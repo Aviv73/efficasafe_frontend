@@ -36,7 +36,7 @@ function _traverse(node, depth, visitFn) {
     visitFn(node, depth);
     if (node.children) {
         node.children.forEach(childNode => {
-            traverse(childNode, depth + 1, visitFn);
+            _traverse(childNode, depth + 1, visitFn);
         });
     }
 }
