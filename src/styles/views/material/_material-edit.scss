@@ -1,0 +1,80 @@
+.material-edit {
+    padding: 8px;
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 16px;
+    margin: 0 auto;
+    .material-edit-title {
+        align-self: flex-start;
+        padding: 16px 0;
+    }
+
+    .form-actions {
+        align-self: flex-end;
+        display: flex;
+
+        .cancel-btn {
+            margin-inline-end: 8px;
+        }
+        margin: 12px 0 6px;
+    }
+
+    .alert {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    form {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 0 16px;
+        width: 700px;
+
+        label {
+            text-align: start;
+        }
+
+        .material-id-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        .mat-item-list {
+            display: flex;
+            flex-direction: column;
+
+            span {
+                margin-bottom: 2px;
+            }
+
+            .item-list {
+                margin-top: 6px;
+                .item {
+                    display: flex;
+                    justify-content: space-between;
+                    span {
+                        font-size: 14px;
+                    }
+                    button {
+                        font-size: 12px;
+                    }
+                }
+            }
+
+            .add-item {
+                display: flex;
+                justify-content: space-between;
+
+                input {
+                    width: 300px;
+                }
+            }
+        }
+    }
+}

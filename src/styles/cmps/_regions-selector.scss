@@ -1,0 +1,21 @@
+.regions-selector {
+    display: grid;
+    // grid-template-columns: 20px 80px;
+    grid-template-columns: 100px 100px 100px;;
+    // grid-template-rows: 100px 100px 100px;
+    // grid-row: 20px;
+    gap: 8px;
+
+    input {
+        width: 20px;
+        height: 20px;
+        margin: 0;
+    }
+
+    input, label {
+        align-self: center;
+        justify-self: start;
+        cursor: pointer;
+    }
+
+}

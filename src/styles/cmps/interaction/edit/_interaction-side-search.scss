@@ -1,0 +1,32 @@
+.interaction-side-search {
+    // max-width: 500px;
+
+    .select-side {
+        // display: flex;
+        // .int-side-radio {
+        //     
+        // }
+    }
+
+    .int-side-value {
+        .side-container {
+            img {
+                height: 20px;
+            }
+
+            .side-title {
+                margin: 0;
+                padding: 0;
+            }
+
+            .side-remove {
+                justify-self: center;
+            }
+
+            .side-remove,
+            .side-title {
+                align-self: center;
+            }
+        }
+    }
+}

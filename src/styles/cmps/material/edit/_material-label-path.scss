@@ -1,0 +1,12 @@
+.material-label-path {
+    .material-label-row {
+        display: grid;
+        grid-template-columns: 3fr 1fr 1fr;
+        gap: 12px;
+        align-content: center;
+
+        .label-add-btn {
+            margin-top: 16px;
+        }
+    }
+}

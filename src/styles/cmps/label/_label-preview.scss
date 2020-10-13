@@ -1,0 +1,38 @@
+.label-preview {
+    .label-details-container {
+        display: grid;
+        grid-template-columns: 1fr 80px;
+        gap: 12px;
+        padding: 6px 8px;
+
+        .label-go-link {
+            text-decoration: none;
+            display: grid;
+            grid-template-columns: 20px 20px 1fr;
+            gap: 8px;
+            color: rgb(0, 0, 60);
+        }
+    }
+
+    a,
+    span,
+    .label-src,
+    .label-color,
+    .label-name {
+        align-self: center;
+    }
+
+    .label-name {
+        text-align: start;
+        font-size: 18px;
+    }
+
+    .label-src,
+    .label-color {
+        height: 20px;
+    }
+
+    .label-color {
+        border-radius: 100%;
+    }
+}

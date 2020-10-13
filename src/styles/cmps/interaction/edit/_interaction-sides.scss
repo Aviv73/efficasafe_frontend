@@ -1,0 +1,13 @@
+.interaction-sides {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+
+    .interaction-side {
+        // padding: 8px 0 0 0;
+
+        .side-title {
+            padding: 0;
+        }
+    }
+}

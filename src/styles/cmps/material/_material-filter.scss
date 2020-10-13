@@ -1,0 +1,22 @@
+.material-filter {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 16px;
+
+    .filter-input {
+        position: relative;
+
+        input {
+            width: 240px;
+            font-size: 16px;
+        }
+    }
+
+    .filter-type {
+        display: flex;
+        align-items: flex-start;
+        label {
+            margin-inline-end: 10px;
+        }
+    }
+}

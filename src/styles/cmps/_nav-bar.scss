@@ -1,0 +1,25 @@
+.nav-bar {
+    margin-bottom: 12px;
+
+    .nav-app {
+        .logo-container {
+            img {
+                width: 24px;
+                margin-inline-start: 4px;
+            }
+
+            span {
+                font-size: 22px;
+                text-transform: capitalize;
+            }
+        }
+
+        .nav-link {
+            height: 100%;
+        }
+    }
+}
+
+.v-toolbar__content {
+    padding: 0 16px;
+}

@@ -1,0 +1,12 @@
+.material-references {
+    .references-action {
+        margin-bottom: 12px;
+        display: grid;
+        grid-template-columns: 1fr 120px;
+        gap: 48px;
+
+        .upload-csv-btn {
+            margin-top: 16px;
+        }
+    }
+}

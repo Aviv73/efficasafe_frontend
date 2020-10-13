@@ -1,0 +1,38 @@
+.material-details {
+    margin-bottom: 12px;
+
+    .action-container {
+        display: flex;
+        margin-bottom: 20px;
+
+        > :not(:last-child) {
+            margin-inline-end: 10px;
+        }
+    }
+
+    .info-container {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 10px;
+        padding: 12px;
+
+        .material-details-title {
+            grid-column: 1 / -1;
+        }
+
+        .info-title,
+        .info-value,
+        a,
+        p {
+            text-align: start;
+        }
+
+        .info-title {
+            padding-inline-start: 16px;
+        }
+
+        p {
+            margin: 0;
+        }
+    }
+}

@@ -1,0 +1,44 @@
+.label-edit {
+    padding: 8px;
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 16px;
+    .label-edit-title {
+        align-self: flex-start;
+        padding: 16px 0;
+    }
+
+    .form-actions {
+        align-self: flex-end;
+        display: flex;
+
+        .cancel-btn {
+            margin-inline-end: 8px;
+        }
+        margin: 12px 0 6px;
+    }
+
+    form {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 0 16px;
+        width: 700px;
+
+        label {
+            text-align: start;
+        }
+
+        input {
+            font-size: 1rem;
+            padding: 2px 6px;
+        }
+
+        > * {
+            margin-bottom: 10px;
+        }
+    }
+}

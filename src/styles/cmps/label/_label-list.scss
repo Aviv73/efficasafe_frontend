@@ -1,0 +1,56 @@
+.label-list {
+    display: grid;
+    gap: 4px;
+}
+
+.tr-label {
+    .td-name-img {
+        a {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            height: 100%;
+
+            img,
+            span {
+                align-self: center;
+                justify-self: center;
+            }
+
+            img {
+                margin-inline-end: 10px;
+                width: 18px;
+            }
+            span {
+                font-size: 16px;
+            }
+        }
+    }
+
+    .td-src {
+        a {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            span {
+                font-size: 14px;
+            }
+        }
+    }
+
+    .td-color {
+        a {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100%;
+            .color-circle {
+                width: 16px;
+                height: 16px;
+                border-radius: 100%;
+            }
+        }
+    }
+}

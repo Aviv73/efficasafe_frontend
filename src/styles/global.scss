@@ -1,0 +1,61 @@
+// BASICS
+@import "basics/base";
+@import "basics/layout";
+@import "basics/button";
+
+// CMPS
+@import "cmps/nav-bar";
+@import "cmps/filter-results";
+@import "cmps/list-and-input";
+@import "cmps/regions-selector";
+
+// GENERAL
+@import "cmps/general/app-messages";
+@import "cmps/general/loading-cmp";
+@import "cmps/general/icons-map";
+
+// COMMON
+
+// MATERIAL
+@import "cmps/material/material-filter";
+@import "cmps/material/material-list";
+@import "cmps/material/material-preview";
+@import "cmps/material/sub-material-list";
+@import "cmps/material/label-path-list";
+
+// MATERIAL EDIT
+@import "cmps/material/edit/search-sub-material";
+@import "cmps/material/edit/material-label-path";
+@import "cmps/material/edit/material-reference";
+
+
+// LABELS
+@import "cmps/label/label-filter";
+@import "cmps/label/label-list";
+@import "cmps/label/label-preview";
+
+// INTERACTIONS
+@import "cmps/interaction/interaction-filter";
+@import "cmps/interaction/interaction-list";
+@import "cmps/interaction/interaction-preview";
+// INTERACTIONS EDIT CMPS
+@import "cmps/interaction/edit/interaction-sides";
+@import "cmps/interaction/edit/interaction-side-search";
+
+// VIEWS
+@import "views/home";
+
+// LABELS
+
+@import "views/label/label-app";
+@import "views/label/label-details";
+@import "views/label/label-edit";
+
+// MATERIALS
+@import "views/material/material-app";
+@import "views/material/material-details";
+@import "views/material/material-edit";
+
+// INTERACTIONS
+@import "views/interaction/interaction-details";
+@import "views/interaction/interaction-edit";

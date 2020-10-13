@@ -1,0 +1,72 @@
+<template>
+  <section class="label-list">
+      <v-data-table :headers="headers" :items="labels" :search="search">
+        <template v-slot:body="{ items }">
+          <tbody>
+            <tr class="tr-label" v-for="item in items" :key="item._id">
+              <td class="td-name-img">
+                <router-link :to="`/label/${item._id}`">
+                  <img :src="require(`@/assets/icons/${item.src}.svg`)" :alt="item.src" :title="item.src" />
+                  <span class="text-capitalize">{{item.name}}</span>
+                </router-link>
+              </td>
+
+              <td class="td-color" width="80">
+                <router-link class="link-clean" :to="`/label/${item._id}`">
+                  <div class="color-circle" :style="{ backgroundColor: item.color}"></div>
+                </router-link>
+              </td>
+
+              <td class="td-src" width="120">
+                <router-link class="link-clean" :to="`/label/${item._id}`">
+                  <span class="text-capitalize">{{item.src}}</span>
+                </router-link>
+              </td>
+
+              <td class="td-actions" width="120" align="center">
+                <v-btn small color="primary" :to="`/label/edit/${item._id}`">
+                  <v-icon small>mdi-pencil</v-icon>
+                </v-btn>
+              </td>
+            </tr>
+          </tbody>
+        </template>
+      </v-data-table>
+  </section>
+</template>
+
+<script>
+export default {
+  name: "labelList",
+  props: {
+    labels: Array,
+  },
+  data() {
+    return {
+      search: "",
+      headers: [
+        {
+          text: "Name",
+          value: "name",
+        },
+        {
+          text: "Color",
+          value: "color",
+          align: "center",
+        },
+        {
+          text: "Source",
+          value: "src",
+        },
+        {
+          text: "Action",
+          name: "Action",
+          value: "action",
+          sortable: false,
+          align: "center",
+        },
+      ],
+    };
+  },
+};
+</script>

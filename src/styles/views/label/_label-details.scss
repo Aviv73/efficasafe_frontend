@@ -1,0 +1,37 @@
+.label-details {
+    .action-container {
+        display: flex;
+        margin-bottom: 20px;
+
+        > :not(:last-child) {
+            margin-inline-end: 10px;
+        }
+    }
+
+    .info-container {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 10px;
+        padding: 12px;
+
+        .color-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 100%;
+        }
+
+        .label-details-title {
+            grid-column: 1 / -1;
+        }
+
+        .info-title {
+            padding-inline-start: 16px;
+        }
+
+        .info-title,
+        .info-value,
+        a {
+            text-align: start;
+        }
+    }
+}
