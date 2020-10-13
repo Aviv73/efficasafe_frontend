@@ -2,7 +2,7 @@
 // import { utilService } from './util.service.js'
 import { httpService } from './http.service.js'
 
-const endpoint = 'material'
+const END_POINT = 'material'
 
 export const materialService = {
     list,
@@ -13,13 +13,13 @@ export const materialService = {
 }
 
 function list(criteria) {
-    return httpService.get(endpoint, criteria)
+    return httpService.get(END_POINT, criteria)
 }
 
 
 function getById(id) {
     try {
-        return httpService.get(`${endpoint}/${id}`);
+        return httpService.get(`${END_POINT}/${id}`);
     } catch (err) {
         console.log('ERROR:', err)
     }

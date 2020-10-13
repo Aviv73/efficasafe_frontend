@@ -1,38 +1,38 @@
-import axios from 'axios'
+import { httpService } from './http.service';
 
-const baseUrl = (process.env.NODE_ENV !== 'development') ? '/label' : '//localhost:4000/label'
+const END_POINT = 'label';
 
-var atcLabels = []
-var atcChildrenLabels = []
+var atcLabels = [];
+var atcChildrenLabels = [];
 
 export const atcService = {
-    list,
+    list
 }
 
 async function list() {
     try {
-        const res = await axios.get(`${baseUrl}`)
-        atcLabels = res.data.filter(label => label.src === 'atc' && !label.parentLabel)
-        atcChildrenLabels = res.data.filter(label => label.src === 'atc' && label.parentLabel)
+        const res = await httpService.get(END_POINT);
+        atcLabels = res.data.filter(label => label.src === 'atc' && !label.parentLabel);
+        atcChildrenLabels = res.data.filter(label => label.src === 'atc' && label.parentLabel);
 
         atcLabels.forEach(node => {
-            traverse(node, 0, buildChildren)
+            _traverse(node, 0, _buildChildren);
         })
 
-        return atcLabels
+        return atcLabels;
 
     } catch (err) {
-        console.log('ERROR:', err)
+        console.log('ERROR:', err);
     }
 }
 
-function buildChildren(node) {
+function _buildChildren(node) {
     if (node) {
-        node.children = atcChildrenLabels.filter(label => node._id === label.parentLabel._id)
+        node.children = atcChildrenLabels.filter(label => node._id === label.parentLabel._id);
     }
 }
 
-function traverse(node, depth, visitFn) {
+function _traverse(node, depth, visitFn) {
     visitFn(node, depth);
     if (node.children) {
         node.children.forEach(childNode => {

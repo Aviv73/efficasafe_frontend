@@ -5,16 +5,15 @@ export const storageService = {
 }
 
 
-function store(key, any) {
-    localStorage[key] = JSON.stringify(any);
+function store(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
 }
 
 function load(key) {
-    var str = localStorage[key] || 'null';
-    return JSON.parse(str);
+    return JSON.parse(localStorage.getItem(key));
 }
 
 function remove(key) {
-    localStorage.removeItem(key)
+    localStorage.removeItem(key);
 }
 

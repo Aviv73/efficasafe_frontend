@@ -2,11 +2,11 @@ export const utilService = {
     makeId
 }
 
-function makeId(length = 7) {
+function makeId(length = 10) {
     var id = '';
-    var possible = '0123456789';
+    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (var i = 0; i < length; i++) {
-        id += possible.charAt(Math.floor(Math.random() * possible.length));
+        id += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    return +id;
+    return id;
 }
