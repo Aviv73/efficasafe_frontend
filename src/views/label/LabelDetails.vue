@@ -28,16 +28,16 @@
     <v-card class="info-container">
       <v-card-title class="label-details-title">{{label.name}}</v-card-title>
 
-      <span class="info-title">Label Color:</span>
+      <div class="info-title">Label Color:</div>
       <div class="color-circle" :style="{ backgroundColor: label.color}"></div>
 
-      <span class="info-title">Source:</span>
-      <span class="info-value">{{label.src}}</span>
+      <div class="info-title">Source:</div>
+      <div class="info-value">{{label.src}}</div>
 
-      <span class="info-title">ATC code:</span>
-      <span class="info-value">{{label.atc}}</span>
+      <div class="info-title">ATC code:</div>
+      <div class="info-value">{{label.atcId}}</div>
 
-      <span class="info-title">Parent label:</span>
+      <div class="info-title" v-if="label.parentLabel">Parent label:</div>
       <router-link
         v-if="label.parentLabel"
         :to="`/label/${label.parentLabel._id}`"

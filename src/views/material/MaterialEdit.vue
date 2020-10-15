@@ -50,7 +50,12 @@
         />
 
         <div class="list-chips">
-          <v-text-field v-model="model.alias" label="Aliases" @keypress.enter.prevent="addAlias" />
+          <v-text-field 
+            v-model="model.alias" 
+            label="Aliases"
+            :disabled="editedMaterial.type !== 'herb'"
+            @keypress.enter.prevent="addAlias" 
+            />
           <v-chip-group column active-class="primary--text">
             <v-chip
               v-for="alias in editedMaterial.aliases"
@@ -165,13 +170,8 @@
         />
 
         <material-reference
-<<<<<<< HEAD
+          v-if="editedMaterial.refIds.length"
           :references="editedMaterial.refIds"
-          @data-ready="AddReferences"
-          @save-data="saveReferences"
-=======
-          :references="editedMaterial.references"
->>>>>>> abaa836686902b057082ca49b238cae442ece5fc
         />
 
         <v-textarea type="text" rows="1" auto-grow v-model="editedMaterial.draft" label="Draft" />
@@ -207,7 +207,12 @@
         />
 
         <div class="list-chips">
-          <v-text-field v-model="model.brand" label="Brands" @keypress.enter.prevent="addBrand" />
+          <v-text-field 
+            v-model="model.brand" 
+            label="Brands"
+            :disabled="editedMaterial.type !== 'drug'" 
+            @keypress.enter.prevent="addBrand" 
+            />
           <v-chip-group column active-class="primary--text">
             <v-chip
               v-for="brand in editedMaterial.brands"
@@ -325,11 +330,15 @@ export default {
       this.editedMaterial = JSON.parse(JSON.stringify(material));
     },
     loadMaterials() {
-      this.$store.dispatch({ type: "loadMaterials" });
+      const criteria = { type: 'drug' };
+      this.$store.dispatch({ type: 'loadMaterials', criteria });
     },
     async saveMaterial() {
       if (!this.editedMaterial.name || !this.editedMaterial.type) return;
       try {
+        if (this.editedMaterial.type === 'drug') this.editedMaterial.aliases = null;
+        else if (this.editedMaterial.type === 'herb') this.editedMaterial.brands = null;
+
         await this.$store.dispatch({
           type: "saveMaterial",
           material: this.editedMaterial,

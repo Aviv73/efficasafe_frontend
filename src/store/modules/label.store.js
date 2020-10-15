@@ -25,19 +25,17 @@ export const labelStore = ({
             return labels;
         },
         async loadLabel(context, { labelId }) {
-            const label = await labelService.getById(labelId)
-            return label
+            return await labelService.getById(labelId);
         },
         async saveLabel(context, { label }) {
-            const newlabel = await labelService.save(label)
-            return newlabel
+            return await labelService.save(label);
         },
         async removeLabel(context, { labelId }) {
-            await labelService.remove(labelId)
+            await labelService.remove(labelId);
             context.commit({
                 type: "removeLabel",
                 labelId
-            })
+            });
         },
         async getLabelPaths(context, { selectedPaths }) {
             return await labelService.getLabelPaths(selectedPaths);

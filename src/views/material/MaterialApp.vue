@@ -60,8 +60,6 @@ export default {
     async loadMaterials() {
       this.loading = true;
       const criteria = this.$route.query;
-      // const filterBy = this.$route.query;
-      // console.log("MAT APP FILTER By from query", filterBy);
       await this.$store.dispatch({ type: "loadMaterials", criteria });
       this.loading = false;
     },

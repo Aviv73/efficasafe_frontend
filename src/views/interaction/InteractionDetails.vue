@@ -22,40 +22,39 @@
 
     <v-card class="info-container">
       <v-card-title class="interaction-details-title">
-        <span v-if="interaction.side1MaterialId">{{interaction.side1MaterialId.name}}</span>
-        <span v-if="interaction.side1LabelId">{{interaction.side1LabelId.name}}</span>
+        <span v-if="interaction.side1Material">{{interaction.side1Material.name}}</span>
         <span class="spacing">&</span>
-        <span v-if="interaction.side2MaterialId">{{interaction.side2MaterialId.name}}</span>
-        <span v-if="interaction.side2LabelId">{{interaction.side2LabelId.name}}</span>
+        <span v-if="interaction.side2Material">{{interaction.side2Material.name}}</span>
+        <span v-if="interaction.side2Label">{{interaction.side2Label.name}}</span>
       </v-card-title>
 
-      <span class="info-title" v-if="interaction.side1MaterialId">Side 1 Material:</span>
+      <span class="info-title" v-if="interaction.side1Material">Side 1 Material:</span>
       <router-link
         class="info-value"
-        v-if="interaction.side1MaterialId"
-        :to="`/material/${interaction.side1MaterialId._id}`"
-      >{{interaction.side1MaterialId.name}}</router-link>
+        v-if="interaction.side1Material"
+        :to="`/material/${interaction.side1Material._id}`"
+      >{{interaction.side1Material.name}}</router-link>
 
-      <span class="info-title" v-if="interaction.side1LabelId">Side 1 Label:</span>
+      <span class="info-title" v-if="interaction.side1Label">Side 1 Label:</span>
       <router-link
         class="info-value"
-        v-if="interaction.side1LabelId"
-        :to="`/label/${interaction.side1LabelId._id}`"
-      >{{interaction.side1LabelId.name}}</router-link>
+        v-if="interaction.side1Label"
+        :to="`/label/${interaction.side1Label._id}`"
+      >{{interaction.side1Label.name}}</router-link>
 
-      <span class="info-title" v-if="interaction.side2MaterialId">Side 2 Material:</span>
+      <span class="info-title" v-if="interaction.side2Material">Side 2 Material:</span>
       <router-link
         class="info-value"
-        v-if="interaction.side2MaterialId"
-        :to="`/material/${interaction.side2MaterialId._id}`"
-      >{{interaction.side2MaterialId.name}}</router-link>
+        v-if="interaction.side2Material"
+        :to="`/material/${interaction.side2Material._id}`"
+      >{{interaction.side2Material.name}}</router-link>
 
-      <span class="info-title" v-if="interaction.side2LabelId">Side 2 Label:</span>
+      <span class="info-title" v-if="interaction.side2Label">Side 2 Label:</span>
       <router-link
         class="info-value"
-        v-if="interaction.side2LabelId"
-        :to="`/label/${interaction.side2LabelId._id}`"
-      >{{interaction.side2LabelId.name}}</router-link>
+        v-if="interaction.side2Label"
+        :to="`/label/${interaction.side2Label._id}`"
+      >{{interaction.side2Label.name}}</router-link>
 
       <span class="info-title">Summary:</span>
       <p class="info-value">{{interaction.summary}}</p>
@@ -68,17 +67,13 @@
 
       <span class="info-title">Review of studies:</span>
       <div>
-        <p class="info-value">{{interaction.reviewOfStudies.main}}</p>
-        <p class="info-value">{{interaction.reviewOfStudies.details}}</p>
+        <p class="info-value">{{interaction.reviewOfStudies}}</p>
       </div>
 
-      <span class="info-title" v-if="interaction.references.length">References:</span>
-      <reference-table :references="interaction.references" v-if="interaction.references.length" />
+      <span class="info-title" v-if="interaction.refs.length">References:</span>
+      <reference-table :references="interaction.refs" v-if="interaction.refs.length" />
 
       <!-- ------------------ MISSING: Monitor (labTests, otherTests, symptoms) ------------------ -->
-
-      <span class="info-title">Draft:</span>
-      <p class="info-value">{{interaction.draft}}</p>
 
       <span class="info-title">Indications:</span>
       <v-chip-group column active-class="primary--text">
@@ -104,10 +99,10 @@ export default {
       interaction: null,
       dialog: false,
       sides: {
-        side1MaterialId: null,
-        side1LabelId: null,
-        side2MaterialId: null,
-        side2LabelId: null,
+        side1Material: null,
+        side1Label: null,
+        side2Material: null,
+        side2Label: null,
       },
     };
   },
@@ -128,31 +123,31 @@ export default {
       }
     },
     async loadInteractionSides() {
-      if (this.interaction.side1MaterialId) {
-        const matId = this.interaction.side1MaterialId._id;
-        this.sides.side1MaterialId = await this.$store.dispatch({
+      if (this.interaction.side1Material) {
+        const matId = this.interaction.side1Material._id;
+        this.sides.side1Material = await this.$store.dispatch({
           type: "loadMat",
           matId,
         });
       } else {
-        const labelId = this.interaction.side1LabelId._id;
-        this.sides.side1LabelId = await this.$store.dispatch({
+        const label = this.interaction.side1Label._id;
+        this.sides.side1Label = await this.$store.dispatch({
           type: "loadLabel",
-          labelId,
+          label,
         });
       }
 
-      if (this.interaction.side2MaterialId) {
-        const matId = this.interaction.side2MaterialId._id;
-        this.sides.side2MaterialId = await this.$store.dispatch({
+      if (this.interaction.side2Material) {
+        const matId = this.interaction.side2Material._id;
+        this.sides.side2Material = await this.$store.dispatch({
           type: "loadMat",
           matId,
         });
       } else {
-        const labelId = this.interaction.side2LabelId._id;
-        this.sides.side2LabelId = await this.$store.dispatch({
+        const label = this.interaction.side2Label._id;
+        this.sides.side2Label = await this.$store.dispatch({
           type: "loadLabel",
-          labelId,
+          label,
         });
       }
     },

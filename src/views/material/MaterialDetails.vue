@@ -30,38 +30,38 @@
     <v-card class="info-container">
       <v-card-title class="material-details-title">{{material.name}}</v-card-title>
 
-      <span class="info-title">Type:</span>
-      <span class="info-value">{{material.type}}</span>
+      <h3 class="info-title">Type:</h3>
+      <div class="info-value">{{ material.type}}</div>
 
-      <span class="info-title">ATC Code:</span>
-      <span class="info-value">{{material.atc}}</span>
+      <h3 class="info-title">ATC Code:</h3>
+      <div class="info-value">{{ material.atcId}}</div>
 
-      <span class="info-title">DrugBank ID:</span>
-      <span class="info-value">{{material.drugBankId}}</span>
+      <h3 class="info-title">DrugBank ID:</h3>
+      <span class="info-value">{{ material.drugBankId}}</span>
 
-      <span class="info-title">Description:</span>
-      <p class="info-value">{{material.desc}}</p>
+      <h3 class="info-title">Description:</h3>
+      <p class="info-value">{{ material.desc}}</p>
 
-      <span class="info-title">Precautions:</span>
-      <p class="info-value">{{material.precautions}}</p>
+      <h3 class="info-title">Precautions:</h3>
+      <p class="info-value">{{ material.precautions}}</p>
 
-      <span class="info-title">Adverse Reactions:</span>
-      <p class="info-value">{{material.adverseReactions}}</p>
+      <h3 class="info-title">Adverse Reactions:</h3>
+      <p class="info-value">{{ material.adverseReactions}}</p>
 
-      <span class="info-title">Draft:</span>
-      <p class="info-value">{{material.draft}}</p>
+      <h3 class="info-title">Draft:</h3>
+      <p class="info-value">{{ material.draft}}</p>
 
-      <span class="info-title">Synonyms:</span>
-      <v-chip-group column active-class="primary--text">
+      <h3 class="info-title" v-if="material.aliases">Synonyms:</h3>
+      <v-chip-group column active-class="primary--text" v-if="material.aliases">
         <v-chip v-for="alias in material.aliases" :key="alias.id">{{ alias.name }}</v-chip>
       </v-chip-group>
 
-      <span class="info-title">Brands:</span>
-      <v-chip-group column active-class="primary--text">
+      <h3 class="info-title" v-if="material.brands">Brands:</h3>
+      <v-chip-group column active-class="primary--text" v-if="material.brands">
         <v-chip v-for="brand in material.brands" :key="brand.id">{{ brand.name }}</v-chip>
       </v-chip-group>
 
-      <span class="info-title">Regions:</span>
+      <h3 class="info-title">Regions:</h3>
       <v-chip-group column active-class="primary--text">
         <v-chip v-for="region in material.regions" :key="region">
           <v-avatar left>
@@ -71,7 +71,7 @@
         </v-chip>
       </v-chip-group>
 
-      <span class="info-title">Indications:</span>
+      <h3 class="info-title">Indications:</h3>
       <v-chip-group column active-class="primary--text">
         <v-chip
           v-for="indication in material.indications"
@@ -79,14 +79,15 @@
         >{{ indication.name }}</v-chip>
       </v-chip-group>
 
-      <span class="info-title" v-if="material.subMaterials.length">Sub Materials:</span>
+      <h3 class="info-title" v-if="material.subMaterials.length">Sub Materials:</h3>
       <sub-material-list :subMats="material.subMaterials" />
 
-      <span class="info-title" v-if="material.labelPaths.length">Label Paths:</span>
+      <h3 class="info-title" v-if="material.labelPaths.length">Label Paths:</h3>
       <label-path-list :labelPaths="material.labelPaths" :isEdit="false" />
 
-      <!-- <span class="info-title" v-if="material.references.length">References:</span>
-      <reference-table :references="material.references" v-if="material.references.length" /> -->
+      <h3 class="info-title" v-if="material.refIds.length">References:</h3>
+      <!-- reference-table needs references OBJECTS NOT IDs (get from server) -->
+      <reference-table :references="material.references" v-if="material.refIds.length" />
     </v-card>
 
     <icons-map />
@@ -97,7 +98,7 @@
 import subMaterialList from "@/cmps/material/SubMaterialList";
 import labelPathList from "@/cmps/material/details/LabelPathList";
 import confirmDelete from "@/cmps/general/ConfirmDelete";
-// import referenceTable from "@/cmps/common/ReferenceTable";
+import referenceTable from "@/cmps/common/ReferenceTable";
 import iconsMap from "@/cmps/general/IconsMap";
 
 export default {
@@ -148,7 +149,7 @@ export default {
   components: {
     subMaterialList,
     labelPathList,
-    // referenceTable,
+    referenceTable,
     confirmDelete,
     iconsMap,
   },

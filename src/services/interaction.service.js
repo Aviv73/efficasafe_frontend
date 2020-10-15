@@ -12,52 +12,11 @@ export const interactionService = {
 
 async function list(filterBy) {
     try {
-        if (filterBy) {
-            var queryParams = new URLSearchParams();
-            if (filterBy.type !== 'all' && filterBy.type) queryParams.set('type', filterBy.type);
-            if (filterBy.isActive !== 'all' && filterBy.isActive) queryParams.set('isActive', filterBy.isActive);
 
-            if (filterBy.q) {
-                const sides = filterBy.q.split(',');
-                for (let i = 0; i < sides.length; i++) {
-                    queryParams.append('q', sides[i]);
-                }
-            }
-        }
+        const data = await httpService.get(END_POINT, filterBy);
 
-        const data = httpService.get(`${END_POINT}?${queryParams}`);
-
-        if (filterBy.material || filterBy.label) {
-            const materialId = +filterBy.material;
-            const labelId = +filterBy.label;
-
-            const interactions = data.reduce((acc, interaction) => {
-                if (interaction.side1MaterialId) {
-                    if (interaction.side1MaterialId._id === materialId) {
-                        acc.push(interaction)
-                    }
-                } else {
-                    if (interaction.side1LabelId._id === labelId) {
-                        acc.push(interaction)
-                    }
-                }
-
-                if (interaction.side2MaterialId) {
-                    if (interaction.side2MaterialId._id === materialId) {
-                        acc.push(interaction)
-                    }
-                } else {
-                    if (interaction.side2LabelId._id === labelId) {
-                        acc.push(interaction)
-                    }
-                }
-
-                return acc
-
-            }, [])
-
-            return interactions
-        }
+         
+        
 
         return data;
 

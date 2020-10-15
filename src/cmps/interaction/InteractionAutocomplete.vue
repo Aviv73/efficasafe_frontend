@@ -30,27 +30,22 @@ export default {
     },
     itemNames() {
       return this.items.reduce((acc, item) => {
-        if (item.side1MaterialId) {
+        if (item.side1Material) {
           acc.push({
-            _id: item.side1MaterialId._id,
-            text: item.side1MaterialId.name,
-          });
-        } else {
-          acc.push({
-            _id: item.side1LabelId._id,
-            text: item.side1LabelId.name,
+            _id: item.side1Material._id,
+            text: item.side1Material.name,
           });
         }
 
-        if (item.side2MaterialId) {
+        if (item.side2Material) {
           acc.push({
-            _id: item.side2MaterialId._id,
-            text: item.side2MaterialId.name,
+            _id: item.side2Material._id,
+            text: item.side2Material.name,
           });
         } else {
           acc.push({
-            _id: item.side2LabelId._id,
-            text: item.side2LabelId.name,
+            _id: item.side2Label._id,
+            text: item.side2Label.name,
           });
         }
         return acc;

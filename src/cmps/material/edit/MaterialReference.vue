@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import papa from "papaparse";
 import referenceTable from "../../common/ReferenceTable";
 
 export default {

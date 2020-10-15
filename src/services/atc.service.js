@@ -11,9 +11,9 @@ export const atcService = {
 
 async function list() {
     try {
-        const res = await httpService.get(END_POINT);
-        atcLabels = res.data.filter(label => label.src === 'atc' && !label.parentLabel);
-        atcChildrenLabels = res.data.filter(label => label.src === 'atc' && label.parentLabel);
+        const data = await httpService.get(END_POINT, {});
+        atcLabels = data.filter(label => label.src === 'atc' && !label.parentLabel);
+        atcChildrenLabels = data.filter(label => label.src === 'atc' && label.parentLabel);
 
         atcLabels.forEach(node => {
             _traverse(node, 0, _buildChildren);
