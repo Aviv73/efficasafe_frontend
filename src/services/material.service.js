@@ -1,19 +1,15 @@
-// import axios from 'axios'
-// import { utilService } from './util.service.js'
-import { httpService } from './http.service.js'
+import { httpService } from './http.service.js';
 
-const END_POINT = 'material'
+const END_POINT = 'material';
 
 export const materialService = {
     list,
     getById,
-    // save,
-    // remove,
     getEmptyMaterial,
 }
 
 function list(criteria) {
-    return httpService.get(END_POINT, criteria)
+    return httpService.get(END_POINT, criteria);
 }
 
 
@@ -21,33 +17,10 @@ function getById(id) {
     try {
         return httpService.get(`${END_POINT}/${id}`);
     } catch (err) {
-        console.log('ERROR:', err)
+        console.log('ERROR:', err);
     }
 }
 
-// async function save(material) {
-//     try {
-//         if (material._id) {
-//             const res = await axios.put(`${baseUrl}/${material._id}`, material)
-//             return res.data
-//         } else {
-//             material._id = utilService.makeId()
-//             const res = await axios.post(`${baseUrl}`, material)
-//             return res.data
-//         }
-//     } catch (err) {
-//         console.log('ERROR:', err)
-//     }
-// }
-
-// async function remove(id) {
-//     await axios.delete(`${baseUrl}/${id}`)
-//     try {
-//         console.log('DELETED!');
-//     } catch (err) {
-//         console.log('ERROR:', err)
-//     }
-// }
 
 function getEmptyMaterial() {
     return {
@@ -60,8 +33,8 @@ function getEmptyMaterial() {
         draft: '',
         precautions: '',
         adverseReactions: '',
-        brands: [],
-        aliases: [],
+        brands: null,
+        aliases: null,
         medicinalActivity: [],
         indications: [],
         labelPaths: [],

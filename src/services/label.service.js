@@ -1,6 +1,6 @@
-import axios from 'axios'
+import { httpService } from './util.service.js';
 
-const baseUrl = (process.env.NODE_ENV !== 'development') ? '/label' : '//localhost:4000/label'
+const END_POINT = 'label';
 
 export const labelService = {
     list,
@@ -9,35 +9,6 @@ export const labelService = {
     remove,
     getEmptyLabel,
     getLabelPaths
-}
-
-function _getLabelPath(atcLabels, label, labelPath) {
-    labelPath.unshift(
-        {
-            _id: label._id,
-            name: label.name,
-        }
-    )
-
-    if (label.parentLabel) {
-        const parent = atcLabels.find(atcLabel => {
-            return atcLabel._id === label.parentLabel._id
-        })
-        if (parent.parentLabel) {
-            _getLabelPath(atcLabels, parent, labelPath)
-        } else {
-            labelPath.unshift(
-                {
-                    _id: parent._id,
-                    name: parent.name,
-                }
-            )
-            return labelPath
-        }
-
-    } else {
-        return labelPath
-    }
 }
 
 async function getLabelPaths(labels) {
@@ -83,13 +54,8 @@ async function list(filterBy) {
     }
 }
 
-async function getById(id) {
-    try {
-        const res = await axios.get(`${baseUrl}/${id}`)
-        return res.data
-    } catch (err) {
-        console.log('ERROR:', err)
-    }
+function getById(id) {
+    return httpService.get(`${baseUrl}/${id}`);
 }
 
 async function save(label) {
@@ -97,7 +63,6 @@ async function save(label) {
         if (label._id) {
             return await axios.put(`${baseUrl}/${label._id}`, label)
         } else {
-            label._id = _makeId()
             return await axios.post(`${baseUrl}`, label)
         }
     } catch (err) {
@@ -125,12 +90,31 @@ function getEmptyLabel() {
     }
 }
 
+function _getLabelPath(atcLabels, label, labelPath) {
+    labelPath.unshift(
+        {
+            _id: label._id,
+            name: label.name,
+        }
+    )
 
-function _makeId(length = 7) {
-    var txt = ''
-    var possible = '0123456789';
-    for (var i = 0; i < length; i++) {
-        txt += possible.charAt(Math.floor(Math.random() * possible.length))
+    if (label.parentLabel) {
+        const parent = atcLabels.find(atcLabel => {
+            return atcLabel._id === label.parentLabel._id
+        })
+        if (parent.parentLabel) {
+            _getLabelPath(atcLabels, parent, labelPath)
+        } else {
+            labelPath.unshift(
+                {
+                    _id: parent._id,
+                    name: parent.name,
+                }
+            )
+            return labelPath
+        }
+
+    } else {
+        return labelPath
     }
-    return +txt;
 }
