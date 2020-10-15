@@ -16,32 +16,32 @@
 </template>
 
 <script>
-import autocomplete from "@/cmps/Autocomplete";
+import autocomplete from '@/cmps/Autocomplete';
 
 export default {
-  name: "materialFilter",
+  name: 'materialFilter',
   props: {
     materials: Array,
   },
   data() {
     return {
       filterBy: {
-        q: "",
-        type: "all",
+        q: '',
+        type: 'all',
       },
       material: {
         type: [
           {
-            text: "All",
-            value: "all",
+            text: 'All',
+            value: 'all',
           },
           {
-            text: "Drug",
-            value: "drug",
+            text: 'Drug',
+            value: 'drug',
           },
           {
-            text: "Herb",
-            value: "herb",
+            text: 'Herb',
+            value: 'herb',
           },
         ],
       },
@@ -49,13 +49,13 @@ export default {
   },
   methods: {
     emitFilter() {
-      this.$emit("emit-filter", JSON.parse(JSON.stringify(this.filterBy)));
+      this.$emit('emit-filter', JSON.parse(JSON.stringify(this.filterBy)));
     },
     updateFilter(material) {
       if (material && material.text) {
         this.filterBy.q = material.text;
       } else {
-        this.filterBy.q = "";
+        this.filterBy.q = '';
       }
       this.emitFilter();
     },

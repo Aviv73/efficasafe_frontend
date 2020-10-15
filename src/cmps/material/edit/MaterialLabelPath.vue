@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     loadLabels() {
-      const filterBy = { src: "other" };
+      const filterBy = { src: "atc" };
       this.$store.dispatch({ type: "loadLabels", filterBy });
     },
     addLabel(label) {

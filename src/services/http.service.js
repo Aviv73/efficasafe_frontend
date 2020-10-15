@@ -29,7 +29,6 @@ async function ajax(endpoint, method='get', data=null) {
         }
         if (method === 'get' || method === 'GET') config.params = {data};
         else config.data = data;
-        
         const res = await axios(config);
         return res.data;
     } catch (err) {

@@ -1,4 +1,4 @@
-import { httpService } from './util.service.js';
+import { httpService } from './http.service.js';
 
 const END_POINT = 'label';
 
@@ -11,59 +11,36 @@ export const labelService = {
     getLabelPaths
 }
 
+function list(filterBy) {
+    return httpService.get(END_POINT, filterBy);
+}
+
 async function getLabelPaths(labels) {
-    const filterBy = { src: 'atc' }
-    const labelList = await list(filterBy)
+    const filterBy = { src: 'atc' };
+    const labelList = await list(filterBy);
 
     const labelPaths = labels.reduce((acc, label) => {
 
-        var labelPath = []
-        _getLabelPath(labelList, label, labelPath)
-        acc.push(labelPath)
-        return acc
+        var labelPath = [];
+        _getLabelPath(labelList, label, labelPath);
+        acc.push(labelPath);
+        return acc;
     }, [])
-    // console.log('labelPaths', labelPaths)
-    return labelPaths
+    console.log('labelPaths', labelPaths)
+    return labelPaths;
 }
 
-async function list(filterBy) {
-    try {
-        if (filterBy) {
-            var queryParams = new URLSearchParams()
-            if (filterBy.q) queryParams.set('q', filterBy.q)
-            if (filterBy.src !== 'all' && filterBy.src) queryParams.set('src', filterBy.src)
-            if (Array.isArray(filterBy.label)) {
-
-                for (let i = 0; i < filterBy.label.length; i++) {
-                    queryParams.append('_id', filterBy.label[i])
-
-                }
-
-            } else if (filterBy.label) {
-                queryParams.set('_id', filterBy.label)
-            }
-
-
-        }
-
-        const res = await axios.get(`${baseUrl}?${queryParams}`)
-        // return res.data.slice(0, 99)
-        return res.data
-    } catch (err) {
-        console.log('ERROR:', err)
-    }
-}
 
 function getById(id) {
-    return httpService.get(`${baseUrl}/${id}`);
+    return httpService.get(`${END_POINT}/${id}`);
 }
 
-async function save(label) {
+function save(label) {
     try {
         if (label._id) {
-            return await axios.put(`${baseUrl}/${label._id}`, label)
+            return httpService.put(`${END_POINT}/${label._id}`, label)
         } else {
-            return await axios.post(`${baseUrl}`, label)
+            return httpService.post(`${END_POINT}`, label)
         }
     } catch (err) {
         console.log('ERROR:', err)
@@ -72,7 +49,7 @@ async function save(label) {
 
 async function remove(labelId) {
     try {
-        await axios.delete(`${baseUrl}/${labelId}`)
+        httpService.delete(`${END_POINT}/${labelId}`);
     } catch (err) {
         console.log('ERROR:', err)
     }

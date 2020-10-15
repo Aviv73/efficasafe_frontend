@@ -165,7 +165,7 @@
         />
 
         <material-reference
-          :references="editedMaterial.references"
+          :references="editedMaterial.refIds"
           @data-ready="AddReferences"
           @save-data="saveReferences"
         />

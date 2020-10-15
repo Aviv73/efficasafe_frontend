@@ -20,9 +20,9 @@ export const labelStore = ({
     },
     actions: {
         async loadLabels(context, { filterBy }) {
-            const labels = await labelService.list(filterBy)
-            context.commit({ type: 'setLabels', labels })
-            return labels
+            const labels = await labelService.list(filterBy);
+            context.commit({ type: 'setLabels', labels });
+            return labels;
         },
         async loadLabel(context, { labelId }) {
             const label = await labelService.getById(labelId)
@@ -40,8 +40,7 @@ export const labelStore = ({
             })
         },
         async getLabelPaths(context, { selectedPaths }) {
-            const labelPaths = await labelService.getLabelPaths(selectedPaths)
-            return labelPaths
+            return await labelService.getLabelPaths(selectedPaths);
         }
     }
 })

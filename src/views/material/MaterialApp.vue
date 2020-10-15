@@ -44,14 +44,14 @@ export default {
     },
     setFilter(filterBy) {
       // If autocomplete cmp clears search, it emits filterBy.q = ""
-      if (!filterBy.type || filterBy.type === "all") {
-        delete filterBy.type;
-      }
+      // if (!filterBy.type || filterBy.type === "all") {
+      //   delete filterBy.type;
+      // }
 
-      if (!filterBy.q) {
-        // To clear the browser navigation from q= at the end
-        delete filterBy.q;
-      }
+      // if (!filterBy.q) {
+      //   // To clear the browser navigation from q= at the end
+      //   delete filterBy.q;
+      // }
 
       const queryStr = "?" + new URLSearchParams(filterBy).toString();
 
@@ -59,10 +59,7 @@ export default {
     },
     async loadMaterials() {
       this.loading = true;
-      const criteria = {
-        filterBy: this.$route.query,
-        sortBy: this.sortBy
-      }
+      const criteria = this.$route.query;
       // const filterBy = this.$route.query;
       // console.log("MAT APP FILTER By from query", filterBy);
       await this.$store.dispatch({ type: "loadMaterials", criteria });

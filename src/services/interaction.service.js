@@ -59,7 +59,7 @@ async function list(filterBy) {
             return interactions
         }
 
-        return res;
+        return data;
 
     } catch (err) {
         console.log('ERROR:', err)
