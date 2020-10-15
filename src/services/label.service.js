@@ -11,6 +11,7 @@ export const labelService = {
     getLabelPaths
 }
 
+// Creates the label paths to be added to the material (material.labelPaths) from the v-tree-view
 async function getLabelPaths(labels) {
     const filterBy = { src: 'atc' }
     const labelList = await list(filterBy)
@@ -22,7 +23,6 @@ async function getLabelPaths(labels) {
         acc.push(labelPath)
         return acc
     }, [])
-    // console.log('labelPaths', labelPaths)
     return labelPaths
 }
 
