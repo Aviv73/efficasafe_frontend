@@ -165,9 +165,13 @@
         />
 
         <material-reference
+<<<<<<< HEAD
           :references="editedMaterial.refIds"
           @data-ready="AddReferences"
           @save-data="saveReferences"
+=======
+          :references="editedMaterial.references"
+>>>>>>> abaa836686902b057082ca49b238cae442ece5fc
         />
 
         <v-textarea type="text" rows="1" auto-grow v-model="editedMaterial.draft" label="Draft" />
@@ -300,22 +304,6 @@ export default {
     },
   },
   methods: {
-    async saveReferences() {
-      const references = await this.$store.dispatch({
-        type: "saveReferences",
-        references: this.editedMaterial.references,
-      });
-      try {
-        this.editedMaterial.references = references;
-        this.isNewReferenceList = false;
-      } catch (err) {
-        console.log("ERROR:", err);
-      }
-    },
-    AddReferences(data) {
-      this.editedMaterial.references = data;
-      this.isNewReferenceList = true;
-    },
     removeLabelPath(idx) {
       this.editedMaterial.labelPaths.splice(idx, 1);
     },

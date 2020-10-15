@@ -15,6 +15,7 @@ function list(filterBy) {
     return httpService.get(END_POINT, filterBy);
 }
 
+// Creates the label paths to be added to the material (material.labelPaths) from the v-tree-view
 async function getLabelPaths(labels) {
     const filterBy = { src: 'atc' };
     const labelList = await list(filterBy);
