@@ -34,8 +34,7 @@ export const interactionStore = ({
             return interactions;
         },
         async loadInteraction(context, { intId }) {
-            const int = await interactionService.getById(intId);
-            return int;
+            return await interactionService.getById(intId);
         },
         async saveInteraction(context, { interaction }) {
             const isEdit = !!interaction._id;
@@ -49,7 +48,7 @@ export const interactionStore = ({
         async removeInteraction(context, { intId }) {
             await interactionService.remove(intId);
             context.commit({
-                type: "removeInteraction",
+                type: 'removeInteraction',
                 intId
             });
         }

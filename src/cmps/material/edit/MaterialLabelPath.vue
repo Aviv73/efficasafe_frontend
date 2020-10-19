@@ -7,7 +7,7 @@
         @emitAutocomplete="addLabel"
         searchName="labels"
       />
-      <v-btn small class="label-add-btn" color="info" @click="$emit('add-custom')">
+      <v-btn small class="label-add-btn" color="info" @click="$emit('add-custom-label')">
         <v-icon dark left>mdi-label-outline</v-icon>new label
       </v-btn>
       <v-btn small class="label-add-btn" color="info" @click="$emit('open-dialog')">
@@ -51,7 +51,7 @@ export default {
       }
     },
     removeLabelPath(idx) {
-      this.$emit("remove-path", idx);
+      this.$emit("remove-path", 'labelPaths', idx);
     },
   },
   created() {

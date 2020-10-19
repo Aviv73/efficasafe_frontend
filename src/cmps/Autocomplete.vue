@@ -14,14 +14,14 @@
 
 <script>
 export default {
-  name: "Autocomplete",
+  name: 'Autocomplete',
   props: {
     items: Array,
     searchName: String,
   },
   data() {
     return {
-      search: "",
+      search: '',
       initialItems: null,
       autocompleteResult: null,
     };
@@ -46,11 +46,11 @@ export default {
     emitAutocomplete() {
       if (this.autocompleteResult) {
         this.$emit(
-          "emitAutocomplete",
+          'emitAutocomplete',
           JSON.parse(JSON.stringify(this.autocompleteResult))
         );
       } else {
-        this.$emit("emitAutocomplete", null);
+        this.$emit('emitAutocomplete', null);
       }
     },
   },

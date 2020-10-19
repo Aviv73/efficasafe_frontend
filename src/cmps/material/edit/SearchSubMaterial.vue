@@ -1,7 +1,7 @@
 <template>
   <section class="search-sub-material">
     <div class="search-container" v-if="materials">
-      <autocomplete :items="materials" @emitAutocomplete="addSubMaterial" searchName="Add Sub Material"/>
+      <autocomplete :items="materials" @emitAutocomplete="addSubMaterial" searchName="Add Sub Material" />
     </div>
 
     <div class="list-chips">
@@ -47,7 +47,7 @@ export default {
       this.$emit("addSubMaterial", newMaterial);
     },
     removeSubMaterial(itemId) {
-      this.$emit("removeSubMaterial", itemId);
+      this.$emit("removeSubMaterial", 'subMaterials', itemId);
     },
   },
   components: {

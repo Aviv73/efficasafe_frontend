@@ -1,7 +1,7 @@
 <template>
   <section class="interaction-side-search">
     <div v-if="side.material || side.label" class="int-side-value">
-      <span class="text-capitalize">{{side.name}}:</span>
+      <span class="text-capitalize">{{ side.name }}:</span>
       <v-chip
         v-if="side.material"
         class="ma-2 side-container"
@@ -12,9 +12,13 @@
         @click:close="removeSide"
       >
         <v-avatar left>
-          <v-img class="side-type-img" :src="materialSideType" :alt="side.material.type" />
+          <v-img
+            class="side-type-img"
+            :src="materialSideType"
+            :alt="side.material.type"
+          />
         </v-avatar>
-        {{side.material.name}}
+        {{ side.material.name }}
       </v-chip>
       <v-chip
         v-if="side.label"
@@ -26,16 +30,25 @@
         @click:close="removeSide"
       >
         <v-avatar left>
-          <v-img class="side-type-img" :src="labelSideSrc" :alt="side.label.src" />
+          <v-img
+            class="side-type-img"
+            :src="labelSideSrc"
+            :alt="side.label.src"
+          />
         </v-avatar>
-        {{side.label.name}}
+        {{ side.label.name }}
       </v-chip>
     </div>
 
     <div v-else class="select-side">
-      <v-radio-group row class="int-side-radio" v-model="isSideMaterial" :mandatory="true">
+      <v-radio-group
+        row
+        class="int-side-radio"
+        v-model="isSideMaterial"
+        :mandatory="true"
+      >
         <v-radio label="Material" :value="true"></v-radio>
-        <v-radio label="Label" :value="false"></v-radio>
+        <v-radio label="Label" :value="false" v-if="showLabels"></v-radio>
       </v-radio-group>
       <div v-show="isSideMaterial">
         <autocomplete
@@ -58,11 +71,18 @@
 </template>
 
 <script>
-import autocomplete from "@/cmps/Autocomplete";
+import autocomplete from '@/cmps/Autocomplete';
 
 export default {
   props: {
-    side: Object,
+    side: {
+      type: Object,
+      required: true  
+    },
+    showLabels: {
+      type: Boolean,
+      defualt: true
+    }
   },
   data() {
     return {
@@ -85,26 +105,26 @@ export default {
   },
   methods: {
     async loadMaterials() {
-      await this.$store.dispatch({ type: "loadMaterials" });
+      await this.$store.dispatch({ type: 'loadMaterials' });
     },
     async loadLabels() {
-      await this.$store.dispatch({ type: "loadLabels" });
+      await this.$store.dispatch({ type: 'loadLabels' });
     },
-    emitSelect(value) {
+    emitSelect(selection) {
       const isMaterial = this.isSideMaterial;
       const payload = {
         isMaterial,
         item: {
-          _id: value._id,
-          name: value.text,
+          _id: selection._id,
+          name: selection.text,
         },
       };
-      if (value.type) payload.item.type = value.type;
-      if (value.src) payload.item.src = value.src;
-      this.$emit("sideSelected", JSON.parse(JSON.stringify(payload)));
+      if (selection.type) payload.item.type = selection.type;
+      if (selection.src) payload.item.src = selection.src;
+      this.$emit('side-selected', JSON.parse(JSON.stringify(payload)));
     },
     removeSide() {
-      this.$emit("removeSide");
+      this.$emit('remove-side');
     },
     updateSidesType() {
       if (this.side.label) {

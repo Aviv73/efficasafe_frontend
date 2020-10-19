@@ -5,22 +5,22 @@ const END_POINT = 'material';
 export const materialService = {
     list,
     getById,
+    save,
     getEmptyMaterial,
 }
 
-function list(criteria) {
-    return httpService.get(END_POINT, criteria);
+function list(filterBy = {}) {
+    return httpService.get(END_POINT, filterBy);
 }
-
 
 function getById(id) {
-    try {
-        return httpService.get(`${END_POINT}/${id}`);
-    } catch (err) {
-        console.log('ERROR:', err);
-    }
+    return httpService.get(`${END_POINT}/${id}`);
 }
 
+function save(material) {
+    if (material._id) return httpService.put(`${END_POINT}/${material._id}`, material);
+    else return httpService.post(`${END_POINT}`, material);
+}
 
 function getEmptyMaterial() {
     return {

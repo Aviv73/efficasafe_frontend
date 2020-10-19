@@ -10,27 +10,30 @@
     <v-card class="interaction-edit" v-if="editedInteraction">
       <v-form v-model="valid" @submit.prevent="saveInteraction">
         <div class="int-sides-active">
-          <v-card-title
-            class="interaction-edit-title"
-          >{{editedInteraction._id? "Edit Interaction" : "New Interaction"}}</v-card-title>
+          <v-card-title class="interaction-edit-title">{{
+            editedInteraction._id ? 'Edit Interaction' : 'New Interaction'
+          }}</v-card-title>
           <div class="active-container">
-            <label for="int-active">{{editedInteraction.isActive ? `Active` : `Not active`}}</label>
+            <label for="int-active">{{
+              editedInteraction.isActive ? `Active` : `Not active`
+            }}</label>
             <v-switch id="int-active" v-model="editedInteraction.isActive" />
           </div>
         </div>
         <interaction-sides
           :sides="sides"
-          @updateSide1="updateSide1"
-          @updateSide2="updateSide2"
-          @removeSide1="removeSide1"
-          @removeSide2="removeSide2"
+          @update-side="updateSide"
+          @remove-side="removeSide"
         />
         <div class="int-rec-evi-row">
           <v-select
             :items="interaction.recommendation"
             label="Recommendation Options"
             v-model="interaction.recommendationSelected"
-            @change="editedInteraction.recommendation = recommendationSelected"
+            @change="
+              editedInteraction.recommendation =
+                interaction.recommendationSelected
+            "
           ></v-select>
           <v-select
             :items="interaction.evidenceLevel"
@@ -38,13 +41,13 @@
             v-model="editedInteraction.evidenceLevel"
           ></v-select>
         </div>
-        <v-textarea
-          type="text"
-          rows="1"
-          auto-grow
+
+        <h3>Recommandation:</h3>
+        <ckeditor
+          :config="CKEditorConfig"
           v-model="editedInteraction.recommendation"
-          label="Recommendation"
-        />
+        ></ckeditor>
+
         <v-textarea
           type="text"
           rows="1"
@@ -52,45 +55,36 @@
           v-model="editedInteraction.note"
           label="Note"
         />
-        <v-textarea
-          type="text"
-          rows="1"
-          auto-grow
+
+        <h3>Summery:</h3>
+        <ckeditor
+          :config="CKEditorConfig"
           v-model="editedInteraction.summary"
-          label="Summary"
-        />
-        <v-textarea
-          type="text"
-          rows="1"
-          auto-grow
-          v-model="editedInteraction.reviewOfStudies.main"
-          label="Review of studies main"
-        />
-        <v-textarea
-          type="text"
-          rows="1"
-          auto-grow
-          v-model="editedInteraction.reviewOfStudies.details"
-          label="Review of studies details"
-        />
+        ></ckeditor>
+
+        <h3>Review Of Studies:</h3>
+        <ckeditor
+          :config="CKEditorConfig"
+          v-model="editedInteraction.reviewOfStudies"
+        ></ckeditor>
 
         <div class="list-chips">
           <v-text-field
-            v-model="model.indication"
+            v-model="model.indications"
             label="Indications"
-            @keypress.enter.prevent="addIndication"
+            @keypress.enter.prevent="addItemToArray('indications')"
           />
-          <v-chip-group column active-class="primary--text">
+          <v-chip-group column>
             <v-chip
               v-for="indication in editedInteraction.indications"
               :key="indication.id"
               close
-              @click:close="removeItem('indication', indication.id)"
-            >{{ indication.name }}</v-chip>
+              @click:close="removeItem('indications', indication.id)"
+              >{{ indication.txt }}</v-chip
+            >
           </v-chip-group>
         </div>
 
-        <v-textarea type="text" rows="1" auto-grow v-model="editedInteraction.draft" label="Draft" />
         <v-textarea
           type="text"
           rows="1"
@@ -112,36 +106,86 @@
           v-model="editedInteraction.editorDraft.general"
           label="General"
         />
-        <!-- <v-textarea
-          type="text"
-          rows="1"
-          auto-grow
-          v-model="editedInteraction.editorDraft.gates"
-          label="Gates"
-        />-->
 
-        <!-- ------------------ MISSING CRUD ARRAYS: Monitor (labTests, otherTests, symptoms) ------------------ -->
-        <!-- ------------------ MISSING: references ------------------ -->
+        <div class="list-chips">
+          <v-text-field
+            v-model="model.labTests"
+            label="Lab Tests"
+            @keypress.enter.prevent="addItemToArray('labTests')"
+          />
+          <v-chip-group column>
+            <v-chip
+              v-for="labTest in editedInteraction.monitor.labTests"
+              :key="labTest.id"
+              close
+              @click:close="removeItem('labTests', labTest.id)"
+              >{{ labTest.txt }}</v-chip
+            >
+          </v-chip-group>
+        </div>
+
+        <div class="list-chips">
+          <v-text-field
+            v-model="model.otherTests"
+            label="Other Tests"
+            @keypress.enter.prevent="addItemToArray('otherTests')"
+          />
+          <v-chip-group column>
+            <v-chip
+              v-for="otherTest in editedInteraction.monitor.otherTests"
+              :key="otherTest.id"
+              close
+              @click:close="removeItem('otherTests', otherTest.id)"
+              >{{ otherTest.txt }}</v-chip
+            >
+          </v-chip-group>
+        </div>
+
+        <div class="list-chips">
+          <v-text-field
+            v-model="model.symptoms"
+            label="Symptoms"
+            @keypress.enter.prevent="addItemToArray('symptoms')"
+          />
+          <v-chip-group column>
+            <v-chip
+              v-for="symptom in editedInteraction.monitor.symptoms"
+              :key="symptom.id"
+              close
+              @click:close="removeItem('symptoms', symptom.id)"
+              >{{ symptom.txt }}</v-chip>
+          </v-chip-group>
+        </div>
+
+        <reference-table
+          :references="editedInteraction.refs"
+          v-if="editedInteraction.refs.length"
+        />
       </v-form>
       <div class="form-actions">
-        <v-btn class="cancel-btn" to="/interaction/" color="normal">cancel</v-btn>
+        <v-btn class="cancel-btn" to="/interaction/" color="normal"
+          >cancel</v-btn
+        >
         <v-btn
           class="submit-btn"
           @click="saveInteraction"
           color="success"
           :disabled="!valid"
-        >Save Interaction</v-btn>
+          >Save Interaction</v-btn
+        >
       </div>
     </v-card>
   </section>
 </template>
 
 <script>
-import { utilService } from "@/services/util.service";
-import { interactionService } from "@/services/interaction.service";
-import { eventBus, EV_addInteraction } from "@/services/eventBus.service";
-import interactionSides from "@/cmps/interaction/edit/InteractionSides";
-import confirmDeleteItem from "../../cmps/common/ConfirmDeleteItem";
+import { utilService } from '@/services/util.service';
+import { interactionService } from '@/services/interaction.service';
+import { eventBus, EV_addInteraction } from '@/services/eventBus.service';
+import interactionSides from '@/cmps/interaction/edit/InteractionSides';
+import referenceTable from '@/cmps/common/ReferenceTable';
+import confirmDeleteItem from '@/cmps/common/ConfirmDeleteItem';
+import CKEditor from 'ckeditor4-vue';
 
 export default {
   data() {
@@ -151,155 +195,117 @@ export default {
       valid: true,
       dialog: false,
       model: {
-        indication: "",
+        indications: '',
+        labTests: '',
+        otherTests: '',
+        symptoms: '',
       },
       interaction: {
-        type: [
-          {
-            text: "Material - Material",
-            value: "direct",
-          },
-          {
-            text: "Material - Label",
-            value: "indirect",
-          },
-        ],
-        recommendationSelected: "",
+        recommendationSelected: '',
         recommendation: [
-          "Coadministration should be avoided",
-          "Coadministration is not advised",
-          "Caution should be taken",
-          "Coadministration is not contraindicated but caution should be taken",
-          "Coadministration is possible but caution should be taken",
-          "Coadministration is not contraindicated",
-          "Coadministration is possible",
-          "Coadministration is advised",
+          'Coadministration should be avoided',
+          'Coadministration is not advised',
+          'Caution should be taken',
+          'Coadministration is not contraindicated but caution should be taken',
+          'Coadministration is possible but caution should be taken',
+          'Coadministration is not contraindicated',
+          'Coadministration is possible',
+          'Coadministration is advised',
         ],
-        evidenceLevel: ["A", "B", "C", "D", "E", "F", "1", "2"],
+        evidenceLevel: ['A', 'B', 'C', 'D', 'E', 'F', '1', '2'],
+      },
+      CKEditorConfig: {
+        extraPlugins: 'autogrow',
+        autoGrow_minHeight: 50,
       },
     };
   },
   computed: {
-    // ColorOfRecommendation() {
-    //   switch (this.editedInteraction.recommendation) {
-    //     case "Coadministration should be avoided":
-    //       return "#ffb4b4";
-    //     case "Coadministration is not advised":
-    //       return "#ffb4b4";
-    //     case "Caution should be taken":
-    //       return "#ffe6b4";
-    //     case "Coadministration is not contraindicated but caution should be taken":
-    //       return "#ffe6b4";
-    //     case "Coadministration is possible but caution should be taken":
-    //       return "#ffe6b4";
-    //     case "Coadministration is not contraindicated":
-    //       return "#b4ffb4";
-    //     case "Coadministration is possible":
-    //       return "#b4ffb4";
-    //     case "Coadministration is advised":
-    //       return "#b4ffb4";
-    //     default:
-    //       return "white";
-    //   }
-    // },
     sides() {
       const interaction = this.editedInteraction;
       return {
         side1: {
-          material: interaction.side1MaterialId,
-          label: interaction.side1LabelId,
-          name: "side 1",
+          material: interaction.side1Material,
+          name: 'side 1',
         },
         side2: {
-          material: interaction.side2MaterialId,
-          label: interaction.side2LabelId,
-          name: "side 2",
+          material: interaction.side2Material,
+          label: interaction.side2Label,
+          name: 'side 2',
         },
       };
     },
   },
   methods: {
-    removeSide1() {
-      this.editedInteraction.side1MaterialId = null;
-      this.editedInteraction.side1LabelId = null;
+    removeSide(side) {
+      const sideMaterial = `side${side}Material`;
+      const sideLabel = `side${side}Label`;
+      this.editedInteraction[sideMaterial] = null;
+      this.editedInteraction[sideLabel] = null;
     },
-    removeSide2() {
-      this.editedInteraction.side2MaterialId = null;
-      this.editedInteraction.side2LabelId = null;
-    },
-    updateSide1(payload) {
-      if (payload.isMaterial) {
-        this.editedInteraction.side1MaterialId = payload.item;
-      } else {
-        this.editedInteraction.side1LabelId = payload.item;
-      }
-    },
-    updateSide2(payload) {
-      if (payload.isMaterial) {
-        this.editedInteraction.side2MaterialId = payload.item;
-      } else {
-        this.editedInteraction.side2LabelId = payload.item;
-      }
+    updateSide(payload) {
+      const sideMaterial = `side${payload.side}Material`;
+      const sideLabel = `side${payload.side}Label`;
+
+      if (payload.isMaterial)
+        this.editedInteraction[sideMaterial] = payload.item;
+      else this.editedInteraction[sideLabel] = payload.item;
     },
     async loadInteraction() {
       try {
         const intId = this.$route.params.id;
-        var interaction = null;
         if (intId) {
-          interaction = await this.$store.dispatch({
-            type: "loadInteraction",
+          var interaction = await this.$store.dispatch({
+            type: 'loadInteraction',
             intId,
           });
+          this.editedInteraction = JSON.parse(JSON.stringify(interaction));
         } else {
-          interaction = interactionService.getEmptyInteraction();
+          this.editedInteraction = interactionService.getEmptyInteraction();
         }
-        this.editedInteraction = JSON.parse(JSON.stringify(interaction));
       } catch (err) {
-        console.log("ERROR", err);
+        console.log('ERROR', err);
       }
     },
     async saveInteraction() {
       try {
         const interaction = JSON.parse(JSON.stringify(this.editedInteraction));
         await this.$store.dispatch({
-          type: "saveInteraction",
+          type: 'saveInteraction',
           interaction,
         });
         eventBus.$emit(EV_addInteraction, {
-          name: "",
-          type: "interaction",
+          name: '',
+          type: 'interaction',
           _id: this.editedInteraction._id,
         });
-        this.$router.push("/interaction");
+        this.$router.push('/interaction');
       } catch (err) {
-        console.log("Error:", err);
+        console.log('Error:', err);
       }
     },
-    addIndication() {
-      if (!this.model.indication) return;
+    addItemToArray(arrName) {
+      if (!this.model[arrName]) return;
 
-      const indications = this.model.indication.split(",");
-      indications.forEach((indication) => {
-        let newIndication = {
-          id: utilService.makeId(10),
-          name: indication,
+      const items = this.model[arrName].split(',');
+      items.forEach(item => {
+        const newItem = {
+          id: utilService.makeId(),
+          txt: item.trim(),
         };
-        this.editedInteraction.indications.push(newIndication);
+        if (arrName === 'indications') this.editedInteraction[arrName].push(newItem);
+        else this.editedInteraction.monitor[arrName].push(newItem);
       });
-
-      this.model.indication = "";
+      this.model[arrName] = '';
     },
-    removeIndication(indicationId) {
-      const idx = this.editedInteraction.indications.findIndex(
-        (currIndication) => currIndication.id === indicationId
-      );
-      if (idx !== -1) {
-        this.editedInteraction.indications.splice(idx, 1);
-      }
+    removeItemFromArray(arrName, itemId) {
+      const innerArray = (arrName === 'indications') ? this.editedInteraction[arrName] : this.editedInteraction.monitor[arrName];
+      const idx = innerArray.findIndex(currItem => currItem.id === itemId);
+      if (idx !== -1) innerArray.splice(idx, 1);
     },
-    removeItem(type, id) {
+    removeItem(arrName, id) {
       this.itemToRemove = {
-        type,
+        arrName,
         id,
       };
       this.dialog = true;
@@ -309,11 +315,9 @@ export default {
       this.itemToRemove = null;
     },
     removeItemConfirmed() {
-      if (this.itemToRemove.type === "indication") {
-        this.removeIndication(this.itemToRemove.id);
+        this.removeItemFromArray(this.itemToRemove.arrName, this.itemToRemove.id);
         this.dialog = false;
         this.itemToRemove = null;
-      }
     },
   },
   created() {
@@ -322,6 +326,8 @@ export default {
   components: {
     interactionSides,
     confirmDeleteItem,
+    referenceTable,
+    ckeditor: CKEditor.component,
   },
 };
 </script>

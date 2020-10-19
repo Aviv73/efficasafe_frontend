@@ -11,7 +11,7 @@ export const labelService = {
     getLabelPaths
 }
 
-function list(filterBy) {
+function list(filterBy = {}) {
     return httpService.get(END_POINT, filterBy);
 }
 
@@ -27,7 +27,6 @@ async function getLabelPaths(labels) {
         acc.push(labelPath);
         return acc;
     }, [])
-    console.log('labelPaths', labelPaths)
     return labelPaths;
 }
 
@@ -37,23 +36,13 @@ function getById(id) {
 }
 
 function save(label) {
-    try {
-        if (label._id) {
-            return httpService.put(`${END_POINT}/${label._id}`, label)
-        } else {
-            return httpService.post(`${END_POINT}`, label)
-        }
-    } catch (err) {
-        console.log('ERROR:', err)
-    }
+    if (label._id) return httpService.put(`${END_POINT}/${label._id}`, label);
+    else return httpService.post(`${END_POINT}`, label);
+
 }
 
-async function remove(labelId) {
-    try {
-        httpService.delete(`${END_POINT}/${labelId}`);
-    } catch (err) {
-        console.log('ERROR:', err)
-    }
+function remove(id) {
+    httpService.delete(`${END_POINT}/${id}`);
 }
 
 

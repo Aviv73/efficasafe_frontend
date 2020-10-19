@@ -3,44 +3,43 @@
     <div class="interaction-side">
       <interaction-side-search
         :side="sides.side1"
-        @sideSelected="updateSide1"
-        @removeSide="removeSide1"
+        :showLabels="false"
+        @side-selected="updateSide($event, 1)"
+        @remove-side="removeSide(1)"
       />
     </div>
     <div class="interaction-side">
       <interaction-side-search
         :side="sides.side2"
-        @sideSelected="updateSide2"
-        @removeSide="removeSide2"
+        @side-selected="updateSide($event, 2)"
+        @remove-side="removeSide(2)"
       />
     </div>
   </section>
 </template>
 
 <script>
-import interactionSideSearch from "@/cmps/interaction/edit/InteractionSideSearch";
+import interactionSideSearch from '@/cmps/interaction/edit/InteractionSideSearch';
 
 export default {
-  name: "InteractionSides",
+  name: 'InteractionSides',
   props: {
-    sides: Object,
+    sides: {
+      type: Object,
+      required: true
+    }
   },
   methods: {
-    updateSide1(payload) {
-      this.$emit("updateSide1", payload);
+    updateSide(payload, side) {
+      payload.side = side;
+      this.$emit('update-side', payload);
     },
-    updateSide2(payload) {
-      this.$emit("updateSide2", payload);
-    },
-    removeSide1() {
-      this.$emit("removeSide1");
-    },
-    removeSide2() {
-      this.$emit("removeSide2");
-    },
+    removeSide(side) {
+      this.$emit('remove-side', side);
+    }
   },
   components: {
-    interactionSideSearch,
-  },
+    interactionSideSearch
+  }
 };
 </script>

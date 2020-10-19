@@ -51,10 +51,8 @@ export default {
     async toggleIsActive(intId) {
       try {
         var interaction = await this.loadInteraction(intId);
-        console.log("interaction", interaction);
         interaction.isActive = !interaction.isActive;
         await this.saveInteraction(interaction);
-        console.log();
       } catch (err) {
         console.log("ERROR", err);
       }

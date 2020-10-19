@@ -10,51 +10,48 @@ export const interactionService = {
     getEmptyInteraction
 }
 
-async function list(filterBy) {
-    try {
-
-        const data = await httpService.get(END_POINT, filterBy);
-
-         
-        
-
-        return data;
-
-    } catch (err) {
-        console.log('ERROR:', err)
-    }
+function list(filterBy) {
+    return httpService.get(END_POINT, filterBy);
 }
 
 function getById(id) {
-    try {
-        return httpService.get(`${END_POINT}/${id}`);
-    } catch (err) {
-        console.log('ERROR:', err);
-    }
+    return httpService.get(`${END_POINT}/${id}`);
 }
 
 function save(interaction) {
-    try {
-        if (interaction._id) {
-            return httpService.put(`${END_POINT}/${interaction._id}`, interaction);
-        } else {
-            return httpService.post(`${END_POINT}`, interaction);
-        }
-    } catch (err) {
-        console.log('ERROR:', err);
-    }
+    if (interaction._id) return httpService.put(`${END_POINT}/${interaction._id}`, interaction);
+    else return httpService.post(`${END_POINT}`, interaction);
 }
 
 function remove(id) {
-    try {
-        httpService.delete(`${END_POINT}/${id}`);
-    } catch (err) {
-        console.log('ERROR:', err);
-    }
+    httpService.delete(`${END_POINT}/${id}`);
 }
 
 function getEmptyInteraction() {
     return {
-        
+        isActive: false,
+        side1Material: null,
+        side2Material: null,
+        side2Label: null,
+        side2DraftName: '',
+        src: 'manual',
+        recommendation: '',
+        note: '',
+        summery: '',
+        monitor: {
+            labTests: [],
+            otherTests: [],
+            symptoms: []
+        },
+        reviewOfStudies: '',
+        evidenceLevel: '',
+        indications: [],
+        refs: [],
+        editorDraft: {
+            general: '',
+            infoSide1: '',
+            infoSide2: '',
+            gates: []
+        }
     }
 }

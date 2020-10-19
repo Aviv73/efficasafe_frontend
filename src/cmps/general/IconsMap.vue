@@ -2,9 +2,7 @@
   <section>
     <v-card class="icons-map">
       <v-card-title>Icons Map</v-card-title>
-      <!-- <v-card-text>Icons Map</v-card-text> -->
-      <!-- <v-card-text>Index for all icons</v-card-text> -->
-      <v-chip-group column active-class="primary--text" class="icon-chips">
+      <v-chip-group column class="icon-chips">
         <v-chip class="icon-chip text-capitalize" v-for="icon in icons" :key="icon.name">
           <v-avatar left size="16">
             <img
