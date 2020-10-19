@@ -5,7 +5,6 @@ import { materialStore } from './modules/material.store'
 import { labelStore } from './modules/label.store'
 import { interactionStore } from './modules/interaction.store'
 import { archiveStore } from './modules/archive.store'
-import { referenceStore } from './modules/reference.store'
 import { atcStore } from './modules/atc.store'
 
 Vue.use(Vuex)
@@ -30,7 +29,6 @@ export default new Vuex.Store({
     labelStore,
     interactionStore,
     archiveStore,
-    referenceStore,
     atcStore
   }
 })

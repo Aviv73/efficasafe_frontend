@@ -1,6 +1,9 @@
 <template>
   <v-card>
-    <v-card-title class="primary headline" style="color:white; font-weight:bold;">
+    <v-card-title
+      class="primary headline"
+      style="color: white; font-weight: bold"
+    >
       <v-icon dark left>mdi-file-tree</v-icon>Add ATC label
       <v-spacer></v-spacer>
       <v-icon dark right @click="closeDialog">mdi-window-close</v-icon>
@@ -39,18 +42,23 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn color="normal" @click="closeDialog">Cancel</v-btn>
-      <v-btn color="primary" @click="addLabelPaths" :disabled="!selection.length">Add to material</v-btn>
+      <v-btn
+        color="primary"
+        @click="addLabelPaths"
+        :disabled="!selection.length"
+        >Add to material</v-btn
+      >
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
-import loadingCmp from "@/cmps/general/LoadingCmp";
+import loadingCmp from '@/cmps/general/LoadingCmp';
 
 export default {
   data() {
     return {
-      search: "",
+      search: '',
       selection: [],
     };
   },
@@ -60,29 +68,29 @@ export default {
     },
     labels() {
       return this.$store.getters.labels;
-    },
+    }
   },
   methods: {
     async addLabelPaths() {
       const selectedPaths = JSON.parse(JSON.stringify(this.selection));
       try {
         const labelPaths = await this.$store.dispatch({
-          type: "getLabelPaths",
+          type: 'getLabelPaths',
           selectedPaths,
         });
-        this.$emit("add-label-paths", labelPaths);
+        this.$emit('add-label-paths', labelPaths);
       } catch (err) {
-        console.log("ERROR", err);
+        console.log('ERROR', err);
       }
       this.closeDialog();
     },
     closeDialog() {
-      this.$emit("close-dialog");
+      this.$emit('close-dialog');
       this.selection = [];
     },
   },
   created() {
-    this.$store.dispatch({ type: "loadAtcLabels" });
+    this.$store.dispatch({ type: 'loadAtcLabels' });
   },
   components: {
     loadingCmp,

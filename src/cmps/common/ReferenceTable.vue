@@ -15,7 +15,7 @@
           <tr v-for="(reference, idx) in references" :key="idx">
             <td>{{ idx + 1 }}</td>
             <td>{{ reference.type }}</td>
-            <td>{{ reference.text }}</td>
+            <td>{{ reference.txt }}</td>
             <td>{{ reference.link }}</td>
             <td>{{ reference.pubmedId }}</td>
           </tr>
