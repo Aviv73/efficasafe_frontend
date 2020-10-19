@@ -4,7 +4,8 @@
       <v-card-title>Efficasafe Management System</v-card-title>
       <v-card-subtitle>
         Welcome back,
-        <span v-if="username" class="text-capitalize">{{ username}}</span>!
+        <span v-if="username" class="text-capitalize">{{ username }}</span
+        >!
       </v-card-subtitle>
       <v-divider></v-divider>
       <v-card-text>Browse Modules:</v-card-text>
@@ -19,7 +20,7 @@
             :to="module.path"
           >
             <v-avatar left>
-              <v-icon small>{{module.icon}}</v-icon>
+              <v-icon small>{{ module.icon }}</v-icon>
             </v-avatar>
             {{ module.name }}
           </v-chip>
@@ -31,38 +32,33 @@
 </template>
 
 <script>
-import iconsMap from "@/cmps/general/IconsMap";
+import iconsMap from '@/cmps/general/IconsMap';
 
 export default {
-  name: "Home",
+  name: 'Home',
   data() {
     return {
       modules: [
         {
-          name: "Material",
-          path: "/material",
-          icon: "mdi-rhombus-split",
+          name: 'Material',
+          path: '/material',
+          icon: 'mdi-rhombus-split',
         },
         {
-          name: "Label",
-          path: "/label",
-          icon: "mdi-rhombus-split",
+          name: 'Label',
+          path: '/label',
+          icon: 'mdi-rhombus-split',
         },
         {
-          name: "Interaction",
-          path: "/interaction",
-          icon: "mdi-rhombus-split",
+          name: 'Interaction',
+          path: '/interaction',
+          icon: 'mdi-rhombus-split',
         },
         {
-          name: "Archive",
-          path: "/archive",
-          icon: "mdi-archive",
+          name: 'Archive',
+          path: '/archive',
+          icon: 'mdi-archive',
         },
-        // {
-        //   name: "ATC Tree",
-        //   path: "/atc",
-        //   icon: "mdi-file-tree",
-        // },
       ],
     };
   },
@@ -73,7 +69,7 @@ export default {
   },
   methods: {
     async loadUsername() {
-      this.$store.dispatch({ type: "loadUsername" });
+      this.$store.dispatch({ type: 'loadUsername' });
     },
   },
   created() {
