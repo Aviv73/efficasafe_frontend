@@ -56,18 +56,6 @@ export const archiveStore = ({
             context.commit({ type: 'setArchiveInteractions', interactions })
             return interactions
         },
-        async restoreMaterial(context, { material }) {
-            const isRestored = await archiveService.restoreMaterial(material)
-            return isRestored
-        },
-        async restoreLabel(context, { label }) {
-            const isRestored = await archiveService.restoreLabel(label)
-            return isRestored
-        },
-        async restoreInteraction(context, { interaction }) {
-            const isRestored = await archiveService.restoreInteraction(interaction)
-            return isRestored
-        },
         async removeMaterialFromArchive(context, { matId }) {
             const isRemoved = await archiveService.removeMaterial(matId)
             try {
@@ -117,12 +105,7 @@ export const archiveStore = ({
             return interaction
         },
         async saveMaterialToArchive(context, { material }) {
-            let savedMaterial = await archiveService.saveMaterialToArchive(material)
-            try {
-                return savedMaterial
-            } catch {
-                return null;
-            }
+            await archiveService.saveMaterialToArchive(material)
         },
         async saveLabelToArchive(context, { label }) {
             await archiveService.saveLabelToArchive(label)

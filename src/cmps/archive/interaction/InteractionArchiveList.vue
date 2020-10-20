@@ -6,41 +6,41 @@
           <tr class="tr-interaction" v-for="item in items" :key="item._id">
             <td class="td-side">
               <router-link :to="`/interaction/${item._id}`">
-                <div v-if="item.side1MaterialId">
+                <div v-if="item.side1Material">
                   <img
-                    :src="require(`@/assets/icons/${item.side1MaterialId.type}.svg`)"
-                    :alt="item.side1MaterialId.type"
-                    :title="item.side1MaterialId.type"
+                    :src="require(`@/assets/icons/${item.side1Material.type}.svg`)"
+                    :alt="item.side1Material.type"
+                    :title="item.side1Material.type"
                   />
-                  <span class="text-capitalize">{{item.side1MaterialId.name}}</span>
+                  <span class="text-capitalize">{{item.side1Material.name}}</span>
                 </div>
                 <div v-else>
                   <img
-                    :src="require(`@/assets/icons/${item.side1LabelId.src}.svg`)"
-                    :alt="item.side1LabelId.src"
-                    :title="item.side1LabelId.src"
+                    :src="require(`@/assets/icons/${item.side1Label.src}.svg`)"
+                    :alt="item.side1Label.src"
+                    :title="item.side1Label.src"
                   />
-                  <span class="text-capitalize">{{item.side1LabelId.name}}</span>
+                  <span class="text-capitalize">{{item.side1Label.name}}</span>
                 </div>
               </router-link>
             </td>
             <td class="td-side">
               <router-link :to="`/interaction/${item._id}`">
-                <div v-if="item.side2MaterialId">
+                <div v-if="item.side2Material">
                   <img
-                    :src="require(`@/assets/icons/${item.side2MaterialId.type}.svg`)"
-                    :alt="item.side2MaterialId.type"
-                    :title="item.side2MaterialId.type"
+                    :src="require(`@/assets/icons/${item.side2Material.type}.svg`)"
+                    :alt="item.side2Material.type"
+                    :title="item.side2Material.type"
                   />
-                  <span class="text-capitalize">{{item.side2MaterialId.name}}</span>
+                  <span class="text-capitalize">{{item.side2Material.name}}</span>
                 </div>
                 <div v-else>
                   <img
-                    :src="require(`@/assets/icons/${item.side2LabelId.src}.svg`)"
-                    :alt="item.side2LabelId.src"
-                    :title="item.side2LabelId.src"
+                    :src="require(`@/assets/icons/${item.side2Label.src}.svg`)"
+                    :alt="item.side2Label.src"
+                    :title="item.side2Label.src"
                   />
-                  <span class="text-capitalize">{{item.side2LabelId.name}}</span>
+                  <span class="text-capitalize">{{item.side2Label.name}}</span>
                 </div>
               </router-link>
             </td>
@@ -69,11 +69,11 @@ export default {
       headers: [
         {
           text: "Side 1",
-          value: "side1MaterialId.name" || "side1LabelId.name",
+          value: "side1Material.name" || "side1Label.name",
         },
         {
           text: "Side 2",
-          value: "side2MaterialId.name" || "side2LabelId.name",
+          value: "side2Material.name" || "side2Label.name",
         },
         {
           text: "Action",

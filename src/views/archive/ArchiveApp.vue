@@ -103,7 +103,6 @@ export default {
       this.$router.push(queryStr);
     },
     setConfirmDelete(payload) {
-      console.log("PAYLOAD@!#@#!@:", payload);
       this.selectedItem = payload;
       this.deleteType = payload.type;
       this.dialog = true;
@@ -137,7 +136,7 @@ export default {
       });
       try {
         const restoredMaterial = this.$store.dispatch({
-          type: "restoreMaterial",
+          type: "saveMaterial",
           material,
         });
 
@@ -159,7 +158,7 @@ export default {
       });
       try {
         const restoredLabel = this.$store.dispatch({
-          type: "restoreLabel",
+          type: "saveLabel",
           label,
         });
 
@@ -180,7 +179,7 @@ export default {
       });
       try {
         const restoredInteraction = this.$store.dispatch({
-          type: "restoreInteraction",
+          type: "saveInteraction",
           interaction,
         });
 
@@ -216,7 +215,6 @@ export default {
     materialFilter,
     labelFilter,
     interactionFilter,
-
     materialArchiveList,
     labelArchiveList,
     interactionArchiveList,
