@@ -1,29 +1,43 @@
 <template>
   <section class="material-label-path" v-if="labelPaths">
-    <div class="material-label-row">
+    <div v-if="labels" class="material-label-row">
       <autocomplete
         v-if="labels !== null"
         :items="labels"
         @emitAutocomplete="addLabel"
         searchName="labels"
       />
-      <v-btn small class="label-add-btn" color="info" @click="$emit('add-custom-label')">
+      <v-btn
+        small
+        class="label-add-btn"
+        color="info"
+        @click="$emit('open-custom-dialog')"
+      >
         <v-icon dark left>mdi-label-outline</v-icon>new label
       </v-btn>
-      <v-btn small class="label-add-btn" color="info" @click="$emit('open-dialog')">
+      <v-btn
+        small
+        class="label-add-btn"
+        color="info"
+        @click="$emit('open-atc-dialog')"
+      >
         <v-icon dark left>mdi-file-tree</v-icon>ATC tree
       </v-btn>
     </div>
-    <label-path-list :labelPaths="labelPaths" :isEdit="true" @remove-path="removeLabelPath" />
+    <label-path-list
+      :labelPaths="labelPaths"
+      :isEdit="true"
+      @remove-path="removeLabelPath"
+    />
   </section>
 </template>
 
 <script>
-import autocomplete from "@/cmps/Autocomplete";
-import labelPathList from "@/cmps/material/details/LabelPathList";
+import autocomplete from '@/cmps/Autocomplete';
+import labelPathList from '@/cmps/material/details/LabelPathList';
 
 export default {
-  name: "MaterialLabelPath",
+  name: 'MaterialLabelPath',
   props: {
     labelPaths: Array,
   },
@@ -34,8 +48,8 @@ export default {
   },
   methods: {
     loadLabels() {
-      const filterBy = { src: "atc" };
-      this.$store.dispatch({ type: "loadLabels", filterBy });
+      const filterBy = { src: 'atc' };
+      this.$store.dispatch({ type: 'loadLabels', filterBy });
     },
     addLabel(label) {
       if (label) {
@@ -47,11 +61,11 @@ export default {
             },
           ],
         ];
-        this.$emit("add-label", path);
+        this.$emit('add-label', path);
       }
     },
     removeLabelPath(idx) {
-      this.$emit("remove-path", 'labelPaths', idx);
+      this.$emit('remove-path', 'labelPaths', idx);
     },
   },
   created() {

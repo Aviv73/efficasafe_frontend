@@ -6,10 +6,16 @@
         @remove-item-canceled="removeItemCanceled"
         @remove-item-confirmed="removeItemConfirmed"
       />
-      <v-dialog v-model="labelDialog" persistent max-width="1000">
+      <v-dialog v-model="AtcLabelDialog" persistent max-width="1000">
         <material-add-tree-path
-          @close-dialog="labelDialog = false"
+          @close-dialog="AtcLabelDialog = false"
           @add-label-paths="addLabelPaths"
+        />
+      </v-dialog>
+      <v-dialog v-model="customLabelDialog" persistent max-width="1000">
+        <add-custom-label
+          @add-custom-label="addLabelPaths"
+          @close-dialog="customLabelDialog = false"
         />
       </v-dialog>
     </v-row>
@@ -48,22 +54,22 @@
         </div>
 
         <h3>Description:</h3>
-        <ckeditor 
-          v-model="editedMaterial.desc" 
+        <ckeditor
+          v-model="editedMaterial.desc"
           :config="CKEditorConfig"
-          ></ckeditor>
+        ></ckeditor>
 
-          <v-text-field
-            v-model="editedMaterial.botanicalFamily"
-            label="Botanical Family"
-            v-if="editedMaterial.type === 'herb'"
-          />
+        <v-text-field
+          v-model="editedMaterial.botanicalFamily"
+          label="Botanical Family"
+          v-if="editedMaterial.type === 'herb'"
+        />
 
-          <v-text-field
-            v-model="editedMaterial.plantPartUsed"
-            label="Plant Part Used"
-            v-if="editedMaterial.type === 'herb'"
-          />
+        <v-text-field
+          v-model="editedMaterial.plantPartUsed"
+          label="Plant Part Used"
+          v-if="editedMaterial.type === 'herb'"
+        />
 
         <div class="list-chips">
           <v-text-field
@@ -78,7 +84,8 @@
               :key="idx"
               close
               @click:close="removeItem('aliases', idx)"
-              >{{ alias }}</v-chip>
+              >{{ alias }}</v-chip
+            >
           </v-chip-group>
         </div>
 
@@ -95,7 +102,8 @@
               :key="idx"
               close
               @click:close="removeItem('qualities', idx)"
-              >{{ quality }}</v-chip>
+              >{{ quality }}</v-chip
+            >
           </v-chip-group>
         </div>
 
@@ -137,7 +145,8 @@
               :key="idx"
               close
               @click:close="removeItem('indications', idx)"
-              >{{ indication }}</v-chip>
+              >{{ indication }}</v-chip
+            >
           </v-chip-group>
         </div>
 
@@ -148,74 +157,74 @@
         />
 
         <h3>Sensitivities:</h3>
-        <ckeditor 
-          v-model="editedMaterial.sensitivities" 
+        <ckeditor
+          v-model="editedMaterial.sensitivities"
           :config="CKEditorConfig"
         ></ckeditor>
 
         <h3>Adverse Reactions:</h3>
-        <ckeditor 
-          v-model="editedMaterial.adverseReactions" 
+        <ckeditor
+          v-model="editedMaterial.adverseReactions"
           :config="CKEditorConfig"
         ></ckeditor>
 
         <h3>Overdosage:</h3>
-        <ckeditor 
-          v-model="editedMaterial.overdosage" 
+        <ckeditor
+          v-model="editedMaterial.overdosage"
           :config="CKEditorConfig"
         ></ckeditor>
 
         <h3>Precautions:</h3>
-        <ckeditor 
-          v-model="editedMaterial.precautions" 
+        <ckeditor
+          v-model="editedMaterial.precautions"
           :config="CKEditorConfig"
         ></ckeditor>
 
         <h3>Mechanism Of Action:</h3>
-        <ckeditor 
-          v-model="editedMaterial.mechanismOfAction" 
+        <ckeditor
+          v-model="editedMaterial.mechanismOfAction"
           :config="CKEditorConfig"
         ></ckeditor>
 
         <h3>Contraindications:</h3>
-        <ckeditor 
-          v-model="editedMaterial.contraindications" 
+        <ckeditor
+          v-model="editedMaterial.contraindications"
           :config="CKEditorConfig"
         ></ckeditor>
 
         <h3>Toxicity:</h3>
-        <ckeditor 
-          v-model="editedMaterial.toxicity" 
+        <ckeditor
+          v-model="editedMaterial.toxicity"
           :config="CKEditorConfig"
         ></ckeditor>
 
         <h3>Pregnancy:</h3>
-        <ckeditor 
-          v-model="editedMaterial.pregnancy" 
+        <ckeditor
+          v-model="editedMaterial.pregnancy"
           :config="CKEditorConfig"
         ></ckeditor>
-     
+
         <h3>Lactation:</h3>
-        <ckeditor 
-          v-model="editedMaterial.lactation" 
+        <ckeditor
+          v-model="editedMaterial.lactation"
           :config="CKEditorConfig"
         ></ckeditor>
 
         <h3>Effect on drug metabolism:</h3>
-        <ckeditor 
-          v-model="editedMaterial.effectOnDrugMetabolism" 
+        <ckeditor
+          v-model="editedMaterial.effectOnDrugMetabolism"
           :config="CKEditorConfig"
         ></ckeditor>
 
         <h3>Detailed Pharmacology:</h3>
-        <ckeditor 
-          v-model="editedMaterial.detailedPharmacology" 
+        <ckeditor
+          v-model="editedMaterial.detailedPharmacology"
           :config="CKEditorConfig"
         ></ckeditor>
 
         <h3>Active Constituents:</h3>
-        <ckeditor 
-          v-model="editedMaterial.activeConstituents" 
+        <ckeditor
+          v-model="editedMaterial.activeConstituents"
           :config="CKEditorConfig"
         ></ckeditor>
 
@@ -273,7 +282,8 @@
               :key="idx"
               close
               @click:close="removeItem('brands', idx)"
-              >{{ brand }}</v-chip>
+              >{{ brand }}</v-chip
+            >
           </v-chip-group>
         </div>
         <material-label-path
@@ -281,8 +291,10 @@
           @add-label="addLabelPaths"
           @add-custom-label="addCustomLabel"
           @remove-path="removeItem"
-          @open-dialog="labelDialog = true"
+          @open-atc-dialog="AtcLabelDialog = true"
+          @open-custom-dialog="customLabelDialog = true"
         />
+        <pre>{{editedMaterial.labelPaths}}</pre>
         <div>
           <label for="mat-regions">Regions:</label>
           <regions-selector
@@ -320,14 +332,15 @@
 </template>
 
 <script>
-import { materialService } from "@/services/material.service";
-import { eventBus, EV_addMaterial } from "@/services/eventBus.service";
-import confirmDeleteItem from "../../cmps/common/ConfirmDeleteItem";
-import searchSubMaterial from "../../cmps/material/edit/SearchSubMaterial";
-import materialLabelPath from "../../cmps/material/edit/MaterialLabelPath";
-import materialAddTreePath from "../../cmps/material/edit/MaterialAddTreePath";
-import referenceTable from "../../cmps/common/ReferenceTable";
-import regionsSelector from "../../cmps/material/edit/RegionsSelector";
+import { materialService } from '@/services/material.service';
+import { eventBus, EV_addMaterial } from '@/services/eventBus.service';
+import confirmDeleteItem from '../../cmps/common/ConfirmDeleteItem';
+import searchSubMaterial from '../../cmps/material/edit/SearchSubMaterial';
+import materialLabelPath from '../../cmps/material/edit/MaterialLabelPath';
+import materialAddTreePath from '../../cmps/material/edit/MaterialAddTreePath';
+import addCustomLabel from '../../cmps/material/edit/AddCustomLabel';
+import referenceTable from '../../cmps/common/ReferenceTable';
+import regionsSelector from '../../cmps/material/edit/RegionsSelector';
 import CKEditor from 'ckeditor4-vue';
 
 export default {
@@ -337,11 +350,12 @@ export default {
       isNewReferenceList: false,
       valid: true,
       dialog: false,
-      labelDialog: false,
+      AtcLabelDialog: false,
+      customLabelDialog: false,
       itemToRemove: null,
       CKEditorConfig: {
         extraPlugins: 'autogrow',
-        autoGrow_minHeight: 50
+        autoGrow_minHeight: 50,
       },
       alerts: {
         success: false,
@@ -351,17 +365,17 @@ export default {
         brands: '',
         medicinalActions: '',
         indications: '',
-        qualities: ''
+        qualities: '',
       },
       subMaterialName: '',
       materialType: [
         {
-          text: "Drug",
-          value: "drug",
+          text: 'Drug',
+          value: 'drug',
         },
         {
-          text: "Herb",
-          value: "herb",
+          text: 'Herb',
+          value: 'herb',
         },
       ],
     };
@@ -389,7 +403,7 @@ export default {
       var material = null;
       if (matId) {
         material = await this.$store.dispatch({
-          type: "loadMaterial",
+          type: 'loadMaterial',
           matId,
         });
       } else {
@@ -398,24 +412,24 @@ export default {
       this.editedMaterial = JSON.parse(JSON.stringify(material));
     },
     loadMaterials() {
-      const criteria = { type: "drug" };
-      this.$store.dispatch({ type: "loadMaterials", criteria });
+      const criteria = { type: 'drug' };
+      this.$store.dispatch({ type: 'loadMaterials', criteria });
     },
     async saveMaterial() {
       if (!this.editedMaterial.name || !this.editedMaterial.type) return;
       try {
         await this.$store.dispatch({
-          type: "saveMaterial",
+          type: 'saveMaterial',
           material: this.editedMaterial,
         });
         eventBus.$emit(EV_addMaterial, {
           name: this.editedMaterial.name,
-          type: "material",
+          type: 'material',
           _id: this.editedMaterial._id,
         });
-        this.$router.push("/material");
+        this.$router.push('/material');
       } catch (err) {
-        console.log("Error:", err);
+        console.log('Error:', err);
       }
     },
     removeItem(type, id) {
@@ -430,9 +444,11 @@ export default {
       this.itemToRemove = null;
     },
     removeItemConfirmed() {
-      if (this.itemToRemove.type === 'labelPaths') this.removeLabelPath(this.itemToRemove.id);
-      else this.removeItemFromArray(this.itemToRemove.id, this.itemToRemove.type);
-      
+      if (this.itemToRemove.type === 'labelPaths')
+        this.removeLabelPath(this.itemToRemove.id);
+      else
+        this.removeItemFromArray(this.itemToRemove.id, this.itemToRemove.type);
+
       this.dialog = false;
       this.itemToRemove = null;
     },
@@ -440,24 +456,29 @@ export default {
       this.editedMaterial.regions = regions;
     },
     removeItemFromArray(itemIdx, arrName) {
-      if (arrName === 'subMaterials') itemIdx = this.editedMaterial.subMaterials.findIndex(subMaterial => subMaterial._id === itemIdx);
+      if (arrName === 'subMaterials')
+        itemIdx = this.editedMaterial.subMaterials.findIndex(
+          (subMaterial) => subMaterial._id === itemIdx
+        );
       this.editedMaterial[arrName].splice(itemIdx, 1);
     },
     addItemToArray(arrName) {
       if (!this.model[arrName]) return;
       const items = this.model[arrName].split(',');
-      items.forEach(item => {
+      items.forEach((item) => {
         this.editedMaterial[arrName].push(item.trim());
       });
       this.model[arrName] = '';
     },
     addSubMaterial(subMaterial) {
       if (!subMaterial) return;
-      const idx = this.editedMaterial.subMaterials.findIndex(currSubMaterial=> currSubMaterial._id === subMaterial._id);
+      const idx = this.editedMaterial.subMaterials.findIndex(
+        (currSubMaterial) => currSubMaterial._id === subMaterial._id
+      );
       if (idx === -1) {
         this.editedMaterial.subMaterials.push(subMaterial);
       }
-    }
+    },
   },
   created() {
     this.loadMaterial();
@@ -468,9 +489,10 @@ export default {
     searchSubMaterial,
     materialLabelPath,
     materialAddTreePath,
+    addCustomLabel,
     referenceTable,
     confirmDeleteItem,
-    ckeditor: CKEditor.component
-  }
+    ckeditor: CKEditor.component,
+  },
 };
 </script>
