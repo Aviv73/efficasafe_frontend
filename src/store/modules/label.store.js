@@ -30,6 +30,9 @@ export const labelStore = ({
         async saveLabel(context, { label }) {
             return await labelService.save(label);
         },
+        async restoreLabel(context, { label }) {
+            return await labelService.restore(label);
+        },
         async removeLabel(context, { labelId }) {
             await labelService.remove(labelId);
             context.commit({

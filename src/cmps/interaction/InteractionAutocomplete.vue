@@ -42,7 +42,8 @@ export default {
             _id: item.side2Material._id,
             text: item.side2Material.name,
           });
-        } else {
+        } else if (item.side2Label) {
+          // Else if fixed error for interaction without Side2 (they have side2draftname)
           acc.push({
             _id: item.side2Label._id,
             text: item.side2Label.name,

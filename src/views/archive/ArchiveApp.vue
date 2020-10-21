@@ -103,7 +103,6 @@ export default {
       this.$router.push(queryStr);
     },
     setConfirmDelete(payload) {
-      console.log("PAYLOAD@!#@#!@:", payload);
       this.selectedItem = payload;
       this.deleteType = payload.type;
       this.dialog = true;
@@ -216,7 +215,6 @@ export default {
     materialFilter,
     labelFilter,
     interactionFilter,
-
     materialArchiveList,
     labelArchiveList,
     interactionArchiveList,

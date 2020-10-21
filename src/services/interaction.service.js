@@ -7,6 +7,7 @@ export const interactionService = {
     getById,
     save,
     remove,
+    restore,
     getEmptyInteraction
 }
 
@@ -21,6 +22,11 @@ function getById(id) {
 function save(interaction) {
     if (interaction._id) return httpService.put(`${END_POINT}/${interaction._id}`, interaction);
     else return httpService.post(`${END_POINT}`, interaction);
+}
+
+// restore to main collection:
+function restore(interaction) {
+    return httpService.post(`${END_POINT}`, interaction);
 }
 
 function remove(id) {
