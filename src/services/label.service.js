@@ -7,6 +7,7 @@ export const labelService = {
     getById,
     save,
     remove,
+    restore,
     getEmptyLabel,
     getLabelPaths
 }
@@ -40,6 +41,9 @@ function save(label) {
     else return httpService.post(`${END_POINT}`, label);
 
 }
+function restore(label) {
+    return httpService.post(`${END_POINT}`, label);
+}
 
 function remove(id) {
     httpService.delete(`${END_POINT}/${id}`);
@@ -48,12 +52,11 @@ function remove(id) {
 
 function getEmptyLabel() {
     return {
-        _id: '',
         src: 'other',
         atcId: '',
         name: '',
         parentLabel: '',
-        color: '#FFFFFF00'
+        color: '#000000ff'
     }
 }
 

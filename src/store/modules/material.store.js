@@ -46,6 +46,9 @@ export const materialStore = ({
             })
             return savedMaterial;
         },
+        async restoreMaterial(context, { material }) {
+            return await materialService.restore(material);
+        },
         async removeMaterial(context, { matId }) {
             await materialService.remove(matId);
             context.commit({

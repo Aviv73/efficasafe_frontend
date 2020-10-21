@@ -136,7 +136,7 @@ export default {
       });
       try {
         const restoredMaterial = this.$store.dispatch({
-          type: "saveMaterial",
+          type: "restoreMaterial",
           material,
         });
 
@@ -158,7 +158,7 @@ export default {
       });
       try {
         const restoredLabel = this.$store.dispatch({
-          type: "saveLabel",
+          type: "restoreLabel",
           label,
         });
 
@@ -179,7 +179,7 @@ export default {
       });
       try {
         const restoredInteraction = this.$store.dispatch({
-          type: "saveInteraction",
+          type: "restoreInteraction",
           interaction,
         });
 

@@ -45,6 +45,9 @@ export const interactionStore = ({
             });
             return savedInteraction;
         },
+        async restoreInteraction(context, { interaction }) {
+            return await interactionService.restore(interaction);
+        },
         async removeInteraction(context, { intId }) {
             await interactionService.remove(intId);
             context.commit({

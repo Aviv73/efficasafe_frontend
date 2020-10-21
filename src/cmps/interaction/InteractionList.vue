@@ -8,11 +8,15 @@
               <router-link :to="`/interaction/${item._id}`">
                 <div class="side-name-img" v-if="item.side1Material">
                   <img
-                    :src="require(`@/assets/icons/${item.side1Material.type}.svg`)"
+                    :src="
+                      require(`@/assets/icons/${item.side1Material.type}.svg`)
+                    "
                     :alt="item.side1Material.type"
                     :title="item.side1Material.type"
                   />
-                  <span class="text-capitalize">{{item.side1Material.name}}</span>
+                  <span class="text-capitalize">{{
+                    item.side1Material.name
+                  }}</span>
                 </div>
                 <div class="side-name-img" v-else>
                   <img
@@ -20,7 +24,9 @@
                     :alt="item.side1Label.src"
                     :title="item.side1Label.src"
                   />
-                  <span class="text-capitalize">{{item.side1Label.name}}</span>
+                  <span class="text-capitalize">{{
+                    item.side1Label.name
+                  }}</span>
                 </div>
               </router-link>
             </td>
@@ -28,29 +34,55 @@
               <router-link :to="`/interaction/${item._id}`">
                 <div class="side-name-img" v-if="item.side2Material">
                   <img
-                    :src="require(`@/assets/icons/${item.side2Material.type}.svg`)"
+                    :src="
+                      require(`@/assets/icons/${item.side2Material.type}.svg`)
+                    "
                     :alt="item.side2Material.type"
                     :title="item.side2Material.type"
                   />
-                  <span class="text-capitalize">{{item.side2Material.name}}</span>
+                  <span class="text-capitalize">{{
+                    item.side2Material.name
+                  }}</span>
                 </div>
-                <div class="side-name-img" v-else>
+                <div class="side-name-img" v-if="item.side2Label">
                   <img
                     :src="require(`@/assets/icons/${item.side2Label.src}.svg`)"
                     :alt="item.side2Label.src"
                     :title="item.side2Label.src"
                   />
-                  <span class="text-capitalize">{{item.side2Label.name}}</span>
+                  <span class="text-capitalize">{{
+                    item.side2Label.name
+                  }}</span>
+                </div>
+                <div class="side-name-img" v-if="item.side2DraftName">
+                  <img
+                    :src="require(`@/assets/icons/draftname.svg`)"
+                    :alt="item.side2DraftName"
+                    :title="item.side2DraftName"
+                  />
+                  <span class="text-capitalize">{{
+                    item.side2DraftName
+                  }}</span>
                 </div>
               </router-link>
             </td>
-            <td class="td-active" align="center" @click="$emit('toggle-is-active', item._id )">
-              <v-icon color="info" v-if="item.isActive">mdi-check-box-outline</v-icon>
+            <td
+              class="td-active"
+              align="center"
+              @click="$emit('toggle-is-active', item._id)"
+            >
+              <v-icon color="info" v-if="item.isActive"
+                >mdi-check-box-outline</v-icon
+              >
               <v-icon v-else>mdi-checkbox-blank-off-outline</v-icon>
             </td>
 
             <td class="td-actions" width="120" align="center">
-              <v-btn small color="primary" :to="`/interaction/edit/${item._id}`">
+              <v-btn
+                small
+                color="primary"
+                :to="`/interaction/edit/${item._id}`"
+              >
                 <v-icon small>mdi-pencil</v-icon>
               </v-btn>
             </td>
@@ -63,33 +95,33 @@
 
 <script>
 export default {
-  name: "interactionList",
+  name: 'interactionList',
   props: {
     interactions: Array,
   },
   data() {
     return {
-      search: "",
+      search: '',
       headers: [
         {
-          text: "Side 1",
-          value: "side1Material.name" || "side1Label.name",
+          text: 'Side 1',
+          value: 'side1Material.name' || 'side1Label.name',
         },
         {
-          text: "Side 2",
-          value: "side2Material.name" || "side2Label.name",
+          text: 'Side 2',
+          value: 'side2Material.name' || 'side2Label.name',
         },
         {
-          text: "Active",
-          value: "isActive",
-          align: "center",
+          text: 'Active',
+          value: 'isActive',
+          align: 'center',
         },
         {
-          text: "Action",
-          name: "Action",
-          value: "action",
+          text: 'Action',
+          name: 'Action',
+          value: 'action',
           sortable: false,
-          align: "center",
+          align: 'center',
         },
       ],
     };
