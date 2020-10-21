@@ -7,14 +7,6 @@
         searchName="interaction"
       />
     </div>
-    <div class="filter-type">
-      <v-select
-        :items="interaction.type"
-        label="Interaction type"
-        @change="emitFilter"
-        v-model="filterBy.type"
-      ></v-select>
-    </div>
 
     <div class="filter-status">
       <v-select
@@ -28,10 +20,10 @@
 </template>
 
 <script>
-import interactionAutocomplete from "@/cmps/interaction/InteractionAutocomplete";
+import interactionAutocomplete from '@/cmps/interaction/InteractionAutocomplete';
 
 export default {
-  name: "interactionFilter",
+  name: 'interactionFilter',
   props: {
     interactions: Array,
   },
@@ -39,36 +31,21 @@ export default {
     return {
       filterBy: {
         q: [],
-        type: "all",
-        isActive: "all",
+        isActive: '',
       },
       interaction: {
-        type: [
-          {
-            text: "All",
-            value: "all",
-          },
-          {
-            text: "Material - Material",
-            value: "direct",
-          },
-          {
-            text: "Material - Label",
-            value: "indirect",
-          },
-        ],
         isActive: [
           {
-            text: "All",
-            value: "all",
+            text: 'All',
+            value: '',
           },
           {
-            text: "Active",
-            value: "true",
+            text: 'Active',
+            value: true,
           },
           {
-            text: "Inactive",
-            value: "false",
+            text: 'Inactive',
+            value: false,
           },
         ],
       },
@@ -76,13 +53,13 @@ export default {
   },
   methods: {
     emitFilter() {
-      this.$emit("emit-filter", JSON.parse(JSON.stringify(this.filterBy)));
+      this.$emit('emit-filter', JSON.parse(JSON.stringify(this.filterBy)));
     },
     updateFilter(interaction) {
       if (interaction && interaction.text) {
         this.filterBy.q = JSON.parse(JSON.stringify(interaction.text));
       } else {
-        this.filterBy.q = "";
+        this.filterBy.q = '';
       }
       this.emitFilter();
     },

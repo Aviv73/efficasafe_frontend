@@ -8,18 +8,22 @@
         @remove-side="removeSide(1)"
       />
     </div>
-    <div class="interaction-side">
-      <interaction-side-search
-        :side="sides.side2"
-        @side-selected="updateSide($event, 2)"
-        @remove-side="removeSide(2)"
-      />
+    <div class="interaction-side side-picker">
+      <v-btn 
+        class="submit-btn" 
+        color="primary"
+        @click="isDialogActive = true"
+      >Pick Side 2</v-btn>
+      <v-dialog v-model="isDialogActive" persistent max-width="100%">
+        <side-picker @close-dialog="isDialogActive = false"></side-picker>
+      </v-dialog>
     </div>
   </section>
 </template>
 
 <script>
 import interactionSideSearch from '@/cmps/interaction/edit/InteractionSideSearch';
+import sidePicker from '@/cmps/interaction/edit/SidePicker';
 
 export default {
   name: 'InteractionSides',
@@ -27,6 +31,11 @@ export default {
     sides: {
       type: Object,
       required: true
+    }
+  },
+  data() {
+    return {
+      isDialogActive: false
     }
   },
   methods: {
@@ -39,7 +48,8 @@ export default {
     }
   },
   components: {
-    interactionSideSearch
+    interactionSideSearch,
+    sidePicker
   }
 };
 </script>

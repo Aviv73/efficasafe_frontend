@@ -1,21 +1,20 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import store from '@/store'
-import Home from '../views/Home'
-import LoginPage from '../views/LoginPage'
-import materialApp from '../views/material/MaterialApp'
-import materialEdit from '../views/material/MaterialEdit'
-import materialDetails from '../views/material/MaterialDetails'
-import LabelApp from '../views/label/LabelApp'
-import labelEdit from '../views/label/LabelEdit'
-import labelDetails from '../views/label/LabelDetails'
-import interactionApp from '../views/interaction/InteractionApp'
-import interactionEdit from '../views/interaction/InteractionEdit'
-import interactionEditGroup from '../views/interaction/InteractionEditGroup'
-import interactionDetails from '../views/interaction/InteractionDetails'
-import archiveApp from '../views/archive/ArchiveApp'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import store from '@/store';
+import Home from '../views/Home';
+import LoginPage from '../views/LoginPage';
+import materialApp from '../views/material/MaterialApp';
+import materialEdit from '../views/material/MaterialEdit';
+import materialDetails from '../views/material/MaterialDetails';
+import LabelApp from '../views/label/LabelApp';
+import labelEdit from '../views/label/LabelEdit';
+import labelDetails from '../views/label/LabelDetails';
+import interactionApp from '../views/interaction/InteractionApp';
+import interactionEdit from '../views/interaction/InteractionEdit';
+import interactionDetails from '../views/interaction/InteractionDetails';
+import archiveApp from '../views/archive/ArchiveApp';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
@@ -75,12 +74,6 @@ const routes = [
     path: '/interaction/edit/:id?',
     name: 'InteractionsEdit',
     component: interactionEdit,
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/interaction/edit-group/:id?',
-    name: 'InteractionsEditGroup',
-    component: interactionEditGroup,
     meta: { requiresAuth: true }
   },
   {

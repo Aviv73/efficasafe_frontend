@@ -42,11 +42,13 @@
           ></v-select>
         </div>
 
-        <h3>Recommandation:</h3>
-        <ckeditor
-          :config="CKEditorConfig"
+        <v-textarea
+          type="text"
+          rows="1"
+          auto-grow
           v-model="editedInteraction.recommendation"
-        ></ckeditor>
+          label="Recommandation"
+        />
 
         <v-textarea
           type="text"
@@ -76,11 +78,11 @@
           />
           <v-chip-group column>
             <v-chip
-              v-for="indication in editedInteraction.indications"
-              :key="indication.id"
+              v-for="(indication, idx) in editedInteraction.indications"
+              :key="idx"
               close
-              @click:close="removeItem('indications', indication.id)"
-              >{{ indication.txt }}</v-chip
+              @click:close="removeItem('indications', idx)"
+              >{{ indication }}</v-chip
             >
           </v-chip-group>
         </div>
@@ -107,59 +109,31 @@
           label="General"
         />
 
-        <div class="list-chips">
-          <v-text-field
-            v-model="model.labTests"
-            label="Lab Tests"
-            @keypress.enter.prevent="addItemToArray('labTests')"
-          />
-          <v-chip-group column>
-            <v-chip
-              v-for="labTest in editedInteraction.monitor.labTests"
-              :key="labTest.id"
-              close
-              @click:close="removeItem('labTests', labTest.id)"
-              >{{ labTest.txt }}</v-chip
-            >
-          </v-chip-group>
-        </div>
-
-        <div class="list-chips">
-          <v-text-field
-            v-model="model.otherTests"
-            label="Other Tests"
-            @keypress.enter.prevent="addItemToArray('otherTests')"
-          />
-          <v-chip-group column>
-            <v-chip
-              v-for="otherTest in editedInteraction.monitor.otherTests"
-              :key="otherTest.id"
-              close
-              @click:close="removeItem('otherTests', otherTest.id)"
-              >{{ otherTest.txt }}</v-chip
-            >
-          </v-chip-group>
-        </div>
-
-        <div class="list-chips">
-          <v-text-field
-            v-model="model.symptoms"
-            label="Symptoms"
-            @keypress.enter.prevent="addItemToArray('symptoms')"
-          />
-          <v-chip-group column>
-            <v-chip
-              v-for="symptom in editedInteraction.monitor.symptoms"
-              :key="symptom.id"
-              close
-              @click:close="removeItem('symptoms', symptom.id)"
-              >{{ symptom.txt }}</v-chip>
-          </v-chip-group>
-        </div>
+        <v-textarea
+          type="text"
+          rows="1"
+          auto-grow
+          v-model="editedInteraction.monitor.labTests"
+          label="Lab Tests"
+        />
+        <v-textarea
+          type="text"
+          rows="1"
+          auto-grow
+          v-model="editedInteraction.monitor.otherTests"
+          label="Other Tests"
+        />
+        <v-textarea
+          type="text"
+          rows="1"
+          auto-grow
+          v-model="editedInteraction.monitor.symptoms"
+          label="Symptoms"
+        />
 
         <reference-table
-          :references="editedInteraction.refs"
-          v-if="editedInteraction.refs.length"
+          :references="interactionRefs"
+          v-if="interactionRefs.length"
         />
       </v-form>
       <div class="form-actions">
@@ -179,7 +153,6 @@
 </template>
 
 <script>
-import { utilService } from '@/services/util.service';
 import { interactionService } from '@/services/interaction.service';
 import { eventBus, EV_addInteraction } from '@/services/eventBus.service';
 import interactionSides from '@/cmps/interaction/edit/InteractionSides';
@@ -218,6 +191,7 @@ export default {
         extraPlugins: 'autogrow',
         autoGrow_minHeight: 50,
       },
+      interactionRefs: [],
     };
   },
   computed: {
@@ -237,6 +211,16 @@ export default {
     },
   },
   methods: {
+    async getReferences() {
+      const matId = this.editedInteraction.side1Material._id;
+      const material = await this.$store.dispatch({
+        type: 'loadMaterial',
+        matId,
+      });
+      this.interactionRefs = material.refs.filter((ref) =>
+        this.editedInteraction.refs.includes(ref.draftIdx)
+      );
+    },
     removeSide(side) {
       const sideMaterial = `side${side}Material`;
       const sideLabel = `side${side}Label`;
@@ -260,6 +244,7 @@ export default {
             intId,
           });
           this.editedInteraction = JSON.parse(JSON.stringify(interaction));
+          this.getReferences();
         } else {
           this.editedInteraction = interactionService.getEmptyInteraction();
         }
@@ -288,25 +273,18 @@ export default {
       if (!this.model[arrName]) return;
 
       const items = this.model[arrName].split(',');
-      items.forEach(item => {
-        const newItem = {
-          id: utilService.makeId(),
-          txt: item.trim(),
-        };
-        if (arrName === 'indications') this.editedInteraction[arrName].push(newItem);
-        else this.editedInteraction.monitor[arrName].push(newItem);
+      items.forEach((item) => {
+        this.editedInteraction[arrName].push(item.trim());
       });
       this.model[arrName] = '';
     },
-    removeItemFromArray(arrName, itemId) {
-      const innerArray = (arrName === 'indications') ? this.editedInteraction[arrName] : this.editedInteraction.monitor[arrName];
-      const idx = innerArray.findIndex(currItem => currItem.id === itemId);
-      if (idx !== -1) innerArray.splice(idx, 1);
+    removeItemFromArray(arrName, itemIdx) {
+      this.editedInteraction[arrName].splice(itemIdx, 1);
     },
-    removeItem(arrName, id) {
+    removeItem(arrName, idx) {
       this.itemToRemove = {
         arrName,
-        id,
+        idx,
       };
       this.dialog = true;
     },
@@ -315,9 +293,12 @@ export default {
       this.itemToRemove = null;
     },
     removeItemConfirmed() {
-        this.removeItemFromArray(this.itemToRemove.arrName, this.itemToRemove.id);
-        this.dialog = false;
-        this.itemToRemove = null;
+      this.removeItemFromArray(
+        this.itemToRemove.arrName,
+        this.itemToRemove.idx
+      );
+      this.dialog = false;
+      this.itemToRemove = null;
     },
   },
   created() {

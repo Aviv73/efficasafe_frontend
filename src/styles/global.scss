@@ -15,6 +15,7 @@
 @import "cmps/general/icons-map";
 
 // COMMON
+@import "cmps/common/material-tree-view";
 
 // MATERIAL
 @import "cmps/material/material-filter";
@@ -26,7 +27,6 @@
 // MATERIAL EDIT
 @import "cmps/material/edit/search-sub-material";
 @import "cmps/material/edit/material-label-path";
-@import "cmps/material/edit/material-reference";
 
 
 // LABELS
@@ -38,6 +38,7 @@
 @import "cmps/interaction/interaction-filter";
 @import "cmps/interaction/interaction-list";
 @import "cmps/interaction/interaction-preview";
+
 // INTERACTIONS EDIT CMPS
 @import "cmps/interaction/edit/interaction-sides";
 @import "cmps/interaction/edit/interaction-side-search";
@@ -46,7 +47,6 @@
 @import "views/home";
 
 // LABELS
-
 @import "views/label/label-app";
 @import "views/label/label-details";
 @import "views/label/label-edit";

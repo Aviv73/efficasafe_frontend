@@ -1,7 +1,11 @@
 <template>
   <section class="search-sub-material">
     <div class="search-container" v-if="materials">
-      <autocomplete :items="materials" @emitAutocomplete="addSubMaterial" searchName="Add Sub Material" />
+      <autocomplete
+        :items="materials"
+        @emitAutocomplete="addSubMaterial"
+        searchName="Add Sub Material"
+      />
     </div>
 
     <div class="list-chips">
@@ -11,17 +15,18 @@
           :key="subMaterial._id"
           close
           @click:close="removeSubMaterial(subMaterial._id)"
-        >{{ subMaterial.name }}</v-chip>
+          >{{ subMaterial.name }}</v-chip
+        >
       </v-chip-group>
     </div>
   </section>
 </template>
 
 <script>
-import autocomplete from "@/cmps/Autocomplete";
+import autocomplete from '@/cmps/Autocomplete';
 
 export default {
-  name: "SearchSubMaterial",
+  name: 'SearchSubMaterial',
   props: {
     subMaterials: Array,
     materials: Array,
@@ -29,25 +34,25 @@ export default {
   data() {
     return {
       filterBy: {
-        q: "",
+        q: '',
       },
     };
   },
   methods: {
     loadMaterials() {
       const filterBy = this.filterBy;
-      this.$store.dispatch({ type: "loadMaterials", filterBy });
+      this.$store.dispatch({ type: 'loadMaterials', filterBy });
     },
     addSubMaterial(material) {
-      if (!material) return
+      if (!material) return;
       const newMaterial = {
         _id: material._id,
         name: material.text,
       };
-      this.$emit("addSubMaterial", newMaterial);
+      this.$emit('addSubMaterial', newMaterial);
     },
     removeSubMaterial(itemId) {
-      this.$emit("removeSubMaterial", 'subMaterials', itemId);
+      this.$emit('removeSubMaterial', 'subMaterials', itemId);
     },
   },
   components: {

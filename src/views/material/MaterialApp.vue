@@ -8,7 +8,11 @@
       </v-card-title>
 
       <material-filter :materials="materials" @emit-filter="setFilter" />
-      <material-list :materials="materials" :loading="loading" @options-updated="setSort" />
+      <material-list
+        :materials="materials"
+        :loading="loading"
+        @options-updated="setSort"
+      />
     </v-card>
 
     <icons-map />
@@ -16,9 +20,9 @@
 </template>
 
 <script>
-import materialFilter from "@/cmps/material/MaterialFilter";
-import materialList from "@/cmps/material/MaterialList";
-import iconsMap from "@/cmps/general/IconsMap";
+import materialFilter from '@/cmps/material/MaterialFilter';
+import materialList from '@/cmps/material/MaterialList';
+import iconsMap from '@/cmps/general/IconsMap';
 
 export default {
   data() {
@@ -28,7 +32,7 @@ export default {
     };
   },
   watch: {
-    "$route.query": function () {
+    '$route.query': function () {
       this.loadMaterials();
     },
   },
@@ -40,27 +44,16 @@ export default {
   methods: {
     setSort(sortBy) {
       this.sortBy = sortBy;
-      this.loadMaterials()
+      this.loadMaterials();
     },
     setFilter(filterBy) {
-      // If autocomplete cmp clears search, it emits filterBy.q = ""
-      // if (!filterBy.type || filterBy.type === "all") {
-      //   delete filterBy.type;
-      // }
-
-      // if (!filterBy.q) {
-      //   // To clear the browser navigation from q= at the end
-      //   delete filterBy.q;
-      // }
-
-      const queryStr = "?" + new URLSearchParams(filterBy).toString();
-
+      const queryStr = '?' + new URLSearchParams(filterBy).toString();
       this.$router.push(queryStr);
     },
     async loadMaterials() {
       this.loading = true;
       const criteria = this.$route.query;
-      await this.$store.dispatch({ type: "loadMaterials", criteria });
+      await this.$store.dispatch({ type: 'loadMaterials', criteria });
       this.loading = false;
     },
   },

@@ -5,7 +5,9 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 
-import "./styles/global.scss";
+import './styles/global.scss';
+
+import './directives';
 
 Vue.config.productionTip = false
 

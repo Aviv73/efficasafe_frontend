@@ -6,7 +6,7 @@
         @remove-item-canceled="removeItemCanceled"
         @remove-item-confirmed="removeItemConfirmed"
       />
-      <v-dialog v-model="labelDialog" persistent scrollable max-width="1000">
+      <v-dialog v-model="labelDialog" persistent max-width="1000">
         <material-add-tree-path
           @close-dialog="labelDialog = false"
           @add-label-paths="addLabelPaths"
@@ -53,6 +53,18 @@
           :config="CKEditorConfig"
           ></ckeditor>
 
+          <v-text-field
+            v-model="editedMaterial.botanicalFamily"
+            label="Botanical Family"
+            v-if="editedMaterial.type === 'herb'"
+          />
+
+          <v-text-field
+            v-model="editedMaterial.plantPartUsed"
+            label="Plant Part Used"
+            v-if="editedMaterial.type === 'herb'"
+          />
+
         <div class="list-chips">
           <v-text-field
             v-model="model.aliases"
@@ -60,14 +72,13 @@
             :disabled="editedMaterial.type !== 'herb'"
             @keypress.enter.prevent="addItemToArray('aliases')"
           />
-          <v-chip-group column active-class="primary--text">
+          <v-chip-group column>
             <v-chip
-              v-for="alias in editedMaterial.aliases"
-              :key="alias.id"
+              v-for="(alias, idx) in editedMaterial.aliases"
+              :key="idx"
               close
-              @click:close="removeItem('aliases', alias.id)"
-              >{{ alias.txt }}</v-chip
-            >
+              @click:close="removeItem('aliases', idx)"
+              >{{ alias }}</v-chip>
           </v-chip-group>
         </div>
 
@@ -78,13 +89,13 @@
             label="Qualities"
             @keypress.enter.prevent="addItemToArray('qualities')"
           />
-          <v-chip-group column active-class="primary--text">
+          <v-chip-group column>
             <v-chip
-              v-for="quality in editedMaterial.qualities"
-              :key="quality.id"
+              v-for="(quality, idx) in editedMaterial.qualities"
+              :key="idx"
               close
-              @click:close="removeItem('qualities', quality.id)"
-              >{{ quality.txt }}</v-chip>
+              @click:close="removeItem('qualities', idx)"
+              >{{ quality }}</v-chip>
           </v-chip-group>
         </div>
 
@@ -99,17 +110,17 @@
 
         <div class="list-chips">
           <v-text-field
-            v-model="model.medicinalActivity"
-            label="Medicinal Activity"
-            @keypress.enter.prevent="addItemToArray('medicinalActivity')"
+            v-model="model.medicinalActions"
+            label="Medicinal Actions"
+            @keypress.enter.prevent="addItemToArray('medicinalActions')"
           />
-          <v-chip-group column active-class="primary--text">
+          <v-chip-group column>
             <v-chip
-              v-for="activity in editedMaterial.medicinalActivity"
-              :key="activity.id"
+              v-for="(action, idx) in editedMaterial.medicinalActions"
+              :key="idx"
               close
-              @click:close="removeItem('medicinalActivity', activity.id)"
-              >{{ activity.txt }}</v-chip
+              @click:close="removeItem('medicinalActions', idx)"
+              >{{ action }}</v-chip
             >
           </v-chip-group>
         </div>
@@ -120,14 +131,13 @@
             label="Indications"
             @keypress.enter.prevent="addItemToArray('indications')"
           />
-          <v-chip-group column active-class="primary--text">
+          <v-chip-group column>
             <v-chip
-              v-for="indication in editedMaterial.indications"
-              :key="indication.id"
+              v-for="(indication, idx) in editedMaterial.indications"
+              :key="idx"
               close
-              @click:close="removeItem('indications', indication.id)"
-              >{{ indication.txt }}</v-chip
-            >
+              @click:close="removeItem('indications', idx)"
+              >{{ indication }}</v-chip>
           </v-chip-group>
         </div>
 
@@ -137,11 +147,11 @@
           label="Dosage"
         />
 
-        <v-text-field
-          type="text"
-          v-model="editedMaterial.sensitivities"
-          label="Sensitivities"
-        />
+        <h3>Sensitivities:</h3>
+        <ckeditor 
+          v-model="editedMaterial.sensitivities" 
+          :config="CKEditorConfig"
+        ></ckeditor>
 
         <h3>Adverse Reactions:</h3>
         <ckeditor 
@@ -149,15 +159,21 @@
           :config="CKEditorConfig"
         ></ckeditor>
 
-        <h3>Overdose:</h3>
+        <h3>Overdosage:</h3>
         <ckeditor 
-          v-model="editedMaterial.overdose" 
+          v-model="editedMaterial.overdosage" 
           :config="CKEditorConfig"
         ></ckeditor>
 
         <h3>Precautions:</h3>
         <ckeditor 
           v-model="editedMaterial.precautions" 
+          :config="CKEditorConfig"
+        ></ckeditor>
+
+        <h3>Mechanism Of Action:</h3>
+        <ckeditor 
+          v-model="editedMaterial.mechanismOfAction" 
           :config="CKEditorConfig"
         ></ckeditor>
 
@@ -191,16 +207,28 @@
           :config="CKEditorConfig"
         ></ckeditor>
 
-        <material-reference
-          v-if="materialReferences"
-          :references="materialReferences"
-        />
-
-        <h3>Draft:</h3>
+        <h3>Detailed Pharmacology:</h3>
         <ckeditor 
-          v-model="editedMaterial.draft" 
+          v-model="editedMaterial.detailedPharmacology" 
           :config="CKEditorConfig"
         ></ckeditor>
+
+        <h3>Active Constituents:</h3>
+        <ckeditor 
+          v-model="editedMaterial.activeConstituents" 
+          :config="CKEditorConfig"
+        ></ckeditor>
+
+        <reference-table
+          v-if="editedMaterial.refs"
+          :references="editedMaterial.refs"
+        />
+
+        <v-text-field
+          type="text"
+          v-model="editedMaterial.draft"
+          label="Draft"
+        ></v-text-field>
 
         <v-textarea
           type="text"
@@ -239,14 +267,13 @@
             :disabled="editedMaterial.type !== 'drug'"
             @keypress.enter.prevent="addItemToArray('brands')"
           />
-          <v-chip-group column active-class="primary--text">
+          <v-chip-group column>
             <v-chip
-              v-for="brand in editedMaterial.brands"
-              :key="brand.id"
+              v-for="(brand, idx) in editedMaterial.brands"
+              :key="idx"
               close
-              @click:close="removeItem('brands', brand.id)"
-              >{{ brand.txt }}</v-chip
-            >
+              @click:close="removeItem('brands', idx)"
+              >{{ brand }}</v-chip>
           </v-chip-group>
         </div>
         <material-label-path
@@ -294,13 +321,12 @@
 
 <script>
 import { materialService } from "@/services/material.service";
-import { utilService } from "@/services/util.service";
 import { eventBus, EV_addMaterial } from "@/services/eventBus.service";
 import confirmDeleteItem from "../../cmps/common/ConfirmDeleteItem";
 import searchSubMaterial from "../../cmps/material/edit/SearchSubMaterial";
 import materialLabelPath from "../../cmps/material/edit/MaterialLabelPath";
 import materialAddTreePath from "../../cmps/material/edit/MaterialAddTreePath";
-import materialReference from "../../cmps/material/edit/MaterialReference";
+import referenceTable from "../../cmps/common/ReferenceTable";
 import regionsSelector from "../../cmps/material/edit/RegionsSelector";
 import CKEditor from 'ckeditor4-vue';
 
@@ -313,7 +339,6 @@ export default {
       dialog: false,
       labelDialog: false,
       itemToRemove: null,
-      materialReferences: null,
       CKEditorConfig: {
         extraPlugins: 'autogrow',
         autoGrow_minHeight: 50
@@ -324,9 +349,8 @@ export default {
       model: {
         aliases: '',
         brands: '',
-        medicinalActivity: '',
+        medicinalActions: '',
         indications: '',
-        activeConstituents: '',
         qualities: ''
       },
       subMaterialName: '',
@@ -372,17 +396,6 @@ export default {
         material = materialService.getEmptyMaterial();
       }
       this.editedMaterial = JSON.parse(JSON.stringify(material));
-      this.getMaterialReferences();
-    },
-    async getMaterialReferences() {
-      const refIds = [...this.editedMaterial.refIds];
-      if (refIds.length) {
-        const materialReferences = await this.$store.dispatch({
-          type: "loadReferences",
-          refIds,
-        });
-        this.materialReferences = materialReferences;
-      }
     },
     loadMaterials() {
       const criteria = { type: "drug" };
@@ -426,29 +439,21 @@ export default {
     updateRegions(regions) {
       this.editedMaterial.regions = regions;
     },
-    removeItemFromArray(itemId, arrName) {
-      var id = (arrName === 'subMaterials') ? '_id': 'id';
-      const idx = this.editedMaterial[arrName].findIndex(currItem => currItem[id] === itemId);
-      if (idx !== -1) this.editedMaterial[arrName].splice(idx, 1);
+    removeItemFromArray(itemIdx, arrName) {
+      if (arrName === 'subMaterials') itemIdx = this.editedMaterial.subMaterials.findIndex(subMaterial => subMaterial._id === itemIdx);
+      this.editedMaterial[arrName].splice(itemIdx, 1);
     },
     addItemToArray(arrName) {
       if (!this.model[arrName]) return;
       const items = this.model[arrName].split(',');
-      items.forEach(currItem => {
-        const item = {
-          id: utilService.makeId(),
-          txt: currItem.trim()
-        };
-        this.editedMaterial[arrName].push(item);
+      items.forEach(item => {
+        this.editedMaterial[arrName].push(item.trim());
       });
       this.model[arrName] = '';
     },
     addSubMaterial(subMaterial) {
       if (!subMaterial) return;
-      const idx = this.editedMaterial.subMaterials.findIndex(
-        (currSubMaterial) => currSubMaterial._id === subMaterial._id
-      );
-
+      const idx = this.editedMaterial.subMaterials.findIndex(currSubMaterial=> currSubMaterial._id === subMaterial._id);
       if (idx === -1) {
         this.editedMaterial.subMaterials.push(subMaterial);
       }
@@ -463,7 +468,7 @@ export default {
     searchSubMaterial,
     materialLabelPath,
     materialAddTreePath,
-    materialReference,
+    referenceTable,
     confirmDeleteItem,
     ckeditor: CKEditor.component
   }

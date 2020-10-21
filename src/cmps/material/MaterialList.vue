@@ -1,6 +1,11 @@
 <template>
   <section class="material-list">
-    <v-data-table :headers="headers" :items="materials" :options.sync="options" :loading="loading">
+    <v-data-table
+      :headers="headers"
+      :items="materials"
+      :options.sync="options"
+      :loading="loading"
+    >
       <template v-slot:body="{ items }">
         <tbody>
           <tr class="tr-material" v-for="item in items" :key="item._id">
@@ -11,13 +16,13 @@
                   :alt="item.type"
                   :title="item.type"
                 />
-                <span class="text-capitalize">{{item.name}}</span>
+                <span class="text-capitalize">{{ item.name }}</span>
               </router-link>
             </td>
 
             <td class="td-type" width="80">
               <router-link class="link-clean" :to="`/material/${item._id}`">
-                <span class="text-capitalize">{{item.type}}</span>
+                <span class="text-capitalize">{{ item.type }}</span>
               </router-link>
             </td>
 
@@ -30,13 +35,12 @@
         </tbody>
       </template>
     </v-data-table>
-    <pre>{{options}}</pre>
   </section>
 </template>
 
 <script>
 export default {
-  name: "materialList",
+  name: 'materialList',
   props: {
     materials: Array,
     loading: Boolean,
@@ -44,23 +48,23 @@ export default {
   data() {
     return {
       isMounted: false,
-      search: "",
+      search: '',
       options: {},
       headers: [
         {
-          text: "Name",
-          value: "name",
+          text: 'Name',
+          value: 'name',
         },
         {
-          text: "Type",
-          value: "type",
+          text: 'Type',
+          value: 'type',
         },
         {
-          text: "Action",
-          name: "Action",
-          value: "action",
+          text: 'Action',
+          name: 'Action',
+          value: 'action',
           sortable: false,
-          align: "center",
+          align: 'center',
         },
       ],
     };
@@ -68,8 +72,7 @@ export default {
   watch: {
     options: function () {
       if (this.isMounted) {
-        console.log("OPTIONS:", this.options);
-        this.$emit("options-updated", JSON.parse(JSON.stringify(this.options)));
+        this.$emit('options-updated', JSON.parse(JSON.stringify(this.options)));
       } else {
         this.isMounted = true;
       }

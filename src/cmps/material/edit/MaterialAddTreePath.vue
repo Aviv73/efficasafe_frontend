@@ -8,37 +8,10 @@
       <v-spacer></v-spacer>
       <v-icon dark right @click="closeDialog">mdi-window-close</v-icon>
     </v-card-title>
-    <v-sheet class="pa-4 primary lighten-2">
-      <v-text-field
-        v-model="search"
-        label="Search label.."
-        append-icon="mdi-magnify"
-        dark
-        flat
-        solo-inverted
-        hide-details
-        clearable
-        clear-icon="mdi-close-circle-outline"
-      ></v-text-field>
-    </v-sheet>
-    <v-card-text>
-      <v-treeview
-        v-if="atcLabels"
-        :items="atcLabels"
-        :search="search"
-        selectable
-        selected-color="primary"
-        selection-type="independent"
-        item-key="_id"
-        dense
-        hoverable
-        v-model="selection"
-        return-object
-        transition
-      ></v-treeview>
-      <loading-cmp v-else />
-    </v-card-text>
-    <v-divider></v-divider>
+    <material-tree-view
+      @branches-selected="toggleSubmit"
+    ></material-tree-view>
+    
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn color="normal" @click="closeDialog">Cancel</v-btn>
@@ -46,31 +19,24 @@
         color="primary"
         @click="addLabelPaths"
         :disabled="!selection.length"
-        >Add to material</v-btn
-      >
+        >Add to material</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
-import loadingCmp from '@/cmps/general/LoadingCmp';
+import materialTreeView from '@/cmps/common/MaterialTreeView';
 
 export default {
   data() {
     return {
-      search: '',
-      selection: [],
+      selection: []
     };
   },
-  computed: {
-    atcLabels() {
-      return this.$store.getters.atcLabels;
-    },
-    labels() {
-      return this.$store.getters.labels;
-    }
-  },
   methods: {
+    toggleSubmit(selection) {
+      this.selection = selection;
+    },
     async addLabelPaths() {
       const selectedPaths = JSON.parse(JSON.stringify(this.selection));
       try {
@@ -87,13 +53,10 @@ export default {
     closeDialog() {
       this.$emit('close-dialog');
       this.selection = [];
-    },
-  },
-  created() {
-    this.$store.dispatch({ type: 'loadAtcLabels' });
+    }
   },
   components: {
-    loadingCmp,
-  },
+    materialTreeView
+  }
 };
 </script>
