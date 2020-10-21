@@ -14,7 +14,7 @@
         clear-icon="mdi-close-circle-outline"
       ></v-text-field>
     </v-sheet>
-    <v-card-text class="">
+    <v-card-text>
       <v-treeview
         v-if="filteredAtcLabels"
         :items="filteredAtcLabels"
@@ -47,9 +47,12 @@ export default {
     };
   },
   watch: {
-    'selection'() {
-      this.$emit('branches-selected', JSON.parse(JSON.stringify(this.selection)));
-    }
+    selection() {
+      this.$emit(
+        'branches-selected',
+        JSON.parse(JSON.stringify(this.selection))
+      );
+    },
   },
   computed: {
     atcLabels() {
@@ -83,8 +86,8 @@ export default {
     this.$store.dispatch({ type: 'loadAtcLabels' });
   },
   components: {
-    loadingCmp
-  }
+    loadingCmp,
+  },
 };
 </script>
 

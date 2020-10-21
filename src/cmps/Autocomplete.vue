@@ -7,6 +7,8 @@
       v-model="autocompleteResult"
       @change="emitAutocomplete"
       clearable
+      :flat="isFlat"
+      :solo-inverted="isSoloInverted"
       return-object
     />
   </section>
@@ -18,6 +20,14 @@ export default {
   props: {
     items: Array,
     searchName: String,
+    isSoloInverted: {
+      type: Boolean,
+      default: false
+    },
+    isFlat: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -28,7 +38,7 @@ export default {
   },
   computed: {
     searchNameStr() {
-      return `${this.searchName}`;
+      return this.searchName;
     },
     itemNames() {
       return this.items.map((item) => {

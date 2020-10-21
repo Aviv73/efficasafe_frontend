@@ -18,16 +18,6 @@
                     item.side1Material.name
                   }}</span>
                 </div>
-                <div class="side-name-img" v-else>
-                  <img
-                    :src="require(`@/assets/icons/${item.side1Label.src}.svg`)"
-                    :alt="item.side1Label.src"
-                    :title="item.side1Label.src"
-                  />
-                  <span class="text-capitalize">{{
-                    item.side1Label.name
-                  }}</span>
-                </div>
               </router-link>
             </td>
             <td class="td-side">
@@ -44,7 +34,7 @@
                     item.side2Material.name
                   }}</span>
                 </div>
-                <div class="side-name-img" v-if="item.side2Label">
+                <div class="side-name-img" v-else-if="item.side2Label">
                   <img
                     :src="require(`@/assets/icons/${item.side2Label.src}.svg`)"
                     :alt="item.side2Label.src"
@@ -54,7 +44,7 @@
                     item.side2Label.name
                   }}</span>
                 </div>
-                <div class="side-name-img" v-if="item.side2DraftName">
+                <div class="side-name-img" v-else>
                   <img
                     :src="require(`@/assets/icons/draftname.svg`)"
                     :alt="item.side2DraftName"
