@@ -1,0 +1,23 @@
+.side-picker {
+    .auto-complete-container {
+        padding: 12px 0;
+        .v-text-field__details {
+            display: none;
+        }
+        .v-input__slot {
+            margin-bottom: 0;
+        }
+    }
+    .material-list {
+        height: 600px;
+        overflow-y: auto;
+        font-size: 24px;
+
+        img {
+            width: 30px;
+        }
+        &-item:not(:last-child) {
+            border-bottom: 1px solid rgba(38, 35, 34, 0.1);
+        }
+    }
+}
