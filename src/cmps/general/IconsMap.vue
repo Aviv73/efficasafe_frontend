@@ -58,6 +58,13 @@ export default {
           color: "",
         },
         {
+          name: "draftname",
+          label: "Draft name",
+          path: "@/assets/icons/draftname",
+          mdi: "",
+          color: "",
+        },
+        {
           name: "Active",
           label: "Active",
           path: "",

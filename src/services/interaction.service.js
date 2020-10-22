@@ -8,7 +8,8 @@ export const interactionService = {
     save,
     remove,
     restore,
-    getEmptyInteraction
+    getEmptyInteraction,
+    calculateEvidenceLevel
 }
 
 function list(filterBy) {
@@ -31,6 +32,46 @@ function restore(interaction) {
 
 function remove(id) {
     httpService.delete(`${END_POINT}/${id}`);
+}
+
+function calculateEvidenceLevel(refs) {
+    const map = _evidenceLevelMap(refs)
+    console.log('EvidenceLevelMap', map)
+
+    if (
+        (map.meta || map.systematic || map['drug label']) ||
+        (map.clinical && map.clinical > 1)
+    ) {
+        return 'A'
+    } else if (
+        (map.clinical && map.animal) ||
+        (map.clinical && map['in vitro']) ||
+        (map.retrospective && map.animal) ||
+        (map.retrospective && map['in vitro'])
+    ) {
+        return 'B'
+    } else if (map.clinical || map.retrospective) {
+        return 'C'
+    } else if (map.case) {
+        return 'D'
+    } else if (
+        (map.animal && map.animal > 1) ||
+        (map['in vitro'] && map['in vitro'] > 1) ||
+        (map.animal && map['in vitro'])
+    ) {
+        return 'E'
+    } else if (map.animal || map['in vitro']) {
+        return 'F'
+    } else return 'Z'
+}
+
+function _evidenceLevelMap(refs) {
+    const map = refs.reduce((acc, ref) => {
+        acc[ref.type] = acc[ref.type]++ || 1
+        return acc
+    }, {})
+
+    return map
 }
 
 function getEmptyInteraction() {
