@@ -294,7 +294,6 @@
           @open-atc-dialog="AtcLabelDialog = true"
           @open-custom-dialog="customLabelDialog = true"
         />
-        <pre>{{editedMaterial.labelPaths}}</pre>
         <div>
           <label for="mat-regions">Regions:</label>
           <regions-selector

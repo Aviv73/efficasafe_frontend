@@ -1,12 +1,6 @@
 .side-picker {
-    .auto-complete-container {
-        padding: 12px 0;
-        .v-text-field__details {
-            display: none;
-        }
-        .v-input__slot {
-            margin-bottom: 0;
-        }
+    .v-tab {
+        max-width: unset;
     }
     .material-list {
         height: 600px;

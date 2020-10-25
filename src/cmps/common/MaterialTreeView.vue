@@ -2,9 +2,8 @@
   <section class="tree-container">
     <v-sheet class="pa-4 primary lighten-2">
       <v-text-field
-        v-model="search"
-        label="Search label.."
-        @input="handleTreeSearch"
+        @input="handleSearch"
+        label="Search Label.."
         append-icon="mdi-magnify"
         dark
         flat
@@ -15,21 +14,13 @@
       ></v-text-field>
     </v-sheet>
     <v-card-text>
-      <v-treeview
+      <tree-view 
         v-if="filteredAtcLabels"
         :items="filteredAtcLabels"
-        ref="treeView"
-        selectable
-        selected-color="primary"
-        selection-type="leaf"
-        item-key="_id"
-        dense
-        hoverable
-        v-model="selection"
-        open-on-click
-        return-object
-        transition
-      ></v-treeview>
+        itemKey="_id"
+        :search="search"
+        @selection-changed="saveSelection($event)"
+        ></tree-view>
       <loading-cmp v-else />
     </v-card-text>
     <v-divider></v-divider>
@@ -37,6 +28,7 @@
 </template>
 
 <script>
+import treeView from '@/cmps/general/TreeView';
 import loadingCmp from '@/cmps/general/LoadingCmp';
 
 export default {
@@ -71,22 +63,27 @@ export default {
         }
         return result;
       };
-      var filteredLabels = this.atcLabels.reduce(getNodes, []);
-      console.log('Open Labels:', filteredLabels);
-      return filteredLabels;
-    },
+      return this.atcLabels.reduce(getNodes, []);
+    }
   },
   methods: {
-    handleTreeSearch(val) {
-      if (val.length > 2) this.$refs.treeView.updateAll(true);
-      else if (!val.length) this.$refs.treeView.updateAll(false);
+    saveSelection(selection) {
+      this.selection = selection;
     },
+    handleSearch(val) {
+      let timerId;
+      clearTimeout(timerId);
+      timerId = setTimeout(() => {
+        this.search = val;
+      }, 500);
+    }
   },
   created() {
     this.$store.dispatch({ type: 'loadAtcLabels' });
   },
   components: {
     loadingCmp,
+    treeView
   },
 };
 </script>

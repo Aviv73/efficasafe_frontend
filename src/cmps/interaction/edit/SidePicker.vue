@@ -16,20 +16,33 @@
       <v-tab @click="handleNavigation('materials')">Materials</v-tab>
     </v-tabs>
     <section class="content">
-      <material-tree-view v-show="activeTab === 'atc'"></material-tree-view>
+      <material-tree-view 
+        v-show="activeTab === 'atc'"
+        @branches-selected="toggleSelection"
+        ></material-tree-view>
       <section v-show="activeTab === 'materials'">
-        <v-sheet class="pa-4 primary lighten-2 auto-complete-container" dark>
-          <auto-complete
-            :items="materials"
-            searchName="Search Material..."
-            :isSoloInverted="true"
-            :isFlat="true"
-          />
+        <v-sheet class="pa-4 primary lighten-2" dark>
+          <v-text-field label="Search Material..." 
+            filled 
+            append-icon="mdi-magnify"
+            v-debounce="filterMaterials"
+            dark
+            flat
+            solo-inverted
+            hide-details
+            clearable></v-text-field>
         </v-sheet>
         <v-card class="material-list mx-auto" flat tile>
           <v-list flat>
             <v-list-item-group color="primary">
-              <v-list-item v-for="material in materials" :key="material._id" class="material-list-item">
+              <v-list-item
+                color="rgba(0, 0, 0, 0.87)"
+                v-for="material in materials"
+                :key="material._id"
+                @click="toggleFromSelection(material)"
+                class="material-list-item"
+                :class="{'blue lighten-4': isInSelection(material._id)}"
+              >
                 <v-list-item-icon>
                   <img
                     :src="require(`@/assets/icons/${material.type}.svg`)"
@@ -57,27 +70,44 @@
 
 <script>
 import materialTreeView from '@/cmps/common/MaterialTreeView';
-import autoComplete from '@/cmps/Autocomplete';
 
 export default {
   data() {
     return {
-      activeTab: 'atc'
+      activeTab: 'atc',
+      search: '',
+      selection: []
     };
   },
   computed: {
     materials() {
-      return this.$store.getters.materials;
-    },
+      return this.$store.getters.materials.filter(mat => mat.name.toLowerCase().includes(this.search.toLowerCase()));
+    }
   },
   methods: {
     handleNavigation(activeTab) {
       this.activeTab = activeTab;
     },
+    filterMaterials(val) {
+        this.search = val;
+    },
+    toggleFromSelection(material) {
+        const idx = this.selection.findIndex(selectedItem => selectedItem._id === material._id);
+        if (idx < 0) this.selection.push(material);
+        else this.selection.splice(idx, 1);
+
+        console.log('Final', this.selection);
+    },
+    isInSelection(materialId) {
+        return this.selection.find(selectedItem => selectedItem._id === materialId);
+    },
+    toggleSelection(selection) {
+      this.selection = selection;
+      console.log('Final', selection);
+    }
   },
   components: {
-    materialTreeView,
-    autoComplete,
+    materialTreeView
   },
 };
 </script>
