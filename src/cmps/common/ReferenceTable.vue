@@ -1,6 +1,6 @@
 <template>
   <section class="reference-table">
-    <v-simple-table class="ref-table" fixed-header height="300px">
+    <v-simple-table fixed-header height="300px">
       <template v-slot:default>
         <thead>
           <tr>
