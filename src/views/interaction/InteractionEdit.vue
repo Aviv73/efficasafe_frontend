@@ -244,12 +244,18 @@ export default {
             intId,
           });
           this.editedInteraction = JSON.parse(JSON.stringify(interaction));
-          this.getReferences();
+          await this.getReferences();
+          this.calculateEvidenceLevel();
         } else {
           this.editedInteraction = interactionService.getEmptyInteraction();
         }
       } catch (err) {
         console.log('ERROR', err);
+      }
+    },
+    calculateEvidenceLevel() {
+      if (this.interactionRefs.length) {
+        this.editedInteraction.evidenceLevel = interactionService.calculateEvidenceLevel(this.interactionRefs);
       }
     },
     async saveInteraction() {

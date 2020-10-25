@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="add-custom-label">
     <v-card-title
       class="primary headline"
       style="color: white; font-weight: bold"

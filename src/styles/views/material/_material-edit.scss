@@ -1,12 +1,13 @@
 .material-edit {
     padding: 8px;
-    width: 800px;
+    max-width: 1000px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin-bottom: 16px;
     margin: 0 auto;
+
     .material-edit-title {
         align-self: flex-start;
         padding: 16px 0;
@@ -33,7 +34,10 @@
         grid-template-columns: 1fr;
         gap: 8px;
         padding: 0 16px;
-        width: 700px;
+
+        .ref-table {
+            max-width: 900px;
+        }
 
         label {
             text-align: start;

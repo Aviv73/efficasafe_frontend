@@ -1,6 +1,6 @@
 .interaction-edit {
     padding: 8px;
-    width: 800px;
+    max-width: 1000px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -28,13 +28,14 @@
         grid-template-columns: 1fr;
         gap: 8px;
         padding: 0 16px;
-        width: 700px;
 
         .int-rec-evi-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
         }
+
+        // .ref-table {}
 
         .int-sides-active {
             display: flex;
