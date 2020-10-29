@@ -73,11 +73,11 @@
       <h3 class="info-title">Source:</h3>
       <p class="info-value">{{ interaction.src }}</p>
 
+      <h3 class="info-title">Recommendation:</h3>
+      <p class="info-value">{{ recommendation }}</p>
+
       <h3 class="info-title">Summary:</h3>
       <p class="info-value" v-html="interaction.summary"></p>
-
-      <h3 class="info-title">Recommendation:</h3>
-      <p class="info-value">{{ interaction.recommendation }}</p>
 
       <span class="info-title">Note:</span>
       <p class="info-value">{{ interaction.note }}</p>
@@ -170,9 +170,7 @@ export default {
         type: 'loadMaterial',
         matId,
       });
-      this.interactionRefs = material.refs.filter((ref) =>
-        this.interaction.refs.includes(ref.draftIdx)
-      );
+      this.interactionRefs = material.refs.filter(ref => this.interaction.refs.includes(ref.draftIdx));
     },
     async loadInteraction() {
       const intId = this.$route.params.id;
@@ -207,10 +205,19 @@ export default {
   created() {
     this.loadInteraction();
   },
+  computed: {
+    recommendation() {
+      var reco = this.interaction.recommendation;
+      if (reco.charAt(reco.length - 1) === '.') {
+        return reco.substring(0, reco.length - 1);
+      }
+      return reco;
+    }
+  },
   components: {
     confirmDelete,
     referenceTable,
     iconsMap,
-  },
+  }
 };
 </script>

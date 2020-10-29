@@ -36,12 +36,9 @@ function remove(id) {
 
 function calculateEvidenceLevel(refs) {
     const map = _evidenceLevelMap(refs)
-    console.log('EvidenceLevelMap', map)
 
-    if (
-        (map.meta || map.systematic || map['drug label']) ||
-        (map.clinical && map.clinical > 1)
-    ) {
+    if ((map.meta || map.systematic || map['drug label']) ||
+        (map.clinical && map.clinical > 1)) {
         return 'A'
     } else if (
         (map.clinical && map.animal) ||

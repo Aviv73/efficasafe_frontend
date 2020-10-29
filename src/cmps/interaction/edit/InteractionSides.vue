@@ -4,8 +4,8 @@
       <interaction-side-search
         :side="sides.side1"
         :showLabels="false"
-        @side-selected="updateSide($event, 1)"
-        @remove-side="removeSide(1)"
+        @side-selected="updateSide($event)"
+        @remove-side="removeSide()"
       />
     </div>
     <div class="interaction-side side-picker">
@@ -14,8 +14,11 @@
         color="primary"
         @click="isDialogActive = true"
       >Pick Side 2</v-btn>
-      <v-dialog v-model="isDialogActive" persistent max-width="100%">
-        <side-picker @close-dialog="isDialogActive = false"></side-picker>
+      <v-dialog v-model="isDialogActive" persistent max-width="1400">
+        <side-picker 
+          @close-dialog="isDialogActive = false"
+          @side2-picked="$emit('side2-picked', $event)"
+          ></side-picker>
       </v-dialog>
     </div>
   </section>
@@ -39,12 +42,11 @@ export default {
     }
   },
   methods: {
-    updateSide(payload, side) {
-      payload.side = side;
+    updateSide(payload) {
       this.$emit('update-side', payload);
     },
-    removeSide(side) {
-      this.$emit('remove-side', side);
+    removeSide() {
+      this.$emit('remove-side');
     }
   },
   components: {

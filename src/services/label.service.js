@@ -52,10 +52,11 @@ function remove(id) {
 
 function getEmptyLabel() {
     return {
-        src: 'other',
+        src: 'custom',
         atcId: '',
         name: '',
-        parentLabel: '',
+        parentLabel: null,
+        labelIds: [],
         color: '#000000ff'
     }
 }

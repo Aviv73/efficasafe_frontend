@@ -18,9 +18,14 @@ export default {
     navBar,
     appMessages,
   },
-
-  data: () => ({
-    //
-  }),
+  methods: {
+    loadLabels() {
+      const filterBy = { src: 'atc' };
+      this.$store.dispatch({ type: 'loadLabels', filterBy });
+    }
+  },
+  created() {
+    this.loadLabels();
+  }
 };
 </script>

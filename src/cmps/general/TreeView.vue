@@ -31,6 +31,7 @@
                 </span>
                 <span>
                     <label :for="`expandInput_${item[itemKey]}`">
+                        <h6 class="atc-id">{{ item.atcId }}</h6>
                         <h6 v-html="labelTxt(item[renderTxt])"></h6>
                     </label>
                     <tree-view
@@ -89,7 +90,9 @@ export default {
     },
     watch: {
         search() {
-            this.checkForExpand();
+            if (this.search) {
+                this.checkForExpand();
+            }
         }
     },
     methods: {
@@ -112,7 +115,7 @@ export default {
         checkSelection() {
             if (!this.items[0].parentLabel) return;
             const isSelected = this.isItemSelected(this.items);
-            this.$emit('item-selection', isSelected, this.items[0].parentLabel[this.itemKey]);
+            this.$emit('item-selection', isSelected, this.items[0].parentLabel[this.itemKey]); 
         },
         indeterminateBranch(isSelected, id) {
             this.$refs[`selectionInput_${id}`][0].indeterminate = isSelected;
@@ -176,20 +179,23 @@ export default {
 </script>
 
 <style scoped lang="scss">
-h6 {
-    display: inline;
-}
-h6:hover {
-    background-color: darken(white, 10%);
-}
-[type=checkbox]:indeterminate {
-    outline: 1px solid #1976D2;
-}
-.expandInput:checked + .v-icon {
-    display: inline-block;
-    transform: rotateZ(90deg);
-}
-.leaf {
-    padding-left: 15px;
-}
+    h6 {
+        display: inline;
+    }
+    h6:hover {
+        background-color: darken(white, 10%);
+    }
+    [type=checkbox]:indeterminate {
+        outline: 1px solid #1976D2;
+    }
+    .expandInput:checked + .v-icon {
+        display: inline-block;
+        transform: rotateZ(90deg);
+    }
+    .leaf {
+        padding-left: 15px;
+    }
+    .atc-id {
+        margin: 0 6px;
+    }
 </style>

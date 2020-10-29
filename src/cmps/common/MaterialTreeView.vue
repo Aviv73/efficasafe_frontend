@@ -78,8 +78,10 @@ export default {
       }, 500);
     }
   },
-  created() {
-    this.$store.dispatch({ type: 'loadAtcLabels' });
+  mounted() {
+    if (!this.atcLabels) {
+      this.$store.dispatch({ type: 'loadAtcLabels' });
+    }
   },
   components: {
     loadingCmp,

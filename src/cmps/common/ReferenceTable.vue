@@ -1,35 +1,77 @@
 <template>
-  <section class="reference-table">
-    <v-simple-table fixed-header height="300px">
-      <template v-slot:default>
-        <thead>
-          <tr>
-            <th class="text-left">#</th>
-            <th class="text-left">Type</th>
-            <th class="text-left">Text</th>
-            <th class="text-left">Link</th>
-            <th class="text-left">Pubmed id</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(reference, idx) in references" :key="idx">
-            <td>{{ idx + 1 }}</td>
-            <td>{{ reference.type }}</td>
-            <td>{{ reference.txt }}</td>
-            <td>{{ reference.link }}</td>
-            <td>{{ reference.pubmedId }}</td>
-          </tr>
-        </tbody>
-      </template>
-    </v-simple-table>
-  </section>
+    <section class="reference-table">
+        <v-card>
+            <v-card-title>
+                <v-text-field
+                    v-model="search"
+                    append-icon="mdi-magnify"
+                    label="Search"
+                    single-line
+                    hide-details
+                ></v-text-field>
+            </v-card-title>
+            <v-data-table
+                :headers="headers"
+                :items="references"
+                :items-per-page="5"
+                :search="search"
+                class="elevation-1"
+            >
+                <template #[`item.link`]="{ value }">
+                    <a :href="value">
+                        {{ value }}
+                    </a>
+                </template>
+            </v-data-table>
+        </v-card>
+    </section>
 </template>
 
 <script>
 export default {
-  props: {
-    references: Array,
-  },
+    props: {
+        references: {
+            type: Array,
+            required: true,
+        },
+    },
+    data() {
+        return {
+            search: '',
+            headers: [
+                {
+                    text: '#',
+                    align: 'start',
+                    sortable: true,
+                    value: 'draftIdx',
+                },
+                {
+                    text: 'Type',
+                    align: 'start',
+                    sortable: true,
+                    value: 'type',
+                },
+                {
+                    text: 'Text',
+                    align: 'start',
+                    sortable: true,
+                    value: 'txt',
+                },
+                {
+                    text: 'Link',
+                    align: 'start',
+                    sortable: false,
+                    value: 'link',
+                },
+                {
+                    text: 'PubmedId',
+                    align: 'start',
+                    sortable: true,
+                    value: 'pubmedId',
+                },
+            ],
+        };
+    },
 };
 </script>
 

@@ -8,11 +8,15 @@
     margin-bottom: 16px;
     margin: 0 auto;
 
-    .interaction-edit-title {
+    &-title {
         align-self: flex-start;
         padding: 16px 0 0 0;
     }
-
+    .draft-input {
+        width: 40%;
+        justify-self: flex-end;
+        margin-bottom: 24px;
+    }
     .form-actions {
         align-self: flex-end;
         display: flex;
@@ -21,6 +25,16 @@
             margin-inline-end: 8px;
         }
         margin: 12px 0 6px;
+    }
+
+    .side-link-container {
+        position: relative;
+
+        a {
+            position: absolute;
+            right: 0;
+            top: 20px;
+        }
     }
 
     form {
@@ -34,8 +48,6 @@
             grid-template-columns: 1fr 1fr;
             gap: 12px;
         }
-
-        // .ref-table {}
 
         .int-sides-active {
             display: flex;

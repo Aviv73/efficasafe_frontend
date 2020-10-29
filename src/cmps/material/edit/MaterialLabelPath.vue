@@ -47,10 +47,6 @@ export default {
     },
   },
   methods: {
-    loadLabels() {
-      const filterBy = { src: 'atc' };
-      this.$store.dispatch({ type: 'loadLabels', filterBy });
-    },
     addLabel(label) {
       if (label) {
         const path = [
@@ -67,9 +63,6 @@ export default {
     removeLabelPath(idx) {
       this.$emit('remove-path', 'labelPaths', idx);
     },
-  },
-  created() {
-    this.loadLabels();
   },
   components: {
     autocomplete,

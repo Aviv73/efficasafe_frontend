@@ -14,9 +14,9 @@
             editedInteraction._id ? 'Edit Interaction' : 'New Interaction'
           }}</v-card-title>
           <div class="active-container">
-            <label for="int-active">{{
-              editedInteraction.isActive ? `Active` : `Not active`
-            }}</label>
+            <label for="int-active">
+              {{ editedInteraction.isActive ? `Active` : `Not active` }}
+            </label>
             <v-switch id="int-active" v-model="editedInteraction.isActive" />
           </div>
         </div>
@@ -24,16 +24,22 @@
           :sides="sides"
           @update-side="updateSide"
           @remove-side="removeSide"
+          @side2-picked="setInteractionSide"
+        />
+        <v-textarea
+          type="text"
+          rows="1"
+          auto-grow
+          class="draft-input"
+          v-model="editedInteraction.side2DraftName"
+          label="Draft Name"
         />
         <div class="int-rec-evi-row">
           <v-select
             :items="interaction.recommendation"
             label="Recommendation Options"
             v-model="interaction.recommendationSelected"
-            @change="
-              editedInteraction.recommendation =
-                interaction.recommendationSelected
-            "
+            @change="editedInteraction.recommendation = interaction.recommendationSelected"
           ></v-select>
           <v-select
             :items="interaction.evidenceLevel"
@@ -87,20 +93,28 @@
           </v-chip-group>
         </div>
 
-        <v-textarea
-          type="text"
-          rows="1"
-          auto-grow
-          v-model="editedInteraction.editorDraft.infoSide1"
-          label="Side 1 info"
-        />
-        <v-textarea
-          type="text"
-          rows="1"
-          auto-grow
-          v-model="editedInteraction.editorDraft.infoSide2"
-          label="Side 2 info"
-        />
+        <div class="side-link-container">
+          <v-textarea
+            type="text"
+            rows="1"
+            auto-grow
+            v-model="editedInteraction.editorDraft.infoSide1"
+            label="Side 1 info"
+          />
+          <a v-if="editedInteraction.side1Material" :href="`/material/${editedInteraction.side1Material._id}`" target="_blank">View Details</a>
+        </div>
+
+        <div class="side-link-container">
+          <v-textarea
+            type="text"
+            rows="1"
+            auto-grow
+            v-model="editedInteraction.editorDraft.infoSide2"
+            label="Side 2 info"
+          />
+          <a v-if="side2Id" :href="`/material/${side2Id}`" target="_blank">View Details</a>
+        </div>
+
         <v-textarea
           type="text"
           rows="1"
@@ -144,9 +158,9 @@
           class="submit-btn"
           @click="saveInteraction"
           color="success"
-          :disabled="!valid"
-          >Save Interaction</v-btn
-        >
+          :disabled="!isFormValid"
+          >Save Interaction</v-btn>
+
       </div>
     </v-card>
   </section>
@@ -209,8 +223,24 @@ export default {
         },
       };
     },
+    isFormValid() {
+      return this.editedInteraction.side1Material &&
+          (this.editedInteraction.side2Material || 
+          this.editedInteraction.side2Label || 
+          this.editedInteraction.side2DraftName);
+    },
+    side2Id() {
+      if (this.editedInteraction.side2Material) return this.editedInteraction.side2Material._id;
+      if (this.editedInteraction.side2Label) return this.editedInteraction.side2Label._id;
+      return '';
+    }
   },
   methods: {
+    setInteractionSide(sides) {
+      //// if draftName make custom label with them in an array ?
+      //// else just make interactions as long as sides ?
+      console.log('Sides:', sides);
+    },
     async getReferences() {
       const matId = this.editedInteraction.side1Material._id;
       const material = await this.$store.dispatch({
@@ -221,19 +251,11 @@ export default {
         this.editedInteraction.refs.includes(ref.draftIdx)
       );
     },
-    removeSide(side) {
-      const sideMaterial = `side${side}Material`;
-      const sideLabel = `side${side}Label`;
-      this.editedInteraction[sideMaterial] = null;
-      this.editedInteraction[sideLabel] = null;
+    removeSide() {
+      this.editedInteraction.side1Material = null;
     },
     updateSide(payload) {
-      const sideMaterial = `side${payload.side}Material`;
-      const sideLabel = `side${payload.side}Label`;
-
-      if (payload.isMaterial)
-        this.editedInteraction[sideMaterial] = payload.item;
-      else this.editedInteraction[sideLabel] = payload.item;
+      this.editedInteraction.side1Material = payload;
     },
     async loadInteraction() {
       try {
@@ -259,6 +281,7 @@ export default {
       }
     },
     async saveInteraction() {
+      /// if there is a custom label with children inside make an array of interactions
       try {
         const interaction = JSON.parse(JSON.stringify(this.editedInteraction));
         await this.$store.dispatch({

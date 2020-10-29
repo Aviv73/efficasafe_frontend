@@ -14,7 +14,9 @@ export const interactionStore = ({
             state.interactions = interactions;
         },
         addInteraction(state, { interaction }) {
-            state.interactions.unshift(interaction);
+            if (state.interactions) {
+                state.interactions.unshift(interaction);
+            }
         },
         updateInteraction(state, { interaction }) {
             const idx = state.interactions.findIndex(currInteraction => currInteraction._id === interaction._id);

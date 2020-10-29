@@ -70,7 +70,7 @@ export default {
     };
   },
   watch: {
-    options: function () {
+    options () {
       if (this.isMounted) {
         this.$emit('options-updated', JSON.parse(JSON.stringify(this.options)));
       } else {

@@ -53,6 +53,7 @@ export default {
     async loadMaterials() {
       this.loading = true;
       const criteria = this.$route.query;
+      criteria.page = this.$options.currPage;
       await this.$store.dispatch({ type: 'loadMaterials', criteria });
       this.loading = false;
     },

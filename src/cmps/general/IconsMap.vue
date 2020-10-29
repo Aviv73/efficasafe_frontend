@@ -51,9 +51,9 @@ export default {
           color: "",
         },
         {
-          name: "other",
-          label: "Other label",
-          path: "@/assets/icons/other",
+          name: "custom",
+          label: "Custom label",
+          path: "@/assets/icons/custom",
           mdi: "",
           color: "",
         },
