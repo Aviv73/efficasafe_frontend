@@ -11,10 +11,10 @@
       <v-btn color="primary" to="/label">
         <v-icon small left>mdi-arrow-left</v-icon>Back to Labels
       </v-btn>
-      <v-btn color="primary" :to="{path:'/interaction',query:{label:`${label._id}`}}">
+      <v-btn color="primary" :to="{path:'/interaction',query:{id:`${label._id}`}}">
         <v-icon small left>mdi-view-list</v-icon>Interactions
       </v-btn>
-      <v-btn color="primary" :to="{path:'/material',query:{label:`${label._id}`}}">
+      <v-btn color="primary" :to="{path:'/material',query:{labelId:`${label._id}`}}">
         <v-icon small left>mdi-view-list</v-icon>Related Materials
       </v-btn>
       <v-spacer></v-spacer>
@@ -29,19 +29,8 @@
       <v-card-title class="label-details-title">{{label.name}}</v-card-title>
 
       <div class="info-title">Label Color:</div>
-      <div class="color-circle" :style="{ backgroundColor: label.color}"></div>
+      <div class="color-circle v-chip" :style="{ backgroundColor: label.color}"></div>
 
-      <div class="info-title">Source:</div>
-      <div class="info-value">{{label.src}}</div>
-
-      <div class="info-title">ATC code:</div>
-      <div class="info-value">{{label.atcId}}</div>
-
-      <div class="info-title" v-if="label.parentLabel">Parent label:</div>
-      <router-link
-        v-if="label.parentLabel"
-        :to="`/label/${label.parentLabel._id}`"
-      >{{label.parentLabel.name}}</router-link>
     </v-card>
     <icons-map />
   </section>

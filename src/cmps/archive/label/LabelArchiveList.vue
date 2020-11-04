@@ -7,9 +7,9 @@
             <td class="td-name-img">
               <router-link :to="`/label/${item._id}`">
                 <img
-                  :src="require(`@/assets/icons/${item.src}.svg`)"
-                  :alt="item.src"
-                  :title="item.src"
+                  :src="require(`@/assets/icons/custom.svg`)"
+                  alt="label icon"
+                  title="Label"
                 />
                 <span class="text-capitalize">{{item.name}}</span>
               </router-link>
@@ -18,12 +18,6 @@
             <td class="td-color" width="80">
               <router-link class="link-clean" :to="`/label/${item._id}`">
                 <div class="color-circle" :style="{ backgroundColor: item.color}"></div>
-              </router-link>
-            </td>
-
-            <td class="td-src" width="120">
-              <router-link class="link-clean" :to="`/label/${item._id}`">
-                <span class="text-capitalize">{{item.src}}</span>
               </router-link>
             </td>
 
@@ -61,10 +55,6 @@ export default {
           text: "Color",
           value: "color",
           align: "center",
-        },
-        {
-          text: "Source",
-          value: "src",
         },
         {
           text: "Action",

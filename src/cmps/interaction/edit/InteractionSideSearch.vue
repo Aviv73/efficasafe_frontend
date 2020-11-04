@@ -24,11 +24,9 @@
 
     <div v-else class="select-side">
       <div>
-        <autocomplete
-          v-if="materials"
-          :items="materials"
+        <async-autocomplete 
           @emitAutocomplete="emitSelect"
-          :searchName="`Select material ${side.name}`"
+          :placeholder="`Select material ${side.name}`"
         />
       </div>
     </div>
@@ -36,7 +34,7 @@
 </template>
 
 <script>
-import autocomplete from '@/cmps/Autocomplete';
+import asyncAutocomplete from '@/cmps/AsyncAutocomplete';
 
 export default {
   props: {
@@ -87,7 +85,7 @@ export default {
     this.loadMaterials();
   },
   components: {
-    autocomplete,
+    asyncAutocomplete
   },
 };
 </script>

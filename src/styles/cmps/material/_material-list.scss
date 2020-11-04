@@ -1,6 +1,10 @@
 .material-list {
     display: grid;
     gap: 4px;
+
+    &-header {
+        cursor: pointer;
+    }
 }
 
 .tr-material {

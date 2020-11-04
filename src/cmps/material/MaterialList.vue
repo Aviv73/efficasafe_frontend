@@ -3,9 +3,27 @@
     <v-data-table
       :headers="headers"
       :items="materials"
+      :server-items-length="totalItems"
+      disable-sort
       :options.sync="options"
       :loading="loading"
     >
+      <template v-slot:[`header.name`]="{ header }">
+        <th>
+          <label class="material-list-header">
+            <input type="checkbox" hidden @change="onSort('name', $event.target.checked)">
+            {{ header.text }}
+          </label>
+        </th>
+      </template>
+      <template v-slot:[`header.type`]="{ header }">
+        <th>
+          <label class="material-list-header">
+            <input type="checkbox" hidden @change="onSort('type', $event.target.checked)">
+            {{ header.text }}
+          </label>
+        </th>
+      </template>
       <template v-slot:body="{ items }">
         <tbody>
           <tr class="tr-material" v-for="item in items" :key="item._id">
@@ -42,8 +60,18 @@
 export default {
   name: 'materialList',
   props: {
-    materials: Array,
-    loading: Boolean,
+    materials: {
+      type: Array,
+      required: true
+    },
+    loading: {
+      type: Boolean,
+      required: true
+    },
+    totalItems: {
+      type: Number,
+      required: true
+    }
   },
   data() {
     return {
@@ -78,5 +106,10 @@ export default {
       }
     },
   },
+  methods: {
+    onSort(sortBy, isDesc) {
+      this.$emit('header-clicked', sortBy, isDesc);
+    }
+  }
 };
 </script>

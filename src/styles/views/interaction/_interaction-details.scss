@@ -9,7 +9,12 @@
             margin-inline-end: 10px;
         }
     }
-
+    .v-chip {
+        cursor: default;
+    }
+    .refs-table {
+        grid-column: 1 / -1;
+    }
     .info-container {
         display: grid;
         grid-template-columns: 200px 1fr;
@@ -22,6 +27,10 @@
 
         .info-title {
             padding-inline-start: 16px;
+        }
+
+        .info-value {
+            max-width: 75%;
         }
 
         .info-title,

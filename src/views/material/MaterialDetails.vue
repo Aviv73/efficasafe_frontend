@@ -42,11 +42,11 @@
             <h3 class="info-title">Type:</h3>
             <div class="info-value">{{ material.type }}</div>
 
-            <h3 class="info-title">ATC Code:</h3>
-            <div class="info-value">{{ material.atcId }}</div>
+            <h3 class="info-title" v-if="material.atcId">ATC Code:</h3>
+            <div class="info-value" v-if="material.atcId">{{ material.atcId }}</div>
 
-            <h3 class="info-title">DrugBank ID:</h3>
-            <div class="info-value">{{ material.drugBankId }}</div>
+            <h3 class="info-title" v-if="material.drugBankId">DrugBank ID:</h3>
+            <div class="info-value" v-if="material.drugBankId">{{ material.drugBankId }}</div>
 
             <h3
                 class="info-title"
@@ -74,8 +74,8 @@
                 {{ material.plantPartUsed }}
             </div>
 
-            <h3 class="info-title">Description:</h3>
-            <p class="info-value" v-html="material.desc"></p>
+            <h3 class="info-title" v-if="material.desc">Description:</h3>
+            <p class="info-value" v-if="material.desc" v-html="material.desc"></p>
 
             <h3 class="info-title" v-if="material.dosage">Dosage:</h3>
             <p class="info-value" v-if="material.dosage">
@@ -96,11 +96,11 @@
                 v-html="material.mechanismOfAction"
             ></div>
 
-            <h3 class="info-title">Precautions:</h3>
-            <p class="info-value" v-html="material.precautions"></p>
+            <h3 class="info-title" v-if="material.precautions">Precautions:</h3>
+            <p class="info-value" v-if="material.precautions" v-html="material.precautions"></p>
 
-            <h3 class="info-title">Adverse Reactions:</h3>
-            <p class="info-value" v-html="material.adverseReactions"></p>
+            <h3 class="info-title" v-if="material.adverseReactions">Adverse Reactions:</h3>
+            <p class="info-value" v-if="material.adverseReactions" v-html="material.adverseReactions"></p>
 
             <h3 class="info-title" v-if="material.sensitivities">
                 Sensitivities:
@@ -222,8 +222,8 @@
                 </v-chip>
             </v-chip-group>
 
-            <h3 class="info-title">Regions:</h3>
-            <v-chip-group column>
+            <h3 class="info-title" v-if="material.regions.length">Regions:</h3>
+            <v-chip-group column v-if="material.regions.length">
                 <v-chip v-for="region in material.regions" :key="region">
                     <v-avatar left>
                         <v-img
@@ -236,8 +236,8 @@
                 </v-chip>
             </v-chip-group>
 
-            <h3 class="info-title">Indications:</h3>
-            <v-chip-group column>
+            <h3 class="info-title" v-if="material.indications.length">Indications:</h3>
+            <v-chip-group column v-if="material.indications.length">
                 <v-chip
                     v-for="(indication, idx) in material.indications"
                     :key="idx"
@@ -250,15 +250,27 @@
             </h3>
             <sub-material-list :subMats="material.subMaterials" />
 
-            <h3 class="info-title" v-if="material.labelPaths.length">
-                Label Paths:
+            <h3 class="info-title" v-if="material.atcPaths.length">
+                ATC Paths:
             </h3>
             <label-path-list
-                :labelPaths="material.labelPaths"
+                v-if="material.atcPaths.length"
+                :atcPaths="material.atcPaths"
                 :isEdit="false"
             />
 
-            <!-- <h3 class="info-title" v-if="material.refs.length">References:</h3> -->
+            <h3 class="info-title" v-if="material.labels.length">Labels</h3>
+            <v-chip-group column v-if="material.labels.length">
+                <v-chip
+                    v-for="label in material.labels"
+                    :key="label._id"
+                >
+                <router-link :to="`/label/${label._id}`">
+                    {{ label.name }}
+                </router-link>
+                </v-chip>
+            </v-chip-group>
+
             <reference-table
                 class="ref-table"
                 :references="material.refs"

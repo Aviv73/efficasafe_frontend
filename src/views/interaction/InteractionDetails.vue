@@ -1,5 +1,8 @@
 <template>
-  <section class="interaction-details" v-if="interaction">
+  <section
+    class="interaction-details"
+    v-if="interaction"
+  >
     <confirm-delete
       v-model="dialog"
       type="interaction"
@@ -77,7 +80,7 @@
       <p class="info-value">{{ recommendation }}</p>
 
       <h3 class="info-title">Summary:</h3>
-      <p class="info-value" v-html="interaction.summary"></p>
+      <p class="info-value" v-html="txtWithRefs('summary')"></p>
 
       <span class="info-title">Note:</span>
       <p class="info-value">{{ interaction.note }}</p>
@@ -87,11 +90,12 @@
 
       <h3 class="info-title">Review of studies:</h3>
       <div>
-        <p class="info-value" v-html="interaction.reviewOfStudies"></p>
+        <p class="info-value" v-html="txtWithRefs('reviewOfStudies')"></p>
       </div>
 
-      <h3 class="info-title" v-if="interactionRefs.length">References:</h3>
       <reference-table
+        class="refs-table"
+        :isInteraction="true"
         :references="interactionRefs"
         v-if="interactionRefs.length"
       />
@@ -140,6 +144,7 @@
 </template>
 
 <script>
+import { interactionService } from '@/services/interaction.service';
 import confirmDelete from '@/cmps/general/ConfirmDelete';
 import referenceTable from '@/cmps/common/ReferenceTable';
 import iconsMap from '@/cmps/general/IconsMap';
@@ -164,13 +169,35 @@ export default {
     },
   },
   methods: {
+    txtWithRefs(propName) {
+      let txt = this.interaction[propName];
+      const refsOrder = interactionService.getRefsOrder(txt);
+      refsOrder.forEach((refNum) => {
+        const idx = this.interactionRefs.findIndex(
+          (ref) => ref.draftIdx === refNum
+        );
+        txt = txt.replaceAll(refNum + '', idx + 1);
+      });
+      return txt;
+    },
+    sortRefs() {
+      const txt = `${this.interaction.summary} ${this.interaction.reviewOfStudies}`;
+      const sortedRefs = interactionService.getSortedRefs(
+        txt,
+        this.interactionRefs
+      );
+      this.interactionRefs = sortedRefs;
+    },
     async getReferences() {
       const matId = this.interaction.side1Material._id;
       const material = await this.$store.dispatch({
         type: 'loadMaterial',
         matId,
       });
-      this.interactionRefs = material.refs.filter(ref => this.interaction.refs.includes(ref.draftIdx));
+      this.interactionRefs = material.refs.filter((ref) =>
+        this.interaction.refs.includes(ref.draftIdx)
+      );
+      this.sortRefs();
     },
     async loadInteraction() {
       const intId = this.$route.params.id;
@@ -202,9 +229,6 @@ export default {
       this.dialog = true;
     },
   },
-  created() {
-    this.loadInteraction();
-  },
   computed: {
     recommendation() {
       var reco = this.interaction.recommendation;
@@ -214,10 +238,13 @@ export default {
       return reco;
     }
   },
+  created() {
+    this.loadInteraction();
+  },
   components: {
     confirmDelete,
     referenceTable,
     iconsMap,
-  }
+  },
 };
 </script>

@@ -17,8 +17,8 @@
       <tree-view 
         v-if="filteredAtcLabels"
         :items="filteredAtcLabels"
-        itemKey="_id"
         :search="search"
+        :depth="0"
         @selection-changed="saveSelection($event)"
         ></tree-view>
       <loading-cmp v-else />
@@ -57,7 +57,7 @@ export default {
           result.push(object);
           return result;
         }
-        if (object.children.length) {
+        if (object.children) {
           const nodes = object.children.reduce(getNodes, []);
           if (nodes.length) result.push({ ...object, children: nodes });
         }

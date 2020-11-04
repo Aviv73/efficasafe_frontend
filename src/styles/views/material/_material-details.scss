@@ -9,7 +9,9 @@
             margin-inline-end: 10px;
         }
     }
-
+    .v-chip {
+        cursor: default;
+    }
     .info-container {
         display: grid;
         grid-template-columns: 200px 1fr;

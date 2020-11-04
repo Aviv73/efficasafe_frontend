@@ -39,7 +39,6 @@
 </template>
 
 <script>
-// import labelEdit from '@/views/label/LabelEdit';
 import { labelService } from '@/services/label.service';
 import { eventBus, EV_addLabel } from '@/services/eventBus.service';
 

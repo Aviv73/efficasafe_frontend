@@ -40,17 +40,11 @@
     }
 
     .td-color {
-        a {
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            height: 100%;
-            .color-circle {
-                width: 16px;
-                height: 16px;
-                border-radius: 100%;
-            }
+        text-decoration: none;
+        height: 100%;
+        .color-circle {
+            width: 16px;
+            height: 16px;
         }
     }
 }

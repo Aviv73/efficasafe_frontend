@@ -1,7 +1,9 @@
 <template>
   <section class="material-filter">
     <div class="filter-input">
-      <autocomplete :items="materials" @emitAutocomplete="updateFilter" searchName="Search material" />
+      <async-autocomplete 
+        @emitAutocomplete="updateFilter"
+      />
     </div>
     <div class="filter-type">
       <v-select
@@ -16,7 +18,7 @@
 </template>
 
 <script>
-import autocomplete from '@/cmps/Autocomplete';
+import asyncAutocomplete from '@/cmps/AsyncAutocomplete';
 
 export default {
   name: 'materialFilter',
@@ -61,7 +63,7 @@ export default {
     },
   },
   components: {
-    autocomplete,
+    asyncAutocomplete
   },
 };
 </script>

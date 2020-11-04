@@ -1,5 +1,5 @@
 <template>
-  <section class="material-label-path" v-if="labelPaths">
+  <section class="material-label-path" v-if="atcPaths">
     <div v-if="labels" class="material-label-row">
       <autocomplete
         v-if="labels !== null"
@@ -25,9 +25,8 @@
       </v-btn>
     </div>
     <label-path-list
-      :labelPaths="labelPaths"
+      :atcPaths="atcPaths"
       :isEdit="true"
-      @remove-path="removeLabelPath"
     />
   </section>
 </template>
@@ -39,7 +38,7 @@ import labelPathList from '@/cmps/material/details/LabelPathList';
 export default {
   name: 'MaterialLabelPath',
   props: {
-    labelPaths: Array,
+    atcPaths: Array,
   },
   computed: {
     labels() {
@@ -59,10 +58,7 @@ export default {
         ];
         this.$emit('add-label', path);
       }
-    },
-    removeLabelPath(idx) {
-      this.$emit('remove-path', 'labelPaths', idx);
-    },
+    }
   },
   components: {
     autocomplete,

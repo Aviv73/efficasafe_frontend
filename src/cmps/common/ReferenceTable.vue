@@ -1,6 +1,12 @@
 <template>
     <section class="reference-table">
         <v-card>
+            <v-icon 
+                v-if="isEdit"
+                class="reference-table-add-btn"
+                @click="$emit('edit-ref')"
+                title="Add Reference"
+                >mdi-plus-circle</v-icon>
             <v-card-title>
                 <v-text-field
                     v-model="search"
@@ -11,16 +17,33 @@
                 ></v-text-field>
             </v-card-title>
             <v-data-table
-                :headers="headers"
+                :headers="computedHeaders"
                 :items="references"
                 :items-per-page="5"
                 :search="search"
-                class="elevation-1"
+                class="elevation-0"
             >
                 <template #[`item.link`]="{ value }">
                     <a :href="value">
                         {{ value }}
                     </a>
+                </template>
+                <template #[`item.txt`]="{ value }">
+                    <p>
+                        {{ value }}
+                    </p>
+                </template>
+                <template #[`item.draftIdx`]="{ value, item }">
+                    <span>
+                        {{ isInteraction ? value + ` (${RefIdxForDisplay(item)})` : value }}
+                    </span>
+                </template>
+                <template #[`item.actions`]="{ item }">
+                    <v-icon 
+                        class="edit-icon" 
+                        @click="$emit('edit-ref', item)"
+                        title="Edit Reference"
+                        >mdi-pencil</v-icon>
                 </template>
             </v-data-table>
         </v-card>
@@ -34,6 +57,14 @@ export default {
             type: Array,
             required: true,
         },
+        isInteraction: {
+            type: Boolean,
+            default: false
+        },
+        isEdit: {
+            type: Boolean,
+            default: false
+        }
     },
     data() {
         return {
@@ -69,9 +100,26 @@ export default {
                     sortable: true,
                     value: 'pubmedId',
                 },
-            ],
+                {
+                    text: 'Actions',
+                    align: 'start',
+                    sortable: false,
+                    value: 'actions'
+                }
+            ]
         };
     },
+    computed: {
+        computedHeaders() {
+            return (this.isEdit) ? this.headers : this.headers.filter(header => header.text !== 'Actions');
+        }
+    },
+    methods: {
+        RefIdxForDisplay(item) {
+            const idx = this.references.findIndex(ref => ref === item);
+            return idx + 1;
+        }
+    }
 };
 </script>
 

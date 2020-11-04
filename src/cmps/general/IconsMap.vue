@@ -44,15 +44,8 @@ export default {
           color: "",
         },
         {
-          name: "atc",
-          label: "ATC label",
-          path: "@/assets/icons/atc",
-          mdi: "",
-          color: "",
-        },
-        {
           name: "custom",
-          label: "Custom label",
+          label: "Label",
           path: "@/assets/icons/custom",
           mdi: "",
           color: "",

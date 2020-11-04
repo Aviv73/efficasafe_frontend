@@ -3,10 +3,9 @@
 
     .icon-chips {
         padding: 0 16px;
+        
+        .icon-chip {
+            cursor: default;
+        }
     }
-}
-
-
-.icon-img {
-    // height: 200px;
 }

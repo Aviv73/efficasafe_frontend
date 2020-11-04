@@ -8,11 +8,17 @@
       />
     </v-row>
     <v-card class="interaction-edit" v-if="editedInteraction">
+      <v-btn
+        class="submit-btn floating-btn"
+        @click="saveInteraction(false)"
+        color="success"
+        :disabled="!isFormValid"
+      >Save Interaction</v-btn>
       <v-form v-model="valid" @submit.prevent="saveInteraction">
         <div class="int-sides-active">
-          <v-card-title class="interaction-edit-title">{{
-            editedInteraction._id ? 'Edit Interaction' : 'New Interaction'
-          }}</v-card-title>
+          <v-card-title class="interaction-edit-title">
+            {{ editedInteraction._id ? 'Edit Interaction' : 'New Interaction' }}
+          </v-card-title>
           <div class="active-container">
             <label for="int-active">
               {{ editedInteraction.isActive ? `Active` : `Not active` }}
@@ -31,8 +37,8 @@
           rows="1"
           auto-grow
           class="draft-input"
-          v-model="editedInteraction.side2DraftName"
-          label="Draft Name"
+          v-model="draftName"
+          :label="(editedInteraction.side2Label) ? 'Draft Name*' : 'Draft Name'"
         />
         <div class="int-rec-evi-row">
           <v-select
@@ -64,16 +70,18 @@
           label="Note"
         />
 
-        <h3>Summery:</h3>
+        <h3>Summary:</h3>
         <ckeditor
           :config="CKEditorConfig"
           v-model="editedInteraction.summary"
+          @blur="handleRefsChange"
         ></ckeditor>
 
         <h3>Review Of Studies:</h3>
         <ckeditor
           :config="CKEditorConfig"
           v-model="editedInteraction.reviewOfStudies"
+          @blur="handleRefsChange"
         ></ckeditor>
 
         <div class="list-chips">
@@ -101,7 +109,7 @@
             v-model="editedInteraction.editorDraft.infoSide1"
             label="Side 1 info"
           />
-          <a v-if="editedInteraction.side1Material" :href="`/material/${editedInteraction.side1Material._id}`" target="_blank">View Details</a>
+          <router-link v-if="editedInteraction.side1Material" :to="`/material/${editedInteraction.side1Material._id}`" target="_blank">View Details</router-link>
         </div>
 
         <div class="side-link-container">
@@ -112,7 +120,7 @@
             v-model="editedInteraction.editorDraft.infoSide2"
             label="Side 2 info"
           />
-          <a v-if="side2Id" :href="`/material/${side2Id}`" target="_blank">View Details</a>
+          <router-link v-if="side2Id" :to="`/material/${side2Id}`" target="_blank">View Details</router-link>
         </div>
 
         <v-textarea
@@ -147,6 +155,7 @@
 
         <reference-table
           :references="interactionRefs"
+          :isInteraction="true"
           v-if="interactionRefs.length"
         />
       </v-form>
@@ -204,11 +213,23 @@ export default {
       CKEditorConfig: {
         extraPlugins: 'autogrow',
         autoGrow_minHeight: 50,
+        removeButtons: ''
       },
       interactionRefs: [],
     };
   },
   computed: {
+    draftName: {
+      get() {
+        return this.editedInteraction.side2DraftName;
+      },
+      set(val) {
+        this.editedInteraction.side2DraftName = val;
+        if (this.editedInteraction.side2Label) {
+          this.editedInteraction.side2Label.name = val;
+        }
+      }
+    },
     sides() {
       const interaction = this.editedInteraction;
       return {
@@ -220,13 +241,13 @@ export default {
           material: interaction.side2Material,
           label: interaction.side2Label,
           name: 'side 2',
-        },
+        }
       };
     },
     isFormValid() {
       return this.editedInteraction.side1Material &&
           (this.editedInteraction.side2Material || 
-          this.editedInteraction.side2Label || 
+          (this.editedInteraction.side2Label && this.editedInteraction.side2DraftName) || 
           this.editedInteraction.side2DraftName);
     },
     side2Id() {
@@ -236,10 +257,44 @@ export default {
     }
   },
   methods: {
+    handleRefsChange() {
+      this.sortRefs();
+      this.makeRefsSub();
+    },
+    makeRefsSub() {
+      const regex = /\(([\d- ,\d]+)\)|<sub>\(([\d- ,\d]+)\)<\/sub>/g;
+      const summaryMatches = this.editedInteraction.summary.match(regex);
+      const reviewOfStudiesMatches = this.editedInteraction.reviewOfStudies.match(regex);
+      
+      summaryMatches.forEach(match => {
+        const strToDisplay = (match.charAt(0) !== '(') ? match : `<sub>${match}</sub>`;
+        this.editedInteraction.summary = this.editedInteraction.summary.replace(match, strToDisplay);
+      });
+      reviewOfStudiesMatches.forEach(match => {
+        const strToDisplay = (match.charAt(0) !== '(') ? match : `<sub>${match}</sub>`;
+        this.editedInteraction.reviewOfStudies = this.editedInteraction.reviewOfStudies.replace(match, strToDisplay);
+      });
+    },
+    sortRefs() {
+      const txt = `${this.editedInteraction.summary} ${this.editedInteraction.reviewOfStudies}`;
+      const sortedRefs = interactionService.getSortedRefs(txt, this.interactionRefs);
+      this.interactionRefs = sortedRefs;
+    },
     setInteractionSide(sides) {
-      //// if draftName make custom label with them in an array ?
-      //// else just make interactions as long as sides ?
       console.log('Sides:', sides);
+      if (sides.length === 1) {
+        const { _id, name, type } = sides[0];
+        this.editedInteraction.side2Material = {
+          _id,
+          name,
+          type
+        }
+      } else {
+        this.editedInteraction.side2Label = {
+          name: this.editedInteraction.side2DraftName
+        };
+      }
+      console.log('Editted Interaction:', this.editedInteraction);
     },
     async getReferences() {
       const matId = this.editedInteraction.side1Material._id;
@@ -247,12 +302,18 @@ export default {
         type: 'loadMaterial',
         matId,
       });
-      this.interactionRefs = material.refs.filter((ref) =>
+      this.interactionRefs = material.refs.filter(ref =>
         this.editedInteraction.refs.includes(ref.draftIdx)
       );
+      this.sortRefs();
+      this.makeRefsSub();
     },
-    removeSide() {
-      this.editedInteraction.side1Material = null;
+    removeSide(sideNum) { 
+      let side = `side${sideNum}Material`;
+      if (this.editedInteraction.side2Label && sideNum === 2) {
+        side = 'side2Label'
+      }
+      this.editedInteraction[side] = null;
     },
     updateSide(payload) {
       this.editedInteraction.side1Material = payload;
@@ -280,8 +341,7 @@ export default {
         this.editedInteraction.evidenceLevel = interactionService.calculateEvidenceLevel(this.interactionRefs);
       }
     },
-    async saveInteraction() {
-      /// if there is a custom label with children inside make an array of interactions
+    async saveInteraction(moveRoute = true) {
       try {
         const interaction = JSON.parse(JSON.stringify(this.editedInteraction));
         await this.$store.dispatch({
@@ -293,7 +353,7 @@ export default {
           type: 'interaction',
           _id: this.editedInteraction._id,
         });
-        this.$router.push('/interaction');
+        if (moveRoute) this.$router.push('/interaction');
       } catch (err) {
         console.log('Error:', err);
       }

@@ -8,6 +8,8 @@ export const interactionService = {
     save,
     remove,
     restore,
+    getSortedRefs,
+    getRefsOrder,
     getEmptyInteraction,
     calculateEvidenceLevel
 }
@@ -32,6 +34,47 @@ function restore(interaction) {
 
 function remove(id) {
     httpService.delete(`${END_POINT}/${id}`);
+}
+
+function getSortedRefs(txt, refs) {
+    const refsOrder = getRefsOrder(txt);
+    const sortedRefs = [];
+    refsOrder.forEach(refIdx => {
+      const ref = refs.find(currRef => currRef.draftIdx === refIdx);
+      sortedRefs.push(ref);
+    });
+    return sortedRefs;
+}
+
+function getRefsOrder(txt) {
+    const regex = /\(([\d- ,\d]+)\)/g;
+    const notUniqueRefs = txt.match(regex);
+    if (!notUniqueRefs) return [];
+
+    const uniqueRefs = notUniqueRefs.filter(_onlyUnique);
+    let cleanRefs = uniqueRefs.map(ref => {
+        ref = ref.substring(1, ref.length - 1);
+        if (!ref.includes(',') && !ref.includes('-')) ref = +ref;
+        else {
+            ref = ref.split(',');
+            for (let i = 0; i < ref.length; i++) {
+                if (!ref[i].includes('-')) ref[i] = +ref[i];
+            }
+        }
+        return ref;
+    });
+    cleanRefs = cleanRefs.flat(1);
+    cleanRefs = cleanRefs.map(ref => {
+        if (typeof ref === 'string' && ref.includes('-')) {
+            const [ num1, num2 ] = ref.split('-').map(currRef => +currRef);
+            const numsBetween = _getAllNumbersBetween(num1, num2);
+            
+            return numsBetween;
+        }
+        return ref;
+    });
+    cleanRefs = cleanRefs.flat(1);
+    return _removeDuplicates(cleanRefs);
 }
 
 function calculateEvidenceLevel(refs) {
@@ -62,15 +105,6 @@ function calculateEvidenceLevel(refs) {
     } else return 'Z'
 }
 
-function _evidenceLevelMap(refs) {
-    const map = refs.reduce((acc, ref) => {
-        acc[ref.type] = acc[ref.type]++ || 1
-        return acc
-    }, {})
-
-    return map
-}
-
 function getEmptyInteraction() {
     return {
         isActive: false,
@@ -81,7 +115,7 @@ function getEmptyInteraction() {
         src: 'manual',
         recommendation: '',
         note: '',
-        summery: '',
+        summary: '',
         monitor: {
             labTests: [],
             otherTests: [],
@@ -98,4 +132,37 @@ function getEmptyInteraction() {
             gates: []
         }
     }
+}
+
+function _removeDuplicates(arr) {
+    var seenMap = {};
+    var resArr = [];
+    for (var i = 0; i < arr.length; i++) {
+        if (!(arr[i] in seenMap)) {
+            resArr.push(arr[i]);
+            seenMap[arr[i]] = true;
+        }
+    }
+    return resArr;
+}
+
+function _onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+}
+
+function _getAllNumbersBetween(num1, num2) {
+    const numbers = [];
+    for (let i = num1; i < num2 + 1; i++) {
+        numbers.push(i);
+    }
+    return numbers;
+}
+
+function _evidenceLevelMap(refs) {
+    const map = refs.reduce((acc, ref) => {
+        acc[ref.type] = acc[ref.type]++ || 1
+        return acc
+    }, {})
+
+    return map
 }

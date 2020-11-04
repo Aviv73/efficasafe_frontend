@@ -1,13 +1,11 @@
 import { httpService } from './http.service';
 
 const END_POINT = {
-    LABEL: 'label',
+    ATC: 'atc',
     MATERIAL: 'material'
 };
 
-
-var atcLabels = [];
-var atcChildrenLabels = [];
+var atcTrees = [];
 var materialParentIdsMap = {};
 
 
@@ -16,42 +14,32 @@ export const atcService = {
 }
 
 async function list() {
-    const [labels, materials] = await Promise.all([
-        httpService.get(END_POINT.LABEL, { src: 'atc' }),
-        httpService.get(END_POINT.MATERIAL, { atcId: true })
-    ]);
-
-    atcLabels = labels.filter(label => !label.parentLabel);
-    atcChildrenLabels = labels.filter(label => label.parentLabel);
-    materialParentIdsMap = _getMatParentIdsMap(materials);
+    const [ matData, atcData ] = await Promise.all([
+        httpService.get(END_POINT.MATERIAL, { atcId: true }),
+        httpService.get(END_POINT.ATC)
+    ]); 
+    atcTrees = atcData;
+    materialParentIdsMap = _getMatParentIdsMap(matData.materials);
     
-    atcLabels.forEach(node => {
-        _traverse(node, 0, _buildChildren);
+    atcTrees.forEach(tree => {
+        _traverse(tree, 0, _buildChildren);
     });
-
-    return atcLabels;
+    
+    return atcTrees;
 }
 
 function _buildChildren(node) {
-    if (!node) return;
-    node.children = atcChildrenLabels.filter(label => node._id === label.parentLabel._id);
-
-    var nodeChilds = materialParentIdsMap[node._id];
-    if (!node.children.length && nodeChilds) {
-        const { _id, name } = node;
-        nodeChilds.forEach(child => {
-            child.parentLabel = {
-                _id,
-                name
-            }
-        });
+    const atcId = _getAtcId(node.name);
+    var nodeChilds = materialParentIdsMap[atcId];
+    if (nodeChilds) {
         node.children = nodeChilds;
     }
 }
 
 function _traverse(node, depth, visitFn) {
+    if (depth > 4) return;
     visitFn(node, depth);
-    if (node.children && node.children.length) {
+    if (node.children) {
         node.children.forEach(childNode => {
             _traverse(childNode, depth + 1, visitFn);
         });
@@ -60,11 +48,17 @@ function _traverse(node, depth, visitFn) {
 
 function _getMatParentIdsMap(materials) {
     return materials.reduce((acc, mat) => {
-        mat.labelPaths.forEach(path => {
-            const parentLabelId = path[path.length - 1]._id;
-            if (!acc[parentLabelId]) acc[parentLabelId] = [];
-            acc[parentLabelId].push({ ...mat });
+        mat.atcPaths.forEach(path => {
+            const parentATCbranch = path[path.length - 1];
+            const parentAtcId = _getAtcId(parentATCbranch);
+            
+            if (!acc[parentAtcId]) acc[parentAtcId] = [];
+            acc[parentAtcId].push({ ...mat });
         });
         return acc;
     }, {});
+}
+
+function _getAtcId(name) {
+    return name.split(' ')[0];
 }

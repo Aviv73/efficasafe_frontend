@@ -2,10 +2,12 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
+    margin-bottom: 24px;
 
     .interaction-side.side-picker {
         display: flex;
         justify-content: flex-end;
+        align-items: center;
 
         .side-title {
             padding: 0;

@@ -7,11 +7,16 @@
         <v-btn color="primary" to="/material/edit/">new material</v-btn>
       </v-card-title>
 
-      <material-filter :materials="materials" @emit-filter="setFilter" />
+      <material-filter
+        :materials="materials"
+        @emit-filter="setFilter"
+      />
       <material-list
         :materials="materials"
         :loading="loading"
-        @options-updated="setSort"
+        :totalItems="totalItems"
+        @options-updated="paginate"
+        @header-clicked="setSort"
       />
     </v-card>
 
@@ -28,7 +33,7 @@ export default {
   data() {
     return {
       loading: false,
-      sortBy: null,
+      tableData: null
     };
   },
   watch: {
@@ -40,23 +45,50 @@ export default {
     materials() {
       return this.$store.getters.materials;
     },
+    totalItems() {
+      return this.$store.getters.total;
+    },
   },
   methods: {
-    setSort(sortBy) {
-      this.sortBy = sortBy;
+    setSort(propName, isDesc) {
+      const criteria = {
+        ...this.$route.query,
+        sortBy: propName,
+        isDesc
+      }
+      const queryStr = '?' + new URLSearchParams(criteria).toString();
+      this.$router.push(queryStr);
+    },
+    paginate(tableData) {
+      this.tableData = tableData;
       this.loadMaterials();
     },
     setFilter(filterBy) {
-      const queryStr = '?' + new URLSearchParams(filterBy).toString();
+      const { q, type } = filterBy;
+      const criteria = {
+        ...this.$route.query,
+        q,
+        type
+      }
+      const queryStr = '?' + new URLSearchParams(criteria).toString();
+      if (filterBy.type !== this.$route.query.type && this.tableData) {
+        this.tableData.page = 1;
+      }
       this.$router.push(queryStr);
     },
     async loadMaterials() {
-      this.loading = true;
       const criteria = this.$route.query;
-      criteria.page = this.$options.currPage;
+      this.loading = true;
+      if (this.tableData) {
+        let { page, itemsPerPage } = this.tableData;
+        criteria.limit = itemsPerPage;
+        criteria.page = --page;
+      } else criteria.limit = 10;
+      if (criteria.q) criteria.page = 0;
+
       await this.$store.dispatch({ type: 'loadMaterials', criteria });
       this.loading = false;
-    },
+    }
   },
   created() {
     this.loadMaterials();

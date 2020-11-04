@@ -1,0 +1,17 @@
+.reference-table {
+    &-add-btn {
+        cursor: pointer;
+        float: right;
+        margin: 5px;
+
+        &:hover {
+            color: rgba(0, 0, 0, 0.70);
+        }
+    }
+    .edit-icon {
+        cursor: pointer;
+    }
+    td {
+        max-width: 450px;
+    }
+}

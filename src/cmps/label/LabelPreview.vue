@@ -22,8 +22,8 @@ export default {
   },
   computed: {
     labelSrc() {
-      return require(`@/assets/icons/${this.label.src}.svg`);
-    },
-  },
+      return require(`@/assets/icons/custom.svg`);
+    }
+  }
 };
 </script>

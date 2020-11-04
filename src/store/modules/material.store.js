@@ -2,11 +2,15 @@ import { materialService } from '@/services/material.service';
 
 export const materialStore = ({
     state: {
-        materials: null
+        materials: null,
+        total: 0
     },
     getters: {
         materials(state) {
             return state.materials;
+        },
+        total(state) {
+            return state.total;
         }
     },
     mutations: {
@@ -24,14 +28,22 @@ export const materialStore = ({
             const idx = state.materials.findIndex(currMaterial => currMaterial._id === matId);
             state.materials.splice(idx, 1);
         },
+        setTotalCount(state, { total }) {
+            state.total = total;
+        },
         importRefSheet(state, { refSheet }) {
             return materialService.importRefSheet(refSheet);
         }
     },
     actions: {
         async loadMaterials(context, { criteria }) {
-            const materials = await materialService.list(criteria);
+            const { materials, total } = await materialService.list(criteria);
             context.commit({ type: 'setMaterials', materials });
+            context.commit({ type: 'setTotalCount', total });
+            return materials;
+        },
+        async loadAutoCompleteResults(context, { criteria }) {
+            const { materials } = await materialService.list(criteria);
             return materials;
         },
         async loadMaterial(context, { matId }) {

@@ -1,55 +1,52 @@
 <template>
   <v-card class="interaction-preview">
-      <div class="int-details-container">
-        <router-link class="int-edit" :to="`/interaction/${interaction._id}`">
-          <div class="int-side" v-if="interaction.side1MaterialId">
-            <img class="mat-type" :src="materialSide1Type" :atl="interaction.side1MaterialId.type" />
-            <span class="int-mat">{{interaction.side1MaterialId.name}}</span>
-          </div>
+    <div class="int-details-container">
+      <router-link class="int-edit" :to="`/interaction/${interaction._id}`">
+        <div class="int-side" v-if="interaction.side1Material">
+          <img
+            class="mat-type"
+            :src="materialSide1Type"
+            :atl="interaction.side1Material.type"
+          />
+          <span class="int-mat">{{ interaction.side1Material.name }}</span>
+        </div>
 
-          <div class="int-side" v-if="interaction.side1LabelId">
-            <img class="label-src" :src="labelSide1Src" :atl="interaction.side1LabelId.src" />
-            <span
-              class="int-label"
-              v-if="interaction.side1LabelId"
-            >{{interaction.side1LabelId.name}}</span>
-          </div>
+        <div class="int-side" v-if="interaction.side2Material">
+          <img
+            class="mat-type"
+            :src="materialSide2Type"
+            :alt="interaction.side2Material.type"
+          />
+          <span class="int-mat">{{ interaction.side2Material.name }}</span>
+        </div>
 
-          <div class="int-side" v-if="interaction.side2MaterialId">
-            <img class="mat-type" :src="materialSide2Type" :atl="interaction.side2MaterialId.type" />
-            <span class="int-mat">{{interaction.side2MaterialId.name}}</span>
-          </div>
-
-          <div class="int-side" v-if="interaction.side2LabelId">
-            <img class="label-src" :src="labelSide2Src" :atl="interaction.side2LabelId.src" />
-            <span class="int-label">{{interaction.side2LabelId.name}}</span>
-          </div>
-        </router-link>
-        <v-btn small color="primary" :to="`/interaction/edit/${interaction._id}`">
-          <v-icon small left>mdi-pencil</v-icon>Edit
-        </v-btn>
-      </div>
+        <div class="int-side" v-if="interaction.side2Label">
+          <img class="label-src" :src="labelSide" atl="label" />
+          <span class="int-label">{{ interaction.side2Label.name }}</span>
+        </div>
+      </router-link>
+      <v-btn small color="primary" :to="`/interaction/edit/${interaction._id}`">
+        <v-icon small left>mdi-pencil</v-icon>Edit
+      </v-btn>
+    </div>
   </v-card>
 </template>
 
 <script>
 export default {
-  name: "interactionPreview",
+  name: 'interactionPreview',
   props: {
     interaction: Object,
   },
   computed: {
     materialSide1Type() {
-      return require(`@/assets/icons/${this.interaction.side1MaterialId.type}.svg`);
+      return require(`@/assets/icons/${this.interaction.side1Material.type}.svg`);
     },
     materialSide2Type() {
-      return require(`@/assets/icons/${this.interaction.side2MaterialId.type}.svg`);
+      return require(`@/assets/icons/${this.interaction.side2Material.type}.svg`);
     },
-    labelSide1Src() {
-      return require(`@/assets/icons/${this.interaction.side1LabelId.src}.svg`);
-    },
-    labelSide2Src() {
-      return require(`@/assets/icons/${this.interaction.side2LabelId.src}.svg`);
+    labelSide() {
+      return require(`@/assets/icons/custom.svg`);
     },
   },
 };

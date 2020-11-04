@@ -1,68 +1,73 @@
 <template>
-    <section class="autocomplete" v-if="initialItems !== null">
-        <v-autocomplete
-            :items="initialItems"
-            :label="searchNameStr"
-            :search-input.sync="search"
-            v-model="autocompleteResult"
-            @change="emitAutocomplete"
-            clearable
-            :flat="isFlat"
-            :solo-inverted="isSoloInverted"
-            return-object
-        />
-    </section>
+  <section class="autocomplete" v-if="initialItems !== null">
+    <v-autocomplete
+      :items="initialItems"
+      :label="searchNameStr"
+      :search-input.sync="search"
+      v-model="autocompleteResult"
+      @change="emitAutocomplete"
+      cache-items
+      clearable
+      :flat="isFlat"
+      :solo-inverted="isSoloInverted"
+      return-object
+    />
+  </section>
 </template>
 
 <script>
 export default {
-    name: 'Autocomplete',
-    props: {
-        items: Array,
-        searchName: String,
-        isSoloInverted: {
-            type: Boolean,
-            default: false,
-        },
-        isFlat: {
-            type: Boolean,
-            default: false,
-        },
+  name: 'Autocomplete',
+  props: {
+    items: Array,
+    searchName: String,
+    isSoloInverted: {
+      type: Boolean,
+      default: false,
     },
-    data() {
-        return {
-            search: '',
-            initialItems: null,
-            autocompleteResult: null,
+    isFlat: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data() {
+    return {
+      search: '',
+      initialItems: null,
+      autocompleteResult: null,
+    };
+  },
+  computed: {
+    searchNameStr() {
+      return this.searchName;
+    },
+    itemNames() {
+      return this.items.map((item) => {
+        const newItem = {
+          _id: item._id,
+          text: item.name,
         };
+        if (item.type) newItem.type = item.type;
+        if (item.src) newItem.src = item.src;
+        return newItem;
+      });
     },
-    computed: {
-        searchNameStr() {
-            return this.searchName;
-        },
-        itemNames() {
-            return this.items.map((item) => {
-                var newItem = {
-                    _id: item._id,
-                    text: item.name,
-                };
-                if (item.type) newItem.type = item.type;
-                if (item.src) newItem.src = item.src;
-                return newItem;
-            });
-        },
+  },
+  methods: {
+    emitAutocomplete() {
+      let result = null;
+      if (this.autocompleteResult) {
+        result = {
+          name: this.autocompleteResult.text,
+          _id: this.autocompleteResult._id,
+        };
+      }
+
+      this.$emit('emitAutocomplete', result);
     },
-    methods: {
-        emitAutocomplete() {
-            this.autocompleteResult = this.autocompleteResult || null;
-            this.$emit(
-                'emitAutocomplete',
-                JSON.parse(JSON.stringify(this.autocompleteResult))
-            );
-        },
-    },
-    created() {
-        this.initialItems = JSON.parse(JSON.stringify(this.itemNames));
-    },
+  },
+  created() {
+    this.initialItems = this.itemNames;
+  },
 };
 </script>

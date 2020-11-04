@@ -7,15 +7,18 @@
     align-items: center;
     margin-bottom: 16px;
     margin: 0 auto;
-
+    
+    h3 {
+        margin-top: 24px;
+    }
     &-title {
         align-self: flex-start;
         padding: 16px 0 0 0;
     }
-    .draft-input {
-        width: 40%;
-        justify-self: flex-end;
-        margin-bottom: 24px;
+    .floating-btn {
+        position: fixed;
+        top: 70px;
+        right: 0;
     }
     .form-actions {
         align-self: flex-end;
@@ -36,7 +39,7 @@
             top: 20px;
         }
     }
-
+    
     form {
         display: grid;
         grid-template-columns: 1fr;

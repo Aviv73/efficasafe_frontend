@@ -20,13 +20,10 @@
                 </div>
                 <div v-else>
                   <img
-                    :src="require(`@/assets/icons/${item.side1Label.src}.svg`)"
-                    :alt="item.side1Label.src"
-                    :title="item.side1Label.src"
+                    :src="require(`@/assets/icons/custom.svg`)"
+                    alt="label icon"
+                    title="Label"
                   />
-                  <span class="text-capitalize">{{
-                    item.side1Label.name
-                  }}</span>
                 </div>
               </router-link>
             </td>
@@ -98,7 +95,7 @@ export default {
       headers: [
         {
           text: 'Side 1',
-          value: 'side1Material.name' || 'side1Label.name',
+          value: 'side1Material.name',
         },
         {
           text: 'Side 2',

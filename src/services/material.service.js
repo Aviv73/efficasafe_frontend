@@ -9,6 +9,7 @@ export const materialService = {
     remove,
     restore,
     getEmptyMaterial,
+    getEmptyRef
 }
 
 function list(filterBy = {}) {
@@ -72,5 +73,15 @@ function getEmptyMaterial() {
             clinicalDesc: '',
             pharmacology: ''
         }
+    }
+}
+
+function getEmptyRef() {
+    return {
+        draftIdx: 0,
+        type: '',
+        txt: '',
+        link: '',
+        pubmedId: ''
     }
 }

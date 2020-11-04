@@ -80,9 +80,6 @@ export default {
       this.$router.push(queryStr);
     },
     setLabelFilter(filterBy) {
-      if (!filterBy.src || filterBy.src === "all") {
-        delete filterBy.src;
-      }
       if (!filterBy.q) {
         delete filterBy.q;
       }

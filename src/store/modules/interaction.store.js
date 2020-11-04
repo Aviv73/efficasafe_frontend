@@ -27,7 +27,7 @@ export const interactionStore = ({
         removeInteraction(state, { intId }) {
             const idx = state.interactions.findIndex(currInteraction => currInteraction._id === intId);
             state.interactions.splice(idx, 1);
-        },
+        }
     },
     actions: {
         async loadInteractions(context, { filterBy }) {
