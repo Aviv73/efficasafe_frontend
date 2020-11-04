@@ -268,11 +268,11 @@ export default {
       
       summaryMatches.forEach(match => {
         const strToDisplay = (match.charAt(0) !== '(') ? match : `<sub>${match}</sub>`;
-        this.editedInteraction.summary = this.editedInteraction.summary.replace(match, strToDisplay);
+        this.editedInteraction.summary = this.editedInteraction.summary.replaceAll(match, strToDisplay);
       });
       reviewOfStudiesMatches.forEach(match => {
         const strToDisplay = (match.charAt(0) !== '(') ? match : `<sub>${match}</sub>`;
-        this.editedInteraction.reviewOfStudies = this.editedInteraction.reviewOfStudies.replace(match, strToDisplay);
+        this.editedInteraction.reviewOfStudies = this.editedInteraction.reviewOfStudies.replaceAll(match, strToDisplay);
       });
     },
     sortRefs() {
