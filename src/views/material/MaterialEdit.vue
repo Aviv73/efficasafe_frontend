@@ -27,7 +27,7 @@
             />
             <v-text-field 
               type="text"
-              label="Link*"
+              label="Link"
               v-model="editedRef.link"
               required
             />
@@ -429,8 +429,8 @@ export default {
         return this.$store.getters.labels;
     },
     isRefValid() {
-      const { type, txt, link } = this.editedRef;
-      return type && txt && link;
+      const { type, txt } = this.editedRef;
+      return type && txt;
     }
   },
   methods: {
