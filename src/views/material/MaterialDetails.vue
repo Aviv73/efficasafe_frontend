@@ -97,10 +97,10 @@
             ></div>
 
             <h3 class="info-title" v-if="material.precautions">Precautions:</h3>
-            <p class="info-value" v-if="material.precautions" v-html="material.precautions"></p>
+            <p class="info-value" v-if="material.precautions" v-html="txtWithRefs('precautions')"></p>
 
             <h3 class="info-title" v-if="material.adverseReactions">Adverse Reactions:</h3>
-            <p class="info-value" v-if="material.adverseReactions" v-html="material.adverseReactions"></p>
+            <p class="info-value" v-if="material.adverseReactions" v-html="txtWithRefs('adverseReactions')"></p>
 
             <h3 class="info-title" v-if="material.sensitivities">
                 Sensitivities:
@@ -115,7 +115,7 @@
             <p
                 class="info-value"
                 v-if="material.overdosage"
-                v-html="material.overdosage"
+                v-html="txtWithRefs('overdosage')"
             ></p>
 
             <h3 class="info-title" v-if="material.contraindications">
@@ -124,28 +124,28 @@
             <p
                 class="info-value"
                 v-if="material.contraindications"
-                v-html="material.contraindications"
+                v-html="txtWithRefs('contraindications')"
             ></p>
 
             <h3 class="info-title" v-if="material.toxicity">Toxicity:</h3>
             <p
                 class="info-value"
                 v-if="material.toxicity"
-                v-html="material.toxicity"
+                v-html="txtWithRefs('toxicity')"
             ></p>
 
             <h3 class="info-title" v-if="material.pregnancy">Pregnancy:</h3>
             <p
                 class="info-value"
                 v-if="material.pregnancy"
-                v-html="material.pregnancy"
+                v-html="txtWithRefs('pregnancy')"
             ></p>
 
             <h3 class="info-title" v-if="material.lactation">Lactation:</h3>
             <p
                 class="info-value"
                 v-if="material.lactation"
-                v-html="material.lactation"
+                v-html="txtWithRefs('lactation')"
             ></p>
 
             <h3 class="info-title" v-if="material.effectOnDrugMetabolism">
@@ -154,7 +154,7 @@
             <p
                 class="info-value"
                 v-if="material.effectOnDrugMetabolism"
-                v-html="material.effectOnDrugMetabolism"
+                v-html="txtWithRefs('effectOnDrugMetabolism')"
             ></p>
 
             <h3 class="info-title" v-if="material.detailedPharmacology">
@@ -163,7 +163,7 @@
             <p
                 class="info-value"
                 v-if="material.detailedPharmacology"
-                v-html="material.detailedPharmacology"
+                v-html="txtWithRefs('detailedPharmacology')"
             ></p>
 
             <h3 class="info-title" v-if="material.editorDraft">
@@ -283,6 +283,7 @@
 </template>
 
 <script>
+import { interactionService } from '@/services/interaction.service';
 import subMaterialList from '@/cmps/material/SubMaterialList';
 import labelPathList from '@/cmps/material/details/LabelPathList';
 import confirmDelete from '@/cmps/general/ConfirmDelete';
@@ -302,6 +303,44 @@ export default {
         },
     },
     methods: {
+        setRefsToolTip() {
+            const elSubs = Array.from(document.querySelectorAll('sub'));
+            for (let i = 0; i < elSubs.length; i++) {
+                const refsOrder = interactionService.getRefsOrder(elSubs[i].innerText);
+                if (refsOrder[i] > 1900) continue; // sort out with regex
+                const refs = this.getRefsFromIdxs(refsOrder);
+                const elTooltip = document.createElement('aside');
+                elTooltip.classList.add('refs-tooltip');
+                let htmlStr = '<ul>';
+                for (let j = 0; j < refs.length; j++) {
+                    htmlStr += `<li class="tooltip-item">
+                        <p><span>${refs[j].draftIdx}</span>.${refs[j].txt}</p>
+                        <a href="${refs[j].link}" target="_blank">${refs[j].link}</a>
+                    </li>`;
+                }
+                htmlStr += '</ul>';
+                elTooltip.innerHTML = htmlStr;
+                elSubs[i].appendChild(elTooltip);
+            }
+        },
+        txtWithRefs(propName) {
+            const regex = /\(([\d- ,\d]+)\)|<sub>\(([\d- ,\d]+)\)<\/sub>/g;
+            let txt = this.material[propName];
+            const matches = txt.match(regex);
+            if (matches) {
+                matches.forEach(match => {
+                    txt = txt.replaceAll(match, `<sub>${match}</sub>`);
+                });
+            }
+            return txt;
+        },
+        getRefsFromIdxs(refIdxs) {
+            const refs = [];
+            refIdxs.forEach(idx => {
+                refs.push({ ...this.material.refs[idx - 1] });
+            })
+            return refs;
+        },
         async loadMaterial() {
             const matId = this.$route.params.id;
             if (matId) {
@@ -333,6 +372,9 @@ export default {
     },
     created() {
         this.loadMaterial();
+    },
+    updated() {
+        this.setRefsToolTip();
     },
     components: {
         subMaterialList,

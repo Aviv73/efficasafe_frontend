@@ -25,6 +25,11 @@
         v-show="activeTab === 'atc'"
         @branches-selected="setSelection"
       ></material-tree-view>
+      <!-- <tree-view 
+        v-show="activeTab === 'atc'"
+        :depth="0"
+        @branches-selected="setSelection"
+      /> -->
       <section v-show="activeTab === 'materials'">
         <v-sheet class="pa-4 primary lighten-2" dark>
           <v-text-field
@@ -90,6 +95,7 @@
 
 <script>
 import materialTreeView from '@/cmps/common/MaterialTreeView';
+// import treeView from '@/cmps/general/TreeView';
 import InfiniteLoading from 'vue-infinite-loading';
 
 export default {
@@ -165,7 +171,8 @@ export default {
   },
   components: {
     materialTreeView,
-    InfiniteLoading,
+    // treeView,
+    InfiniteLoading
   },
 };
 </script>

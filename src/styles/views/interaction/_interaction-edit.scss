@@ -8,6 +8,9 @@
     margin-bottom: 16px;
     margin: 0 auto;
     
+    .ref-table-btn {
+        justify-self: flex-start;
+    }
     h3 {
         margin-top: 24px;
     }
@@ -17,8 +20,8 @@
     }
     .floating-btn {
         position: fixed;
-        top: 70px;
-        right: 0;
+        bottom: 24px;
+        right: 24px;
     }
     .form-actions {
         align-self: flex-end;

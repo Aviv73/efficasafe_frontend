@@ -7,6 +7,45 @@
     max-width: unset;
 }
 sub {
+    position: relative;
+    line-height: unset;
     color: #1976d2;
     cursor: help;
+
+    &:hover > .refs-tooltip {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.refs-tooltip {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    width: 550px;
+    max-height: 350px;
+    overflow-y: auto;
+    padding: 10px;
+    color: black;
+    background-color: darken(#fff, 5%);
+    border: 1px solid rgba(38,35,34,.1);
+    box-shadow: 0 3px 8px 0 rgba(38,35,34,.1);
+    z-index: 9;
+    transform: scale(0);
+    opacity: 0;
+    transform-origin: top left;
+    transition: transform .3s linear, opacity .3s linear;
+
+    &-item {
+        border-bottom: 1px solid #fff;
+        &:hover {
+            background-color: #fff;
+        }
+    }
+    p {
+        margin-bottom: 4px;
+        span {
+            font-weight: 700;
+        }
+    }
 }

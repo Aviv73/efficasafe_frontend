@@ -80,7 +80,11 @@
       <p class="info-value">{{ recommendation }}</p>
 
       <h3 class="info-title">Summary:</h3>
-      <p class="info-value" v-html="txtWithRefs('summary')"></p>
+      <p 
+        class="info-value" 
+        v-html="txtWithRefs('summary')"
+        ref="summary"
+        ></p>
 
       <span class="info-title">Note:</span>
       <p class="info-value">{{ interaction.note }}</p>
@@ -90,7 +94,11 @@
 
       <h3 class="info-title">Review of studies:</h3>
       <div>
-        <p class="info-value" v-html="txtWithRefs('reviewOfStudies')"></p>
+        <p 
+          class="info-value" 
+          v-html="txtWithRefs('reviewOfStudies')"
+          ref="reviewOfStudies"
+          ></p>
       </div>
 
       <reference-table
@@ -160,13 +168,13 @@ export default {
         side2Material: null,
         side2Label: null,
       },
-      interactionRefs: [],
+      interactionRefs: []
     };
   },
   watch: {
-    '$route.params.id': function () {
+    '$route.params.id'() {
       this.loadInteraction();
-    },
+    }
   },
   methods: {
     txtWithRefs(propName) {
@@ -228,6 +236,36 @@ export default {
     displayDialog() {
       this.dialog = true;
     },
+    getRefsFromIdxs(refIdxs) {
+      const refs = [];
+      refIdxs.forEach(idx => {
+        refs.push({ ...this.interactionRefs[idx - 1] });
+      })
+      return refs;
+    },
+    setRefsToolTip() {
+      const { summary, reviewOfStudies } = this.$refs;
+      const summarySubs = summary.querySelectorAll('sub');
+      const reviewSubs = reviewOfStudies.querySelectorAll('sub');
+      const elSubs = [ ...summarySubs, ...reviewSubs ];
+      for (let i = 0; i < elSubs.length; i++) {
+        const refIdxs = interactionService.getRefsOrder(elSubs[i].innerText);
+        if (!refIdxs[0]) return;
+        const elTooltip = document.createElement('aside');
+        const refs = this.getRefsFromIdxs(refIdxs);
+        elTooltip.classList.add('refs-tooltip');
+        let htmlStr = '<ul>';
+        for (let j = 0; j < refs.length; j++) {
+          htmlStr += `<li class="tooltip-item">
+            <p><span>${j + 1}</span>.${refs[j].txt}</p>
+            <a href="${refs[j].link}" target="_blank">${refs[j].link}</a>
+          </li>`;
+        }
+        htmlStr += '</ul>';
+        elTooltip.innerHTML = htmlStr;
+        elSubs[i].appendChild(elTooltip);
+      }
+    }
   },
   computed: {
     recommendation() {
@@ -241,10 +279,13 @@ export default {
   created() {
     this.loadInteraction();
   },
+  updated() {
+    this.setRefsToolTip();
+  },
   components: {
     confirmDelete,
     referenceTable,
-    iconsMap,
+    iconsMap
   },
 };
 </script>

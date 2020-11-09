@@ -1,5 +1,11 @@
 <template>
   <section class="tree-view">
+    <v-btn 
+      color="secondary" 
+      v-if="depth === 0" 
+      class="close-btn"
+      @click="closeAllBranches"
+      >Close All</v-btn>
     <ul>
       <li
         v-for="item in items"
@@ -14,6 +20,7 @@
               hidden
               class="expandInput"
               :id="`expandInput_${item[itemKey]}`"
+              :checked="isBranchOpen(item[itemKey])"
               type="checkbox"
               :ref="`expandInput_${item[itemKey]}`"
               @input="toggleExpand($event.target.checked, item[itemKey])"
@@ -39,8 +46,7 @@
             <h6 v-html="labelTxt(item[renderTxt])"></h6>
           </label>
           <tree-view
-            hidden
-            v-if="item[children]"
+            v-if="item[children] && isBranchOpen(item[itemKey])"
             :search="search"
             :ref="`branch_${item[itemKey]}`"
             :items="item[children]"
@@ -50,7 +56,6 @@
             :parentId="item[itemKey]"
             :parentSelection="selection"
             :depth="childDepth"
-            @label-name-found="expandBranch"
             @item-selection="indeterminateBranch"
             @selection-changed="saveSelection($event)"
           />
@@ -97,16 +102,20 @@ export default {
       required: true,
     },
   },
+  branchIdsMap: {},
   data() {
     return {
       selection: this.parentSelection,
       childDepth: this.depth + 1,
+      openBranches: []
     };
   },
   watch: {
     search() {
       if (this.search) {
         this.checkForExpand();
+      } else {
+        this.closeAllBranches();
       }
     },
   },
@@ -123,21 +132,44 @@ export default {
     }
   },
   methods: {
-    checkForExpand() {
-      if (!this.parentId) return;
-      const isFound = this.isItemFound(this.items);
-      this.$emit('label-name-found', isFound, this.parentId);
+    closeAllBranches() {
+      this.openBranches = [];
     },
-    expandBranch(isFound, id) {
-      if (!this.$refs[`branch_${id}`]) return;
-      this.toggleExpand(isFound, id);
-      if (this.parentId) {
-        this.$emit('label-name-found', isFound, this.parentId);
+    isBranchOpen(id) {
+      return this.openBranches.includes(id);
+    },
+    checkForExpand() {
+      const checkForExpand = (node) => {
+        var paths = [];
+        if (node.name.toLowerCase().includes(this.search.toLowerCase())) {
+          this.getNodePath(node, paths);
+          paths.forEach(path => {
+            if (!this.openBranches.includes(path)) {
+              this.openBranches.push(path);
+            }
+          });
+        }
+      }
+      this.items.forEach(item => {
+        this.traverse(item, 0, checkForExpand);
+      });
+    },
+    getNodePath(node, paths) {
+      if (node.id) {
+        paths.push(node.id);
+      } 
+      if (node.parentId) {
+        const parentNode = this.$options.branchIdsMap[node.parentId];
+        this.getNodePath(parentNode, paths);
       }
     },
     toggleExpand(isChecked, nodeId) {
       if (this.$refs[`expandInput_${nodeId}`]) this.$refs[`expandInput_${nodeId}`][0].checked = isChecked;
-      this.$refs[`branch_${nodeId}`][0].$el.hidden = !isChecked;
+      if (isChecked) this.openBranches.push(nodeId);
+      else {
+        const idx = this.openBranches.findIndex(currId => currId === nodeId);
+        this.openBranches.splice(idx, 1);
+      }
     },
     checkForIndeterminate() {
       if (!this.parentId) return;
@@ -162,11 +194,6 @@ export default {
         const childInput = this.$refs[`branch_${node[this.itemKey]}`][0].$refs[`selectionInput_${childNode[this.itemKey]}`];
         if (!childInput) return false;
         return childInput[0].indeterminate || childInput[0].checked;
-      });
-    },
-    isItemFound(items) {
-      return items.some((item) => {
-        return item.name.toLowerCase().includes(this.search.toLowerCase());
       });
     },
     isItemSelected(items) {
@@ -216,12 +243,26 @@ export default {
           this.traverse(childNode, depth + 1, visitFn);
         });
       }
-    },
+    }
   },
+  created() {
+    const { branchIdsMap } = this.$options;
+    const makeBranchIdsMap = (node) => {
+      if (!branchIdsMap[node[this.itemKey]]) {
+        branchIdsMap[node[this.itemKey]] = node;
+      }
+    }
+    this.items.forEach(item => {
+      this.traverse(item, 0, makeBranchIdsMap);
+    });
+  }
 };
 </script>
 
 <style scoped lang="scss">
+.close-btn {
+  float: right;
+}
 h6 {
   display: inline;
 }

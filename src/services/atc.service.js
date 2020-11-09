@@ -33,6 +33,9 @@ function _buildChildren(node) {
     var nodeChilds = materialParentIdsMap[atcId];
     if (nodeChilds) {
         node.children = nodeChilds;
+        node.children.forEach(child => {
+            child.parentId = node.id;
+        });
     }
 }
 

@@ -9,11 +9,17 @@
     </v-row>
     <v-card class="interaction-edit" v-if="editedInteraction">
       <v-btn
+        fab
         class="submit-btn floating-btn"
+        large
+        elevation="5"
         @click="saveInteraction(false)"
         color="success"
+        title="Save Interaction"
         :disabled="!isFormValid"
-      >Save Interaction</v-btn>
+      >
+        <v-icon>mdi-content-save-edit</v-icon>
+      </v-btn>
       <v-form v-model="valid" @submit.prevent="saveInteraction">
         <div class="int-sides-active">
           <v-card-title class="interaction-edit-title">
@@ -38,14 +44,17 @@
           auto-grow
           class="draft-input"
           v-model="draftName"
-          :label="(editedInteraction.side2Label) ? 'Draft Name*' : 'Draft Name'"
+          :label="editedInteraction.side2Label ? 'Draft Name*' : 'Draft Name'"
         />
         <div class="int-rec-evi-row">
           <v-select
             :items="interaction.recommendation"
             label="Recommendation Options"
             v-model="interaction.recommendationSelected"
-            @change="editedInteraction.recommendation = interaction.recommendationSelected"
+            @change="
+              editedInteraction.recommendation =
+                interaction.recommendationSelected
+            "
           ></v-select>
           <v-select
             :items="interaction.evidenceLevel"
@@ -76,6 +85,15 @@
           v-model="editedInteraction.summary"
           @blur="handleRefsChange"
         ></ckeditor>
+        <v-btn
+          v-if="interactionRefs.length"
+          color="blue-grey"
+          class="ref-table-btn ma-2 white--text"
+          @click="refsTableDialog = true"
+        >
+          Upload References
+          <v-icon right dark> mdi-cloud-upload </v-icon>
+        </v-btn>
 
         <h3>Review Of Studies:</h3>
         <ckeditor
@@ -83,6 +101,15 @@
           v-model="editedInteraction.reviewOfStudies"
           @blur="handleRefsChange"
         ></ckeditor>
+        <v-btn
+          v-if="interactionRefs.length"
+          color="blue-grey"
+          class="ref-table-btn ma-2 white--text"
+          @click="refsTableDialog = true"
+        >
+          Upload References
+          <v-icon right dark> mdi-cloud-upload </v-icon>
+        </v-btn>
 
         <div class="list-chips">
           <v-text-field
@@ -109,7 +136,12 @@
             v-model="editedInteraction.editorDraft.infoSide1"
             label="Side 1 info"
           />
-          <router-link v-if="editedInteraction.side1Material" :to="`/material/${editedInteraction.side1Material._id}`" target="_blank">View Details</router-link>
+          <router-link
+            v-if="editedInteraction.side1Material"
+            :to="`/material/${editedInteraction.side1Material._id}`"
+            target="_blank"
+            >View Details</router-link
+          >
         </div>
 
         <div class="side-link-container">
@@ -120,7 +152,12 @@
             v-model="editedInteraction.editorDraft.infoSide2"
             label="Side 2 info"
           />
-          <router-link v-if="side2Id" :to="`/material/${side2Id}`" target="_blank">View Details</router-link>
+          <router-link
+            v-if="side2Id"
+            :to="`/material/${side2Id}`"
+            target="_blank"
+            >View Details</router-link
+          >
         </div>
 
         <v-textarea
@@ -152,12 +189,6 @@
           v-model="editedInteraction.monitor.symptoms"
           label="Symptoms"
         />
-
-        <reference-table
-          :references="interactionRefs"
-          :isInteraction="true"
-          v-if="interactionRefs.length"
-        />
       </v-form>
       <div class="form-actions">
         <v-btn class="cancel-btn" to="/interaction/" color="normal"
@@ -168,10 +199,17 @@
           @click="saveInteraction"
           color="success"
           :disabled="!isFormValid"
-          >Save Interaction</v-btn>
-
+          >Save Interaction</v-btn
+        >
       </div>
     </v-card>
+    <v-dialog max-width="1400px" v-model="refsTableDialog">
+      <reference-table
+        :references="interactionRefs"
+        :isInteraction="true"
+        v-if="interactionRefs.length"
+      />
+    </v-dialog>
   </section>
 </template>
 
@@ -190,6 +228,7 @@ export default {
       itemToRemove: null,
       valid: true,
       dialog: false,
+      refsTableDialog: false,
       model: {
         indications: '',
         labTests: '',
@@ -213,7 +252,7 @@ export default {
       CKEditorConfig: {
         extraPlugins: 'autogrow',
         autoGrow_minHeight: 50,
-        removeButtons: ''
+        removeButtons: '',
       },
       interactionRefs: [],
     };
@@ -228,7 +267,7 @@ export default {
         if (this.editedInteraction.side2Label) {
           this.editedInteraction.side2Label.name = val;
         }
-      }
+      },
     },
     sides() {
       const interaction = this.editedInteraction;
@@ -241,20 +280,25 @@ export default {
           material: interaction.side2Material,
           label: interaction.side2Label,
           name: 'side 2',
-        }
+        },
       };
     },
     isFormValid() {
-      return this.editedInteraction.side1Material &&
-          (this.editedInteraction.side2Material || 
-          (this.editedInteraction.side2Label && this.editedInteraction.side2DraftName) || 
-          this.editedInteraction.side2DraftName);
+      return (
+        this.editedInteraction.side1Material &&
+        (this.editedInteraction.side2Material ||
+          (this.editedInteraction.side2Label &&
+            this.editedInteraction.side2DraftName) ||
+          this.editedInteraction.side2DraftName)
+      );
     },
     side2Id() {
-      if (this.editedInteraction.side2Material) return this.editedInteraction.side2Material._id;
-      if (this.editedInteraction.side2Label) return this.editedInteraction.side2Label._id;
+      if (this.editedInteraction.side2Material)
+        return this.editedInteraction.side2Material._id;
+      if (this.editedInteraction.side2Label)
+        return this.editedInteraction.side2Label._id;
       return '';
-    }
+    },
   },
   methods: {
     handleRefsChange() {
@@ -265,19 +309,32 @@ export default {
       const regex = /\(([\d- ,\d]+)\)|<sub>\(([\d- ,\d]+)\)<\/sub>/g;
       const summaryMatches = this.editedInteraction.summary.match(regex);
       const reviewOfStudiesMatches = this.editedInteraction.reviewOfStudies.match(regex);
-      
-      summaryMatches.forEach(match => {
-        const strToDisplay = (match.charAt(0) !== '(') ? match : `<sub>${match}</sub>`;
-        this.editedInteraction.summary = this.editedInteraction.summary.replaceAll(match, strToDisplay);
-      });
-      reviewOfStudiesMatches.forEach(match => {
-        const strToDisplay = (match.charAt(0) !== '(') ? match : `<sub>${match}</sub>`;
-        this.editedInteraction.reviewOfStudies = this.editedInteraction.reviewOfStudies.replaceAll(match, strToDisplay);
-      });
+
+      if (summaryMatches) {
+        summaryMatches.forEach((match) => {
+          const strToDisplay = match.charAt(0) !== '(' ? match : `<sub>${match}</sub>`;
+          this.editedInteraction.summary = this.editedInteraction.summary.replaceAll(
+            match,
+            strToDisplay
+          );
+        });
+      }
+      if (reviewOfStudiesMatches) {
+        reviewOfStudiesMatches.forEach((match) => {
+          const strToDisplay = match.charAt(0) !== '(' ? match : `<sub>${match}</sub>`;
+          this.editedInteraction.reviewOfStudies = this.editedInteraction.reviewOfStudies.replaceAll(
+            match,
+            strToDisplay
+          );
+        });
+      }
     },
     sortRefs() {
       const txt = `${this.editedInteraction.summary} ${this.editedInteraction.reviewOfStudies}`;
-      const sortedRefs = interactionService.getSortedRefs(txt, this.interactionRefs);
+      const sortedRefs = interactionService.getSortedRefs(
+        txt,
+        this.interactionRefs
+      );
       this.interactionRefs = sortedRefs;
     },
     setInteractionSide(sides) {
@@ -287,11 +344,11 @@ export default {
         this.editedInteraction.side2Material = {
           _id,
           name,
-          type
-        }
+          type,
+        };
       } else {
         this.editedInteraction.side2Label = {
-          name: this.editedInteraction.side2DraftName
+          name: this.editedInteraction.side2DraftName,
         };
       }
       console.log('Editted Interaction:', this.editedInteraction);
@@ -302,16 +359,16 @@ export default {
         type: 'loadMaterial',
         matId,
       });
-      this.interactionRefs = material.refs.filter(ref =>
+      this.interactionRefs = material.refs.filter((ref) =>
         this.editedInteraction.refs.includes(ref.draftIdx)
       );
       this.sortRefs();
       this.makeRefsSub();
     },
-    removeSide(sideNum) { 
+    removeSide(sideNum) {
       let side = `side${sideNum}Material`;
       if (this.editedInteraction.side2Label && sideNum === 2) {
-        side = 'side2Label'
+        side = 'side2Label';
       }
       this.editedInteraction[side] = null;
     },
@@ -338,7 +395,9 @@ export default {
     },
     calculateEvidenceLevel() {
       if (this.interactionRefs.length) {
-        this.editedInteraction.evidenceLevel = interactionService.calculateEvidenceLevel(this.interactionRefs);
+        this.editedInteraction.evidenceLevel = interactionService.calculateEvidenceLevel(
+          this.interactionRefs
+        );
       }
     },
     async saveInteraction(moveRoute = true) {
