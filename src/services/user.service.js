@@ -1,13 +1,9 @@
 
-import { storageService } from './storage.service'
+import { httpService } from './http.service';
+import { storageService } from './storage.service';
 
-const KEY = 'loggedInUser'
-const gUsers = [
-    {
-        username: "admin",
-        password: "nana123"
-    }
-]
+const END_POINT = 'auth';
+const KEY = 'loggedInUser';
 
 export const userService = {
     login,
@@ -16,25 +12,18 @@ export const userService = {
 }
 
 function getLoggedInUser() {
-    return storageService.load(KEY) || null
+    return storageService.load(KEY, true) || null;
 }
 
-function login(userCred) {
-    const user = gUsers.find(currUser => {
-        return currUser.username === userCred.username && currUser.password === userCred.password
-    })
-
-    if (user) {
-        const loggedInUser = JSON.parse(JSON.stringify(user))
-        delete loggedInUser.password
-        storageService.store(KEY, loggedInUser)
-        return loggedInUser
-    } else {
-        return null
+async function login(credentials) {
+    const res = await httpService.post(`${END_POINT}/login`, credentials);
+    if (res.account) {
+        storageService.store(KEY, res.account, true);
     }
-
+    return res.account || null;
 }
 
-function logout() {
-    storageService.remove(KEY)
+async function logout() {
+    await httpService.post(`${END_POINT}/logout`);
+    storageService.remove(KEY, true);
 }

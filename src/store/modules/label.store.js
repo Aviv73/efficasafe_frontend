@@ -6,17 +6,24 @@ export const labelStore = ({
     },
     getters: {
         labels(state) {
-            return state.labels
+            return state.labels;
         },
     },
     mutations: {
         setLabels(state, { labels }) {
-            state.labels = labels
+            state.labels = labels;
+        },
+        addLabel(state, { label }) {
+            state.labels.unshift(label);
         },
         removeLabel(state, { labelId }) {
-            const idx = state.labels.findIndex(currLabel => currLabel._id === labelId)
-            state.labels.splice(idx, 1)
+            const idx = state.labels.findIndex(currLabel => currLabel._id === labelId);
+            state.labels.splice(idx, 1);
         },
+        updateLabel(state, { label }) {
+            const idx = state.labels.findIndex(currLabel => currLabel._id === label._id);
+            state.labels.splice(idx, 1, label);
+        }
     },
     actions: {
         async loadLabels(context, { filterBy }) {
@@ -28,7 +35,13 @@ export const labelStore = ({
             return await labelService.getById(labelId);
         },
         async saveLabel(context, { label }) {
-            return await labelService.save(label);
+            const isEdit = !!label._id;
+            const savedLabel = await labelService.save(label);
+            context.commit({
+                type: (isEdit) ? 'updateLabel' : 'addLabel',
+                label: savedLabel
+            });
+            return savedLabel;
         },
         async restoreLabel(context, { label }) {
             return await labelService.restore(label);

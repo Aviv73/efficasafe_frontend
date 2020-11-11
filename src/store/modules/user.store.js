@@ -7,9 +7,6 @@ export const userStore = {
     getters: {
         loggedInUser(state) {
             return state.loggedInUser
-        },
-        username(state) {
-            return state.loggedInUser.username
         }
     },
     mutations: {
@@ -22,27 +19,13 @@ export const userStore = {
     },
     actions: {
         async login(context, { credentials }) {
-            const user = await userService.login(credentials)
-            try {
-                context.commit({ type: 'login', user })
-                return user
-            } catch {
-                console.log('error - unautorized');
-                throw new Error
-            }
+            const user = await userService.login(credentials);
+            context.commit({ type: 'login', user });
+            return user;
         },
         async logout(context) {
-            await userService.logout()
-            context.commit({ type: 'logout' })
-        },
-        async loadUsername(context) {
-            const user = await userService.getLoggedInUser()
-            try {
-                context.commit({ type: 'login', user })
-            } catch {
-                console.log('error - unautorized');
-                throw new Error
-            }
+            await userService.logout();
+            context.commit({ type: 'logout' });
         }
     }
 }

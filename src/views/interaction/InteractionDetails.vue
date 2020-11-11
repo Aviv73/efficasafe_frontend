@@ -1,8 +1,5 @@
 <template>
-  <section
-    class="interaction-details"
-    v-if="interaction"
-  >
+  <section class="interaction-details" v-if="interaction">
     <confirm-delete
       v-model="dialog"
       type="interaction"
@@ -80,11 +77,7 @@
       <p class="info-value">{{ recommendation }}</p>
 
       <h3 class="info-title">Summary:</h3>
-      <p 
-        class="info-value" 
-        v-html="txtWithRefs('summary')"
-        ref="summary"
-        ></p>
+      <p class="info-value" v-html="txtWithRefs('summary')" ref="summary"></p>
 
       <span class="info-title">Note:</span>
       <p class="info-value">{{ interaction.note }}</p>
@@ -94,11 +87,11 @@
 
       <h3 class="info-title">Review of studies:</h3>
       <div>
-        <p 
-          class="info-value" 
+        <p
+          class="info-value"
           v-html="txtWithRefs('reviewOfStudies')"
           ref="reviewOfStudies"
-          ></p>
+        ></p>
       </div>
 
       <reference-table
@@ -168,23 +161,26 @@ export default {
         side2Material: null,
         side2Label: null,
       },
-      interactionRefs: []
+      interactionRefs: [],
     };
   },
   watch: {
     '$route.params.id'() {
       this.loadInteraction();
-    }
+    },
   },
   methods: {
     txtWithRefs(propName) {
+      if (!this.interactionRefs.length) return;
       let txt = this.interaction[propName];
-      const refsOrder = interactionService.getRefsOrder(txt);
+      const refsOrder = interactionService.getRefsOrder(txt, false);
+      let lastRefIdx = 0;
       refsOrder.forEach((refNum) => {
-        const idx = this.interactionRefs.findIndex(
-          (ref) => ref.draftIdx === refNum
-        );
-        txt = txt.replaceAll(refNum + '', idx + 1);
+        const draftIdx = this.interactionRefs.findIndex(ref => ref && ref.draftIdx === refNum) + 1;
+        const refIdx = txt.indexOf(refNum, lastRefIdx);
+        if (refIdx < 0) return;
+        lastRefIdx = refIdx;
+        txt = txt.slice(0, refIdx) + txt.slice(refIdx).replace(refNum, draftIdx);
       });
       return txt;
     },
@@ -238,26 +234,31 @@ export default {
     },
     getRefsFromIdxs(refIdxs) {
       const refs = [];
-      refIdxs.forEach(idx => {
+      refIdxs.forEach((idx) => {
         refs.push({ ...this.interactionRefs[idx - 1] });
-      })
+      });
       return refs;
     },
     setRefsToolTip() {
       const { summary, reviewOfStudies } = this.$refs;
       const summarySubs = summary.querySelectorAll('sub');
       const reviewSubs = reviewOfStudies.querySelectorAll('sub');
-      const elSubs = [ ...summarySubs, ...reviewSubs ];
+      const elSubs = [...summarySubs, ...reviewSubs];
       for (let i = 0; i < elSubs.length; i++) {
+        
         const refIdxs = interactionService.getRefsOrder(elSubs[i].innerText);
+        
         if (!refIdxs[0]) return;
+
+        elSubs[i].innerText = interactionService.formatRefStrs(elSubs[i].innerText);
+        
         const elTooltip = document.createElement('aside');
         const refs = this.getRefsFromIdxs(refIdxs);
         elTooltip.classList.add('refs-tooltip');
         let htmlStr = '<ul>';
         for (let j = 0; j < refs.length; j++) {
           htmlStr += `<li class="tooltip-item">
-            <p><span>${j + 1}</span>.${refs[j].txt}</p>
+            <p><span>${refs[j].draftIdx}</span>.${refs[j].txt}</p>
             <a href="${refs[j].link}" target="_blank">${refs[j].link}</a>
           </li>`;
         }
@@ -274,7 +275,7 @@ export default {
         return reco.substring(0, reco.length - 1);
       }
       return reco;
-    }
+    },
   },
   created() {
     this.loadInteraction();
@@ -285,7 +286,7 @@ export default {
   components: {
     confirmDelete,
     referenceTable,
-    iconsMap
+    iconsMap,
   },
 };
 </script>

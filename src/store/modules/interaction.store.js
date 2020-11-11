@@ -7,6 +7,9 @@ export const interactionStore = ({
     getters: {
         interactions(state) {
             return state.interactions;
+        },
+        interaction: (state) => (id) => {
+            return state.interactions && state.interactions.find(currInteraction => currInteraction._id === id);
         }
     },
     mutations: {

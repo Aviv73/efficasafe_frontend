@@ -19,13 +19,14 @@ export default {
     appMessages,
   },
   methods: {
-    loadLabels() {
-      const filterBy = { src: 'atc' };
+    loadData() {
+      const filterBy = {};
       this.$store.dispatch({ type: 'loadLabels', filterBy });
+      this.$store.dispatch({ type: 'loadInteractions', filterBy });
     }
   },
   created() {
-    this.loadLabels();
+    this.loadData();
   }
 };
 </script>

@@ -10,6 +10,7 @@ export const interactionService = {
     restore,
     getSortedRefs,
     getRefsOrder,
+    formatRefStrs,
     getEmptyInteraction,
     calculateEvidenceLevel
 }
@@ -36,6 +37,27 @@ function remove(id) {
     httpService.delete(`${END_POINT}/${id}`);
 }
 
+function formatRefStrs(refStr) {
+    const formatedRefs = getRefsOrder(refStr);
+
+    let formatedRefStr = '';
+    let isSequence = false;
+    for (let i = 0; i < formatedRefs.length; i++) {
+      if (formatedRefs[i - 1] === undefined) formatedRefStr += formatedRefs[i];
+
+      if (formatedRefs[i] - formatedRefs[i - 1] > 1) {
+        if (isSequence) formatedRefStr += '-' + (formatedRefs[i - 1]);
+        formatedRefStr += ',' + formatedRefs[i];
+        isSequence = false;
+      } else if (formatedRefs[i] - formatedRefs[i - 1] === 1) isSequence = true;
+
+      if (i === (formatedRefs.length - 1) && formatedRefs[i - 1] !== undefined && isSequence) {
+        formatedRefStr += '-' + formatedRefs[i];
+      }
+    }
+    return `(${formatedRefStr})`;
+  }
+
 function getSortedRefs(txt, refs) {
     const refsOrder = getRefsOrder(txt);
     const sortedRefs = [];
@@ -46,13 +68,13 @@ function getSortedRefs(txt, refs) {
     return sortedRefs;
 }
 
-function getRefsOrder(txt) {
+function getRefsOrder(txt, isUnique = true) {
     const regex = /\(([\d- ,\d]+)\)/g;
     const notUniqueRefs = txt.match(regex);
     if (!notUniqueRefs) return [];
 
-    const uniqueRefs = notUniqueRefs.filter(_onlyUnique);
-    let cleanRefs = uniqueRefs.map(ref => {
+    const refs = (isUnique) ? notUniqueRefs.filter(_onlyUnique) : notUniqueRefs;
+    let cleanRefs = refs.map(ref => {
         ref = ref.substring(1, ref.length - 1);
         if (!ref.includes(',') && !ref.includes('-')) ref = +ref;
         else {
@@ -74,7 +96,10 @@ function getRefsOrder(txt) {
         return ref;
     });
     cleanRefs = cleanRefs.flat(1);
-    return _removeDuplicates(cleanRefs);
+    cleanRefs = cleanRefs.filter(ref => {
+        if (ref.toString().length < 4) return ref;
+    });
+    return (isUnique) ? _removeDuplicates(cleanRefs) : cleanRefs;
 }
 
 function calculateEvidenceLevel(refs) {
@@ -117,9 +142,9 @@ function getEmptyInteraction() {
         note: '',
         summary: '',
         monitor: {
-            labTests: [],
-            otherTests: [],
-            symptoms: []
+            labTests: '',
+            otherTests: '',
+            symptoms: ''
         },
         reviewOfStudies: '',
         evidenceLevel: '',

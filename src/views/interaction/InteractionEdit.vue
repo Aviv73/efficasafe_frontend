@@ -13,14 +13,14 @@
         class="submit-btn floating-btn"
         large
         elevation="5"
-        @click="saveInteraction(false)"
+        @click="onSaveInteraction(false)"
         color="success"
         title="Save Interaction"
         :disabled="!isFormValid"
       >
         <v-icon>mdi-content-save-edit</v-icon>
       </v-btn>
-      <v-form v-model="valid" @submit.prevent="saveInteraction">
+      <v-form v-model="valid" @submit.prevent="onSaveInteraction(true)">
         <div class="int-sides-active">
           <v-card-title class="interaction-edit-title">
             {{ editedInteraction._id ? 'Edit Interaction' : 'New Interaction' }}
@@ -79,14 +79,21 @@
           label="Note"
         />
 
-        <h3>Summary:</h3>
+        <h3>
+          Summary:
+          <v-btn 
+            @click="handleRefsChange" 
+            depressed 
+            color="warning" 
+            :disabled="isRefsChanged('summary')"
+          >Update Refs</v-btn>
+        </h3>
         <ckeditor
           :config="CKEditorConfig"
           v-model="editedInteraction.summary"
-          @blur="handleRefsChange"
         ></ckeditor>
         <v-btn
-          v-if="interactionRefs.length"
+          v-if="side1MaterialRefs.length"
           color="blue-grey"
           class="ref-table-btn ma-2 white--text"
           @click="refsTableDialog = true"
@@ -95,14 +102,21 @@
           <v-icon right dark> mdi-cloud-upload </v-icon>
         </v-btn>
 
-        <h3>Review Of Studies:</h3>
+        <h3>
+          Review Of Studies:
+          <v-btn 
+            @click="handleRefsChange" 
+            depressed 
+            color="warning" 
+            :disabled="isRefsChanged('reviewOfStudies')"
+          >Update Refs</v-btn>
+        </h3>
         <ckeditor
           :config="CKEditorConfig"
           v-model="editedInteraction.reviewOfStudies"
-          @blur="handleRefsChange"
         ></ckeditor>
         <v-btn
-          v-if="interactionRefs.length"
+          v-if="side1MaterialRefs.length"
           color="blue-grey"
           class="ref-table-btn ma-2 white--text"
           @click="refsTableDialog = true"
@@ -196,7 +210,7 @@
         >
         <v-btn
           class="submit-btn"
-          @click="saveInteraction"
+          @click="onSaveInteraction(true)"
           color="success"
           :disabled="!isFormValid"
           >Save Interaction</v-btn
@@ -215,6 +229,7 @@
 
 <script>
 import { interactionService } from '@/services/interaction.service';
+import { labelService } from '@/services/label.service';
 import { eventBus, EV_addInteraction } from '@/services/eventBus.service';
 import interactionSides from '@/cmps/interaction/edit/InteractionSides';
 import referenceTable from '@/cmps/common/ReferenceTable';
@@ -229,6 +244,7 @@ export default {
       valid: true,
       dialog: false,
       refsTableDialog: false,
+      relatedMaterials: [],
       model: {
         indications: '',
         labTests: '',
@@ -254,10 +270,24 @@ export default {
         autoGrow_minHeight: 50,
         removeButtons: '',
       },
-      interactionRefs: [],
+      side1MaterialRefs: [],
+      interactionRefs: []
     };
   },
+  watch: {
+    'editedInteraction.side1Material'() {
+      if (this.editedInteraction.side1Material) {
+        this.getReferences();
+      }
+    }
+  },
   computed: {
+    interactions() {
+      return this.$store.getters.interactions;
+    },
+    unsavedInteraction() {
+      return this.$store.getters.interaction(this.$route.params.id);
+    },
     draftName: {
       get() {
         return this.editedInteraction.side2DraftName;
@@ -301,8 +331,12 @@ export default {
     },
   },
   methods: {
+    isRefsChanged(property) {
+      if (!this.unsavedInteraction) return false;
+      return this.editedInteraction[property] === this.unsavedInteraction[property];
+    },
     handleRefsChange() {
-      this.sortRefs();
+      this.setInteractionRefs();
       this.makeRefsSub();
     },
     makeRefsSub() {
@@ -312,7 +346,7 @@ export default {
 
       if (summaryMatches) {
         summaryMatches.forEach((match) => {
-          const strToDisplay = match.charAt(0) !== '(' ? match : `<sub>${match}</sub>`;
+          const strToDisplay = `<sub>${interactionService.formatRefStrs(match)}</sub>`;
           this.editedInteraction.summary = this.editedInteraction.summary.replaceAll(
             match,
             strToDisplay
@@ -321,7 +355,7 @@ export default {
       }
       if (reviewOfStudiesMatches) {
         reviewOfStudiesMatches.forEach((match) => {
-          const strToDisplay = match.charAt(0) !== '(' ? match : `<sub>${match}</sub>`;
+          const strToDisplay = `<sub>${interactionService.formatRefStrs(match)}</sub>`;
           this.editedInteraction.reviewOfStudies = this.editedInteraction.reviewOfStudies.replaceAll(
             match,
             strToDisplay
@@ -329,16 +363,16 @@ export default {
         });
       }
     },
-    sortRefs() {
+    setInteractionRefs() {
       const txt = `${this.editedInteraction.summary} ${this.editedInteraction.reviewOfStudies}`;
       const sortedRefs = interactionService.getSortedRefs(
         txt,
-        this.interactionRefs
+        this.side1MaterialRefs
       );
       this.interactionRefs = sortedRefs;
+      this.editedInteraction.refs = sortedRefs.map(ref => ref.draftIdx);
     },
     setInteractionSide(sides) {
-      console.log('Sides:', sides);
       if (sides.length === 1) {
         const { _id, name, type } = sides[0];
         this.editedInteraction.side2Material = {
@@ -347,11 +381,11 @@ export default {
           type,
         };
       } else {
+        this.relatedMaterials = sides;
         this.editedInteraction.side2Label = {
           name: this.editedInteraction.side2DraftName,
         };
       }
-      console.log('Editted Interaction:', this.editedInteraction);
     },
     async getReferences() {
       const matId = this.editedInteraction.side1Material._id;
@@ -359,10 +393,8 @@ export default {
         type: 'loadMaterial',
         matId,
       });
-      this.interactionRefs = material.refs.filter((ref) =>
-        this.editedInteraction.refs.includes(ref.draftIdx)
-      );
-      this.sortRefs();
+      this.side1MaterialRefs = [ ...material.refs ];
+      this.setInteractionRefs();
       this.makeRefsSub();
     },
     removeSide(sideNum) {
@@ -394,13 +426,38 @@ export default {
       }
     },
     calculateEvidenceLevel() {
-      if (this.interactionRefs.length) {
+      if (this.side1MaterialRefs.length) {
         this.editedInteraction.evidenceLevel = interactionService.calculateEvidenceLevel(
-          this.interactionRefs
+          this.side1MaterialRefs
         );
       }
     },
-    async saveInteraction(moveRoute = true) {
+    async onSaveInteraction(isRouteChange) {
+      const { side2Label } = this.editedInteraction;
+      if (!this.editedInteraction.side2Material && side2Label) {
+        if (!side2Label._id) {
+          var newLabel = labelService.getEmptyLabel();
+          newLabel.name = `${this.editedInteraction.side1Material.name} & ${this.editedInteraction.side2Label.name}`;
+        } else {
+          /// it's edit -> then it's a different code (no need to get empty and name is allready right)
+          /// (maybe allways take second part of label name from side2DraftName)
+          /// need to check materials related against this.relatedMaterials
+        }
+
+        try {
+          // const savedLabel = await this.$store.dispatch({ type: 'saveLabel', label: newLabel });
+          // const relatedMaterialIds = this.relatedMaterials.map(mat => mat._id);
+          // /// update this.relatedMaterials labels with minimal label obj with _id
+          // console.log(savedLabel, relatedMaterialIds);
+          /// add the interaction with side2Label minimal obj with _id
+        } catch (err) {
+          console.log('Error:', err);
+        }
+      } else {
+        this.saveInteraction(isRouteChange);
+      }
+    },
+    async saveInteraction(isRouteChange) {
       try {
         const interaction = JSON.parse(JSON.stringify(this.editedInteraction));
         await this.$store.dispatch({
@@ -412,7 +469,7 @@ export default {
           type: 'interaction',
           _id: this.editedInteraction._id,
         });
-        if (moveRoute) this.$router.push('/interaction');
+        if (isRouteChange) this.$router.push('/interaction');
       } catch (err) {
         console.log('Error:', err);
       }

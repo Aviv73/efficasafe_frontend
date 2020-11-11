@@ -99,7 +99,7 @@ export default {
     },
     depth: {
       type: Number,
-      required: true,
+      required: true
     },
   },
   branchIdsMap: {},

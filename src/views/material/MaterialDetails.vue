@@ -307,7 +307,7 @@ export default {
             const elSubs = Array.from(document.querySelectorAll('sub'));
             for (let i = 0; i < elSubs.length; i++) {
                 const refsOrder = interactionService.getRefsOrder(elSubs[i].innerText);
-                if (refsOrder[i] > 1900) continue; // sort out with regex
+                
                 const refs = this.getRefsFromIdxs(refsOrder);
                 const elTooltip = document.createElement('aside');
                 elTooltip.classList.add('refs-tooltip');
@@ -329,7 +329,9 @@ export default {
             const matches = txt.match(regex);
             if (matches) {
                 matches.forEach(match => {
-                    txt = txt.replaceAll(match, `<sub>${match}</sub>`);
+                    if (this.isRefStr(match)) {
+                        txt = txt.replaceAll(match, `<sub>${match}</sub>`);
+                    }
                 });
             }
             return txt;
@@ -340,6 +342,15 @@ export default {
                 refs.push({ ...this.material.refs[idx - 1] });
             })
             return refs;
+        },
+        isRefStr(refStr) {
+            let doReturn = true;
+            let formatted = refStr.replaceAll(/[-,()]/g, '__');
+            formatted = formatted.split('__').filter(idxStr => +idxStr);
+            formatted.forEach(numStr => {
+                if (numStr.length >= 4) doReturn = false;
+            });
+            return doReturn;
         },
         async loadMaterial() {
             const matId = this.$route.params.id;

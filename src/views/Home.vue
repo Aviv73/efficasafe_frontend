@@ -2,10 +2,9 @@
   <section>
     <v-card class="home-page">
       <v-card-title>Efficasafe Management System</v-card-title>
-      <v-card-subtitle>
+      <v-card-subtitle v-if="loggedInUser">
         Welcome back,
-        <span v-if="username" class="text-capitalize">{{ username }}</span
-        >!
+        <span class="text-capitalize">{{ loggedInUser.username }}!</span>
       </v-card-subtitle>
       <v-divider></v-divider>
       <v-card-text>Browse Modules:</v-card-text>
@@ -63,20 +62,12 @@ export default {
     };
   },
   computed: {
-    username() {
-      return this.$store.getters.username;
+    loggedInUser() {
+      return this.$store.getters.loggedInUser;
     },
-  },
-  methods: {
-    async loadUsername() {
-      this.$store.dispatch({ type: 'loadUsername' });
-    },
-  },
-  created() {
-    this.loadUsername();
   },
   components: {
     iconsMap,
-  },
+  }
 };
 </script>
