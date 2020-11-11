@@ -1,15 +1,17 @@
 <template>
   <section class="label-page">
-    <v-card v-if="labels" class="mb-10">
-      <v-card-title>
-        Labels collection
-        <v-spacer></v-spacer>
-        <v-btn color="primary" to="/label/edit/">new label</v-btn>
-      </v-card-title>
-      <label-filter :labels="labels" @emit-filter="setFilter" />
-      <label-list :labels="labels" />
-    </v-card>
-    <icons-map />
+    <div class="container">
+      <v-card v-if="labels" class="mb-10">
+        <v-card-title>
+          Labels collection
+          <v-spacer></v-spacer>
+          <v-btn color="primary" to="/label/edit/">new label</v-btn>
+        </v-card-title>
+        <label-filter :labels="labels" @emit-filter="setFilter" />
+        <label-list :labels="labels" />
+      </v-card>
+      <icons-map />
+    </div>
   </section>
 </template>
 

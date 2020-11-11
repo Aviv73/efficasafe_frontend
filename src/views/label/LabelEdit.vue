@@ -1,33 +1,35 @@
 <template>
-  <v-card class="label-edit" v-if="editedLabel">
-    <v-form v-model="valid" @submit.prevent="saveLabel">
-      <v-text-field
-        id="label-name"
-        type="text"
-        v-model="editedLabel.name"
-        label="Name*"
-        required
-        :rules="[(v) => !!v || 'Label Name is required']"
-      />
-      <label for="label-name">Label Color:</label>
-      <v-color-picker
-        v-model="editedLabel.color"
-        hide-inputs
-        mode="hexa"
-        value="string"
-      />
-    </v-form>
-    <div class="form-actions">
-      <v-btn class="cancel-btn" to="/label/" color="normal">cancel</v-btn>
-      <v-btn
-        class="submit-btn"
-        @click="saveLabel"
-        color="success"
-        :disabled="!valid"
-        >Save Label</v-btn
-      >
-    </div>
-  </v-card>
+  <div class="container">
+    <v-card class="label-edit" v-if="editedLabel">
+      <v-form v-model="valid" @submit.prevent="saveLabel">
+        <v-text-field
+          id="label-name"
+          type="text"
+          v-model="editedLabel.name"
+          label="Name*"
+          required
+          :rules="[(v) => !!v || 'Label Name is required']"
+        />
+        <label for="label-name">Label Color:</label>
+        <v-color-picker
+          v-model="editedLabel.color"
+          hide-inputs
+          mode="hexa"
+          value="string"
+        />
+      </v-form>
+      <div class="form-actions">
+        <v-btn class="cancel-btn" to="/label/" color="normal">cancel</v-btn>
+        <v-btn
+          class="submit-btn"
+          @click="saveLabel"
+          color="success"
+          :disabled="!valid"
+          >Save Label</v-btn
+        >
+      </div>
+    </v-card>
+  </div>
 </template>
 
 <script>

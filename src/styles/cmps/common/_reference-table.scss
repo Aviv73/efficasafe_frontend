@@ -14,4 +14,9 @@
     td {
         max-width: 450px;
     }
+    &-shrink {
+        td {
+            max-width: 250px;
+        }
+    }
 }

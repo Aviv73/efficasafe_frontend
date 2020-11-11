@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="container">
     <v-card class="home-page">
       <v-card-title>Efficasafe Management System</v-card-title>
       <v-card-subtitle v-if="loggedInUser">

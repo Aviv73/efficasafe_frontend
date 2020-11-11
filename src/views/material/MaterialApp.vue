@@ -1,26 +1,28 @@
 <template>
   <section class="material-app">
-    <v-card class="mb-10" v-if="materials">
-      <v-card-title>
-        Materials collection
-        <v-spacer></v-spacer>
-        <v-btn color="primary" to="/material/edit/">new material</v-btn>
-      </v-card-title>
+    <div class="container">
+      <v-card class="mb-10" v-if="materials">
+        <v-card-title>
+          Materials collection
+          <v-spacer></v-spacer>
+          <v-btn color="primary" to="/material/edit/">new material</v-btn>
+        </v-card-title>
 
-      <material-filter
-        :materials="materials"
-        @emit-filter="setFilter"
-      />
-      <material-list
-        :materials="materials"
-        :loading="loading"
-        :totalItems="totalItems"
-        @options-updated="paginate"
-        @header-clicked="setSort"
-      />
-    </v-card>
+        <material-filter
+          :materials="materials"
+          @emit-filter="setFilter"
+        />
+        <material-list
+          :materials="materials"
+          :loading="loading"
+          :totalItems="totalItems"
+          @options-updated="paginate"
+          @header-clicked="setSort"
+        />
+      </v-card>
 
-    <icons-map />
+      <icons-map />
+    </div>
   </section>
 </template>
 

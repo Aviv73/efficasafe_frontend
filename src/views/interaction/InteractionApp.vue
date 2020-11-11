@@ -1,21 +1,23 @@
 <template>
   <section class="interaction-page">
-    <v-card v-if="interactions" class="mb-10">
-      <v-card-title>
-        Interactions collection
-        <v-spacer></v-spacer>
-        <v-btn color="primary" to="/interaction/edit/">new interaction</v-btn>
-      </v-card-title>
-      <interaction-filter
-        :interactions="interactions"
-        @emit-filter="setFilter"
-      />
-      <interaction-list
-        :interactions="interactions"
-        @toggle-is-active="toggleIsActive"
-      />
-    </v-card>
-    <icons-map />
+    <div class="container">
+      <v-card v-if="interactions" class="mb-10">
+        <v-card-title>
+          Interactions collection
+          <v-spacer></v-spacer>
+          <v-btn color="primary" to="/interaction/edit/">new interaction</v-btn>
+        </v-card-title>
+        <interaction-filter
+          :interactions="interactions"
+          @emit-filter="setFilter"
+        />
+        <interaction-list
+          :interactions="interactions"
+          @toggle-is-active="toggleIsActive"
+        />
+      </v-card>
+      <icons-map />
+    </div>
   </section>
 </template>
 

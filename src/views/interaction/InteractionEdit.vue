@@ -7,224 +7,232 @@
         @remove-item-confirmed="removeItemConfirmed"
       />
     </v-row>
-    <v-card class="interaction-edit" v-if="editedInteraction">
-      <v-btn
-        fab
-        class="submit-btn floating-btn"
-        large
-        elevation="5"
-        @click="onSaveInteraction(false)"
-        color="success"
-        title="Save Interaction"
-        :disabled="!isFormValid"
-      >
-        <v-icon>mdi-content-save-edit</v-icon>
-      </v-btn>
-      <v-form v-model="valid" @submit.prevent="onSaveInteraction(true)">
-        <div class="int-sides-active">
-          <v-card-title class="interaction-edit-title">
-            {{ editedInteraction._id ? 'Edit Interaction' : 'New Interaction' }}
-          </v-card-title>
-          <div class="active-container">
-            <label for="int-active">
-              {{ editedInteraction.isActive ? `Active` : `Not active` }}
-            </label>
-            <v-switch id="int-active" v-model="editedInteraction.isActive" />
-          </div>
-        </div>
-        <interaction-sides
-          :sides="sides"
-          @update-side="updateSide"
-          @remove-side="removeSide"
-          @side2-picked="setInteractionSide"
-        />
-        <v-textarea
-          type="text"
-          rows="1"
-          auto-grow
-          class="draft-input"
-          v-model="draftName"
-          :label="editedInteraction.side2Label ? 'Draft Name*' : 'Draft Name'"
-        />
-        <div class="int-rec-evi-row">
-          <v-select
-            :items="interaction.recommendation"
-            label="Recommendation Options"
-            v-model="interaction.recommendationSelected"
-            @change="
-              editedInteraction.recommendation =
-                interaction.recommendationSelected
-            "
-          ></v-select>
-          <v-select
-            :items="interaction.evidenceLevel"
-            label="Level of Evidence"
-            v-model="editedInteraction.evidenceLevel"
-          ></v-select>
-        </div>
-
-        <v-textarea
-          type="text"
-          rows="1"
-          auto-grow
-          v-model="editedInteraction.recommendation"
-          label="Recommandation"
-        />
-
-        <v-textarea
-          type="text"
-          rows="1"
-          auto-grow
-          v-model="editedInteraction.note"
-          label="Note"
-        />
-
-        <h3>
-          Summary:
-          <v-btn 
-            @click="handleRefsChange" 
-            depressed 
-            color="warning" 
-            :disabled="isRefsChanged('summary')"
-          >Update Refs</v-btn>
-        </h3>
-        <ckeditor
-          :config="CKEditorConfig"
-          v-model="editedInteraction.summary"
-        ></ckeditor>
+    <div class="interaction-edit-container" :class="{ 'portal-active': isPortalActive }">
+      <v-card class="interaction-edit" v-if="editedInteraction">
         <v-btn
-          v-if="side1MaterialRefs.length"
-          color="blue-grey"
-          class="ref-table-btn ma-2 white--text"
-          @click="refsTableDialog = true"
-        >
-          Upload References
-          <v-icon right dark> mdi-cloud-upload </v-icon>
-        </v-btn>
-
-        <h3>
-          Review Of Studies:
-          <v-btn 
-            @click="handleRefsChange" 
-            depressed 
-            color="warning" 
-            :disabled="isRefsChanged('reviewOfStudies')"
-          >Update Refs</v-btn>
-        </h3>
-        <ckeditor
-          :config="CKEditorConfig"
-          v-model="editedInteraction.reviewOfStudies"
-        ></ckeditor>
-        <v-btn
-          v-if="side1MaterialRefs.length"
-          color="blue-grey"
-          class="ref-table-btn ma-2 white--text"
-          @click="refsTableDialog = true"
-        >
-          Upload References
-          <v-icon right dark> mdi-cloud-upload </v-icon>
-        </v-btn>
-
-        <div class="list-chips">
-          <v-text-field
-            v-model="model.indications"
-            label="Indications"
-            @keypress.enter.prevent="addItemToArray('indications')"
-          />
-          <v-chip-group column>
-            <v-chip
-              v-for="(indication, idx) in editedInteraction.indications"
-              :key="idx"
-              close
-              @click:close="removeItem('indications', idx)"
-              >{{ indication }}</v-chip
-            >
-          </v-chip-group>
-        </div>
-
-        <div class="side-link-container">
-          <v-textarea
-            type="text"
-            rows="1"
-            auto-grow
-            v-model="editedInteraction.editorDraft.infoSide1"
-            label="Side 1 info"
-          />
-          <router-link
-            v-if="editedInteraction.side1Material"
-            :to="`/material/${editedInteraction.side1Material._id}`"
-            target="_blank"
-            >View Details</router-link
-          >
-        </div>
-
-        <div class="side-link-container">
-          <v-textarea
-            type="text"
-            rows="1"
-            auto-grow
-            v-model="editedInteraction.editorDraft.infoSide2"
-            label="Side 2 info"
-          />
-          <router-link
-            v-if="side2Id"
-            :to="`/material/${side2Id}`"
-            target="_blank"
-            >View Details</router-link
-          >
-        </div>
-
-        <v-textarea
-          type="text"
-          rows="1"
-          auto-grow
-          v-model="editedInteraction.editorDraft.general"
-          label="General"
-        />
-
-        <v-textarea
-          type="text"
-          rows="1"
-          auto-grow
-          v-model="editedInteraction.monitor.labTests"
-          label="Lab Tests"
-        />
-        <v-textarea
-          type="text"
-          rows="1"
-          auto-grow
-          v-model="editedInteraction.monitor.otherTests"
-          label="Other Tests"
-        />
-        <v-textarea
-          type="text"
-          rows="1"
-          auto-grow
-          v-model="editedInteraction.monitor.symptoms"
-          label="Symptoms"
-        />
-      </v-form>
-      <div class="form-actions">
-        <v-btn class="cancel-btn" to="/interaction/" color="normal"
-          >cancel</v-btn
-        >
-        <v-btn
-          class="submit-btn"
-          @click="onSaveInteraction(true)"
+          fab
+          class="submit-btn floating-btn"
+          large
+          elevation="5"
+          @click="onSaveInteraction(false)"
           color="success"
+          title="Save Interaction"
           :disabled="!isFormValid"
-          >Save Interaction</v-btn
         >
-      </div>
-    </v-card>
-    <v-dialog max-width="1400px" v-model="refsTableDialog">
+          <v-icon>mdi-content-save-edit</v-icon>
+        </v-btn>
+        <v-form v-model="valid" @submit.prevent="onSaveInteraction(true)">
+          <div class="int-sides-active">
+            <v-card-title class="interaction-edit-title">
+              {{ editedInteraction._id ? 'Edit Interaction' : 'New Interaction' }}
+            </v-card-title>
+            <div class="active-container">
+              <label for="int-active">
+                {{ editedInteraction.isActive ? `Active` : `Not active` }}
+              </label>
+              <v-switch id="int-active" v-model="editedInteraction.isActive" />
+            </div>
+          </div>
+          <interaction-sides
+            :sides="sides"
+            @update-side="updateSide"
+            @remove-side="removeSide"
+            @side2-picked="setInteractionSide"
+          />
+          <v-textarea
+            type="text"
+            rows="1"
+            auto-grow
+            class="draft-input"
+            v-model="draftName"
+            :label="editedInteraction.side2Label ? 'Draft Name*' : 'Draft Name'"
+          />
+          <div class="int-rec-evi-row">
+            <v-select
+              :items="interaction.recommendation"
+              label="Recommendation Options"
+              v-model="interaction.recommendationSelected"
+              @change="
+                editedInteraction.recommendation =
+                  interaction.recommendationSelected
+              "
+            ></v-select>
+            <v-select
+              :items="interaction.evidenceLevel"
+              label="Level of Evidence"
+              v-model="editedInteraction.evidenceLevel"
+            ></v-select>
+          </div>
+
+          <v-textarea
+            type="text"
+            rows="1"
+            auto-grow
+            v-model="editedInteraction.recommendation"
+            label="Recommandation"
+          />
+
+          <v-textarea
+            type="text"
+            rows="1"
+            auto-grow
+            v-model="editedInteraction.note"
+            label="Note"
+          />
+
+          <h3>
+            Summary:
+            <v-btn 
+              @click="handleRefsChange" 
+              depressed 
+              color="warning" 
+              :disabled="isRefsChanged('summary')"
+            >Update Refs</v-btn>
+          </h3>
+          <ckeditor
+            :config="CKEditorConfig"
+            v-model="editedInteraction.summary"
+          ></ckeditor>
+          <v-btn
+            :disabled="!interactionRefs.length"
+            color="blue-grey"
+            class="ref-table-btn ma-2 white--text"
+            @click="isPortalActive = true"
+          >
+            Upload References
+            <v-icon right dark> mdi-cloud-upload </v-icon>
+          </v-btn>
+
+          <h3>
+            Review Of Studies:
+            <v-btn 
+              @click="handleRefsChange" 
+              depressed 
+              color="warning" 
+              :disabled="isRefsChanged('reviewOfStudies')"
+            >Update Refs</v-btn>
+          </h3>
+          <ckeditor
+            :config="CKEditorConfig"
+            v-model="editedInteraction.reviewOfStudies"
+          ></ckeditor>
+          <v-btn
+            :disabled="!interactionRefs.length"
+            color="blue-grey"
+            class="ref-table-btn ma-2 white--text"
+            @click="isPortalActive = true"
+          >
+            Upload References
+            <v-icon right dark> mdi-cloud-upload </v-icon>
+          </v-btn>
+
+          <div class="list-chips">
+            <v-text-field
+              v-model="model.indications"
+              label="Indications"
+              @keypress.enter.prevent="addItemToArray('indications')"
+            />
+            <v-chip-group column>
+              <v-chip
+                v-for="(indication, idx) in editedInteraction.indications"
+                :key="idx"
+                close
+                @click:close="removeItem('indications', idx)"
+                >{{ indication }}</v-chip
+              >
+            </v-chip-group>
+          </div>
+
+          <div class="side-link-container">
+            <v-textarea
+              type="text"
+              rows="1"
+              auto-grow
+              v-model="editedInteraction.editorDraft.infoSide1"
+              label="Side 1 info"
+            />
+            <router-link
+              v-if="editedInteraction.side1Material"
+              :to="`/material/${editedInteraction.side1Material._id}`"
+              target="_blank"
+              >View Details</router-link
+            >
+          </div>
+
+          <div class="side-link-container">
+            <v-textarea
+              type="text"
+              rows="1"
+              auto-grow
+              v-model="editedInteraction.editorDraft.infoSide2"
+              label="Side 2 info"
+            />
+            <router-link
+              v-if="side2Id"
+              :to="`/material/${side2Id}`"
+              target="_blank"
+              >View Details</router-link
+            >
+          </div>
+
+          <v-textarea
+            type="text"
+            rows="1"
+            auto-grow
+            v-model="editedInteraction.editorDraft.general"
+            label="General"
+          />
+
+          <v-textarea
+            type="text"
+            rows="1"
+            auto-grow
+            v-model="editedInteraction.monitor.labTests"
+            label="Lab Tests"
+          />
+          <v-textarea
+            type="text"
+            rows="1"
+            auto-grow
+            v-model="editedInteraction.monitor.otherTests"
+            label="Other Tests"
+          />
+          <v-textarea
+            type="text"
+            rows="1"
+            auto-grow
+            v-model="editedInteraction.monitor.symptoms"
+            label="Symptoms"
+          />
+        </v-form>
+        <div class="form-actions">
+          <v-btn class="cancel-btn" to="/interaction/" color="normal"
+            >cancel</v-btn
+          >
+          <v-btn
+            class="submit-btn"
+            @click="onSaveInteraction(true)"
+            color="success"
+            :disabled="!isFormValid"
+            >Save Interaction</v-btn
+          >
+        </div>
+      </v-card>
+    <v-card class="portal-container">
+      <header>
+        <v-btn icon @click="isPortalActive = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </header>
       <reference-table
+        class="reference-table-shrink"
         :references="interactionRefs"
         :isInteraction="true"
         v-if="interactionRefs.length"
       />
-    </v-dialog>
-  </section>
+    </v-card>
+  </div>
+</section>
 </template>
 
 <script>
@@ -243,7 +251,7 @@ export default {
       itemToRemove: null,
       valid: true,
       dialog: false,
-      refsTableDialog: false,
+      isPortalActive: false,
       relatedMaterials: [],
       model: {
         indications: '',
@@ -278,7 +286,7 @@ export default {
     'editedInteraction.side1Material'() {
       if (this.editedInteraction.side1Material) {
         this.getReferences();
-      }
+      } else this.interactionRefs = [];
     }
   },
   computed: {
@@ -394,8 +402,6 @@ export default {
         matId,
       });
       this.side1MaterialRefs = [ ...material.refs ];
-      this.setInteractionRefs();
-      this.makeRefsSub();
     },
     removeSide(sideNum) {
       let side = `side${sideNum}Material`;
@@ -445,10 +451,10 @@ export default {
         }
 
         try {
-          // const savedLabel = await this.$store.dispatch({ type: 'saveLabel', label: newLabel });
-          // const relatedMaterialIds = this.relatedMaterials.map(mat => mat._id);
-          // /// update this.relatedMaterials labels with minimal label obj with _id
-          // console.log(savedLabel, relatedMaterialIds);
+          const savedLabel = await this.$store.dispatch({ type: 'saveLabel', label: newLabel });
+          const relatedMaterialIds = this.relatedMaterials.map(mat => mat._id);
+          /// update this.relatedMaterials labels with minimal label obj with _id
+          console.log(savedLabel, relatedMaterialIds);
           /// add the interaction with side2Label minimal obj with _id
         } catch (err) {
           console.log('Error:', err);

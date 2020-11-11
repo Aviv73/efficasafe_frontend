@@ -1,5 +1,5 @@
 <template>
-  <v-card width="400">
+  <v-card width="400" class="container">
     <v-card-title>Login</v-card-title>
     <v-card-text>
       <v-form v-model="valid" @submit.prevent="login(credentials)">

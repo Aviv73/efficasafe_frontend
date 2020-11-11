@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="container">
     <v-row justify="center">
       <confirm-delete-item
         :dialog="dialog"

@@ -45,11 +45,11 @@ function formatRefStrs(refStr) {
     for (let i = 0; i < formatedRefs.length; i++) {
       if (formatedRefs[i - 1] === undefined) formatedRefStr += formatedRefs[i];
 
-      if (formatedRefs[i] - formatedRefs[i - 1] > 1) {
+      if (Math.abs(formatedRefs[i] - formatedRefs[i - 1]) > 1) {
         if (isSequence) formatedRefStr += '-' + (formatedRefs[i - 1]);
         formatedRefStr += ',' + formatedRefs[i];
         isSequence = false;
-      } else if (formatedRefs[i] - formatedRefs[i - 1] === 1) isSequence = true;
+      } else if (Math.abs(formatedRefs[i] - formatedRefs[i - 1]) === 1) isSequence = true;
 
       if (i === (formatedRefs.length - 1) && formatedRefs[i - 1] !== undefined && isSequence) {
         formatedRefStr += '-' + formatedRefs[i];
