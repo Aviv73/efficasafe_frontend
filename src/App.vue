@@ -18,6 +18,11 @@ export default {
     navBar,
     appMessages,
   },
+  computed: {
+    loggedInUser() {
+      return this.$store.getters.loggedInUser;
+    }
+  },
   methods: {
     loadData() {
       const filterBy = {};
@@ -26,7 +31,7 @@ export default {
     }
   },
   created() {
-    this.loadData();
+    if (this.loggedInUser) this.loadData();
   }
 };
 </script>

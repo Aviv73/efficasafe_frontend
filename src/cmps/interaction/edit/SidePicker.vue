@@ -79,7 +79,7 @@
 
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="normal" @click="cancelSelection">Cancel</v-btn>
+      <v-btn color="normal" @click="closePicker">Cancel</v-btn>
       <v-btn 
         color="primary" 
         @click="emitInteractionSides"
@@ -151,8 +151,7 @@ export default {
     setSelection(atcSelection) {
       this.atcSelection = atcSelection.filter((atcNode) => atcNode._id);
     },
-    cancelSelection() {
-      this.atcSelection = [];
+    closePicker() {
       this.$emit('close-dialog');
     },
     emitInteractionSides() {
@@ -164,7 +163,7 @@ export default {
         delete mat.parentId;
       });
       this.$emit('side2-picked', interactionSides);
-      this.$emit('close-dialog');
+      this.closePicker();
     },
   },
   components: {

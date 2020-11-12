@@ -33,6 +33,13 @@ export const materialStore = ({
         },
         importRefSheet(state, { refSheet }) {
             return materialService.importRefSheet(refSheet);
+        },
+        setMaterialLabels(state, { data }) {
+            data.ids.forEach(id => {
+                const material = state.materials.find(mat => mat._id === id);
+                const isExists = !!material.labels.find(label => label._id === data.label._id);
+                if (!isExists) material.labels.push(data.label);
+            });
         }
     },
     actions: {
@@ -67,6 +74,12 @@ export const materialStore = ({
                 type: "removeMaterial",
                 matId
             });
+        },
+        async updateMaterials(context, { data }) {
+            const res = await materialService.updateMaterials(data);
+            if (res.ok) {
+                context.commit({ type: 'setMaterialLabels', data });
+            }
         }
     }
 })

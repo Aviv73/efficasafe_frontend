@@ -107,8 +107,7 @@
           <v-chip
             v-for="(indication, idx) in interaction.indications"
             :key="idx"
-            >{{ indication }}</v-chip
-          >
+            >{{ indication }}</v-chip>
         </v-chip-group>
 
         <h3 class="info-title">Lab Tests:</h3>
@@ -259,8 +258,9 @@ export default {
         elTooltip.classList.add('refs-tooltip');
         let htmlStr = '<ul>';
         for (let j = 0; j < refs.length; j++) {
+          const draftIdx = this.interactionRefs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx) + 1;
           htmlStr += `<li class="tooltip-item">
-            <p><span>${refs[j].draftIdx}</span>.${refs[j].txt}</p>
+            <p><span>${draftIdx}</span>.${refs[j].txt}</p>
             <a href="${refs[j].link}" target="_blank">${refs[j].link}</a>
           </li>`;
         }
@@ -289,6 +289,6 @@ export default {
     confirmDelete,
     referenceTable,
     iconsMap,
-  },
+  }
 };
 </script>

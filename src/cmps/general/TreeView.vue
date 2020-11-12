@@ -1,11 +1,22 @@
 <template>
   <section class="tree-view">
-    <v-btn 
-      color="secondary" 
-      v-if="depth === 0" 
-      class="close-btn"
-      @click="closeAllBranches"
+    <div class="btns">
+
+      <v-btn 
+        elevation="0"
+        color="primary lighten-1" 
+        v-if="depth === 0" 
+        class="close-btn"
+        @click="closeAllBranches"
       >Close All</v-btn>
+      <v-btn 
+        elevation="0"
+        color="warning lighten-1" 
+        v-if="depth === 0" 
+        class="close-btn"
+        @click="cleanSelection"
+      >Clear All</v-btn>
+    </div>
     <ul>
       <li
         v-for="item in items"
@@ -33,10 +44,8 @@
             type="checkbox"
             :ref="`selectionInput_${item[itemKey]}`"
             :checked="isChecked(item)"
-            v-if="
-              ((item.children && item.children.length) || item._id) &&
-              depth >= 2
-            "
+            :disabled="depth < 2"
+            v-if="((item.children && item.children.length) || item._id)"
             @input="handleSelection($event.target.checked, item)"
           />
         </span>
@@ -100,7 +109,7 @@ export default {
     depth: {
       type: Number,
       required: true
-    },
+    }
   },
   branchIdsMap: {},
   data() {
@@ -117,7 +126,7 @@ export default {
       } else {
         this.closeAllBranches();
       }
-    },
+    }
   },
   computed: {
     labelTxt() {
@@ -132,6 +141,11 @@ export default {
     }
   },
   methods: {
+    cleanSelection() {
+      /// maybe pass it down to each cmp React style and call from childs
+      this.selection = [];
+      this.emitSelection();
+    },
     closeAllBranches() {
       this.openBranches = [];
     },
@@ -236,6 +250,17 @@ export default {
     emitSelection() {
       this.$emit('selection-changed', this.selection);
     },
+    makeBranchIdsMap() {
+      const { branchIdsMap } = this.$options;
+      const visitFunc = (node) => {
+        if (!branchIdsMap[node[this.itemKey]]) {
+          branchIdsMap[node[this.itemKey]] = node;
+        }
+      }
+      this.items.forEach(item => {
+        this.traverse(item, 0, visitFunc);
+      });
+    },
     traverse(node, depth, visitFn) {
       visitFn(node, depth);
       if (node.children) {
@@ -246,22 +271,21 @@ export default {
     }
   },
   created() {
-    const { branchIdsMap } = this.$options;
-    const makeBranchIdsMap = (node) => {
-      if (!branchIdsMap[node[this.itemKey]]) {
-        branchIdsMap[node[this.itemKey]] = node;
-      }
-    }
-    this.items.forEach(item => {
-      this.traverse(item, 0, makeBranchIdsMap);
-    });
+    this.makeBranchIdsMap();
   }
 };
 </script>
 
 <style scoped lang="scss">
-.close-btn {
+.btns {
   float: right;
+
+  .close-btn {
+    display: block;
+    &:first-child {
+      margin-bottom: 12px;
+    }
+  }
 }
 h6 {
   display: inline;

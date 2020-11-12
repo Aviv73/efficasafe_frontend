@@ -38,7 +38,7 @@
         <side-picker 
           @close-dialog="isDialogActive = false"
           @side2-picked="$emit('side2-picked', $event)"
-          ></side-picker>
+        ></side-picker>
       </v-dialog>
     </div>
   </section>

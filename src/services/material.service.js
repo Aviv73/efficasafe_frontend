@@ -9,6 +9,7 @@ export const materialService = {
     remove,
     restore,
     getEmptyMaterial,
+    updateMaterials,
     getEmptyRef
 }
 
@@ -22,15 +23,19 @@ function getById(id) {
 
 function save(material) {
     if (material._id) return httpService.put(`${END_POINT}/${material._id}`, material);
-    else return httpService.post(`${END_POINT}`, material);
+    else return httpService.post(END_POINT, material);
 }
 
 function restore(material) {
-    return httpService.post(`${END_POINT}`, material);
+    return httpService.post(END_POINT, material);
 }
 
 function remove(id) {
     httpService.delete(`${END_POINT}/${id}`);
+}
+
+function updateMaterials(data) {
+    return httpService.put(END_POINT, data);
 }
 
 function getEmptyMaterial() {

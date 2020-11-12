@@ -12,10 +12,23 @@
 .portal-container {
     flex-basis: 0;
     padding: 0;
-    margin-bottom: 16px;
+    z-index: 1;
+    margin: 8px 0 24px 0;
     overflow: hidden;
     transition: flex-basis .4s linear;
 
+    .table-container {
+        position: absolute;
+        top: 12px;
+        left: 0;
+        width: 100%;
+        padding: 0 8px;
+
+        aside {
+            position: fixed;
+            width: 48%;
+        }
+    }
     header {
         direction: rtl;
         margin-bottom: 8px;
@@ -47,6 +60,7 @@
         position: fixed;
         bottom: 24px;
         right: 24px;
+        z-index: 9;
     }
     .form-actions {
         align-self: flex-end;

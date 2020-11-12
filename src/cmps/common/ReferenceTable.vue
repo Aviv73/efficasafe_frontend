@@ -28,10 +28,13 @@
                         {{ value }}
                     </a>
                 </template>
-                <template #[`item.txt`]="{ value }">
+                <template #[`item.txt`]="{ value, item }">
                     <p>
                         {{ value }}
                     </p>
+                    <a :href="item.link" v-if="isShrinked" target="_blank">
+                        {{ item.link }}
+                    </a>
                 </template>
                 <template #[`item.draftIdx`]="{ value, item }">
                     <span>
@@ -62,6 +65,10 @@ export default {
             default: false
         },
         isEdit: {
+            type: Boolean,
+            default: false
+        },
+        isShrinked: {
             type: Boolean,
             default: false
         }
@@ -111,6 +118,7 @@ export default {
     },
     computed: {
         computedHeaders() {
+            if (this.isShrinked) return this.headers.filter(header => header.text !== 'Link' && header.text !== 'Actions');
             return (this.isEdit) ? this.headers : this.headers.filter(header => header.text !== 'Actions');
         }
     },
