@@ -10,18 +10,30 @@
     <div class="interaction-edit-container" :class="{ 'portal-active': isPortalActive }">
       <section class="interaction-edit" v-if="editedInteraction">
         <v-card>
-          <v-btn
-            fab
-            class="submit-btn floating-btn"
-            large
-            elevation="5"
-            @click="onSaveInteraction(false)"
-            color="success"
-            title="Save Interaction"
-            :disabled="!isFormValid"
-          >
+          <div class="floating-btns">
+            <v-btn 
+              fab
+              class="warning-btn"
+              @click="handleRefsChange" 
+              elevation="5"
+              color="warning" 
+              title="Update References"
+              :disabled="isRefsChanged('summary') && isRefsChanged('reviewOfStudies')"
+            >
+              <v-icon>mdi-table-refresh</v-icon>
+            </v-btn>
+            <v-btn
+              fab
+              class="submit-btn"
+              elevation="5"
+              @click="onSaveInteraction(false)"
+              color="success"
+              title="Save Interaction"
+              :disabled="!isFormValid"
+            >
             <v-icon>mdi-content-save-edit</v-icon>
-          </v-btn>
+            </v-btn>
+          </div>
           <v-form v-model="valid" @submit.prevent="onSaveInteraction(true)">
             <div class="int-sides-active">
               <v-card-title class="interaction-edit-title">
@@ -98,9 +110,9 @@
               :disabled="!interactionRefs.length"
               color="blue-grey"
               class="ref-table-btn ma-2 white--text"
-              @click="isPortalActive = true"
+              @click="showRefsTable"
             >
-              Upload References
+              Show References
               <v-icon right dark> mdi-cloud-upload </v-icon>
             </v-btn>
 
@@ -121,9 +133,9 @@
               :disabled="!interactionRefs.length"
               color="blue-grey"
               class="ref-table-btn ma-2 white--text"
-              @click="isPortalActive = true"
+              @click="showRefsTable"
             >
-              Upload References
+              Show References
               <v-icon right dark> mdi-cloud-upload </v-icon>
             </v-btn>
 
@@ -152,12 +164,15 @@
                 v-model="editedInteraction.editorDraft.infoSide1"
                 label="Side 1 info"
               />
-              <router-link
+              <v-btn 
+                class="details-btn"
+                x-small
+                depressed
                 v-if="editedInteraction.side1Material"
-                :to="`/material/${editedInteraction.side1Material._id}`"
-                target="_blank"
-                >View Details</router-link
+                @click="showSideDetails(editedInteraction.side1Material._id)"
               >
+                Show Details
+              </v-btn>
             </div>
 
             <div class="side-link-container">
@@ -168,12 +183,15 @@
                 v-model="editedInteraction.editorDraft.infoSide2"
                 label="Side 2 info"
               />
-              <router-link
-                v-if="side2Id"
-                :to="side2Link"
-                target="_blank"
-                >View Details</router-link
+              <v-btn 
+                class="details-btn"
+                x-small
+                depressed
+                v-if="editedInteraction.side2Material && editedInteraction.side2Material._id"
+                @click="showSideDetails(editedInteraction.side2Material._id)"
               >
+                Show Details
+              </v-btn>
             </div>
 
             <v-textarea
@@ -224,17 +242,23 @@
       <div class="table-container">
         <aside>
           <header>
-            <v-btn icon @click="isPortalActive = false">
+            <v-btn icon @click="closePortal">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </header>
-          <reference-table
-              class="reference-table-shrink"
-              :references="interactionRefs"
-              :isInteraction="true"
-              :isShrinked="true"
-              v-if="interactionRefs.length"
-          />
+          <transition name="fade">
+            <reference-table
+                class="reference-table-shrink"
+                :references="interactionRefs"
+                :isInteraction="true"
+                :isShrinked="true"
+                v-if="refsTableActive"
+            />
+            <side-details 
+              :id="viewedSideId" 
+              v-if="sideDetailsActive"
+            />
+          </transition>
         </aside>
       </div>
     </v-card>
@@ -249,6 +273,7 @@ import { eventBus, EV_addInteraction } from '@/services/eventBus.service';
 import interactionSides from '@/cmps/interaction/edit/InteractionSides';
 import referenceTable from '@/cmps/common/ReferenceTable';
 import confirmDeleteItem from '@/cmps/common/ConfirmDeleteItem';
+import sideDetails from '@/cmps/interaction/edit/SideDetails';
 import CKEditor from 'ckeditor4-vue';
 
 export default {
@@ -259,6 +284,9 @@ export default {
       valid: true,
       dialog: false,
       isPortalActive: false,
+      refsTableActive: false,
+      sideDetailsActive: false,
+      viewedSideId: '',
       relatedMaterials: [],
       model: {
         indications: '',
@@ -337,19 +365,31 @@ export default {
           this.editedInteraction.side2DraftName)
       );
     },
-    side2Id() {
-      if (this.editedInteraction.side2Material)
-        return this.editedInteraction.side2Material._id;
-      if (this.editedInteraction.side2Label)
-        return this.editedInteraction.side2Label._id;
-      return '';
-    },
-    side2Link() {
-      const endPoint = (this.editedInteraction.side2Material) ? 'material' : 'label';
-      return `/${endPoint}/${this.side2Id}`;
-    }
+    // side2Id() {
+    //   if (this.editedInteraction.side2Material)
+    //     return this.editedInteraction.side2Material._id;
+    //   if (this.editedInteraction.side2Label)
+    //     return this.editedInteraction.side2Label._id;
+    //   return '';
+    // }
   },
   methods: {
+    closePortal() {
+      this.isPortalActive = false;
+      this.sideDetailsActive = false;
+      this.refsTableActive = false;
+    },
+    showSideDetails(id) {
+      this.isPortalActive = true;
+      this.refsTableActive = false;
+      this.sideDetailsActive = true;
+      this.viewedSideId = id;
+    },
+    showRefsTable() {
+      this.isPortalActive = true;
+      this.refsTableActive = true;
+      this.sideDetailsActive = false;
+    },
     isRefsChanged(property) {
       const refsOrder = interactionService.getRefsOrder(this.editedInteraction[property]);
       return !refsOrder.length;
@@ -538,13 +578,26 @@ export default {
   },
   async created() {
     await this.loadInteraction();
+    if (this.editedInteraction.side1Material) {
+      this.setInteractionRefs();
+    }
     this.getRelatedMaterials();
   },
   components: {
     interactionSides,
     confirmDeleteItem,
     referenceTable,
+    sideDetails,
     ckeditor: CKEditor.component,
   },
 };
 </script>
+
+<style lang="scss" scoped>
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .4s;
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
+</style>

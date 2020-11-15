@@ -9,6 +9,9 @@
     flex-basis: 50%;
     padding: 8px;
 }
+.interaction-edit-container.portal-active .floating-btns {
+    right: calc(50% + 36px);
+}
 .portal-container {
     flex-basis: 0;
     padding: 0;
@@ -27,6 +30,16 @@
         aside {
             position: fixed;
             width: 48%;
+            
+            .reference-table-shrink, .side-details {
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+            .side-details {
+                .v-chip {
+                    cursor: default;
+                }
+            }
         }
     }
     header {
@@ -56,26 +69,32 @@
         align-self: flex-start;
         padding: 16px 0 0 0;
     }
-    .floating-btn {
+    .floating-btns {
         position: fixed;
-        bottom: 24px;
+        bottom: 36px;
         right: 24px;
         z-index: 9;
+        transition: right .4s linear;
+
+        button:first-child {
+            margin-right: 12px;
+        }
     }
     .form-actions {
         align-self: flex-end;
         display: flex;
+        padding: 0 6px;
+        margin: 12px 0 6px;
 
         .cancel-btn {
             margin-inline-end: 8px;
         }
-        margin: 12px 0 6px;
     }
 
     .side-link-container {
         position: relative;
 
-        a {
+        .details-btn {
             position: absolute;
             right: 0;
             top: 20px;

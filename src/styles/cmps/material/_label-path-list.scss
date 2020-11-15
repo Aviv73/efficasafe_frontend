@@ -4,7 +4,9 @@
     align-items: flex-start;
     text-align: start;
     
-
+    &.narrow .path-container {
+        grid-template-columns: 1fr auto;
+    }
     .path-container {
         padding: 0 8px;
         margin-bottom: 8px;

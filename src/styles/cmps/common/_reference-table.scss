@@ -17,6 +17,10 @@
     &-shrink {
         td {
             max-width: 250px;
+
+            p {
+                margin-bottom: 0;
+            }
         }
     }
 }

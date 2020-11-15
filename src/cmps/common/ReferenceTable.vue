@@ -17,6 +17,8 @@
                 ></v-text-field>
             </v-card-title>
             <v-data-table
+                :hide-default-footer="isShrinked"
+                :disable-pagination="isShrinked"
                 :headers="computedHeaders"
                 :items="references"
                 :items-per-page="5"
@@ -32,13 +34,13 @@
                     <p>
                         {{ value }}
                     </p>
-                    <a :href="item.link" v-if="isShrinked" target="_blank">
+                    <a :href="item.link" target="_blank">
                         {{ item.link }}
                     </a>
                 </template>
                 <template #[`item.draftIdx`]="{ value, item }">
                     <span>
-                        {{ isInteraction ? value + ` (${RefIdxForDisplay(item)})` : value }}
+                        {{ isInteraction ? `${RefIdxForDisplay(item)} (${value})` : value }}
                     </span>
                 </template>
                 <template #[`item.actions`]="{ item }">
@@ -84,28 +86,16 @@ export default {
                     value: 'draftIdx',
                 },
                 {
-                    text: 'Type',
-                    align: 'start',
-                    sortable: true,
-                    value: 'type',
-                },
-                {
                     text: 'Text',
                     align: 'start',
                     sortable: true,
                     value: 'txt',
                 },
                 {
-                    text: 'Link',
-                    align: 'start',
-                    sortable: false,
-                    value: 'link',
-                },
-                {
-                    text: 'PubmedId',
+                    text: 'Type',
                     align: 'start',
                     sortable: true,
-                    value: 'pubmedId',
+                    value: 'type',
                 },
                 {
                     text: 'Actions',
@@ -118,7 +108,6 @@ export default {
     },
     computed: {
         computedHeaders() {
-            if (this.isShrinked) return this.headers.filter(header => header.text !== 'Link' && header.text !== 'Actions');
             return (this.isEdit) ? this.headers : this.headers.filter(header => header.text !== 'Actions');
         }
     },

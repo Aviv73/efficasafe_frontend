@@ -211,7 +211,7 @@ export default {
       });
     },
     isItemSelected(items) {
-        const itemKey = (items[0]._id) ? '_id' : 'id';
+        const itemKey = (items[0] && items[0]._id) ? '_id' : 'id';
         return items.some((item) => {
           return this.selection.find(
             (selectedItem) => selectedItem[itemKey] === item[itemKey]
@@ -272,6 +272,18 @@ export default {
   },
   created() {
     this.makeBranchIdsMap();
+
+    this.items.forEach(item => {
+      /// not strong enough cause the selected one can be nth degree offspring, not a direct child
+      /// i need to traverse all the way down, find that selected offsprings
+      /// and use this.getNodePath and indeterminate it
+      if (item.children) {
+        if (this.isItemSelected(item.children)) {
+          console.log('I open!', item.id);
+        }
+
+      }
+    });
   }
 };
 </script>
