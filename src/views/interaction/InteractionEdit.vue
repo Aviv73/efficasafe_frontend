@@ -95,12 +95,6 @@
 
             <h3>
               Summary:
-              <v-btn 
-                @click="handleRefsChange" 
-                depressed 
-                color="warning" 
-                :disabled="isRefsChanged('summary')"
-              >Update Refs</v-btn>
             </h3>
             <ckeditor
               :config="CKEditorConfig"
@@ -118,12 +112,6 @@
 
             <h3>
               Review Of Studies:
-              <v-btn 
-                @click="handleRefsChange" 
-                depressed 
-                color="warning" 
-                :disabled="isRefsChanged('reviewOfStudies')"
-              >Update Refs</v-btn>
             </h3>
             <ckeditor
               :config="CKEditorConfig"
@@ -364,14 +352,7 @@ export default {
             this.editedInteraction.side2DraftName) ||
           this.editedInteraction.side2DraftName)
       );
-    },
-    // side2Id() {
-    //   if (this.editedInteraction.side2Material)
-    //     return this.editedInteraction.side2Material._id;
-    //   if (this.editedInteraction.side2Label)
-    //     return this.editedInteraction.side2Label._id;
-    //   return '';
-    // }
+    }
   },
   methods: {
     closePortal() {

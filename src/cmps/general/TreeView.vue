@@ -75,6 +75,9 @@
 </template>
 
 <script>
+import { utilService } from '@/services/util.service';
+import { eventBus, EV_emptySelection } from '@/services/eventBus.service';
+
 export default {
   name: 'tree-view',
   props: {
@@ -132,7 +135,7 @@ export default {
     labelTxt() {
       return (txt) => {
         if (!this.search) return txt;
-        const regex = new RegExp(this.search, 'i');
+        const regex = new RegExp(utilService.escapeStrRegex(this.search), 'i');
         return txt.replace(
           regex,
           `<span style="background-color: yellow">${this.search.toUpperCase()}</span>`
@@ -142,7 +145,17 @@ export default {
   },
   methods: {
     cleanSelection() {
-      /// maybe pass it down to each cmp React style and call from childs
+      const removeFromSelection = (node) => {
+        const itemKey = (node._id) ? '_id' : 'id';
+        if (this.selection.find((currItem) => currItem[itemKey] === node[itemKey])) {
+          const idx = this.selection.findIndex((currItem) => currItem[itemKey] === node[itemKey]);
+          this.selection.splice(idx, 1);
+          eventBus.$emit(EV_emptySelection, node.parentId);
+        }
+      }
+      this.items.forEach(item => {
+        this.traverse(item, 0, removeFromSelection);
+      });
       this.selection = [];
       this.emitSelection();
     },
@@ -250,6 +263,33 @@ export default {
     emitSelection() {
       this.$emit('selection-changed', this.selection);
     },
+    unIndeterminateInput(id) {
+      const elSelectionInputs = this.$refs[`selectionInput_${id}`];
+      if (elSelectionInputs && elSelectionInputs.length) {
+        elSelectionInputs[0].indeterminate = false;
+        if (this.parentId) {
+          eventBus.$emit(EV_emptySelection, this.parentId);
+        }
+      }
+    },
+    checkOffspringSelected() {
+      const indeterminatePaths = (node) => {
+        const itemKey = (node._id) ? '_id' : 'id';
+        if (this.selection.find(currNode => currNode[itemKey] === node[itemKey])) {
+          const path = [];
+          this.getNodePath(node, path);
+          const item = this.items.find(currItem => path.includes(currItem[this.itemKey]));
+          this.$nextTick(() => {
+            if (item) {
+              this.$refs[`selectionInput_${item[this.itemKey]}`][0].indeterminate = true;
+            }
+          });
+        }
+      }
+      this.items.forEach(item => {
+        this.traverse(item, 0, indeterminatePaths);
+      });
+    },
     makeBranchIdsMap() {
       const { branchIdsMap } = this.$options;
       const visitFunc = (node) => {
@@ -272,18 +312,8 @@ export default {
   },
   created() {
     this.makeBranchIdsMap();
-
-    this.items.forEach(item => {
-      /// not strong enough cause the selected one can be nth degree offspring, not a direct child
-      /// i need to traverse all the way down, find that selected offsprings
-      /// and use this.getNodePath and indeterminate it
-      if (item.children) {
-        if (this.isItemSelected(item.children)) {
-          console.log('I open!', item.id);
-        }
-
-      }
-    });
+    eventBus.$on(EV_emptySelection, this.unIndeterminateInput);
+    this.checkOffspringSelected();
   }
 };
 </script>
@@ -305,7 +335,7 @@ h6 {
 h6:hover {
   background-color: darken(white, 10%);
 }
-[type='checkbox']:indeterminate {
+[type=checkbox]:indeterminate {
   outline: 1px solid #1976d2;
 }
 .expandInput:checked + .v-icon {

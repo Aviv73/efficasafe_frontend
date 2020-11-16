@@ -81,7 +81,7 @@ export default {
             headers: [
                 {
                     text: '#',
-                    align: 'start',
+                    align: 'center',
                     sortable: true,
                     value: 'draftIdx',
                 },

@@ -1,5 +1,6 @@
 export const utilService = {
-    makeId
+    makeId,
+    escapeStrRegex
 }
 
 function makeId(length = 10) {
@@ -10,3 +11,7 @@ function makeId(length = 10) {
     }
     return id;
 }
+
+function escapeStrRegex(str) {
+    return str.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
+  }

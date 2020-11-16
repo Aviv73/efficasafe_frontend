@@ -36,9 +36,9 @@
             </div>
 
             <v-card class="info-container">
-                <v-card-title class="material-details-title">{{
-                    material.name
-                }}</v-card-title>
+                <v-card-title class="material-details-title">
+                    {{ material.name }}
+                </v-card-title>
 
                 <h3 class="info-title">Type:</h3>
                 <div class="info-value">{{ material.type }}</div>
@@ -48,6 +48,20 @@
 
                 <h3 class="info-title" v-if="material.drugBankId">DrugBank ID:</h3>
                 <div class="info-value" v-if="material.drugBankId">{{ material.drugBankId }}</div>
+
+                <h3 class="info-title" v-if="material.aliases.length">Synonyms:</h3>
+                <v-chip-group column v-if="material.aliases.length">
+                    <v-chip v-for="(alias, idx) in material.aliases" :key="idx">{{
+                        alias
+                    }}</v-chip>
+                </v-chip-group>
+
+                <h3 class="info-title" v-if="material.brands.length">Brands:</h3>
+                <v-chip-group column v-if="material.brands.length">
+                    <v-chip v-for="(brand, idx) in material.brands" :key="idx">
+                        {{ brand }}
+                    </v-chip>
+                </v-chip-group>
 
                 <h3
                     class="info-title"
@@ -62,11 +76,14 @@
                     {{ material.botanicalFamily }}
                 </div>
 
+                <h3 class="info-title" v-if="material.desc">Description:</h3>
+                <p class="info-value" v-if="material.desc" v-html="material.desc"></p>
+
                 <h3
                     class="info-title"
                     v-if="material.type === 'herb' && material.plantPartUsed"
                 >
-                    Botanical Family
+                    Plant Part Used
                 </h3>
                 <div
                     class="info-value"
@@ -75,33 +92,54 @@
                     {{ material.plantPartUsed }}
                 </div>
 
-                <h3 class="info-title" v-if="material.desc">Description:</h3>
-                <p class="info-value" v-if="material.desc" v-html="material.desc"></p>
+                <h3 class="info-title" v-if="material.qualities.length">
+                    Qualities:
+                </h3>
+                <div class="info-value" v-if="material.qualities.length">
+                    <v-chip-group column>
+                        <v-chip
+                            v-for="(quality, idx) in material.qualities"
+                            :key="idx"
+                            >{{ quality }}</v-chip
+                        >
+                    </v-chip-group>
+                </div>
+
+                <h3 class="info-title" v-if="material.activeConstituents">
+                    Active Constituents:
+                </h3>
+                <div
+                    class="info-value"
+                    v-if="material.activeConstituents"
+                    v-html="material.activeConstituents"
+                ></div>
+
+                <h3 class="info-title" v-if="material.medicinalActions.length">
+                    Medicinal Actions:
+                </h3>
+                <div class="info-value" v-if="material.medicinalActions.length">
+                    <v-chip-group column>
+                        <v-chip
+                            v-for="(medAction, idx) in material.medicinalActions"
+                            :key="idx"
+                            >{{ medAction }}</v-chip
+                        >
+                    </v-chip-group>
+                </div>
+
+                <h3 class="info-title" v-if="material.indications.length">Indications:</h3>
+                <v-chip-group column v-if="material.indications.length">
+                    <v-chip
+                        v-for="(indication, idx) in material.indications"
+                        :key="idx"
+                        >{{ indication }}</v-chip
+                    >
+                </v-chip-group>
 
                 <h3 class="info-title" v-if="material.dosage">Dosage:</h3>
                 <p class="info-value" v-if="material.dosage">
                     {{ material.dosage }}
                 </p>
-
-                <h3 class="info-title" v-if="material.draft">Draft:</h3>
-                <div class="info-value" v-if="material.draft">
-                    {{ material.draft }}
-                </div>
-
-                <h3 class="info-title" v-if="material.mechanismOfAction">
-                    Mechanism Of Action:
-                </h3>
-                <div
-                    class="info-value"
-                    v-if="material.mechanismOfAction"
-                    v-html="material.mechanismOfAction"
-                ></div>
-
-                <h3 class="info-title" v-if="material.precautions">Precautions:</h3>
-                <p class="info-value" v-if="material.precautions" v-html="txtWithRefs('precautions')"></p>
-
-                <h3 class="info-title" v-if="material.adverseReactions">Adverse Reactions:</h3>
-                <p class="info-value" v-if="material.adverseReactions" v-html="txtWithRefs('adverseReactions')"></p>
 
                 <h3 class="info-title" v-if="material.sensitivities">
                     Sensitivities:
@@ -112,12 +150,18 @@
                     v-html="material.sensitivities"
                 ></p>
 
+                <h3 class="info-title" v-if="material.adverseReactions">Adverse Reactions:</h3>
+                <p class="info-value" v-if="material.adverseReactions" v-html="txtWithRefs('adverseReactions')"></p>
+
                 <h3 class="info-title" v-if="material.overdosage">Overdosage:</h3>
                 <p
                     class="info-value"
                     v-if="material.overdosage"
                     v-html="txtWithRefs('overdosage')"
                 ></p>
+
+                <h3 class="info-title" v-if="material.precautions">Precautions:</h3>
+                <p class="info-value" v-if="material.precautions" v-html="txtWithRefs('precautions')"></p>
 
                 <h3 class="info-title" v-if="material.contraindications">
                     Contraindications:
@@ -167,61 +211,26 @@
                     v-html="txtWithRefs('detailedPharmacology')"
                 ></p>
 
+                 <h3 class="info-title" v-if="material.mechanismOfAction">
+                    Mechanism Of Action:
+                </h3>
+                <div
+                    class="info-value"
+                    v-if="material.mechanismOfAction"
+                    v-html="material.mechanismOfAction"
+                ></div>
+
+                <h3 class="info-title" v-if="material.draft">Draft:</h3>
+                <div class="info-value" v-if="material.draft">
+                    {{ material.draft }}
+                </div>
+
                 <h3 class="info-title" v-if="material.editorDraft">
                     Editor draft:
                 </h3>
                 <p class="info-value" v-if="material.editorDraft">
                     {{ material.editorDraft }}
                 </p>
-
-                <h3 class="info-title" v-if="material.medicinalActions.length">
-                    Medicinal Actions:
-                </h3>
-                <div class="info-value" v-if="material.medicinalActions.length">
-                    <v-chip-group column>
-                        <v-chip
-                            v-for="(medAction, idx) in material.medicinalActions"
-                            :key="idx"
-                            >{{ medAction }}</v-chip
-                        >
-                    </v-chip-group>
-                </div>
-
-                <h3 class="info-title" v-if="material.activeConstituents">
-                    Active Constituents:
-                </h3>
-                <div
-                    class="info-value"
-                    v-if="material.activeConstituents"
-                    v-html="material.activeConstituents"
-                ></div>
-
-                <h3 class="info-title" v-if="material.qualities.length">
-                    Qualities:
-                </h3>
-                <div class="info-value" v-if="material.qualities.length">
-                    <v-chip-group column>
-                        <v-chip
-                            v-for="(quality, idx) in material.qualities"
-                            :key="idx"
-                            >{{ quality }}</v-chip
-                        >
-                    </v-chip-group>
-                </div>
-
-                <h3 class="info-title" v-if="material.aliases.length">Synonyms:</h3>
-                <v-chip-group column v-if="material.aliases.length">
-                    <v-chip v-for="(alias, idx) in material.aliases" :key="idx">{{
-                        alias
-                    }}</v-chip>
-                </v-chip-group>
-
-                <h3 class="info-title" v-if="material.brands.length">Brands:</h3>
-                <v-chip-group column v-if="material.brands.length">
-                    <v-chip v-for="(brand, idx) in material.brands" :key="idx">
-                        {{ brand }}
-                    </v-chip>
-                </v-chip-group>
 
                 <h3 class="info-title" v-if="material.regions.length">Regions:</h3>
                 <v-chip-group column v-if="material.regions.length">
@@ -235,15 +244,6 @@
                         </v-avatar>
                         {{ region.toUpperCase() }}
                     </v-chip>
-                </v-chip-group>
-
-                <h3 class="info-title" v-if="material.indications.length">Indications:</h3>
-                <v-chip-group column v-if="material.indications.length">
-                    <v-chip
-                        v-for="(indication, idx) in material.indications"
-                        :key="idx"
-                        >{{ indication }}</v-chip
-                    >
                 </v-chip-group>
 
                 <h3 class="info-title" v-if="material.subMaterials.length">

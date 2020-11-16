@@ -85,7 +85,11 @@ export default {
         let { page, itemsPerPage } = this.tableData;
         criteria.limit = itemsPerPage;
         criteria.page = --page;
-      } else criteria.limit = 10;
+      } else { 
+        criteria.limit = 10;
+        criteria.sortBy = [ 'type', 'name' ];
+        criteria.isDesc = [ true, false ];
+      }
       if (criteria.q) criteria.page = 0;
 
       await this.$store.dispatch({ type: 'loadMaterials', criteria });

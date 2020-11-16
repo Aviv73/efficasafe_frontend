@@ -101,6 +101,10 @@ export default {
       search: '',
       atcSelection: [],
       materialSelection: [],
+      sortBy: {
+        sortBy: [ 'type', 'name' ],
+        isDesc: [ true, false ]
+      }
     };
   },
   computed: {
@@ -111,7 +115,7 @@ export default {
   methods: {
     async infiScrollHandler($state) {
       this.$options.currPage++;
-      await this.loadMaterials();
+      await this.loadMaterials(this.sortBy);
 
       if (this.materials.length < 20) $state.complete();
       else {
@@ -120,11 +124,12 @@ export default {
         }, 100);
       }
     },
-    async loadMaterials() {
+    async loadMaterials(sortBy = {}) {
       const currPage = this.search ? 0 : this.$options.currPage;
       const criteria = {
+        ...sortBy,
         page: currPage,
-        q: this.search,
+        q: this.search
       };
 
       await this.$store.dispatch({ type: 'loadMaterials', criteria });
@@ -134,7 +139,7 @@ export default {
     },
     filterMaterials(val) {
       this.search = val;
-      this.loadMaterials();
+      this.loadMaterials(this.sortBy);
     },
     toggleFromSelection(material) {
       const idx = this.materialSelection.findIndex(
@@ -164,7 +169,10 @@ export default {
       });
       this.$emit('side2-picked', interactionSides);
       this.closePicker();
-    },
+    }
+  },
+  created() {
+    this.loadMaterials(this.sortBy);
   },
   components: {
     materialTreeView,

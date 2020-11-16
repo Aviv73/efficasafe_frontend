@@ -21,45 +21,81 @@
         <span class="text-capitalize">DrugBank id:</span>
         {{ side.dragBankId }}
     </div>
+    <div class="side-details-row" v-if="side.brands.length">
+        <span class="text-capitalize">Brands:</span>
+        <v-chip-group column>
+            <v-chip v-for="(brand, idx) in side.brands" :key="idx">
+                {{ brand }}
+            </v-chip>
+        </v-chip-group>
+    </div>
+    <div class="side-details-row" v-if="side.aliases.length">
+        <span class="text-capitalize">Synonyms:</span>
+        <v-chip-group column>
+            <v-chip v-for="(alias, idx) in side.aliases" :key="idx">
+                {{ alias }}
+            </v-chip>
+        </v-chip-group>
+    </div>
     <div class="side-details-row" v-if="side.botanicalFamily">
         <span class="text-capitalize">Botanical family:</span>
         {{ side.botanicalFamily }}
-    </div>
-    <div class="side-details-row" v-if="side.plantPartUsed">
-        <span class="text-capitalize">Plant part used:</span>
-        {{ side.plantPartUsed }}
     </div>
     <div class="side-details-row" v-if="side.desc">
         <span class="text-capitalize">Description:</span>
         <div v-html="side.desc"></div>
     </div>
+    <div class="side-details-row" v-if="side.plantPartUsed">
+        <span class="text-capitalize">Plant part used:</span>
+        {{ side.plantPartUsed }}
+    </div>
+    <div class="side-details-row" v-if="side.qualities.length">
+        <span class="text-capitalize">Qualities:</span>
+        <v-chip-group column>
+            <v-chip v-for="(quality, idx) in side.qualities" :key="idx">
+                {{ quality }}
+            </v-chip>
+        </v-chip-group>
+    </div>
+    <div class="side-details-row" v-if="side.activeConstituents">
+        <span class="text-capitalize">Active constituents:</span>
+        <div v-html="side.activeConstituents"></div>
+    </div>
+    <div class="side-details-row" v-if="side.medicinalActions.length">
+        <span class="text-capitalize">Medicinal actions:</span>
+        <v-chip-group column>
+            <v-chip v-for="(action, idx) in side.medicinalActions" :key="idx">
+                {{ action }}
+            </v-chip>
+        </v-chip-group>
+    </div>
+    <div class="side-details-row" v-if="side.indications.length">
+        <span class="text-capitalize">Indications:</span>
+        <v-chip-group column>
+            <v-chip v-for="(indication, idx) in side.indications" :key="idx">
+                {{ indication }}
+            </v-chip>
+        </v-chip-group>
+    </div>
     <div class="side-details-row" v-if="side.dosage">
         <span class="text-capitalize">Dosage:</span>
         <div v-html="side.dosage"></div>
-    </div>
-    <div class="side-details-row" v-if="side.draft">
-        <span class="text-capitalize">Draft:</span>
-        <div v-html="side.draft"></div>
-    </div>
-    <div class="side-details-row" v-if="side.mechanismOfAction">
-        <span class="text-capitalize">Mechanism of action:</span>
-        <div v-html="side.mechanismOfAction"></div>
-    </div>
-    <div class="side-details-row" v-if="side.precautions">
-        <span class="text-capitalize">Precautions:</span>
-        <div v-html="side.precautions"></div>
-    </div>
-    <div class="side-details-row" v-if="side.adverseReactions">
-        <span class="text-capitalize">Adverse reactions:</span>
-        <div v-html="side.adverseReactions"></div>
     </div>
     <div class="side-details-row" v-if="side.sensitivities">
         <span class="text-capitalize">Sensitivities:</span>
         <div v-html="side.sensitivities"></div>
     </div>
+    <div class="side-details-row" v-if="side.adverseReactions">
+        <span class="text-capitalize">Adverse reactions:</span>
+        <div v-html="side.adverseReactions"></div>
+    </div>
     <div class="side-details-row" v-if="side.overdosage">
         <span class="text-capitalize">Overdosage:</span>
         <div v-html="side.overdosage"></div>
+    </div>
+    <div class="side-details-row" v-if="side.precautions">
+        <span class="text-capitalize">Precautions:</span>
+        <div v-html="side.precautions"></div>
     </div>
     <div class="side-details-row" v-if="side.contraindications">
         <span class="text-capitalize">Contraindications:</span>
@@ -73,9 +109,13 @@
         <span class="text-capitalize">Pregnancy:</span>
         <div v-html="side.pregnancy"></div>
     </div>
-    <div class="side-details-row" v-if="side.lacatation">
-        <span class="text-capitalize">Lacatation:</span>
-        <div v-html="side.lacatation"></div>
+    <div class="side-details-row" v-if="side.lactation">
+        <span class="text-capitalize">Lactation:</span>
+        <div v-html="side.lactation"></div>
+    </div>
+    <div class="side-details-row" v-if="side.draft">
+        <span class="text-capitalize">Draft:</span>
+        <div v-html="side.draft"></div>
     </div>
     <div class="side-details-row" v-if="side.effectOnDrugMetabolism">
         <span class="text-capitalize">Effect on drug metabolism:</span>
@@ -85,45 +125,13 @@
         <span class="text-capitalize">Detailed pharmacology:</span>
         <div v-html="side.detailedPharmacology"></div>
     </div>
+    <div class="side-details-row" v-if="side.mechanismOfAction">
+        <span class="text-capitalize">Mechanism of action:</span>
+        <div v-html="side.mechanismOfAction"></div>
+    </div>
     <div class="side-details-row" v-if="side.editorDraft">
         <span class="text-capitalize">Editor draft:</span>
         {{ side.editorDraft }}
-    </div>
-    <div class="side-details-row" v-if="side.medicinalActions.length">
-        <span class="text-capitalize">Medicinal actions:</span>
-        <v-chip-group column>
-            <v-chip v-for="(action, idx) in side.medicinalActions" :key="idx">
-                {{ action }}
-            </v-chip>
-        </v-chip-group>
-    </div>
-    <div class="side-details-row" v-if="side.activeConstituents">
-        <span class="text-capitalize">Active constituents:</span>
-        <div v-html="side.activeConstituents"></div>
-    </div>
-    <div class="side-details-row" v-if="side.qualities.length">
-        <span class="text-capitalize">Qualities:</span>
-        <v-chip-group column>
-            <v-chip v-for="(quality, idx) in side.qualities" :key="idx">
-                {{ quality }}
-            </v-chip>
-        </v-chip-group>
-    </div>
-    <div class="side-details-row" v-if="side.aliases.length">
-        <span class="text-capitalize">Synonyms:</span>
-        <v-chip-group column>
-            <v-chip v-for="(alias, idx) in side.aliases" :key="idx">
-                {{ alias }}
-            </v-chip>
-        </v-chip-group>
-    </div>
-    <div class="side-details-row" v-if="side.brands.length">
-        <span class="text-capitalize">Brands:</span>
-        <v-chip-group column>
-            <v-chip v-for="(brand, idx) in side.brands" :key="idx">
-                {{ brand }}
-            </v-chip>
-        </v-chip-group>
     </div>
     <div class="side-details-row" v-if="side.regions.length">
         <span class="text-capitalize">Regions:</span>
@@ -135,14 +143,6 @@
                     ></v-img>
                 </v-avatar>
                 {{ region }}
-            </v-chip>
-        </v-chip-group>
-    </div>
-    <div class="side-details-row" v-if="side.indications.length">
-        <span class="text-capitalize">Indications:</span>
-        <v-chip-group column>
-            <v-chip v-for="(indication, idx) in side.indications" :key="idx">
-                {{ indication }}
             </v-chip>
         </v-chip-group>
     </div>
