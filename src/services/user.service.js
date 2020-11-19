@@ -12,18 +12,18 @@ export const userService = {
 }
 
 function getLoggedInUser() {
-    return storageService.load(KEY, true) || null;
+    return storageService.load(KEY) || null;
 }
 
 async function login(credentials) {
     const res = await httpService.post(`${END_POINT}/login`, credentials);
     if (res.account) {
-        storageService.store(KEY, res.account, true);
+        storageService.store(KEY, res.account);
     }
     return res.account || null;
 }
 
 async function logout() {
     await httpService.post(`${END_POINT}/logout`);
-    storageService.remove(KEY, true);
+    storageService.remove(KEY);
 }

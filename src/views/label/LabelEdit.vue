@@ -3,20 +3,38 @@
     <v-card class="label-edit" v-if="editedLabel">
       <v-form v-model="valid" @submit.prevent="saveLabel">
         <v-text-field
-          id="label-name"
           type="text"
           v-model="editedLabel.name"
           label="Name*"
           required
           :rules="[(v) => !!v || 'Label Name is required']"
         />
-        <label for="label-name">Label Color:</label>
+        <h3>Label Color:</h3>
         <v-color-picker
           v-model="editedLabel.color"
           hide-inputs
           mode="hexa"
           value="string"
         />
+        <div>
+          <h3>Is 'Super'?</h3>
+          <v-switch
+            v-model="editedLabel.isSuper"
+            inset
+            :label="`${editedLabel.isSuper}`"
+          ></v-switch>
+        </div>
+        <div>
+          <v-btn 
+            color="primary"
+            class="label-edit-btn"
+            @click="isDialogActive = true"
+          >Pick Materials</v-btn>
+          <span class="text--secondary">
+            {{ relatedMaterials.length }} Materials are picked.
+            {{ editedLabel.primaryMaterialId ? 'Has primary material.' : '' }}
+          </span>
+        </div>
       </v-form>
       <div class="form-actions">
         <v-btn class="cancel-btn" to="/label/" color="normal">cancel</v-btn>
@@ -24,17 +42,26 @@
           class="submit-btn"
           @click="saveLabel"
           color="success"
-          :disabled="!valid"
+          :disabled="!valid || !relatedMaterials.length"
           >Save Label</v-btn
         >
       </div>
     </v-card>
+    <v-dialog v-model="isDialogActive" persistent max-width="1400">
+      <side-picker
+        @close-dialog="isDialogActive = false"
+        @side2-picked="setLabelMaterials"
+        :labelPrimaryMaterialId="primaryMaterialId"
+        :relatedMaterials="relatedMaterials"
+      />
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import { labelService } from '@/services/label.service';
 import { eventBus, EV_addLabel } from '@/services/eventBus.service';
+import sidePicker from '@/cmps/interaction/edit/SidePicker';
 
 export default {
   name: 'label-edit',
@@ -42,9 +69,21 @@ export default {
     return {
       editedLabel: null,
       valid: true,
+      isDialogActive: false,
+      relatedMaterials: []
     };
   },
+  computed: {
+    primaryMaterialId() {
+      if (!this.editedLabel) return '';
+      return this.editedLabel.primaryMaterialId;
+    }
+  },
   methods: {
+    setLabelMaterials(sidesData) {
+      this.editedLabel.primaryMaterialId = sidesData.primaryMaterialId;
+      this.relatedMaterials = [ ...sidesData.materials ];
+    },
     async loadLabel() {
       const labelId = this.$route.params.id;
       var label = null;
@@ -53,6 +92,9 @@ export default {
           type: 'loadLabel',
           labelId,
         });
+        const criteria = { labelId, limit: 0 };
+        const materials = await this.$store.dispatch({ type: 'loadAutoCompleteResults', criteria });
+        this.relatedMaterials = materials;
       } else {
         label = labelService.getEmptyLabel();
       }
@@ -65,10 +107,21 @@ export default {
     async saveLabel() {
       if (!this.editedLabel.name) return;
       try {
-        await this.$store.dispatch({
+        const isEdit = !!this.editedLabel._id;
+        const savedLabel = await this.$store.dispatch({
           type: 'saveLabel',
           label: this.editedLabel,
         });
+        if (isEdit) {
+          /// if edit, check wich materials got that labelId on them, and sync them to be this.relatedMaterials
+        } 
+        const relatedMaterialIds = this.relatedMaterials.map(mat => mat._id);
+        const data = {
+          ids: relatedMaterialIds,
+          label: savedLabel
+        }
+        await this.$store.dispatch({ type: 'updateMaterials', data });
+        
         eventBus.$emit(EV_addLabel, {
           name: this.editedLabel.name,
           type: 'label',
@@ -83,5 +136,8 @@ export default {
   created() {
     this.loadLabel();
   },
+  components: {
+    sidePicker
+  }
 };
 </script>

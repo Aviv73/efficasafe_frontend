@@ -2,14 +2,13 @@
     width: 20px;
     height: 20px;
     border-radius: 100%;
-    margin: 0 0 0 15%;
     padding: 0;
     max-width: unset;
 }
 sub {
     position: relative;
     line-height: unset;
-    color: #1976d2;
+    color: #4CAF50;
     cursor: help;
 
     &:hover > .refs-tooltip {

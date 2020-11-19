@@ -14,4 +14,4 @@ function makeId(length = 10) {
 
 function escapeStrRegex(str) {
     return str.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
-  }
+}

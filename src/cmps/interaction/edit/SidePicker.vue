@@ -7,10 +7,13 @@
       <v-icon dark left>mdi-plus-box-multiple</v-icon>
       Add Side 2
       <v-spacer></v-spacer>
-      <span class="text-caption"
-        >{{ atcSelection.length + materialSelection.length }} Materials are
-        picked.</span
-      >
+      <span class="text-caption">
+        {{ selection.length }} Materials are picked.
+        <span v-if="primaryMaterialId">
+          Has primary material.
+        </span>
+      </span>
+
       <v-spacer></v-spacer>
       <v-icon dark right @click="$emit('close-dialog')"
         >mdi-window-close</v-icon
@@ -24,6 +27,8 @@
       <material-tree-view
         v-show="activeTab === 'atc'"
         @branches-selected="setSelection"
+        :selection="selection"
+        :primaryMaterialId="primaryMaterialId"
       ></material-tree-view>
       
       <section v-show="activeTab === 'materials'">
@@ -53,6 +58,7 @@
                 v-for="material in materials"
                 :key="material._id"
                 @click="toggleFromSelection(material)"
+                @contextmenu.prevent="setPrimaryMaterial(material._id)"
                 class="material-list-item"
                 :class="{ 'blue lighten-4': isInSelection(material._id) }"
               >
@@ -63,7 +69,13 @@
                   />
                 </v-list-item-icon>
                 <v-list-item-content>
-                  <v-list-item-title v-text="material.name"></v-list-item-title>
+                  <v-list-item-title>
+                    {{ material.name }}
+                    <v-icon 
+                      class="material-list-item-primary-icon" 
+                      v-if="material._id === primaryMaterialId"
+                      >mdi-shield-star</v-icon>
+                  </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <infinite-loading
@@ -83,18 +95,33 @@
       <v-btn 
         color="primary" 
         @click="emitInteractionSides"
-        :disabled="atcSelection.length + materialSelection.length === 0"
+        :disabled="selection.length === 0"
         >Add Side</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
+import { eventBus, EV_material_unselected, EV_primary_material_changed, EV_refresh_root_tree_view } from '@/services/eventBus.service';
 import materialTreeView from '@/cmps/common/MaterialTreeView';
 import InfiniteLoading from 'vue-infinite-loading';
 
 export default {
   currPage: 0,
+  props: {
+    side2MaterialId: {
+      type: String,
+      required: false
+    },
+    relatedMaterials: {
+      type: Array,
+      required: false
+    },
+    labelPrimaryMaterialId: {
+      type: String,
+      required: false
+    }
+  },
   data() {
     return {
       activeTab: 'atc',
@@ -104,15 +131,37 @@ export default {
       sortBy: {
         sortBy: [ 'type', 'name' ],
         isDesc: [ true, false ]
-      }
+      },
+      primaryMaterialId: ''
     };
   },
   computed: {
     materials() {
       return this.$store.getters.materials;
     },
+    selection() {
+      const selection = this.atcSelection.slice();
+      this.materialSelection.forEach(mat => {
+        const idx = selection.findIndex(atcMat => atcMat._id === mat._id);
+        if (idx === -1) selection.push(mat);
+      });
+      return selection;
+    }
   },
   methods: {
+    async getMaterial(matId) {
+      const material = await this.$store.dispatch({
+        type: 'loadMaterial',
+        matId
+      });
+      this.materialSelection.push(material);
+      eventBus.$emit(EV_refresh_root_tree_view);
+    },
+    setPrimaryMaterial(matId) {
+      if (!this.selection.find(mat => mat._id === matId)) return;
+      if (matId === this.primaryMaterialId) this.primaryMaterialId = '';
+      else this.primaryMaterialId = matId;
+    },
     async infiScrollHandler($state) {
       this.$options.currPage++;
       await this.loadMaterials(this.sortBy);
@@ -142,16 +191,21 @@ export default {
       this.loadMaterials(this.sortBy);
     },
     toggleFromSelection(material) {
-      const idx = this.materialSelection.findIndex(
+      const idx = this.selection.findIndex(
         (selectedItem) => selectedItem._id === material._id
       );
-      if (idx < 0) this.materialSelection.push(material);
-      else this.materialSelection.splice(idx, 1);
+      if (idx === -1) this.materialSelection.push(material);
+      else {
+        if (material._id === this.primaryMaterialId) this.primaryMaterialId = '';
+        const matIdx = this.materialSelection.findIndex(mat => mat._id === material._id);
+        if (matIdx >= 0) this.materialSelection.splice(matIdx, 1);
+
+        const atcMatIdx = this.atcSelection.findIndex(atcMat => atcMat._id === material._id);
+        if (atcMatIdx >= 0) this.atcSelection.splice(atcMatIdx, 1);
+      }
     },
     isInSelection(materialId) {
-      return this.materialSelection.find(
-        (selectedItem) => selectedItem._id === materialId
-      );
+      return this.selection.find(selectedItem => selectedItem._id === materialId);
     },
     setSelection(atcSelection) {
       this.atcSelection = atcSelection.filter((atcNode) => atcNode._id);
@@ -160,23 +214,33 @@ export default {
       this.$emit('close-dialog');
     },
     emitInteractionSides() {
-      const interactionSides = [
-        ...this.atcSelection,
-        ...this.materialSelection,
-      ];
+      const interactionSides = this.selection.slice();
       interactionSides.forEach(mat => {
         delete mat.parentId;
       });
-      this.$emit('side2-picked', interactionSides);
+      this.$emit('side2-picked', { materials: interactionSides, primaryMaterialId: this.primaryMaterialId });
       this.closePicker();
     }
   },
   created() {
     this.loadMaterials(this.sortBy);
+    eventBus.$on(EV_material_unselected, (mat) => {
+      this.toggleFromSelection(mat);
+    });
+    eventBus.$on(EV_primary_material_changed, this.setPrimaryMaterial);
+    if (this.side2MaterialId) {
+      this.getMaterial(this.side2MaterialId);
+    }
+    if (this.relatedMaterials && this.relatedMaterials.length) {
+      for (let i = 0; i < this.relatedMaterials.length; i++) {
+        this.materialSelection.push(this.relatedMaterials[i]);
+      }
+      if (this.labelPrimaryMaterialId) this.primaryMaterialId = this.labelPrimaryMaterialId;
+    }
   },
   components: {
     materialTreeView,
     InfiniteLoading
-  },
+  }
 };
 </script>

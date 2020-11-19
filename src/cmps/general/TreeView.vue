@@ -41,6 +41,7 @@
         </span>
         <span>
           <input
+            :key="checkboxRenderKey"
             type="checkbox"
             :ref="`selectionInput_${item[itemKey]}`"
             :checked="isChecked(item)"
@@ -50,9 +51,13 @@
           />
         </span>
         <span>
-          <label :for="`expandInput_${item[itemKey]}`">
+          <label :for="`expandInput_${item[itemKey]}`" @contextmenu.prevent="emitPrimaryMaterial(item)">
             <h6 class="atc-id">{{ item.atcId }}</h6>
             <h6 v-html="labelTxt(item[renderTxt])"></h6>
+             <v-icon 
+              class="primary-icon"
+              v-if="item._id === primaryMaterialId"
+              >mdi-shield-star</v-icon>
           </label>
           <tree-view
             v-if="item[children] && isBranchOpen(item[itemKey])"
@@ -67,6 +72,8 @@
             :depth="childDepth"
             @item-selection="indeterminateBranch"
             @selection-changed="saveSelection($event)"
+            :finalSelection="finalSelection"
+            :primaryMaterialId="primaryMaterialId"
           />
         </span>
       </li>
@@ -76,7 +83,7 @@
 
 <script>
 import { utilService } from '@/services/util.service';
-import { eventBus, EV_emptySelection } from '@/services/eventBus.service';
+import { eventBus, EV_emptySelection, EV_material_unselected, EV_primary_material_changed, EV_refresh_root_tree_view } from '@/services/eventBus.service';
 
 export default {
   name: 'tree-view',
@@ -112,6 +119,14 @@ export default {
     depth: {
       type: Number,
       required: true
+    },
+    finalSelection: {
+      type: Array,
+      required: true
+    },
+    primaryMaterialId: {
+      type: String,
+      required: true
     }
   },
   branchIdsMap: {},
@@ -119,10 +134,19 @@ export default {
     return {
       selection: this.parentSelection,
       childDepth: this.depth + 1,
-      openBranches: []
+      openBranches: [],
+      checkboxRenderKey: 1
     };
   },
   watch: {
+    finalSelection: {
+      handler() {
+        this.selection = [ ...this.finalSelection ];
+        this.checkOffspringSelected();
+        this.refreshCmps();
+      },
+      immediate: true
+    },
     search() {
       if (this.search) {
         this.checkForExpand();
@@ -144,17 +168,25 @@ export default {
     }
   },
   methods: {
+    refreshCmps() {
+      this.checkboxRenderKey++;
+    },
+    emitPrimaryMaterial(mat) {
+      if (!mat._id) return;
+      eventBus.$emit(EV_primary_material_changed, mat._id);
+    },
     cleanSelection() {
-      const removeFromSelection = (node) => {
+      const removeAllFromSelection = (node) => {
         const itemKey = (node._id) ? '_id' : 'id';
         if (this.selection.find((currItem) => currItem[itemKey] === node[itemKey])) {
           const idx = this.selection.findIndex((currItem) => currItem[itemKey] === node[itemKey]);
           this.selection.splice(idx, 1);
           eventBus.$emit(EV_emptySelection, node.parentId);
+          eventBus.$emit(EV_material_unselected, node);
         }
       }
       this.items.forEach(item => {
-        this.traverse(item, 0, removeFromSelection);
+        this.traverse(item, 0, removeAllFromSelection);
       });
       this.selection = [];
       this.emitSelection();
@@ -187,7 +219,9 @@ export default {
       } 
       if (node.parentId) {
         const parentNode = this.$options.branchIdsMap[node.parentId];
-        this.getNodePath(parentNode, paths);
+        if (parentNode) {
+          this.getNodePath(parentNode, paths);
+        }
       }
     },
     toggleExpand(isChecked, nodeId) {
@@ -199,9 +233,8 @@ export default {
       }
     },
     checkForIndeterminate() {
-      if (!this.parentId) return;
       const isSelected = this.isItemSelected(this.items);
-      this.$emit('item-selection', isSelected, this.parentId);
+      if (this.parentId) this.$emit('item-selection', isSelected, this.parentId);
     },
     indeterminateBranch(isSelected, id) {
       if (!this.$refs[`selectionInput_${id}`]) return; 
@@ -211,6 +244,7 @@ export default {
         isSelected = isIndeterminate;
       } 
       this.$refs[`selectionInput_${id}`][0].indeterminate = isSelected;
+      this.$refs[`selectionInput_${id}`][0].checked = false;
       if (this.parentId) {
         this.$emit('item-selection', isSelected, this.parentId);
       }
@@ -226,8 +260,8 @@ export default {
     isItemSelected(items) {
         const itemKey = (items[0] && items[0]._id) ? '_id' : 'id';
         return items.some((item) => {
-          return this.selection.find(
-            (selectedItem) => selectedItem[itemKey] === item[itemKey]
+          return this.finalSelection.find(
+            (selectedItem) => selectedItem._id === item[itemKey]
           );
         });
     },
@@ -244,7 +278,10 @@ export default {
         const idx = this.selection.findIndex(
           (currNode) => currNode[itemKey] === node[itemKey]
         );
-        if (idx !== -1) this.selection.splice(idx, 1);
+        if (idx !== -1) {
+          this.selection.splice(idx, 1);
+          eventBus.$emit(EV_material_unselected, node);
+        }
       };
       const visitFunc = isChecked ? addToSelection : removeFromSelection;
 
@@ -253,8 +290,8 @@ export default {
       this.checkForIndeterminate();
     },
     isChecked(item) {
-      const itemKey = (item._id) ? '_id' : 'id';
-      return this.selection.find((currItem) => currItem[itemKey] === item[itemKey]);
+      if (!item._id) return false;
+      return this.finalSelection.find((currItem) => currItem._id === item._id);
     },
     saveSelection(selection) {
       this.selection = selection;
@@ -275,7 +312,7 @@ export default {
     checkOffspringSelected() {
       const indeterminatePaths = (node) => {
         const itemKey = (node._id) ? '_id' : 'id';
-        if (this.selection.find(currNode => currNode[itemKey] === node[itemKey])) {
+        if (this.finalSelection.find(currNode => currNode._id === node[itemKey])) {
           const path = [];
           this.getNodePath(node, path);
           const item = this.items.find(currItem => path.includes(currItem[this.itemKey]));
@@ -314,6 +351,7 @@ export default {
     this.makeBranchIdsMap();
     eventBus.$on(EV_emptySelection, this.unIndeterminateInput);
     this.checkOffspringSelected();
+    eventBus.$on(EV_refresh_root_tree_view, this.refreshCmps);
   }
 };
 </script>
@@ -336,7 +374,13 @@ h6:hover {
   background-color: darken(white, 10%);
 }
 [type=checkbox]:indeterminate {
-  outline: 1px solid #1976d2;
+  outline: 2px solid #4CAF50;
+}
+.primary-icon {
+  color: #FFA726;
+  margin-left: 12px;
+  font-size: 18px;
+  vertical-align: baseline;
 }
 .expandInput:checked + .v-icon {
   display: inline-block;

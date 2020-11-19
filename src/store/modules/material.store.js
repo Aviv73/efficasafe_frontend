@@ -36,9 +36,12 @@ export const materialStore = ({
         },
         setMaterialLabels(state, { data }) {
             data.ids.forEach(id => {
+                if (!state.materials) return;
                 const material = state.materials.find(mat => mat._id === id);
-                const isExists = !!material.labels.find(label => label._id === data.label._id);
-                if (!isExists) material.labels.push(data.label);
+                if (material) {
+                    const label = material.labels.find(label => label._id === data.label._id);
+                    if (!label) material.labels.push(data.label);
+                }
             });
         }
     },

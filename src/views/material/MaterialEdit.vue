@@ -426,7 +426,7 @@ export default {
       return this.$store.getters.materials;
     },
     labels() {
-        return this.$store.getters.labels;
+      return this.$store.getters.labels;
     },
     isRefValid() {
       const { type, txt } = this.editedRef;

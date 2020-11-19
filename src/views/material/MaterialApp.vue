@@ -81,6 +81,7 @@ export default {
     async loadMaterials() {
       const criteria = this.$route.query;
       this.loading = true;
+
       if (this.tableData) {
         let { page, itemsPerPage } = this.tableData;
         criteria.limit = itemsPerPage;

@@ -9,7 +9,6 @@
         flat
         solo-inverted
         hide-details
-        clearable
         clear-icon="mdi-close-circle-outline"
       ></v-text-field>
     </v-sheet>
@@ -20,6 +19,8 @@
         :search="search"
         :depth="0"
         @selection-changed="saveSelection($event)"
+        :finalSelection="selection"
+        :primaryMaterialId="primaryMaterialId"
         ></tree-view>
       <loading-cmp v-else />
     </v-card-text>
@@ -32,17 +33,27 @@ import treeView from '@/cmps/general/TreeView';
 import loadingCmp from '@/cmps/general/LoadingCmp';
 
 export default {
+  props: {
+    selection: {
+      type: Array,
+      required: true
+    },
+    primaryMaterialId: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       search: '',
-      selection: [],
+      atcSelection: [],
     };
   },
   watch: {
-    selection() {
+    atcSelection() {
       this.$emit(
         'branches-selected',
-        JSON.parse(JSON.stringify(this.selection))
+        JSON.parse(JSON.stringify(this.atcSelection))
       );
     },
   },
@@ -68,7 +79,7 @@ export default {
   },
   methods: {
     saveSelection(selection) {
-      this.selection = selection;
+      this.atcSelection = selection;
     },
     handleSearch(val) {
       let timerId;

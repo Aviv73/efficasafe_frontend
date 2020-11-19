@@ -1,5 +1,5 @@
 .label-edit {
-    padding: 8px;
+    padding: 24px 12px 8px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -9,7 +9,10 @@
         align-self: flex-start;
         padding: 16px 0;
     }
-
+    &-btn {
+        justify-self: flex-start;
+        margin-right: 24px;
+    }
     .form-actions {
         align-self: flex-end;
         display: flex;

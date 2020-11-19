@@ -9,7 +9,7 @@
     </v-row>
     <div class="interaction-edit-container" :class="{ 'portal-active': isPortalActive }">
       <section class="interaction-edit" v-if="editedInteraction">
-        <v-card>
+        <v-card width="90%" max-width="1200">
           <div class="floating-btns">
             <v-btn 
               fab
@@ -51,6 +51,7 @@
               @update-side="updateSide"
               @remove-side="removeSide"
               @side2-picked="setInteractionSide"
+              :editedInteraction="editedInteraction"
             />
             <v-textarea
               type="text"
@@ -410,21 +411,24 @@ export default {
         this.side1MaterialRefs
       );
       this.interactionRefs = sortedRefs;
-      this.editedInteraction.refs = sortedRefs.map(ref => ref.draftIdx);
+      this.editedInteraction.refs = sortedRefs.map(ref => ref && ref.draftIdx);
     },
-    setInteractionSide(sides) {
-      if (sides.length === 1) {
-        const { _id, name, type } = sides[0];
+    setInteractionSide(sidesData) {
+      const { materials, primaryMaterialId } = sidesData;
+      if (materials.length === 1) {
+        this.editedInteraction.side2Label = null;
+        const { _id, name, type } = materials[0];
         this.editedInteraction.side2Material = {
           _id,
           name,
-          type,
+          type
         };
       } else {
-        this.relatedMaterials = sides;
-        this.editedInteraction.side2Label = {
-          name: this.editedInteraction.side2DraftName,
-        };
+        this.editedInteraction.side2Material = null;
+        this.relatedMaterials = materials;
+        this.editedInteraction.side2Label = labelService.getEmptyLabel();
+        this.editedInteraction.side2Label.name = this.editedInteraction.side2DraftName;
+        this.editedInteraction.side2Label.primaryMaterialId = primaryMaterialId;
       }
     },
     async getReferences() {
@@ -472,19 +476,10 @@ export default {
     },
     async onSaveInteraction(isRouteChange) {
       const { side2Label } = this.editedInteraction;
-      if (!this.editedInteraction.side2Material && side2Label) {
-        let labelToEdit;
-        if (!side2Label._id) {
-          labelToEdit = labelService.getEmptyLabel();
-        } else {
-          labelToEdit = { ...side2Label };
-          /// need to check materials related against this.relatedMaterials
-          /// do we replace label? add a new one?
-        }
-        labelToEdit.name = `${this.editedInteraction.side1Material.name} & ${this.editedInteraction.side2DraftName}`;
-
+      if (!this.editedInteraction.side2Material && side2Label && !side2Label._id) {
+        this.editedInteraction.side2Label.name = `${this.editedInteraction.side1Material.name} & ${this.editedInteraction.side2DraftName}`;
         try {
-          const savedLabel = await this.$store.dispatch({ type: 'saveLabel', label: labelToEdit });
+          const savedLabel = await this.$store.dispatch({ type: 'saveLabel', label: this.editedInteraction.side2Label });
           const relatedMaterialIds = this.relatedMaterials.map(mat => mat._id);
           const data = {
             ids: relatedMaterialIds,
@@ -522,7 +517,6 @@ export default {
         const criteria = { labelId: this.editedInteraction.side2Label._id };
         const materials = await this.$store.dispatch({ type: 'loadAutoCompleteResults', criteria });
         this.relatedMaterials = materials;
-        //// if label is not being replaced, then send relatedMaterials down to SidePicker as props
       }
     },
     addItemToArray(arrName) {

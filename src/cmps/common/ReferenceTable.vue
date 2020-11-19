@@ -20,7 +20,7 @@
                 :hide-default-footer="isShrinked"
                 :disable-pagination="isShrinked"
                 :headers="computedHeaders"
-                :items="references"
+                :items="validRefs"
                 :items-per-page="5"
                 :search="search"
                 class="elevation-0"
@@ -109,11 +109,14 @@ export default {
     computed: {
         computedHeaders() {
             return (this.isEdit) ? this.headers : this.headers.filter(header => header.text !== 'Actions');
+        },
+        validRefs() {
+            return this.references.filter(ref => ref);
         }
     },
     methods: {
         RefIdxForDisplay(item) {
-            const idx = this.references.findIndex(ref => ref === item);
+            const idx = this.validRefs.findIndex(ref => ref === item);
             return idx + 1;
         }
     }

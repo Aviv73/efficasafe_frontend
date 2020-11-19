@@ -3,14 +3,14 @@
     display: flex;
 }
 .interaction-edit-container.portal-active .interaction-edit {
-    flex-basis: 50%;
+    flex-basis: 60%;
 }
 .interaction-edit-container.portal-active .portal-container {
-    flex-basis: 50%;
+    flex-basis: 40%;
     padding: 8px;
 }
 .interaction-edit-container.portal-active .floating-btns {
-    right: calc(50% + 36px);
+    right: calc(40% + 12px);
 }
 .portal-container {
     flex-basis: 0;
@@ -29,7 +29,7 @@
 
         aside {
             position: fixed;
-            width: 48%;
+            width: 38%;
             
             .reference-table-shrink, .side-details {
                 max-height: 80vh;

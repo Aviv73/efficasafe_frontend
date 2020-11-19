@@ -53,7 +53,9 @@ function remove(id) {
 function getEmptyLabel() {
     return {
         name: '',
-        color: '#000000ff'
+        color: '#000000ff',
+        primaryMaterialId: '',
+        isSuper: false
     }
 }
 

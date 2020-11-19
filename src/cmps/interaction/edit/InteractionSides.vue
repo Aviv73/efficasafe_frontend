@@ -13,7 +13,7 @@
       <v-chip
         v-if="side2"
         class="ma-2 side-container"
-        close
+        :close="!isEdit"
         color="primary"
         label
         text-color="white"
@@ -29,15 +29,17 @@
         {{ side2.name }}
       </v-chip>
       <v-btn 
-        v-else
         class="submit-btn" 
         color="primary"
         @click="isDialogActive = true"
+        v-if="!isEdit"
       >Pick Side 2</v-btn>
+      <router-link :to="`/label/edit/${side2LabelId}`" v-if="isEdit">Edit Label</router-link>
       <v-dialog v-model="isDialogActive" persistent max-width="1400">
         <side-picker 
           @close-dialog="isDialogActive = false"
           @side2-picked="$emit('side2-picked', $event)"
+          :side2MaterialId="side2MaterialId"
         ></side-picker>
       </v-dialog>
     </div>
@@ -54,6 +56,10 @@ export default {
     sides: {
       type: Object,
       required: true
+    },
+    editedInteraction: {
+      type: Object,
+      required: true
     }
   },
   data() {
@@ -62,6 +68,16 @@ export default {
     }
   },
   computed: {
+    side2MaterialId() {
+      if (!this.editedInteraction.side2Material) return '';
+      return this.editedInteraction.side2Material._id;
+    },
+    side2LabelId() {
+      return this.editedInteraction.side2Label && this.editedInteraction.side2Label._id;
+    },
+    isEdit() {
+      return !!this.editedInteraction._id && !!this.side2LabelId;
+    },
     side2() {
       return this.sides.side2.material || this.sides.side2.label;
     },

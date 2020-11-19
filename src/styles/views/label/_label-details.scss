@@ -7,19 +7,37 @@
             margin-inline-end: 10px;
         }
     }
-
+   
+    
     .info-container {
         display: grid;
         grid-template-columns: 120px 1fr;
-        gap: 10px;
+        gap: 24px;
         padding: 12px;
 
+        .v-chip {
+            cursor: default;
+        }
+        .primary-material {
+            background-color: orange;
+        }
         .label-details-title {
             grid-column: 1 / -1;
+            
+            .color-circle {
+                margin-left: 28px;
+                width: 25px;
+                height: 25px;
+            }
         }
 
         .info-title {
             padding-inline-start: 16px;
+
+            &.is-super {
+                color: black;
+                opacity: .6;
+            }
         }
 
         .info-title,
