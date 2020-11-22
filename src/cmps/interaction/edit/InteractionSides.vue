@@ -40,6 +40,7 @@
           @close-dialog="isDialogActive = false"
           @side2-picked="$emit('side2-picked', $event)"
           :side2MaterialId="side2MaterialId"
+          :isLabelImport="true"
         ></side-picker>
       </v-dialog>
     </div>

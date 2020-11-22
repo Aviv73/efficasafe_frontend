@@ -7,6 +7,13 @@
         searchName="Search label"
       />
     </div>
+      <v-select
+        :items="isSuperOpts"
+        class="label-filter-select"
+        label="Label type"
+        v-model="filterBy.isSuper"
+        @change="emitFilterBy"
+      ></v-select>
   </section>
 </template>
 
@@ -21,8 +28,23 @@ export default {
   data() {
     return {
       filterBy: {
-        q: ''
-      }
+        q: '',
+        isSuper: ''
+      },
+      isSuperOpts: [
+        {
+          text: 'All',
+          value: ''
+        },
+        {
+          text: 'Super',
+          value: true
+        },
+        {
+          text: 'Regular',
+          value: false
+        }
+      ]
     };
   },
   methods: {
@@ -32,8 +54,11 @@ export default {
       } else {
         this.filterBy.q = '';
       }
-      this.$emit('emit-filter', JSON.parse(JSON.stringify(this.filterBy)));
+      this.emitFilterBy();
     },
+    emitFilterBy() {
+      this.$emit('emit-filter', JSON.parse(JSON.stringify(this.filterBy)));
+    }
   },
   components: {
     autocomplete,

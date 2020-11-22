@@ -43,7 +43,7 @@
         This is a 'super' drug group
       </div>
 
-      <div class="info-title">Related Materials:</div>
+      <div class="info-title" v-if="relatedMaterials">Related Materials:</div>
       <v-chip-group column v-if="relatedMaterials">
         <v-chip 
           v-for="material in relatedMaterials" 

@@ -1,6 +1,18 @@
 .side-picker {
     margin: 0 auto;
 
+    &-title {
+        display: flex;
+        align-items: center;
+    }
+    &-autocomplete {
+        .v-messages, .v-text-field__details {
+            display: none;
+        }
+        .v-input__slot {
+            margin-bottom: 0;
+        }
+    }
     .v-tab {
         max-width: unset;
     }

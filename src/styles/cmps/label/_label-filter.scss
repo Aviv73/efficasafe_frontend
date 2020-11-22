@@ -3,8 +3,13 @@
     justify-content: space-between;
     padding: 0 16px;
 
+    &-select {
+        flex-grow: .1;
+    }
     .filter-input {
         position: relative;
+        display: flex;
+        justify-content: space-between;
 
         input {
             width: 240px;

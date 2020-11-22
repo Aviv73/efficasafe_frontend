@@ -36,6 +36,9 @@ export default {
       if (!filterBy.src || filterBy.src === "all") {
         delete filterBy.src;
       }
+      if (filterBy.isSuper === '') {
+        delete filterBy.isSuper;
+      }
       if (!filterBy.q) {
         delete filterBy.q;
       }

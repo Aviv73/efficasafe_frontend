@@ -1,13 +1,24 @@
 <template>
   <v-card class="side-picker">
     <v-card-title
-      class="primary headline"
+      class="side-picker-title primary headline"
       style="color: white; font-weight: bold"
     >
       <v-icon dark left>mdi-plus-box-multiple</v-icon>
       Add Side 2
-      <v-spacer></v-spacer>
-      <span class="text-caption">
+      
+      <autocomplete
+        v-if="isLabelImport"
+        class="ml-8 side-picker-autocomplete"
+        :items="labels"
+        searchName="Import label"
+        @emitAutocomplete="importSuperLabel"
+        :isSoloInverted="true"
+        :isFlat="true"
+        :isDark="true"
+      />
+
+      <span class="text-caption ml-8">
         {{ selection.length }} Materials are picked.
         <span v-if="primaryMaterialId">
           Has primary material.
@@ -104,6 +115,7 @@
 <script>
 import { eventBus, EV_material_unselected, EV_primary_material_changed, EV_refresh_root_tree_view } from '@/services/eventBus.service';
 import materialTreeView from '@/cmps/common/MaterialTreeView';
+import autocomplete from '@/cmps/Autocomplete';
 import InfiniteLoading from 'vue-infinite-loading';
 
 export default {
@@ -120,6 +132,10 @@ export default {
     labelPrimaryMaterialId: {
       type: String,
       required: false
+    },
+    isLabelImport: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -139,6 +155,9 @@ export default {
     materials() {
       return this.$store.getters.materials;
     },
+    labels() {
+      return this.$store.getters.labels.filter(label => label.isSuper);
+    },
     selection() {
       const selection = this.atcSelection.slice();
       this.materialSelection.forEach(mat => {
@@ -149,6 +168,17 @@ export default {
     }
   },
   methods: {
+    async importSuperLabel(label) {
+      const labelId = (label) ? label._id : null; 
+      if (labelId) {
+        const criteria = { labelId };
+        const materials = await this.$store.dispatch({ type: 'loadAutoCompleteResults', criteria });
+        this.materialSelection = [ ...materials ];
+      } else {
+        this.materialSelection = [];
+      }
+      eventBus.$emit(EV_refresh_root_tree_view);
+    },
     async getMaterial(matId) {
       const material = await this.$store.dispatch({
         type: 'loadMaterial',
@@ -240,6 +270,7 @@ export default {
   },
   components: {
     materialTreeView,
+    autocomplete,
     InfiniteLoading
   }
 };

@@ -261,7 +261,7 @@ export default {
           const draftIdx = this.interactionRefs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx) + 1;
           htmlStr += `<li class="tooltip-item">
             <p><span>${draftIdx}</span>.${refs[j].txt}</p>
-            <a href="${refs[j].link}" target="_blank">${refs[j].link}</a>
+            <a href="${refs[j].link}" class="ref-link" target="_blank">${refs[j].link}</a>
           </li>`;
         }
         htmlStr += '</ul>';

@@ -10,6 +10,7 @@
       clearable
       :flat="isFlat"
       :solo-inverted="isSoloInverted"
+      :dark="isDark"
       return-object
     />
   </section>
@@ -23,12 +24,16 @@ export default {
     searchName: String,
     isSoloInverted: {
       type: Boolean,
-      default: false,
+      default: false
     },
     isFlat: {
       type: Boolean,
-      default: false,
+      default: false
     },
+    isDark: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {

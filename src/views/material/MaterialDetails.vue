@@ -317,7 +317,7 @@ export default {
                 for (let j = 0; j < refs.length; j++) {
                     htmlStr += `<li class="tooltip-item">
                         <p><span>${refs[j].draftIdx}</span>.${refs[j].txt}</p>
-                        <a href="${refs[j].link}" target="_blank">${refs[j].link}</a>
+                        <a href="${refs[j].link}" class="ref-link" target="_blank">${refs[j].link}</a>
                     </li>`;
                 }
                 htmlStr += '</ul>';

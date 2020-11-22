@@ -2,8 +2,19 @@
     display: grid;
     gap: 4px;
 }
-
+.v-application--is-ltr .v-input--selection-controls__input {
+    margin-right: 0;
+}
+.centered {
+   padding: 12px 16px 0 !important;
+}
 .tr-label {
+    &-checkbox {
+        margin: 0 12px;
+      &:hover, & *:hover {
+        cursor: default !important;
+      }
+    }
     .td-name-img {
         a {
             text-decoration: none;
@@ -45,7 +56,7 @@
         .color-circle {
             width: 16px;
             height: 16px;
-            margin: 0 0 0 15%;
+            margin: 0 12px;
         }
     }
 }

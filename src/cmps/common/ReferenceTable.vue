@@ -34,7 +34,7 @@
                     <p>
                         {{ value }}
                     </p>
-                    <a :href="item.link" target="_blank">
+                    <a :href="item.link" target="_blank" class="ref-link">
                         {{ item.link }}
                     </a>
                 </template>
