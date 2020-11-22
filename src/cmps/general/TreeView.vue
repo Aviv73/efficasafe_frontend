@@ -56,7 +56,7 @@
             <h6 v-html="labelTxt(item[renderTxt])"></h6>
              <v-icon 
               class="primary-icon"
-              v-if="item._id === primaryMaterialId"
+              v-if="isPrimaryMaterial(item._id)"
               >mdi-shield-star</v-icon>
           </label>
           <tree-view
@@ -73,7 +73,7 @@
             @item-selection="indeterminateBranch"
             @selection-changed="saveSelection($event)"
             :finalSelection="finalSelection"
-            :primaryMaterialId="primaryMaterialId"
+            :primaryMaterialIds="primaryMaterialIds"
           />
         </span>
       </li>
@@ -124,8 +124,8 @@ export default {
       type: Array,
       required: true
     },
-    primaryMaterialId: {
-      type: String,
+    primaryMaterialIds: {
+      type: Array,
       required: true
     }
   },
@@ -139,6 +139,13 @@ export default {
     };
   },
   watch: {
+    primaryMaterialIds: {
+      handler() {
+        this.checkOffspringSelected();
+        this.refreshCmps();
+      },
+      immediate: true
+    },
     finalSelection: {
       handler() {
         this.selection = [ ...this.finalSelection ];
@@ -168,6 +175,9 @@ export default {
     }
   },
   methods: {
+    isPrimaryMaterial(matId) {
+      return this.primaryMaterialIds.includes(matId);
+    },
     refreshCmps() {
       this.checkboxRenderKey++;
     },
@@ -313,6 +323,16 @@ export default {
       const indeterminatePaths = (node) => {
         const itemKey = (node._id) ? '_id' : 'id';
         if (this.finalSelection.find(currNode => currNode._id === node[itemKey])) {
+          if (this.primaryMaterialIds.includes(node[itemKey])) {
+            var primaryPath = [];
+            this.getNodePath(node, primaryPath);
+            const primaryParent = this.items.find(currItem => primaryPath.includes(currItem[this.itemKey]));
+            if (primaryParent) {
+              this.$nextTick(() => {
+                this.$refs[`selectionInput_${primaryParent[this.itemKey]}`][0].classList.add('primary-parent');
+              });
+            }
+          }
           const path = [];
           this.getNodePath(node, path);
           const item = this.items.find(currItem => path.includes(currItem[this.itemKey]));
@@ -375,6 +395,9 @@ h6:hover {
 }
 [type=checkbox]:indeterminate {
   outline: 2px solid #4CAF50;
+}
+.primary-parent {
+  outline: 2px solid #FFA726 !important;
 }
 .primary-icon {
   color: #FFA726;

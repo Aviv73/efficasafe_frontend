@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     isPrimaryMaterial(matId) {
-      return this.label.primaryMaterialId === matId;
+      return this.label.primaryMaterialIds.includes(matId);
     },
     async loadLabel() {
       const labelId = this.$route.params.id;

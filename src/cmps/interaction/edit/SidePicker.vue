@@ -20,8 +20,8 @@
 
       <span class="text-caption ml-8">
         {{ selection.length }} Materials are picked.
-        <span v-if="primaryMaterialId">
-          Has primary material.
+        <span v-if="primaryMaterialIds.length">
+          Has primary material/s.
         </span>
       </span>
 
@@ -39,7 +39,7 @@
         v-show="activeTab === 'atc'"
         @branches-selected="setSelection"
         :selection="selection"
-        :primaryMaterialId="primaryMaterialId"
+        :primaryMaterialIds="primaryMaterialIds"
       ></material-tree-view>
       
       <section v-show="activeTab === 'materials'">
@@ -84,7 +84,7 @@
                     {{ material.name }}
                     <v-icon 
                       class="material-list-item-primary-icon" 
-                      v-if="material._id === primaryMaterialId"
+                      v-if="isPrimaryMaterial(material._id)"
                       >mdi-shield-star</v-icon>
                   </v-list-item-title>
                 </v-list-item-content>
@@ -129,8 +129,8 @@ export default {
       type: Array,
       required: false
     },
-    labelPrimaryMaterialId: {
-      type: String,
+    labelPrimaryMaterialIds: {
+      type: Array,
       required: false
     },
     isLabelImport: {
@@ -148,7 +148,7 @@ export default {
         sortBy: [ 'type', 'name' ],
         isDesc: [ true, false ]
       },
-      primaryMaterialId: ''
+      primaryMaterialIds: []
     };
   },
   computed: {
@@ -168,6 +168,9 @@ export default {
     }
   },
   methods: {
+    isPrimaryMaterial(matId) {
+      return this.primaryMaterialIds.includes(matId);
+    },
     async importSuperLabel(label) {
       const labelId = (label) ? label._id : null; 
       if (labelId) {
@@ -189,8 +192,10 @@ export default {
     },
     setPrimaryMaterial(matId) {
       if (!this.selection.find(mat => mat._id === matId)) return;
-      if (matId === this.primaryMaterialId) this.primaryMaterialId = '';
-      else this.primaryMaterialId = matId;
+      const idx = this.primaryMaterialIds.findIndex(id => id === matId);
+      if (idx !== -1) {
+        this.primaryMaterialIds.splice(idx, 1);
+      } else this.primaryMaterialIds.push(matId);
     },
     async infiScrollHandler($state) {
       this.$options.currPage++;
@@ -226,7 +231,10 @@ export default {
       );
       if (idx === -1) this.materialSelection.push(material);
       else {
-        if (material._id === this.primaryMaterialId) this.primaryMaterialId = '';
+        const idx = this.primaryMaterialIds.findIndex(id => id === material._id);
+        if (idx !== -1) {
+          this.primaryMaterialIds.splice(idx, 1);
+        }
         const matIdx = this.materialSelection.findIndex(mat => mat._id === material._id);
         if (matIdx >= 0) this.materialSelection.splice(matIdx, 1);
 
@@ -248,7 +256,7 @@ export default {
       interactionSides.forEach(mat => {
         delete mat.parentId;
       });
-      this.$emit('side2-picked', { materials: interactionSides, primaryMaterialId: this.primaryMaterialId });
+      this.$emit('side2-picked', { materials: interactionSides, primaryMaterialIds: this.primaryMaterialIds });
       this.closePicker();
     }
   },
@@ -265,7 +273,7 @@ export default {
       for (let i = 0; i < this.relatedMaterials.length; i++) {
         this.materialSelection.push(this.relatedMaterials[i]);
       }
-      if (this.labelPrimaryMaterialId) this.primaryMaterialId = this.labelPrimaryMaterialId;
+      if (this.labelPrimaryMaterialIds) this.primaryMaterialIds = [ ...this.labelPrimaryMaterialIds ];
     }
   },
   components: {

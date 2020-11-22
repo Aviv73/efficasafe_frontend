@@ -54,7 +54,7 @@ function getEmptyLabel() {
     return {
         name: '',
         color: '#000000ff',
-        primaryMaterialId: '',
+        primaryMaterialIds: [],
         isSuper: false
     }
 }

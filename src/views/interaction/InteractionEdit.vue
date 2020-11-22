@@ -414,7 +414,7 @@ export default {
       this.editedInteraction.refs = sortedRefs.map(ref => ref && ref.draftIdx);
     },
     setInteractionSide(sidesData) {
-      const { materials, primaryMaterialId } = sidesData;
+      const { materials, primaryMaterialIds } = sidesData;
       if (materials.length === 1) {
         this.editedInteraction.side2Label = null;
         const { _id, name, type } = materials[0];
@@ -428,7 +428,7 @@ export default {
         this.relatedMaterials = materials;
         this.editedInteraction.side2Label = labelService.getEmptyLabel();
         this.editedInteraction.side2Label.name = this.editedInteraction.side2DraftName;
-        this.editedInteraction.side2Label.primaryMaterialId = primaryMaterialId;
+        this.editedInteraction.side2Label.primaryMaterialIds = [ ...primaryMaterialIds ];
       }
     },
     async getReferences() {

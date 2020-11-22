@@ -20,7 +20,7 @@
         :depth="0"
         @selection-changed="saveSelection($event)"
         :finalSelection="selection"
-        :primaryMaterialId="primaryMaterialId"
+        :primaryMaterialIds="primaryMaterialIds"
         ></tree-view>
       <loading-cmp v-else />
     </v-card-text>
@@ -38,8 +38,8 @@ export default {
       type: Array,
       required: true
     },
-    primaryMaterialId: {
-      type: String,
+    primaryMaterialIds: {
+      type: Array,
       required: true
     }
   },

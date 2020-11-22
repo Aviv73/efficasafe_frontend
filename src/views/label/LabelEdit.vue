@@ -32,7 +32,7 @@
           >Pick Materials</v-btn>
           <span class="text--secondary">
             {{ relatedMaterials.length }} Materials are picked.
-            {{ editedLabel.primaryMaterialId ? 'Has primary material.' : '' }}
+            {{ editedLabel.primaryMaterialIds.length ? 'Has primary material/s.' : '' }}
           </span>
         </div>
       </v-form>
@@ -51,7 +51,7 @@
       <side-picker
         @close-dialog="isDialogActive = false"
         @side2-picked="setLabelMaterials"
-        :labelPrimaryMaterialId="primaryMaterialId"
+        :labelPrimaryMaterialIds="primaryMaterialIds"
         :relatedMaterials="relatedMaterials"
       />
     </v-dialog>
@@ -74,14 +74,14 @@ export default {
     };
   },
   computed: {
-    primaryMaterialId() {
-      if (!this.editedLabel) return '';
-      return this.editedLabel.primaryMaterialId;
+    primaryMaterialIds() {
+      if (!this.editedLabel) return [];
+      return this.editedLabel.primaryMaterialIds;
     }
   },
   methods: {
     setLabelMaterials(sidesData) {
-      this.editedLabel.primaryMaterialId = sidesData.primaryMaterialId;
+      this.editedLabel.primaryMaterialIds = [ ...sidesData.primaryMaterialIds ];
       this.relatedMaterials = [ ...sidesData.materials ];
     },
     async loadLabel() {
