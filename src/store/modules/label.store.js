@@ -7,7 +7,7 @@ export const labelStore = ({
     getters: {
         labels(state) {
             return state.labels;
-        },
+        }
     },
     mutations: {
         setLabels(state, { labels }) {
