@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       search: '',
-      atcSelection: [],
+      atcSelection: []
     };
   },
   watch: {
@@ -87,11 +87,14 @@ export default {
       timerId = setTimeout(() => {
         this.search = val;
       }, 500);
+    },
+    loadTreeLabels() {
+      this.$store.dispatch({ type: 'loadAtcLabels' });
     }
   },
   mounted() {
     if (!this.atcLabels) {
-      this.$store.dispatch({ type: 'loadAtcLabels' });
+      this.loadTreeLabels();
     }
   },
   components: {

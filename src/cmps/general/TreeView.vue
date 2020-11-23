@@ -1,7 +1,6 @@
 <template>
   <section class="tree-view">
     <div class="btns">
-
       <v-btn 
         elevation="0"
         color="primary lighten-1" 
@@ -270,17 +269,13 @@ export default {
     isItemSelected(items) {
         const itemKey = (items[0] && items[0]._id) ? '_id' : 'id';
         return items.some((item) => {
-          return this.finalSelection.find(
-            (selectedItem) => selectedItem._id === item[itemKey]
-          );
+          return this.finalSelection.find(selectedItem => selectedItem._id === item[itemKey]);
         });
     },
     handleSelection(isChecked, node) {
       const addToSelection = (node) => {
         const itemKey = (node._id) ? '_id' : 'id';
-        const isExists = this.selection.find(
-          (currNode) => currNode[itemKey] === node[itemKey]
-        );
+        const isExists = this.selection.find(currNode => currNode[itemKey] === node[itemKey]);
         if (!isExists) this.selection.push(node);
       };
       const removeFromSelection = (node) => {

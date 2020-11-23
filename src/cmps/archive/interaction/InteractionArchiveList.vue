@@ -43,7 +43,7 @@
                 </div>
                 <div v-if="item.side2Label">
                   <img
-                    :src="require(`@/assets/icons/${item.side2Label.src}.svg`)"
+                    :src="require(`@/assets/icons/custom.svg`)"
                     :alt="item.side2Label.src"
                     :title="item.side2Label.src"
                   />

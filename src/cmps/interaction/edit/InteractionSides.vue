@@ -13,7 +13,7 @@
       <v-chip
         v-if="side2"
         class="ma-2 side-container"
-        :close="!isEdit"
+        close
         color="primary"
         label
         text-color="white"
