@@ -12,6 +12,9 @@
 .interaction-edit-container.portal-active .floating-btns {
     right: calc(40% + 12px);
 }
+.interaction-edit-container.portal-active .close-portal {
+    opacity: 1;
+}
 .portal-container {
     flex-basis: 0;
     padding: 0;
@@ -20,6 +23,10 @@
     overflow: hidden;
     transition: flex-basis .4s linear;
 
+    .close-portal {
+        opacity: 0;
+        transition: opacity .3s linear;
+    }
     .table-container {
         position: absolute;
         top: 12px;
@@ -31,6 +38,7 @@
             position: fixed;
             width: 38%;
             
+        
             .reference-table-shrink, .side-details {
                 max-height: 80vh;
                 overflow-y: auto;

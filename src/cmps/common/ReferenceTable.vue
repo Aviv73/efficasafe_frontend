@@ -20,7 +20,7 @@
                 :hide-default-footer="isShrinked"
                 :disable-pagination="isShrinked"
                 :headers="computedHeaders"
-                :items="validRefs"
+                :items="references"
                 :items-per-page="5"
                 :search="search"
                 class="elevation-0"
@@ -31,16 +31,16 @@
                     </a>
                 </template>
                 <template #[`item.txt`]="{ value, item }">
-                    <p>
-                        {{ value }}
+                    <p :class="{'red--text': !value}">
+                        {{ value || 'Reference does not exists on side 1 material' }}
                     </p>
-                    <a :href="item.link" target="_blank" class="ref-link">
-                        {{ item.link }}
+                    <a :href="item && item.link" target="_blank" class="ref-link">
+                        {{ item && item.link }}
                     </a>
                 </template>
                 <template #[`item.draftIdx`]="{ value, item }">
-                    <span>
-                        {{ isInteraction ? `${RefIdxForDisplay(item)} (${value})` : value }}
+                    <span :class="{'red--text': !value}">
+                        {{ isInteraction ? `${RefIdxForDisplay(item)} (${value || 'Invalid'})` : value }}
                     </span>
                 </template>
                 <template #[`item.actions`]="{ item }">
@@ -109,14 +109,11 @@ export default {
     computed: {
         computedHeaders() {
             return (this.isEdit) ? this.headers : this.headers.filter(header => header.text !== 'Actions');
-        },
-        validRefs() {
-            return this.references.filter(ref => ref);
         }
     },
     methods: {
         RefIdxForDisplay(item) {
-            const idx = this.validRefs.findIndex(ref => ref === item);
+            const idx = this.references.findIndex(ref => ref === item);
             return idx + 1;
         }
     }

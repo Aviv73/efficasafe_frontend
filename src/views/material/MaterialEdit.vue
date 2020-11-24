@@ -9,7 +9,7 @@
       <v-dialog v-model="refDialog" persistent max-width="600">
         <v-card>
           <v-card-title class="primary headline" style="color:white; font-weight:bold;">
-            <v-icon dark left>mdi-plus-circle</v-icon>Add Reference
+            <v-icon dark left>mdi-plus-circle</v-icon>Add / Edit Reference
           </v-card-title>
           <v-form @submit.prevent="editRef" class="ref-form">
             <v-text-field 
@@ -43,7 +43,7 @@
                 class="submit-btn"
                 color="success"
                 :disabled="!isRefValid"
-              >Add Reference</v-btn>
+              >Save Reference</v-btn>
             </div>
           </v-form>
         </v-card>

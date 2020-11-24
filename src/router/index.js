@@ -13,6 +13,7 @@ import interactionApp from '../views/interaction/InteractionApp';
 import interactionEdit from '../views/interaction/InteractionEdit';
 import interactionDetails from '../views/interaction/InteractionDetails';
 import archiveApp from '../views/archive/ArchiveApp';
+import DataIntegrity from '@/views/DataIntegrity';
 
 Vue.use(VueRouter);
 
@@ -86,6 +87,12 @@ const routes = [
     path: '/archive',
     name: 'Archives',
     component: archiveApp,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/data-integrity',
+    name: 'DataIntegrity',
+    component: DataIntegrity,
     meta: { requiresAuth: true }
   },
   {

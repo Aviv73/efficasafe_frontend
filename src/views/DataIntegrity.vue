@@ -1,0 +1,162 @@
+<template>
+  <div class="container">
+    <section class="data-integrity">
+      <v-card>
+        <header class="data-integrity-header">
+          <v-card-title class="text-capitalize"
+            >Data integrity check</v-card-title
+          >
+          <div class="data-integrity-header-controls">
+            <v-select
+              :items="$options.checkTypes"
+              v-model="checkType"
+              clearable
+              label="Check type"
+            ></v-select>
+            <v-btn
+              class="data-integrity-header-controls-btn"
+              elevation="0"
+              depressed
+              outlined
+              :disabled="!checkType || isLoading"
+              @click="getIntegritResults"
+              color="primary"
+            >
+              <v-icon small class="mr-2">mdi-skull-scan-outline</v-icon>
+              Run check
+            </v-btn>
+          </div>
+        </header>
+        <v-divider></v-divider>
+        <loading-cmp class="data-integrity-loader" v-if="isLoading" />
+        <v-simple-table v-else-if="!isLoading && alerts.length">
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th>Entity</th>
+                <th>Alerts</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(alert, idx) in alerts" :key="idx">
+                <td>
+                  {{ entityName(alert.entity) }}
+                </td>
+                <td>
+                  <v-expansion-panels class="data-integrity-expand-panel p-0">
+                    <v-expansion-panel>
+                      <v-expansion-panel-header class="pa-0 warning--text">
+                        {{ alert.msgs.length }} errors detected
+                      </v-expansion-panel-header>
+                      <v-expansion-panel-content class="pa-0">
+                        <v-list dense>
+                          <v-list-item
+                            v-for="(msg, idx) in alert.msgs"
+                            :key="idx"
+                          >
+                            <v-list-item-icon>
+                              <v-icon small color="warning" class="mr-2">
+                                mdi-alert
+                              </v-icon>
+                              <v-list-item-content>
+                                <v-list-item-title
+                                  v-text="msg"
+                                ></v-list-item-title>
+                              </v-list-item-content>
+                            </v-list-item-icon>
+                          </v-list-item>
+                        </v-list>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+                  </v-expansion-panels>
+                </td>
+                <td>
+                  <v-btn
+                    :to="`/${entityType(alert.entity)}/edit/${
+                      alert.entity._id
+                    }`"
+                    elevation="0"
+                    small
+                    outlined
+                    color="primary"
+                    title="Go to edit"
+                  >
+                    <v-icon small>mdi-pencil</v-icon>
+                  </v-btn>
+                </td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+        <div
+          v-else-if="!isLoading && !alerts.length && !isInitial"
+          class="data-integrity-empty"
+        >
+          <p class="subtitle-2 mb-0">
+            There is no dishonest data in this case :)
+          </p>
+        </div>
+        <div
+          v-else-if="!isLoading && !alerts.length && isInitial"
+          class="data-integrity-initial"
+        >
+          <p class="subtitle-1 mb-0">Available check types:</p>
+          <v-list>
+            <v-list-item v-for="(type, idx) in $options.checkTypes" :key="idx">
+              <v-list-item-icon>
+                <v-icon x-small class="mr-2">mdi-scan-helper</v-icon>
+                <v-list-item-content>
+                  <v-list-item-title v-text="type.text"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item-icon>
+            </v-list-item>
+          </v-list>
+        </div>
+      </v-card>
+    </section>
+  </div>
+</template>
+
+<script>
+import LoadingCmp from '@/cmps/general/LoadingCmp';
+import { dataIntegrityService } from '@/services/data-integrity.service';
+
+export default {
+  checkTypes: [
+    { text: 'Duplicate references (material)', value: 'ref-dups' },
+    { text: 'Bad reference (interaction)', value: 'ref-broken' },
+  ],
+  data() {
+    return {
+      isLoading: false,
+      alerts: [],
+      checkType: '',
+      isInitial: true,
+    };
+  },
+  methods: {
+    entityName(entity) {
+      if (entity.name) return entity.name;
+      if (entity.side2Label) return entity.side2Label.name;
+      return `${entity.side1Material.name} & ${entity.side2Material.name}`;
+    },
+    entityType(entity) {
+      return entity.name ? 'material' : 'interaction';
+    },
+    async getIntegritResults() {
+      this.isLoading = true;
+      const criteria = {
+        type: this.checkType,
+      };
+      const alerts = await dataIntegrityService.list(criteria);
+      this.alerts = alerts;
+      this.isLoading = false;
+      if (this.isInitial) this.isInitial = false;
+    },
+  },
+  components: {
+    LoadingCmp,
+  },
+};
+</script>

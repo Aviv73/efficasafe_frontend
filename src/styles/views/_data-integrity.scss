@@ -1,0 +1,50 @@
+.data-integrity {
+    tbody {
+        tr:hover {
+           background-color: transparent !important;
+        }
+    }
+    &-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px;
+
+        &-controls {
+            flex-basis: 30%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+        .v-card__title {
+            padding: 0;
+        }
+    }
+    &-loader {
+        padding: 48px;
+    }
+    &-empty {
+        text-align: center;
+        padding: 8px 16px;
+    }
+    &-initial {
+        padding: 8px 16px;
+    }
+    &-expand-panel {
+        min-width: 500px;
+        z-index: unset;
+        cursor: default;
+        pointer-events: none;
+
+        .v-icon {
+            pointer-events: all;
+        }
+    }
+}
+.v-application--is-ltr .data-integrity .v-expansion-panel-header__icon {
+    margin-left: 24px;
+}
+.v-expansion-panel-content__wrap {
+    padding: 0;
+}

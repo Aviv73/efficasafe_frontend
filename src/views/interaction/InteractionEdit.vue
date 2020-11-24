@@ -101,15 +101,6 @@
               :config="CKEditorConfig"
               v-model="editedInteraction.summary"
             ></ckeditor>
-            <v-btn
-              :disabled="!interactionRefs.length"
-              color="blue-grey"
-              class="ref-table-btn ma-2 white--text"
-              @click="showRefsTable"
-            >
-              Show References
-              <v-icon right dark> mdi-cloud-upload </v-icon>
-            </v-btn>
 
             <h3>
               Review Of Studies:
@@ -231,7 +222,7 @@
       <div class="table-container">
         <aside>
           <header>
-            <v-btn icon @click="closePortal">
+            <v-btn icon @click="closePortal" class="close-portal">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </header>
