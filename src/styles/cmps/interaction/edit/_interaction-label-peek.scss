@@ -1,0 +1,36 @@
+.label-peek {
+    &-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+
+        &-sub {
+            color: white !important;
+            opacity: .7;
+        }
+        &-closer {
+            align-self: flex-start;
+            padding-top: 2px;
+        }
+        .color-circle {
+            margin-left: 12px;
+        }
+    }
+    &-content {
+        padding: 16px 0;
+        max-height: 500px;
+        overflow-y: auto;
+
+        &-link {
+            font-weight: normal;
+            text-transform: unset;
+            &:hover {
+                color: #1976d2;
+            }
+        }
+        .v-chip {
+            margin: 8px 12px;
+        }
+    }
+}

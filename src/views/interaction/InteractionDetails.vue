@@ -23,10 +23,10 @@
 
       <v-card class="info-container">
         <v-card-title class="interaction-details-title">
-          <h2 v-if="interaction.side1Material">
+          <h2 v-if="interaction.side1Material && !interaction.side2Label">
             {{ interaction.side1Material.name }}
           </h2>
-          <span class="spacing">&</span>
+          <span class="spacing" v-if="!interaction.side2Label">&</span>
           <h2 v-if="interaction.side2Material">
             {{ interaction.side2Material.name }}
           </h2>

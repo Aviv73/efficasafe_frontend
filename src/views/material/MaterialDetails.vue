@@ -330,9 +330,13 @@ export default {
             let txt = this.material[propName];
             const matches = txt.match(regex);
             if (matches) {
+                let lastidx = 0;
                 matches.forEach(match => {
                     if (this.isRefStr(match)) {
-                        txt = txt.replaceAll(match, `<sub>${match}</sub>`);
+                        const idx = txt.indexOf(match, lastidx);
+                        if (idx < 0) return;
+                        lastidx = idx + 6;
+                        txt = txt.slice(0, idx) + txt.slice(idx).replace(match, `<sub>${match}</sub>`);
                     }
                 });
             }

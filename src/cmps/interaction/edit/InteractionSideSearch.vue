@@ -1,7 +1,7 @@
 <template>
   <section class="interaction-side-search">
     <div v-if="side.material || side.label" class="int-side-value">
-      <span class="text-capitalize">{{ side.name }}:</span>
+      <span>Side 1:</span>
       <v-chip
         v-if="side.material"
         class="ma-2 side-container"

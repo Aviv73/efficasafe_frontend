@@ -5,6 +5,7 @@
     justify-content: center;
     align-items: center;
     margin-bottom: 16px;
+
     .label-edit-title {
         align-self: flex-start;
         padding: 16px 0;
@@ -43,4 +44,7 @@
             margin-bottom: 10px;
         }
     }
+}
+.info-container .v-expansion-panels {
+    z-index: unset;
 }

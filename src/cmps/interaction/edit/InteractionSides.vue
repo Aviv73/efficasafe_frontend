@@ -9,7 +9,7 @@
       />
     </div>
     <div class="interaction-side side-picker">
-      <span class="text-capitalize" v-if="side2">{{ sides.side2.name }}:</span>
+      <span class="mr-2">Side 2:</span>
       <v-chip
         v-if="side2"
         class="ma-2 side-container"
@@ -28,14 +28,30 @@
         </v-avatar>
         {{ side2.name }}
       </v-chip>
+        <v-btn
+          icon
+          title="View label's materials"
+          v-if="isLabelEdit"
+          @click="$emit('show-label')"
+        >
+          <v-icon color="primary">mdi-eye</v-icon>
+        </v-btn>
       <v-btn 
         class="submit-btn" 
         color="primary"
         @click="isDialogActive = true"
-        v-if="!isEdit"
-      >Pick Side 2</v-btn>
-      <router-link :to="`/label/edit/${side2LabelId}`" v-if="isEdit">Edit Label</router-link>
-      <v-dialog v-model="isDialogActive" persistent max-width="1400">
+        v-if="!isLabelEdit"
+      >
+        Pick Side 2
+      </v-btn>
+      <router-link :to="`/label/edit/${side2LabelId}`" v-if="isLabelEdit" title="Edit Label">
+        <v-icon color="primary">mdi-pencil</v-icon>
+      </router-link>
+      <v-dialog 
+        v-model="isDialogActive" 
+        persistent 
+        max-width="1400" 
+      >
         <side-picker 
           @close-dialog="isDialogActive = false"
           @side2-picked="$emit('side2-picked', $event)"
@@ -76,7 +92,7 @@ export default {
     side2LabelId() {
       return this.editedInteraction.side2Label && this.editedInteraction.side2Label._id;
     },
-    isEdit() {
+    isLabelEdit() {
       return !!this.editedInteraction._id && !!this.side2LabelId;
     },
     side2() {

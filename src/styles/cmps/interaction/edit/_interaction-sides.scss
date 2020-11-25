@@ -1,16 +1,23 @@
+.interaction-edit-container.portal-active .interaction-sides {
+    width: 100%;
+}
 .interaction-sides {
+    width: 50%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 16px;
     margin-bottom: 24px;
+    transition: width .4s linear;
 
     .interaction-side.side-picker {
         display: flex;
-        justify-content: flex-end;
         align-items: center;
 
         .side-title {
             padding: 0;
         }
     }
+}
+.v-dialog:not(.v-dialog--fullscreen) {
+    max-height: unset;
 }

@@ -11,12 +11,12 @@
       <section class="interaction-edit" v-if="editedInteraction">
         <v-card width="90%" max-width="1200">
           <div class="floating-btns">
-            <v-btn 
+            <v-btn
               fab
               class="warning-btn"
-              @click="handleRefsChange" 
+              @click="handleRefsChange"
               elevation="5"
-              color="warning" 
+              color="warning"
               title="Update References"
               :disabled="isRefsChanged('summary') && isRefsChanged('reviewOfStudies')"
             >
@@ -51,6 +51,7 @@
               @update-side="updateSide"
               @remove-side="removeSide"
               @side2-picked="setInteractionSide"
+              @show-label="showLabelDialog"
               :editedInteraction="editedInteraction"
             />
             <v-textarea
@@ -144,7 +145,7 @@
                 v-model="editedInteraction.editorDraft.infoSide1"
                 label="Side 1 info"
               />
-              <v-btn 
+              <v-btn
                 class="details-btn"
                 x-small
                 depressed
@@ -163,7 +164,7 @@
                 v-model="editedInteraction.editorDraft.infoSide2"
                 label="Side 2 info"
               />
-              <v-btn 
+              <v-btn
                 class="details-btn"
                 x-small
                 depressed
@@ -172,6 +173,15 @@
               >
                 Show Details
               </v-btn>
+              <v-btn
+                class="details-btn icon"
+                icon
+                title="View label's materials"
+                v-if="editedInteraction.side2Label && editedInteraction.side2Label._id"
+                @click="showLabelDialog"
+              >
+                <v-icon color="primary">mdi-eye</v-icon>
+            </v-btn>
             </div>
 
             <v-textarea
@@ -217,6 +227,18 @@
             >
           </div>
         </v-card>
+        <v-dialog
+          v-model="isLabelDialogActive"
+          persistent
+          max-width="1400"
+          >
+          <label-peek
+            v-if="editedInteraction.side2Label && editedInteraction.side2Label._id" 
+            :labelId="editedInteraction.side2Label._id" 
+            @close-label-dialog="isLabelDialogActive = false" 
+            @view-material="showLabelMatDetails"
+          />
+        </v-dialog>
       </section>
     <v-card class="portal-container">
       <div class="table-container">
@@ -234,8 +256,8 @@
                 :isShrinked="true"
                 v-if="refsTableActive"
             />
-            <side-details 
-              :id="viewedSideId" 
+            <side-details
+              :id="viewedSideId"
               v-if="sideDetailsActive"
             />
           </transition>
@@ -254,6 +276,7 @@ import interactionSides from '@/cmps/interaction/edit/InteractionSides';
 import referenceTable from '@/cmps/common/ReferenceTable';
 import confirmDeleteItem from '@/cmps/common/ConfirmDeleteItem';
 import sideDetails from '@/cmps/interaction/edit/SideDetails';
+import labelPeek from '@/cmps/interaction/edit/LabelPeek';
 import CKEditor from 'ckeditor4-vue';
 
 export default {
@@ -266,6 +289,7 @@ export default {
       isPortalActive: false,
       refsTableActive: false,
       sideDetailsActive: false,
+      isLabelDialogActive: false,
       viewedSideId: '',
       relatedMaterials: [],
       model: {
@@ -347,6 +371,13 @@ export default {
     }
   },
   methods: {
+    showLabelMatDetails(matId) {
+      this.showSideDetails(matId);
+      this.isLabelDialogActive = false;
+    },
+    showLabelDialog() {
+      this.isLabelDialogActive = true;
+    },
     closePortal() {
       this.isPortalActive = false;
       this.sideDetailsActive = false;
@@ -554,6 +585,7 @@ export default {
     confirmDeleteItem,
     referenceTable,
     sideDetails,
+    labelPeek,
     ckeditor: CKEditor.component,
   },
 };

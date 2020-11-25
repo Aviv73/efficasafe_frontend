@@ -44,20 +44,30 @@
       </div>
 
       <div class="info-title" v-if="relatedMaterials">Related Materials:</div>
-      <v-chip-group column v-if="relatedMaterials">
-        <v-chip 
-          v-for="material in relatedMaterials" 
-          :key="material._id" 
-          :class="{ warning: isPrimaryMaterial(material._id) }"
-        >
-          <v-avatar left size="16">
-            <img :src="require(`@/assets/icons/${material.type}.svg`)" :alt="material.type" />
-          </v-avatar>
-          <router-link :to="`/material/${material._id}`">
-            {{ material.name }}
-          </router-link>
-        </v-chip>
-      </v-chip-group>
+       <v-expansion-panels v-if="relatedMaterials">
+         <v-expansion-panel>
+           <v-expansion-panel-header>
+            There are {{ relatedMaterials.length }} materials related to this label,
+            with {{ label.primaryMaterialIds.length }} primary material/s.
+           </v-expansion-panel-header>
+           <v-expansion-panel-content>
+            <v-chip-group column>
+              <v-chip 
+                v-for="material in relatedMaterials" 
+                :key="material._id" 
+                :class="{ warning: isPrimaryMaterial(material._id) }"
+              >
+                <v-avatar left size="16">
+                  <img :src="require(`@/assets/icons/${material.type}.svg`)" :alt="material.type" />
+                </v-avatar>
+                <router-link :to="`/material/${material._id}`">
+                  {{ material.name }}
+                </router-link>
+              </v-chip>
+            </v-chip-group>
+           </v-expansion-panel-content>
+         </v-expansion-panel>
+       </v-expansion-panels>
     </v-card>
     <icons-map />
   </section>

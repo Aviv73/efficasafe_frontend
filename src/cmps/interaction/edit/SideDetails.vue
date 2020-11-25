@@ -24,7 +24,7 @@
     <div class="side-details-row" v-if="side.brands.length">
         <span class="text-capitalize">Brands:</span>
         <v-chip-group column>
-            <v-chip v-for="(brand, idx) in side.brands" :key="idx">
+            <v-chip v-for="(brand, idx) in side.brands" :key="'brand' + idx">
                 {{ brand }}
             </v-chip>
         </v-chip-group>
@@ -32,7 +32,7 @@
     <div class="side-details-row" v-if="side.aliases.length">
         <span class="text-capitalize">Synonyms:</span>
         <v-chip-group column>
-            <v-chip v-for="(alias, idx) in side.aliases" :key="idx">
+            <v-chip v-for="(alias, idx) in side.aliases" :key="'alias' + idx">
                 {{ alias }}
             </v-chip>
         </v-chip-group>
@@ -52,7 +52,7 @@
     <div class="side-details-row" v-if="side.qualities.length">
         <span class="text-capitalize">Qualities:</span>
         <v-chip-group column>
-            <v-chip v-for="(quality, idx) in side.qualities" :key="idx">
+            <v-chip v-for="(quality, idx) in side.qualities" :key="'quality' + idx">
                 {{ quality }}
             </v-chip>
         </v-chip-group>
@@ -64,7 +64,7 @@
     <div class="side-details-row" v-if="side.medicinalActions.length">
         <span class="text-capitalize">Medicinal actions:</span>
         <v-chip-group column>
-            <v-chip v-for="(action, idx) in side.medicinalActions" :key="idx">
+            <v-chip v-for="(action, idx) in side.medicinalActions" :key="'med-action' + idx">
                 {{ action }}
             </v-chip>
         </v-chip-group>
@@ -72,7 +72,7 @@
     <div class="side-details-row" v-if="side.indications.length">
         <span class="text-capitalize">Indications:</span>
         <v-chip-group column>
-            <v-chip v-for="(indication, idx) in side.indications" :key="idx">
+            <v-chip v-for="(indication, idx) in side.indications" :key="'indication' + idx">
                 {{ indication }}
             </v-chip>
         </v-chip-group>
@@ -136,7 +136,7 @@
     <div class="side-details-row" v-if="side.regions.length">
         <span class="text-capitalize">Regions:</span>
         <v-chip-group column>
-            <v-chip v-for="(region, idx) in side.regions" :key="idx" class="text-uppercase">
+            <v-chip v-for="(region, idx) in side.regions" :key="'region' + idx" class="text-uppercase">
                 <v-avatar left>
                     <v-img
                         :src="require(`@/assets/icons/regions/${region}.svg`)"
@@ -163,7 +163,7 @@
         <v-chip-group column>
             <v-chip v-for="label in side.labels" :key="label._id" :style="label.color">
                 <router-link :to="`/label/${label._id}`">
-                        {{ label.name }}
+                    {{ label.name }}
                 </router-link>
             </v-chip>
         </v-chip-group>

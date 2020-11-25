@@ -2,17 +2,27 @@
   <section class="tree-view">
     <div class="btns">
       <v-btn 
+        class="btn"
         elevation="0"
-        color="primary lighten-1" 
+        outlined
+        color="secondary lighten-1" 
         v-if="depth === 0" 
-        class="close-btn"
         @click="closeAllBranches"
       >Close All</v-btn>
       <v-btn 
+        class="btn"
         elevation="0"
+        outlined
+        color="primary lighten-1" 
+        v-if="depth === 0" 
+        @click="expandToSelection"
+      >View selected</v-btn>
+      <v-btn 
+        class="btn"
+        elevation="0"
+        outlined
         color="warning lighten-1" 
         v-if="depth === 0" 
-        class="close-btn"
         @click="cleanSelection"
       >Clear All</v-btn>
     </div>
@@ -174,6 +184,22 @@ export default {
     }
   },
   methods: {
+    expandToSelection() {
+      const expandToSelection = (node) => {
+        const paths = [];
+        if (this.isChecked(node)) {
+          this.getNodePath(node, paths);
+          for (let i = paths.length - 1; i >= 0; i--) {
+            if (!this.openBranches.includes(paths[i])) {
+              this.openBranches.push(paths[i]);
+            }
+          }
+        }
+      }
+      this.items.forEach(item => {
+        this.traverse(item, 0, expandToSelection);
+      });
+    },
     isPrimaryMaterial(matId) {
       return this.primaryMaterialIds.includes(matId);
     },
@@ -273,6 +299,16 @@ export default {
         });
     },
     handleSelection(isChecked, node) {
+      if (!node._id) {
+        const selectedOffsprings = [];
+        const findSelected = (node) => {
+          if (this.isChecked(node)) {
+            selectedOffsprings.push(node);
+          }
+        }
+        this.traverse(node, 0, findSelected);
+        isChecked = !selectedOffsprings.length;
+      } 
       const addToSelection = (node) => {
         const itemKey = (node._id) ? '_id' : 'id';
         const isExists = this.selection.find(currNode => currNode[itemKey] === node[itemKey]);
@@ -367,6 +403,9 @@ export default {
     eventBus.$on(EV_emptySelection, this.unIndeterminateInput);
     this.checkOffspringSelected();
     eventBus.$on(EV_refresh_root_tree_view, this.refreshCmps);
+  },
+  mounted() {
+    if (this.depth) this.expandToSelection();
   }
 };
 </script>
@@ -374,10 +413,12 @@ export default {
 <style scoped lang="scss">
 .btns {
   float: right;
+  display: flex;
+  flex-direction: column;
 
-  .close-btn {
+  .btn {
     display: block;
-    &:first-child {
+    &:not(:last-child) {
       margin-bottom: 12px;
     }
   }
