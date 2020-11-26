@@ -4,6 +4,18 @@
 
     &-header {
         cursor: pointer;
+
+        .icon {
+            font-size: 1.2em;
+            visibility: hidden;
+        }
+        .icon-active {
+            visibility: visible;
+        }
+        [type=checkbox]:checked ~ .icon-active {
+            transform: rotateX(180deg);
+            perspective: 15px;
+        }
     }
 }
 

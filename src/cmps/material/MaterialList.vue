@@ -13,6 +13,7 @@
           <label class="material-list-header">
             <input type="checkbox" hidden @change="onSort('name', $event.target.checked)">
             {{ header.text }}
+            <v-icon class="icon" :class="{ 'icon-active': isSortedBy(header.value) }">mdi-arrow-down</v-icon>
           </label>
         </th>
       </template>
@@ -21,6 +22,7 @@
           <label class="material-list-header">
             <input type="checkbox" hidden @change="onSort('type', $event.target.checked)">
             {{ header.text }}
+            <v-icon class="icon" :class="{ 'icon-active': isSortedBy(header.value) }">mdi-arrow-down</v-icon>
           </label>
         </th>
       </template>
@@ -109,6 +111,9 @@ export default {
   methods: {
     onSort(sortBy, isDesc) {
       this.$emit('header-clicked', sortBy, isDesc);
+    },
+    isSortedBy(property) {
+      return this.$route.query.sortBy === property;
     }
   }
 };

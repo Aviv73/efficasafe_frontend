@@ -50,6 +50,9 @@ export default {
     totalItems() {
       return this.$store.getters.total;
     },
+    routeQuery() {
+      return '?' + new URLSearchParams(this.$route.query).toString();
+    }
   },
   methods: {
     setSort(propName, isDesc) {
@@ -88,8 +91,6 @@ export default {
         criteria.page = --page;
       } else { 
         criteria.limit = 10;
-        criteria.sortBy = [ 'type', 'name' ];
-        criteria.isDesc = [ true, false ];
       }
       if (criteria.q) criteria.page = 0;
 
@@ -98,12 +99,20 @@ export default {
     }
   },
   created() {
+    const criteria = {
+      sortBy: [ 'type', 'name' ],
+      isDesc: [ true, false ]
+    }
+    const queryStr = '?' + new URLSearchParams(criteria).toString();
+    if (queryStr !== this.routeQuery) {
+      this.$router.push(queryStr);
+    }
     this.loadMaterials();
   },
   components: {
     materialFilter,
     materialList,
-    iconsMap,
+    iconsMap
   },
 };
 </script>
