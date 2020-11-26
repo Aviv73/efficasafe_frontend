@@ -69,11 +69,6 @@ export default {
           type: 'saveInteraction',
           interaction,
         });
-        // eventBus.$emit(EV_addInteraction, {
-        //   name: "",
-        //   type: "interaction",
-        //   _id: interaction._id,
-        // });
       } catch (err) {
         console.log('Error:', err);
       }

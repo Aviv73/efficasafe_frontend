@@ -10,7 +10,7 @@
         }
     }
     .v-chip {
-        cursor: default;
+        pointer-events: none;
     }
     .info-container {
         display: grid;

@@ -11,9 +11,7 @@
 .tr-label {
     &-checkbox {
         margin: 0 12px;
-      &:hover, & *:hover {
-        cursor: default !important;
-      }
+        pointer-events: none;
     }
     .td-name-img {
         a {

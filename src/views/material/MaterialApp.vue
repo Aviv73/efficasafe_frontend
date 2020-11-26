@@ -39,7 +39,7 @@ export default {
     };
   },
   watch: {
-    '$route.query': function () {
+    '$route.query'() {
       this.loadMaterials();
     },
   },
