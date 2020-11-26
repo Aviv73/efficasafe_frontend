@@ -229,7 +229,6 @@
         </v-card>
         <v-dialog
           v-model="isLabelDialogActive"
-          persistent
           max-width="1400"
           >
           <label-peek
@@ -332,9 +331,6 @@ export default {
     interactions() {
       return this.$store.getters.interactions;
     },
-    unsavedInteraction() {
-      return this.$store.getters.interaction(this.$route.params.id);
-    },
     draftName: {
       get() {
         return this.editedInteraction.side2DraftName;
@@ -344,7 +340,7 @@ export default {
         if (this.editedInteraction.side2Label) {
           this.editedInteraction.side2Label.name = val;
         }
-      },
+      }
     },
     sides() {
       const interaction = this.editedInteraction;
@@ -481,7 +477,6 @@ export default {
           });
           this.editedInteraction = JSON.parse(JSON.stringify(interaction));
           await this.getReferences();
-          this.calculateEvidenceLevel();
         } else {
           this.editedInteraction = interactionService.getEmptyInteraction();
         }
@@ -490,9 +485,9 @@ export default {
       }
     },
     calculateEvidenceLevel() {
-      if (this.side1MaterialRefs.length) {
+      if (this.interactionRefs.length) {
         this.editedInteraction.evidenceLevel = interactionService.calculateEvidenceLevel(
-          this.side1MaterialRefs
+          this.interactionRefs
         );
       }
     },
@@ -577,6 +572,7 @@ export default {
     await this.loadInteraction();
     if (this.editedInteraction.side1Material) {
       this.setInteractionRefs();
+      this.calculateEvidenceLevel();
     }
     this.getRelatedMaterials();
   },

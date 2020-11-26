@@ -11,7 +11,7 @@
         padding: 16px;
 
         &-controls {
-            flex-basis: 30%;
+            flex-basis: 60%;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -34,17 +34,5 @@
     &-expand-panel {
         min-width: 500px;
         z-index: unset;
-        cursor: default;
-        pointer-events: none;
-
-        .v-icon {
-            pointer-events: all;
-        }
     }
-}
-.v-application--is-ltr .data-integrity .v-expansion-panel-header__icon {
-    margin-left: 24px;
-}
-.v-expansion-panel-content__wrap {
-    padding: 0;
 }

@@ -104,30 +104,30 @@ function getRefsOrder(txt, isUnique = true) {
 
 function calculateEvidenceLevel(refs) {
     const map = _evidenceLevelMap(refs)
-
+    
     if ((map.meta || map.systematic || map['drug label']) ||
         (map.clinical && map.clinical > 1)) {
-        return 'A'
+        return 'A';
     } else if (
         (map.clinical && map.animal) ||
         (map.clinical && map['in vitro']) ||
         (map.retrospective && map.animal) ||
         (map.retrospective && map['in vitro'])
     ) {
-        return 'B'
+        return 'B';
     } else if (map.clinical || map.retrospective) {
-        return 'C'
+        return 'C';
     } else if (map.case) {
-        return 'D'
+        return 'D';
     } else if (
         (map.animal && map.animal > 1) ||
         (map['in vitro'] && map['in vitro'] > 1) ||
         (map.animal && map['in vitro'])
     ) {
-        return 'E'
+        return 'E';
     } else if (map.animal || map['in vitro']) {
-        return 'F'
-    } else return 'Z'
+        return 'F';
+    } else return 'Z';
 }
 
 function getEmptyInteraction() {

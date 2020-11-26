@@ -7,6 +7,7 @@
       :loading="isLoading"
       @change="emitAutocomplete"
       :label="placeholder"
+      :disabled="isDisabled"
       clearable
       cache-items
       flat
@@ -22,6 +23,10 @@ export default {
     placeholder: {
       type: String,
       default: 'Search Material'
+    },
+    isDisabled: {
+      type: Boolean,
+      defualt: false
     }
   },
   data() {

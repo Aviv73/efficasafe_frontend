@@ -15,7 +15,7 @@
         outlined
         color="primary lighten-1" 
         v-if="depth === 0" 
-        @click="expandToSelection"
+        @click="handleViewAll"
       >View selected</v-btn>
       <v-btn 
         class="btn"
@@ -83,6 +83,7 @@
             @selection-changed="saveSelection($event)"
             :finalSelection="finalSelection"
             :primaryMaterialIds="primaryMaterialIds"
+            :doExpandOnMount="isChildsExpand"
           />
         </span>
       </li>
@@ -136,6 +137,10 @@ export default {
     primaryMaterialIds: {
       type: Array,
       required: true
+    },
+    doExpandOnMount: {
+      type: Boolean,
+      required: false
     }
   },
   branchIdsMap: {},
@@ -144,7 +149,8 @@ export default {
       selection: this.parentSelection,
       childDepth: this.depth + 1,
       openBranches: [],
-      checkboxRenderKey: 1
+      checkboxRenderKey: 1,
+      isChildsExpand: this.doExpandOnMount || false
     };
   },
   watch: {
@@ -184,9 +190,16 @@ export default {
     }
   },
   methods: {
+    handleViewAll() {
+      this.expandToSelection();
+      this.isChildsExpand = true;
+      this.$nextTick(() => {
+        this.isChildsExpand = false;
+      });
+    },
     expandToSelection() {
-      const expandToSelection = (node) => {
-        const paths = [];
+      const paths = [];
+      const doExpand = (node) => {
         if (this.isChecked(node)) {
           this.getNodePath(node, paths);
           for (let i = paths.length - 1; i >= 0; i--) {
@@ -197,7 +210,7 @@ export default {
         }
       }
       this.items.forEach(item => {
-        this.traverse(item, 0, expandToSelection);
+        this.traverse(item, 0, doExpand);
       });
     },
     isPrimaryMaterial(matId) {
@@ -405,7 +418,9 @@ export default {
     eventBus.$on(EV_refresh_root_tree_view, this.refreshCmps);
   },
   mounted() {
-    if (this.depth) this.expandToSelection();
+    if (this.doExpandOnMount) {
+      this.expandToSelection();
+    }
   }
 };
 </script>

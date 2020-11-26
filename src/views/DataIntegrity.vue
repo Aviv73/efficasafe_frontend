@@ -13,12 +13,17 @@
               clearable
               label="Check type"
             ></v-select>
+            <async-autocomplete 
+                @emitAutocomplete="saveMaterialId"
+                :isDisabled="checkType !== 'material-ref-dups'"
+                placeholder="Select material"
+            />
             <v-btn
               class="data-integrity-header-controls-btn"
               elevation="0"
               depressed
               outlined
-              :disabled="!checkType || isLoading"
+              :disabled="!checkType || isLoading || (checkType === 'material-ref-dups' && !this.materialId)"
               @click="getIntegritResults"
               color="primary"
             >
@@ -47,7 +52,9 @@
                   <v-expansion-panels class="data-integrity-expand-panel p-0">
                     <v-expansion-panel>
                       <v-expansion-panel-header class="pa-0 warning--text">
-                        {{ alert.msgs.length }} errors detected
+                        <span class="data-integrity-expand-panel-msg">
+                          {{ alert.msgs.length }} errors detected
+                        </span>
                       </v-expansion-panel-header>
                       <v-expansion-panel-content class="pa-0">
                         <v-list dense>
@@ -120,11 +127,13 @@
 
 <script>
 import LoadingCmp from '@/cmps/general/LoadingCmp';
+import AsyncAutocomplete from '@/cmps/AsyncAutocomplete.vue';
 import { dataIntegrityService } from '@/services/data-integrity.service';
 
 export default {
   checkTypes: [
-    { text: 'Duplicate references (material)', value: 'ref-dups' },
+    { text: 'Duplicate references (all materials)', value: 'ref-dups' },
+    { text: 'Duplicate references (single material)', value: 'material-ref-dups' },
     { text: 'Bad reference (interaction)', value: 'ref-broken' },
   ],
   data() {
@@ -133,9 +142,19 @@ export default {
       alerts: [],
       checkType: '',
       isInitial: true,
+      materialId: ''
     };
   },
+  computed: {
+    selectedMaterialId() {
+      if (this.checkType !== 'material-ref-dups') return '';
+      return this.materialId;
+    }
+  },
   methods: {
+    saveMaterialId(material) {
+      this.materialId = (material) ? material._id : '';
+    },
     entityName(entity) {
       if (entity.name) return entity.name;
       if (entity.side2Label) return entity.side2Label.name;
@@ -146,17 +165,23 @@ export default {
     },
     async getIntegritResults() {
       this.isLoading = true;
-      const criteria = {
-        type: this.checkType,
-      };
-      const alerts = await dataIntegrityService.list(criteria);
-      this.alerts = alerts;
+      if (!this.selectedMaterialId) {
+        const criteria = {
+          type: this.checkType,
+        };
+        const alerts = await dataIntegrityService.list(criteria);
+        this.alerts = alerts;
+      } else {
+        const materialAlerts = await dataIntegrityService.getById(this.selectedMaterialId);
+        this.alerts = materialAlerts;
+      }
       this.isLoading = false;
       if (this.isInitial) this.isInitial = false;
     },
   },
   components: {
     LoadingCmp,
+    AsyncAutocomplete,
   },
 };
 </script>
