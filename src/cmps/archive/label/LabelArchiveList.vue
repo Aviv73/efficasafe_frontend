@@ -17,7 +17,7 @@
 
             <td class="td-color" width="80">
               <router-link class="link-clean" :to="`/label/${item._id}`">
-                <div class="color-circle" :style="{ backgroundColor: item.color}"></div>
+                <div class="color-circle" :style="{ backgroundColor: item.color }"></div>
               </router-link>
             </td>
 
@@ -25,7 +25,7 @@
               <v-btn
                 small
                 color="primary"
-                @click="$emit('restore-label', {id: item._id, type: 'label'})"
+                @click="$emit('restore-label', { id: item._id, type: 'label' })"
               >
                 <v-icon small>mdi-archive-arrow-up</v-icon>
               </v-btn>

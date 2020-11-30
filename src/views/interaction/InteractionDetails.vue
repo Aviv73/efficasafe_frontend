@@ -1,148 +1,151 @@
 <template>
-  <section class="interaction-details" v-if="interaction">
-    <div class="container">
-      <confirm-delete
-        v-model="dialog"
-        type="interaction"
-        :dialog="dialog"
-        @delete-confirm="removeInteraction"
-        @delete-cancel="dialog = false"
-      />
-      <div class="action-container">
-        <v-btn color="primary" to="/interaction">
-          <v-icon small left>mdi-arrow-left</v-icon>Back to Interactions
-        </v-btn>
-        <v-spacer></v-spacer>
-        <v-btn color="primary" :to="`/interaction/edit/${interaction._id}`">
-          <v-icon small left>mdi-pencil</v-icon>Edit
-        </v-btn>
-        <v-btn color="error" @click="displayDialog">
-          <v-icon small left>mdi-delete</v-icon>Delete
-        </v-btn>
-      </div>
-
-      <v-card class="info-container">
-        <v-card-title class="interaction-details-title">
-          <h2 v-if="interaction.side1Material && !interaction.side2Label">
-            {{ interaction.side1Material.name }}
-          </h2>
-          <span class="spacing" v-if="!interaction.side2Label">&</span>
-          <h2 v-if="interaction.side2Material">
-            {{ interaction.side2Material.name }}
-          </h2>
-          <h2 v-if="interaction.side2Label">{{ interaction.side2Label.name }}</h2>
-        </v-card-title>
-
-        <span class="info-title">Is Active:</span>
-        <span>{{ interaction.isActive ? 'Active' : 'Not Active' }}</span>
-
-        <span class="info-title" v-if="interaction.side1Material">
-          Side 1 Material:
-        </span>
-        <router-link
-          class="info-value"
-          v-if="interaction.side1Material"
-          :to="`/material/${interaction.side1Material._id}`"
-        >
-          {{ interaction.side1Material.name }}
-        </router-link>
-
-        <span class="info-title" v-if="interaction.side2Material">
-          Side 2 Material:
-        </span>
-        <router-link
-          class="info-value"
-          v-if="interaction.side2Material"
-          :to="`/material/${interaction.side2Material._id}`"
-          >{{ interaction.side2Material.name }}</router-link
-        >
-
-        <span class="info-title" v-if="interaction.side2Label">
-          Side 2 Label:
-        </span>
-        <router-link
-          class="info-value"
-          v-if="interaction.side2Label"
-          :to="`/label/${interaction.side2Label._id}`"
-        >
-          {{ interaction.side2Label.name }}
-        </router-link>
-
-        <h3 class="info-title">Draft Name:</h3>
-        <p class="info-value">{{ interaction.side2DraftName }}</p>
-
-        <h3 class="info-title">Source:</h3>
-        <p class="info-value">{{ interaction.src }}</p>
-
-        <h3 class="info-title">Recommendation:</h3>
-        <p class="info-value">{{ recommendation }}</p>
-
-        <h3 class="info-title">Summary:</h3>
-        <p class="info-value" v-html="txtWithRefs('summary')" ref="summary"></p>
-
-        <span class="info-title">Note:</span>
-        <p class="info-value">{{ interaction.note }}</p>
-
-        <h3 class="info-title">Level of evidence:</h3>
-        <span class="info-value">{{ interaction.evidenceLevel }}</span>
-
-        <h3 class="info-title">Review of studies:</h3>
-        <div>
-          <p
-            class="info-value"
-            v-html="txtWithRefs('reviewOfStudies')"
-            ref="reviewOfStudies"
-          ></p>
+  <div>
+    <section class="interaction-details" v-if="interaction">
+      <div class="container">
+        <confirm-delete
+          v-model="dialog"
+          type="interaction"
+          :dialog="dialog"
+          @delete-confirm="removeInteraction"
+          @delete-cancel="dialog = false"
+        />
+        <div class="action-container">
+          <v-btn color="primary" to="/interaction">
+            <v-icon small left>mdi-arrow-left</v-icon>Back to Interactions
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" :to="`/interaction/edit/${interaction._id}`">
+            <v-icon small left>mdi-pencil</v-icon>Edit
+          </v-btn>
+          <v-btn color="error" @click="displayDialog">
+            <v-icon small left>mdi-delete</v-icon>Delete
+          </v-btn>
         </div>
 
-        <reference-table
-          class="refs-table"
-          :isInteraction="true"
-          :references="interactionRefs"
-          v-if="interactionRefs.length"
-        />
+        <v-card class="info-container">
+          <v-card-title class="interaction-details-title">
+            <h2 v-if="interaction.side1Material && !interaction.side2Label">
+              {{ interaction.side1Material.name }}
+            </h2>
+            <span class="spacing" v-if="!interaction.side2Label">&</span>
+            <h2 v-if="interaction.side2Material">
+              {{ interaction.side2Material.name }}
+            </h2>
+            <h2 v-if="interaction.side2Label">{{ interaction.side2Label.name }}</h2>
+          </v-card-title>
 
-        <h3 class="info-title">Indications:</h3>
-        <v-chip-group column>
-          <v-chip
-            v-for="(indication, idx) in interaction.indications"
-            :key="idx"
-            >{{ indication }}</v-chip>
-        </v-chip-group>
+          <span class="info-title">Is Active:</span>
+          <span>{{ interaction.isActive ? 'Active' : 'Not Active' }}</span>
 
-        <h3 class="info-title">Lab Tests:</h3>
-        <p class="info-value">{{ interaction.monitor.labTests }}</p>
-
-        <h3 class="info-title">Other Tests:</h3>
-        <p class="info-value">{{ interaction.monitor.otherTests }}</p>
-
-        <h3 class="info-title">Symptoms:</h3>
-        <p class="info-value">{{ interaction.monitor.symptoms }}</p>
-
-        <h2 class="info-title">Editor's Draft:</h2>
-        <span></span>
-
-        <h3 class="info-title">General:</h3>
-        <div class="info-value">{{ interaction.editorDraft.general }}</div>
-
-        <h3 class="info-title">Info Side 1:</h3>
-        <div class="info-value">{{ interaction.editorDraft.infoSide1 }}</div>
-
-        <h3 class="info-title">Info Side 2:</h3>
-        <div class="info-value">{{ interaction.editorDraft.infoSide2 }}</div>
-
-        <h3 class="info-title">Gates:</h3>
-        <v-chip-group column>
-          <v-chip
-            v-for="(gate, idx) in interaction.editorDraft.gates"
-            :key="idx"
-            >{{ gate }}</v-chip
+          <span class="info-title" v-if="interaction.side1Material">
+            Side 1 Material:
+          </span>
+          <router-link
+            class="info-value"
+            v-if="interaction.side1Material"
+            :to="`/material/${interaction.side1Material._id}`"
           >
-        </v-chip-group>
-      </v-card>
-      <icons-map />
-    </div>
-  </section>
+            {{ interaction.side1Material.name }}
+          </router-link>
+
+          <span class="info-title" v-if="interaction.side2Material">
+            Side 2 Material:
+          </span>
+          <router-link
+            class="info-value"
+            v-if="interaction.side2Material"
+            :to="`/material/${interaction.side2Material._id}`"
+            >{{ interaction.side2Material.name }}</router-link
+          >
+
+          <span class="info-title" v-if="interaction.side2Label">
+            Side 2 Label:
+          </span>
+          <router-link
+            class="info-value"
+            v-if="interaction.side2Label"
+            :to="`/label/${interaction.side2Label._id}`"
+          >
+            {{ interaction.side2Label.name }}
+          </router-link>
+
+          <h3 class="info-title">Draft Name:</h3>
+          <p class="info-value">{{ interaction.side2DraftName }}</p>
+
+          <h3 class="info-title">Source:</h3>
+          <p class="info-value">{{ interaction.src }}</p>
+
+          <h3 class="info-title">Recommendation:</h3>
+          <p class="info-value">{{ recommendation }}</p>
+
+          <h3 class="info-title">Summary:</h3>
+          <p class="info-value" v-html="txtWithRefs('summary')" ref="summary"></p>
+
+          <span class="info-title">Note:</span>
+          <p class="info-value">{{ interaction.note }}</p>
+
+          <h3 class="info-title">Level of evidence:</h3>
+          <span class="info-value">{{ interaction.evidenceLevel }}</span>
+
+          <h3 class="info-title">Review of studies:</h3>
+          <div>
+            <p
+              class="info-value"
+              v-html="txtWithRefs('reviewOfStudies')"
+              ref="reviewOfStudies"
+            ></p>
+          </div>
+
+          <reference-table
+            class="refs-table"
+            :isInteraction="true"
+            :references="interactionRefs"
+            v-if="interactionRefs.length"
+          />
+
+          <h3 class="info-title">Indications:</h3>
+          <v-chip-group column>
+            <v-chip
+              v-for="(indication, idx) in interaction.indications"
+              :key="idx"
+              >{{ indication }}</v-chip>
+          </v-chip-group>
+
+          <h3 class="info-title">Lab Tests:</h3>
+          <p class="info-value">{{ interaction.monitor.labTests }}</p>
+
+          <h3 class="info-title">Other Tests:</h3>
+          <p class="info-value">{{ interaction.monitor.otherTests }}</p>
+
+          <h3 class="info-title">Symptoms:</h3>
+          <p class="info-value">{{ interaction.monitor.symptoms }}</p>
+
+          <h2 class="info-title">Editor's Draft:</h2>
+          <span></span>
+
+          <h3 class="info-title">General:</h3>
+          <div class="info-value">{{ interaction.editorDraft.general }}</div>
+
+          <h3 class="info-title">Info Side 1:</h3>
+          <div class="info-value">{{ interaction.editorDraft.infoSide1 }}</div>
+
+          <h3 class="info-title">Info Side 2:</h3>
+          <div class="info-value">{{ interaction.editorDraft.infoSide2 }}</div>
+
+          <h3 class="info-title">Gates:</h3>
+          <v-chip-group column>
+            <v-chip
+              v-for="(gate, idx) in interaction.editorDraft.gates"
+              :key="idx"
+              >{{ gate }}</v-chip
+            >
+          </v-chip-group>
+        </v-card>
+        <icons-map />
+      </div>
+    </section>
+    <entity-not-found v-if="isNotFound" entity="interaction" />
+  </div>
 </template>
 
 <script>
@@ -150,6 +153,7 @@ import { interactionService } from '@/services/interaction.service';
 import confirmDelete from '@/cmps/general/ConfirmDelete';
 import referenceTable from '@/cmps/common/ReferenceTable';
 import iconsMap from '@/cmps/general/IconsMap';
+import entityNotFound from '@/cmps/general/EntityNotFound'; 
 
 export default {
   data() {
@@ -163,6 +167,7 @@ export default {
         side2Label: null,
       },
       interactionRefs: [],
+      isNotFound: false
     };
   },
   watch: {
@@ -179,7 +184,6 @@ export default {
       refsOrder.forEach((refNum) => {
         const draftIdx = this.interactionRefs.findIndex(ref => ref && ref.draftIdx === refNum) + 1;
         const refIdx = txt.indexOf(refNum, lastRefIdx);
-        if (refIdx < 0) return;
         lastRefIdx = refIdx;
         txt = txt.slice(0, refIdx) + txt.slice(refIdx).replace(refNum, draftIdx);
       });
@@ -212,7 +216,11 @@ export default {
           intId,
         });
         this.interaction = interaction;
-        this.getReferences();
+        if (this.interaction) {
+          this.getReferences();
+        } else {
+          this.isNotFound = true;
+        }
       }
     },
     async removeInteraction() {
@@ -248,7 +256,6 @@ export default {
       for (let i = 0; i < elSubs.length; i++) {
         
         const refIdxs = interactionService.getRefsOrder(elSubs[i].innerText);
-        
         if (!refIdxs[0]) return;
 
         elSubs[i].innerText = interactionService.formatRefStrs(elSubs[i].innerText);
@@ -283,12 +290,15 @@ export default {
     this.loadInteraction();
   },
   updated() {
-    this.setRefsToolTip();
+    if (this.interaction) {
+      this.setRefsToolTip();
+    }
   },
   components: {
     confirmDelete,
     referenceTable,
     iconsMap,
+    entityNotFound,
   }
 };
 </script>

@@ -1,81 +1,85 @@
 <template>
-  <section class="label-details container" v-if="label">
-    <confirm-delete
-      v-model="dialog"
-      type="Label"
-      :dialog="dialog"
-      @delete-confirm="removeLabel"
-      @delete-cancel="dialog = false"
-    />
-    <div class="action-container">
-      <v-btn color="primary" to="/label">
-        <v-icon small left>mdi-arrow-left</v-icon>Back to Labels
-      </v-btn>
-      <v-btn
-        color="primary"
-        :to="{ path: '/interaction', query: { id: `${label._id}` } }"
-      >
-        <v-icon small left>mdi-view-list</v-icon>Interactions
-      </v-btn>
-      <v-btn
-        color="primary"
-        :to="{ path: '/material', query: { labelId: `${label._id}` } }"
-      >
-        <v-icon small left>mdi-view-list</v-icon>Related Materials
-      </v-btn>
-      <v-spacer></v-spacer>
-      <v-btn color="primary" :to="`/label/edit/${label._id}`">
-        <v-icon small left>mdi-pencil</v-icon>Edit
-      </v-btn>
-      <v-btn color="error" v-if="label.src !== 'atc'" @click="displayDialog">
-        <v-icon small left>mdi-delete</v-icon>Delete
-      </v-btn>
-    </div>
-    <v-card class="info-container">
-      <v-card-title class="label-details-title">
-        {{ label.name }}
-        <span class="color-circle v-chip" :style="{ backgroundColor: label.color }"></span>
-      </v-card-title>
-
-      <v-spacer v-if="label.isSuper"></v-spacer>
-      <div class="info-title is-super" v-if="label.isSuper">
-        <v-icon color="red">mdi-pill</v-icon>
-        This is a 'super' drug group
+  <div>
+    <section class="label-details container" v-if="label">
+      <confirm-delete
+        v-model="dialog"
+        type="Label"
+        :dialog="dialog"
+        @delete-confirm="removeLabel"
+        @delete-cancel="dialog = false"
+      />
+      <div class="action-container">
+        <v-btn color="primary" to="/label">
+          <v-icon small left>mdi-arrow-left</v-icon>Back to Labels
+        </v-btn>
+        <v-btn
+          color="primary"
+          :to="{ path: '/interaction', query: { id: `${label._id}` } }"
+        >
+          <v-icon small left>mdi-view-list</v-icon>Interactions
+        </v-btn>
+        <v-btn
+          color="primary"
+          :to="{ path: '/material', query: { labelId: `${label._id}` } }"
+        >
+          <v-icon small left>mdi-view-list</v-icon>Related Materials
+        </v-btn>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" :to="`/label/edit/${label._id}`">
+          <v-icon small left>mdi-pencil</v-icon>Edit
+        </v-btn>
+        <v-btn color="error" v-if="label.src !== 'atc'" @click="displayDialog">
+          <v-icon small left>mdi-delete</v-icon>Delete
+        </v-btn>
       </div>
+      <v-card class="info-container">
+        <v-card-title class="label-details-title">
+          {{ label.name }}
+          <span class="color-circle v-chip" :style="{ backgroundColor: label.color }"></span>
+        </v-card-title>
 
-      <div class="info-title" v-if="relatedMaterials">Related Materials:</div>
-       <v-expansion-panels v-if="relatedMaterials">
-         <v-expansion-panel>
-           <v-expansion-panel-header>
-            There are {{ relatedMaterials.length }} materials related to this label,
-            with {{ label.primaryMaterialIds.length }} primary material/s.
-           </v-expansion-panel-header>
-           <v-expansion-panel-content>
-            <v-chip-group column>
-              <v-chip 
-                v-for="material in relatedMaterials" 
-                :key="material._id" 
-                :class="{ warning: isPrimaryMaterial(material._id) }"
-              >
-                <v-avatar left size="16">
-                  <img :src="require(`@/assets/icons/${material.type}.svg`)" :alt="material.type" />
-                </v-avatar>
-                <router-link :to="`/material/${material._id}`">
-                  {{ material.name }}
-                </router-link>
-              </v-chip>
-            </v-chip-group>
-           </v-expansion-panel-content>
-         </v-expansion-panel>
-       </v-expansion-panels>
-    </v-card>
-    <icons-map />
-  </section>
+        <v-spacer v-if="label.isSuper"></v-spacer>
+        <div class="info-title is-super" v-if="label.isSuper">
+          <v-icon color="red">mdi-pill</v-icon>
+          This is a 'super' drug group
+        </div>
+
+        <div class="info-title" v-if="relatedMaterials">Related Materials:</div>
+        <v-expansion-panels v-if="relatedMaterials">
+          <v-expansion-panel>
+            <v-expansion-panel-header>
+              There are {{ relatedMaterials.length }} materials related to this label,
+              with {{ label.primaryMaterialIds.length }} primary material/s.
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <v-chip-group column>
+                <v-chip 
+                  v-for="material in relatedMaterials" 
+                  :key="material._id" 
+                  :class="{ warning: isPrimaryMaterial(material._id) }"
+                >
+                  <v-avatar left size="16">
+                    <img :src="require(`@/assets/icons/${material.type}.svg`)" :alt="material.type" />
+                  </v-avatar>
+                  <router-link :to="`/material/${material._id}`">
+                    {{ material.name }}
+                  </router-link>
+                </v-chip>
+              </v-chip-group>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </v-card>
+      <icons-map />
+    </section>
+    <entity-not-found v-if="isNotFound" entity="label" />
+  </div>
 </template>
 
 <script>
 import confirmDelete from '@/cmps/general/ConfirmDelete';
 import iconsMap from '@/cmps/general/IconsMap';
+import entityNotFound from '@/cmps/general/EntityNotFound';
 
 export default {
   data() {
@@ -83,6 +87,7 @@ export default {
       label: null,
       dialog: false,
       relatedMaterials: null,
+      isNotFound: false
     };
   },
   watch: {
@@ -107,8 +112,12 @@ export default {
           this.$store.dispatch({ type: 'loadLabel', labelId }),
           this.$store.dispatch({ type: 'loadAutoCompleteResults', criteria }),
         ]);
-        this.label = label;
-        this.relatedMaterials = materials;
+        if (label) {
+          this.label = label;
+          this.relatedMaterials = materials;
+        } else {
+          this.isNotFound = true;
+        }
       }
     },
     async removeLabel() {
@@ -138,6 +147,7 @@ export default {
   components: {
     confirmDelete,
     iconsMap,
+    entityNotFound
   },
 };
 </script>
