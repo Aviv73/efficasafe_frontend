@@ -25,7 +25,12 @@
         .ref-table {
             grid-column: 1 / -1;
         }
-
+        .info-value.dosage ul {
+            list-style-type: disc;
+            li {
+                margin-bottom: 12px;
+            }
+        }
         .info-title,
         .info-value,
         a,

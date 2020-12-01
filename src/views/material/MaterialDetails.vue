@@ -138,9 +138,7 @@
                     </v-chip-group>
 
                     <h3 class="info-title" v-if="material.dosage">Dosage:</h3>
-                    <p class="info-value" v-if="material.dosage">
-                        {{ material.dosage }}
-                    </p>
+                    <div class="info-value dosage" v-if="material.dosage" v-html="material.dosage"></div>
 
                     <h3 class="info-title" v-if="material.sensitivities">
                         Sensitivities:

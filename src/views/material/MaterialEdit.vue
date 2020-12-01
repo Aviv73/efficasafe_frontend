@@ -180,11 +180,11 @@
           </v-chip-group>
         </div>
 
-        <v-text-field
-          type="text"
+        <h3>Dosage:</h3>
+        <ckeditor
           v-model="editedMaterial.dosage"
-          label="Dosage"
-        />
+          :config="CKEditorConfig"
+        ></ckeditor>
 
         <h3>Sensitivities:</h3>
         <ckeditor
