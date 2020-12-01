@@ -48,6 +48,45 @@
           </v-form>
         </v-card>
       </v-dialog>
+      <v-dialog v-model="pathwayDialog" persistent max-width="600">
+        <v-card>
+          <v-card-title class="primary headline" style="color:white; font-weight:bold;">
+            <v-icon dark left>mdi-plus-circle</v-icon>Add / Edit Pathway
+          </v-card-title>
+          <v-form @submit.prevent="editPathway" class="pathway-form">
+            <v-text-field 
+              type="text"
+              label="Enzyme*"
+              v-model="editedPathway.enzyme"
+              required
+            />
+            <h4>Influence</h4>
+            <ckeditor
+              v-model="editedPathway.influence"
+              :config="CKEditorConfig"
+            ></ckeditor>
+            <v-text-field 
+              type="text"
+              label="References (provide space seperated values)"
+              v-model="editedPathwayReferences"
+            />
+            <v-text-field 
+              type="text"
+              label="Ful References (provide space seperated values)"
+              v-model="editedPathwayFullReferences"
+            />
+            <div class="pathway-form-actions">
+              <v-btn class="cancel-btn" @click="closePathwayDialog" color="normal">cancel</v-btn>
+              <v-btn
+                type="submit"
+                class="submit-btn"
+                color="success"
+                :disabled="!isPathwayValid"
+              >Save Pathway</v-btn>
+            </div>
+          </v-form>
+        </v-card>
+      </v-dialog>
     </v-row>
     <v-card class="material-edit" v-if="editedMaterial">
       <v-form v-model="valid" @submit.prevent="saveMaterial">
@@ -359,6 +398,13 @@
           v-model="editedMaterial.drugBankInfo.foodInteractions"
           label="Food interactions"
         />
+        <pathway-table 
+          v-if="editedMaterial.pathways.length"
+          :items="editedMaterial.pathways"
+          :isEdit="true"
+          :isHerb="editedMaterial.type === 'herb'"
+          @edit-pathway="openPathwayDialog"
+        />
       </v-form>
       <div class="form-actions">
         <v-btn class="cancel-btn" to="/material/" color="normal">cancel</v-btn>
@@ -381,6 +427,7 @@ import searchSubMaterial from '../../cmps/material/edit/SearchSubMaterial';
 import referenceTable from '../../cmps/common/ReferenceTable';
 import regionsSelector from '../../cmps/material/edit/RegionsSelector';
 import Autocomplete from '@/cmps/Autocomplete';
+import pathwayTable from '@/cmps/common/PathwayTable';
 import CKEditor from 'ckeditor4-vue';
 
 export default {
@@ -388,9 +435,12 @@ export default {
     return {
       editedMaterial: null,
       editedRef: materialService.getEmptyRef(),
+      editedPathway: materialService.getEmptyPathway(),
+      editedPathwayIdx: undefined,
       valid: true,
       dialog: false,
       refDialog: false,
+      pathwayDialog: false,
       itemToRemove: null,
       CKEditorConfig: {
         extraPlugins: 'autogrow',
@@ -431,9 +481,49 @@ export default {
     isRefValid() {
       const { type, txt } = this.editedRef;
       return type && txt;
+    },
+    isPathwayValid() {
+      const { enzyme } = this.editedPathway;
+      return !!enzyme;
+    },
+    editedPathwayReferences: {
+      get() {
+        return this.editedPathway.references.join(' ');
+      },
+      set(val) {
+        this.editedPathway.references = val.split(' ');
+      }
+    },
+    editedPathwayFullReferences: {
+      get() {
+        return this.editedPathway.fullReferences.join(' ');
+      },
+      set(val) {
+        this.editedPathway.fullReferences = val.split(' ');
+      }
     }
   },
   methods: {
+    editPathway() {
+      const isEdit = this.editedPathwayIdx !== undefined;
+      if (isEdit) {
+        this.editedMaterial.pathways.splice(this.editedPathwayIdx, 1, { ...this.editedPathway });
+      } else {
+        this.editedMaterial.pathways.push({ ...this.editedPathway });
+      }
+      this.closePathwayDialog();
+    },
+    openPathwayDialog(pathway, pathwayIdx) {
+      if (pathway) {
+        this.editedPathway = { ...pathway };
+      }
+      this.editedPathwayIdx = pathwayIdx;
+      this.pathwayDialog = true;
+    },
+    closePathwayDialog() {
+      this.editedPathway = materialService.getEmptyPathway();
+      this.pathwayDialog = false;
+    },
     editRef() {
       const isEdit = !!this.editedRef.draftIdx;
       if (!isEdit) {
@@ -446,7 +536,9 @@ export default {
       this.closeRefDialog();
     },
     openRefDialog(ref) {
-      this.editedRef = { ...ref };
+      if (ref) {
+        this.editedRef = { ...ref };
+      }
       this.refDialog = true;
     },
     closeRefDialog() {
@@ -540,7 +632,9 @@ export default {
     referenceTable,
     confirmDeleteItem,
     Autocomplete,
-    ckeditor: CKEditor.component,
+    pathwayTable,
+    ckeditor: CKEditor.component
   },
 };
 </script>
+    PathwayTable

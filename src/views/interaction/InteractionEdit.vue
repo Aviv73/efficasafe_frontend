@@ -397,6 +397,7 @@ export default {
     handleRefsChange() {
       this.setInteractionRefs();
       this.makeRefsSub();
+      this.calculateEvidenceLevel();
     },
     makeRefsSub() {
       const regex = /\(([\d- ,\d]+)\)|<sub>\(([\d- ,\d]+)\)<\/sub>/g;

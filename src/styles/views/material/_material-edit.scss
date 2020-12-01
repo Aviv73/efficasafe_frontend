@@ -86,8 +86,9 @@
     }
 }
 
-.ref-form {
-    padding: 10px 20px;
+.ref-form,
+.pathway-form {
+    padding: 12px 24px;
 
     &-actions {
         display: flex;

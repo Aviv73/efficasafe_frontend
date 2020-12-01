@@ -10,7 +10,8 @@ export const materialService = {
     restore,
     getEmptyMaterial,
     updateMaterials,
-    getEmptyRef
+    getEmptyRef,
+    getEmptyPathway
 }
 
 function list(filterBy = {}) {
@@ -88,5 +89,14 @@ function getEmptyRef() {
         txt: '',
         link: '',
         pubmedId: ''
+    }
+}
+
+function getEmptyPathway() {
+    return {
+        enzyme: '',
+        influence: '',
+        references: [],
+        fullReferences: []
     }
 }

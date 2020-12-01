@@ -1,0 +1,32 @@
+.pathway-table {
+    &-add-btn {
+        cursor: pointer;
+        float: right;
+        margin: 5px;
+
+        &:hover {
+            color: rgba(0, 0, 0, 0.70);
+        }
+    }
+    &-full-ref {
+        padding: 8px 0;
+
+        p:last-child {
+            margin-bottom: 0;
+        }
+    }
+    &-influence {
+        padding: 12px 0;
+        p {
+            margin-bottom: 0;
+
+            sub {
+                cursor: default;
+                color: inherit;
+            }
+        }
+    }
+    &-actions {
+        text-align: center;
+    }
+}
