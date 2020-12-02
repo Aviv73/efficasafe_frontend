@@ -36,7 +36,7 @@
                 class="label-peek-content-link transparent" 
                 elevation="0" 
                 rounded
-                @click="$emit('view-material', material._id)"
+                @click="$emit('view-material', material)"
             >
                 <v-avatar left size="16">
                 <img

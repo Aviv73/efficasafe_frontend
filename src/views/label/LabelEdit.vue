@@ -107,14 +107,10 @@ export default {
     async saveLabel() {
       if (!this.editedLabel.name) return;
       try {
-        const isEdit = !!this.editedLabel._id;
         const savedLabel = await this.$store.dispatch({
           type: 'saveLabel',
           label: this.editedLabel,
         });
-        if (isEdit) {
-          /// if edit, check wich materials got that labelId on them, and sync them to be this.relatedMaterials
-        } 
         const relatedMaterialIds = this.relatedMaterials.map(mat => mat._id);
         const data = {
           ids: relatedMaterialIds,

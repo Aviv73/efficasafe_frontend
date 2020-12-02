@@ -121,8 +121,6 @@ export default {
       }
     },
     async removeLabel() {
-      if (this.label.src === 'atc') return;
-
       const label = JSON.parse(JSON.stringify(this.label));
       const labelId = label._id;
       const saveToArchive = this.$store.dispatch({

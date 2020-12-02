@@ -61,13 +61,19 @@
           <span class="info-title" v-if="interaction.side2Label">
             Side 2 Label:
           </span>
-          <router-link
-            class="info-value"
-            v-if="interaction.side2Label"
-            :to="`/label/${interaction.side2Label._id}`"
-          >
-            {{ interaction.side2Label.name }}
-          </router-link>
+          <div class="info-value" v-if="interaction.side2Label">
+            <router-link :to="`/label/${interaction.side2Label._id}`">
+              {{ interaction.side2Label.name }}
+            </router-link>
+            <v-btn
+              class="icon"
+              icon
+              title="View label's materials"
+              @click="labelDialog = true"
+            >
+              <v-icon color="primary">mdi-eye</v-icon>
+            </v-btn>
+          </div>
 
           <h3 class="info-title">Draft Name:</h3>
           <p class="info-value">{{ interaction.side2DraftName }}</p>
@@ -143,6 +149,17 @@
         </v-card>
         <icons-map />
       </div>
+      <v-dialog
+          v-model="labelDialog"
+          max-width="1400"
+        >
+        <label-peek 
+          v-if="interaction.side2Label"
+          :labelId="interaction.side2Label._id" 
+          @close-label-dialog="labelDialog = false"
+          @view-material="showPathways"
+          />
+      </v-dialog>
     </section>
     <entity-not-found v-if="isNotFound" entity="interaction" />
   </div>
@@ -152,6 +169,7 @@
 import { interactionService } from '@/services/interaction.service';
 import confirmDelete from '@/cmps/general/ConfirmDelete';
 import referenceTable from '@/cmps/common/ReferenceTable';
+import labelPeek from '@/cmps/interaction/edit/LabelPeek';
 import iconsMap from '@/cmps/general/IconsMap';
 import entityNotFound from '@/cmps/general/EntityNotFound'; 
 
@@ -160,6 +178,7 @@ export default {
     return {
       interaction: null,
       dialog: false,
+      labelDialog: false,
       sides: {
         side1Material: null,
         side1Label: null,
@@ -176,6 +195,11 @@ export default {
     },
   },
   methods: {
+    showPathways(material) {
+      /// will go to vInteraction page '/interaction/[interaction id]/[material id]'
+      console.log('Material:', material.name);
+      console.log('Pathways:', material.pathways);
+    },
     txtWithRefs(propName) {
       if (!this.interactionRefs.length) return;
       let txt = this.interaction[propName];
@@ -297,6 +321,7 @@ export default {
   components: {
     confirmDelete,
     referenceTable,
+    labelPeek,
     iconsMap,
     entityNotFound,
   }

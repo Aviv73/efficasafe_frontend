@@ -367,8 +367,8 @@ export default {
     }
   },
   methods: {
-    showLabelMatDetails(matId) {
-      this.showSideDetails(matId);
+    showLabelMatDetails(material) {
+      this.showSideDetails(material._id);
       this.isLabelDialogActive = false;
     },
     showLabelDialog() {

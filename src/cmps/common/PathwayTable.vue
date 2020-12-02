@@ -31,10 +31,13 @@
           <div v-if="isHerb" v-html="value" class="pathway-table-influence"></div>
           <p v-else>{{ value }}</p>
         </template>
-        <template #[`item.fullReferences`]="{ value }">
+        <template #[`item.fullReferences`]="{ value, item }">
           <div class="pathway-table-full-ref">
             <p v-for="(fullRef, idx) in value" :key="idx">
               {{ formatedRef(fullRef) }}
+              <a :href="`https://pubmed.ncbi.nlm.nih.gov/${item.references[idx]}`">
+                {{ `https://pubmed.ncbi.nlm.nih.gov/${item.references[idx]}` }}
+              </a>
             </p>
           </div>
         </template>
