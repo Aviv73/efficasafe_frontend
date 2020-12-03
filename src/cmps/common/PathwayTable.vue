@@ -35,7 +35,7 @@
           <div class="pathway-table-full-ref">
             <p v-for="(fullRef, idx) in value" :key="idx">
               {{ formatedRef(fullRef) }}
-              <a :href="`https://pubmed.ncbi.nlm.nih.gov/${item.references[idx]}`">
+              <a :href="`https://pubmed.ncbi.nlm.nih.gov/${item.references[idx]}`" class="ref-link">
                 {{ `https://pubmed.ncbi.nlm.nih.gov/${item.references[idx]}` }}
               </a>
             </p>

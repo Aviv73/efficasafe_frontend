@@ -12,6 +12,7 @@ import labelDetails from '../views/label/LabelDetails';
 import interactionApp from '../views/interaction/InteractionApp';
 import interactionEdit from '../views/interaction/InteractionEdit';
 import interactionDetails from '../views/interaction/InteractionDetails';
+import vInteractionDetails from '@/views/interaction/VinteractionDetails';
 import archiveApp from '../views/archive/ArchiveApp';
 import DataIntegrity from '@/views/DataIntegrity';
 
@@ -75,6 +76,12 @@ const routes = [
     path: '/interaction/edit/:id?',
     name: 'InteractionsEdit',
     component: interactionEdit,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/interaction/:id/:matId',
+    name: 'vInteractionsDetails',
+    component: vInteractionDetails,
     meta: { requiresAuth: true }
   },
   {

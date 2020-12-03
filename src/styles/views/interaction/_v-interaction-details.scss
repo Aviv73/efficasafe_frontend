@@ -1,0 +1,14 @@
+.v-interaction-details {
+    &-content {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 10px
+    }
+    &-title,
+    .editor-draft {
+        grid-column: 1 / -1;
+    }
+    .refs-table {
+        grid-column: 1 / -1;
+    }
+}

@@ -196,9 +196,7 @@ export default {
   },
   methods: {
     showPathways(material) {
-      /// will go to vInteraction page '/interaction/[interaction id]/[material id]'
-      console.log('Material:', material.name);
-      console.log('Pathways:', material.pathways);
+      this.$router.push(`/interaction/${this.$route.params.id}/${material._id}`);
     },
     txtWithRefs(propName) {
       if (!this.interactionRefs.length) return;
