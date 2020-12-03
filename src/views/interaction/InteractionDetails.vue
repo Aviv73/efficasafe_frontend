@@ -10,14 +10,14 @@
           @delete-cancel="dialog = false"
         />
         <div class="action-container">
-          <v-btn color="primary" to="/interaction">
-            <v-icon small left>mdi-arrow-left</v-icon>Back to Interactions
+          <v-btn color="primary" :to="(isArchive) ? '/archive' : '/interaction'">
+            <v-icon small left>mdi-arrow-left</v-icon>{{ (isArchive) ? 'Back to Archive' : 'Back to Interactions' }}
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="primary" :to="`/interaction/edit/${interaction._id}`">
+          <v-btn color="primary" :to="`/interaction/edit/${interaction._id}`" v-if="!isArchive">
             <v-icon small left>mdi-pencil</v-icon>Edit
           </v-btn>
-          <v-btn color="error" @click="displayDialog">
+          <v-btn color="error" @click="displayDialog" v-if="!isArchive">
             <v-icon small left>mdi-delete</v-icon>Delete
           </v-btn>
         </div>
@@ -66,6 +66,7 @@
               {{ interaction.side2Label.name }}
             </router-link>
             <v-btn
+              v-if="!isArchive"
               class="icon"
               icon
               title="View label's materials"
@@ -186,6 +187,7 @@ export default {
         side2Label: null,
       },
       interactionRefs: [],
+      isArchive: false,
       isNotFound: false
     };
   },
@@ -234,7 +236,7 @@ export default {
       const intId = this.$route.params.id;
       if (intId) {
         const interaction = await this.$store.dispatch({
-          type: 'loadInteraction',
+          type: (this.isArchive) ? 'loadArchiveInteraction' : 'loadInteraction',
           intId,
         });
         this.interaction = interaction;
@@ -309,6 +311,9 @@ export default {
     },
   },
   created() {
+    if (this.$route.name === 'ArchiveInteractionDetails') {
+      this.isArchive = true;
+    }
     this.loadInteraction();
   },
   updated() {

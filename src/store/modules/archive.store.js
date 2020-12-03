@@ -93,25 +93,22 @@ export const archiveStore = ({
             }
         },
         async loadArchiveMaterial(context, { matId }) {
-            const material = await archiveService.getMatrialById(matId)
-            return material
+            return await archiveService.getMatrialById(matId);
         },
         async loadArchiveLabel(context, { labelId }) {
-            const label = await archiveService.getLabelById(labelId)
-            return label
+            return await archiveService.getLabelById(labelId);
         },
         async loadArchiveInteraction(context, { intId }) {
-            const interaction = await archiveService.getInteractionById(intId)
-            return interaction
+            return await archiveService.getInteractionById(intId);
         },
         async saveMaterialToArchive(context, { material }) {
-            await archiveService.saveMaterialToArchive(material)
+            await archiveService.saveMaterialToArchive(material);
         },
         async saveLabelToArchive(context, { label }) {
-            await archiveService.saveLabelToArchive(label)
+            await archiveService.saveLabelToArchive(label);
         },
         async saveInteractionToArchive(context, { interaction }) {
-            await archiveService.saveInteractionToArchive(interaction)
+            await archiveService.saveInteractionToArchive(interaction);
         },
     }
 })

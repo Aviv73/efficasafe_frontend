@@ -299,6 +299,7 @@
 
         <div class="list-chips">
           <autocomplete 
+            v-if="labels"
             :items="labels"
             @emitAutocomplete="addObjToArray($event, 'labels')"
             searchName="Add label"
@@ -399,7 +400,7 @@
           label="Food interactions"
         />
         <pathway-table 
-          v-if="editedMaterial.pathways.length"
+          v-if="editedMaterial.pathways && editedMaterial.pathways.length"
           :items="editedMaterial.pathways"
           :isEdit="true"
           :isHerb="editedMaterial.type === 'herb'"
@@ -545,6 +546,9 @@ export default {
       this.editedRef = materialService.getEmptyRef();
       this.refDialog = false;
     },
+    async loadLabels() {
+      this.$store.dispatch({ type: 'loadLabels' });
+    },
     async loadMaterial() {
       const matId = this.$route.params.id;
       var material = null;
@@ -622,7 +626,10 @@ export default {
       }
     }
   },
-  created() {
+  async created() {
+    if (!this.labels)  {
+      this.loadLabels();
+    }
     this.loadMaterial();
     this.loadMaterials();
   },

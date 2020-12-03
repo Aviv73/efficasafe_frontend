@@ -97,6 +97,24 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/archive/label/:id',
+    name: 'ArchiveLabelDetails',
+    component: labelDetails,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/archive/interaction/:id',
+    name: 'ArchiveInteractionDetails',
+    component: interactionDetails,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/archive/material/:id',
+    name: 'ArchiveMaterialDetails',
+    component: materialDetails,
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/data-integrity',
     name: 'DataIntegrity',
     component: DataIntegrity,

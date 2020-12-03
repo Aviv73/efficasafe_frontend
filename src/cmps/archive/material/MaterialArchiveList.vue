@@ -3,10 +3,9 @@
     <v-data-table :headers="headers" :items="materials">
       <template v-slot:body="{ items }">
         <tbody>
-          <!-- v-if="items.length" -->
           <tr class="tr-material" v-for="item in items" :key="item._id">
             <td class="td-name-img">
-              <router-link :to="`/material/${item._id}`">
+              <router-link :to="`/archive/material/${item._id}`">
                 <img
                   :src="require(`@/assets/icons/${item.type}.svg`)"
                   :alt="item.type"
@@ -17,9 +16,7 @@
             </td>
 
             <td class="td-type" width="80">
-              <router-link class="link-clean" :to="`/material/${item._id}`">
-                <span class="text-capitalize">{{item.type}}</span>
-              </router-link>
+              <span class="text-capitalize">{{item.type}}</span>
             </td>
 
             <td class="td-actions" width="120" align="center">

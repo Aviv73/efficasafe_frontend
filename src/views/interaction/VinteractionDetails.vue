@@ -11,11 +11,15 @@
                 v-if="interaction && material"
                 class="v-interaction-details-content px-2"
             >
-                <v-card-title class="v-interaction-details-title">
+                <v-card-title class="v-interaction-details-title px-0">
                     <h2>
                         {{ interaction.side1Material.name }}
                         <span>&amp;</span>
                         {{ material.name }}
+                        <span class="subtitle caption">
+                            <v-icon>mdi-file-tree</v-icon>
+                            This is a virtual interaction from {{ interaction.side2Label.name }}
+                        </span>
                     </h2>
                 </v-card-title>
 
@@ -54,8 +58,8 @@
                 <div class="text-capitalize">Summary:</div>
                 <div v-html="txtWithRefs(interaction.summary)" ref="summary"></div>
 
-                <div class="text-capitalize">Note:</div>
-                <div>{{ interaction.note }}</div>
+                <div class="text-capitalize" v-if="!isPrimaryMaterial">Note:</div>
+                <div v-if="!isPrimaryMaterial">{{ interaction.note }}</div>
 
                 <div class="text-capitalize">Level of evidence:</div>
                 <div>{{ interaction.evidenceLevel }}</div>
@@ -146,6 +150,7 @@
                     </v-chip-group>
                 </div>
             </v-card>
+            {{ isPrimaryMaterial }}
             <icons-map />
         </div>
     </section>
@@ -178,6 +183,10 @@ export default {
                 return acc;
             }, '');
             return interactionService.getSortedRefs(txt, this.$options.side1Refs);
+        },
+        isPrimaryMaterial() {
+            if (!this.interaction || !this.material) return false;
+            return this.interaction.side2Label.primaryMaterialIds.includes(this.material._id);
         }
     },
     methods: {
@@ -199,7 +208,7 @@ export default {
         },
         getMaterialRefNums(refsCount) {
             if (!this.interactionRefs.length || !this.materialRefs.length) return;
-            this.$options.refsCountSum += refsCount
+            this.$options.refsCountSum += refsCount;
             const nextLastRef = this.interactionRefs.length + this.$options.refsCountSum;
             if (refsCount === 1) {
                 return nextLastRef;

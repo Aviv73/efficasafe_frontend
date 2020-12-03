@@ -9,8 +9,8 @@
         @delete-cancel="dialog = false"
       />
       <div class="action-container">
-        <v-btn color="primary" to="/label">
-          <v-icon small left>mdi-arrow-left</v-icon>Back to Labels
+        <v-btn color="primary" :to="(isArchive) ? '/archive' : '/label'">
+          <v-icon small left>mdi-arrow-left</v-icon>{{ (isArchive) ? 'Back to Archive' : 'Back to Labels' }}
         </v-btn>
         <v-btn
           color="primary"
@@ -21,14 +21,15 @@
         <v-btn
           color="primary"
           :to="{ path: '/material', query: { labelId: `${label._id}` } }"
+          v-if="!isArchive"
         >
           <v-icon small left>mdi-view-list</v-icon>Related Materials
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="primary" :to="`/label/edit/${label._id}`">
+        <v-btn color="primary" :to="`/label/edit/${label._id}`" v-if="!isArchive">
           <v-icon small left>mdi-pencil</v-icon>Edit
         </v-btn>
-        <v-btn color="error" v-if="label.src !== 'atc'" @click="displayDialog">
+        <v-btn color="error" @click="displayDialog" v-if="!isArchive">
           <v-icon small left>mdi-delete</v-icon>Delete
         </v-btn>
       </div>
@@ -87,7 +88,8 @@ export default {
       label: null,
       dialog: false,
       relatedMaterials: null,
-      isNotFound: false
+      isNotFound: false,
+      isArchive: false
     };
   },
   watch: {
@@ -109,7 +111,7 @@ export default {
       if (labelId) {
         const criteria = { labelId, limit: 0 };
         const [label, materials] = await Promise.all([
-          this.$store.dispatch({ type: 'loadLabel', labelId }),
+          this.$store.dispatch({ type: (this.isArchive) ? 'loadArchiveLabel' : 'loadLabel', labelId }),
           this.$store.dispatch({ type: 'loadAutoCompleteResults', criteria }),
         ]);
         if (label) {
@@ -140,12 +142,15 @@ export default {
     },
   },
   created() {
+    if (this.$route.name === 'ArchiveLabelDetails') {
+      this.isArchive = true; 
+    }
     this.loadLabel();
   },
   components: {
     confirmDelete,
     iconsMap,
     entityNotFound
-  },
+  }
 };
 </script>

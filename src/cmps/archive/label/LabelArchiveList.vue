@@ -5,7 +5,7 @@
         <tbody>
           <tr class="tr-label" v-for="item in items" :key="item._id">
             <td class="td-name-img">
-              <router-link :to="`/label/${item._id}`">
+              <router-link :to="`/archive/label/${item._id}`">
                 <img
                   :src="require(`@/assets/icons/custom.svg`)"
                   alt="label icon"
@@ -16,9 +16,7 @@
             </td>
 
             <td class="td-color" width="80">
-              <router-link class="link-clean" :to="`/label/${item._id}`">
-                <div class="color-circle" :style="{ backgroundColor: item.color }"></div>
-              </router-link>
+              <div class="color-circle" :style="{ backgroundColor: item.color }"></div>
             </td>
 
             <td class="td-actions" width="120" align="center">

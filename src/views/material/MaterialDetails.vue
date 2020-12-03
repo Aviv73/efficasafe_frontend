@@ -10,8 +10,8 @@
                     @delete-cancel="dialog = false"
                 />
                 <div class="action-container">
-                    <v-btn class="base-btn action-btn" color="primary" to="/material">
-                        <v-icon small left>mdi-arrow-left</v-icon>Back to Materials
+                    <v-btn class="base-btn action-btn" color="primary" :to="(isArchive) ? '/archive' : '/material'">
+                        <v-icon small left>mdi-arrow-left</v-icon>{{ (isArchive) ? 'Back to Archive' : 'Back to Materials' }}
                     </v-btn>
                     <v-btn
                         class="base-btn action-btn"
@@ -28,10 +28,11 @@
                         class="base-btn action-btn"
                         color="primary"
                         :to="`/material/edit/${material._id}`"
+                        v-if="!isArchive"
                     >
                         <v-icon small left>mdi-pencil</v-icon>Edit
                     </v-btn>
-                    <v-btn color="error" @click="displayDialog">
+                    <v-btn color="error" @click="displayDialog" v-if="!isArchive">
                         <v-icon small left>mdi-delete</v-icon>Delete
                     </v-btn>
                 </div>
@@ -298,6 +299,7 @@ export default {
         return {
             material: null,
             dialog: false,
+            isArchive: false,
             isNotFound: false
         };
     },
@@ -364,7 +366,7 @@ export default {
             const matId = this.$route.params.id;
             if (matId) {
                 const material = await this.$store.dispatch({
-                    type: 'loadMaterial',
+                    type: (this.isArchive) ? 'loadArchiveMaterial' : 'loadMaterial',
                     matId,
                 });
                 this.material = material;
@@ -393,6 +395,9 @@ export default {
         },
     },
     created() {
+        if (this.$route.name === 'ArchiveMaterialDetails') {
+            this.isArchive = true;   
+        }
         this.loadMaterial();
     },
     updated() {

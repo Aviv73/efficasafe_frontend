@@ -5,7 +5,7 @@
         <tbody>
           <tr class="tr-interaction" v-for="item in items" :key="item._id">
             <td class="td-side">
-              <router-link :to="`/interaction/${item._id}`">
+              <router-link :to="`/archive/interaction/${item._id}`">
                 <div v-if="item.side1Material">
                   <img
                     :src="
@@ -28,7 +28,7 @@
               </router-link>
             </td>
             <td class="td-side">
-              <router-link :to="`/interaction/${item._id}`">
+              <router-link :to="`/archive/interaction/${item._id}`">
                 <div v-if="item.side2Material">
                   <img
                     :src="
@@ -51,7 +51,7 @@
                     item.side2Label.name
                   }}</span>
                 </div>
-                <div class="side-name-img" v-if="item.side2DraftName">
+                <div class="side-name-img" v-if="!item.side2Label && item.side2DraftName">
                   <img
                     :src="require(`@/assets/icons/draftname.svg`)"
                     :alt="item.side2DraftName"
