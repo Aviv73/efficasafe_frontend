@@ -304,6 +304,7 @@ export default {
     setTooltipPos(ev) {
       const elTooltip = ev.target.querySelector('.refs-tooltip');
       if (ev.clientX + elTooltip.offsetWidth > window.innerWidth) {
+        elTooltip.style.transformOrigin = 'top right';
         elTooltip.style.left = `unset`;
         elTooltip.style.right = `0`;
       }

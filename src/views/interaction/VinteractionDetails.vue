@@ -193,8 +193,8 @@ export default {
             });
         },
         unRelevantSide1Pathways() {
-            return this.side1Pathways.filter(pathway => {
-                const idx = this.material.pathways.findIndex(matPathway => matPathway.enzyme === pathway.enzyme.replace('CYP', ''));
+            return this.material.pathways.filter(pathway => {
+                const idx = this.side1Pathways.findIndex(matPathway => matPathway.enzyme.replace('CYP', '') === pathway.enzyme);
                 return idx === -1;
             });
         },
@@ -317,6 +317,7 @@ export default {
         setTooltipPos(ev) {
             const elTooltip = ev.target.querySelector('.refs-tooltip');
             if (ev.clientX + elTooltip.offsetWidth > window.innerWidth) {
+                elTooltip.style.transformOrigin = 'top right';
                 elTooltip.style.left = `unset`;
                 elTooltip.style.right = `0`;
             }
