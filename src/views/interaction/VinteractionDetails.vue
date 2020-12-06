@@ -70,8 +70,8 @@
                     ref="reviewOfStudies"
                 ></div>
 
-                <div class="text-capitalize">Pathways:</div>
-                <div>
+                <div class="text-capitalize" v-if="material.pathways.length">Pathways:</div>
+                <div v-if="material.pathways.length">
                     <p ref="pathway">
                         <span class="font-weight-medium">
                             {{ material.name }}
@@ -80,7 +80,7 @@
                         <span v-for="(pathway, idx) in material.pathways" :key="idx">
                             <span>{{ idx === 0 ? '' : ',' }} </span>
                             <span class="text-uppercase">{{ pathway.enzyme }} </span>
-                            <sub>{{ `(${getMaterialRefNums(pathway.references.length)})` }}</sub>
+                            <sub>{{ `(${getMaterialRefNums(pathway.references)})` }}</sub>
                         </span>
                     </p>
                     <div ref="pathway2">
@@ -92,9 +92,12 @@
                                 <span class="text-uppercase">{{ pathway.enzyme }}</span>
                             </span>
                         </p>
-                        <div v-for="(pathway, idx) in side1Pathways" :key="'pathway' + idx">
+                        <div v-for="(pathway, idx) in relevantSide1Pathways" :key="'pathway' + idx">
                             <h6>{{ pathway.enzyme }}</h6>
                             <p v-html="txtWithRefs(pathway.influence)"></p>
+                        </div>
+                        <div v-for="(pathway, idx) in unRelevantSide1Pathways" :key="'unrelevantPathway' + idx">
+                            <p>There is no evidence regarding the effect of {{ interaction.side1Material.name }} on {{ pathway.enzyme }} activity.</p>
                         </div>
                     </div>
                 </div>
@@ -150,7 +153,6 @@
                     </v-chip-group>
                 </div>
             </v-card>
-            {{ isPrimaryMaterial }}
             <icons-map />
         </div>
     </section>
@@ -178,11 +180,23 @@ export default {
             return this.interactionRefs.concat(this.materialRefs, this.pathwayRefs);
         },
         pathwayRefs() {
-            const txt = this.side1Pathways.reduce((acc, pathway) => {
+            const txt = this.relevantSide1Pathways.reduce((acc, pathway) => {
                 acc += pathway.influence + ' ';
                 return acc;
             }, '');
             return interactionService.getSortedRefs(txt, this.$options.side1Refs);
+        },
+        relevantSide1Pathways() {
+            return this.side1Pathways.filter(pathway => {
+                const idx = this.material.pathways.findIndex(matPathway => matPathway.enzyme === pathway.enzyme.replace('CYP', ''));
+                return idx !== -1;
+            });
+        },
+        unRelevantSide1Pathways() {
+            return this.side1Pathways.filter(pathway => {
+                const idx = this.material.pathways.findIndex(matPathway => matPathway.enzyme === pathway.enzyme.replace('CYP', ''));
+                return idx === -1;
+            });
         },
         isPrimaryMaterial() {
             if (!this.interaction || !this.material) return false;
@@ -199,22 +213,31 @@ export default {
             this.interaction = interaction;
             this.material = material;
             if (this.material) {
-                this.materialRefs = material.refs;
+                for (let i = 0; i < material.refs.length; i++) {
+                    const ref = material.refs[i];
+                    const idx = this.materialRefs.findIndex(matRef => matRef.pubmedId === ref.pubmedId);
+                    if (idx === -1) {
+                        this.materialRefs.push(ref);
+                    }
+                }
             }
             if (this.interaction) {
                 await this.getReferences();
                 this.setRefsToolTip();
             }
         },
-        getMaterialRefNums(refsCount) {
+        getMaterialRefNums(pubmedIds) {
             if (!this.interactionRefs.length || !this.materialRefs.length) return;
-            this.$options.refsCountSum += refsCount;
-            const nextLastRef = this.interactionRefs.length + this.$options.refsCountSum;
-            if (refsCount === 1) {
-                return nextLastRef;
+            const refIdx  = this.combinedRefs.findIndex(ref => pubmedIds.includes(ref.pubmedId));
+            if (pubmedIds.length === 1) {
+                return refIdx + 1;
             }
-            const refStr = `${nextLastRef - (refsCount - 1)}-${nextLastRef}`;
-            return refStr;
+            let refsStr = '';
+            for (let i = 0; i < pubmedIds.length; i++) {
+                const idx = this.combinedRefs.findIndex(ref => pubmedIds[i] === ref.pubmedId);
+                refsStr += (idx + 1) + ', ';
+            }
+            return refsStr;
         },
         async getReferences() {
             const matId = this.interaction.side1Material._id;
@@ -256,8 +279,8 @@ export default {
             const { summary, reviewOfStudies, pathway, pathway2 } = this.$refs;
             const summarySubs = summary.querySelectorAll('sub');
             const reviewSubs = reviewOfStudies.querySelectorAll('sub');
-            const pathwaySubs = pathway.querySelectorAll('sub');
-            const pathway2Subs = pathway2.querySelectorAll('sub');
+            const pathwaySubs = (pathway) ? pathway.querySelectorAll('sub') : [];
+            const pathway2Subs = (pathway2) ? pathway2.querySelectorAll('sub') : [];
             const elSubs = [ ...summarySubs, ...reviewSubs, ...pathwaySubs, ...pathway2Subs ];
 
             for (let i = 0; i < elSubs.length; i++) {
@@ -265,7 +288,8 @@ export default {
                 if (!refIdxs[0]) return;
 
                 elSubs[i].innerText = interactionService.formatRefStrs(elSubs[i].innerText);
-
+                elSubs[i].addEventListener('mouseenter', this.setTooltipPos);
+                
                 const refs = this.getRefsFromIdxs(refIdxs);
                 const elTooltip = document.createElement('aside');
                 elTooltip.classList.add('refs-tooltip');
@@ -288,6 +312,13 @@ export default {
                 htmlStr += '</ul>';
                 elTooltip.innerHTML = htmlStr;
                 elSubs[i].appendChild(elTooltip);
+            }
+        },
+        setTooltipPos(ev) {
+            const elTooltip = ev.target.querySelector('.refs-tooltip');
+            if (ev.clientX + elTooltip.offsetWidth > window.innerWidth) {
+                elTooltip.style.left = `unset`;
+                elTooltip.style.right = `0`;
             }
         },
         getRefsFromIdxs(refIdxs) {

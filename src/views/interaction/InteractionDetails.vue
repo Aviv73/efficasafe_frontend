@@ -283,6 +283,7 @@ export default {
         if (!refIdxs[0]) return;
 
         elSubs[i].innerText = interactionService.formatRefStrs(elSubs[i].innerText);
+        elSubs[i].addEventListener('mouseenter', this.setTooltipPos);
         
         const elTooltip = document.createElement('aside');
         const refs = this.getRefsFromIdxs(refIdxs);
@@ -299,7 +300,14 @@ export default {
         elTooltip.innerHTML = htmlStr;
         elSubs[i].appendChild(elTooltip);
       }
-    }
+    },
+    setTooltipPos(ev) {
+      const elTooltip = ev.target.querySelector('.refs-tooltip');
+      if (ev.clientX + elTooltip.offsetWidth > window.innerWidth) {
+        elTooltip.style.left = `unset`;
+        elTooltip.style.right = `0`;
+      }
+    },
   },
   computed: {
     recommendation() {

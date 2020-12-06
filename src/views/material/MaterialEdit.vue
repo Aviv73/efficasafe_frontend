@@ -12,10 +12,12 @@
             <v-icon dark left>mdi-plus-circle</v-icon>Add / Edit Reference
           </v-card-title>
           <v-form @submit.prevent="editRef" class="ref-form">
-            <v-text-field 
+            <v-select 
               type="text"
               label="Type*"
+              :items="$options.refTypes"
               v-model="editedRef.type"
+              clearable
               required
             />
             <v-textarea
@@ -432,6 +434,10 @@ import pathwayTable from '@/cmps/common/PathwayTable';
 import CKEditor from 'ckeditor4-vue';
 
 export default {
+  refTypes: [
+    'clinical', 'meta', 'systematic', 'drug label', 'animal',
+    'in vitro', 'retrospective', 'case'
+  ],
   data() {
     return {
       editedMaterial: null,

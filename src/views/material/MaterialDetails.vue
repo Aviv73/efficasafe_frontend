@@ -312,6 +312,7 @@ export default {
         setRefsToolTip() {
             const elSubs = Array.from(document.querySelectorAll('sub'));
             for (let i = 0; i < elSubs.length; i++) {
+                elSubs[i].addEventListener('mouseenter', this.setTooltipPos);
                 const refsOrder = interactionService.getRefsOrder(elSubs[i].innerText);
                 
                 const refs = this.getRefsFromIdxs(refsOrder);
@@ -345,6 +346,13 @@ export default {
                 });
             }
             return txt;
+        },
+        setTooltipPos(ev) {
+            const elTooltip = ev.target.querySelector('.refs-tooltip');
+            if (ev.clientX + elTooltip.offsetWidth > window.innerWidth) {
+                elTooltip.style.left = `unset`;
+                elTooltip.style.right = `0`;
+            }
         },
         getRefsFromIdxs(refIdxs) {
             const refs = [];
