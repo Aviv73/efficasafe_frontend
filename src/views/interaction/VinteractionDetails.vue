@@ -94,7 +94,7 @@
                         </p>
                         <div v-for="(pathway, idx) in relevantSide1Pathways" :key="'pathway' + idx">
                             <h6>{{ pathway.enzyme }}</h6>
-                            <p v-html="txtWithRefs(pathway.influence)"></p>
+                            <p v-highlight-text:[material.name] v-html="txtWithRefs(pathway.influence)"></p>
                         </div>
                         <div v-for="(pathway, idx) in unRelevantSide1Pathways" :key="'unrelevantPathway' + idx">
                             <p>There is no evidence regarding the effect of {{ interaction.side1Material.name }} on {{ pathway.enzyme }} activity.</p>
