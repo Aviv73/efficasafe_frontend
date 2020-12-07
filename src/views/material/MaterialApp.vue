@@ -48,7 +48,7 @@ export default {
       return this.$store.getters.materials;
     },
     totalItems() {
-      return this.$store.getters.total;
+      return this.$store.getters.materialCount;
     },
     routeQuery() {
       return '?' + new URLSearchParams(this.$route.query).toString();

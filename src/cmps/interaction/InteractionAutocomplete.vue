@@ -1,9 +1,11 @@
 <template>
   <section class="autocomplete">
     <v-autocomplete
-      :items="initialItems"
-      :label="searchNameStr"
+      :items="results"
+      label="Search interaction"
       v-model="autocompleteResult"
+      :search-input.sync="search"
+      :loading="isLoading"
       @change="emitAutocomplete"
       clearable
       return-object
@@ -14,36 +16,35 @@
 <script>
 export default {
   name: "InteractionAutocomplete",
-  props: {
-    items: Array,
-    searchName: String,
-  },
   data() {
     return {
-      initialItems: [],
+      items: [],
+      search: null,
       autocompleteResult: null,
+      isLoading: false
     };
   },
+  watch: {
+    search(val) {
+      if (val && val !== this.select) this.getResults(val);
+    }
+  },
   computed: {
-    searchNameStr() {
-      return `Search ${this.searchName}`;
-    },
-    itemNames() {
+    results() {
+      if (!this.items) return [];
       return this.items.reduce((acc, item) => {
-        if (item.side1Material) {
+        if (acc.findIndex(currItem => currItem._id === item.side1Material._id) === -1) {
           acc.push({
-            _id: item.side1Material._id,
-            text: item.side1Material.name,
+              _id: item.side1Material._id,
+              text: item.side1Material.name,
           });
         }
-
         if (item.side2Material) {
           acc.push({
             _id: item.side2Material._id,
             text: item.side2Material.name,
           });
         } else if (item.side2Label) {
-          // Else if fixed error for interaction without Side2 (they have side2draftname)
           acc.push({
             _id: item.side2Label._id,
             text: item.side2Label.name,
@@ -54,6 +55,13 @@ export default {
     },
   },
   methods: {
+    async getResults(q) {
+      this.isLoading = true;
+      const filterBy = { q: q || '', limit: 0, page: 0 };
+      const interactions = await this.$store.dispatch({ type: 'getInteractions', filterBy });
+      this.items = interactions;
+      this.isLoading = false;
+    },
     emitAutocomplete() {
       if (this.autocompleteResult) {
         this.$emit(
@@ -66,7 +74,7 @@ export default {
     },
   },
   created() {
-    this.initialItems = JSON.parse(JSON.stringify(this.itemNames));
-  },
+    this.getResults(this.search);
+  }
 };
 </script>

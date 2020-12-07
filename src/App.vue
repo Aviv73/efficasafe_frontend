@@ -27,7 +27,6 @@ export default {
     loadData() {
       const filterBy = {};
       this.$store.dispatch({ type: 'loadLabels', filterBy });
-      this.$store.dispatch({ type: 'loadInteractions', filterBy });
     }
   },
   created() {

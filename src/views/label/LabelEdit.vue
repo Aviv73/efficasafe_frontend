@@ -93,7 +93,7 @@ export default {
           labelId,
         });
         const criteria = { labelId, limit: 0 };
-        const materials = await this.$store.dispatch({ type: 'loadAutoCompleteResults', criteria });
+        const materials = await this.$store.dispatch({ type: 'getMaterials', criteria });
         this.relatedMaterials = materials;
       } else {
         label = labelService.getEmptyLabel();

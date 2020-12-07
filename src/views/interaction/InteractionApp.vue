@@ -8,11 +8,14 @@
           <v-btn color="primary" to="/interaction/edit/">new interaction</v-btn>
         </v-card-title>
         <interaction-filter
-          :interactions="interactions"
           @emit-filter="setFilter"
         />
         <interaction-list
           :interactions="interactions"
+          :totalItems="totalItems"
+          :loading="loading"
+          @options-updated="paginate"
+          @header-clicked="setSort"
           @toggle-is-active="toggleIsActive"
         />
       </v-card>
@@ -27,6 +30,12 @@ import interactionList from '@/cmps/interaction/InteractionList';
 import iconsMap from '@/cmps/general/IconsMap';
 
 export default {
+  data() {
+    return {
+      loading: false,
+      tableData: null
+    }
+  },
   watch: {
     '$route.query': function () {
       this.loadInteractions();
@@ -36,15 +45,51 @@ export default {
     interactions() {
       return this.$store.getters.interactions;
     },
+    totalItems() {
+      return this.$store.getters.interactionCount;
+    },
   },
   methods: {
-    setFilter(filterBy) {
-      const queryStr = '?' + new URLSearchParams(filterBy).toString();
+    paginate(tableData) {
+      this.tableData = tableData;
+      this.loadInteractions();
+    },
+    setSort(propName, isDesc) {
+      const criteria = {
+        ...this.$route.query,
+        sortBy: propName,
+        isDesc
+      }
+      const queryStr = '?' + new URLSearchParams(criteria).toString();
       this.$router.push(queryStr);
     },
-    loadInteractions() {
+    setFilter(filterBy) {
+      const { q, isActive } = filterBy;
+      const criteria = {
+        ...this.$route.query,
+        q,
+        isActive
+      }
+      const queryStr = '?' + new URLSearchParams(criteria).toString();
+      if (filterBy.isActive !== this.$route.query.isActive && this.tableData) {
+        this.tableData.page = 1;
+      }
+      this.$router.push(queryStr);
+    },
+    async loadInteractions() {
+      this.loading = true;
       const filterBy = this.$route.query;
-      this.$store.dispatch({ type: 'loadInteractions', filterBy });
+
+      if (this.tableData) {
+        let { page, itemsPerPage } = this.tableData;
+        filterBy.limit = itemsPerPage;
+        filterBy.page = --page;
+      } else filterBy.limit = 10;
+
+      if (filterBy.q) filterBy.page = 0;
+      
+      await this.$store.dispatch({ type: 'loadInteractions', filterBy });
+      this.loading = false;
     },
     async toggleIsActive(intId) {
       try {

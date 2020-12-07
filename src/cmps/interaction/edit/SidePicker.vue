@@ -176,7 +176,7 @@ export default {
       if (labelId) {
         const criteria = { labelId, limit: 0 };
         const [ materials, label ] = await Promise.all([
-          this.$store.dispatch({ type: 'loadAutoCompleteResults', criteria }),
+          this.$store.dispatch({ type: 'getMaterials', criteria }),
           this.$store.dispatch({ type: 'loadLabel', labelId })
         ]);
         this.primaryMaterialIds = [ ...label.primaryMaterialIds ];

@@ -64,7 +64,7 @@ export default {
       this.isLoading = true;
       const criteria = { q };
       const materials = await this.$store.dispatch({
-        type: 'loadAutoCompleteResults',
+        type: 'getMaterials',
         criteria,
       });
       this.items = materials;
@@ -77,7 +77,7 @@ export default {
   },
   async created() {
     if (this.materials) this.items = this.materials;
-    else this.items = await this.getResults(this.search);
+    else this.getResults(this.search);
   },
 };
 </script>

@@ -2,9 +2,7 @@
   <section class="material-filter">
     <div class="filter-input">
       <interaction-autocomplete
-        :items="interactions"
         @emitAutocomplete="updateFilter"
-        searchName="interaction"
       />
     </div>
 
@@ -24,13 +22,10 @@ import interactionAutocomplete from '@/cmps/interaction/InteractionAutocomplete'
 
 export default {
   name: 'interactionFilter',
-  props: {
-    interactions: Array,
-  },
   data() {
     return {
       filterBy: {
-        q: [],
+        q: '',
         isActive: '',
       },
       interaction: {

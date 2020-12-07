@@ -104,7 +104,7 @@ function getRefsOrder(txt, isUnique = true) {
 
 function calculateEvidenceLevel(refs) {
     const map = _evidenceLevelMap(refs)
-    
+
     if ((map.meta || map.systematic || map['drug label']) ||
         (map.clinical && map.clinical > 1)) {
         return 'A';
@@ -185,9 +185,9 @@ function _getAllNumbersBetween(num1, num2) {
 
 function _evidenceLevelMap(refs) {
     const map = refs.reduce((acc, ref) => {
-        acc[ref.type] = acc[ref.type]++ || 1
-        return acc
-    }, {})
-
-    return map
+        if (!acc[ref.type]) acc[ref.type] = 1;
+        else acc[ref.type]++;
+        return acc;
+    }, {});
+    return map;
 }

@@ -1,6 +1,27 @@
 <template>
   <section class="interaction-list">
-    <v-data-table :headers="headers" :items="interactions" :search="search">
+    <v-data-table 
+      :headers="headers" 
+      :items="interactions" 
+      :server-items-length="totalItems"
+      :options.sync="options"
+      disable-sort
+      :loading="loading"
+    >
+      <template v-slot:[`header.side1Material.name`]="{ header }">
+        <label class="list-header">
+          <input type="checkbox" hidden @change="onSort(header.value, $event.target.checked)" />
+          {{ header.text }}
+           <v-icon class="icon" :class="{ 'icon-active': isSortedBy(header.value) }">mdi-arrow-down</v-icon>
+        </label>
+      </template>
+      <template v-slot:[`header.isActive`]="{ header }">
+        <label class="list-header">
+          <input type="checkbox" hidden @change="onSort(header.value, $event.target.checked)" />
+          {{ header.text }}
+           <v-icon class="icon" :class="{ 'icon-active': isSortedBy(header.value) }">mdi-arrow-down</v-icon>
+        </label>
+      </template>
       <template v-slot:body="{ items }">
         <tbody>
           <tr class="tr-interaction" v-for="item in items" :key="item._id">
@@ -8,9 +29,7 @@
               <router-link :to="`/interaction/${item._id}`">
                 <div class="side-name-img" v-if="item.side1Material">
                   <img
-                    :src="
-                      require(`@/assets/icons/${item.side1Material.type}.svg`)
-                    "
+                    :src="require(`@/assets/icons/${item.side1Material.type}.svg`)"
                     :alt="item.side1Material.type"
                     :title="item.side1Material.type"
                   />
@@ -87,15 +106,27 @@
 export default {
   name: 'interactionList',
   props: {
-    interactions: Array,
+    interactions: {
+      type: Array,
+      required: true
+    },
+    totalItems: {
+      type: Number,
+      required: true
+    },
+    loading: {
+      type: Boolean,
+      required: true
+    }
   },
   data() {
     return {
-      search: '',
+      isMounted: false,
+      options: {},
       headers: [
         {
           text: 'Side 1',
-          value: 'side1Material.name' || 'side1Label.name',
+          value: 'side1Material.name',
         },
         {
           text: 'Side 2',
@@ -116,5 +147,22 @@ export default {
       ],
     };
   },
+  watch: {
+    options() {
+      if (this.isMounted) {
+        this.$emit('options-updated', JSON.parse(JSON.stringify(this.options)));
+      } else {
+        this.isMounted = true;
+      }
+    }
+  },
+  methods: {
+    onSort(sortBy, isDesc) {
+      this.$emit('header-clicked', sortBy, isDesc);
+    },
+    isSortedBy(property) {
+      return this.$route.query.sortBy === property;
+    }
+  }
 };
 </script>

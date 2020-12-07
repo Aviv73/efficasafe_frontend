@@ -2,7 +2,8 @@ import { interactionService } from '@/services/interaction.service';
 
 export const interactionStore = ({
     state: {
-        interactions: null
+        interactions: null,
+        materialsCount: 0
     },
     getters: {
         interactions(state) {
@@ -10,6 +11,9 @@ export const interactionStore = ({
         },
         interaction: (state) => (id) => {
             return state.interactions && state.interactions.find(currInteraction => currInteraction._id === id);
+        },
+        interactionCount(state) {
+            return state.interactionCount;
         }
     },
     mutations: {
@@ -30,12 +34,20 @@ export const interactionStore = ({
         removeInteraction(state, { intId }) {
             const idx = state.interactions.findIndex(currInteraction => currInteraction._id === intId);
             state.interactions.splice(idx, 1);
+        },
+        setInteractionCount(state, { total }) {
+            state.interactionCount = total;
         }
     },
     actions: {
         async loadInteractions(context, { filterBy }) {
-            const interactions = await interactionService.list(filterBy);
+            const { interactions, total } = await interactionService.list(filterBy);
             context.commit({ type: 'setInteractions', interactions });
+            context.commit({ type: 'setInteractionCount', total });
+            return interactions;
+        },
+        async getInteractions(context, { filterBy }) {
+            const { interactions } = await interactionService.list(filterBy);
             return interactions;
         },
         async loadInteraction(context, { intId }) {

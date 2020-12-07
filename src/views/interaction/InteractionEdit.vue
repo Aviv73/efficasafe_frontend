@@ -533,7 +533,7 @@ export default {
     async getRelatedMaterials() {
       if (this.editedInteraction.side2Label) {
         const criteria = { labelId: this.editedInteraction.side2Label._id };
-        const materials = await this.$store.dispatch({ type: 'loadAutoCompleteResults', criteria });
+        const materials = await this.$store.dispatch({ type: 'getMaterials', criteria });
         this.relatedMaterials = materials;
       }
     },

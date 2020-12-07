@@ -1,16 +1,16 @@
 import { materialService } from '@/services/material.service';
 
-export const materialStore = ({
+export const materialStore = {
     state: {
         materials: null,
-        total: 0
+        materialCount: 0
     },
     getters: {
         materials(state) {
             return state.materials;
         },
-        total(state) {
-            return state.total;
+        materialCount(state) {
+            return state.materialCount;
         }
     },
     mutations: {
@@ -28,8 +28,8 @@ export const materialStore = ({
             const idx = state.materials.findIndex(currMaterial => currMaterial._id === matId);
             state.materials.splice(idx, 1);
         },
-        setTotalCount(state, { total }) {
-            state.total = total;
+        setMaterialCount(state, { total }) {
+            state.materialCount = total;
         },
         importRefSheet(state, { refSheet }) {
             return materialService.importRefSheet(refSheet);
@@ -49,10 +49,10 @@ export const materialStore = ({
         async loadMaterials(context, { criteria }) {
             const { materials, total } = await materialService.list(criteria);
             context.commit({ type: 'setMaterials', materials });
-            context.commit({ type: 'setTotalCount', total });
+            context.commit({ type: 'setMaterialCount', total });
             return materials;
         },
-        async loadAutoCompleteResults(context, { criteria }) {
+        async getMaterials(context, { criteria }) {
             const { materials } = await materialService.list(criteria);
             return materials;
         },
@@ -85,4 +85,4 @@ export const materialStore = ({
             }
         }
     }
-})
+}

@@ -10,7 +10,7 @@
     >
       <template v-slot:[`header.name`]="{ header }">
         <th>
-          <label class="material-list-header">
+          <label class="list-header">
             <input type="checkbox" hidden @change="onSort('name', $event.target.checked)">
             {{ header.text }}
             <v-icon class="icon" :class="{ 'icon-active': isSortedBy(header.value) }">mdi-arrow-down</v-icon>
@@ -19,7 +19,7 @@
       </template>
       <template v-slot:[`header.type`]="{ header }">
         <th>
-          <label class="material-list-header">
+          <label class="list-header">
             <input type="checkbox" hidden @change="onSort('type', $event.target.checked)">
             {{ header.text }}
             <v-icon class="icon" :class="{ 'icon-active': isSortedBy(header.value) }">mdi-arrow-down</v-icon>
@@ -78,7 +78,6 @@ export default {
   data() {
     return {
       isMounted: false,
-      search: '',
       options: {},
       headers: [
         {
