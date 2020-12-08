@@ -301,10 +301,9 @@
 
         <div class="list-chips">
           <autocomplete 
-            v-if="labels"
-            :items="labels"
+            placeholder="Search label"
+            :isLabel="true"
             @emitAutocomplete="addObjToArray($event, 'labels')"
-            searchName="Add label"
           />
           <v-chip-group column>
             <v-chip
@@ -429,7 +428,7 @@ import confirmDeleteItem from '../../cmps/common/ConfirmDeleteItem';
 import searchSubMaterial from '../../cmps/material/edit/SearchSubMaterial';
 import referenceTable from '../../cmps/common/ReferenceTable';
 import regionsSelector from '../../cmps/material/edit/RegionsSelector';
-import Autocomplete from '@/cmps/Autocomplete';
+import autocomplete from '@/cmps/Autocomplete';
 import pathwayTable from '@/cmps/common/PathwayTable';
 import CKEditor from 'ckeditor4-vue';
 
@@ -626,9 +625,14 @@ export default {
     },
     addObjToArray(obj, arrName) {
       if (!obj) return;
-      const idx = this.editedMaterial[arrName].findIndex(currObj => currObj._id === obj._id);
+      const { _id, text } = obj;
+      const label = {
+        _id,
+        name: text
+      }
+      const idx = this.editedMaterial[arrName].findIndex(currObj => currObj._id === label._id);
       if (idx === -1) {
-        this.editedMaterial[arrName].push(obj);
+        this.editedMaterial[arrName].push(label);
       }
     }
   },
@@ -644,7 +648,7 @@ export default {
     searchSubMaterial,
     referenceTable,
     confirmDeleteItem,
-    Autocomplete,
+    autocomplete,
     pathwayTable,
     ckeditor: CKEditor.component
   },

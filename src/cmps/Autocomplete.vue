@@ -1,16 +1,18 @@
 <template>
-  <section class="autocomplete" v-if="initialItems !== null">
+  <section class="autocomplete">
     <v-autocomplete
-      :items="initialItems"
-      :label="searchNameStr"
+      v-model="select"
+      :items="results"
       :search-input.sync="search"
-      v-model="autocompleteResult"
+      :loading="isLoading"
       @change="emitAutocomplete"
-      cache-items
+      :label="placeholder"
+      :disabled="isDisabled"
       clearable
-      :flat="isFlat"
-      :solo-inverted="isSoloInverted"
+      cache-items
+      flat
       :dark="isDark"
+      :solo-inverted="isSoloInverted"
       return-object
     />
   </section>
@@ -20,59 +22,92 @@
 export default {
   name: 'Autocomplete',
   props: {
-    items: Array,
-    searchName: String,
+    isLabel: {
+      type: Boolean,
+      default: false
+    },
+    placeholder: {
+      type: String,
+      default: 'Search Material'
+    },
+    isDisabled: {
+      type: Boolean,
+      defualt: false
+    },
+    isDark: {
+      type: Boolean,
+      default: false
+    },
     isSoloInverted: {
       type: Boolean,
       default: false
     },
-    isFlat: {
-      type: Boolean,
-      default: false
-    },
-    isDark: {
+    isSuperLabelImport: {
       type: Boolean,
       default: false
     }
   },
   data() {
     return {
-      search: '',
-      initialItems: null,
-      autocompleteResult: null,
+      search: null,
+      items: [],
+      select: null,
+      isLoading: false,
     };
   },
-  computed: {
-    searchNameStr() {
-      return this.searchName;
+  watch: {
+    search(val) {
+      if (val && val !== this.select) this.getResults(val);
     },
-    itemNames() {
+  },
+  computed: {
+    materials() {
+      return this.$store.getters.materials;
+    },
+    labels() {
+      return this.$store.getters.labels;
+    },
+    results() {
+      if (!this.items) return [];
       return this.items.map((item) => {
-        const newItem = {
+        const result = {
           _id: item._id,
           text: item.name,
         };
-        if (item.type) newItem.type = item.type;
-        if (item.src) newItem.src = item.src;
-        return newItem;
+        if (item.type) result.type = item.type;
+        if (item.src) result.src = item.src;
+        return result;
       });
     },
   },
   methods: {
-    emitAutocomplete() {
-      let result = null;
-      if (this.autocompleteResult) {
-        result = {
-          name: this.autocompleteResult.text,
-          _id: this.autocompleteResult._id,
-        };
+    async getResults(q) {
+      this.isLoading = true;
+      const criteria = { q: q || '' };
+      if (this.isSuperLabelImport) {
+        criteria.isSuper = true;
+        criteria.limit = 0;
       }
-
-      this.$emit('emitAutocomplete', result);
+      const entities = await this.$store.dispatch({
+        type: (this.isLabel) ? 'getLabels' : 'getMaterials',
+        criteria,
+      });
+      this.items = entities;
+      this.isLoading = false;
+    },
+    emitAutocomplete() {
+      this.select = this.select || null;
+      this.$emit('emitAutocomplete', JSON.parse(JSON.stringify(this.select)));
     },
   },
-  created() {
-    this.initialItems = this.itemNames;
+  async created() {
+    if (!this.isLabel) {
+      if (this.materials) this.items = this.materials;
+      else this.getResults(this.search);
+    } else {
+      if (this.labels && !this.isSuperLabelImport) this.items = this.labels;
+      else this.getResults(this.search);
+    }
   },
 };
 </script>

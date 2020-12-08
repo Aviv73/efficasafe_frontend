@@ -1,7 +1,7 @@
 <template>
   <section class="material-filter">
     <div class="filter-input">
-      <async-autocomplete 
+      <autocomplete 
         @emitAutocomplete="updateFilter"
       />
     </div>
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import asyncAutocomplete from '@/cmps/AsyncAutocomplete';
+import autocomplete from '@/cmps/Autocomplete';
 
 export default {
   name: 'materialFilter',
@@ -63,7 +63,7 @@ export default {
     },
   },
   components: {
-    asyncAutocomplete
+    autocomplete
   },
 };
 </script>

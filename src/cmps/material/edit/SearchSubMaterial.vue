@@ -1,7 +1,7 @@
 <template>
   <section class="search-sub-material">
     <div class="search-container" v-if="materials">
-      <async-autocomplete 
+      <autocomplete 
         @emitAutocomplete="addSubMaterial"
         placeholder="Search Sub Material"
       />
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import asyncAutocomplete from '@/cmps/AsyncAutocomplete';
+import autocomplete from '@/cmps/Autocomplete';
 
 export default {
   name: 'SearchSubMaterial',
@@ -55,7 +55,7 @@ export default {
     },
   },
   components: {
-    asyncAutocomplete,
+    autocomplete,
   },
 };
 </script>

@@ -3,10 +3,14 @@ import { labelService } from '@/services/label.service'
 export const labelStore = ({
     state: {
         labels: null,
+        labelsCount: 0
     },
     getters: {
         labels(state) {
             return state.labels;
+        },
+        labelsCount(state) {
+            return state.labelsCount;
         }
     },
     mutations: {
@@ -23,12 +27,20 @@ export const labelStore = ({
         updateLabel(state, { label }) {
             const idx = state.labels.findIndex(currLabel => currLabel._id === label._id);
             state.labels.splice(idx, 1, label);
+        },
+        setLabelCount(state, { total }) {
+            state.labelsCount = total;
         }
     },
     actions: {
         async loadLabels(context, { filterBy }) {
-            const labels = await labelService.list(filterBy);
+            const { labels, total } = await labelService.list(filterBy);
             context.commit({ type: 'setLabels', labels });
+            context.commit({ type: 'setLabelCount', total });
+            return labels;
+        },
+        async getLabels(context, { criteria }) {
+            const { labels } = await labelService.list(criteria);
             return labels;
         },
         async loadLabel(context, { labelId }) {

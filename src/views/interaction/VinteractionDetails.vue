@@ -237,7 +237,7 @@ export default {
                 const idx = this.combinedRefs.findIndex(ref => pubmedIds[i] === ref.pubmedId);
                 refsStr += (idx + 1) + ', ';
             }
-            return refsStr.split(', ').filter(ref => ref).sort().join(', ');
+            return refsStr.split(', ').filter(ref => ref).sort((a, b) => a - b).join(', ');
         },
         async getReferences() {
             const matId = this.interaction.side1Material._id;

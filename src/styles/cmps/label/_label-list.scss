@@ -1,6 +1,10 @@
 .label-list {
     display: grid;
     gap: 4px;
+
+    [aria-label="Is Super"] {
+        width: 100px;
+    }
 }
 .v-application--is-ltr .v-input--selection-controls__input {
     margin-right: 0;

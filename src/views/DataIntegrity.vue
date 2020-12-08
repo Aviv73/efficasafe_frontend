@@ -13,7 +13,7 @@
               clearable
               label="Check type"
             ></v-select>
-            <async-autocomplete 
+            <autocomplete 
                 @emitAutocomplete="saveMaterialId"
                 :isDisabled="checkType !== 'material-ref-dups'"
                 placeholder="Select material"
@@ -127,7 +127,7 @@
 
 <script>
 import LoadingCmp from '@/cmps/general/LoadingCmp';
-import AsyncAutocomplete from '@/cmps/AsyncAutocomplete.vue';
+import autocomplete from '@/cmps/Autocomplete';
 import { dataIntegrityService } from '@/services/data-integrity.service';
 
 export default {
@@ -181,7 +181,7 @@ export default {
   },
   components: {
     LoadingCmp,
-    AsyncAutocomplete,
+    autocomplete,
   },
 };
 </script>

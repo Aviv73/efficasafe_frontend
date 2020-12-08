@@ -7,15 +7,15 @@
       <v-icon dark left>mdi-plus-box-multiple</v-icon>
       Add Side 2
       
-      <autocomplete
+      <autocomplete 
         v-if="isLabelImport"
         class="ml-8 side-picker-autocomplete"
-        :items="labels"
-        searchName="Import label"
+        placeholder="Import label"
         @emitAutocomplete="importSuperLabel"
-        :isSoloInverted="true"
-        :isFlat="true"
+        :isLabel="true"
         :isDark="true"
+        :isSoloInverted="true"
+        :isSuperLabelImport="true"
       />
 
       <span class="text-caption ml-8">
@@ -154,9 +154,6 @@ export default {
   computed: {
     materials() {
       return this.$store.getters.materials;
-    },
-    labels() {
-      return this.$store.getters.labels.filter(label => label.isSuper);
     },
     selection() {
       const selection = this.atcSelection.slice();

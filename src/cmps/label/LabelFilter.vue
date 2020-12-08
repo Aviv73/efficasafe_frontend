@@ -1,10 +1,10 @@
 <template>
   <section class="label-filter">
     <div class="filter-input">
-      <autocomplete
-        :items="labels"
-        @emitAutocomplete="updateFilter"
-        searchName="Search label"
+      <autocomplete 
+        placeholder="Search label" 
+        :isLabel="true" 
+        @emitAutocomplete="updateFilter"  
       />
     </div>
       <v-select
@@ -50,7 +50,7 @@ export default {
   methods: {
     updateFilter(label) {
       if (label) {
-        this.filterBy.q = label.name;
+        this.filterBy.q = label.text;
       } else {
         this.filterBy.q = '';
       }
@@ -61,7 +61,7 @@ export default {
     }
   },
   components: {
-    autocomplete,
+    autocomplete
   },
 };
 </script>

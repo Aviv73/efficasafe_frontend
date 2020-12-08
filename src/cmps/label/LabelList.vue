@@ -2,11 +2,27 @@
   <section class="label-list">
     <v-data-table
       :headers="headers"
-      :items="labels"
-      :search="search"
-      :sort-by.sync="sortBy"
-      :sort-desc.sync="isDesc"
+      :items="labels" 
+      :server-items-length="totalItems"
+      :options.sync="options"
+      disable-sort
+      :loading="loading"
     >
+      <template v-slot:[`header.name`]="{ header }">
+        <label class="list-header">
+          <input type="checkbox" hidden @change="onSort(header.value, $event.target.checked)" />
+          {{ header.text }}
+          <v-icon class="icon" :class="{ 'icon-active': isSortedBy(header.value) }">mdi-arrow-down</v-icon>
+        </label>
+      </template>
+      <template v-slot:[`header.isSuper`]="{ header }">
+        <label class="list-header">
+          <input type="checkbox" hidden @change="onSort(header.value, $event.target.checked)" />
+          {{ header.text }}
+          <v-icon class="icon" :class="{ 'icon-active': isSortedBy(header.value) }">mdi-arrow-down</v-icon>
+        </label>
+      </template>
+
       <template v-slot:body="{ items }">
         <tbody>
           <tr class="tr-label" v-for="item in items" :key="item._id">
@@ -54,12 +70,32 @@
 export default {
   name: 'labelList',
   props: {
-    labels: Array,
+    labels: {
+      type: Array,
+      required: true
+    },
+    totalItems: {
+      type: Number,
+      required: true
+    },
+    loading: {
+      type: Boolean,
+      required: true
+    }
+  },
+  watch: {
+    options() {
+      if (this.isMounted) {
+        this.$emit('options-updated', JSON.parse(JSON.stringify(this.options)));
+      } else {
+        this.isMounted = true;
+      }
+    }
   },
   data() {
     return {
-      search: '',
-      sortBy: 'isSuper',
+      isMounted: false,
+      options: {},
       isDesc: true,
       headers: [
         {
@@ -88,5 +124,13 @@ export default {
       ],
     };
   },
+  methods: {
+    onSort(sortBy, isDesc) {
+      this.$emit('header-clicked', sortBy, isDesc);
+    },
+    isSortedBy(property) {
+      return this.$route.query.sortBy === property;
+    }
+  }
 };
 </script>
