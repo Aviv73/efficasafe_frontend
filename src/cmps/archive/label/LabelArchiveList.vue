@@ -31,7 +31,7 @@
               </v-btn>
               <v-btn
                 small
-                color="warning"
+                color="error"
                 title="Delete label"
                 @click="$emit('restore-label', { id: item._id, type: 'label', doRestore: false })"
               >

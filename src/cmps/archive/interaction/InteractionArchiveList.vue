@@ -80,7 +80,7 @@
               </v-btn>
               <v-btn
                 small
-                color="warning"
+                color="error"
                 title="Delete interaction"
                 @click="
                   $emit('restore-interaction', {

@@ -60,6 +60,7 @@
               auto-grow
               class="draft-input"
               v-model="draftName"
+              :disabled="editedInteraction._id && !!editedInteraction.side2Label"
               :label="editedInteraction.side2Label ? 'Draft Name*' : 'Draft Name'"
             />
             <div class="int-rec-evi-row">

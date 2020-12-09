@@ -333,6 +333,7 @@ export default {
             return refs;
         },
         formatedRefTxt(fullRefTxt) {
+            if (!fullRefTxt) return '';
             const doiIdx = fullRefTxt.indexOf('doi');
             if (doiIdx !== -1) {
                 return fullRefTxt.substring(0, doiIdx).trim();

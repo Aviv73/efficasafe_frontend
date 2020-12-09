@@ -31,7 +31,7 @@
               </v-btn>
               <v-btn
                 small
-                color="warning"
+                color="error"
                 title="Delete material"
                 @click="$emit('restore-material', { id: item._id, type: 'material', doRestore: false })"
               >

@@ -14,6 +14,9 @@
             <v-icon small left>mdi-arrow-left</v-icon>{{ (isArchive) ? 'Back to Archive' : 'Back to Interactions' }}
           </v-btn>
           <v-spacer></v-spacer>
+          <v-btn color="primary" v-if="!isArchive" @click="cloneInteraction">
+            <v-icon small left>mdi-content-copy</v-icon>Clone
+          </v-btn>
           <v-btn color="primary" :to="`/interaction/edit/${interaction._id}`" v-if="!isArchive">
             <v-icon small left>mdi-pencil</v-icon>Edit
           </v-btn>
@@ -158,7 +161,7 @@
           v-if="interaction.side2Label"
           :labelId="interaction.side2Label._id" 
           @close-label-dialog="labelDialog = false"
-          @view-material="showPathways"
+          @view-material="goToVinteraction"
           />
       </v-dialog>
     </section>
@@ -168,6 +171,7 @@
 
 <script>
 import { interactionService } from '@/services/interaction.service';
+import { eventBus, EV_addInteraction } from '@/services/eventBus.service';
 import confirmDelete from '@/cmps/general/ConfirmDelete';
 import referenceTable from '@/cmps/common/ReferenceTable';
 import labelPeek from '@/cmps/interaction/edit/LabelPeek';
@@ -197,7 +201,19 @@ export default {
     },
   },
   methods: {
-    showPathways(material) {
+    async cloneInteraction() {
+      const interactionCopy = JSON.parse(JSON.stringify(this.interaction));
+      delete interactionCopy._id;
+      
+      const savedInteraction = await this.$store.dispatch({ type: 'saveInteraction', interaction: interactionCopy });
+      eventBus.$emit(EV_addInteraction, {
+          name: '',
+          type: 'interaction',
+          _id: savedInteraction._id,
+      });
+      this.$router.push(`/interaction/edit/${savedInteraction._id}`);
+    },
+    goToVinteraction(material) {
       this.$router.push(`/interaction/${this.$route.params.id}/${material._id}`);
     },
     txtWithRefs(propName) {

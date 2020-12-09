@@ -26,6 +26,7 @@ export const interactionStore = ({
             }
         },
         updateInteraction(state, { interaction }) {
+            if (!state.interactions) return;
             const idx = state.interactions.findIndex(currInteraction => currInteraction._id === interaction._id);
             if (idx !== -1) {
                 state.interactions.splice(idx, 1, interaction);
