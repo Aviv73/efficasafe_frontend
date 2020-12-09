@@ -62,18 +62,35 @@
               </router-link>
             </td>
 
-            <td class="td-actions" width="120" align="center">
+            <td class="td-actions" width="180" align="center">
               <v-btn
+                class="mr-2"
                 small
                 color="primary"
+                title="Restore interaction"
                 @click="
                   $emit('restore-interaction', {
                     id: item._id,
                     type: 'interaction',
+                    doRestore: true 
                   })
                 "
               >
                 <v-icon small>mdi-archive-arrow-up</v-icon>
+              </v-btn>
+              <v-btn
+                small
+                color="warning"
+                title="Delete interaction"
+                @click="
+                  $emit('restore-interaction', {
+                    id: item._id,
+                    type: 'interaction',
+                    doRestore: false 
+                  })
+                "
+              >
+                <v-icon small>mdi-delete</v-icon>
               </v-btn>
             </td>
           </tr>
@@ -102,7 +119,7 @@ export default {
           value: 'side2Material.name' || 'side2Label.name',
         },
         {
-          text: 'Action',
+          text: 'Actions',
           name: 'Action',
           value: 'action',
           sortable: false,

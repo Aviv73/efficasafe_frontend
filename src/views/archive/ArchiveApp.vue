@@ -5,6 +5,7 @@
         v-model="dialog"
         :type="deleteType"
         :dialog="dialog"
+        :isRestore="isRestoring"
         @delete-confirm="restoreItem"
         @delete-cancel="clearConfirmDelete"
       />
@@ -81,6 +82,10 @@ export default {
     interactions() {
       return this.$store.getters.archiveInteractions;
     },
+    isRestoring() {
+      if (!this.selectedItem) return false;
+      return this.selectedItem.doRestore;
+    }
   },
   methods: {
     setMaterialFilter(filterBy) {
@@ -131,75 +136,72 @@ export default {
       }
 
       if (item.type === 'material') {
-        this.restoreMaterial(item.id);
+        this.restoreMaterial(item.id, item.doRestore);
       } else if (item.type === 'label') {
-        this.restoreLabel(item.id);
+        this.restoreLabel(item.id, item.doRestore);
       } else {
-        this.restoreInteraction(item.id);
+        this.restoreInteraction(item.id, item.doRestore);
       }
       this.clearConfirmDelete();
     },
 
-    async restoreMaterial(matId) {
+    async restoreMaterial(matId, doRestore) {
       const material = await this.$store.dispatch({
         type: 'loadArchiveMaterial',
         matId,
       });
       try {
-        const restoredMaterial = this.$store.dispatch({
-          type: 'restoreMaterial',
-          material,
-        });
-
-        const removedMaterial = this.$store.dispatch({
+        if (doRestore) {
+          this.$store.dispatch({
+            type: 'restoreMaterial',
+            material,
+          });
+        }
+        this.$store.dispatch({
           type: 'removeMaterialFromArchive',
           matId: material._id,
         });
-
-        Promise.all([restoredMaterial, removedMaterial]);
       } catch (err) {
         console.log('ERROR', err);
       }
     },
 
-    async restoreLabel(labelId) {
+    async restoreLabel(labelId, doRestore) {
       const label = await this.$store.dispatch({
         type: 'loadArchiveLabel',
         labelId,
       });
       try {
-        const restoredLabel = this.$store.dispatch({
-          type: 'restoreLabel',
-          label,
-        });
-
-        const removedLabel = this.$store.dispatch({
+        if (doRestore) {
+          this.$store.dispatch({
+            type: 'restoreLabel',
+            label,
+          });
+        }
+        this.$store.dispatch({
           type: 'removeLabelFromArchive',
           labelId: label._id,
         });
-
-        Promise.all([restoredLabel, removedLabel]);
       } catch (err) {
         console.log('ERROR', err);
       }
     },
-    async restoreInteraction(intId) {
+    async restoreInteraction(intId, doRestore) {
       const interaction = await this.$store.dispatch({
         type: 'loadArchiveInteraction',
         intId,
       });
       try {
-        const restoredInteraction = this.$store.dispatch({
-          type: 'restoreInteraction',
-          interaction,
-        });
-
-        const removedInteraction = this.$store.dispatch({
+        if (doRestore) {
+          this.$store.dispatch({
+            type: 'restoreInteraction',
+            interaction,
+          });
+        }
+        this.$store.dispatch({
           type: 'removeInteractionFromArchive',
           intId: interaction._id,
         });
-
-        Promise.all([restoredInteraction, removedInteraction]);
       } catch (err) {
         console.log('ERROR', err);
       }

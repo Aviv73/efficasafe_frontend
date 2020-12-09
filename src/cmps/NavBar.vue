@@ -12,7 +12,7 @@
       <v-btn class="nav-link" tile color="white" text to="/material">Materials</v-btn>
       <v-btn class="nav-link" tile color="white" text to="/label">Labels</v-btn>
       <v-btn class="nav-link" tile color="white" text to="/interaction">Interactions</v-btn>
-      <v-btn class="nav-link" tile color="white" text to="/archive">Archive</v-btn>
+      <v-btn class="nav-link" tile color="white" text to="/archive" v-if="isAdmin">Archive</v-btn>
       <v-btn class="nav-link" tile color="white" text v-if="loggedInUser" @click="logout">
         <v-icon left>mdi-logout</v-icon>Logout
       </v-btn>
@@ -27,6 +27,9 @@ export default {
     loggedInUser() {
       return this.$store.getters.loggedInUser;
     },
+    isAdmin() {
+      return (this.loggedInUser) ? this.loggedInUser.role === 'admin' : false;
+    }
   },
   methods: {
     async logout() {

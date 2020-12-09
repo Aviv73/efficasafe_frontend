@@ -87,7 +87,7 @@ export default {
 
       if (this.tableData) {
         let { page, itemsPerPage } = this.tableData;
-        criteria.limit = itemsPerPage;
+        criteria.limit = (itemsPerPage < 0) ? 0 : itemsPerPage;
         criteria.page = --page;
       } else { 
         criteria.limit = 10;

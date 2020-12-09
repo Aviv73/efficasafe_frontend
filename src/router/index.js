@@ -94,7 +94,7 @@ const routes = [
     path: '/archive',
     name: 'Archives',
     component: archiveApp,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true, requiresAdmin: true }
   },
   {
     path: '/archive/label/:id',
@@ -137,6 +137,13 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAdmin) {
+    if (store.state.userStore.loggedInUser.role !== 'admin') {
+      next({ name: 'Home' });
+    } else {
+      next();
+    }
+  }
   if (to.meta.requiresAuth) {
     if (!store.state.userStore.loggedInUser) {
       next({

@@ -19,13 +19,23 @@
               <div class="color-circle" :style="{ backgroundColor: item.color }"></div>
             </td>
 
-            <td class="td-actions" width="120" align="center">
+            <td class="td-actions" width="180" align="center">
               <v-btn
+                class="mr-2"
                 small
                 color="primary"
-                @click="$emit('restore-label', { id: item._id, type: 'label' })"
+                title="Restore label"
+                @click="$emit('restore-label', { id: item._id, type: 'label', doRestore: true })"
               >
                 <v-icon small>mdi-archive-arrow-up</v-icon>
+              </v-btn>
+              <v-btn
+                small
+                color="warning"
+                title="Delete label"
+                @click="$emit('restore-label', { id: item._id, type: 'label', doRestore: false })"
+              >
+                <v-icon small>mdi-delete</v-icon>
               </v-btn>
             </td>
           </tr>
@@ -55,7 +65,7 @@ export default {
           align: "center",
         },
         {
-          text: "Action",
+          text: "Actions",
           name: "Action",
           value: "action",
           sortable: false,

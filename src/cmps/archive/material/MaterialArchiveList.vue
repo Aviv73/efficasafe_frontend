@@ -19,13 +19,23 @@
               <span class="text-capitalize">{{item.type}}</span>
             </td>
 
-            <td class="td-actions" width="120" align="center">
+            <td class="td-actions" width="180" align="center">
               <v-btn
+                class="mr-2"
                 small
                 color="primary"
-                @click="$emit('restore-material', {id: item._id, type: 'material'})"
+                title="Restore material"
+                @click="$emit('restore-material', {id: item._id, type: 'material', doRestore: true })"
               >
                 <v-icon small>mdi-archive-arrow-up</v-icon>
+              </v-btn>
+              <v-btn
+                small
+                color="warning"
+                title="Delete material"
+                @click="$emit('restore-material', { id: item._id, type: 'material', doRestore: false })"
+              >
+                <v-icon small>mdi-delete</v-icon>
               </v-btn>
             </td>
           </tr>
@@ -54,7 +64,7 @@ export default {
           value: "type",
         },
         {
-          text: "Action",
+          text: "Actions",
           name: "Action",
           value: "action",
           sortable: false,

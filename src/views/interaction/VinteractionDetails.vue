@@ -80,7 +80,7 @@
                         <span v-for="(pathway, idx) in material.pathways" :key="idx">
                             <span>{{ idx === 0 ? '' : ',' }} </span>
                             <span class="text-uppercase">{{ pathway.enzyme }} </span>
-                            <sub>{{ `(${getMaterialRefNums(pathway.references)})` }}</sub>
+                            <sub>{{ getMaterialRefNums(pathway.references) }}</sub>
                         </span>
                     </p>
                     <div ref="pathway2">
@@ -96,8 +96,11 @@
                             <h6>{{ pathway.enzyme }}</h6>
                             <p v-highlight-text:[material.name] v-html="txtWithRefs(pathway.influence)"></p>
                         </div>
-                        <div v-for="(pathway, idx) in unRelevantSide1Pathways" :key="'unrelevantPathway' + idx">
-                            <p>There is no evidence regarding the effect of {{ interaction.side1Material.name }} on {{ pathway.enzyme }} activity.</p>
+                        <div>
+                            <p>
+                                There is no evidence regarding the effect of {{ interaction.side1Material.name }} on
+                                <span v-for="(pathway, idx) in unRelevantSide1Pathways" :key="'unrelevantPathway' + idx">{{ (idx === 0) ? '' : ', ' }}{{ pathway.enzyme.toUpperCase() }}</span> activity.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -188,13 +191,13 @@ export default {
         },
         relevantSide1Pathways() {
             return this.side1Pathways.filter(pathway => {
-                const idx = this.material.pathways.findIndex(matPathway => matPathway.enzyme === pathway.enzyme.replace('CYP', ''));
+                const idx = this.material.pathways.findIndex(matPathway => matPathway.enzyme.toUpperCase() === pathway.enzyme.replace('CYP', '').toUpperCase());
                 return idx !== -1;
             });
         },
         unRelevantSide1Pathways() {
             return this.material.pathways.filter(pathway => {
-                const idx = this.side1Pathways.findIndex(matPathway => matPathway.enzyme.replace('CYP', '') === pathway.enzyme);
+                const idx = this.side1Pathways.findIndex(matPathway => matPathway.enzyme.replace('CYP', '').toUpperCase() === pathway.enzyme.toUpperCase());
                 return idx === -1;
             });
         },
@@ -227,17 +230,17 @@ export default {
             }
         },
         getMaterialRefNums(pubmedIds) {
-            if (!this.interactionRefs.length || !this.materialRefs.length) return;
+            if (!this.interactionRefs.length || !this.materialRefs.length || !pubmedIds.length) return;
             const refIdx  = this.combinedRefs.findIndex(ref => pubmedIds.includes(ref.pubmedId));
             if (pubmedIds.length === 1) {
-                return refIdx + 1;
+                return `(${refIdx + 1})`;
             }
             let refsStr = '';
             for (let i = 0; i < pubmedIds.length; i++) {
                 const idx = this.combinedRefs.findIndex(ref => pubmedIds[i] === ref.pubmedId);
                 refsStr += (idx + 1) + ', ';
             }
-            return refsStr.split(', ').filter(ref => ref).sort((a, b) => a - b).join(', ');
+            return `(${refsStr.split(', ').filter(ref => ref).sort((a, b) => a - b).join(', ')})`;
         },
         async getReferences() {
             const matId = this.interaction.side1Material._id;
@@ -285,7 +288,7 @@ export default {
 
             for (let i = 0; i < elSubs.length; i++) {
                 const refIdxs = interactionService.getRefsOrder(elSubs[i].innerText);
-                if (!refIdxs[0]) return;
+                if (!refIdxs.length) continue;
 
                 elSubs[i].innerText = interactionService.formatRefStrs(elSubs[i].innerText);
                 elSubs[i].addEventListener('mouseenter', this.setTooltipPos);
