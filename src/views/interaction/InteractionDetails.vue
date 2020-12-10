@@ -207,7 +207,8 @@ export default {
       const savedInteraction = await this.$store.dispatch({ type: 'saveInteraction', interaction: interactionCopy });
       eventBus.$emit(EV_addInteraction, {
           name: '',
-          type: 'interaction',
+          isNotice: true,
+          type: 'interaction COPY',
           _id: savedInteraction._id,
       });
       this.$router.push(`/interaction/edit/${savedInteraction._id}`);
