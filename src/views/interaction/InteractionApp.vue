@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import { eventBus, EV_edit_interaction_failed } from '@/services/eventBus.service';
 import interactionFilter from '@/cmps/interaction/InteractionFilter';
 import interactionList from '@/cmps/interaction/InteractionList';
 import iconsMap from '@/cmps/general/IconsMap';
@@ -94,6 +95,10 @@ export default {
     async toggleIsActive(intId) {
       try {
         var interaction = await this.loadInteraction(intId);
+        if (!interaction.side1Material || (!interaction.side2Material && !interaction.side2Label)) {
+          eventBus.$emit(EV_edit_interaction_failed, { type: 'interaction', isError: true });
+          return;
+        }
         interaction.isActive = !interaction.isActive;
         await this.saveInteraction(interaction);
       } catch (err) {
@@ -103,7 +108,7 @@ export default {
     async loadInteraction(intId) {
       const editedInteraction = await this.$store.dispatch({
         type: 'loadInteraction',
-        intId,
+        intId
       });
       return JSON.parse(JSON.stringify(editedInteraction));
     },
@@ -125,7 +130,7 @@ export default {
   components: {
     interactionFilter,
     interactionList,
-    iconsMap,
+    iconsMap
   },
 };
 </script>

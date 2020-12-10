@@ -107,7 +107,6 @@ export default {
     if (queryStr !== this.routeQuery) {
       this.$router.push(queryStr);
     }
-    this.loadMaterials();
   },
   components: {
     materialFilter,

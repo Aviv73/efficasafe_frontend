@@ -186,7 +186,6 @@ export default {
       labelDialog: false,
       sides: {
         side1Material: null,
-        side1Label: null,
         side2Material: null,
         side2Label: null,
       },
@@ -198,7 +197,7 @@ export default {
   watch: {
     '$route.params.id'() {
       this.loadInteraction();
-    },
+    }
   },
   methods: {
     async cloneInteraction() {
