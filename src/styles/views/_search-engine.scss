@@ -1,0 +1,12 @@
+.search-engine {
+    &-header {
+        display: flex;
+        flex-direction: column;
+        padding: 0 16px;
+
+        &-search-field {
+            width: 100%;
+            align-self: center;
+        }
+    }
+}

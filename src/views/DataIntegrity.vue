@@ -121,6 +121,7 @@
           </v-list>
         </div>
       </v-card>
+      <icons-map />
     </section>
   </div>
 </template>
@@ -128,6 +129,7 @@
 <script>
 import LoadingCmp from '@/cmps/general/LoadingCmp';
 import autocomplete from '@/cmps/Autocomplete';
+import iconsMap from '@/cmps/general/IconsMap';
 import { dataIntegrityService } from '@/services/data-integrity.service';
 
 export default {
@@ -182,6 +184,7 @@ export default {
   components: {
     LoadingCmp,
     autocomplete,
+    iconsMap
   },
 };
 </script>

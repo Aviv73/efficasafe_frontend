@@ -1,6 +1,19 @@
 .material-details {
     margin-bottom: 12px;
 
+    &-expand-panel {
+        width: 95%;
+        
+        &-header {
+            display: flex;
+            align-items: baseline;
+
+            &:hover {
+                text-shadow: $bold;
+                transition: text-shadow .15s linear;
+            }
+        }
+    }
     .action-container {
         display: flex;
         margin-bottom: 20px;

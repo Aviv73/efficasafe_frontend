@@ -1,0 +1,44 @@
+.dbank-material-details {
+    max-height: 80vh;
+    overflow-y: auto;
+    
+    
+    [alt="DrugBank logo"] {
+        width: 150px;
+        filter: grayscale(100%);
+        opacity: 0.6;
+    }
+    &-row {
+        width: 100%;
+        margin-bottom: 12px;
+        
+        &-header {
+            font-weight: 700;
+            display: inline-block;
+            margin-inline-end: 6px;
+        }
+        &-expand-content {
+            flex-direction: column;
+
+            h5 {
+                font-size: 1.2em;
+                margin-bottom: 6px;
+
+                &::after {
+                    content: ':';
+                }
+            }
+        }
+        &.expandable {
+            z-index: unset;
+        }
+        .v-expansion-panel-header {
+            width: 99%;
+            min-height: unset;
+            margin-bottom: 12px;
+        }
+        .v-chip {
+            pointer-events: none;
+        }
+    }
+}

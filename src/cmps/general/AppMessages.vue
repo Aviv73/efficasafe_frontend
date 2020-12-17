@@ -2,7 +2,7 @@
     <section v-if="alertOn" class="alert-messages">
         <v-alert
             class="alert-msg"
-            :type="(isError) ? 'error' : (isNotice) ? 'primary' : 'success'"
+            :type="(isError) ? 'error' : (isNotice) ? 'info' : 'success'"
             :value="alertOn"
             @click:close="killAlert"
             dismissible

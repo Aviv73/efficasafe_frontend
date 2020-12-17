@@ -45,6 +45,9 @@
                     <h3 class="info-title">Type:</h3>
                     <div class="info-value">{{ material.type }}</div>
 
+                    <h3 class="info-title" v-if="material.updatedAt">Last Update At:</h3>
+                    <div class="info-value" v-if="material.updatedAt">{{ material.updatedAt | moment('MMM Do YYYY') }}</div>
+
                     <h3 class="info-title" v-if="material.atcId">ATC Code:</h3>
                     <div class="info-value" v-if="material.atcId">{{ material.atcId }}</div>
 
@@ -259,6 +262,22 @@
                         :atcPaths="material.atcPaths"
                         :isEdit="false"
                     />
+
+                    <h3 class="info-title" v-if="material.compounds.length">Compounds:</h3>
+                    <v-expansion-panels class="material-details-expand-panel" v-if="material.compounds.length">
+                        <v-expansion-panel>
+                            <v-expansion-panel-header class="material-details-expand-panel-header pa-0">
+                                Click to view compounds
+                            </v-expansion-panel-header>
+                            <v-expansion-panel-content class="pa-0">
+                                <v-chip-group column>
+                                    <v-chip v-for="(compound, idx) in material.compounds" :key="idx">
+                                        {{ compound }}
+                                    </v-chip>
+                                </v-chip-group>
+                            </v-expansion-panel-content>
+                        </v-expansion-panel>
+                    </v-expansion-panels>
 
                     <h3 class="info-title" v-if="material.labels.length">Labels</h3>
                     <v-chip-group column v-if="material.labels.length">

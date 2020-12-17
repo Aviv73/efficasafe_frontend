@@ -82,6 +82,9 @@
           <h3 class="info-title">Draft Name:</h3>
           <p class="info-value">{{ interaction.side2DraftName }}</p>
 
+          <h3 class="info-title" v-if="interaction.updatedAt">Updated At:</h3>
+          <p class="info-value" v-if="interaction.updatedAt">{{ interaction.updatedAt | moment('MMM Do YYYY') }}</p>
+
           <h3 class="info-title">Source:</h3>
           <p class="info-value">{{ interaction.src }}</p>
 

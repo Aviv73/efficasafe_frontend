@@ -137,6 +137,7 @@ function getEmptyInteraction() {
         side2Material: null,
         side2Label: null,
         side2DraftName: '',
+        updatedAt: null,
         src: 'manual',
         recommendation: '',
         note: '',

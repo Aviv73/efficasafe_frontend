@@ -8,6 +8,7 @@
         </div>
       </v-btn>
       <v-spacer></v-spacer>
+      <v-btn class="nav-link" tile color="white" text to="/search">Search-Engine</v-btn>
       <v-btn class="nav-link" tile color="white" text to="/data-integrity">Alerts</v-btn>
       <v-btn class="nav-link" tile color="white" text to="/material">Materials</v-btn>
       <v-btn class="nav-link" tile color="white" text to="/label">Labels</v-btn>

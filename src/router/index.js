@@ -15,6 +15,7 @@ import interactionDetails from '../views/interaction/InteractionDetails';
 import vInteractionDetails from '@/views/interaction/VinteractionDetails';
 import archiveApp from '../views/archive/ArchiveApp';
 import DataIntegrity from '@/views/DataIntegrity';
+import searchEngine from '@/views/SearchEngine';
 
 Vue.use(VueRouter);
 
@@ -118,6 +119,12 @@ const routes = [
     path: '/data-integrity',
     name: 'DataIntegrity',
     component: DataIntegrity,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/search',
+    name: 'SearchEngine',
+    component: searchEngine,
     meta: { requiresAuth: true }
   },
   {
