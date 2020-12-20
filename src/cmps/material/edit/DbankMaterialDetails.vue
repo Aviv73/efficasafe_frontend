@@ -34,6 +34,14 @@
                 <v-expansion-panel>
                     <v-expansion-panel-header class="pa-0">
                         <span class="dbank-material-details-row-header text-capitalize">Description:</span>
+                        <span @click.stop="" class="dbank-material-details-row-toggle">
+                            <v-checkbox 
+                                on-icon="mdi-database-import"
+                                off-icon="mdi-database-import-outline"
+                                color="primary"
+                                @change.self="toggleFieldForExport($event, 'desc')" 
+                            />
+                        </span>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content
                         class="dbank-material-details-row-expand-content"
@@ -46,6 +54,14 @@
                 <v-expansion-panel>
                     <v-expansion-panel-header class="pa-0">
                         <span class="dbank-material-details-row-header text-capitalize">Brands:</span>
+                        <span @click.stop="" class="dbank-material-details-row-toggle">
+                            <v-checkbox 
+                                on-icon="mdi-database-import"
+                                off-icon="mdi-database-import-outline"
+                                color="primary"
+                                @change.self="toggleFieldForExport($event, 'brands')" 
+                            />
+                        </span>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content>
                         <v-chip-group column>
@@ -64,6 +80,14 @@
                 <v-expansion-panel>
                     <v-expansion-panel-header class="pa-0">
                         <span class="dbank-material-details-row-header text-capitalize">Aliases:</span>
+                        <span @click.stop="" class="dbank-material-details-row-toggle">
+                            <v-checkbox 
+                                on-icon="mdi-database-import"
+                                off-icon="mdi-database-import-outline"
+                                color="primary"
+                                @change.self="toggleFieldForExport($event, 'aliases')" 
+                            />
+                        </span>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content>
                         <v-chip-group column>
@@ -82,6 +106,14 @@
                 <v-expansion-panel>
                     <v-expansion-panel-header class="pa-0">
                         <span class="dbank-material-details-row-header text-capitalize">Indications:</span>
+                        <span @click.stop="" class="dbank-material-details-row-toggle">
+                            <v-checkbox 
+                                on-icon="mdi-database-import"
+                                off-icon="mdi-database-import-outline"
+                                color="primary"
+                                @change.self="toggleFieldForExport($event, 'indications')" 
+                            />
+                        </span>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content>
                         <v-chip-group column>
@@ -100,6 +132,14 @@
                 <v-expansion-panel>
                     <v-expansion-panel-header class="pa-0">
                         <span class="dbank-material-details-row-header text-capitalize">Regions:</span>
+                        <span @click.stop="" class="dbank-material-details-row-toggle">
+                            <v-checkbox 
+                                on-icon="mdi-database-import"
+                                off-icon="mdi-database-import-outline"
+                                color="primary"
+                                @change.self="toggleFieldForExport($event, 'regions')" 
+                            />
+                        </span>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content>
                         <v-chip-group column>
@@ -192,11 +232,140 @@
                 </v-expansion-panel>
             </v-expansion-panels>
 
-            <!-- TO BE REMOVED -->
-            <pre>
-                {{ material.drugBankInfo }}
-            </pre>
-            <!-- TO BE REMOVED -->
+            <div v-if="material.drugBankInfo">
+                <span class="dbank-material-details-row-header --main text-capitalize">Pharmacology (DrugBank's):</span>
+                <v-expansion-panels class="dbank-material-details-row expandable" v-if="material.drugBankInfo.indication">
+                    <v-expansion-panel>
+                        <v-expansion-panel-header class="pa-0">
+                            <span class="dbank-material-details-row-header --sub text-capitalize">
+                                Indication:
+                            </span>
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                            {{ material.drugBankInfo.indication }}
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+
+                <v-expansion-panels class="dbank-material-details-row expandable" v-if="material.drugBankInfo.pharmacodynamics">
+                    <v-expansion-panel>
+                        <v-expansion-panel-header class="pa-0">
+                            <span class="dbank-material-details-row-header --sub text-capitalize">Pharmacodynamics:</span>
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                            {{ material.drugBankInfo.pharmacodynamics }}
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+
+                <v-expansion-panels class="dbank-material-details-row expandable" v-if="material.drugBankInfo.mechanism_of_action">
+                    <v-expansion-panel>
+                        <v-expansion-panel-header class="pa-0">
+                            <span class="dbank-material-details-row-header --sub text-capitalize">Mechanism of action:</span>
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                            {{ material.drugBankInfo.mechanism_of_action }}
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+
+                <v-expansion-panels class="dbank-material-details-row expandable" v-if="material.drugBankInfo.absorption">
+                    <v-expansion-panel>
+                        <v-expansion-panel-header class="pa-0">
+                            <span class="dbank-material-details-row-header --sub text-capitalize">Absorption:</span>
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                            {{ material.drugBankInfo.absorption }}
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+
+                <v-expansion-panels class="dbank-material-details-row expandable" v-if="material.drugBankInfo.toxicity">
+                    <v-expansion-panel>
+                        <v-expansion-panel-header class="pa-0">
+                            <span class="dbank-material-details-row-header --sub text-capitalize">Toxicity:</span>
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                            {{ material.drugBankInfo.toxicity }}
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+
+                <v-expansion-panels class="dbank-material-details-row expandable" v-if="material.drugBankInfo.protein_binding">
+                    <v-expansion-panel>
+                        <v-expansion-panel-header class="pa-0">
+                            <span class="dbank-material-details-row-header --sub text-capitalize">Protein binding:</span>
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                            {{ material.drugBankInfo.protein_binding }}
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+
+                <v-expansion-panels class="dbank-material-details-row expandable" v-if="material.drugBankInfo.metabolism">
+                    <v-expansion-panel>
+                        <v-expansion-panel-header class="pa-0">
+                            <span class="dbank-material-details-row-header --sub text-capitalize">Metabolism:</span>
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                            {{ material.drugBankInfo.metabolism }}
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+
+                <v-expansion-panels class="dbank-material-details-row expandable" v-if="material.drugBankInfo.half_life">
+                    <v-expansion-panel>
+                        <v-expansion-panel-header class="pa-0">
+                            <span class="dbank-material-details-row-header --sub text-capitalize">Half life:</span>
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                            {{ material.drugBankInfo.half_life }}
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+
+                <v-expansion-panels class="dbank-material-details-row expandable" v-if="material.drugBankInfo.route_of_elimination">
+                    <v-expansion-panel>
+                        <v-expansion-panel-header class="pa-0">
+                            <span class="dbank-material-details-row-header --sub text-capitalize">Route of elimination:</span>
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                            {{ material.drugBankInfo.route_of_elimination }}
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+
+                <v-expansion-panels class="dbank-material-details-row expandable" v-if="material.drugBankInfo.volume_of_distribution">
+                    <v-expansion-panel>
+                        <v-expansion-panel-header class="pa-0">
+                            <span class="dbank-material-details-row-header --sub text-capitalize">Volume of distribution:</span>
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                            {{ material.drugBankInfo.volume_of_distribution }}
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+
+                <v-expansion-panels class="dbank-material-details-row expandable" v-if="material.drugBankInfo.clearance">
+                    <v-expansion-panel>
+                        <v-expansion-panel-header class="pa-0">
+                            <span class="dbank-material-details-row-header --sub text-capitalize">Clearance:</span>
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                            {{ material.drugBankInfo.clearance }}
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+
+                <v-btn
+                    color="primary"
+                    :disabled="!isDataValid"
+                    @click="emitDrugBankData"
+                >
+                    Import
+                </v-btn>
+
+            </div>
         </v-card>
     </section>
 </template>
@@ -207,6 +376,46 @@ export default {
         material: {
             type: Object,
             required: true
+        }
+    },
+    data() {
+        return {
+            drugBankData: {
+                desc: '',
+                brands: [],
+                aliases: [],
+                indications: [],
+                regions: []
+            }
+        }
+    },
+    computed: {
+        isDataValid() {
+            const values = Object.values(this.drugBankData);
+            for (let i = 0; i < values.length; i++) {
+                if (typeof values[i] === 'string' && values[i]) return true;
+                else if (Array.isArray(values[i]) && values[i].length) return true;
+            }
+            return false;
+        },
+        relevantData() {
+            return Object.keys(this.drugBankData).reduce((acc, key) => {    
+                if (typeof this.drugBankData[key] === 'string' && this.drugBankData[key]) {
+                    acc[key] = this.drugBankData[key];
+                } else if (Array.isArray(this.drugBankData[key]) && this.drugBankData[key].length) {
+                    acc[key] = [ ...this.drugBankData[key] ];
+                }
+                return acc;
+            }, {});
+        }
+    },
+    methods: {
+        toggleFieldForExport(doExport, field) {
+            const drugBankData = (typeof this.material[field] === 'string') ? this.material[field] : [ ...this.material[field] ]
+            this.drugBankData[field] = (doExport) ? drugBankData : '';
+        },
+        emitDrugBankData() {
+            this.$emit('drugbank-data-export', this.relevantData);
         }
     }
 }

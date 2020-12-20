@@ -96,13 +96,13 @@
           v-if="editedMaterial.dBankMaterial.length"
           @click="isPortalActive = !isPortalActive"
           class="material-edit-portal-toggle"
-          color="primary"
+          :color="(isPortalActive) ? 'warning' : 'primary'"
           outlined
           rounded
           depressed
         >
           <v-icon class="mr-1">{{ (isPortalActive) ? 'mdi-close' : 'mdi-eye-outline' }}</v-icon>
-          Drugbank data
+          {{ (isPortalActive) ? 'Close' : 'Drugbank data' }}
         </v-btn>
         <v-form v-model="valid" @submit.prevent="saveMaterial">
           <v-text-field
@@ -455,7 +455,10 @@
                 <v-icon>mdi-close</v-icon>
               </v-btn>
             </header>
-            <d-bank-material-details :material="editedMaterial.dBankMaterial[0]" />
+            <d-bank-material-details 
+              :material="editedMaterial.dBankMaterial[0]" 
+              @drugbank-data-export="importDrugBankData"
+            />
           </aside>
         </transition>
       </v-card>
@@ -555,6 +558,12 @@ export default {
     }
   },
   methods: {
+    importDrugBankData(data) {
+      Object.entries(data).forEach(entry => {
+        const [ key, value ] = entry;
+        this.editedMaterial[key] = value;
+      });
+    },
     editPathway() {
       const isEdit = this.editedPathwayIdx !== undefined;
       if (isEdit) {

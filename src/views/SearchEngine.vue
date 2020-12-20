@@ -16,9 +16,9 @@
                 </header>
                 <main>
                     <img 
-                        src="https://i1.wp.com/whiterivernow.com/wp-content/uploads/2018/12/Under-Construction-Sign.png?fit=1230%2C580&ssl=1" 
+                        src="https://i1.wp.com/whiterivernow.com/wp-content/uploads/2018/12/Under-Construction-Sign.png?fit=1230%2C580" 
                         style="width: 100%;"
-                        />
+                    />
                 </main>
                 <v-divider></v-divider>
             </v-card>
