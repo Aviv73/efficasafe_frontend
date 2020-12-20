@@ -77,6 +77,14 @@
             </v-chip>
         </v-chip-group>
     </div>
+    <div class="side-details-row" v-if="side.pathways.length">
+        <span class="text-capitalize">Pathways:</span>
+        <v-chip-group column>
+            <v-chip v-for="(pathway, idx) in side.pathways" :key="'pathway' + idx">
+                {{ pathways.enzyme.toUpperCase() }}
+            </v-chip>
+        </v-chip-group>
+    </div>
     <div class="side-details-row" v-if="side.dosage">
         <span class="text-capitalize">Dosage:</span>
         <div v-html="side.dosage"></div>

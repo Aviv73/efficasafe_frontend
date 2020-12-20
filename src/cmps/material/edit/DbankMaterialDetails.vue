@@ -25,7 +25,7 @@
 
             <div class="dbank-material-details-row" v-if="material.fdaLabelLink">
                 <span class="dbank-material-details-row-header text-capitalize">FDA label link:</span>
-                <a :href="material.fdaLabelLink" target='_blank' class="ref-link">
+                <a :href="material.fdaLabelLink" target='_blank'>
                     {{ material.fdaLabelLink }}
                 </a>
             </div>
@@ -158,6 +158,14 @@
                 <v-expansion-panel>
                     <v-expansion-panel-header class="pa-0">
                         <span class="dbank-material-details-row-header text-capitalize">Structured adverse effects:</span>
+                        <span @click.stop="" class="dbank-material-details-row-toggle">
+                            <v-checkbox 
+                                on-icon="mdi-database-import"
+                                off-icon="mdi-database-import-outline"
+                                color="primary"
+                                @change.self="toggleFieldForExport($event, 'structuredAdverseEffects')" 
+                            />
+                        </span>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content>
                         <v-chip-group column>
@@ -176,6 +184,14 @@
                 <v-expansion-panel>
                     <v-expansion-panel-header class="pa-0">
                         <span class="dbank-material-details-row-header text-capitalize">Structured contra indications:</span>
+                        <span @click.stop="" class="dbank-material-details-row-toggle">
+                            <v-checkbox 
+                                on-icon="mdi-database-import"
+                                off-icon="mdi-database-import-outline"
+                                color="primary"
+                                @change.self="toggleFieldForExport($event, 'structuredContraIndications')" 
+                            />
+                        </span>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content>
                         <v-chip-group column>
@@ -222,7 +238,7 @@
                         <v-list-item-content>
                             <v-list-item-title>{{ link.resource }}</v-list-item-title>
                             <v-list-item-subtitle>
-                                <a :href="link.url" target='_blank' class="ref-link">
+                                <a :href="link.url" target='_blank'>
                                     {{ link.url }}
                                 </a>
                             </v-list-item-subtitle>
@@ -262,6 +278,14 @@
                     <v-expansion-panel>
                         <v-expansion-panel-header class="pa-0">
                             <span class="dbank-material-details-row-header --sub text-capitalize">Mechanism of action:</span>
+                            <span @click.stop="" class="dbank-material-details-row-toggle">
+                                <v-checkbox 
+                                    on-icon="mdi-database-import"
+                                    off-icon="mdi-database-import-outline"
+                                    color="primary"
+                                    @change.self="toggleFieldForExport($event, 'mechanism_of_action')" 
+                                />
+                            </span>
                         </v-expansion-panel-header>
                         <v-expansion-panel-content>
                             {{ material.drugBankInfo.mechanism_of_action }}
@@ -284,6 +308,14 @@
                     <v-expansion-panel>
                         <v-expansion-panel-header class="pa-0">
                             <span class="dbank-material-details-row-header --sub text-capitalize">Toxicity:</span>
+                            <span @click.stop="" class="dbank-material-details-row-toggle">
+                                <v-checkbox 
+                                    on-icon="mdi-database-import"
+                                    off-icon="mdi-database-import-outline"
+                                    color="primary"
+                                    @change.self="toggleFieldForExport($event, 'toxicity')" 
+                                />
+                            </span>
                         </v-expansion-panel-header>
                         <v-expansion-panel-content>
                             {{ material.drugBankInfo.toxicity }}
@@ -382,6 +414,10 @@ export default {
         return {
             drugBankData: {
                 desc: '',
+                toxicity: '',
+                mechanism_of_action: '',
+                structuredAdverseEffects: [],
+                structuredContraIndications: [],
                 brands: [],
                 aliases: [],
                 indications: [],
@@ -399,11 +435,23 @@ export default {
             return false;
         },
         relevantData() {
-            return Object.keys(this.drugBankData).reduce((acc, key) => {    
+            return Object.keys(this.drugBankData).reduce((acc, key) => { 
                 if (typeof this.drugBankData[key] === 'string' && this.drugBankData[key]) {
-                    acc[key] = this.drugBankData[key];
+                    if (key === 'mechanism_of_action') {
+                        acc['mechanismOfAction'] = `<p>${this.drugBankData[key]}</p>`;
+                    } else if (key === 'desc') {
+                        acc[key] = this.drugBankData[key];
+                    } else {
+                        acc[key] = `<p>${this.drugBankData[key]}</p>`;
+                    }
                 } else if (Array.isArray(this.drugBankData[key]) && this.drugBankData[key].length) {
-                    acc[key] = [ ...this.drugBankData[key] ];
+                    if (key === 'structuredAdverseEffects') {
+                        acc['adverseReactions'] = `<p>${this.drugBankData[key].join(', ')}</p>`;
+                    } else if (key === 'structuredContraIndications') {
+                        acc['contraindications'] = `<p>${this.drugBankData[key].join(', ')}</p>`;
+                    } else {
+                        acc[key] = [ ...this.drugBankData[key] ];
+                    }
                 }
                 return acc;
             }, {});
@@ -411,7 +459,8 @@ export default {
     },
     methods: {
         toggleFieldForExport(doExport, field) {
-            const drugBankData = (typeof this.material[field] === 'string') ? this.material[field] : [ ...this.material[field] ]
+            const obj = (field === 'toxicity' || field === 'mechanism_of_action') ? this.material.drugBankInfo : this.material;
+            const drugBankData = (typeof obj[field] === 'string') ? obj[field] : [ ...obj[field] ];
             this.drugBankData[field] = (doExport) ? drugBankData : '';
         },
         emitDrugBankData() {
