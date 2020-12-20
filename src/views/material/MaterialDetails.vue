@@ -39,6 +39,11 @@
 
                 <v-card class="info-container">
                     <v-card-title class="material-details-title">
+                        <v-avatar left class="mr-2" size="20">
+                            <v-img
+                                :src="require(`@/assets/icons/${material.type}.svg`)"
+                            ></v-img>
+                        </v-avatar>
                         {{ material.name }}
                     </v-card-title>
 
@@ -241,7 +246,7 @@
                             <v-avatar left>
                                 <v-img
                                     :src="
-                                        require(`@/assets/icons/regions/${region}.svg`)
+                                        require(`@/assets/icons/regions/${region.toLowerCase()}.svg`)
                                     "
                                 ></v-img>
                             </v-avatar>

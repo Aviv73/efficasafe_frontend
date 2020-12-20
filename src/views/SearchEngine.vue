@@ -2,25 +2,43 @@
     <section class="search-engine">
         <div class="container">
             <v-card>
-                <header class="search-engine-header">
+                <header class="search-engine-search">
                     <v-card-title class="text-capitalize px-0">
                         Search engine
                     </v-card-title>
-                    <v-text-field 
+                    <autocomplete 
                         class="search-engine-header-search-field"
-                        color="primary"
-                        label="Search"
-                        append-icon="mdi-magnify"
-                        :loading="isLoading"
+                        :isSoloInverted="true"
+                        color="white"
+                        @emitAutocomplete="addMaterial"
                     />
                 </header>
-                <main>
-                    <img 
-                        src="https://i1.wp.com/whiterivernow.com/wp-content/uploads/2018/12/Under-Construction-Sign.png?fit=1230%2C580" 
-                        style="width: 100%;"
-                    />
+                <v-divider />
+                <main class="search-engine-results">
+                    <div class="search-engine-results-materials px-4 py-3">
+                        <v-chip-group column>
+                            <v-chip
+                                v-for="(material, idx) in materials"
+                                :key="material._id"
+                                close
+                                outlined
+                                :color="(material.type === 'herb') ? 'success' : 'primary'"
+                                @click:close="removeMaterial(idx)"
+                            >
+                                <v-avatar left class="mr-2">
+                                    <v-img
+                                        :src="require(`@/assets/icons/${material.type}.svg`)"
+                                    ></v-img>
+                                </v-avatar>
+                                {{ material.text }}
+                            </v-chip>
+                        </v-chip-group>
+                    </div>
+                    <v-divider vertical />
+                    <div class="search-engine-results-interactions">
+
+                    </div>
                 </main>
-                <v-divider></v-divider>
             </v-card>
             <icons-map />
         </div>
@@ -28,15 +46,31 @@
 </template>
 
 <script>
+import autocomplete from '@/cmps/Autocomplete';
 import iconsMap from '@/cmps/general/IconsMap';
 
 export default {
     data() {
         return {
-            isLoading: false
+            materials: []
+        }
+    },
+    methods: {
+        addMaterial(material) {
+            if (!material) return;
+            if (!this.isIncluded(material._id)) {
+                this.materials.push(material);
+            }
+        },
+        removeMaterial(matIdx) {
+            this.materials.splice(matIdx, 1);
+        },
+        isIncluded(matId) {
+            return this.materials.findIndex(mat => mat._id === matId) !== -1;
         }
     },
     components: {
+        autocomplete,
         iconsMap
     }
 }

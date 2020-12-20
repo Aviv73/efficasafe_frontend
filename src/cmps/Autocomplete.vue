@@ -3,6 +3,8 @@
     <v-autocomplete
       v-model="select"
       :items="results"
+      :background-color="backgroundColor"
+      :color="color"
       :search-input.sync="search"
       :loading="isLoading"
       @change="emitAutocomplete"
@@ -12,6 +14,7 @@
       cache-items
       flat
       :dark="isDark"
+      :solo="isSolo"
       :solo-inverted="isSoloInverted"
       return-object
     />
@@ -41,6 +44,18 @@ export default {
     isSoloInverted: {
       type: Boolean,
       default: false
+    },
+    isSolo: {
+      type: Boolean,
+      default: false
+    },
+    backgroundColor: {
+      type: String,
+      default: ''
+    },
+    color: {
+      type: String,
+      default: ''
     },
     isSuperLabelImport: {
       type: Boolean,
