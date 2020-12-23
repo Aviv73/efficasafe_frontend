@@ -18,7 +18,7 @@
                     <div class="search-engine-results-materials px-4 py-3">
                         <v-chip-group column>
                             <v-chip
-                                v-for="(material, idx) in materials"
+                                v-for="({ material }, idx) in results"
                                 :key="material._id"
                                 close
                                 outlined
@@ -36,7 +36,8 @@
                     </div>
                     <v-divider vertical />
                     <div class="search-engine-results-interactions">
-
+                        <!-- tabs or nested routes, first is herb2Drug interactions -->
+                        <!-- second is Drug2Drug interactions (DBank's interactions) -->
                     </div>
                 </main>
             </v-card>
@@ -52,21 +53,39 @@ import iconsMap from '@/cmps/general/IconsMap';
 export default {
     data() {
         return {
-            materials: []
+            results: []
         }
     },
+  watch: {
+    '$route.query'() {
+      /// if i have array of ids there, the server knows to get materialId: [ "...", "..." ]
+      /// and bring array of materials
+      /// so this.addMaterial and this.removeMaterial will just add and remove from this.$route.query
+      /// and here i will get their their labels, and then all interactions for results
+    },
+  },
     methods: {
-        addMaterial(material) {
+        async addMaterial(material) {
             if (!material) return;
             if (!this.isIncluded(material._id)) {
-                this.materials.push(material);
+                const { labels } = await this.$store.dispatch({ type: 'loadMaterial', matId: material._id});
+                const result = {
+                    material: { ...material, labelIds: labels.map(label => label._id) },
+                    interactions: []
+                };
+                /// get from interaction API using result.material._id and results.material.labelIds as one array
+                /// server knows to get { ids: [ "...", "..." ] }
+                this.results.push(result);
             }
         },
         removeMaterial(matIdx) {
-            this.materials.splice(matIdx, 1);
+            this.results.splice(matIdx, 1);
         },
         isIncluded(matId) {
-            return this.materials.findIndex(mat => mat._id === matId) !== -1;
+            return this.materialsData.findIndex(({ material }) => material._id === matId) !== -1;
+        },
+        isObjectEmpty(obj) {
+            return Object.keys(obj).length === 0 && obj.constructor === Object;
         }
     },
     components: {
