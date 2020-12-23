@@ -83,9 +83,6 @@ export default {
         },
         isIncluded(matId) {
             return this.materialsData.findIndex(({ material }) => material._id === matId) !== -1;
-        },
-        isObjectEmpty(obj) {
-            return Object.keys(obj).length === 0 && obj.constructor === Object;
         }
     },
     components: {
