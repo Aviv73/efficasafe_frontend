@@ -6,7 +6,7 @@
                     <v-card-title class="text-capitalize px-0">
                         Search engine
                     </v-card-title>
-                    <autocomplete 
+                    <autocomplete
                         class="search-engine-header-search-field"
                         :isSoloInverted="true"
                         color="white"
@@ -18,19 +18,25 @@
                     <div class="search-engine-results-materials px-4 py-3">
                         <v-chip-group column>
                             <v-chip
-                                v-for="({ material }, idx) in results"
+                                v-for="{ material } in results"
                                 :key="material._id"
                                 close
                                 outlined
-                                :color="(material.type === 'herb') ? 'success' : 'primary'"
-                                @click:close="removeMaterial(idx)"
+                                :color="
+                                    material.type === 'herb'
+                                        ? 'success'
+                                        : 'primary'
+                                "
+                                @click:close="removeMaterial(material._id)"
                             >
                                 <v-avatar left class="mr-2">
                                     <v-img
-                                        :src="require(`@/assets/icons/${material.type}.svg`)"
+                                        :src="
+                                            require(`@/assets/icons/${material.type}.svg`)
+                                        "
                                     ></v-img>
                                 </v-avatar>
-                                {{ material.text }}
+                                {{ material.name }}
                             </v-chip>
                         </v-chip-group>
                     </div>
@@ -38,6 +44,7 @@
                     <div class="search-engine-results-interactions">
                         <!-- tabs or nested routes, first is herb2Drug interactions -->
                         <!-- second is Drug2Drug interactions (DBank's interactions) -->
+                        {{ relevantInteractions }}
                     </div>
                 </main>
             </v-card>
@@ -54,40 +61,92 @@ export default {
     data() {
         return {
             results: []
+        };
+    },
+    watch: {
+        '$route.query'() {
+            this.getResults();
         }
     },
-  watch: {
-    '$route.query'() {
-      /// if i have array of ids there, the server knows to get materialId: [ "...", "..." ]
-      /// and bring array of materials
-      /// so this.addMaterial and this.removeMaterial will just add and remove from this.$route.query
-      /// and here i will get their their labels, and then all interactions for results
+    computed: {
+        relevantInteractions() {
+            const materials = this.results.map(res => res.material);
+            console.log('Materials:', materials);
+            /// minimal material -> i need just _ids
+            return this.results.reduce((acc, result) => {
+                const relevent = result.interactions.filter(interaction => {
+                    /// if interaction is relevent to all materials return it!
+                    console.log('interaction:', interaction);
+                    return interaction;
+                });
+                acc = [ ...acc, ...relevent ];
+                return acc;
+            }, []);
+        }
     },
-  },
     methods: {
-        async addMaterial(material) {
+        async getResults() {
+            if (!this.$route.query.materialId) {
+                this.results = [];
+                return;
+            }
+            const criteria = {
+                page: 0,
+                limit: 0,
+                materialId: this.$route.query.materialId,
+            };
+            const materials = await this.$store.dispatch({
+                type: 'getMaterials',
+                criteria
+            });
+            const results = materials.map(
+                async ({ _id, labels, name, type }) => {
+                    const ids = labels.map((label) => label._id);
+                    const filterBy = { limit: 0, page: 0, id: [ _id, ...ids ] };
+                    const interactions = await this.$store.dispatch({
+                        type: 'getInteractions',
+                        filterBy,
+                    });
+                    return {
+                        material: {
+                            _id,
+                            name,
+                            type,
+                            labelIds: ids
+                        },
+                        interactions,
+                    };
+                }
+            );
+            this.results = await Promise.all(results);
+        },
+        addMaterial(material) {
             if (!material) return;
-            if (!this.isIncluded(material._id)) {
-                const { labels } = await this.$store.dispatch({ type: 'loadMaterial', matId: material._id});
-                const result = {
-                    material: { ...material, labelIds: labels.map(label => label._id) },
-                    interactions: []
-                };
-                /// get from interaction API using result.material._id and results.material.labelIds as one array
-                /// server knows to get { ids: [ "...", "..." ] }
-                this.results.push(result);
+            if (this.$route.query.materialId) {
+                if (!this.isQueryExists(material._id)) {
+                    const ids = [...this.$route.query.materialId, material._id];
+                    this.$router.replace({ query: { materialId: ids } });
+                }
+            } else {
+                this.$router.push({ query: { materialId: [material._id] } });
             }
         },
-        removeMaterial(matIdx) {
-            this.results.splice(matIdx, 1);
+        removeMaterial(matId) {
+            const ids = this.$route.query.materialId.filter(
+                (id) => id !== matId
+            );
+            this.$router.replace({ query: { materialId: ids } });
         },
-        isIncluded(matId) {
-            return this.materialsData.findIndex(({ material }) => material._id === matId) !== -1;
-        }
+        isQueryExists(matId) {
+            return this.$route.query.materialId.includes(matId);
+        },
+    },
+    created() {
+        this.getResults();
     },
     components: {
         autocomplete,
-        iconsMap
-    }
-}
+        iconsMap,
+    },
+};
 </script>
