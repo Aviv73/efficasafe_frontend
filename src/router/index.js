@@ -16,6 +16,8 @@ import vInteractionDetails from '@/views/interaction/VinteractionDetails';
 import archiveApp from '../views/archive/ArchiveApp';
 import DataIntegrity from '@/views/DataIntegrity';
 import searchEngine from '@/views/SearchEngine';
+import resultList from '@/cmps/search-engine/ResultList';
+import dBankResultList from '@/cmps/search-engine/DBankResultList';
 
 Vue.use(VueRouter);
 
@@ -123,9 +125,20 @@ const routes = [
   },
   {
     path: '/search',
-    name: 'SearchEngine',
     component: searchEngine,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: '',
+        name: 'Results',
+        component: resultList
+      },
+      {
+        path: 'drug-bank',
+        name: 'DBankResults',
+        component: dBankResultList
+      }
+    ]
   },
   {
     path: '/about',

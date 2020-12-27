@@ -21,6 +21,20 @@
         }
         &-interactions {
             flex-grow: 1;
+
+            .v-tab {
+                max-width: unset;
+            }
+            .results-list {
+
+                &-link {
+                    color: inherit;
+                }
+                .v-slide-group__content {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+            }
         }
     }
 }

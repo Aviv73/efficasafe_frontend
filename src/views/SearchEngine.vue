@@ -42,9 +42,20 @@
                     </div>
                     <v-divider vertical />
                     <div class="search-engine-results-interactions">
-                        <!-- tabs or nested routes, first is herb2Drug interactions -->
-                        <!-- second is Drug2Drug interactions (DBank's interactions) -->
-                        {{ relevantInteractions }}
+                        <v-tabs 
+                            background-color="white"
+                            light
+                            fixed-tabs
+                            optional
+                        >
+                            <v-tab :to="{ name: 'Results', query: this.$route.query }">
+                                Herb to drug
+                            </v-tab>
+                            <v-tab :to="{ name: 'DBankResults', query: this.$route.query }">
+                                Drug to drug
+                            </v-tab>
+                        </v-tabs>
+                        <router-view class="px-2 py-4" :interactions="relevantInteractions" />
                     </div>
                 </main>
             </v-card>
@@ -70,18 +81,19 @@ export default {
     },
     computed: {
         relevantInteractions() {
-            const materials = this.results.map(res => res.material);
-            console.log('Materials:', materials);
-            /// minimal material -> i need just _ids
-            return this.results.reduce((acc, result) => {
-                const relevent = result.interactions.filter(interaction => {
-                    /// if interaction is relevent to all materials return it!
-                    console.log('interaction:', interaction);
-                    return interaction;
+            if (!this.results.length) return [];
+            const releventIdsMap = this.results.reduce((acc, { material }) => {
+                if (!acc[material._id]) acc[material._id] = true;
+                material.labelIds.forEach(labelId => {
+                    if (!acc[labelId]) acc[labelId] = true;
                 });
-                acc = [ ...acc, ...relevent ];
                 return acc;
-            }, []);
+            }, {});
+
+            return this.results[0].interactions.filter(interaction => {
+                const side2Id = (interaction.side2Material) ? interaction.side2Material._id : (interaction.side2Label) ? interaction.side2Label._id : '';
+                return interaction.isActive && (releventIdsMap[interaction.side1Material._id] || releventIdsMap[side2Id]);
+            });
         }
     },
     methods: {
@@ -100,7 +112,7 @@ export default {
                 criteria
             });
             const results = materials.map(
-                async ({ _id, labels, name, type }) => {
+                async ({ _id, labels, name, type, drugBankId }) => {
                     const ids = labels.map((label) => label._id);
                     const filterBy = { limit: 0, page: 0, id: [ _id, ...ids ] };
                     const interactions = await this.$store.dispatch({
@@ -112,7 +124,8 @@ export default {
                             _id,
                             name,
                             type,
-                            labelIds: ids
+                            labelIds: ids,
+                            drugBankId
                         },
                         interactions,
                     };
@@ -128,7 +141,7 @@ export default {
                     this.$router.replace({ query: { materialId: ids } });
                 }
             } else {
-                this.$router.push({ query: { materialId: [material._id] } });
+                this.$router.push({ query: { materialId: [ material._id ] } });
             }
         },
         removeMaterial(matId) {
@@ -142,6 +155,9 @@ export default {
         },
     },
     created() {
+        if (!Array.isArray(this.$route.query.materialId)) {
+            this.$route.query.materialId = [ this.$route.query.materialId ];
+        }
         this.getResults();
     },
     components: {

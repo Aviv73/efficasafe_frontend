@@ -60,7 +60,7 @@
               auto-grow
               class="draft-input"
               v-model="draftName"
-              :disabled="editedInteraction._id && !!editedInteraction.side2Label"
+              :disabled="editedInteraction._id && (!!editedInteraction.side2Label && !!editedInteraction.side2Label._id)"
               :label="editedInteraction.side2Label ? 'Draft Name*' : 'Draft Name'"
             />
             <div class="int-rec-evi-row">
@@ -301,7 +301,7 @@ export default {
       interaction: {
         recommendationSelected: '',
         recommendation: [
-          'Coadministration should be avoided',
+          'Avoid coadministration',
           'Coadministration is not advised',
           'Caution should be taken',
           'Coadministration is not contraindicated but caution should be taken',
