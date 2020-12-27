@@ -15,9 +15,10 @@
                 </header>
                 <v-divider />
                 <main class="search-engine-results">
-                    <div class="search-engine-results-materials px-4 py-3">
+                    <div class="search-engine-results-materials px-2 py-4">
                         <v-chip-group column>
                             <v-chip
+                                class="mb-4"
                                 v-for="{ material } in results"
                                 :key="material._id"
                                 close
@@ -81,19 +82,25 @@ export default {
     },
     computed: {
         relevantInteractions() {
+            /// get interactions that apear in more than one material
             if (!this.results.length) return [];
-            const releventIdsMap = this.results.reduce((acc, { material }) => {
-                if (!acc[material._id]) acc[material._id] = true;
-                material.labelIds.forEach(labelId => {
-                    if (!acc[labelId]) acc[labelId] = true;
+            if (this.results.length === 1) return this.results[0].interactions;
+            const relevantIdsCountMap = this.results.reduce((acc, { interactions }) => {
+                interactions.forEach(interaction => {
+                    if (!acc[interaction._id]) acc[interaction._id] = 1;
+                    else acc[interaction._id]++;
                 });
                 return acc;
             }, {});
-
-            return this.results[0].interactions.filter(interaction => {
-                const side2Id = (interaction.side2Material) ? interaction.side2Material._id : (interaction.side2Label) ? interaction.side2Label._id : '';
-                return interaction.isActive && (releventIdsMap[interaction.side1Material._id] || releventIdsMap[side2Id]);
-            });
+            
+            return this.results.reduce((acc, { interactions }) => {
+                interactions.forEach(interaction => {
+                    if ((relevantIdsCountMap[interaction._id] > 1) && (acc.findIndex(int => int._id === interaction._id) === -1)) {
+                        acc.push(interaction);
+                    }
+                });
+                return acc;
+            }, []);
         }
     },
     methods: {
@@ -127,11 +134,11 @@ export default {
                             labelIds: ids,
                             drugBankId
                         },
-                        interactions,
+                        interactions: interactions.filter(interaction => interaction.isActive),
                     };
                 }
             );
-            this.results = await Promise.all(results);
+            this.results = await Promise.all(results.reverse());
         },
         addMaterial(material) {
             if (!material) return;
