@@ -1,6 +1,6 @@
 <template>
   <section class="results-list">
-    <v-chip-group column>
+    <v-chip-group column v-if="!isLoading">
       <v-chip
         class="mb-4"
         v-for="interaction in interactions"
@@ -13,14 +13,21 @@
         </router-link>
       </v-chip>
     </v-chip-group>
+    <loader v-else />
   </section>
 </template>
 
 <script>
+import loader from '@/cmps/general/LoadingCmp';
+
 export default {
   props: {
     interactions: {
       type: Array,
+      required: true
+    },
+    isLoading: {
+      type: Boolean,
       required: true
     }
   },
@@ -48,6 +55,9 @@ export default {
           return 'primary';
       }
     }
+  },
+  components: {
+    loader
   }
 }
 </script>

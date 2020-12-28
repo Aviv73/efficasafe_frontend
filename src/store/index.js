@@ -1,11 +1,12 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import { userStore } from './modules/user.store'
-import { materialStore } from './modules/material.store'
-import { labelStore } from './modules/label.store'
-import { interactionStore } from './modules/interaction.store'
-import { archiveStore } from './modules/archive.store'
-import { atcStore } from './modules/atc.store'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import { userStore } from './modules/user.store';
+import { materialStore } from './modules/material.store';
+import { labelStore } from './modules/label.store';
+import { interactionStore } from './modules/interaction.store';
+import { archiveStore } from './modules/archive.store';
+import { atcStore } from './modules/atc.store';
+import { drugBankStore } from './modules/drug-bank.store';
 
 Vue.use(Vuex)
 
@@ -29,6 +30,7 @@ export default new Vuex.Store({
     labelStore,
     interactionStore,
     archiveStore,
-    atcStore
+    atcStore,
+    drugBankStore
   }
 })

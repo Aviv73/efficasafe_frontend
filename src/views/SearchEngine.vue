@@ -56,7 +56,12 @@
                                 Drug to drug
                             </v-tab>
                         </v-tabs>
-                        <router-view class="px-2 py-4" :interactions="relevantInteractions" />
+                        <router-view 
+                            class="px-2 py-4" 
+                            :isLoading="isLoading"
+                            :interactions="relevantInteractions"
+                            :dBankInteractions="dBankInteractions"
+                        />
                     </div>
                 </main>
             </v-card>
@@ -72,17 +77,28 @@ import iconsMap from '@/cmps/general/IconsMap';
 export default {
     data() {
         return {
-            results: []
+            results: [],
+            dBankInteractions: [],
+            isLoading: false
         };
     },
     watch: {
-        '$route.query'() {
-            this.getResults();
+        '$route'(to, from) {
+            if (JSON.stringify(from.query) !== JSON.stringify(to.query)) {
+                this.getResults();
+            }
+            if (this.$route.name === 'DBankResults' && from.name !== to.name) {
+                this.getDBankResults();
+            }
+        },
+        'results.length'() {
+            if (this.$route.name === 'DBankResults') {
+                this.getDBankResults();
+            }
         }
     },
     computed: {
         relevantInteractions() {
-            /// get interactions that apear in more than one material
             if (!this.results.length) return [];
             if (this.results.length === 1) return this.results[0].interactions;
             const relevantIdsCountMap = this.results.reduce((acc, { interactions }) => {
@@ -104,9 +120,22 @@ export default {
         }
     },
     methods: {
+        async getDBankResults() {
+            this.isLoading = true;
+            const drugBankIds = this.results.reduce((acc, { material: { drugBankId } }) => {
+                if (drugBankId && !acc.includes(drugBankId)) acc.push(drugBankId);
+                return acc;
+            }, []);
+            const drugBankId = (drugBankIds.length === 1) ? drugBankIds[0] : drugBankIds;
+            const criteria = { drugBankId };
+            this.dBankInteractions = await this.$store.dispatch({ type: 'getDBankInteractions', criteria });
+            this.isLoading = false;
+        },
         async getResults() {
+            this.isLoading = true;
             if (!this.$route.query.materialId) {
                 this.results = [];
+                this.isLoading = false;
                 return;
             }
             const criteria = {
@@ -134,11 +163,12 @@ export default {
                             labelIds: ids,
                             drugBankId
                         },
-                        interactions: interactions.filter(interaction => interaction.isActive),
+                        interactions: interactions.filter(interaction => interaction.isActive)
                     };
                 }
             );
             this.results = await Promise.all(results.reverse());
+            this.isLoading = false;
         },
         addMaterial(material) {
             if (!material) return;
@@ -162,7 +192,7 @@ export default {
         },
     },
     created() {
-        if (!Array.isArray(this.$route.query.materialId)) {
+        if (!Array.isArray(this.$route.query.materialId) && this.$route.query.materialId) {
             this.$route.query.materialId = [ this.$route.query.materialId ];
         }
         this.getResults();
