@@ -122,6 +122,11 @@ export default {
     methods: {
         async getDBankResults() {
             this.isLoading = true;
+            if (!this.results.length) {
+                this.isLoading = false;
+                this.dBankInteractions = [];
+                return;
+            }
             const drugBankIds = this.results.reduce((acc, { material: { drugBankId } }) => {
                 if (drugBankId && !acc.includes(drugBankId)) acc.push(drugBankId);
                 return acc;
