@@ -93,7 +93,7 @@
     <div class="material-details-container" :class="{ 'portal-active': isPortalActive }">
       <v-card class="material-edit" v-if="editedMaterial" width="90%" max-width="1200">
         <v-btn
-          v-if="editedMaterial.dBankMaterial.length"
+          v-if="editedMaterial.dBankMaterial && editedMaterial.dBankMaterial.length"
           @click="isPortalActive = !isPortalActive"
           class="material-edit-portal-toggle"
           :color="(isPortalActive) ? 'warning' : 'primary'"

@@ -64,6 +64,8 @@ function getEmptyMaterial() {
         regions: [],
         subMaterials: [],
         compounds: [],
+        pathways: [],
+        dBankPathways: [],
         refs: [],
         qualities: [],
         sensitivities: '',
