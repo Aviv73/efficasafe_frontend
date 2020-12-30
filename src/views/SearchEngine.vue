@@ -100,8 +100,11 @@ export default {
     computed: {
         relevantInteractions() {
             if (!this.results.length) return [];
-            if (this.results.length === 1) return this.results[0].interactions;
-            
+            if (this.results.length === 1) {
+            ///@@ show collapse on label interactions, to their materials with ATC groups level 4 parent in between
+            /// (if ATC group has more than one offspring related to this label) 
+                return this.results[0].interactions
+            }
             const relevantIdsCountMap = this.results.reduce((acc, { interactions }) => {
                 interactions.forEach(interaction => {
                     if (!acc[interaction._id]) acc[interaction._id] = 1;
@@ -113,7 +116,22 @@ export default {
             return this.results.reduce((acc, { interactions }) => {
                 interactions.forEach(interaction => {
                     if ((relevantIdsCountMap[interaction._id] > 1) && (acc.findIndex(int => int._id === interaction._id) === -1)) {
-                        acc.push(interaction);
+                        if (interaction.side2Label) {
+                            const { material } = this.results.find(({ material }) => material.labelIds.includes(interaction.side2Label._id));
+                            const vinteraction = {
+                                _id: interaction._id,
+                                side1Material: interaction.side1Material,
+                                side2Material: {
+                                    _id: material._id,
+                                    name: material.name,
+                                    type: material.type
+                                },
+                                side2Label: null,
+                                recommendation: interaction.recommendation,
+                                isVirual: true
+                            };
+                            acc.push(vinteraction);
+                        } else acc.push(interaction);
                     }
                 });
                 return acc;
@@ -169,7 +187,17 @@ export default {
                             labelIds: ids,
                             drugBankId
                         },
-                        interactions: interactions.filter(interaction => interaction.isActive)
+                        interactions: interactions.filter(interaction => interaction.isActive).map(
+                            ({ _id, side1Material, side2Material, side2Label, recommendation }) => {
+                            return {
+                                _id,
+                                side1Material,
+                                side2Material,
+                                side2Label,
+                                recommendation,
+                                isVirual: false
+                            }
+                        })
                     };
                 }
             );

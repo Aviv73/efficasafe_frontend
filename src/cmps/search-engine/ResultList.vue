@@ -8,7 +8,10 @@
         outlined
         :color="getInteractionColor(interaction)"
       >
-        <router-link :to="`/interaction/${interaction._id}`" class="results-list-link">
+        <router-link 
+          class="results-list-link"
+          :to="(interaction.isVirual) ? `/interaction/${interaction._id}/${interaction.side2Material._id}` : `/interaction/${interaction._id}`" 
+        >
           {{ getInteractionName(interaction) }}
         </router-link>
       </v-chip>
