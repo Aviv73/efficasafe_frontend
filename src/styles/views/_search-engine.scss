@@ -32,11 +32,26 @@
                 &-link {
                     color: inherit;
                 }
+                &-expand-panel {
+                    &-panel {
+                        color: inherit !important;
+                        &-header {
+                            pointer-events: none;
+                        } 
+                        &-chip {
+                            pointer-events: all;
+                            cursor: row-resize;
+                        }
+                    }
+                }
                 .v-slide-group__content {
                     flex-direction: column;
                     align-items: flex-start;
                 }
             }
+        }
+        .loading-container {
+            margin: 50px 0;
         }
     }
 }
