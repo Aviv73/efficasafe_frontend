@@ -1,6 +1,6 @@
 <template>
   <section>
-    {{ interaction.side2Label._id }}
+    {{ vInteractions.length }} v-interactions inside
   </section>
 </template>
 
