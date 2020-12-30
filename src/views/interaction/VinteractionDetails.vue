@@ -70,14 +70,14 @@
                     ref="reviewOfStudies"
                 ></div>
 
-                <div class="text-capitalize" v-if="material.pathways.length">Pathways:</div>
-                <div v-if="material.pathways.length">
+                <div class="text-capitalize" v-if="combinedPathways.length">Pathways:</div>
+                <div v-if="combinedPathways.length">
                     <p ref="pathway">
                         <span class="font-weight-medium">
                             {{ material.name }}
                         </span>
                         is metabolized by the enzymes:
-                        <span v-for="(pathway, idx) in material.pathways" :key="idx">
+                        <span v-for="(pathway, idx) in combinedPathways" :key="idx">
                             <span>{{ idx === 0 ? '' : ',' }} </span>
                             <span class="text-uppercase">{{ pathway.enzyme }} </span>
                             <sub>{{ getMaterialRefNums(pathway.references) }}</sub>
@@ -87,14 +87,14 @@
                         <p>
                             <span class="font-weight-medium">{{ interaction.side1Material.name }}</span>
                             effect on the enzymes:
-                            <span v-for="(pathway, idx) in material.pathways" :key="idx">
+                            <span v-for="(pathway, idx) in combinedPathways" :key="idx">
                                 <span>{{ idx === 0 ? '' : ',' }} </span>
                                 <span class="text-uppercase">{{ pathway.enzyme }}</span>
                             </span>
                         </p>
                         <div v-for="(pathway, idx) in relevantSide1Pathways" :key="'pathway' + idx">
                             <h6>{{ pathway.enzyme }}</h6>
-                            <p v-highlight-text:[material.name] v-html="txtWithRefs(pathway.influence)"></p>
+                            <p v-highlight-text:[material.name] v-html="txtWithRefs(pathway.influence, true)"></p>
                         </div>
                         <div>
                             <p>
@@ -167,7 +167,6 @@ import referenceTable from '@/cmps/common/ReferenceTable';
 import iconsMap from '@/cmps/general/IconsMap';
 
 export default {
-    refsCountSum: 0,
     side1Refs: [],
     data() {
         return {
@@ -188,6 +187,24 @@ export default {
                 return acc;
             }, '');
             return interactionService.getSortedRefs(txt, this.$options.side1Refs);
+        },
+        combinedPathways() {
+            if (!this.material) return;
+            const { pathways, dBankPathways } = this.material;
+            const finalPathways = JSON.parse(JSON.stringify(pathways));
+            dBankPathways.forEach(dBankPathway => {
+                const idx = finalPathways.findIndex(finalPathway => finalPathway.enzyme.toUpperCase() === dBankPathway.enzyme.toUpperCase().replace('CYP', ''));
+                if (idx !== -1) {
+                    const existingPathway = finalPathways[idx];
+                    dBankPathway.references.forEach((ref, index) => {
+                        if (!existingPathway.references.includes(ref)) {
+                            existingPathway.references.push(ref);
+                            existingPathway.fullReferences.push(dBankPathway.fullReferences[index]); 
+                        }
+                    });
+                } else finalPathways.push(dBankPathway);
+            });
+            return finalPathways;
         },
         relevantSide1Pathways() {
             return this.side1Pathways.filter(pathway => {
@@ -263,16 +280,21 @@ export default {
             );
             this.interactionRefs = sortedRefs;
         },
-        txtWithRefs(txt) {
+        txtWithRefs(txt, isDBKRefs = false) {
             if (!this.interactionRefs.length) return;
             const refsOrder = interactionService.getRefsOrder(txt, false);
             let lastRefIdx = 0;
             refsOrder.forEach((refNum) => {
                 let draftIdx = this.combinedRefs.findIndex(ref => ref && ref.draftIdx === refNum) + 1;
+                if (isDBKRefs) {
+                    const sameRefs = this.combinedRefs.filter(ref => ref && ref.draftIdx === refNum);
+                    const ref = sameRefs[sameRefs.length - 1];
+                    draftIdx = this.combinedRefs.indexOf(ref) + 1;
+                }
+
                 const refIdx = txt.indexOf(refNum, lastRefIdx);
-                lastRefIdx = refIdx;
-                if (draftIdx < this.$options.refsCountSum && draftIdx !== -1) {
-                    draftIdx += this.$options.refsCountSum;
+                if (refIdx > -1) {
+                    lastRefIdx = refIdx;
                 }
                 txt = txt.slice(0, refIdx) + txt.slice(refIdx).replace(refNum, draftIdx);
             });
@@ -300,12 +322,14 @@ export default {
                 let htmlStr = '<ul>';
                 for (let j = 0; j < refs.length; j++) {
                     let draftIdx = this.combinedRefs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx) + 1;
-                    
+                    if (i >= elSubs.length - pathway2Subs.length) {
+                        const sameRefs = this.combinedRefs.filter(ref => ref && ref.draftIdx === refs[j].draftIdx);
+                        const ref = sameRefs[sameRefs.length - 1];
+                        draftIdx = this.combinedRefs.indexOf(ref) + 1;
+                    }
                     if (i >= (summarySubs.length + reviewSubs.length) && i < (summarySubs.length + reviewSubs.length + pathwaySubs.length)) {
                         draftIdx = this.materialRefs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx) + 1 + this.interactionRefs.length;
-                    } else if (i >= (summarySubs.length + reviewSubs.length + pathwaySubs.length) && draftIdx < this.$options.refsCountSum) {
-                        draftIdx += this.$options.refsCountSum;
-                    }
+                    } 
                     
                     htmlStr += `<li class="tooltip-item">
                                     <p><span>${draftIdx}</span>. ${this.formatedRefTxt(refs[j].txt)}</p>
