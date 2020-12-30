@@ -8,6 +8,7 @@
           >
           <div class="data-integrity-header-controls">
             <v-select
+              class="data-integrity-header-controls-select"
               :items="$options.checkTypes"
               v-model="checkType"
               clearable
@@ -15,7 +16,7 @@
             ></v-select>
             <autocomplete 
                 @emitAutocomplete="saveMaterialId"
-                :isDisabled="checkType !== 'material-ref-dups'"
+                :isDisabled="checkType !== 'material-ref-dups' && checkType !== 'v-interaction-dups'"
                 placeholder="Select material"
             />
             <v-btn
@@ -23,8 +24,11 @@
               elevation="0"
               depressed
               outlined
-              :disabled="!checkType || isLoading || (checkType === 'material-ref-dups' && !this.materialId)"
-              @click="getIntegritResults"
+              :disabled="
+                !checkType || isLoading || (checkType === 'material-ref-dups' && !this.materialId)
+                || (checkType === 'v-interaction-dups' && !this.materialId)
+              "
+              @click="getResults"
               color="primary"
             >
               <v-icon small class="mr-2">mdi-skull-scan-outline</v-icon>
@@ -137,6 +141,7 @@ export default {
     { text: 'Duplicate references (all materials)', value: 'ref-dups' },
     { text: 'Duplicate references (single material)', value: 'material-ref-dups' },
     { text: 'Bad reference (interaction)', value: 'ref-broken' },
+    { text: 'Duplicate v-interaction (single side1 material)', value: 'v-interaction-dups' }
   ],
   data() {
     return {
@@ -149,7 +154,7 @@ export default {
   },
   computed: {
     selectedMaterialId() {
-      if (this.checkType !== 'material-ref-dups') return '';
+      if (this.checkType !== 'material-ref-dups' && this.checkType !== 'v-interaction-dups') return '';
       return this.materialId;
     }
   },
@@ -165,7 +170,7 @@ export default {
     entityType(entity) {
       return entity.name ? 'material' : 'interaction';
     },
-    async getIntegritResults() {
+    async getResults() {
       this.isLoading = true;
       if (!this.selectedMaterialId) {
         const criteria = {
@@ -174,8 +179,14 @@ export default {
         const alerts = await dataIntegrityService.list(criteria);
         this.alerts = alerts;
       } else {
-        const materialAlerts = await dataIntegrityService.getById(this.selectedMaterialId);
-        this.alerts = materialAlerts;
+        if (this.checkType === 'v-interaction-dups') {
+          const criteria = { type: this.checkType, side1Id: this.selectedMaterialId };
+          const alerts = await dataIntegrityService.list(criteria);
+          this.alerts = alerts;
+        } else {
+          const materialAlerts = await dataIntegrityService.getById(this.selectedMaterialId);
+          this.alerts = materialAlerts;
+        }
       }
       this.isLoading = false;
       if (this.isInitial) this.isInitial = false;

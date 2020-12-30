@@ -101,6 +101,7 @@ export default {
         relevantInteractions() {
             if (!this.results.length) return [];
             if (this.results.length === 1) return this.results[0].interactions;
+            
             const relevantIdsCountMap = this.results.reduce((acc, { interactions }) => {
                 interactions.forEach(interaction => {
                     if (!acc[interaction._id]) acc[interaction._id] = 1;
@@ -172,7 +173,7 @@ export default {
                     };
                 }
             );
-            this.results = await Promise.all(results.reverse());
+            this.results = await Promise.all(results);
             this.isLoading = false;
         },
         addMaterial(material) {
@@ -204,7 +205,7 @@ export default {
     },
     components: {
         autocomplete,
-        iconsMap,
+        iconsMap
     },
 };
 </script>

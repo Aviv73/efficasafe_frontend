@@ -16,6 +16,10 @@
             align-items: center;
             justify-content: space-between;
             gap: 24px;
+
+            &-select {
+                width: 260px;
+            }
         }
         .v-card__title {
             padding: 0;
