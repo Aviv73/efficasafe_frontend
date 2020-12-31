@@ -1,7 +1,7 @@
 <template>
     <section class="result-expand-preview">
-        <v-expansion-panels flat class="result-expand-preview-panel">
-            <v-expansion-panel v-for="(atcGroup, idx) in atcGroups" :key="idx">
+        <v-expansion-panels flat class="result-expand-preview-panel" accordion >
+            <v-expansion-panel v-for="(atcGroup, idx) in atcGroupedVinteractions" :key="idx">
                 <v-expansion-panel-header
                     class="result-expand-preview-panel-header pa-0"
                     disable-icon-rotate
@@ -11,7 +11,7 @@
                     class="result-expand-preview-panel-chip mb-4"
                     outlined
                     active-class="chip-active"
-                    :color="getInteractionColor(interaction)"
+                    color="grey darken-1"
                 >
                     {{ atcGroup.name }}
                 <v-icon small class="ml-2">mdi-family-tree</v-icon>
@@ -34,9 +34,27 @@
                             </router-link>
                         </v-chip>
                     </v-chip-group>
+                    <v-divider inset />
                 </v-expansion-panel-content>
             </v-expansion-panel>
         </v-expansion-panels>
+        <v-chip-group>
+            <v-chip
+                class="mb-4"
+                v-for="vInteraction in restOfVinteractions"
+                :key="vInteraction.side2Material._id"
+                outlined
+                :color="getInteractionColor(vInteraction)"
+            >
+                <router-link 
+                    class="results-list-link"
+                    :to="`/interaction/${vInteraction._id}/${vInteraction.side2Material._id}`" 
+                >
+                    {{ `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}` }}
+                </router-link>
+            </v-chip>
+        </v-chip-group>
+        <v-divider />
     </section>
 </template>
 
@@ -54,47 +72,54 @@ export default {
         },
     },
     computed: {
-        atcGroups() {
-            const atcGroupVinteractionMap = this.vInteractions.reduce(
-                (acc, vinteraction) => {
-                    vinteraction.atcParentGroups.forEach((atcGroup) => {
-                        const atcGroupName = atcGroup
-                            .split(' ')
-                            .splice(1)
-                            .join(' ');
-                        if (!acc[atcGroupName]) {
-                            acc[atcGroupName] = [];
-                        }
-                        if (
-                            !acc[atcGroupName].includes(vinteraction.drugBankId)
-                        ) {
-                            acc[atcGroupName].push(vinteraction.drugBankId);
-                        }
-                    });
-                    return acc;
-                },
-                {}
-            );
-
-            return Object.keys(atcGroupVinteractionMap).reduce(
+        atcGroupVinteractionMap() {
+            return this.vInteractions.reduce((acc, vinteraction) => {
+                vinteraction.atcParentGroups.forEach((atcGroup) => {
+                    const atcGroupName = atcGroup.split(' ').splice(1).join(' ');
+                    if (!acc[atcGroupName]) {
+                        acc[atcGroupName] = [];
+                    }
+                    if (!acc[atcGroupName].includes(vinteraction.drugBankId)) {
+                        acc[atcGroupName].push(vinteraction.drugBankId);
+                    }
+                });
+                return acc;
+            }, {});
+        },
+        atcGroupedVinteractions() {
+            return Object.keys(this.atcGroupVinteractionMap).reduce(
                 (acc, atcGroup) => {
-                    const drugBankIds = atcGroupVinteractionMap[atcGroup];
+                    const drugBankIds = this.atcGroupVinteractionMap[atcGroup];
                     if (drugBankIds.length > 1) {
                         let vInteractions = [];
                         drugBankIds.forEach((drugBankId) => {
-                            const matching = this.vInteractions.filter(
-                                (vinteraction) =>
-                                    vinteraction.drugBankId === drugBankId
-                            );
-                            vInteractions = [...vInteractions, ...matching];
+                            const matching = this.vInteractions.filter(vinteraction => vinteraction.drugBankId === drugBankId);
+                            vInteractions = vInteractions.concat(matching);
                         });
                         acc.push({ name: atcGroup, vInteractions });
                     }
                     return acc;
-                },
-                []
-            );
+            }, []);
         },
+        restOfVinteractions() {
+            const seenDbankIdsMap = {};
+            return Object.keys(this.atcGroupVinteractionMap).reduce(
+                (acc, atcGroup) => {
+                    const drugBankIds = this.atcGroupVinteractionMap[atcGroup];
+                    if (drugBankIds.length === 1 && !seenDbankIdsMap[drugBankIds[0]]) {
+                        let vInteractions;
+                        if (!drugBankIds[0]) {
+                            vInteractions = this.vInteractions.filter(vint => !vint.drugBankId);
+                        } else {
+                            vInteractions = this.vInteractions.filter(vint => vint.drugBankId === drugBankIds[0]);
+                        }
+                        acc = acc.concat(vInteractions);
+
+                        seenDbankIdsMap[drugBankIds[0]] = true;
+                    }
+                    return acc;
+            }, []);
+        }
     },
     methods: {
         async getRelatedMaterials() {
