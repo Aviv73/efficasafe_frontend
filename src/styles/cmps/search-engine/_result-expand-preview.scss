@@ -1,0 +1,21 @@
+.result-expand-preview {
+    &-panel {
+        &-header {
+            pointer-events: none;
+        } 
+        &-chip {
+            pointer-events: all;
+            cursor: row-resize;
+        }
+    }
+    .v-expansion-panel {
+        flex: unset;
+    }
+    .v-slide-group__content {
+        flex-direction: row !important;
+    }
+    .chip-active {
+        justify-content: center;
+        font-size: 1.2em;
+    }
+}
