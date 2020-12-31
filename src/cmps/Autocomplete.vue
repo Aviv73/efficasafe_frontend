@@ -1,6 +1,7 @@
 <template>
   <section class="autocomplete">
     <v-autocomplete
+      ref="autocomplete"
       v-model="select"
       :items="results"
       :background-color="backgroundColor"
@@ -12,6 +13,7 @@
       :disabled="isDisabled"
       clearable
       cache-items
+      hide-selected
       flat
       :dark="isDark"
       :solo="isSolo"
@@ -22,6 +24,8 @@
 </template>
 
 <script>
+import { eventBus, EV_clear_autocomplete } from '@/services/eventBus.service';
+
 export default {
   name: 'Autocomplete',
   props: {
@@ -124,5 +128,13 @@ export default {
       else this.getResults(this.search);
     }
   },
+  mounted() {
+    eventBus.$on(EV_clear_autocomplete, () => {
+      this.$refs.autocomplete.setValue('');
+    });
+  },
+  destroyed() {
+    eventBus.$off(EV_clear_autocomplete);
+  }
 };
 </script>

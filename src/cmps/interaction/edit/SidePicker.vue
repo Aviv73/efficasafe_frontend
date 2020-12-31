@@ -277,6 +277,10 @@ export default {
       if (this.labelPrimaryMaterialIds) this.primaryMaterialIds = [ ...this.labelPrimaryMaterialIds ];
     }
   },
+  destroyed() {
+    eventBus.$off(EV_material_unselected);
+    eventBus.$off(EV_primary_material_changed);
+  },
   components: {
     materialTreeView,
     autocomplete,

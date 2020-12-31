@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import { eventBus, EV_clear_autocomplete } from '@/services/eventBus.service';
 import autocomplete from '@/cmps/Autocomplete';
 import iconsMap from '@/cmps/general/IconsMap';
 
@@ -101,8 +102,6 @@ export default {
         relevantInteractions() {
             if (!this.results.length) return [];
             if (this.results.length === 1) {
-            ///@@ show collapse on label interactions, to their materials with ATC groups level 4 parent in between
-            /// (if ATC group has more than one offspring related to this label) 
                 return this.results[0].interactions
             }
             const relevantIdsCountMap = this.results.reduce((acc, { interactions }) => {
@@ -214,6 +213,7 @@ export default {
             } else {
                 this.$router.push({ query: { materialId: [ material._id ] } });
             }
+            eventBus.$emit(EV_clear_autocomplete);
         },
         removeMaterial(matId) {
             const ids = this.$route.query.materialId.filter(

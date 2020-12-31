@@ -421,6 +421,10 @@ export default {
     if (this.doExpandOnMount) {
       this.expandToSelection();
     }
+  },
+  destroyed() {
+    eventBus.$off(EV_emptySelection);
+    eventBus.$off(EV_refresh_root_tree_view);
   }
 };
 </script>

@@ -125,6 +125,10 @@ export default {
     },
   },
   created() {
+    const { sortBy, isDesc } = this.$route.query;
+    if (sortBy !== '_id' && isDesc !== 'true') {
+      this.setSort('_id', true);
+    }
     this.loadInteractions();
   },
   components: {
