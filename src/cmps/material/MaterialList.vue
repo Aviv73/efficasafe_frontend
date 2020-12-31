@@ -32,7 +32,7 @@
             <td class="td-name-img">
               <router-link :to="`/material/${item._id}`">
                 <img
-                  :src="require(`@/assets/icons/${item.type}.svg`)"
+                  :src="require(`@/assets/icons/${item.type || 'drug'}.svg`)"
                   :alt="item.type"
                   :title="item.type"
                 />
