@@ -24,7 +24,7 @@
                             v-for="vInteraction in atcGroup.vInteractions"
                             :key="vInteraction.side2Material._id"
                             outlined
-                            :color="getInteractionColor(vInteraction)"
+                            v-recommendation-color:[interaction.recommendation]
                         >
                             <router-link 
                                 class="results-list-link"
@@ -44,7 +44,7 @@
                 v-for="vInteraction in restOfVinteractions"
                 :key="vInteraction.side2Material._id"
                 outlined
-                :color="getInteractionColor(vInteraction)"
+                v-recommendation-color:[interaction.recommendation]
             >
                 <router-link 
                     class="results-list-link"
@@ -152,24 +152,7 @@ export default {
                     };
                 }
             );
-        },
-        getInteractionColor({ recommendation }) {
-            switch (recommendation.toLowerCase()) {
-                case 'avoid coadministration':
-                case 'coadministration is not advised':
-                    return 'error';
-                case 'caution should be taken':
-                case 'coadministration is not contraindicated but caution should be taken':
-                case 'coadministration is possible but caution should be taken':
-                    return 'warning';
-                case 'coadministration is not contraindicated':
-                case 'coadministration is possible':
-                case 'coadministration is advised':
-                    return 'success';
-                default:
-                    return 'primary';
-            }
-        },
+        }
     },
     created() {
         this.getRelatedMaterials();

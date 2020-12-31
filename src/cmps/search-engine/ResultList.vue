@@ -9,7 +9,7 @@
           class="mb-4"
           v-if="!interaction.side2Label"
           outlined
-          :color="getInteractionColor(interaction)"
+          v-recommendation-color:[interaction.recommendation]
         >
           <router-link 
             class="results-list-link"
@@ -28,7 +28,7 @@
               <v-chip
                 class="results-list-expand-panel-panel-chip mb-4"
                 outlined
-                :color="getInteractionColor(interaction)"
+                v-recommendation-color:[interaction.recommendation]
               >
                 {{ getInteractionName(interaction) }}
                 <v-icon small class="ml-2">mdi-family-tree</v-icon>
@@ -66,23 +66,6 @@ export default {
         return `${interaction.side1Material.name} & ${interaction.side2Material.name}`
       }
       return interaction.side2Label.name;
-    },
-    getInteractionColor({ recommendation }) {
-      switch (recommendation.toLowerCase()) {
-        case 'avoid coadministration':
-        case 'coadministration is not advised':
-          return 'error';
-        case 'caution should be taken':
-        case 'coadministration is not contraindicated but caution should be taken':
-        case 'coadministration is possible but caution should be taken':
-          return 'warning'
-        case 'coadministration is not contraindicated':
-        case 'coadministration is possible':
-        case 'coadministration is advised':
-          return 'success';
-        default:
-          return 'primary';
-      }
     }
   },
   components: {

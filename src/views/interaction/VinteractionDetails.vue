@@ -23,46 +23,29 @@
                     </h2>
                 </v-card-title>
 
-                <div class="text-capitalize">Is active:</div>
-                <div>{{ interaction.isActive ? 'Active' : 'Not Active' }}</div>
-
-                <div class="text-capitalize">Side 1 material:</div>
-                <div>
-                    <router-link
-                        :to="`/material/${interaction.side1Material._id}`"
-                    >
-                        {{ interaction.side1Material.name }}
-                    </router-link>
-                </div>
-
-                <div class="text-capitalize">Side 2 material:</div>
-                <div>
-                    <router-link :to="`/material/${material._id}`">
-                        {{ material.name }}
-                    </router-link>
-                </div>
-
-                <div class="text-capitalize" v-if="interaction.side2DraftName">
-                    Draft name:
-                </div>
-                <div v-if="interaction.side2DraftName">
-                    {{ interaction.side2DraftName }}
-                </div>
-
-                <div class="text-capitalize">Source:</div>
-                <div>{{ interaction.src }}</div>
-
                 <div class="text-capitalize">Recommendation:</div>
-                <div>{{ interaction.recommendation }}</div>
+                <div v-recommendation-color>{{ interaction.recommendation }}</div>
+
+                <div class="text-capitalize">Level of evidence:</div>
+                <div>{{ interaction.evidenceLevel }}</div>
 
                 <div class="text-capitalize">Summary:</div>
                 <div v-html="txtWithRefs(interaction.summary)" ref="summary"></div>
 
+                <div class="text-capitalize">What to monitor:</div>
+                <div> 
+                    <span class="text-capitalize">Lab tests: </span>
+                    <span>{{ interaction.monitor.labTests }}</span>
+
+                    <span class="text-capitalize" v-if="interaction.monitor.otherTests">Other tests: </span>
+                    <span v-if="interaction.monitor.otherTests">{{ interaction.monitor.otherTests }}</span>
+
+                    <span class="text-capitalize" v-if="interaction.monitor.symptons">Symptons: </span>
+                    <span v-if="interaction.monitor.symptons">{{ interaction.monitor.symptons }}</span>
+                </div>
+
                 <div class="text-capitalize" v-if="!isPrimaryMaterial">Note:</div>
                 <div v-if="!isPrimaryMaterial">{{ interaction.note }}</div>
-
-                <div class="text-capitalize">Level of evidence:</div>
-                <div>{{ interaction.evidenceLevel }}</div>
 
                 <div class="text-capitalize">Review of studies:</div>
                 <div
@@ -112,49 +95,22 @@
                     v-if="combinedRefs.length"
                 />
 
-                <div class="text-capitalize">Indications:</div>
+                <div class="text-capitalize">Side 1 material:</div>
                 <div>
-                    <v-chip-group column>
-                        <v-chip
-                            v-for="(indication, idx) in interaction.indications"
-                            :key="idx"
-                        >
-                            {{ indication }}
-                        </v-chip>
-                    </v-chip-group>
+                    <router-link
+                        :to="`/material/${interaction.side1Material._id}`"
+                    >
+                        {{ interaction.side1Material.name }}
+                    </router-link>
                 </div>
 
-                <div class="text-capitalize">Lab tests:</div>
-                <div>{{ interaction.monitor.labTests }}</div>
-
-                <div class="text-capitalize">Other tests:</div>
-                <div>{{ interaction.monitor.otherTests }}</div>
-
-                <div class="text-capitalize">Symptons:</div>
-                <div>{{ interaction.monitor.symptons }}</div>
-
-                <div class="text-capitalize editor-draft">Editor's Draft:</div>
-
-                <div class="text-capitalize">General:</div>
-                <div>{{ interaction.editorDraft.general }}</div>
-
-                <div class="text-capitalize">Info Side 1:</div>
-                <div>{{ interaction.editorDraft.infoSide1 }}</div>
-
-                <div class="text-capitalize">Info Side 2:</div>
-                <div>{{ interaction.editorDraft.infoSide2 }}</div>
-
-                <div class="text-capitalize">Gates:</div>
+                <div class="text-capitalize">Side 2 material:</div>
                 <div>
-                    <v-chip-group column>
-                        <v-chip
-                            v-for="(gate, idx) in interaction.editorDraft.gates"
-                            :key="idx"
-                        >
-                            {{ gate }}
-                        </v-chip>
-                    </v-chip-group>
+                    <router-link :to="`/material/${material._id}`">
+                        {{ material.name }}
+                    </router-link>
                 </div>
+
             </v-card>
             <icons-map />
         </div>
