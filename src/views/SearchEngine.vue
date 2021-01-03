@@ -60,7 +60,7 @@
                             class="px-2 py-4" 
                             :isLoading="isLoading"
                             :interactions="relevantInteractions"
-                            :dBankInteractions="dBankInteractions"
+                            :dBankInteractions="sortedDbankInteractions"
                         />
                     </div>
                 </main>
@@ -76,6 +76,16 @@ import autocomplete from '@/cmps/Autocomplete';
 import iconsMap from '@/cmps/general/IconsMap';
 
 export default {
+    recommendationOrderMap: {
+        'avoid coadministration': 1,
+        'coadministration is not advised': 1,
+        'caution should be taken': 2,
+        'coadministration is not contraindicated but caution should be taken': 2,
+        'coadministration is possible but caution should be taken': 2,
+        'coadministration is not contraindicated': 3,
+        'coadministration is possible': 3,
+        'coadministration is advised': 3
+    },
     data() {
         return {
             results: [],
@@ -102,7 +112,7 @@ export default {
         relevantInteractions() {
             if (!this.results.length) return [];
             if (this.results.length === 1) {
-                return this.results[0].interactions
+                return this.getSortedResults(this.results[0].interactions);
             }
             const relevantIdsCountMap = this.results.reduce((acc, { interactions }) => {
                 interactions.forEach(interaction => {
@@ -112,7 +122,7 @@ export default {
                 return acc;
             }, {});
             
-            return this.results.reduce((acc, { interactions }) => {
+            const relevantResults = this.results.reduce((acc, { interactions }) => {
                 interactions.forEach(interaction => {
                     if ((relevantIdsCountMap[interaction._id] > 1) && (acc.findIndex(int => int._id === interaction._id) === -1)) {
                         if (interaction.side2Label) {
@@ -127,7 +137,8 @@ export default {
                                 },
                                 side2Label: null,
                                 recommendation: interaction.recommendation,
-                                isVirual: true
+                                isVirual: true,
+                                evidenceLevel: interaction.evidenceLevel
                             };
                             acc.push(vinteraction);
                         } else acc.push(interaction);
@@ -135,9 +146,24 @@ export default {
                 });
                 return acc;
             }, []);
+            return this.getSortedResults(relevantResults);
+        },
+        sortedDbankInteractions() {
+            return this.dBankInteractions.slice().sort((a, b) => {
+                return this.$options.recommendationOrderMap[a.recommendation.toLowerCase()] - this.$options.recommendationOrderMap[b.recommendation.toLowerCase()]
+                || b.evidence_level - a.evidence_level
+                || this.getDBankInteractionName(a).toLowerCase().localeCompare(this.getDBankInteractionName(b).toLowerCase());
+            });
         }
     },
     methods: {
+        getSortedResults(results) {
+            return results.slice().slice().sort((a, b) => {
+                return this.$options.recommendationOrderMap[a.recommendation.toLowerCase()] - this.$options.recommendationOrderMap[b.recommendation.toLowerCase()]
+                || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())
+                || this.getInteractionName(a).toLowerCase().localeCompare(this.getInteractionName(b).toLowerCase());
+            });
+        },
         async getDBankResults() {
             this.isLoading = true;
             if (!this.results.length) {
@@ -187,14 +213,15 @@ export default {
                             drugBankId
                         },
                         interactions: interactions.filter(interaction => interaction.isActive).map(
-                            ({ _id, side1Material, side2Material, side2Label, recommendation }) => {
+                            ({ _id, side1Material, side2Material, side2Label, recommendation, evidenceLevel }) => {
                             return {
                                 _id,
                                 side1Material,
                                 side2Material,
                                 side2Label,
                                 recommendation,
-                                isVirual: false
+                                isVirual: false,
+                                evidenceLevel
                             }
                         })
                     };
@@ -224,6 +251,15 @@ export default {
         isQueryExists(matId) {
             return this.$route.query.materialId.includes(matId);
         },
+        getInteractionName(interaction) {
+            if (interaction.side2Material) {
+                return `${interaction.side1Material.name} & ${interaction.side2Material.name}`
+            }
+            return interaction.side2Label.name;
+        },
+        getDBankInteractionName(interaction) {
+            return `${interaction.subject_drug.name} & ${interaction.affected_drug.name}`;
+        }
     },
     created() {
         if (!Array.isArray(this.$route.query.materialId) && this.$route.query.materialId) {
