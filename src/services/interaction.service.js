@@ -12,7 +12,8 @@ export const interactionService = {
     getRefsOrder,
     formatRefStrs,
     getEmptyInteraction,
-    calculateEvidenceLevel
+    calculateEvidenceLevel,
+    getRecommendationOrderMap
 }
 
 function list(filterBy) {
@@ -157,6 +158,19 @@ function getEmptyInteraction() {
             infoSide2: '',
             gates: []
         }
+    }
+}
+
+function getRecommendationOrderMap() {
+    return {
+        'avoid coadministration': 1,
+        'coadministration is not advised': 1,
+        'caution should be taken': 2,
+        'coadministration is not contraindicated but caution should be taken': 2,
+        'coadministration is possible but caution should be taken': 2,
+        'coadministration is not contraindicated': 3,
+        'coadministration is possible': 3,
+        'coadministration is advised': 3
     }
 }
 

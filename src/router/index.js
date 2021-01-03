@@ -18,6 +18,7 @@ import DataIntegrity from '@/views/DataIntegrity';
 import searchEngine from '@/views/SearchEngine';
 import resultList from '@/cmps/search-engine/ResultList';
 import dBankResultList from '@/cmps/search-engine/DBankResultList';
+import dBankInteractionDetails from '@/views/DBankInteractionDetails'
 
 Vue.use(VueRouter);
 
@@ -139,6 +140,12 @@ const routes = [
         component: dBankResultList
       }
     ]
+  },
+  {
+    path: '/d-bank-interaction/:id',
+    name: 'DBankInteractionDetails',
+    component: dBankInteractionDetails,
+    meta: { requiresAuth: true }
   },
   {
     path: '/about',

@@ -5,9 +5,14 @@ const END_POINTS = {
 };
 
 export const drugBankService = {
-    getInteractions
+    getInteractions,
+    getInteraction
 }
 
 function getInteractions(filterBy) {
     return httpService.get(END_POINTS.INTERACTION, filterBy);
+}
+
+function getInteraction(id) {
+    return httpService.get(`${END_POINTS.INTERACTION}/${id}`);
 }

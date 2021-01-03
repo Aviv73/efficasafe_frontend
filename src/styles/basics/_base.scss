@@ -78,3 +78,8 @@ sub {
 .fade-enter, .fade-leave-to {
     opacity: 0;
 }
+[alt="DrugBank logo"] {
+    width: 150px;
+    filter: grayscale(100%);
+    opacity: 0.6;
+}

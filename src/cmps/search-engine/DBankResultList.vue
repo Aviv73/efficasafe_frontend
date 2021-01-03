@@ -8,7 +8,12 @@
         outlined
         v-recommendation-color:[interaction.recommendation]
       >
-      {{ `${interaction.subject_drug.name} & ${interaction.affected_drug.name}` }}
+        <router-link 
+          class="results-list-link"
+          :to="`/d-bank-interaction/${interaction._id}`"
+        >
+          {{ `${interaction.subject_drug.name} & ${interaction.affected_drug.name}` }}
+        </router-link>
       </v-chip>
     </v-chip-group>
     <loader v-else />
