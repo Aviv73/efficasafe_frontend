@@ -53,14 +53,14 @@
                     ref="reviewOfStudies"
                 ></div>
 
-                <div class="text-capitalize" v-if="combinedPathways.length">Pathways:</div>
-                <div v-if="combinedPathways.length">
+                <div class="text-capitalize" v-if="material.pathways.length">Pathways:</div>
+                <div v-if="material.pathways.length">
                     <p ref="pathway">
                         <span class="font-weight-medium">
                             {{ material.name }}
                         </span>
                         is metabolized by the enzymes:
-                        <span v-for="(pathway, idx) in combinedPathways" :key="idx">
+                        <span v-for="(pathway, idx) in material.pathways" :key="idx">
                             <span>{{ idx === 0 ? '' : ',' }} </span>
                             <span class="text-uppercase">{{ pathway.enzyme }} </span>
                             <sub>{{ getMaterialRefNums(pathway.references) }}</sub>
@@ -70,7 +70,7 @@
                         <p>
                             <span class="font-weight-medium">{{ interaction.side1Material.name }}</span>
                             effect on the enzymes:
-                            <span v-for="(pathway, idx) in combinedPathways" :key="idx">
+                            <span v-for="(pathway, idx) in material.pathways" :key="idx">
                                 <span>{{ idx === 0 ? '' : ',' }} </span>
                                 <span class="text-uppercase">{{ pathway.enzyme }}</span>
                             </span>
@@ -143,24 +143,6 @@ export default {
                 return acc;
             }, '');
             return interactionService.getSortedRefs(txt, this.$options.side1Refs);
-        },
-        combinedPathways() {
-            if (!this.material) return;
-            const { pathways, dBankPathways } = this.material;
-            const finalPathways = JSON.parse(JSON.stringify(pathways));
-            dBankPathways.forEach(dBankPathway => {
-                const idx = finalPathways.findIndex(finalPathway => finalPathway.enzyme.toUpperCase() === dBankPathway.enzyme.toUpperCase().replace('CYP', ''));
-                if (idx !== -1) {
-                    const existingPathway = finalPathways[idx];
-                    dBankPathway.references.forEach((ref, index) => {
-                        if (!existingPathway.references.includes(ref)) {
-                            existingPathway.references.push(ref);
-                            existingPathway.fullReferences.push(dBankPathway.fullReferences[index]); 
-                        }
-                    });
-                } else finalPathways.push(dBankPathway);
-            });
-            return finalPathways;
         },
         relevantSide1Pathways() {
             return this.side1Pathways.filter(pathway => {

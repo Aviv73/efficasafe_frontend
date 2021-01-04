@@ -144,6 +144,7 @@ function getEmptyInteraction() {
         note: '',
         summary: '',
         monitor: {
+            general: '',
             labTests: '',
             otherTests: '',
             symptoms: ''
@@ -155,8 +156,7 @@ function getEmptyInteraction() {
         editorDraft: {
             general: '',
             infoSide1: '',
-            infoSide2: '',
-            gates: []
+            infoSide2: ''
         }
     }
 }

@@ -40,7 +40,7 @@ function _buildChildren(node) {
 }
 
 function _traverse(node, depth, visitFn) {
-    if (depth > 4) return;
+    if (depth > 3) return;
     visitFn(node, depth);
     if (node.children) {
         node.children.forEach(childNode => {

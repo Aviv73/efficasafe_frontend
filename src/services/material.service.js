@@ -65,7 +65,6 @@ function getEmptyMaterial() {
         subMaterials: [],
         compounds: [],
         pathways: [],
-        dBankPathways: [],
         refs: [],
         qualities: [],
         sensitivities: '',
