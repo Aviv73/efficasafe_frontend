@@ -2,7 +2,7 @@
     <div>
         <section class="d-bank-interaction-details" v-if="interaction">
             <div class="container">
-                <header>
+                <header class="pb-4">
                     <v-btn color="primary" @click="$router.go(-1)">
                         <v-icon small left>mdi-arrow-left</v-icon>Back to Search
                     </v-btn>
@@ -73,15 +73,6 @@ export default {
         }
     },
     computed: {
-        // sortedRefs() {
-        //     const { interaction, interactionRefs, getRefsToDisplay } = this;
-        //     const txt = `${getRefsToDisplay(interaction.extended_description)} ${getRefsToDisplay(interaction.management)}`;
-        //     const sortedRefs = interactionService.getSortedRefs(txt, interactionRefs);
-        //     sortedRefs.forEach((ref, idx) => {
-        //         ref.draftIdx = idx + 1;
-        //     });
-        //     return sortedRefs;
-        // },
         interactionRefs() {
             let refIdx = 1;
             return Object.keys(this.interaction.references).reduce((acc, key) => {
