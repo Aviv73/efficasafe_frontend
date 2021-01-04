@@ -21,5 +21,14 @@
                 }
             }
         }
+        &-table, &-divider {
+            grid-column: 1 / -1;
+            margin: 0 2.5%;
+            width: 95%;
+        }
+        &-table p {
+            display: inline;
+            margin-bottom: 0;
+        }
     }
 }

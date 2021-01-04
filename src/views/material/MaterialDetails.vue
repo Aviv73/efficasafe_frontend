@@ -1,6 +1,6 @@
 <template>
     <div>
-        <section class="material-details" v-if="material">
+        <section class="material-details" v-if="material" ref="materialDetails">
             <div class="container">
                 <confirm-delete
                     v-model="dialog"
@@ -342,12 +342,12 @@ export default {
     },
     methods: {
         setRefsToolTip() {
-            const elSubs = Array.from(document.querySelectorAll('sub'));
+            const elSubs = Array.from(this.$refs.materialDetails.querySelectorAll('sub'));
             for (let i = 0; i < elSubs.length; i++) {
-                elSubs[i].addEventListener('mouseenter', this.setTooltipPos);
                 const refsOrder = interactionService.getRefsOrder(elSubs[i].innerText);
-                
                 const refs = this.getRefsFromIdxs(refsOrder);
+                
+                elSubs[i].addEventListener('mouseenter', this.setTooltipPos);
                 const elTooltip = document.createElement('aside');
                 elTooltip.classList.add('refs-tooltip');
                 let htmlStr = '<ul>';

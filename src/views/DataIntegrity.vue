@@ -36,7 +36,7 @@
             </v-btn>
           </div>
         </header>
-        <v-divider></v-divider>
+        <v-divider />
         <loading-cmp class="data-integrity-loader" v-if="isLoading" />
         <v-simple-table v-else-if="!isLoading && alerts.length">
           <template v-slot:default>

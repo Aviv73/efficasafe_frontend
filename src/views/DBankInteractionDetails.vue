@@ -28,13 +28,25 @@
                     <div class="text-capitalize">Summary:</div>
                     <p>{{ interaction.summary }}</p>
 
-                    <div class="text-capitalize">Extended description:</div>
-                    <p>{{ interaction.extended_description }}</p>
+                    <div class="text-capitalize" v-if="interaction.extended_description">Extended description:</div>
+                    <p 
+                        v-if="interaction.extended_description"
+                        ref="extendedDescription"
+                        v-html="getRefsToDisplay(interaction.extended_description)" 
+                    />
 
                     <div class="text-capitalize" v-if="interaction.management">Management:</div>
-                    <p v-if="interaction.management">{{ interaction.management }}</p>
-
-                    <pre>{{ copy }}</pre>
+                    <p 
+                        ref="management"
+                        v-if="interaction.management"
+                        v-html="getRefsToDisplay(interaction.management)"
+                    />
+                    
+                    <v-divider class="d-bank-interaction-details-content-divider my-2" />
+                    <d-bank-refs-table 
+                        class="d-bank-interaction-details-content-table"
+                        :refs="interactionRefs"
+                    />
                 </v-card>
             </div>
         </section>
@@ -44,6 +56,8 @@
 
 <script>
 import { drugBankService } from '@/services/drug-bank.service';
+import { interactionService } from '@/services/interaction.service';
+import dBankRefsTable from '@/cmps/d-bank-interaction/DBankRefsTable';
 import entityNotFound from '@/cmps/general/EntityNotFound';
 
 export default {
@@ -59,27 +73,36 @@ export default {
         }
     },
     computed: {
+        // sortedRefs() {
+        //     const { interaction, interactionRefs, getRefsToDisplay } = this;
+        //     const txt = `${getRefsToDisplay(interaction.extended_description)} ${getRefsToDisplay(interaction.management)}`;
+        //     const sortedRefs = interactionService.getSortedRefs(txt, interactionRefs);
+        //     sortedRefs.forEach((ref, idx) => {
+        //         ref.draftIdx = idx + 1;
+        //     });
+        //     return sortedRefs;
+        // },
+        interactionRefs() {
+            let refIdx = 1;
+            return Object.keys(this.interaction.references).reduce((acc, key) => {
+                const moreRefs = this.interaction.references[key].map(
+                    ({ ref_id, pubmed_id, citation, title, url }) => {
+                    return {
+                        ref_id,
+                        pubmed_id: pubmed_id || '',
+                        citation: citation || '',
+                        title: title || '',
+                        url: url || '',
+                        draftIdx: refIdx++
+                    }
+                });
+                acc = acc.concat(moreRefs);
+                return acc;
+            }, []);
+        },
         interactionAction() {
             const action = this.interaction.action.split('_').join(' ');
             return action.charAt(0).toUpperCase() + action.slice(1);
-        },
-        copy() {
-            const copy = JSON.parse(JSON.stringify(this.interaction));
-            delete copy.subject_drug;
-            delete copy.affected_drug;
-            delete copy._id;
-            delete copy.recommendation;
-            delete copy.evidence_level;
-            delete copy.severity;
-            delete copy.summary;
-            delete copy.management;
-            delete copy.extended_description;
-            delete copy.subject_dosage;
-            delete copy.affected_dosage;
-            delete copy.action;
-            delete copy.subject_category;
-            delete copy.affected_category;
-            return copy
         }
     },
     methods: {
@@ -89,15 +112,82 @@ export default {
                 this.interaction = await drugBankService.getInteraction(id);
                 if (!this.interaction) {
                     this.isNotFound = true;
-                }
+                } 
             }
+        },
+        getRefsToDisplay(txt) {
+            const regex = /\[(.*?)\]/g;
+            const matches = txt.match(regex);
+            if (!matches) return txt;
+            matches.forEach(match => {
+                let formatedMatch = match;
+                this.interactionRefs.forEach(({ ref_id, draftIdx }) => {
+                    if (formatedMatch.includes(ref_id)) {
+                        formatedMatch = formatedMatch.replace(ref_id, draftIdx);
+                    } else {
+                        const refId = ref_id.replace(/\D/g,'');
+                        formatedMatch = formatedMatch.replace(refId, draftIdx);
+                    }
+                });
+                formatedMatch = formatedMatch.replace('[', '(');
+                formatedMatch = formatedMatch.replace(']', ')');
+                formatedMatch = `<sub>${interactionService.formatRefStrs(formatedMatch)}</sub>`;
+                txt = txt.replace(match, formatedMatch);
+            });
+            return txt;
+        },
+        setRefsToolTip() {
+            const { extendedDescription, management } = this.$refs;
+            const elSubs = [ 
+                ...extendedDescription.querySelectorAll('sub'),
+                ...management.querySelectorAll('sub') 
+            ];
+            for (let i = 0; i < elSubs.length; i++) {
+                const refsOrder = interactionService.getRefsOrder(elSubs[i].innerText);
+                const refs = this.getRefsFromIdxs(refsOrder);
 
+                elSubs[i].addEventListener('mouseenter', this.setTooltipPos);
+                const elTooltip = document.createElement('aside');
+                elTooltip.classList.add('refs-tooltip');
+                let htmlStr = '<ul>';
+                refs.forEach(ref => {
+                    htmlStr += `<li class="tooltip-item">
+                        <p><span>${ref.draftIdx}</span>.${ref.citation || ref.title}</p>
+                        <a href="${ref.pubmed_id ? `https://pubmed.ncbi.nlm.nih.gov/${ref.pubmed_id}` : ref.url}" class="ref-link" target="_blank">
+                            ${ref.pubmed_id ? `https://pubmed.ncbi.nlm.nih.gov/${ref.pubmed_id}` : ref.url}
+                        </a>
+                    </li>`;
+                });
+                htmlStr += '</ul>';
+                elTooltip.innerHTML = htmlStr;
+                elSubs[i].appendChild(elTooltip);
+            }
+        },
+        getRefsFromIdxs(refIdxs) {
+            const refs = [];
+            refIdxs.forEach(idx => {
+                const ref = this.interactionRefs.find(ref => ref.draftIdx === idx);
+                refs.push(ref);
+            })
+            return refs;
+        },
+        setTooltipPos(ev) {
+            const elTooltip = ev.target.querySelector('.refs-tooltip');
+            if (ev.clientX + elTooltip.offsetWidth > window.innerWidth) {
+                elTooltip.style.transformOrigin = 'top right';
+                elTooltip.style.left = `unset`;
+                elTooltip.style.right = `0`;
+            }
         }
     },
     created() {
         this.loadInteraction();
     },
+    updated() {
+        this.setRefsToolTip();
+    },
     components: {
+        dBankRefsTable,
         entityNotFound
     }
 }

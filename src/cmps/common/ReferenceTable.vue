@@ -32,7 +32,7 @@
                 </template>
                 <template #[`item.txt`]="{ value, item }">
                     <p :class="{'red--text': !value}">
-                        {{ formatedTxt(value) || 'Reference does not exists on side 1 material' }}
+                        {{ value || 'Reference does not exists on side 1 material' | ref-txt }}
                     </p>
                     <a :href="item && item.link" target="_blank" class="ref-link">
                         {{ item && item.link }}
@@ -115,17 +115,6 @@ export default {
         }
     },
     methods: {
-        formatedTxt(fullTxt) {
-            const doiIdx = fullTxt.indexOf('doi');
-            if (doiIdx !== -1) {
-                return fullTxt.substring(0, doiIdx).trim();
-            }
-            const PmidIdx = fullTxt.indexOf('PMID');
-            if (PmidIdx !== -1) {
-                return fullTxt.substring(0, PmidIdx).trim();
-            }
-            return fullTxt;
-        },
         RefIdxForDisplay(item) {
             const idx = this.references.findIndex(ref => ref === item);
             return idx + 1;

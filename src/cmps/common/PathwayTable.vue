@@ -34,7 +34,7 @@
         <template #[`item.fullReferences`]="{ value, item }">
           <div class="pathway-table-full-ref">
             <p v-for="(fullRef, idx) in value" :key="idx">
-              {{ formatedRef(fullRef) }}
+              {{ fullRef | ref-txt }}
               <a :href="`https://pubmed.ncbi.nlm.nih.gov/${item.references[idx]}`" class="ref-link">
                 {{ `https://pubmed.ncbi.nlm.nih.gov/${item.references[idx]}` }}
               </a>
@@ -121,18 +121,7 @@ export default {
   methods: {
     itemIdx(item) {
         return this.items.findIndex(currItem => currItem === item);
-    },
-    formatedRef(fullRef) {
-      const doiIdx = fullRef.indexOf('doi');
-      if (doiIdx !== -1) {
-        return fullRef.substring(0, doiIdx).trim();
-      }
-      const PmidIdx = fullRef.indexOf('PMID');
-      if (PmidIdx !== -1) {
-        return fullRef.substring(0, PmidIdx).trim();
-      }
-      return fullRef;
-    },
-  },
+    }
+  }
 };
 </script>
