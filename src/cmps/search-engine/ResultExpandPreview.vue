@@ -79,8 +79,8 @@ export default {
                     if (!acc[atcGroupName]) {
                         acc[atcGroupName] = [];
                     }
-                    if (!acc[atcGroupName].includes(vinteraction.drugBankId)) {
-                        acc[atcGroupName].push(vinteraction.drugBankId);
+                    if (!acc[atcGroupName].includes(vinteraction.side2Material._id)) {
+                        acc[atcGroupName].push(vinteraction.side2Material._id);
                     }
                 });
                 return acc;
@@ -89,11 +89,11 @@ export default {
         atcGroupedVinteractions() {
             return Object.keys(this.atcGroupVinteractionMap).reduce(
                 (acc, atcGroup) => {
-                    const drugBankIds = this.atcGroupVinteractionMap[atcGroup];
-                    if (drugBankIds.length > 1) {
+                    const ids = this.atcGroupVinteractionMap[atcGroup];
+                    if (ids.length > 1) {
                         let vInteractions = [];
-                        drugBankIds.forEach((drugBankId) => {
-                            const matching = this.vInteractions.filter(vinteraction => vinteraction.drugBankId === drugBankId);
+                        ids.forEach((id) => {
+                            const matching = this.vInteractions.filter(vinteraction => vinteraction.side2Material._id === id);
                             vInteractions = vInteractions.concat(matching);
                         });
                         acc.push({ name: atcGroup, vInteractions });
@@ -105,17 +105,12 @@ export default {
             const seenDbankIdsMap = {};
             return Object.keys(this.atcGroupVinteractionMap).reduce(
                 (acc, atcGroup) => {
-                    const drugBankIds = this.atcGroupVinteractionMap[atcGroup];
-                    if (drugBankIds.length === 1 && !seenDbankIdsMap[drugBankIds[0]]) {
-                        let vInteractions;
-                        if (!drugBankIds[0]) {
-                            vInteractions = this.vInteractions.filter(vint => !vint.drugBankId);
-                        } else {
-                            vInteractions = this.vInteractions.filter(vint => vint.drugBankId === drugBankIds[0]);
-                        }
+                    const ids = this.atcGroupVinteractionMap[atcGroup];
+                    if (ids.length === 1 && !seenDbankIdsMap[ids[0]]) {
+                        const vInteractions = this.vInteractions.filter(vint => vint.side2Material._id === ids[0]);
                         acc = acc.concat(vInteractions);
 
-                        seenDbankIdsMap[drugBankIds[0]] = true;
+                        seenDbankIdsMap[ids[0]] = true;
                     }
                     return acc;
             }, []);

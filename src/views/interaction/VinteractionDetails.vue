@@ -67,10 +67,10 @@
                         </span>
                     </p>
                     <div ref="pathway2">
-                        <p>
+                        <p v-if="relevantSide1Pathways.length">
                             <span class="font-weight-medium">{{ interaction.side1Material.name }}</span>
                             effect on the enzymes:
-                            <span v-for="(pathway, idx) in material.pathways" :key="idx">
+                            <span v-for="(pathway, idx) in relevantSide1Pathways" :key="idx">
                                 <span>{{ idx === 0 ? '' : ',' }} </span>
                                 <span class="text-uppercase">{{ pathway.enzyme }}</span>
                             </span>
@@ -87,7 +87,7 @@
                         </div>
                     </div>
                 </div>
-
+               
                 <reference-table
                     class="refs-table"
                     :isInteraction="true"
