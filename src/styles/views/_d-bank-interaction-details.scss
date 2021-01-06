@@ -6,11 +6,13 @@
 
         &-title {
             grid-column: 1 / -1;
-            justify-content: space-between;
+            font-size: 1.75em;
+            justify-content: center;
             align-items: center;
 
             figure {
-                position: relative;
+                position: absolute;
+                right: 12px;
 
                 figcaption {
                     opacity: .8;

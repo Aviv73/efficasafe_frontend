@@ -26,7 +26,7 @@
         </div>
 
         <v-card class="info-container">
-          <v-card-title class="interaction-details-title">
+          <v-card-title class="interaction-details-title justify-center">
             <h2 v-if="interaction.side1Material && !interaction.side2Label">
               {{ interaction.side1Material.name }}
             </h2>

@@ -246,16 +246,17 @@ export default {
       return this.openBranches.includes(id);
     },
     checkForExpand() {
+      this.closeAllBranches();
       const checkForExpand = (node) => {
-        var paths = [];
+        var foundPaths = [];
         if (node.name.toLowerCase().includes(this.search.toLowerCase())) {
-          this.getNodePath(node, paths);
-          paths.forEach(path => {
+          this.getNodePath(node, foundPaths);
+          foundPaths.forEach(path => {
             if (!this.openBranches.includes(path)) {
               this.openBranches.push(path);
             }
           });
-        }
+        } 
       }
       this.items.forEach(item => {
         this.traverse(item, 0, checkForExpand);

@@ -11,15 +11,11 @@
                 v-if="interaction && material"
                 class="v-interaction-details-content px-2"
             >
-                <v-card-title class="v-interaction-details-title px-0">
+                <v-card-title class="v-interaction-details-title px-0 justify-center my-4">
                     <h2>
                         {{ interaction.side1Material.name }}
                         <span>&amp;</span>
                         {{ material.name }}
-                        <span class="subtitle caption">
-                            <v-icon>mdi-file-tree</v-icon>
-                            This is a virtual interaction from {{ interaction.side2Label.name }}
-                        </span>
                     </h2>
                 </v-card-title>
 
@@ -28,6 +24,9 @@
 
                 <div class="text-capitalize">Level of evidence:</div>
                 <div>{{ interaction.evidenceLevel }}</div>
+
+                <div class="text-capitalize" v-if="!isPrimaryMaterial && interaction.note">Note:</div>
+                <div v-if="!isPrimaryMaterial && interaction.note">{{ interaction.note }}</div>
 
                 <div class="text-capitalize">Summary:</div>
                 <div v-html="txtWithRefs(interaction.summary)" ref="summary"></div>
@@ -43,9 +42,6 @@
                     <span class="text-capitalize" v-if="interaction.monitor.symptons">Symptons: </span>
                     <span v-if="interaction.monitor.symptons">{{ interaction.monitor.symptons }}</span>
                 </div>
-
-                <div class="text-capitalize" v-if="!isPrimaryMaterial">Note:</div>
-                <div v-if="!isPrimaryMaterial">{{ interaction.note }}</div>
 
                 <div class="text-capitalize">Review of studies:</div>
                 <div

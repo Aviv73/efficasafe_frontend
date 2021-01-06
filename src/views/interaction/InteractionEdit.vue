@@ -517,6 +517,9 @@ export default {
     async saveInteraction(isRouteChange) {
       try {
         const interaction = JSON.parse(JSON.stringify(this.editedInteraction));
+        if (interaction.side1Material && (interaction.side2Material || interaction.side2Label)) {
+          interaction.isActive = true;
+        }
         await this.$store.dispatch({
           type: 'saveInteraction',
           interaction,

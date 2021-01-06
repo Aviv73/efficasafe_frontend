@@ -12,20 +12,19 @@
             <v-icon dark left>mdi-plus-circle</v-icon>Add / Edit Reference
           </v-card-title>
           <v-form @submit.prevent="editRef" class="ref-form">
-            <v-select 
-              type="text"
-              label="Type*"
-              :items="$options.refTypes"
-              v-model="editedRef.type"
-              clearable
-              required
-            />
             <v-textarea
               type="text"
               rows="1"
               label="Text*"
               v-model="editedRef.txt"
               auto-grow
+            />
+            <v-select 
+              type="text"
+              label="Type"
+              :items="$options.refTypes"
+              v-model="editedRef.type"
+              clearable
             />
             <v-text-field 
               type="text"

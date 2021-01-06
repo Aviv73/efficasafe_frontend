@@ -14,14 +14,14 @@
     </v-sheet>
     <v-card-text>
       <tree-view 
-        v-if="filteredAtcLabels"
-        :items="filteredAtcLabels"
+        v-if="atcLabels"
+        :items="atcLabels"
         :search="search"
         :depth="0"
         @selection-changed="saveSelection($event)"
         :finalSelection="selection"
         :primaryMaterialIds="primaryMaterialIds"
-        ></tree-view>
+      />
       <loading-cmp v-else />
     </v-card-text>
     <v-divider></v-divider>
@@ -60,21 +60,6 @@ export default {
   computed: {
     atcLabels() {
       return this.$store.getters.atcLabels;
-    },
-    filteredAtcLabels() {
-      if (!this.atcLabels) return null;
-      const getNodes = (result, object) => {
-        if (object.name.toLowerCase().includes(this.search.toLowerCase())) {
-          result.push(object);
-          return result;
-        }
-        if (object.children) {
-          const nodes = object.children.reduce(getNodes, []);
-          if (nodes.length) result.push({ ...object, children: nodes });
-        }
-        return result;
-      };
-      return this.atcLabels.reduce(getNodes, []);
     }
   },
   methods: {

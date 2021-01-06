@@ -4,14 +4,9 @@
         grid-template-columns: 200px 1fr;
         gap: 10px
     }
-    &-title,
-    .editor-draft {
+    &-title {
         grid-column: 1 / -1;
-
-        .subtitle {
-            display: block;
-            opacity: .8;
-        }
+        font-size: 1.75em;
     }
     .refs-table {
         grid-column: 1 / -1;
