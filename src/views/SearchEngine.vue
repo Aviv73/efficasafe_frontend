@@ -15,7 +15,7 @@
                 </header>
                 <v-divider />
                 <main class="search-engine-results">
-                    <div class="search-engine-results-materials px-2 py-4">
+                    <div class="search-engine-results-materials px-6 py-4">
                         <v-chip-group column>
                             <v-chip
                                 class="mb-4"
@@ -37,7 +37,7 @@
                                         "
                                     ></v-img>
                                 </v-avatar>
-                                {{ material.name }}
+                                {{ material.name | material-name }}
                             </v-chip>
                         </v-chip-group>
                     </div>
@@ -113,26 +113,28 @@ export default {
                 });
                 return acc;
             }, {});
-            
             const relevantResults = this.results.reduce((acc, { interactions }) => {
                 interactions.forEach(interaction => {
-                    if ((relevantIdsCountMap[interaction._id] > 1) && (acc.findIndex(int => int._id === interaction._id) === -1)) {
+                    if (relevantIdsCountMap[interaction._id] > 1 && (acc.findIndex(int => int._id === interaction._id) === -1)) {
                         if (interaction.side2Label) {
-                            const { material } = this.results.find(({ material }) => material.labelIds.includes(interaction.side2Label._id));
-                            const vinteraction = {
-                                _id: interaction._id,
-                                side1Material: interaction.side1Material,
-                                side2Material: {
-                                    _id: material._id,
-                                    name: material.name,
-                                    type: material.type
-                                },
-                                side2Label: null,
-                                recommendation: interaction.recommendation,
-                                isVirual: true,
-                                evidenceLevel: interaction.evidenceLevel
-                            };
-                            acc.push(vinteraction);
+                            const materials = this.results.filter(({ material }) => material.labelIds.includes(interaction.side2Label._id)).map(res => res.material);
+                            materials.forEach(material => {
+                                const vinteraction = {
+                                    _id: interaction._id,
+                                    side1Material: interaction.side1Material,
+                                    side2Material: {
+                                        _id: material._id,
+                                        name: material.name,
+                                        type: material.type
+                                    },
+                                    side2Label: null,
+                                    recommendation: interaction.recommendation,
+                                    isVirtual: true,
+                                    side2DraftName: interaction.side2DraftName,
+                                    evidenceLevel: interaction.evidenceLevel
+                                };
+                                acc.push(vinteraction);
+                            });
                         } else acc.push(interaction);
                     }
                 });
@@ -205,14 +207,15 @@ export default {
                             drugBankId
                         },
                         interactions: interactions.filter(interaction => interaction.isActive).map(
-                            ({ _id, side1Material, side2Material, side2Label, recommendation, evidenceLevel }) => {
+                            ({ _id, side1Material, side2Material, side2Label, recommendation, evidenceLevel, side2DraftName }) => {
                             return {
                                 _id,
                                 side1Material,
                                 side2Material,
                                 side2Label,
                                 recommendation,
-                                isVirual: false,
+                                isVirtual: false,
+                                side2DraftName,
                                 evidenceLevel
                             }
                         })

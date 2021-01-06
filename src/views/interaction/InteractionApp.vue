@@ -72,7 +72,8 @@ export default {
         isActive
       }
       const queryStr = '?' + new URLSearchParams(criteria).toString();
-      if (filterBy.isActive !== this.$route.query.isActive && this.tableData) {
+      if ((filterBy.isActive !== this.$route.query.isActive && this.tableData)
+      || (filterBy.q !== this.$route.query.q && this.tableData)) {
         this.tableData.page = 1;
       }
       this.$router.push(queryStr);
@@ -86,8 +87,6 @@ export default {
         filterBy.limit = (itemsPerPage < 0) ? 0 : itemsPerPage;
         filterBy.page = --page;
       } else filterBy.limit = 10;
-
-      if (filterBy.q) filterBy.page = 0;
       
       await this.$store.dispatch({ type: 'loadInteractions', filterBy });
       this.loading = false;

@@ -14,3 +14,7 @@ Vue.filter('ref-txt', (val) => {
     }
     return val;
 });
+
+Vue.filter('material-name', (val) => {
+    return val.replace(/\[(.*?)\]/g, '');
+});

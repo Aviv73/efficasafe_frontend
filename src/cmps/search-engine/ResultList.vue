@@ -3,7 +3,7 @@
     <v-chip-group column v-if="!isLoading">
       <span
         v-for="interaction in interactions"
-        :key="interaction._id"
+        :key="getInteractionKey(interaction)"
       >
         <v-chip
           class="mb-4"
@@ -13,9 +13,9 @@
         >
           <router-link 
             class="results-list-link"
-            :to="(interaction.isVirual) ? `/interaction/${interaction._id}/${interaction.side2Material._id}` : `/interaction/${interaction._id}`" 
+            :to="(interaction.isVirtual) ? `/interaction/${interaction._id}/${interaction.side2Material._id}` : `/interaction/${interaction._id}`" 
           >
-            {{ getInteractionName(interaction) }}
+            {{ getInteractionName(interaction) | material-name }}
           </router-link>
         </v-chip>
         <v-expansion-panels v-else flat class="results-list-expand-panel">
@@ -30,7 +30,7 @@
                 outlined
                 v-recommendation-color:[interaction.recommendation]
               >
-                {{ getInteractionName(interaction) }}
+                {{ getInteractionName(interaction) | material-name }}
                 <v-icon small class="ml-2">mdi-family-tree</v-icon>
               </v-chip>
             </v-expansion-panel-header>
@@ -62,10 +62,17 @@ export default {
   },
   methods: {
     getInteractionName(interaction) {
-      if (interaction.side2Material) {
-        return `${interaction.side1Material.name} & ${interaction.side2Material.name}`
+      let name = (interaction.side2Material) ? `${interaction.side1Material.name} & ${interaction.side2Material.name}` : interaction.side2Label.name;
+      const vInteractionsCount = this.interactions.filter(int => int.side2Material && int.side2Material._id === interaction.side2Material._id).length;
+      
+      if (interaction.isVirtual && vInteractionsCount > 1) {
+        name += ` (${interaction.side2DraftName})`;
       }
-      return interaction.side2Label.name;
+
+      return name;
+    },
+    getInteractionKey(interaction) {
+      return (interaction.side2Material) ? `${interaction._id}-${interaction.side2Material._id}` : interaction._id;
     }
   },
   components: {

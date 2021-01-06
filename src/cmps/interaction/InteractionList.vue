@@ -8,6 +8,7 @@
       disable-sort
       :loading="loading"
     >
+
       <template v-slot:[`header.side1Material.name`]="{ header }">
         <label class="list-header">
           <input type="checkbox" hidden @change="onSort(header.value, $event.target.checked)" />
@@ -156,6 +157,23 @@ export default {
       } else {
         this.isMounted = true;
       }
+    }
+  },
+  computed: {
+    groupedItems() {
+      return this.interactions.reduce((acc, interaction) => {
+        const idx = acc.findIndex(group => group.name === interaction.side1Material.name);
+        if (idx === -1) {
+          const group = {
+            name: interaction.side1Material.name,
+            interactions: [ interaction ]
+          };
+          acc.push(group);
+        } else {
+          acc[idx].interactions.push(interaction);
+        }
+        return acc;
+      }, []);
     }
   },
   methods: {
