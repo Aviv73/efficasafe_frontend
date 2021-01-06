@@ -86,7 +86,7 @@ export default {
         let { page, itemsPerPage } = this.tableData;
         filterBy.limit = (itemsPerPage < 0) ? 0 : itemsPerPage;
         filterBy.page = --page;
-      } else filterBy.limit = 10;
+      } else filterBy.limit = 30;
       
       await this.$store.dispatch({ type: 'loadInteractions', filterBy });
       this.loading = false;
@@ -125,7 +125,7 @@ export default {
   },
   created() {
     const { sortBy, isDesc } = this.$route.query;
-    if (sortBy !== '_id' && isDesc !== 'true') {
+    if ((sortBy !== '_id' && isDesc !== 'true') && (sortBy !== 'isActive,_id' && isDesc !== 'true,true')) {
       this.setSort([ 'isActive', '_id' ], [ true, true ]);
     }
     this.loadInteractions();

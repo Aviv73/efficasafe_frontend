@@ -7,8 +7,11 @@
       :options.sync="options"
       disable-sort
       :loading="loading"
+      :items-per-page="30"
+      :footer-props="{
+        'items-per-page-options': [ 30, 10, 20, -1 ]
+      }"
     >
-
       <template v-slot:[`header.side1Material.name`]="{ header }">
         <label class="list-header">
           <input type="checkbox" hidden @change="onSort(header.value, $event.target.checked)" />
