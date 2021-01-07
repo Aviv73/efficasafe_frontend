@@ -14,8 +14,8 @@
           :interactions="interactions"
           :totalItems="totalItems"
           :loading="loading"
-          @options-updated="paginate"
-          @header-clicked="setSort"
+          @options-updated="setFilter"
+          @header-clicked="setFilter"
           @toggle-is-active="toggleIsActive"
         />
       </v-card>
@@ -51,43 +51,21 @@ export default {
     },
   },
   methods: {
-    paginate(tableData) {
-      this.tableData = tableData;
-      this.loadInteractions();
-    },
-    setSort(propName, isDesc) {
-      const criteria = {
-        ...this.$route.query,
-        sortBy: propName,
-        isDesc
-      }
-      const queryStr = '?' + new URLSearchParams(criteria).toString();
-      this.$router.push(queryStr);
-    },
     setFilter(filterBy) {
-      const { q, isActive } = filterBy;
       const criteria = {
         ...this.$route.query,
-        q,
-        isActive
+        ...filterBy
+      }
+      if ((filterBy.isActive !== this.$route.query.isActive && (+this.$route.query !== 0))
+      || (filterBy.q !== this.$route.query.q && (+this.$route.query !== 0))) {
+        criteria.page = 0;
       }
       const queryStr = '?' + new URLSearchParams(criteria).toString();
-      if ((filterBy.isActive !== this.$route.query.isActive && this.tableData)
-      || (filterBy.q !== this.$route.query.q && this.tableData)) {
-        this.tableData.page = 1;
-      }
       this.$router.push(queryStr);
     },
     async loadInteractions() {
       this.loading = true;
       const filterBy = this.$route.query;
-
-      if (this.tableData) {
-        let { page, itemsPerPage } = this.tableData;
-        filterBy.limit = (itemsPerPage < 0) ? 0 : itemsPerPage;
-        filterBy.page = --page;
-      } else filterBy.limit = 30;
-      
       await this.$store.dispatch({ type: 'loadInteractions', filterBy });
       this.loading = false;
     },
@@ -126,7 +104,7 @@ export default {
   created() {
     const { sortBy, isDesc } = this.$route.query;
     if ((sortBy !== '_id' && isDesc !== 'true') && (sortBy !== 'isActive,_id' && isDesc !== 'true,true')) {
-      this.setSort([ 'isActive', '_id' ], [ true, true ]);
+      this.setFilter({sortBy: [ 'isActive', '_id' ], isDesc: [ true, true ]});
     }
     this.loadInteractions();
   },
