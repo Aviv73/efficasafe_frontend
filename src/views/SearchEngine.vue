@@ -144,7 +144,7 @@ export default {
         },
         sortedDbankInteractions() {
             return this.dBankInteractions.slice().sort((a, b) => {
-                return this.$options.recommendationOrderMap[a.recommendation.toLowerCase()] - this.$options.recommendationOrderMap[b.recommendation.toLowerCase()]
+                return this.$options.recommendationOrderMap[a.recommendation] - this.$options.recommendationOrderMap[b.recommendation]
                 || b.evidence_level - a.evidence_level
                 || this.getDBankInteractionName(a).toLowerCase().localeCompare(this.getDBankInteractionName(b).toLowerCase());
             });
@@ -153,7 +153,7 @@ export default {
     methods: {
         getSortedResults(results) {
             return results.slice().slice().sort((a, b) => {
-                return this.$options.recommendationOrderMap[a.recommendation.toLowerCase()] - this.$options.recommendationOrderMap[b.recommendation.toLowerCase()]
+                return this.$options.recommendationOrderMap[a.recommendation] - this.$options.recommendationOrderMap[b.recommendation]
                 || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())
                 || this.getInteractionName(a).toLowerCase().localeCompare(this.getInteractionName(b).toLowerCase());
             });
