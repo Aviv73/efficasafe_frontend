@@ -59,6 +59,7 @@
                         <router-view 
                             class="px-2 py-4" 
                             :isLoading="isLoading"
+                            :materialCount="materialCount"
                             :interactions="relevantInteractions"
                             :dBankInteractions="sortedDbankInteractions"
                         />
@@ -148,6 +149,9 @@ export default {
                 || b.evidence_level - a.evidence_level
                 || this.getDBankInteractionName(a).toLowerCase().localeCompare(this.getDBankInteractionName(b).toLowerCase());
             });
+        },
+        materialCount() {
+            return (this.$route.query.materialId) ? this.$route.query.materialId.length : 0;
         }
     },
     methods: {
@@ -160,12 +164,16 @@ export default {
         },
         async getDBankResults() {
             this.isLoading = true;
-            if (!this.results.length) {
+            /// 'isAllHerbs' is new.. maybe delete it and deal with it other way
+            const isAllHerbs = this.results.every(({ material }) => material.type === 'herb');
+            if (!this.results.length || isAllHerbs) {
                 this.isLoading = false;
                 this.dBankInteractions = [];
                 return;
             }
             const drugBankIds = this.results.reduce((acc, { material: { drugBankId } }) => {
+                /// this way is like there are no herbs... 
+                /// it's good except for when there is one herb and one drug (no results needed then)
                 if (drugBankId && !acc.includes(drugBankId)) acc.push(drugBankId);
                 return acc;
             }, []);

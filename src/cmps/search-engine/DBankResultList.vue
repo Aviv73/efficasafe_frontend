@@ -17,6 +17,12 @@
       </v-chip>
     </v-chip-group>
     <loader v-else />
+    <p 
+      class="text-center"
+      v-if="!isLoading && !dBankInteractions.length && materialCount"
+    >
+      No results :(
+    </p>
   </section>
 </template>
 
@@ -31,6 +37,10 @@ export default {
     },
     isLoading: {
       type: Boolean,
+      required: true
+    },
+    materialCount: {
+      type: Number,
       required: true
     }
   },

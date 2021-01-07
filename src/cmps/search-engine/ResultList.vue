@@ -42,6 +42,12 @@
       </span>
     </v-chip-group>
     <loader v-else />
+    <p 
+      class="text-center"
+      v-if="!isLoading && !interactions.length && materialCount"
+    >
+      No results :(
+    </p>
   </section>
 </template>
 
@@ -57,6 +63,10 @@ export default {
     },
     isLoading: {
       type: Boolean,
+      required: true
+    },
+    materialCount: {
+      type: Number,
       required: true
     }
   },
