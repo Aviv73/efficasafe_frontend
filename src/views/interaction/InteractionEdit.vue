@@ -67,11 +67,7 @@
               <v-select
                 :items="interaction.recommendation"
                 label="Recommendation Options"
-                v-model="interaction.recommendationSelected"
-                @change="
-                  editedInteraction.recommendation =
-                    interaction.recommendationSelected
-                "
+                v-model="editedInteraction.recommendation"
               ></v-select>
               <v-select
                 :items="interaction.evidenceLevel"
@@ -299,17 +295,7 @@ export default {
         symptoms: '',
       },
       interaction: {
-        recommendationSelected: '',
-        recommendation: [
-          'Avoid coadministration',
-          'Coadministration is not advised',
-          'Caution should be taken',
-          'Coadministration is not contraindicated but caution should be taken',
-          'Coadministration is possible but caution should be taken',
-          'Coadministration is not contraindicated',
-          'Coadministration is possible',
-          'Coadministration is advised',
-        ],
+        recommendation: Object.keys(interactionService.getRecommendationOrderMap()),
         evidenceLevel: ['A', 'B', 'C', 'D', 'E', 'F', '1', '2'],
       },
       CKEditorConfig: {
