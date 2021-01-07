@@ -62,8 +62,9 @@ export default {
   },
   methods: {
     getInteractionName(interaction) {
+      const id = (interaction.side2Material) ? interaction.side2Material._id : '';
       let name = (interaction.side2Material) ? `${interaction.side1Material.name} & ${interaction.side2Material.name}` : interaction.side2Label.name;
-      const vInteractionsCount = this.interactions.filter(int => int.side2Material && int.side2Material._id === interaction.side2Material._id).length;
+      const vInteractionsCount = this.interactions.filter(int => int.side2Material && int.side2Material._id === id).length;
       
       if (interaction.isVirtual && vInteractionsCount > 1) {
         name += ` (${interaction.side2DraftName})`;
