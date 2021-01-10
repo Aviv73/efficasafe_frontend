@@ -61,7 +61,7 @@
                             :isLoading="isLoading"
                             :materialCount="materialCount"
                             :interactions="relevantInteractions"
-                            :dBankInteractions="sortedDbankInteractions"
+                            :dBankInteractions="dBankInteractions"
                         />
                     </div>
                 </main>
@@ -164,7 +164,6 @@ export default {
         },
         async getDBankResults() {
             this.isLoading = true;
-            /// 'isAllHerbs' is new.. maybe delete it and deal with it other way
             const isAllHerbs = this.results.every(({ material }) => material.type === 'herb');
             if (!this.results.length || isAllHerbs) {
                 this.isLoading = false;
@@ -172,9 +171,7 @@ export default {
                 return;
             }
             const drugBankIds = this.results.reduce((acc, { material: { drugBankId } }) => {
-                /// this way is like there are no herbs... 
-                /// it's good except for when there is one herb and one drug (no results needed then)
-                if (drugBankId && !acc.includes(drugBankId)) acc.push(drugBankId);
+                if (!acc.includes(drugBankId)) acc.push(drugBankId);
                 return acc;
             }, []);
             const drugBankId = (drugBankIds.length === 1) ? drugBankIds[0] : drugBankIds;
