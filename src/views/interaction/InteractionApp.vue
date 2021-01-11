@@ -106,7 +106,6 @@ export default {
     if ((sortBy !== '_id' && isDesc !== 'true') && (sortBy !== 'isActive,_id' && isDesc !== 'true,true')) {
       this.setFilter({sortBy: [ 'isActive', '_id' ], isDesc: [ true, true ]});
     }
-    this.loadInteractions();
   },
   components: {
     interactionFilter,

@@ -3,7 +3,7 @@ import { interactionService } from '@/services/interaction.service';
 export const interactionStore = ({
     state: {
         interactions: null,
-        materialsCount: 0
+        interactionCount: 0
     },
     getters: {
         interactions(state) {
