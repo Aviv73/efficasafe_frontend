@@ -13,6 +13,7 @@
         }
     }
     &-results {
+        position: relative;   
         min-height: 300px;
         max-height: 550px;
         overflow-y: auto;
@@ -21,8 +22,9 @@
         &-materials {
             flex-basis: 30%;
         }
-        &-interactions {
+        &-interactions {         
             flex-basis: 70%;
+            padding-bottom: 30px;
 
             .v-tab {
                 max-width: unset;
@@ -43,6 +45,11 @@
                             cursor: row-resize;
                         }
                     }
+                }
+                &-footer {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                 }
                 .v-slide-group__content {
                     flex-direction: column;

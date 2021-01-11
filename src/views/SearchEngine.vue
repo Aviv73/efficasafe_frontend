@@ -62,6 +62,8 @@
                             :materialCount="materialCount"
                             :interactions="relevantInteractions"
                             :dBankInteractions="dBankInteractions"
+                            :pageCount="dBankPageCount"
+                            @page-changed="getDBankResults"
                         />
                     </div>
                 </main>
@@ -83,6 +85,7 @@ export default {
         return {
             results: [],
             dBankInteractions: [],
+            dBankPageCount: 0,
             isLoading: false
         };
     },
@@ -143,26 +146,19 @@ export default {
             }, []);
             return this.getSortedResults(relevantResults);
         },
-        sortedDbankInteractions() {
-            return this.dBankInteractions.slice().sort((a, b) => {
-                return this.$options.recommendationOrderMap[a.recommendation] - this.$options.recommendationOrderMap[b.recommendation]
-                || b.evidence_level - a.evidence_level
-                || this.getDBankInteractionName(a).toLowerCase().localeCompare(this.getDBankInteractionName(b).toLowerCase());
-            });
-        },
         materialCount() {
             return (this.$route.query.materialId) ? this.$route.query.materialId.length : 0;
         }
     },
     methods: {
         getSortedResults(results) {
-            return results.slice().slice().sort((a, b) => {
+            return results.slice().sort((a, b) => {
                 return this.$options.recommendationOrderMap[a.recommendation] - this.$options.recommendationOrderMap[b.recommendation]
                 || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())
                 || this.getInteractionName(a).toLowerCase().localeCompare(this.getInteractionName(b).toLowerCase());
             });
         },
-        async getDBankResults() {
+        async getDBankResults(page = 1) {
             this.isLoading = true;
             const isAllHerbs = this.results.every(({ material }) => material.type === 'herb');
             if (!this.results.length || isAllHerbs) {
@@ -175,8 +171,10 @@ export default {
                 return acc;
             }, []);
             const drugBankId = (drugBankIds.length === 1) ? drugBankIds[0] : drugBankIds;
-            const criteria = { drugBankId };
-            this.dBankInteractions = await this.$store.dispatch({ type: 'getDBankInteractions', criteria });
+            const criteria = { drugBankId, page: --page };
+            const { dBankInteractions, total } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria });
+            this.dBankInteractions = dBankInteractions;
+            this.dBankPageCount = total;
             this.isLoading = false;
         },
         async getResults() {
@@ -256,9 +254,6 @@ export default {
                 return `${interaction.side1Material.name} & ${interaction.side2Material.name}`
             }
             return interaction.side2Label.name;
-        },
-        getDBankInteractionName(interaction) {
-            return `${interaction.subject_drug.name} & ${interaction.affected_drug.name}`;
         }
     },
     created() {

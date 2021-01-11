@@ -23,6 +23,20 @@
     >
       No results :(
     </p>
+    <v-footer 
+      v-if="materialCount && pageCount > 1"
+      class="results-list-footer"
+      tile 
+    >
+      <v-pagination 
+        v-model="page"
+        :length="pageCount"
+        :total-visible="10"
+        light
+        circle
+        :disabled="isLoading"
+      />
+    </v-footer>
   </section>
 </template>
 
@@ -42,6 +56,20 @@ export default {
     materialCount: {
       type: Number,
       required: true
+    },
+    pageCount: {
+      type: Number,
+      required: true
+    }
+  },
+  watch: {
+    page(val) {
+      this.$emit('page-changed', val);
+    }
+  },
+  data() {
+    return {
+      page: 1
     }
   },
   components: {
