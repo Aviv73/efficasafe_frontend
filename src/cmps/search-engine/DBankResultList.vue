@@ -62,14 +62,19 @@ export default {
       required: true
     }
   },
-  watch: {
-    page(val) {
-      this.$emit('page-changed', val);
-    }
-  },
   data() {
     return {
       page: 1
+    }
+  },
+  watch: {
+    page(val) {
+      if (this.materialCount) {
+        this.$emit('page-changed', val);
+      }
+    },
+    materialCount() {
+      this.page = 1;
     }
   },
   components: {
