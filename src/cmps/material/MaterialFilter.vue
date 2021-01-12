@@ -45,6 +45,26 @@ export default {
             text: 'Herb',
             value: 'herb',
           },
+          {
+            text: 'Vitamin',
+            value: 'vitamin'
+          },
+          {
+            text: 'Amino acid',
+            value: 'amino acid'
+          },
+          {
+            text: 'Mineral',
+            value: 'mineral'
+          },
+          {
+            text: 'Nutraceutical',
+            value: 'nutraceutical'
+          },
+          {
+            text: 'Essential oil',
+            value: 'essential oil'
+          }
         ],
       },
     };
