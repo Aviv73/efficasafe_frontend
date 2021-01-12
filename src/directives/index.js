@@ -16,8 +16,10 @@ Vue.directive('highlight-text', {
 Vue.directive('recommendation-color', {
     inserted(el, binding) {
         const txt = binding.arg || el.innerText;
+        console.log('Txt:', txt);
         switch (txt.toLowerCase()) {
             case 'avoid coadministration':
+            case 'coadministration is not advised':
                 el.style.color = '#F44336';
                 if (binding.arg) {
                     el.style.borderColor = '#F44336';
@@ -34,6 +36,8 @@ Vue.directive('recommendation-color', {
             case 'coadministration is not contraindicated':
             case 'coadministration is possible':
             case 'coadministration is advised':
+            case 'coadministration is not contraindicated and may even be advised':
+            case 'coadministration is possible and may even be advised':
                 el.style.color = '#4CAF50';
                 if (binding.arg) {
                     el.style.borderColor = '#4CAF50';
