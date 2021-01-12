@@ -23,11 +23,7 @@
                                 :key="material._id"
                                 close
                                 outlined
-                                :color="
-                                    material.type === 'herb'
-                                        ? 'success'
-                                        : 'primary'
-                                "
+                                :color="getMaterialColor(material.type)"
                                 @click:close="removeMaterial(material._id)"
                             >
                                 <v-avatar left class="mr-2">
@@ -193,39 +189,42 @@ export default {
                 type: 'getMaterials',
                 criteria
             });
-            const results = materials.map(
-                async ({ _id, labels, name, type, drugBankId }) => {
-                    const ids = labels.map((label) => label._id);
-                    const filterBy = { limit: 0, page: 0, id: [ _id, ...ids ] };
-                    const interactions = await this.$store.dispatch({
-                        type: 'getInteractions',
-                        filterBy,
-                    });
-                    return {
-                        material: {
-                            _id,
-                            name,
-                            type,
-                            labelIds: ids,
-                            drugBankId
-                        },
-                        interactions: interactions.filter(interaction => interaction.isActive).map(
-                            ({ _id, side1Material, side2Material, side2Label, recommendation, evidenceLevel, side2DraftName }) => {
-                            return {
-                                _id,
-                                side1Material,
-                                side2Material,
-                                side2Label,
-                                recommendation,
-                                isVirtual: false,
-                                side2DraftName,
-                                evidenceLevel
-                            }
-                        })
-                    };
+            this.results = materials.map(({  _id, labels, name, type, drugBankId }) => {
+                return { 
+                    material: {  
+                        _id, 
+                        labelIds: labels.map(label => label._id), 
+                        name, 
+                        type,
+                        drugBankId 
+                    }, interactions: [] 
                 }
-            );
-            this.results = await Promise.all(results);
+            });
+            const prms = this.results.map(async result => {
+                const { _id, labelIds } = result.material;
+                const filterBy = { limit: 0, page: 0, id: [ _id, ...labelIds ] };
+                const interactions = await this.$store.dispatch({ type: 'getInteractions', filterBy });
+                const miniInteractions = interactions.reduce(
+                    (acc, { _id, side1Material, side2Material, side2Label, recommendation, evidenceLevel, side2DraftName, isActive }) => {
+                    if (isActive) {
+                        const interaction = {
+                            _id,
+                            side1Material,
+                            side2Material,
+                            side2Label,
+                            recommendation,
+                            isVirtual: false,
+                            side2DraftName,
+                            evidenceLevel
+                        };
+                        acc.push(interaction);
+                    }
+                    return acc;
+                }, []);
+                result.interactions = miniInteractions;
+                return miniInteractions;
+            });
+            await Promise.all(prms);
             this.isLoading = false;
         },
         addMaterial(material) {
@@ -248,6 +247,24 @@ export default {
         },
         isQueryExists(matId) {
             return this.$route.query.materialId.includes(matId);
+        },
+        getMaterialColor(type) {
+            switch (type) {
+                case 'herb':
+                    return 'success';
+                case 'drug':
+                    return 'primary';
+                case 'vitamin':
+                    return 'amber';
+                case 'mineral':
+                    return 'orange';
+                case 'amino acid':
+                    return 'deep-orange';
+                case 'nutraceutical':
+                    return 'teal';
+                case 'essential oil':
+                    return 'cyan';
+            }
         },
         getInteractionName(interaction) {
             if (interaction.side2Material) {

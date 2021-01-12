@@ -16,12 +16,12 @@ Vue.directive('highlight-text', {
 Vue.directive('recommendation-color', {
     inserted(el, binding) {
         const txt = binding.arg || el.innerText;
-        console.log('Txt:', txt);
         switch (txt.toLowerCase()) {
             case 'avoid coadministration':
             case 'coadministration is not advised':
                 el.style.color = '#F44336';
                 if (binding.arg) {
+                    // Vuetufy 'error'
                     el.style.borderColor = '#F44336';
                 }
                 break;
@@ -30,6 +30,7 @@ Vue.directive('recommendation-color', {
             case 'coadministration is possible but caution should be taken':
                 el.style.color = '#FB8C00';
                 if (binding.arg) {
+                    // Vuetufy 'warning'
                     el.style.borderColor = '#FB8C00';
                 }
                 break;
@@ -40,12 +41,14 @@ Vue.directive('recommendation-color', {
             case 'coadministration is possible and may even be advised':
                 el.style.color = '#4CAF50';
                 if (binding.arg) {
+                    // Vuetufy 'success'
                     el.style.borderColor = '#4CAF50';
                 }
                 break;
             default:
                 el.style.color = '#2196F3';
                 if (binding.arg) {
+                    // Vuetufy 'primary'
                     el.style.borderColor = '#2196F3';
                 }
                 break;
