@@ -175,7 +175,7 @@ export default {
         },
         async getResults() {
             this.isLoading = true;
-            if (!this.$route.query.materialId) {
+            if (!this.$route.query.materialId || !this.$route.query.materialId.length) {
                 this.results = [];
                 this.isLoading = false;
                 return;
