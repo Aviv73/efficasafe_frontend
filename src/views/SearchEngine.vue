@@ -90,8 +90,9 @@ export default {
             if (JSON.stringify(from.query) !== JSON.stringify(to.query)) {
                 this.getResults();
             }
-            if (this.$route.name === 'DBankResults' && from.name !== to.name) {
-                this.getDBankResults();
+            if (from.name !== to.name) {
+                if (this.$route.name === 'DBankResults') this.getDBankResults();
+                else this.getResults();
             }
         },
         'results.length'() {
@@ -155,6 +156,7 @@ export default {
             });
         },
         async getDBankResults(page = 1) {
+            if (this.$route.name !== 'DBankResults') return;
             this.isLoading = true;
             const isAllHerbs = this.results.every(({ material }) => material.type === 'herb');
             if (!this.results.length || isAllHerbs) {
@@ -200,6 +202,7 @@ export default {
                     }, interactions: [] 
                 }
             });
+            if (this.$route.name === 'DBankResults') return;
             const prms = this.results.map(async result => {
                 const { _id, labelIds } = result.material;
                 const filterBy = { limit: 0, page: 0, id: [ _id, ...labelIds ] };
@@ -225,9 +228,7 @@ export default {
                 return miniInteractions;
             });
             await Promise.all(prms);
-            if (this.$route.name !== 'DBankResults') {
-                this.isLoading = false;
-            }
+            this.isLoading = false;
         },
         addMaterial(material) {
             if (!material) return;
