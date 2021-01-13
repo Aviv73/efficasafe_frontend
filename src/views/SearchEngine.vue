@@ -225,7 +225,9 @@ export default {
                 return miniInteractions;
             });
             await Promise.all(prms);
-            this.isLoading = false;
+            if (this.$route.name !== 'DBankResults') {
+                this.isLoading = false;
+            }
         },
         addMaterial(material) {
             if (!material) return;
