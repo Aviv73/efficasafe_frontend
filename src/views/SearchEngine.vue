@@ -169,6 +169,11 @@ export default {
                 return acc;
             }, []);
             const drugBankId = (drugBankIds.length === 1) ? drugBankIds[0] : drugBankIds;
+            if (!drugBankId) {
+                this.isLoading = false;
+                this.dBankInteractions = [];
+                return;
+            }
             const criteria = { drugBankId, page: --page };
             const { dBankInteractions, total } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria });
             this.dBankInteractions = dBankInteractions;
