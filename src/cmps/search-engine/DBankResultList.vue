@@ -24,7 +24,7 @@
       No results :(
     </p>
     <v-footer 
-      v-if="materialCount && pageCount > 1"
+      v-if="materialCount && pageCount > 1 && dBankInteractions.length"
       class="results-list-footer"
       tile 
     >
