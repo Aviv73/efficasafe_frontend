@@ -1,4 +1,9 @@
 .d-bank-interaction-details {
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
     &-content {
         display: grid;
         grid-template-columns: 200px 1fr;

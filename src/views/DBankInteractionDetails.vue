@@ -6,6 +6,9 @@
                     <v-btn color="primary" @click="$router.go(-1)">
                         <v-icon small left>mdi-arrow-left</v-icon>Back to Search
                     </v-btn>
+                    <v-btn :color="isTextFormatted ? 'secondary' : 'primary'" @click="isTextFormatted = !isTextFormatted">
+                        <v-icon small left>{{ isTextFormatted ? 'mdi-eye-outline' : 'mdi-eye-off-outline' }}</v-icon>View {{ isTextFormatted ? 'origin' : 'formatted' }} text
+                    </v-btn>
                 </header>
                 <v-card class="d-bank-interaction-details-content px-3">
                     <v-card-title class="d-bank-interaction-details-content-title px-0">
@@ -32,14 +35,14 @@
                     <p 
                         v-if="interaction.extended_description"
                         ref="extendedDescription"
-                        v-html="getRefsToDisplay(interaction.extended_description)" 
+                        v-html="isTextFormatted ? getRefsToDisplay(interaction.extended_description) : interaction.extended_description" 
                     />
 
                     <div class="text-capitalize" v-if="interaction.management">Management:</div>
                     <p 
                         ref="management"
                         v-if="interaction.management"
-                        v-html="getRefsToDisplay(interaction.management)"
+                        v-html="isTextFormatted ? getRefsToDisplay(interaction.management) : interaction.management"
                     />
                     
                     <v-divider class="d-bank-interaction-details-content-divider my-2" />
@@ -61,15 +64,20 @@ import dBankRefsTable from '@/cmps/d-bank-interaction/DBankRefsTable';
 import entityNotFound from '@/cmps/general/EntityNotFound';
 
 export default {
+    wrongRefsMap: drugBankService.getWrongRefsMap(),
     data() {
         return {
             interaction: null,
-            isNotFound: false
+            isNotFound: false,
+            isTextFormatted: true
         }
     },
     watch: {
-        '$route.params.id'() {
-            this.loadInteraction();
+        '$route.params.id': {
+            handler() {
+                this.loadInteraction();
+            },
+            immediate: true
         }
     },
     computed: {
@@ -111,7 +119,7 @@ export default {
             const matches = txt.match(regex);
             if (!matches) return txt;
             matches.forEach(match => {
-                let formatedMatch = match;
+                let formatedMatch = this.replaceWrongRefs(match);
                 this.interactionRefs.forEach(({ ref_id, draftIdx }) => {
                     if (formatedMatch.includes(ref_id)) {
                         formatedMatch = formatedMatch.replace(ref_id, draftIdx);
@@ -123,9 +131,25 @@ export default {
                 formatedMatch = formatedMatch.replace('[', '(');
                 formatedMatch = formatedMatch.replace(']', ')');
                 formatedMatch = `<sub>${interactionService.formatRefStrs(formatedMatch)}</sub>`;
+                
+                const beforeIdx = txt.indexOf(match) - 1;
+                if (txt.charAt(beforeIdx) === '.') {
+                    txt = txt.substring(0, beforeIdx) + txt.substring(beforeIdx + 1);
+                    formatedMatch += '.';
+                }
+                
                 txt = txt.replace(match, formatedMatch);
             });
             return txt;
+        },
+        replaceWrongRefs(refStr) {
+            const { wrongRefsMap } = this.$options;
+            Object.keys(wrongRefsMap).forEach(wrongRef => {
+                if (refStr.includes(wrongRef)) {
+                    refStr = refStr.replaceAll(wrongRef, wrongRefsMap[wrongRef]);
+                }
+            });
+            return refStr;
         },
         setRefsToolTip() {
             const { extendedDescription, management } = this.$refs;
@@ -170,9 +194,6 @@ export default {
                 elTooltip.style.right = `0`;
             }
         }
-    },
-    created() {
-        this.loadInteraction();
     },
     updated() {
         this.setRefsToolTip();
