@@ -8,6 +8,9 @@
             cursor: row-resize;
         }
     }
+    &-loader {
+        margin: 20px calc(50% - 32px);
+    }
     .v-expansion-panel {
         flex: unset;
     }

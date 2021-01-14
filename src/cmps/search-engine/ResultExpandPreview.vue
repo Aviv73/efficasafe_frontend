@@ -54,7 +54,13 @@
                 </router-link>
             </v-chip>
         </v-chip-group>
-        <v-divider />
+        <v-progress-circular 
+            class="result-expand-preview-loader"
+            v-if="isLoading" 
+            color="grey darken-1"
+            indeterminate 
+        />
+        <v-divider v-else />
     </section>
 </template>
 
@@ -63,6 +69,7 @@ export default {
     data() {
         return {
             vInteractions: [],
+            isLoading: false
         };
     },
     props: {
@@ -118,6 +125,7 @@ export default {
     },
     methods: {
         async getRelatedMaterials() {
+            this.isLoading = true;
             const { interaction } = this;
             const labelId = interaction.side2Label._id;
             const criteria = { limit: 0, labelId };
@@ -140,18 +148,15 @@ export default {
                         isVirtual: true,
                         side2DraftName: interaction.side2DraftName,
                         drugBankId,
-                        atcParentGroups: atcPaths
-                            .map((atcPath) =>
-                                atcPath.filter((path, idx) => idx === 3)
-                            )
-                            .flat(1),
+                        atcParentGroups: atcPaths.map((atcPath) => atcPath.filter((path, idx) => idx === 3)).flat(1),
                     };
                 }
             );
+            this.isLoading = false;
         }
     },
     created() {
         this.getRelatedMaterials();
-    },
+    }
 };
 </script>

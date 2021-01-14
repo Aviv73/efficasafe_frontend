@@ -22,7 +22,7 @@
         :finalSelection="selection"
         :primaryMaterialIds="primaryMaterialIds"
       />
-      <loading-cmp v-else />
+      <loading-cmp v-else class="tree-container-loader" />
     </v-card-text>
     <v-divider></v-divider>
   </section>
