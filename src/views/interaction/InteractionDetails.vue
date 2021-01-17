@@ -10,8 +10,8 @@
           @delete-cancel="dialog = false"
         />
         <div class="action-container">
-          <v-btn color="primary" :to="(isArchive) ? '/archive' : '/interaction'">
-            <v-icon small left>mdi-arrow-left</v-icon>{{ (isArchive) ? 'Back to Archive' : 'Back to Interactions' }}
+          <v-btn color="primary" @click="$router.go(-1)">
+            <v-icon small left>mdi-arrow-left</v-icon>Back
           </v-btn>
           <v-spacer></v-spacer>
           <v-btn color="primary" v-if="!isArchive" @click="cloneInteraction">

@@ -105,6 +105,6 @@ export default {
       labelFilter,
       labelList,
       iconsMap
-    },
+    }
 };
 </script>

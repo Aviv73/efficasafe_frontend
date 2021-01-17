@@ -111,7 +111,7 @@ export default {
         type: (this.isLabel) ? 'getLabels' : 'getMaterials',
         criteria,
       });
-      this.items = entities;
+      this.items = entities.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
       this.isLoading = false;
     },
     emitAutocomplete() {
