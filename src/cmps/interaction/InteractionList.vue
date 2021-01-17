@@ -167,23 +167,6 @@ export default {
       }
     }
   },
-  computed: {
-    groupedItems() {
-      return this.interactions.reduce((acc, interaction) => {
-        const idx = acc.findIndex(group => group.name === interaction.side1Material.name);
-        if (idx === -1) {
-          const group = {
-            name: interaction.side1Material.name,
-            interactions: [ interaction ]
-          };
-          acc.push(group);
-        } else {
-          acc[idx].interactions.push(interaction);
-        }
-        return acc;
-      }, []);
-    }
-  },
   methods: {
     onSort(sortBy, isDesc) {
       this.$emit('header-clicked', { sortBy, isDesc });

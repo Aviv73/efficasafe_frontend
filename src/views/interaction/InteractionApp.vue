@@ -33,8 +33,7 @@ import iconsMap from '@/cmps/general/IconsMap';
 export default {
   data() {
     return {
-      loading: false,
-      tableData: null
+      loading: false
     }
   },
   watch: {
@@ -69,6 +68,8 @@ export default {
     async loadInteractions() {
       this.loading = true;
       const filterBy = this.$route.query;
+      filterBy.sortBy = filterBy.sortBy || [ 'isActive', '_id' ];
+      filterBy.isDesc = filterBy.isDesc || [ true, true ];
       await this.$store.dispatch({ type: 'loadInteractions', filterBy });
       this.loading = false;
     },
@@ -103,12 +104,6 @@ export default {
         console.log('Error:', err);
       }
     },
-  },
-  created() {
-    const { sortBy, isDesc } = this.$route.query;
-    if ((sortBy !== '_id' && isDesc !== 'true') && (sortBy !== 'isActive,_id' && isDesc !== 'true,true')) {
-      this.setFilter({sortBy: [ 'isActive', '_id' ], isDesc: [ true, true ]});
-    }
   },
   components: {
     interactionFilter,

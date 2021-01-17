@@ -101,7 +101,12 @@ export default {
   watch: {
     options () {
       if (this.isMounted) {
-        this.$emit('options-updated', JSON.parse(JSON.stringify(this.options)));
+        let { itemsPerPage, page } = this.options;
+        const filterBy = {
+          limit: (itemsPerPage < 0) ? 0 : itemsPerPage,
+          page: --page
+        };
+        this.$emit('options-updated', JSON.parse(JSON.stringify(filterBy)));
       } else {
         this.isMounted = true;
       }
@@ -109,7 +114,7 @@ export default {
   },
   methods: {
     onSort(sortBy, isDesc) {
-      this.$emit('header-clicked', sortBy, isDesc);
+      this.$emit('header-clicked', { sortBy, isDesc });
     },
     isSortedBy(property) {
       return this.$route.query.sortBy === property;

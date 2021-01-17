@@ -16,8 +16,8 @@
           :materials="materials"
           :loading="loading"
           :totalItems="totalItems"
-          @options-updated="paginate"
-          @header-clicked="setSort"
+          @options-updated="setFilter"
+          @header-clicked="setFilter"
         />
       </v-card>
 
@@ -34,8 +34,7 @@ import iconsMap from '@/cmps/general/IconsMap';
 export default {
   data() {
     return {
-      loading: false,
-      tableData: null
+      loading: false
     };
   },
   watch: {
@@ -58,30 +57,13 @@ export default {
     }
   },
   methods: {
-    setSort(propName, isDesc) {
-      const criteria = {
-        ...this.$route.query,
-        sortBy: propName,
-        isDesc
-      }
-      const queryStr = '?' + new URLSearchParams(criteria).toString();
-      this.$router.push(queryStr);
-    },
-    paginate(tableData) {
-      this.tableData = tableData;
-      this.loadMaterials();
-    },
     setFilter(filterBy) {
-      const { q, type } = filterBy;
       const criteria = {
         ...this.$route.query,
-        q,
-        type
+        ...filterBy
       }
       const queryStr = '?' + new URLSearchParams(criteria).toString();
-      if (filterBy.type !== this.$route.query.type && this.tableData) {
-        this.tableData.page = 1;
-      }
+     
       this.$router.push(queryStr);
     },
     async loadMaterials() {
@@ -90,14 +72,8 @@ export default {
 
       criteria.sortBy = criteria.sortBy || [ 'type', 'name' ];
       criteria.isDesc = criteria.isDesc || [ true, false ];
+      criteria.limit = criteria.limit || 10;
 
-      if (this.tableData) {
-        let { page, itemsPerPage } = this.tableData;
-        criteria.limit = (itemsPerPage < 0) ? 0 : itemsPerPage;
-        criteria.page = --page;
-      } else { 
-        criteria.limit = 10;
-      }
       if (criteria.q) criteria.page = 0;
 
       await this.$store.dispatch({ type: 'loadMaterials', criteria });
