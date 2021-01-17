@@ -13,12 +13,13 @@ import interactionApp from '../views/interaction/InteractionApp';
 import interactionEdit from '../views/interaction/InteractionEdit';
 import interactionDetails from '../views/interaction/InteractionDetails';
 import vInteractionDetails from '@/views/interaction/VinteractionDetails';
+import featuredInteractionApp from '@/views/featured-interaction/FeaturedInteractionApp';
 import archiveApp from '../views/archive/ArchiveApp';
 import DataIntegrity from '@/views/DataIntegrity';
 import searchEngine from '@/views/SearchEngine';
 import resultList from '@/cmps/search-engine/ResultList';
 import dBankResultList from '@/cmps/search-engine/DBankResultList';
-import dBankInteractionDetails from '@/views/DBankInteractionDetails'
+import dBankInteractionDetails from '@/views/DBankInteractionDetails';
 
 Vue.use(VueRouter);
 
@@ -92,6 +93,12 @@ const routes = [
     path: '/interaction/:id',
     name: 'InteractionsDetails',
     component: interactionDetails,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/featured-interaction',
+    name: 'FeaturedInteraction',
+    component: featuredInteractionApp,
     meta: { requiresAuth: true }
   },
   {

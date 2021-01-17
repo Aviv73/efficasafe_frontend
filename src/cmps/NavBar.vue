@@ -12,6 +12,7 @@
       <v-btn class="nav-link" tile color="white" text to="/data-integrity">Alerts</v-btn>
       <v-btn class="nav-link" tile color="white" text to="/material">Materials</v-btn>
       <v-btn class="nav-link" tile color="white" text to="/label">Labels</v-btn>
+      <v-btn class="nav-link" tile color="white" text to="/featured-interaction">Workshop</v-btn>
       <v-btn class="nav-link" tile color="white" text to="/interaction">Interactions</v-btn>
       <v-btn class="nav-link" tile color="white" text to="/archive" v-if="isAdmin">Archive</v-btn>
       <v-btn class="nav-link" tile color="white" text v-if="loggedInUser" @click="logout">

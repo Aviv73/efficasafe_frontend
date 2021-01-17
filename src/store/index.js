@@ -7,6 +7,7 @@ import { interactionStore } from './modules/interaction.store';
 import { archiveStore } from './modules/archive.store';
 import { atcStore } from './modules/atc.store';
 import { drugBankStore } from './modules/drug-bank.store';
+import { featuredInteractionStore } from './modules/featured-interaction.store';
 
 Vue.use(Vuex)
 
@@ -31,6 +32,7 @@ export default new Vuex.Store({
     interactionStore,
     archiveStore,
     atcStore,
-    drugBankStore
+    drugBankStore,
+    featuredInteractionStore
   }
 })
