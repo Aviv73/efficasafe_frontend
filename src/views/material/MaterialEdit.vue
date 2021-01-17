@@ -656,7 +656,6 @@ export default {
           type: 'material',
           _id: this.editedMaterial._id,
         });
-        this.$router.push('/material');
       } catch (err) {
         console.log('Error:', err);
       }

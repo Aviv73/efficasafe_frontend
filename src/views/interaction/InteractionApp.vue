@@ -38,8 +38,11 @@ export default {
     }
   },
   watch: {
-    '$route.query': function () {
-      this.loadInteractions();
+    '$route.query': {
+      handler() {
+        this.loadInteractions();
+      },
+      immediate: true
     },
   },
   computed: {

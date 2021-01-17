@@ -123,7 +123,6 @@ export default {
           type: 'label',
           _id: this.editedLabel._id,
         });
-        this.$router.push('/label');
       } catch (err) {
         console.log('Error:', err);
       }

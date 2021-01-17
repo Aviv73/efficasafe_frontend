@@ -9,8 +9,8 @@
         @delete-cancel="dialog = false"
       />
       <div class="action-container">
-        <v-btn color="primary" :to="(isArchive) ? '/archive' : '/label'">
-          <v-icon small left>mdi-arrow-left</v-icon>{{ (isArchive) ? 'Back to Archive' : 'Back to Labels' }}
+        <v-btn color="primary" @click="$router.go(-1)">
+          <v-icon small left>mdi-arrow-left</v-icon>Back
         </v-btn>
         <v-btn
           color="primary"

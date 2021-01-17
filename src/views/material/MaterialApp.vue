@@ -39,8 +39,11 @@ export default {
     };
   },
   watch: {
-    '$route.query'() {
-      this.loadMaterials();
+    '$route.query': {
+      handler() {
+        this.loadMaterials();
+      },
+      immediate: true
     },
   },
   computed: {
@@ -85,6 +88,9 @@ export default {
       const criteria = this.$route.query;
       this.loading = true;
 
+      criteria.sortBy = criteria.sortBy || [ 'type', 'name' ];
+      criteria.isDesc = criteria.isDesc || [ true, false ];
+
       if (this.tableData) {
         let { page, itemsPerPage } = this.tableData;
         criteria.limit = (itemsPerPage < 0) ? 0 : itemsPerPage;
@@ -96,16 +102,6 @@ export default {
 
       await this.$store.dispatch({ type: 'loadMaterials', criteria });
       this.loading = false;
-    }
-  },
-  created() {
-    const criteria = {
-      sortBy: [ 'type', 'name' ],
-      isDesc: [ true, false ]
-    }
-    const queryStr = '?' + new URLSearchParams(criteria).toString();
-    if (queryStr !== this.routeQuery) {
-      this.$router.push(queryStr);
     }
   },
   components: {

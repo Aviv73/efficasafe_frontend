@@ -34,7 +34,7 @@
             <v-icon>mdi-content-save-edit</v-icon>
             </v-btn>
           </div>
-          <v-form v-model="valid" @submit.prevent="onSaveInteraction(true)">
+          <v-form v-model="valid" @submit.prevent="onSaveInteraction(false)">
             <div class="int-sides-active">
               <v-card-title class="interaction-edit-title">
                 {{ editedInteraction._id ? 'Edit Interaction' : 'New Interaction' }}
