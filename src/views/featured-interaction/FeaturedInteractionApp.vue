@@ -65,7 +65,7 @@ export default {
             this.isLoading = true;
             const filterBy = this.$route.query;
             filterBy.isGroups = true;
-            filterBy.sortBy = filterBy.sortBy || '_id';
+            filterBy.sortBy = filterBy.sortBy || 'name';
             filterBy.isDesc = filterBy.isDesc || false;
             filterBy.limit = filterBy.limit || 10;
             await this.$store.dispatch({ type: 'loadFeaturedInteractionGroups', filterBy });

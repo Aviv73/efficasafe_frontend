@@ -34,8 +34,8 @@ export default {
     },
     computed: {
         items() {
-            return this.initialItems.reduce((acc, { _id }) => {
-                acc.push({ _id, text: _id });
+            return this.initialItems.reduce((acc, { _id, name }) => {
+                acc.push({ _id, text: name });
                 return acc;
             }, []);
         }

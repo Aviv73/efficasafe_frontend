@@ -8,13 +8,16 @@
         disable-sort
         :loading="isLoading"
     >
-        <template v-slot:[`header._id`]="{ header }">
+        <template v-slot:[`header.name`]="{ header }">
             <label class="list-header">
                 <input type="checkbox" hidden @change="onSort(header.value, $event.target.checked)" />
                 {{ header.text }}
                 <v-icon class="icon" :class="{ 'icon-active': isSortedBy(header.value) }">mdi-arrow-down</v-icon>
             </label>
         </template>
+        <!-- <template v-slot:body="{ items }">
+
+        </template> -->
     </v-data-table>
   </section>
 </template>
@@ -41,7 +44,7 @@ export default {
             headers: [
                 {
                     text: 'Side 1',
-                    value: '_id'
+                    value: 'name'
                 },
                 {
                     text: 'Interactions',
