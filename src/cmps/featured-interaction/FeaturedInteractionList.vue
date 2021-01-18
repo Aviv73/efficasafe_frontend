@@ -24,6 +24,7 @@
 
 <script>
 export default {
+    INFINITY: Math.pow(2, 53) - 1,
     props: {
         groups: {
             type: Array,
@@ -63,7 +64,7 @@ export default {
                 else {
                     let { itemsPerPage, page } = this.options;
                     const filterBy = {
-                        limit: (itemsPerPage < 0) ? 0 : itemsPerPage,
+                        limit: (itemsPerPage < 0) ? this.$options.INFINITY : itemsPerPage,
                         page: --page
                     };
                     this.$emit('pagination-changed', filterBy);
