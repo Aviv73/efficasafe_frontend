@@ -11,7 +11,7 @@
                 <featured-interaction-filter 
                     @filter-changed="setFilter"
                 />
-                <featured-interaction-list 
+                <featured-interaction-grouped-list 
                     :groups="featuredInteractionGroups" 
                     :groupCount="groupsCount" 
                     :isLoading="isLoading"
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import featuredInteractionList from '@/cmps/featured-interaction/FeaturedInteractionList';
+import featuredInteractionGroupedList from '@/cmps/featured-interaction/FeaturedInteractionGroupedList';
 import featuredInteractionFilter from '@/cmps/featured-interaction/FeaturedInteractionFilter';
 import iconsMap from '@/cmps/general/IconsMap';
 
@@ -74,7 +74,7 @@ export default {
     },
     components: {
         featuredInteractionFilter,
-        featuredInteractionList,
+        featuredInteractionGroupedList,
         iconsMap
     }
 }

@@ -2,4 +2,18 @@
     &-filter-field {
         width: 30%;
     }
+    &-list {
+        tbody {
+            tr {
+                cursor: pointer;
+    
+                &.v-data-table__expanded.v-data-table__expanded__row {
+                    background-color: lighten(#eeeeee, 1%);
+                }
+            }
+            td.expanded {
+                cursor: default;
+            }
+        }
+    }
 }

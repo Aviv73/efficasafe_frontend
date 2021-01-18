@@ -21,13 +21,13 @@ export default {
             isLoading: false,
             search: null,
             result: null,
-            initialItems: this.$store.getters.featuredInteractionGroups
+            initialItems: []
         }
     },
     watch: {
         search: {
             handler(val) {
-                if (val) this.getResults(val);
+                this.getResults(val);
             },
             immediate: true
         }
