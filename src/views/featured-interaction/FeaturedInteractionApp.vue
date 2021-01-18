@@ -8,7 +8,16 @@
                         <v-card-subtitle class="pa-0">featured interaction collection</v-card-subtitle>
                     </h2>
                 </v-card-title>
-                <featured-interaction-list />
+                <featured-interaction-filter 
+                    @filter-changed="setFilter"
+                />
+                <featured-interaction-list 
+                    :groups="featuredInteractionGroups" 
+                    :groupCount="groupsCount" 
+                    :isLoading="isLoading"
+                    @sort-changed="setFilter"
+                    @pagination-changed="setFilter"
+                />
             </v-card>
             <icons-map />
         </div>
@@ -17,6 +26,7 @@
 
 <script>
 import featuredInteractionList from '@/cmps/featured-interaction/FeaturedInteractionList';
+import featuredInteractionFilter from '@/cmps/featured-interaction/FeaturedInteractionFilter';
 import iconsMap from '@/cmps/general/IconsMap';
 
 export default {
@@ -34,25 +44,38 @@ export default {
         }
     },
     computed: {
-        featuredInteractions() {
-            return this.$store.getters.featuredInteractions;
+        featuredInteractionGroups() {
+            return this.$store.getters.featuredInteractionGroups;
         },
-        totalItems() {
-            return this.$store.getters.featuredInteractionCount;
+        groupsCount() {
+            return this.$store.getters.featuredGroupsCount;
         }
     },
     methods: {
+        setFilter(filterBy) {
+            const criteria = {
+                ...this.$route.query,
+                ...filterBy
+            };
+            if (criteria.side1Name) criteria.page = 0;
+            const queryStr = '?' + new URLSearchParams(criteria).toString();
+            this.$router.push(queryStr);
+        },
         async loadFeaturedInteractions() {
             this.isLoading = true;
             const filterBy = this.$route.query;
-            await this.$store.dispatch({ type: 'loadFeaturedInteractions', filterBy });
-            console.log(this.featuredInteractions);
+            filterBy.isGroups = true;
+            filterBy.sortBy = filterBy.sortBy || '_id';
+            filterBy.isDesc = filterBy.isDesc || false;
+            filterBy.limit = filterBy.limit || 10;
+            await this.$store.dispatch({ type: 'loadFeaturedInteractionGroups', filterBy });
             this.isLoading = false;
         }
     },
     components: {
-        iconsMap,
-        featuredInteractionList
+        featuredInteractionFilter,
+        featuredInteractionList,
+        iconsMap
     }
 }
 </script>

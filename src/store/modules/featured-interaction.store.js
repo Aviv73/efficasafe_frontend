@@ -2,30 +2,41 @@ import { featuredInteractionService } from '@/services/featured-interaction.serv
 
 export const featuredInteractionStore = {
     state: {
+        featuredInteractionGroups: [],
         featuredInteractions: [],
-        featuredInteractionCount: 0
+        featuredGroupsCount: 0
     },
     getters: {
+        featuredInteractionGroups(state) {
+            return state.featuredInteractionGroups;
+        },
         featuredInteractions(state) {
             return state.featuredInteractions;
         },
-        featuredInteractionCount(state) {
-            return state.featuredInteractionCount;
+        featuredGroupsCount(state) {
+            return state.featuredGroupsCount;
         }
     },
     mutations: {
         setFeaturedInteractions(state, { featuredInteractions }) {
             state.featuredInteractions = featuredInteractions;
         },
-        setFeaturedInteractionsCount(state, { total }) {
-            state.featuredInteractionCount = total;
+        setFeaturedInteractionGroups(state, { groups }) {
+            state.featuredInteractionGroups = groups;
+        },
+        setFeaturedGroupsCount(state, { total }) {
+            state.featuredGroupsCount = total;
         }
     },
     actions: {
-        async loadFeaturedInteractions(context, { filterBy }) {
-            const { featuredInteractions, total } = await featuredInteractionService.list(filterBy);
-            context.commit({ type: 'setFeaturedInteractions', featuredInteractions });
-            context.commit({ type: 'setFeaturedInteractionsCount', total });
+        async loadFeaturedInteractionGroups(context, { filterBy }) {
+            const { groups, total } = await featuredInteractionService.list(filterBy);
+            context.commit({ type: 'setFeaturedInteractionGroups', groups });
+            context.commit({ type: 'setFeaturedGroupsCount', total });
+        },
+        async getFeaturedInteractionGroups(context, { filterBy }) {
+            const { groups } = await featuredInteractionService.list(filterBy);
+            return groups;
         }
     }
 }

@@ -1,11 +1,81 @@
 <template>
   <section class="featured-interaction-list">
-    LIST WORKS!!
+    <v-data-table
+        :headers="headers"
+        :items="groups"
+        :server-items-length="groupCount"
+        :options.sync="options"
+        disable-sort
+        :loading="isLoading"
+    >
+        <template v-slot:[`header._id`]="{ header }">
+            <label class="list-header">
+                <input type="checkbox" hidden @change="onSort(header.value, $event.target.checked)" />
+                {{ header.text }}
+                <v-icon class="icon" :class="{ 'icon-active': isSortedBy(header.value) }">mdi-arrow-down</v-icon>
+            </label>
+        </template>
+    </v-data-table>
   </section>
 </template>
 
 <script>
 export default {
-
+    props: {
+        groups: {
+            type: Array,
+            required: true
+        },
+        groupCount: {
+            type: Number,
+            required: true
+        },
+        isLoading: {
+            type: Boolean,
+            required: true
+        }
+    },
+    data() {
+        return {
+            options: {},
+            headers: [
+                {
+                    text: 'Side 1',
+                    value: '_id'
+                },
+                {
+                    text: 'Interactions',
+                    value: 'count',
+                    sortable: false,
+                    align: 'center',
+                }
+            ],
+            isInit: true
+        }
+    },
+    watch: {
+        options: {
+            handler() {
+                if (this.isInit) this.isInit = false;
+                else {
+                    let { itemsPerPage, page } = this.options;
+                    const filterBy = {
+                        limit: (itemsPerPage < 0) ? 0 : itemsPerPage,
+                        page: --page
+                    };
+                    this.$emit('pagination-changed', filterBy);
+                }
+            },
+            deep: true
+        }
+    },
+    methods: {
+        onSort(sortBy, isDesc) {
+            this.$emit('sort-changed', { sortBy, isDesc });
+        },
+        isSortedBy(property) {
+            return this.$route.query.sortBy === property;
+        }
+    }
 }
 </script>
