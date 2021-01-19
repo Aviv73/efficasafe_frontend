@@ -20,7 +20,7 @@
             </label>
         </template>
         <template v-slot:expanded-item="{ headers, item }">
-            <td :colspan="headers.length" class="expanded">
+            <td :colspan="headers.length" class="expanded py-2 px-3">
                 <featured-interaction-list :group="item" />
             </td>
         </template>

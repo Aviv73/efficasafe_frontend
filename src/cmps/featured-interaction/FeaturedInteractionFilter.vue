@@ -2,7 +2,7 @@
   <section class="featured-interaction-app-filter px-4">
     <v-autocomplete 
         class="featured-interaction-app-filter-field"
-        label="Search interactions"
+        label="Search groups"
         v-model="result"
         @change="emitAutocomplete"
         :items="items"

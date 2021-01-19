@@ -3,24 +3,17 @@ import { featuredInteractionService } from '@/services/featured-interaction.serv
 export const featuredInteractionStore = {
     state: {
         featuredInteractionGroups: [],
-        featuredInteractions: [],
         featuredGroupsCount: 0
     },
     getters: {
         featuredInteractionGroups(state) {
             return state.featuredInteractionGroups;
         },
-        featuredInteractions(state) {
-            return state.featuredInteractions;
-        },
         featuredGroupsCount(state) {
             return state.featuredGroupsCount;
         }
     },
     mutations: {
-        setFeaturedInteractions(state, { featuredInteractions }) {
-            state.featuredInteractions = featuredInteractions;
-        },
         setFeaturedInteractionGroups(state, { groups }) {
             state.featuredInteractionGroups = groups;
         },
@@ -29,6 +22,9 @@ export const featuredInteractionStore = {
         }
     },
     actions: {
+        async getFeaturedInteractions(context, { filterBy }) {
+            return await featuredInteractionService.list(filterBy);
+        },
         async loadFeaturedInteractionGroups(context, { filterBy }) {
             const { groups, total } = await featuredInteractionService.list(filterBy);
             context.commit({ type: 'setFeaturedInteractionGroups', groups });

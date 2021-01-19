@@ -13,6 +13,38 @@
             }
             td.expanded {
                 cursor: default;
+                background-color: lighten(#eeeeee, 1%);
+            }
+            .featured-interaction-list {
+                display: flex;
+                justify-content: center;
+
+                &-filter {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    &-field {
+                        width: 30%;
+                        flex-grow: 0;
+                    }
+                }
+                &-actions {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 16px;
+                }
+                main {
+                    width: 100%;
+
+                    tr {
+                        cursor: default;
+                    }
+                }
+                [role=progressbar] {
+                    margin: 24px 0;
+                }
             }
         }
     }
