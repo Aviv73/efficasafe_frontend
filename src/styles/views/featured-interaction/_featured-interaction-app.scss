@@ -22,11 +22,24 @@
                 &-filter {
                     display: flex;
                     align-items: center;
-                    justify-content: space-between;
+                    justify-content: flex-start;
 
                     &-field {
                         width: 30%;
                         flex-grow: 0;
+
+                        &.composed {
+                            width: unset;
+                            display: flex;
+                            align-items: center;
+
+                            & > span {
+                                margin-top: -4px;
+                            }
+                        }
+                    }
+                    .v-input__slot {
+                        margin-bottom: 0 !important;
                     }
                 }
                 &-actions {

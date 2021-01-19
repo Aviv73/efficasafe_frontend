@@ -1,18 +1,49 @@
 <template>
     <section class="featured-interaction-list">
-        <main v-if="interactions.length">
-            <div class="featured-interaction-list-filter">
+        <main v-if="!isLoading">
+            <div class="featured-interaction-list-filter py-4">
                 <v-autocomplete 
-                    class="featured-interaction-list-filter-field"
+                    class="featured-interaction-list-filter-field mr-4 mb-0"
                     label="Search interactions"
                     :items="autocompleteResults"
                     v-model="result"
                     :search-input.sync="search"
-                    @change="setFilter"
+                    @change="setFilter($event, 'side2Name')"
                     :loading="isAutocompleteLoading"
+                    hide-details
+                    outlined
                     clearable
                     return-object
                 />
+                <v-divider vertical class="mr-4" />
+                <span class="featured-interaction-list-filter-field composed">
+                    <span>
+                        <v-radio-group
+                            class="ma-0 pa-0"
+                            v-model="propertyToSearch"
+                            hide-details
+                            mandatory
+                            dense
+                            row
+                        >
+                            <v-radio value="summary" label="summary" />
+                            <v-radio value="management" label="management" />
+                        </v-radio-group>
+                        <v-text-field
+                            v-model="txtSearch"
+                            class="ma-0 pa-0"
+                            label="Text starts with..."
+                            hide-details
+                            outlined
+                        />
+                    </span>
+                    <v-btn
+                        outlined
+                        class="ml-2"
+                        color="primary"
+                        @click="setFilter(txtSearch, propertyToSearch)"
+                    >Search</v-btn>
+                </span>
             </div>
             <v-data-table
                 :headers="headers"
@@ -54,6 +85,8 @@ export default {
     },
     data() {
         return {
+            txtSearch: '',
+            propertyToSearch: '',
             interactions: [],
             totalItems: 0,
             autocompleteItems: [],
@@ -66,7 +99,9 @@ export default {
                 page: 0,
                 sortBy: 'affected_drug.name',
                 isDesc: false,
-                side2Name: ''
+                side2Name: '',
+                summary: '',
+                management: ''
             },
             search: null,
             result: null,
@@ -116,14 +151,23 @@ export default {
         }
     },
     methods: {
-        setFilter(val) {
-            const q = val ? val.text : '';
-            this.filterBy.side2Name = q;
+        setFilter(val, property) {
+            switch (property) {
+                case 'side2Name':
+                    this.filterBy.side2Name = val ? val.text : '';
+                    break;
+                case 'summary':
+                case 'management':
+                    this.filterBy[property] = val;
+                    break;
+                default:
+                    break;
+            }
         },
         async getFeaturedInteractions() {
             this.isLoading = true;
             const filterBy = { ...this.filterBy };
-            if (filterBy.side2Name) filterBy.page = 0;
+            if (filterBy.side2Name || filterBy.summary || filterBy.management) filterBy.page = 0;
             const { featuredInteractions, total } = await this.$store.dispatch({ type: 'getFeaturedInteractions', filterBy });
             this.interactions = featuredInteractions;
             this.totalItems = total;
