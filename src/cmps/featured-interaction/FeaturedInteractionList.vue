@@ -40,7 +40,7 @@
                             dark
                             row
                         >
-                            <v-radio :value="true" label="Starts width" />
+                            <v-radio :value="true" label="Starts with" />
                             <v-radio :value="false" label="Includes" />
                         </v-radio-group>
                         <v-text-field
@@ -61,7 +61,7 @@
                 </span>
                 <v-divider dark vertical class="mx-4" />
                 <v-checkbox
-                    :label="selected.length ? 'None' : 'All'"
+                    :label="isAllSelected ? 'None' : 'All'"
                     dark
                     @change="toggleAllSelected"
                 />
@@ -94,7 +94,9 @@
                                 fab
                                 outlined
                                 title="Change side 1"
-                                color="secondary"
+                                color="success"
+                                @click="materialPickerDialog = true"
+                                :disabled="!selected.length"
                             >
                                 <v-icon>mdi-swap-horizontal-variant</v-icon>
                             </v-btn>
@@ -102,16 +104,31 @@
                                 class="mb-4"
                                 fab
                                 outlined
-                                title="Activate / Deactivate"
+                                title="Activate"
                                 color="primary"
+                                @click="editInteractions('isActive', true)"
+                                :disabled="!selected.length"
                             >
                                 <v-icon>mdi-check-box-outline</v-icon>
+                            </v-btn>
+                            <v-btn
+                                class="mb-4"
+                                fab
+                                outlined
+                                title="Deactivate"
+                                color="secondary"
+                                @click="editInteractions('isActive', false)"
+                                :disabled="!selected.length"
+                            >
+                                <v-icon>mdi-checkbox-blank-off-outline</v-icon>
                             </v-btn>
                             <v-btn 
                                 fab
                                 outlined
                                 title="Delete"
                                 color="error"
+                                @click="confirmDeleteDialog = true"
+                                :disabled="!selected.length"
                             >
                                 <v-icon>mdi-delete</v-icon>
                             </v-btn>
@@ -127,18 +144,16 @@
                 :loading="isLoading"
             >
                 <template #[`item.isActive`]="{ item }">
-                    <v-checkbox
-                        class="read-only"
-                        :value="item.isActive"
-                        readonly
-                    />
+                    <v-icon
+                        :color="(item.isActive) ? 'primary' : 'secondary'"
+                    >
+                        {{ (item.isActive) ? 'mdi-check-box-outline' : 'mdi-checkbox-blank-off-outline' }}
+                    </v-icon>
                 </template>
                 <template #[`item.actions`]="{ item }">
                     <div class="featured-interaction-list-actions">
                         <v-checkbox
                             v-model="selected"
-                            hint="Toggle selection"
-                            persistent-hint
                             :value="item._id"
                         />
                         <v-btn 
@@ -158,10 +173,25 @@
             indeterminate
             color="grey darken-1"
         />
+        <confirm-delete
+            v-model="confirmDeleteDialog"
+            type="featured interaction"
+            :dialog="confirmDeleteDialog"
+            @delete-confirm="removeInteractions"
+            @delete-cancel="confirmDeleteDialog = false"
+        />
+        <material-picker
+            :dialog="materialPickerDialog"
+            @material-picked="editInteractions('subject_drug', $event)"
+            @close-dialog="materialPickerDialog = false"
+        />
     </section>
 </template>
 
 <script>
+import materialPicker from '@/cmps/featured-interaction/MaterialPicker';
+import confirmDelete from '@/cmps/general/ConfirmDelete';
+
 export default {
     props: {
         group: {
@@ -171,6 +201,9 @@ export default {
     },
     data() {
         return {
+            isAllSelected: false,
+            materialPickerDialog:false,
+            confirmDeleteDialog: false,
             selected: [],
             txtSearch: '',
             propertyToSearch: '',
@@ -244,6 +277,21 @@ export default {
         }
     },
     methods: {
+        async editInteractions(field, value) {
+            const filterBy = {
+                ids: [ ...this.selected ],
+                field,
+                value
+            };
+            await this.$store.dispatch({ type: 'updateFeaturedInteractions', filterBy });
+            this.materialPickerDialog = false;
+            this.getFeaturedInteractions();
+        },
+        async removeInteractions() {
+            await this.$store.dispatch({ type: 'removeFaeturedInteractions', filterBy: [ ...this.selected ] });
+            this.confirmDeleteDialog = false;
+            this.getFeaturedInteractions();
+        },
         async getFeaturedInteractions() {
             this.isLoading = true;
             const filterBy = { ...this.filterBy };
@@ -281,8 +329,13 @@ export default {
             }
         },
         toggleAllSelected(doSelect) {
+            this.isAllSelected = doSelect;
             this.selected = (doSelect) ? this.interactions.map(int => int._id) : [];
         }
+    },
+    components: {
+        confirmDelete,
+        materialPicker
     }
 }
 </script>

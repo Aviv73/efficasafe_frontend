@@ -33,6 +33,12 @@ export const featuredInteractionStore = {
         async getFeaturedInteractionGroups(context, { filterBy }) {
             const { groups } = await featuredInteractionService.list(filterBy);
             return groups;
+        },
+        async updateFeaturedInteractions(context, { filterBy }) {
+            await featuredInteractionService.updateMany(filterBy);
+        },
+        async removeFaeturedInteractions(context, { filterBy }) {
+            await featuredInteractionService.removeMany(filterBy);
         }
     }
 }
