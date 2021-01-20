@@ -9,8 +9,12 @@
                     >
                         <header class="mb-8">
                             <v-card-title class="pa-0">
-                                Edit featured interaction
+                                Edit interaction
                             </v-card-title>
+                            <figure>
+                                <figcaption class="caption text-center">powered by</figcaption>
+                                <img :src="require(`@/assets/drugbank.png`)" alt="DrugBank logo" />
+                            </figure>
                             <div class="featured-interaction-edit-switch">
                                 <v-switch
                                     class="ma-0"
