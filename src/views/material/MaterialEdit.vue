@@ -73,7 +73,7 @@
             />
             <v-text-field 
               type="text"
-              label="Ful References (provide space seperated values)"
+              label="Full References (provide space seperated values)"
               v-model="editedPathwayFullReferences"
             />
             <div class="pathway-form-actions">

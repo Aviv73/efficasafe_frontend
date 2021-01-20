@@ -20,7 +20,13 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="normal" @click="$emit('close-dialog')">Cancel</v-btn>
-                    <v-btn color="primary" @click="$emit('material-picked', { ...pickedMaterial })">Ok</v-btn>
+                    <v-btn
+                        color="primary"
+                        @click="$emit('material-picked', { ...pickedMaterial })"
+                        :disabled="!pickedMaterial"
+                        >
+                            Ok
+                        </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -43,10 +49,14 @@ export default {
         }
     },
     methods: {
-        setPickedMaterial({ _id, type, text }) {
+        setPickedMaterial(material) {
+            if (!material) {
+                this.pickedMaterial = null;
+                return;
+            }
+            const { _id, text } = material;
             this.pickedMaterial = { 
-                _id,
-                type,
+                drugbank_id: _id,
                 name: text
              };
         }

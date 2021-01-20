@@ -4,12 +4,17 @@ const END_POINT = 'featured-interaction';
 
 export const featuredInteractionService = {
     list,
+    getById,
     removeMany,
     updateMany
 }
 
 function list(filterBy) {
     return httpService.get(END_POINT, filterBy);
+}
+
+function getById(id) {
+    return httpService.get(`${END_POINT}/${id}`);
 }
 
 function removeMany(filterBy) {

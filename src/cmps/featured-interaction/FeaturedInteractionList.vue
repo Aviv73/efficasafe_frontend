@@ -71,7 +71,7 @@
                     left
                     nudge-left="50"
                     nudge-top="35"
-                    :close-on-click="true"
+                    :close-on-click="false"
                     :close-on-content-click="false"
                 >
                     <template v-slot:activator="{ on, attrs }">

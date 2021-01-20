@@ -1,0 +1,18 @@
+.featured-interaction-edit {
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    &-switch {
+        label {
+            margin-right: 8px;
+        }
+        .v-input__slot {
+            flex-direction: row-reverse;
+        }
+    }
+    &-loader {
+        margin-top: 35vh;
+    }
+}

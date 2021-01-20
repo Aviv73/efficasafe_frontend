@@ -22,13 +22,16 @@ export const featuredInteractionStore = {
         }
     },
     actions: {
-        async getFeaturedInteractions(context, { filterBy }) {
-            return await featuredInteractionService.list(filterBy);
-        },
         async loadFeaturedInteractionGroups(context, { filterBy }) {
             const { groups, total } = await featuredInteractionService.list(filterBy);
             context.commit({ type: 'setFeaturedInteractionGroups', groups });
             context.commit({ type: 'setFeaturedGroupsCount', total });
+        },
+        async getFeaturedInteractions(context, { filterBy }) {
+            return await featuredInteractionService.list(filterBy);
+        },
+        async getFeaturedInteraction(context, { id }) {
+            return await featuredInteractionService.getById(id);
         },
         async getFeaturedInteractionGroups(context, { filterBy }) {
             const { groups } = await featuredInteractionService.list(filterBy);
