@@ -8,7 +8,17 @@
             <v-card>
                 <v-card-title class="primary headline text-capitalize" style="color:white; font-weight:bold;">
                     <v-icon dark left>mdi-magnify</v-icon>
-                    Material picker
+                    Pick material
+                    <v-spacer />
+                    <v-btn 
+                        color="transparent"
+                        elevation="0"
+                        fab
+                        dark
+                        @click="closePicker"
+                    >
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
                 </v-card-title>
                 <main class="py-6">
                     <autocomplete 
@@ -19,10 +29,10 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="normal" @click="$emit('close-dialog')">Cancel</v-btn>
+                    <v-btn color="normal" @click="closePicker">Cancel</v-btn>
                     <v-btn
                         color="primary"
-                        @click="$emit('material-picked', { ...pickedMaterial })"
+                        @click="emitMaterial"
                         :disabled="!pickedMaterial"
                         >
                             Ok
@@ -35,6 +45,7 @@
 
 <script>
 import autocomplete from '@/cmps/Autocomplete';
+import { eventBus, EV_clear_autocomplete } from '@/services/eventBus.service';
 
 export default {
     props: {
@@ -49,6 +60,11 @@ export default {
         }
     },
     methods: {
+        emitMaterial() {
+            this.$emit('material-picked', { ...this.pickedMaterial });
+            this.pickedMaterial = null;
+            eventBus.$emit(EV_clear_autocomplete);
+        },
         setPickedMaterial(material) {
             if (!material) {
                 this.pickedMaterial = null;
@@ -59,6 +75,11 @@ export default {
                 drugbank_id: _id,
                 name: text
              };
+        },
+        closePicker() {
+            this.$emit('close-dialog');
+            eventBus.$emit(EV_clear_autocomplete);
+            this.pickedMaterial = null;
         }
     },
     components: {
