@@ -67,7 +67,7 @@ export default {
             filterBy.isGroups = true;
             filterBy.sortBy = filterBy.sortBy || 'name';
             filterBy.isDesc = filterBy.isDesc || false;
-            filterBy.limit = filterBy.limit || 10;
+            filterBy.limit = filterBy.limit || Number.MAX_SAFE_INTEGER;
             await this.$store.dispatch({ type: 'loadFeaturedInteractionGroups', filterBy });
             this.isLoading = false;
         }

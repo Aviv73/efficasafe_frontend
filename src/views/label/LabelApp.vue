@@ -63,7 +63,7 @@ export default {
 
             filterBy.sortBy = filterBy.sortBy || 'isSuper';
             filterBy.isDesc = filterBy.isDesc || 1;
-            filterBy.limit = filterBy.limit || 10;
+            filterBy.limit = filterBy.limit || 15;
             if (filterBy.q) filterBy.page = 0;
 
             await this.$store.dispatch({ type: 'loadLabels', filterBy });

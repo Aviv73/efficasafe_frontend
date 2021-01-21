@@ -13,6 +13,7 @@ export const interactionService = {
     formatRefStrs,
     getEmptyInteraction,
     calculateEvidenceLevel,
+    getEvidenceLevelDictionary,
     getRecommendationOrderMap
 }
 
@@ -174,6 +175,17 @@ function getRecommendationOrderMap() {
         'Coadministration is possible and may even be advised': 3,
         'Coadministration is advised': 3
     }
+}
+
+function getEvidenceLevelDictionary() {
+    return [
+        'A - multi clinical or meta or systematic',
+        'B - 1 clinical or retrospective + pre-clinical',
+        'C - 1 clinical or retrospective',
+        'D - case report',
+        'E - multi pre-clinical',
+        'F - 1 pre clinical'
+    ];
 }
 
 function _removeDuplicates(arr) {

@@ -68,8 +68,9 @@ export default {
     async loadInteractions() {
       this.loading = true;
       const filterBy = this.$route.query;
-      filterBy.sortBy = filterBy.sortBy || [ 'side1Material.name', 'isActive' ];
-      filterBy.isDesc = filterBy.isDesc || [ false, true ];
+      filterBy.limit = filterBy.limit || 50;
+      filterBy.sortBy = filterBy.sortBy || [ 'side1Material.name', 'isActive', 'side1Material.name', 'side1Label.name', 'side2DraftName' ];
+      filterBy.isDesc = filterBy.isDesc || [ false, true, false, false, false ];
       await this.$store.dispatch({ type: 'loadInteractions', filterBy });
       this.loading = false;
     },

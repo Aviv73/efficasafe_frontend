@@ -7,6 +7,10 @@
       disable-sort
       :options.sync="options"
       :loading="loading"
+      :items-per-page="15"
+      :footer-props="{
+        'items-per-page-options': [ 15, 50, -1 ]
+      }"
     >
       <template v-slot:[`header.name`]="{ header }">
         <th>

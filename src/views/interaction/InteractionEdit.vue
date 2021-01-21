@@ -72,7 +72,7 @@
               <v-select
                 :items="interaction.evidenceLevel"
                 label="Level of Evidence"
-                v-model="editedInteraction.evidenceLevel"
+                v-model="evidenceLevel"
               ></v-select>
             </div>
 
@@ -296,7 +296,7 @@ export default {
       },
       interaction: {
         recommendation: Object.keys(interactionService.getRecommendationOrderMap()),
-        evidenceLevel: ['A', 'B', 'C', 'D', 'E', 'F', '1', '2'],
+        evidenceLevel: interactionService.getEvidenceLevelDictionary(),
       },
       CKEditorConfig: {
         extraPlugins: 'autogrow',
@@ -342,6 +342,21 @@ export default {
           name: 'side 2',
         },
       };
+    },
+    evidenceLevel: {
+      get() {
+        for (let i = 0; i < this.interaction.evidenceLevel.length; i++) {
+          const str = this.interaction.evidenceLevel[i];
+          if (str.charAt(0) === this.editedInteraction.evidenceLevel) {
+            return str;
+          }
+        }
+        return '';
+      },
+      set(val) {
+        this.editedInteraction.evidenceLevel = val.charAt(0);
+        console.log(this.editedInteraction.evidenceLevel);
+      }
     },
     isFormValid() {
       return (

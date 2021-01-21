@@ -72,7 +72,7 @@ export default {
 
       criteria.sortBy = criteria.sortBy || [ 'type', 'name' ];
       criteria.isDesc = criteria.isDesc || [ true, false ];
-      criteria.limit = criteria.limit || 10;
+      criteria.limit = criteria.limit || 15;
 
       if (criteria.q) criteria.page = 0;
 

@@ -44,7 +44,7 @@
                             <v-radio :value="false" label="Includes" />
                         </v-radio-group>
                         <v-text-field
-                            v-model="txtSearch"
+                            v-model="query"
                             class="ma-0 pa-0 text-capitalize"
                             :label="(isStartsWith) ? `${propertyToSearch} starts with...` : `${propertyToSearch} includes...`"
                             hide-details
@@ -56,7 +56,7 @@
                         dark
                         outlined
                         class="ml-2"
-                        @click="setFilter(txtSearch, propertyToSearch, isStartsWith)"
+                        @click="setFilter(query, propertyToSearch, isStartsWith)"
                     >Search</v-btn>
                 </span>
                 <v-divider dark vertical class="mx-4" />
@@ -142,6 +142,10 @@
                 :options.sync="options"
                 disable-sort
                 :loading="isLoading"
+                :items-per-page="15"
+                :footer-props="{
+                    'items-per-page-options': [ 15, 50, -1 ]
+                }"
             >
                 <template #[`item.isActive`]="{ item }">
                     <v-icon
@@ -205,7 +209,7 @@ export default {
             materialPickerDialog:false,
             confirmDeleteDialog: false,
             selected: [],
-            txtSearch: '',
+            txtQuery: '',
             propertyToSearch: '',
             isStartsWith: true,
             interactions: [],
@@ -216,7 +220,7 @@ export default {
             filterBy: {
                 isGroups: false,
                 drugBankId: this.group._id,
-                limit: 10,
+                limit: 15,
                 page: 0,
                 sortBy: 'affected_drug.name',
                 isDesc: false,
@@ -269,6 +273,14 @@ export default {
         }
     },
     computed: {
+        query: {
+            get() {
+                return this.txtQuery;
+            },
+            set(val) {
+                this.txtQuery = val;
+            }
+        },
         autocompleteResults() {
             return this.autocompleteItems.reduce((acc, { _id, affected_drug }) => {
                 acc.push({ _id, text: affected_drug.name });

@@ -36,7 +36,6 @@
 import featuredInteractionList from '@/cmps/featured-interaction/FeaturedInteractionList'
 
 export default {
-    INFINITY: Math.pow(2, 53) - 1,
     props: {
         groups: {
             type: Array,
@@ -77,7 +76,7 @@ export default {
             handler() {
                 let { itemsPerPage, page } = this.options;
                 const filterBy = {
-                    limit: (itemsPerPage < 0) ? this.$options.INFINITY : itemsPerPage,
+                    limit: (itemsPerPage < 0) ? Number.MAX_SAFE_INTEGER : itemsPerPage,
                     page: --page
                 };
                 this.$emit('pagination-changed', filterBy);
