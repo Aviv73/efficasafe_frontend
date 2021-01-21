@@ -16,12 +16,9 @@ export const atcStore = ({
     },
     actions: {
         async loadAtcLabels(context) {
-            const atcLabels = await atcService.list();
+            const atcLabels = await atcService.query();
             context.commit({ type: 'setAtcLabels', atcLabels });
             return atcLabels;
-        },
-        async loadAtcLabel(context, { labelId }) {
-            return await atcService.getById(labelId);
         }
     }
 })
