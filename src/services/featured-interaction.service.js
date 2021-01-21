@@ -6,6 +6,7 @@ export const featuredInteractionService = {
     list,
     getById,
     removeMany,
+    update,
     updateMany
 }
 
@@ -19,6 +20,10 @@ function getById(id) {
 
 function removeMany(filterBy) {
     return httpService.delete(END_POINT, filterBy);
+}
+
+function update(interaction) {
+    return httpService.put(`${END_POINT}/${interaction._id}`, interaction);
 }
 
 function updateMany(filterBy) {

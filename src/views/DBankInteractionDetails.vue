@@ -49,6 +49,7 @@
                     <d-bank-refs-table 
                         class="d-bank-interaction-details-content-table"
                         :refs="interactionRefs"
+                        :isEdit="false"
                     />
                 </v-card>
             </div>

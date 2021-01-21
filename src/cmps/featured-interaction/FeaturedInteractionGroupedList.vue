@@ -11,6 +11,10 @@
         disable-sort
         @click:row="onRowClick"
         :loading="isLoading"
+        :items-per-page="-1"
+        :footer-props="{
+            'items-per-page-options': [ 15, 50, -1 ]
+        }"
     >
         <template v-slot:[`header.name`]="{ header }">
             <label class="list-header">
@@ -65,22 +69,18 @@ export default {
                     text: '',
                     value: 'data-table-expand'
                 }
-            ],
-            isInit: true
+            ]
         }
     },
     watch: {
         options: {
             handler() {
-                if (this.isInit) this.isInit = false;
-                else {
-                    let { itemsPerPage, page } = this.options;
-                    const filterBy = {
-                        limit: (itemsPerPage < 0) ? this.$options.INFINITY : itemsPerPage,
-                        page: --page
-                    };
-                    this.$emit('pagination-changed', filterBy);
-                }
+                let { itemsPerPage, page } = this.options;
+                const filterBy = {
+                    limit: (itemsPerPage < 0) ? this.$options.INFINITY : itemsPerPage,
+                    page: --page
+                };
+                this.$emit('pagination-changed', filterBy);
             },
             deep: true
         }

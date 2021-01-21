@@ -1,8 +1,16 @@
 <template>
   <section class="d-bank-refs-table">
+            <v-icon 
+                v-if="isEdit"
+                @click="$emit('edit-ref')"
+                class="reference-table-add-btn"
+                title="Add Reference"
+            >
+                mdi-plus-circle
+            </v-icon>
       <v-data-table
         caption="References"
-        :headers="headers"
+        :headers="computedHeaders"
         :items="refs"
       >
         <template #[`item.citation`]="{ value, item }">
@@ -17,6 +25,15 @@
                 {{ (item.pubmed_id) ? `https://pubmed.ncbi.nlm.nih.gov/${item.pubmed_id}` : item.url }}
             </a>
         </template>
+        <template #[`item.actions`]="{ item }">
+            <v-icon 
+                class="edit-icon" 
+                @click="$emit('edit-ref', item)"
+                title="Edit Reference"
+            >
+                mdi-pencil
+            </v-icon>
+        </template>
       </v-data-table>
   </section>
 </template>
@@ -28,6 +45,10 @@ export default {
         refs: {
             type: Array,
             required: true
+        },
+        isEdit: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -50,8 +71,19 @@ export default {
                     align: 'center',
                     sortable: true,
                     value: 'ref_id'
+                },
+                {
+                    text: 'Actions',
+                    align: 'center',
+                    sortable: false,
+                    value: 'actions'
                 }
             ]
+        }
+    },
+    computed: {
+        computedHeaders() {
+            return (this.isEdit) ? this.headers : this.headers.filter(header => header.text !== 'Actions');
         }
     }
 }

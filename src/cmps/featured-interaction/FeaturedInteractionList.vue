@@ -28,8 +28,8 @@
                             dark
                             row
                         >
-                            <v-radio value="summary" label="summary" />
-                            <v-radio value="management" label="management" />
+                            <v-radio value="summary" label="Summary" />
+                            <v-radio value="extended_description" label="Extended description" />
                         </v-radio-group>
                         <v-radio-group
                             class="mx-0 my-2 pa-0"
@@ -222,7 +222,7 @@ export default {
                 isDesc: false,
                 side2Name: '',
                 summary: '',
-                management: '',
+                extended_description: '',
                 isStartsWith: true
             },
             search: null,
@@ -295,7 +295,7 @@ export default {
         async getFeaturedInteractions() {
             this.isLoading = true;
             const filterBy = { ...this.filterBy };
-            if (filterBy.side2Name || filterBy.summary || filterBy.management) filterBy.page = 0;
+            if (filterBy.side2Name || filterBy.summary || filterBy.extended_description) filterBy.page = 0;
             const { featuredInteractions, total } = await this.$store.dispatch({ type: 'getFeaturedInteractions', filterBy });
             this.interactions = featuredInteractions;
             this.totalItems = total;
@@ -315,13 +315,13 @@ export default {
                     this.filterBy.side2Name = val ? val.text : '';
                     break;
                 case 'summary':
-                    this.filterBy.management = '';
+                    this.filterBy.extended_description = '';
                     this.filterBy.summary = val;
                     this.filterBy.isStartsWith = isStartsWith;
                     break;
-                case 'management':
+                case 'extended_description':
                     this.filterBy.summary = '';
-                    this.filterBy.management = val;
+                    this.filterBy.extended_description = val;
                     this.filterBy.isStartsWith = isStartsWith;
                     break;
                 default:

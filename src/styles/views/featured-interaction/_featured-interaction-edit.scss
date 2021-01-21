@@ -30,6 +30,10 @@
             max-width: 70%;
         }
     }
+    &-table p {
+        display: inline;
+        margin-bottom: 0;
+    }
     &-loader {
         margin-top: 35vh;
     }

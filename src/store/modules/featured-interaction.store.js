@@ -40,6 +40,9 @@ export const featuredInteractionStore = {
         async updateFeaturedInteractions(context, { filterBy }) {
             await featuredInteractionService.updateMany(filterBy);
         },
+        async updateFeaturedInteraction(context, { interaction }) {
+            return await featuredInteractionService.update(interaction);
+        },
         async removeFaeturedInteractions(context, { filterBy }) {
             await featuredInteractionService.removeMany(filterBy);
         }

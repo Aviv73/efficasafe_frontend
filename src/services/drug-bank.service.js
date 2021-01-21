@@ -7,7 +7,8 @@ const END_POINTS = {
 export const drugBankService = {
     getInteractions,
     getInteraction,
-    getWrongRefsMap
+    getWrongRefsMap,
+    getEmptyRef
 }
 
 function getInteractions(filterBy) {
@@ -16,6 +17,17 @@ function getInteractions(filterBy) {
 
 function getInteraction(id) {
     return httpService.get(`${END_POINTS.INTERACTION}/${id}`);
+}
+
+function getEmptyRef() {
+    return {
+        ref_id: '',
+        pubmed_id: '',
+        citation: '',
+        title: '',
+        url: '',
+        draftIdx: 0
+    }
 }
 
 function getWrongRefsMap() {
