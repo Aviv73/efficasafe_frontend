@@ -26,7 +26,7 @@
         </template>
         <template v-slot:expanded-item="{ headers, item }">
             <td :colspan="headers.length" class="expanded py-2 px-3 primary lighten-1">
-                <featured-interaction-list :group="item" />
+                <featured-interaction-list :group="item" ref="elList" />
             </td>
         </template>
     </v-data-table>
@@ -102,14 +102,38 @@ export default {
         }
     },
     created() {
-        const { expandedGroups  } = this.$store.getters;
-        if (expandedGroups) this.expanded = expandedGroups;
+        const { expandedGroups } = this.$store.getters;
+        if (expandedGroups) {
+            this.expanded = expandedGroups;
+        }
     },
-    destroyed() {
+    beforeDestroy() {
         this.$store.commit({ 
             type: 'setExpandedGroups',
             groups: JSON.parse(JSON.stringify(this.expanded))
         });
+        const filterBy = (this.$refs.elList) ? this.$refs.elList.filterBy : null;
+        this.$store.commit({ 
+            type: 'setLastFilterBy',
+            filterBy: JSON.parse(JSON.stringify(filterBy))
+        });
+        if (this.$refs.elList) {
+            console.log(this.$refs.elList);
+            const { isStartsWith, propertyToSearch, searchOperator, txtQuery, result, search, options } = this.$refs.elList;
+            const prevState = {
+                isStartsWith,
+                propertyToSearch,
+                searchOperator,
+                txtQuery,
+                result,
+                search,
+                options
+            }
+            this.$store.commit({ 
+                type: 'setPrevState',
+                prevState
+            });
+        }
     },
     components: {
         featuredInteractionList

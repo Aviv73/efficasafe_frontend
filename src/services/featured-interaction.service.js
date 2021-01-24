@@ -7,7 +7,8 @@ export const featuredInteractionService = {
     getById,
     removeMany,
     update,
-    updateMany
+    updateMany,
+    getDefaultFilterBy
 }
 
 function list(filterBy) {
@@ -28,4 +29,20 @@ function update(interaction) {
 
 function updateMany(filterBy) {
     return httpService.put(END_POINT, filterBy);
+}
+
+function getDefaultFilterBy(drugBankId) {
+    return {
+        isGroups: false,
+        drugBankId,
+        limit: 15,
+        page: 0,
+        sortBy: 'affected_drug.name',
+        isDesc: false,
+        side2Name: '',
+        summary: '',
+        extended_description: '',
+        isStartsWith: true,
+        operator: ''
+    }
 }

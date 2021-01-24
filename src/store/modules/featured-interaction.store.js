@@ -4,22 +4,17 @@ export const featuredInteractionStore = {
     state: {
         featuredInteractionGroups: [],
         featuredGroupsCount: 0,
-        expandedGroups: null
-        // filterBy: {
-        //     isGroups: false,
-        //     drugBankId: '',
-        //     limit: 15,
-        //     page: 0,
-        //     sortBy: 'affected_drug.name',
-        //     isDesc: false,
-        //     side2Name: '',
-        //     summary: '',
-        //     extended_description: '',
-        //     isStartsWith: true,
-        //     operator: ''
-        // }
+        expandedGroups: null,
+        lastFilterBy: null,
+        prevState: null
     },
     getters: {
+        prevState(state) {
+            return state.prevState;
+        },
+        lastFilterBy(state) {
+            return state.lastFilterBy;
+        },
         expandedGroups(state) {
             return state.expandedGroups;
         },
@@ -31,6 +26,12 @@ export const featuredInteractionStore = {
         }
     },
     mutations: {
+        setPrevState(state, { prevState }) {
+            state.prevState = prevState;
+        },
+        setLastFilterBy(state, { filterBy }) {
+            state.lastFilterBy = filterBy;
+        },
         setExpandedGroups(state, { groups }) {
             state.expandedGroups = groups;
         },

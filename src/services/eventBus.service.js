@@ -11,6 +11,7 @@ export const EV_material_unselected = 'material-unselected';
 export const EV_primary_material_changed = 'primary-material-changed';
 export const EV_refresh_root_tree_view = 'refresh-root-tree-view';
 export const EV_clear_autocomplete = 'clear-autocomplete';
+export const EV_restore_filter_by = 'restore-filter-by';
 
 export const EV_edit_interaction_failed = 'edit-interaction-failed';
 

@@ -194,6 +194,7 @@
 </template>
 
 <script>
+import { featuredInteractionService } from '@/services/featured-interaction.service';
 import materialPicker from '@/cmps/featured-interaction/MaterialPicker';
 import confirmDelete from '@/cmps/general/ConfirmDelete';
 
@@ -219,19 +220,7 @@ export default {
             autocompleteItems: [],
             isAutocompleteLoading: false,
             isLoading: false,
-            filterBy: {
-                isGroups: false,
-                drugBankId: this.group._id,
-                limit: 15,
-                page: 0,
-                sortBy: 'affected_drug.name',
-                isDesc: false,
-                side2Name: '',
-                summary: '',
-                extended_description: '',
-                isStartsWith: true,
-                operator: ''
-            },
+            filterBy: featuredInteractionService.getDefaultFilterBy(this.group._id),
             search: null,
             result: null,
             options: {},
@@ -253,8 +242,9 @@ export default {
         }
     },
     watch: {
-        group({ _id }) {
-            this.filterBy.drugBankId = _id;
+        'group._id'(groupId) {
+            this.resetData();
+            this.filterBy = featuredInteractionService.getDefaultFilterBy(groupId);
         },
         search: {
             handler(val) {
@@ -313,7 +303,12 @@ export default {
         },
         async getFeaturedInteractions() {
             this.isLoading = true;
-            const filterBy = { ...this.filterBy };
+            const { lastFilterBy } = this.$store.getters;
+            let filterBy;
+            if (lastFilterBy) {
+                filterBy = this.restoreLastState();
+            } else filterBy = { ...this.filterBy };
+
             if (filterBy.side2Name || filterBy.summary || filterBy.extended_description) filterBy.page = 0;
             const { featuredInteractions, total } = await this.$store.dispatch({ type: 'getFeaturedInteractions', filterBy });
             this.interactions = featuredInteractions;
@@ -352,6 +347,31 @@ export default {
         toggleAllSelected(doSelect) {
             this.isAllSelected = doSelect;
             this.selected = (doSelect) ? this.interactions.map(int => int._id) : [];
+        },
+        restoreLastState() {
+            Object.entries(this.$store.getters.prevState).forEach(([ key, value]) => {
+                this[key] = (typeof value === 'object') ? JSON.parse(JSON.stringify(value)) : value;
+            });
+            const lastFilterBy = JSON.parse(JSON.stringify(this.$store.getters.lastFilterBy));
+            this.$store.commit({
+                type: 'setPrevState',
+                prevState: null
+            });
+            this.$store.commit({
+                type: 'setLastFilterBy',
+                filterBy: null
+            });
+            return lastFilterBy;
+        },
+        resetData() {
+            this.options = {};
+            this.result = null;
+            this.search = null;
+            this.isStartsWith = true;
+            this.isAllSelected = false;
+            this.propertyToSearch = '';
+            this.searchOperator = '';
+            this.txtQuery = '';
         }
     },
     components: {

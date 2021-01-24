@@ -5,6 +5,12 @@
 
 .tr-interaction {
     .td-side {
+        &.side1 {
+            white-space: nowrap;
+            max-width: 250px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
         a {
             text-decoration: none;
             display: flex;
