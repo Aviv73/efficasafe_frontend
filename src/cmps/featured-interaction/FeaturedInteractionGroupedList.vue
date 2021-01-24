@@ -6,6 +6,7 @@
         :server-items-length="groupCount"
         :options.sync="options"
         :expanded.sync="expanded"
+        :single-expand="true"
         item-key="_id"
         show-expand
         disable-sort
@@ -33,7 +34,7 @@
 </template>
 
 <script>
-import featuredInteractionList from '@/cmps/featured-interaction/FeaturedInteractionList'
+import featuredInteractionList from '@/cmps/featured-interaction/FeaturedInteractionList';
 
 export default {
     props: {
@@ -52,6 +53,7 @@ export default {
     },
     data() {
         return {
+            isMounted: false,
             expanded: [],
             options: {},
             headers: [
@@ -74,12 +76,14 @@ export default {
     watch: {
         options: {
             handler() {
-                let { itemsPerPage, page } = this.options;
-                const filterBy = {
-                    limit: (itemsPerPage < 0) ? Number.MAX_SAFE_INTEGER : itemsPerPage,
-                    page: --page
-                };
-                this.$emit('pagination-changed', filterBy);
+                if (this.isMounted) {
+                    let { itemsPerPage, page } = this.options;
+                    const filterBy = {
+                        limit: (itemsPerPage < 0) ? Number.MAX_SAFE_INTEGER : itemsPerPage,
+                        page: --page
+                    };
+                    this.$emit('pagination-changed', filterBy);
+                } else this.isMounted = true;
             },
             deep: true
         }
@@ -93,9 +97,19 @@ export default {
         },
         onRowClick(row) {
             const idx = this.expanded.indexOf(row);
-            if (idx === -1) this.expanded.push(row);
-            else this.expanded.splice(idx, 1);
+            if (idx === -1) this.expanded = [ row ];
+            else this.expanded = [];
         }
+    },
+    created() {
+        const { expandedGroups  } = this.$store.getters;
+        if (expandedGroups) this.expanded = expandedGroups;
+    },
+    destroyed() {
+        this.$store.commit({ 
+            type: 'setExpandedGroups',
+            groups: JSON.parse(JSON.stringify(this.expanded))
+        });
     },
     components: {
         featuredInteractionList

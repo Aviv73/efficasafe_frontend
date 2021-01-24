@@ -47,7 +47,8 @@
                             v-model="query"
                             class="ma-0 pa-0 text-capitalize"
                             :label="(isStartsWith) ? `${propertyToSearch} starts with...` : `${propertyToSearch} includes...`"
-                            hide-details
+                            hint="AND | OR operators are optional"
+                            persistent-hint
                             outlined
                             dark
                         />
@@ -252,6 +253,9 @@ export default {
         }
     },
     watch: {
+        group({ _id }) {
+            this.filterBy.drugBankId = _id;
+        },
         search: {
             handler(val) {
                 this.getAutocompleteResults(val);

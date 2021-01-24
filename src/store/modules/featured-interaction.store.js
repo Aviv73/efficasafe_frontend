@@ -3,9 +3,26 @@ import { featuredInteractionService } from '@/services/featured-interaction.serv
 export const featuredInteractionStore = {
     state: {
         featuredInteractionGroups: [],
-        featuredGroupsCount: 0
+        featuredGroupsCount: 0,
+        expandedGroups: null
+        // filterBy: {
+        //     isGroups: false,
+        //     drugBankId: '',
+        //     limit: 15,
+        //     page: 0,
+        //     sortBy: 'affected_drug.name',
+        //     isDesc: false,
+        //     side2Name: '',
+        //     summary: '',
+        //     extended_description: '',
+        //     isStartsWith: true,
+        //     operator: ''
+        // }
     },
     getters: {
+        expandedGroups(state) {
+            return state.expandedGroups;
+        },
         featuredInteractionGroups(state) {
             return state.featuredInteractionGroups;
         },
@@ -14,6 +31,9 @@ export const featuredInteractionStore = {
         }
     },
     mutations: {
+        setExpandedGroups(state, { groups }) {
+            state.expandedGroups = groups;
+        },
         setFeaturedInteractionGroups(state, { groups }) {
             state.featuredInteractionGroups = groups;
         },
