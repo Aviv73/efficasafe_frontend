@@ -205,6 +205,7 @@ export default {
     },
     data() {
         return {
+            searchOperator: '',
             isAllSelected: false,
             materialPickerDialog:false,
             confirmDeleteDialog: false,
@@ -227,7 +228,8 @@ export default {
                 side2Name: '',
                 summary: '',
                 extended_description: '',
-                isStartsWith: true
+                isStartsWith: true,
+                operator: ''
             },
             search: null,
             result: null,
@@ -278,6 +280,7 @@ export default {
                 return this.txtQuery;
             },
             set(val) {
+                this.searchOperator = val.includes('AND') ? 'AND' : val.includes('OR') ? 'OR' : '';
                 this.txtQuery = val;
             }
         },
@@ -328,13 +331,15 @@ export default {
                     break;
                 case 'summary':
                     this.filterBy.extended_description = '';
-                    this.filterBy.summary = val;
+                    this.filterBy.summary = this.searchOperator ? val.split(this.searchOperator).map(str => str.trim()) : val;
                     this.filterBy.isStartsWith = isStartsWith;
+                    this.filterBy.operator = this.searchOperator;
                     break;
                 case 'extended_description':
                     this.filterBy.summary = '';
-                    this.filterBy.extended_description = val;
+                    this.filterBy.extended_description = this.searchOperator ? val.split(this.searchOperator).map(str => str.trim()) : val;
                     this.filterBy.isStartsWith = isStartsWith;
+                    this.filterBy.operator = this.searchOperator;
                     break;
                 default:
                     break;
