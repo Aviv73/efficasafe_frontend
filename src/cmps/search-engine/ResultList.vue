@@ -72,9 +72,10 @@ export default {
   },
   methods: {
     getInteractionName(interaction) {
-      const id = (interaction.side2Material) ? interaction.side2Material._id : '';
+      const side1Id = interaction.side1Material._id;
+      const side2Id = (interaction.side2Material) ? interaction.side2Material._id : '';
       let name = (interaction.side2Material) ? `${interaction.side1Material.name} & ${interaction.side2Material.name}` : interaction.side2Label.name;
-      const vInteractionsCount = this.interactions.filter(int => int.side2Material && int.side2Material._id === id).length;
+      const vInteractionsCount = this.interactions.filter(int => (int.side2Material && int.side2Material._id === side2Id) && int.side1Material._id === side1Id).length;
       
       if (interaction.isVirtual && vInteractionsCount > 1) {
         name += ` (${interaction.side2DraftName})`;

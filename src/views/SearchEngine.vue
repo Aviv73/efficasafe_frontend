@@ -204,7 +204,8 @@ export default {
                         name, 
                         type,
                         drugBankId 
-                    }, interactions: [] 
+                    },
+                    interactions: [] 
                 }
             });
             if (this.$route.name === 'DBankResults') return;
