@@ -180,6 +180,14 @@
                         >
                             <v-icon x-small>mdi-pencil</v-icon>
                         </v-btn>
+                        <v-btn 
+                            color="primary" 
+                            x-small
+                            title="View interaction"
+                            :to="`/featured-interaction/${item._id}`"
+                        >
+                            <v-icon x-small>mdi-eye</v-icon>
+                        </v-btn>
                     </div>
                 </template>
             </v-data-table>

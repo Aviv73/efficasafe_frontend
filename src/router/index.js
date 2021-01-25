@@ -15,6 +15,7 @@ import interactionDetails from '../views/interaction/InteractionDetails';
 import vInteractionDetails from '@/views/interaction/VinteractionDetails';
 import featuredInteractionApp from '@/views/featured-interaction/FeaturedInteractionApp';
 import featuredInteractionEdit from '@/views/featured-interaction/FeaturedInteractionEdit';
+import featuredInteractionDetails from '@/views/featured-interaction/FeaturedInteractionDetails';
 import archiveApp from '../views/archive/ArchiveApp';
 import DataIntegrity from '@/views/DataIntegrity';
 import searchEngine from '@/views/SearchEngine';
@@ -106,6 +107,12 @@ const routes = [
     path: '/featured-interaction/edit/:id',
     name: 'FeaturedInteractionEdit',
     component: featuredInteractionEdit,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/featured-interaction/:id',
+    name: 'FeaturedInteractionDetails',
+    component: featuredInteractionDetails,
     meta: { requiresAuth: true }
   },
   {
