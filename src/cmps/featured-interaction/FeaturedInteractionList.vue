@@ -47,7 +47,7 @@
                             v-model="query"
                             class="ma-0 pa-0 text-capitalize"
                             :label="(isStartsWith) ? `${propertyToSearch} starts with...` : `${propertyToSearch} includes...`"
-                            hint="AND | OR operators are optional"
+                            hint="AND | OR | NOT operators are optional"
                             persistent-hint
                             outlined
                             dark
@@ -274,7 +274,7 @@ export default {
                 return this.txtQuery;
             },
             set(val) {
-                this.searchOperator = val.includes('AND') ? 'AND' : val.includes('OR') ? 'OR' : '';
+                this.searchOperator = val.includes('AND') ? 'AND' : val.includes('OR') ? 'OR' : val.includes('NOT') ? 'NOT' : '';
                 this.txtQuery = val;
             }
         },
@@ -330,13 +330,13 @@ export default {
                     break;
                 case 'summary':
                     this.filterBy.extended_description = '';
-                    this.filterBy.summary = this.searchOperator ? val.split(this.searchOperator).map(str => str.trim()) : val;
+                    this.filterBy.summary = this.searchOperator ? val.split(this.searchOperator).filter(str => str).map(str => str.trim()) : val;
                     this.filterBy.isStartsWith = isStartsWith;
                     this.filterBy.operator = this.searchOperator;
                     break;
                 case 'extended_description':
                     this.filterBy.summary = '';
-                    this.filterBy.extended_description = this.searchOperator ? val.split(this.searchOperator).map(str => str.trim()) : val;
+                    this.filterBy.extended_description = this.searchOperator ? val.split(this.searchOperator).filter(str => str).map(str => str.trim()) : val;
                     this.filterBy.isStartsWith = isStartsWith;
                     this.filterBy.operator = this.searchOperator;
                     break;

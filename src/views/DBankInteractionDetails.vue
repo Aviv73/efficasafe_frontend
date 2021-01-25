@@ -136,7 +136,7 @@ export default {
                 const beforeIdx = txt.indexOf(match) - 1;
                 if (txt.charAt(beforeIdx) === '.') {
                     txt = txt.substring(0, beforeIdx) + txt.substring(beforeIdx + 1);
-                    formatedMatch += '.';
+                    formatedMatch = ` ${formatedMatch}.`;
                 }
                 
                 txt = txt.replace(match, formatedMatch);
