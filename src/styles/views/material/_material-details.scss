@@ -1,6 +1,9 @@
 .material-details {
     margin-bottom: 12px;
-
+    
+    .v-chip {
+        pointer-events: none;
+    }
     &-expand-panel {
         width: 95%;
         
@@ -14,6 +17,11 @@
             }
         }
     }
+    &-labels {
+        .v-chip {
+            pointer-events: all;
+        }
+    }
     .action-container {
         display: flex;
         margin-bottom: 20px;
@@ -21,9 +29,6 @@
         > :not(:last-child) {
             margin-inline-end: 10px;
         }
-    }
-    .v-chip {
-        pointer-events: none;
     }
     .info-container {
         display: grid;

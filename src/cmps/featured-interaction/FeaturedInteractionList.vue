@@ -105,8 +105,19 @@
                                 class="mb-4"
                                 fab
                                 outlined
-                                title="Activate"
+                                title="Export to label"
                                 color="primary"
+                                @click="addToLabel"
+                                :disabled="!selected.length"
+                            >
+                                <v-icon>mdi-label-outline</v-icon>
+                            </v-btn>
+                            <v-btn
+                                class="mb-4"
+                                fab
+                                outlined
+                                title="Activate"
+                                color="light-blue"
                                 @click="editInteractions('isActive', true)"
                                 :disabled="!selected.length"
                             >
@@ -131,7 +142,7 @@
                                 @click="confirmDeleteDialog = true"
                                 :disabled="!selected.length"
                             >
-                                <v-icon>mdi-delete</v-icon>
+                                <v-icon>mdi-delete-outline</v-icon>
                             </v-btn>
                         </v-card>
                 </v-menu>
@@ -286,6 +297,12 @@ export default {
         }
     },
     methods: {
+        async addToLabel() {
+            const side2DBKId = this.selected.map(interactionId => {
+                return this.interactions.find(interaction => interaction._id === interactionId).affected_drug.drugbank_id;
+            });
+            this.$router.push(`/label/edit?materials=${side2DBKId}`);
+        },
         async editInteractions(field, value) {
             const filterBy = {
                 ids: [ ...this.selected ],

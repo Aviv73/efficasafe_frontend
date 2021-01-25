@@ -293,7 +293,7 @@
                     </v-expansion-panels>
 
                     <h3 class="info-title" v-if="material.labels.length">Labels</h3>
-                    <v-chip-group column v-if="material.labels.length">
+                    <v-chip-group column v-if="material.labels.length" class="material-details-labels">
                         <v-chip
                             v-for="label in material.labels"
                             :key="label._id"

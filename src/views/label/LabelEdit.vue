@@ -95,6 +95,7 @@ export default {
         const criteria = { labelId, limit: 0 };
         const materials = await this.$store.dispatch({ type: 'getMaterials', criteria });
         this.relatedMaterials = materials;
+        console.log('Inload:', this.relatedMaterials);
       } else {
         label = labelService.getEmptyLabel();
       }
@@ -127,8 +128,19 @@ export default {
         console.log('Error:', err);
       }
     },
+    async addMaterials(DBKIds) {
+      const materials = await Promise.all(DBKIds.map(drugBankId => {
+          return this.$store.dispatch({
+              type: 'getMaterials',
+              criteria: { drugBankId, page: 0, limit: 0 }
+          });
+      }));
+      this.relatedMaterials = materials.flat(1);
+    }
   },
-  created() {
+  async created() {
+    const { materials } = this.$route.query;
+    if (materials) await this.addMaterials(materials.split(','));
     this.loadLabel();
   },
   components: {

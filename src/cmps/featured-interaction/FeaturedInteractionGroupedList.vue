@@ -118,7 +118,6 @@ export default {
             filterBy: JSON.parse(JSON.stringify(filterBy))
         });
         if (this.$refs.elList) {
-            console.log(this.$refs.elList);
             const { isStartsWith, propertyToSearch, searchOperator, txtQuery, result, search, options } = this.$refs.elList;
             const prevState = {
                 isStartsWith,
