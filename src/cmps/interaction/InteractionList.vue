@@ -29,7 +29,11 @@
       <template v-slot:body="{ items }">
         <tbody>
           <tr class="tr-interaction" v-for="item in items" :key="item._id">
-            <td class="td-side side1">
+            <td 
+              class="td-side text-no-wrap text-truncate"
+              style="max-width: 200px;"
+              :title="item.side1Material.name"
+            >
               <router-link :to="`/interaction/${item._id}`">
                 <div class="side-name-img" v-if="item.side1Material">
                   <img

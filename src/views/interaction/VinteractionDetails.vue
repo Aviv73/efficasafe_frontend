@@ -142,13 +142,13 @@ export default {
         },
         relevantSide1Pathways() {
             return this.side1Pathways.filter(pathway => {
-                const idx = this.material.pathways.findIndex(matPathway => matPathway.enzyme.toUpperCase() === pathway.enzyme.replace('CYP', '').toUpperCase());
+                const idx = this.material.pathways.findIndex(matPathway => matPathway.enzyme.replace('CYP', '').toUpperCase() === pathway.enzyme.replace('CYP', '').toUpperCase());
                 return idx !== -1;
             });
         },
         unRelevantSide1Pathways() {
             return this.material.pathways.filter(pathway => {
-                const idx = this.side1Pathways.findIndex(matPathway => matPathway.enzyme.replace('CYP', '').toUpperCase() === pathway.enzyme.toUpperCase());
+                const idx = this.side1Pathways.findIndex(matPathway => matPathway.enzyme.replace('CYP', '').toUpperCase() === pathway.enzyme.replace('CYP', '').toUpperCase());
                 return idx === -1;
             });
         },
