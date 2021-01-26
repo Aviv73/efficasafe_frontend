@@ -18,13 +18,17 @@
               label="Text*"
               v-model="editedRef.txt"
               auto-grow
+              required
+              :rules="[(v) => !!v || 'Reference text is required']"
             />
             <v-select 
               type="text"
-              label="Type"
+              label="Type*"
               :items="$options.refTypes"
               v-model="editedRef.type"
               clearable
+              required
+              :rules="[(v) => !!v || 'Reference type is required']"
             />
             <v-text-field 
               type="text"
@@ -145,13 +149,11 @@
           <v-text-field
             v-model="editedMaterial.botanicalFamily"
             label="Botanical Family"
-            v-if="editedMaterial.type === 'herb'"
           />
 
           <v-text-field
             v-model="editedMaterial.plantPartUsed"
             label="Plant Part Used"
-            v-if="editedMaterial.type === 'herb'"
           />
 
           <div class="list-chips">
@@ -332,7 +334,6 @@
             :isEdit="true"
             @edit-ref="openRefDialog"
             class="ref-table"
-            v-if="editedMaterial.refs.length"
             :references="editedMaterial.refs"
           />
 
@@ -429,7 +430,6 @@
             label="Food interactions"
           />
           <pathway-table 
-            v-if="editedMaterial.pathways && editedMaterial.pathways.length"
             :items="editedMaterial.pathways"
             :isEdit="true"
             :isHerb="editedMaterial.type === 'herb'"
@@ -480,7 +480,7 @@ import CKEditor from 'ckeditor4-vue';
 export default {
   refTypes: [
     'clinical', 'meta', 'systematic', 'drug label', 'animal',
-    'in vitro', 'retrospective', 'case'
+    'in vitro', 'retrospective', 'case', 'review'
   ],
   data() {
     return {

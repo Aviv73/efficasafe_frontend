@@ -1,84 +1,89 @@
 <template>
-    <div>
-        <section class="d-bank-interaction-details" v-if="interaction">
-            <div class="container">
-                <header class="pb-4">
-                    <v-btn color="primary" @click="$router.go(-1)">
-                        <v-icon small left>mdi-arrow-left</v-icon>Back to Search
-                    </v-btn>
-                    <v-btn :color="isTextFormatted ? 'secondary' : 'primary'" @click="isTextFormatted = !isTextFormatted">
-                        <v-icon small left>{{ isTextFormatted ? 'mdi-eye-outline' : 'mdi-eye-off-outline' }}</v-icon>View {{ isTextFormatted ? 'origin' : 'formatted' }} text
-                    </v-btn>
-                </header>
-                <v-card class="d-bank-interaction-details-content px-3">
-                    <v-card-title class="d-bank-interaction-details-content-title px-0">
-                        {{ `${interaction.subject_drug.name} & ${interaction.affected_drug.name}` }}
-                        <figure>
-                            <img :src="require(`@/assets/drugbank.png`)" alt="DrugBank logo" />
-                            <figcaption class="caption">powered by</figcaption>
-                        </figure>
-                    </v-card-title>
+  <section class="d-bank-interaction-details">
+      <div class="container">
+        <main v-if="!isLoading && interaction">
+            <header class="pb-4">
+                <v-btn color="primary" @click="$router.go(-1)">
+                    <v-icon small left>mdi-arrow-left</v-icon>Back
+                </v-btn>
+                <v-btn :color="isTextFormatted ? 'secondary' : 'primary'" @click="isTextFormatted = !isTextFormatted">
+                    <v-icon small left>{{ isTextFormatted ? 'mdi-eye-outline' : 'mdi-eye-off-outline' }}</v-icon>View {{ isTextFormatted ? 'origin' : 'formatted' }} text
+                </v-btn>
+            </header>
+            <v-card class="d-bank-interaction-details-content px-3">
+                <v-card-title class="d-bank-interaction-details-content-title px-0">
+                    {{ `${interaction.subject_drug.name} & ${interaction.affected_drug.name}` }}
+                    <figure>
+                        <img :src="require(`@/assets/drugbank.png`)" alt="DrugBank logo" />
+                        <figcaption class="caption">powered by</figcaption>
+                    </figure>
+                </v-card-title>
 
-                    <div class="text-capitalize">Recommendation:</div>
-                    <div v-recommendation-color>{{ interaction.recommendation }}</div>
+                <div class="text-capitalize">Recommendation:</div>
+                <div v-recommendation-color>{{ interaction.recommendation }}</div>
 
-                    <div class="text-capitalize">Severity:</div>
-                    <div>{{ interaction.severity }}</div>
+                <div class="text-capitalize">Severity:</div>
+                <div>{{ interaction.severity }}</div>
 
-                    <div class="text-capitalize">Level of evidence:</div>
-                    <div>{{ interaction.evidence_level }}</div>
+                <div class="text-capitalize">Level of evidence:</div>
+                <div>{{ interaction.evidence_level }}</div>
 
-                    <div class="text-capitalize">Summary:</div>
-                    <p>{{ interaction.summary }}</p>
+                <div class="text-capitalize">Summary:</div>
+                <p>{{ interaction.summary }}</p>
 
-                    <div class="text-capitalize" v-if="interaction.extended_description">Extended description:</div>
-                    <p 
-                        v-if="interaction.extended_description"
-                        ref="extendedDescription"
-                        v-html="isTextFormatted ? getRefsToDisplay(interaction.extended_description) : interaction.extended_description" 
-                    />
+                <div class="text-capitalize" v-if="interaction.extended_description">Extended description:</div>
+                <p 
+                    v-if="interaction.extended_description"
+                    ref="extendedDescription"
+                    v-html="isTextFormatted ? getRefsToDisplay(interaction.extended_description) : interaction.extended_description" 
+                />
 
-                    <div class="text-capitalize" v-if="interaction.management">Management:</div>
-                    <p 
-                        ref="management"
-                        v-if="interaction.management"
-                        v-html="isTextFormatted ? getRefsToDisplay(interaction.management) : interaction.management"
-                    />
-                    
-                    <v-divider class="d-bank-interaction-details-content-divider my-2" />
-                    <d-bank-refs-table 
+                <div class="text-capitalize" v-if="interaction.management">Management:</div>
+                <p 
+                    v-if="interaction.management"
+                    ref="management"
+                    v-html="isTextFormatted ? getRefsToDisplay(interaction.management) : interaction.management"
+                />
+
+                <v-divider class="d-bank-interaction-details-content-divider my-2" />
+                <d-bank-refs-table 
                         class="d-bank-interaction-details-content-table"
                         :refs="interactionRefs"
                         :isEdit="false"
                     />
-                </v-card>
-            </div>
-        </section>
-        <entity-not-found v-if="isNotFound" entity="DrugBank interaction" />
-    </div>
+            </v-card>
+        </main>
+        <entity-not-found 
+            entity="featured interaction"
+            v-if="!isLoading && !interaction"
+        />
+        <loader class="d-bank-interaction-details-loader" v-if="isLoading" />
+      </div>
+  </section>
 </template>
 
 <script>
 import { drugBankService } from '@/services/drug-bank.service';
 import { interactionService } from '@/services/interaction.service';
-import dBankRefsTable from '@/cmps/d-bank-interaction/DBankRefsTable';
+import loader from '@/cmps/general/LoadingCmp';
 import entityNotFound from '@/cmps/general/EntityNotFound';
+import dBankRefsTable from '@/cmps/d-bank-interaction/DBankRefsTable';
 
 export default {
     wrongRefsMap: drugBankService.getWrongRefsMap(),
     data() {
         return {
+            isLoading: false,
+            isTextFormatted: true,
             interaction: null,
-            isNotFound: false,
-            isTextFormatted: true
+            isFeatured: this.$route.name === 'FeaturedInteractionDetails'
         }
     },
     watch: {
         '$route.params.id': {
             handler() {
                 this.loadInteraction();
-            },
-            immediate: true
+            }
         }
     },
     computed: {
@@ -103,13 +108,17 @@ export default {
     },
     methods: {
         async loadInteraction() {
-            const id = this.$route.params.id;
-            if (id) {
-                this.interaction = await drugBankService.getInteraction(id);
-                if (!this.interaction) {
-                    this.isNotFound = true;
-                } 
-            }
+            this.isLoading = true;
+            const { id } = this.$route.params;
+            this.interaction = (this.isFeatured) ?
+            await this.$store.dispatch({ type: 'getFeaturedInteraction', id }) :
+            await drugBankService.getInteraction(id);
+            this.isLoading = false;
+        },
+        async getPathways() {
+            /// get side 1 pathways from OUR material (it's a MongoId) - Only for replaced side 1
+            console.log('Side 1 id (NEEDS TO BE MONGO\'s):', this.interaction.subject_drug.drugbank_id);
+            console.log('Side 2 id (Drugbank):', this.interaction.affected_drug.drugbank_id);
         },
         getRefsToDisplay(txt) {
             const regex = /\[(.*?)\]/g;
@@ -192,12 +201,19 @@ export default {
             }
         }
     },
+    async created() {
+        await this.loadInteraction();
+        if (this.isFeatured) {
+            this.getPathways();
+        }
+    },
     updated() {
         this.setRefsToolTip();
     },
     components: {
-        dBankRefsTable,
-        entityNotFound
+        loader,
+        entityNotFound,
+        dBankRefsTable
     }
 }
 </script>
