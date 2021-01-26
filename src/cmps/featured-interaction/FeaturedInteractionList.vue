@@ -64,6 +64,7 @@
                 <v-checkbox
                     :label="isAllSelected ? 'None' : 'All'"
                     dark
+                    v-model="isAllSelected"
                     @change="toggleAllSelected"
                 />
                 <v-divider dark vertical class="mx-4 ml-auto" />
@@ -263,6 +264,8 @@ export default {
     watch: {
         'group._id'(groupId) {
             this.resetData();
+            this.$store.commit({ type: 'setPrevState', prevState: null });
+            this.$store.commit({ type: 'setLastFilterBy', filterBy: null });
             this.filterBy = featuredInteractionService.getDefaultFilterBy(groupId);
         },
         search: {
@@ -275,8 +278,7 @@ export default {
             handler() {
                 this.getFeaturedInteractions();
             },
-            deep: true,
-            immediate: true
+            deep: true
         },
         options: {
             handler() {
@@ -328,12 +330,7 @@ export default {
         },
         async getFeaturedInteractions() {
             this.isLoading = true;
-            const { lastFilterBy } = this.$store.getters;
-            let filterBy;
-            if (lastFilterBy) {
-                filterBy = this.restoreLastState();
-            } else filterBy = { ...this.filterBy };
-
+            const filterBy = { ...this.filterBy };
             if (filterBy.side2Name || filterBy.summary || filterBy.extended_description) filterBy.page = 0;
             const { featuredInteractions, total } = await this.$store.dispatch({ type: 'getFeaturedInteractions', filterBy });
             this.interactions = featuredInteractions;
@@ -377,16 +374,6 @@ export default {
             Object.entries(this.$store.getters.prevState).forEach(([ key, value]) => {
                 this[key] = (typeof value === 'object') ? JSON.parse(JSON.stringify(value)) : value;
             });
-            const lastFilterBy = JSON.parse(JSON.stringify(this.$store.getters.lastFilterBy));
-            this.$store.commit({
-                type: 'setPrevState',
-                prevState: null
-            });
-            this.$store.commit({
-                type: 'setLastFilterBy',
-                filterBy: null
-            });
-            return lastFilterBy;
         },
         resetData() {
             this.options = {};
@@ -397,6 +384,16 @@ export default {
             this.propertyToSearch = '';
             this.searchOperator = '';
             this.txtQuery = '';
+        }
+    },
+    created() {
+        const { lastFilterBy } = this.$store.getters;
+        if (lastFilterBy) {
+            this.restoreLastState();
+            this.filterBy = JSON.parse(JSON.stringify(lastFilterBy));
+        } else {
+            this.resetData();
+            this.getFeaturedInteractions();
         }
     },
     components: {

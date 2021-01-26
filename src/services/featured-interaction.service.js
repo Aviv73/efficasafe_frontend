@@ -31,7 +31,7 @@ function updateMany(filterBy) {
     return httpService.put(END_POINT, filterBy);
 }
 
-function getDefaultFilterBy(drugBankId) {
+function getDefaultFilterBy(drugBankId = '') {
     return {
         isGroups: false,
         drugBankId,

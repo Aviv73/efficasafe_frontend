@@ -98,7 +98,11 @@ export default {
         onRowClick(row) {
             const idx = this.expanded.indexOf(row);
             if (idx === -1) this.expanded = [ row ];
-            else this.expanded = [];
+            else {
+                this.$store.commit({ type: 'setPrevState', prevState: null });
+                this.$store.commit({ type: 'setLastFilterBy', filterBy: null });
+                this.expanded = [];
+            }
         }
     },
     created() {
@@ -118,7 +122,17 @@ export default {
             filterBy: JSON.parse(JSON.stringify(filterBy))
         });
         if (this.$refs.elList) {
-            const { isStartsWith, propertyToSearch, searchOperator, txtQuery, result, search, options } = this.$refs.elList;
+            const { 
+                    isStartsWith,
+                    propertyToSearch,
+                    searchOperator,
+                    txtQuery,
+                    result,
+                    search,
+                    options,
+                    isAllSelected,
+                    selected
+                } = this.$refs.elList;
             const prevState = {
                 isStartsWith,
                 propertyToSearch,
@@ -126,7 +140,9 @@ export default {
                 txtQuery,
                 result,
                 search,
-                options
+                options,
+                isAllSelected,
+                selected
             }
             this.$store.commit({ 
                 type: 'setPrevState',
