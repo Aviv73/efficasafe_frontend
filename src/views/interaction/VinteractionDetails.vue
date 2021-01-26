@@ -182,7 +182,7 @@ export default {
         },
         getMaterialRefNums(pubmedIds) {
             if (!this.interactionRefs.length || !this.materialRefs.length || !pubmedIds.length) return;
-            const refIdx  = this.combinedRefs.findIndex(ref => pubmedIds.includes(ref.pubmedId));
+            const refIdx  = this.combinedRefs.findIndex(ref => pubmedIds.includes(ref && ref.pubmedId));
             if (pubmedIds.length === 1) {
                 return `(${refIdx + 1})`;
             }
