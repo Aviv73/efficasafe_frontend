@@ -198,6 +198,8 @@ export default {
         this.loadInteraction();
         ///~ await this function and get side1 pathways using this.interaction.subject_drug.drugbank_id
         ///~ get side 2 pathways by his drugbank_id from our materials ?
+        /// MAYBE just add a route query and use DBankInteractionDetails page with 'isFeatured' boolean
+        /// BEST: use DBank page, with this template & code, and add 'isFeatured'
     },
     updated() {
         this.setRefsToolTip();

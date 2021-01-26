@@ -95,7 +95,6 @@ export default {
         const criteria = { labelId, limit: 0 };
         const materials = await this.$store.dispatch({ type: 'getMaterials', criteria });
         this.relatedMaterials = materials;
-        console.log('Inload:', this.relatedMaterials);
       } else {
         label = labelService.getEmptyLabel();
       }
