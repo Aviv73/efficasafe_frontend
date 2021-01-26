@@ -182,13 +182,13 @@ export default {
         },
         getMaterialRefNums(pubmedIds) {
             if (!this.interactionRefs.length || !this.materialRefs.length || !pubmedIds.length) return;
-            const refIdx  = this.combinedRefs.findIndex(ref => pubmedIds.includes(ref && ref.pubmedId));
+            const refIdx  = this.combinedRefs.findIndex(ref => pubmedIds.includes(ref.pubmedId));
             if (pubmedIds.length === 1) {
                 return `(${refIdx + 1})`;
             }
             let refsStr = '';
             for (let i = 0; i < pubmedIds.length; i++) {
-                const idx = this.combinedRefs.findIndex(ref => pubmedIds[i] === ref && ref.pubmedId);
+                const idx = this.combinedRefs.findIndex(ref => pubmedIds[i] === ref.pubmedId);
                 refsStr += (idx + 1) + ', ';
             }
             return `(${refsStr.split(', ').filter(ref => ref).sort((a, b) => a - b).join(', ')})`;
