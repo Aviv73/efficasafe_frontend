@@ -367,7 +367,6 @@ export default {
             }
         },
         toggleAllSelected(doSelect) {
-            this.isAllSelected = doSelect;
             this.selected = (doSelect) ? this.interactions.map(int => int._id) : [];
         },
         restoreLastState() {
