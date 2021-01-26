@@ -188,7 +188,7 @@ export default {
             }
             let refsStr = '';
             for (let i = 0; i < pubmedIds.length; i++) {
-                const idx = this.combinedRefs.findIndex(ref => pubmedIds[i] === ref.pubmedId);
+                const idx = this.combinedRefs.findIndex(ref => pubmedIds[i] === ref && ref.pubmedId);
                 refsStr += (idx + 1) + ', ';
             }
             return `(${refsStr.split(', ').filter(ref => ref).sort((a, b) => a - b).join(', ')})`;
