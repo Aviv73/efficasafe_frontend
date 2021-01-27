@@ -222,13 +222,17 @@ export default {
     txtWithRefs(propName) {
       if (!this.interactionRefs.length) return;
       let txt = this.interaction[propName];
-      const refsOrder = interactionService.getRefsOrder(txt, false);
+      const refsOrder = interactionService.getRefsOrder(txt, false, false).filter(num => txt.indexOf(num) > -1);
       let lastRefIdx = 0;
       refsOrder.forEach((refNum) => {
         const draftIdx = this.interactionRefs.findIndex(ref => ref && ref.draftIdx === refNum) + 1;
         const refIdx = txt.indexOf(refNum, lastRefIdx);
         lastRefIdx = refIdx;
-        txt = txt.slice(0, refIdx) + txt.slice(refIdx).replace(refNum, draftIdx);
+        if (refIdx > -1) {
+          txt = txt.slice(0, lastRefIdx) +
+          txt.slice(lastRefIdx, (lastRefIdx + refNum.toString().length)).replace(refNum, draftIdx) +
+          txt.slice(lastRefIdx + refNum.toString().length);
+        } 
       });
       return txt;
     },

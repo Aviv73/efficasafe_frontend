@@ -70,7 +70,7 @@ function getSortedRefs(txt, refs) {
     return sortedRefs;
 }
 
-function getRefsOrder(txt, isUnique = true) {
+function getRefsOrder(txt, isUnique = true, withRange = true) {
     const regex = /\(([\d- ,\d]+)\)/g;
     const notUniqueRefs = txt.match(regex);
     if (!notUniqueRefs) return [];
@@ -91,7 +91,7 @@ function getRefsOrder(txt, isUnique = true) {
     cleanRefs = cleanRefs.map(ref => {
         if (typeof ref === 'string' && ref.includes('-')) {
             const [ num1, num2 ] = ref.split('-').map(currRef => +currRef);
-            const numsBetween = _getAllNumbersBetween(num1, num2);
+            const numsBetween = (withRange) ? _getAllNumbersBetween(num1, num2) : [ num1, num2 ];
             
             return numsBetween;
         }

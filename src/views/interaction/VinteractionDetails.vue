@@ -125,20 +125,21 @@ export default {
             interaction: null,
             material: null,
             interactionRefs: [],
-            materialRefs: [],
+            side2Refs: [],
             side1Pathways: []
         };
     },
     computed: {
         combinedRefs() {
-            return this.interactionRefs.concat(this.materialRefs, this.pathwayRefs);
+            return this.interactionRefs.concat(this.side2Refs, this.pathwayRefs);
         },
         pathwayRefs() {
             const txt = this.relevantSide1Pathways.reduce((acc, pathway) => {
                 acc += pathway.influence + ' ';
                 return acc;
             }, '');
-            return interactionService.getSortedRefs(txt, this.$options.side1Refs);
+            const sortedRefs = interactionService.getSortedRefs(txt, this.$options.side1Refs);
+            return sortedRefs.filter(ref => this.interactionRefs.findIndex(currRef => currRef === ref) === -1);
         },
         relevantSide1Pathways() {
             return this.side1Pathways.filter(pathway => {
@@ -169,9 +170,9 @@ export default {
             if (this.material) {
                 for (let i = 0; i < material.refs.length; i++) {
                     const ref = material.refs[i];
-                    const idx = this.materialRefs.findIndex(matRef => matRef.pubmedId === ref.pubmedId);
+                    const idx = this.side2Refs.findIndex(matRef => matRef.pubmedId === ref.pubmedId);
                     if (idx === -1) {
-                        this.materialRefs.push(ref);
+                        this.side2Refs.push(ref);
                     }
                 }
             }
@@ -181,7 +182,7 @@ export default {
             }
         },
         getMaterialRefNums(pubmedIds) {
-            if (!this.interactionRefs.length || !this.materialRefs.length || !pubmedIds.length) return;
+            if (!this.interactionRefs.length || !this.side2Refs.length || !pubmedIds.length) return;
             const refIdx  = this.combinedRefs.findIndex(ref => pubmedIds.includes(ref.pubmedId));
             if (pubmedIds.length === 1) {
                 return `(${refIdx + 1})`;
@@ -214,23 +215,26 @@ export default {
             );
             this.interactionRefs = sortedRefs;
         },
-        txtWithRefs(txt, isDBKRefs = false) {
+        txtWithRefs(txt, isPathwaysRefs = false) {
             if (!this.interactionRefs.length) return;
-            const refsOrder = interactionService.getRefsOrder(txt, false);
+            const refsOrder = interactionService.getRefsOrder(txt, false, false).filter(num => txt.indexOf(num) > -1);
             let lastRefIdx = 0;
             refsOrder.forEach((refNum) => {
                 let draftIdx = this.combinedRefs.findIndex(ref => ref && ref.draftIdx === refNum) + 1;
-                if (isDBKRefs) {
+                if (isPathwaysRefs) {
                     const sameRefs = this.combinedRefs.filter(ref => ref && ref.draftIdx === refNum);
-                    const ref = sameRefs[sameRefs.length - 1];
-                    draftIdx = this.combinedRefs.indexOf(ref) + 1;
+                    if (sameRefs.length > 1) {
+                        const ref = sameRefs.find(ref => this.side2Refs.findIndex(currRef => currRef === ref) === -1);
+                        draftIdx = this.combinedRefs.indexOf(ref) + 1;
+                    }
                 }
-
                 const refIdx = txt.indexOf(refNum, lastRefIdx);
+                lastRefIdx = refIdx;
                 if (refIdx > -1) {
-                    lastRefIdx = refIdx;
+                    txt = txt.slice(0, lastRefIdx) +
+                    txt.slice(lastRefIdx, (lastRefIdx + refNum.toString().length)).replace(refNum, draftIdx) +
+                    txt.slice(lastRefIdx + refNum.toString().length);
                 }
-                txt = txt.slice(0, refIdx) + txt.slice(refIdx).replace(refNum, draftIdx);
             });
             return txt;
         },
@@ -262,7 +266,7 @@ export default {
                         draftIdx = this.combinedRefs.indexOf(ref) + 1;
                     }
                     if (i >= (summarySubs.length + reviewSubs.length) && i < (summarySubs.length + reviewSubs.length + pathwaySubs.length)) {
-                        draftIdx = this.materialRefs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx) + 1 + this.interactionRefs.length;
+                        draftIdx = this.side2Refs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx) + 1 + this.interactionRefs.length;
                     } 
                     
                     htmlStr += `<li class="tooltip-item">
