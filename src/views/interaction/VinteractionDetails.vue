@@ -2,9 +2,8 @@
     <section class="v-interaction-details">
         <div class="container">
             <div class="mb-5">
-                <v-btn color="primary" :to="`/interaction/${$route.params.id}`">
-                    <v-icon small left>mdi-arrow-left</v-icon>Back to
-                    Interaction
+                <v-btn color="primary" @click="$router.go(-1)">
+                    <v-icon small left>mdi-arrow-left</v-icon>Back
                 </v-btn>
             </div>
             <v-card
@@ -73,7 +72,7 @@
                         </p>
                         <div v-for="(pathway, idx) in relevantSide1Pathways" :key="'pathway' + idx">
                             <h6>{{ pathway.enzyme }}</h6>
-                            <p v-highlight-text:[material.name] v-html="txtWithRefs(pathway.influence, true)"></p>
+                            <p v-highlight-text:[material.name] v-html="txtWithRefs(pathway.influence, true)" />
                         </div>
                         <div>
                             <p>
@@ -262,8 +261,10 @@ export default {
                     let draftIdx = this.combinedRefs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx) + 1;
                     if (i >= elSubs.length - pathway2Subs.length) {
                         const sameRefs = this.combinedRefs.filter(ref => ref && ref.draftIdx === refs[j].draftIdx);
-                        const ref = sameRefs[sameRefs.length - 1];
-                        draftIdx = this.combinedRefs.indexOf(ref) + 1;
+                        if (sameRefs.length > 1) {
+                            const ref = sameRefs.find(ref => this.side2Refs.findIndex(currRef => currRef === ref) === -1);
+                            draftIdx = this.combinedRefs.indexOf(ref) + 1;
+                        }
                     }
                     if (i >= (summarySubs.length + reviewSubs.length) && i < (summarySubs.length + reviewSubs.length + pathwaySubs.length)) {
                         draftIdx = this.side2Refs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx) + 1 + this.interactionRefs.length;

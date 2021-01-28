@@ -83,7 +83,8 @@ export default {
         '$route.params.id': {
             handler() {
                 this.loadInteraction();
-            }
+            },
+            immediate: true
         }
     },
     computed: {
@@ -114,11 +115,6 @@ export default {
             await this.$store.dispatch({ type: 'getFeaturedInteraction', id }) :
             await drugBankService.getInteraction(id);
             this.isLoading = false;
-        },
-        async getPathways() {
-            /// get side 1 pathways from OUR material (it's a MongoId) - Only for replaced side 1
-            console.log('Side 1 id (NEEDS TO BE MONGO\'s):', this.interaction.subject_drug.drugbank_id);
-            console.log('Side 2 id (Drugbank):', this.interaction.affected_drug.drugbank_id);
         },
         getRefsToDisplay(txt) {
             const regex = /\[(.*?)\]/g;
@@ -199,12 +195,6 @@ export default {
                 elTooltip.style.left = `unset`;
                 elTooltip.style.right = `0`;
             }
-        }
-    },
-    async created() {
-        await this.loadInteraction();
-        if (this.isFeatured) {
-            this.getPathways();
         }
     },
     updated() {
