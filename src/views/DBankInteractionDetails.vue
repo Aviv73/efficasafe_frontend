@@ -67,7 +67,7 @@ import { drugBankService } from '@/services/drug-bank.service';
 import { interactionService } from '@/services/interaction.service';
 import loader from '@/cmps/general/LoadingCmp';
 import entityNotFound from '@/cmps/general/EntityNotFound';
-import dBankRefsTable from '@/cmps/d-bank-interaction/DBankRefsTable';
+import dBankRefsTable from '@/cmps/common/DBankRefsTable';
 
 export default {
     wrongRefsMap: drugBankService.getWrongRefsMap(),

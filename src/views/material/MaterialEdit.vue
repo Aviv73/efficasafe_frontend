@@ -1,6 +1,5 @@
 <template>
-  <section>
-    <v-row justify="center">
+  <section class="container">
       <confirm-delete-item
         :dialog="dialog"
         @remove-item-canceled="removeItemCanceled"
@@ -92,24 +91,17 @@
           </v-form>
         </v-card>
       </v-dialog>
-    </v-row>
-    <div class="material-details-container" :class="{ 'portal-active': isPortalActive }">
+      <v-dialog v-model="dBankRefDialog" persistent max-width="600">
+        <d-bank-ref-edit
+          :editedRef="editedDBankRef"
+          @d-bank-ref-dialog-close="closeDBankRefDialog"
+          @d-bank-ref-saved="saveDBankRef"
+        />
+      </v-dialog>
+    <div>
       <v-card class="material-edit" v-if="editedMaterial" width="90%" max-width="1200">
-        <v-btn
-          v-if="editedMaterial.dBankMaterial && editedMaterial.dBankMaterial.length"
-          @click="isPortalActive = !isPortalActive"
-          class="material-edit-portal-toggle"
-          :color="(isPortalActive) ? 'warning' : 'primary'"
-          outlined
-          rounded
-          depressed
-        >
-          <v-icon class="mr-1">{{ (isPortalActive) ? 'mdi-close' : 'mdi-eye-outline' }}</v-icon>
-          {{ (isPortalActive) ? 'Close' : 'Drugbank data' }}
-        </v-btn>
         <v-form v-model="valid" @submit.prevent="saveMaterial">
           <v-text-field
-            id="mat-name"
             type="text"
             v-model="editedMaterial.name"
             label="Material name*"
@@ -117,7 +109,7 @@
             :rules="[(v) => !!v || 'Material Name is required']"
           />
 
-          <div class="material-id-row">
+          <div class="side-by-side-row">
             <v-select
               class="mat-type"
               v-model="editedMaterial.type"
@@ -126,23 +118,48 @@
               label="Type*"
               required
             ></v-select>
+            
             <v-text-field
-              id="mat-atc"
-              type="text"
-              v-model="editedMaterial.atcId"
-              label="ATC Code"
-            />
-            <v-text-field
-              id="mat-dbid"
               type="text"
               v-model="editedMaterial.drugBankId"
               label="DrugBank ID"
             />
           </div>
 
+           <div class="list-chips">
+             <v-text-field
+              type="text"
+              v-model="model.atcIds"
+              label="ATC Codes"
+              @keypress.enter.prevent="addItemToArray('atcIds')"
+            />
+            <v-chip-group column>
+                <v-chip
+                  v-for="(atcId, idx) in editedMaterial.atcIds"
+                  :key="idx"
+                  close
+                  @click:close="removeItem('atcIds', idx)"
+                >
+                {{ atcId }}
+                </v-chip>
+            </v-chip-group>
+           </div>
+
           <h3>Description:</h3>
           <ckeditor
             v-model="editedMaterial.desc"
+            :config="CKEditorConfig"
+          ></ckeditor>
+
+          <h3 class="text-capitalize">DrugBank's description</h3>
+          <ckeditor
+            v-model="editedMaterial.dBankDesc"
+            :config="CKEditorConfig"
+          ></ckeditor>
+
+          <h3 class="text-capitalize">DrugBank's clinical description</h3>
+          <ckeditor
+            v-model="editedMaterial.dBankClinicalDesc"
             :config="CKEditorConfig"
           ></ckeditor>
 
@@ -175,6 +192,23 @@
 
           <div class="list-chips">
             <v-text-field
+              v-model="model.dBankAliases"
+              label="DrugBank's Aliases"
+              @keypress.enter.prevent="addItemToArray('dBankAliases')"
+            />
+            <v-chip-group column>
+              <v-chip
+                v-for="(alias, idx) in editedMaterial.dBankAliases"
+                :key="idx"
+                close
+                @click:close="removeItem('dBankAliases', idx)"
+                >{{ alias }}</v-chip
+              >
+            </v-chip-group>
+          </div>
+
+          <div class="list-chips">
+            <v-text-field
               type="text"
               v-model="model.qualities"
               label="Qualities"
@@ -190,15 +224,6 @@
               >
             </v-chip-group>
           </div>
-
-          <search-sub-material
-            id="mat-sub-materials"
-            :subMaterials="editedMaterial.subMaterials"
-            :materials="materials"
-            placeholder="Sub Materials"
-            @addSubMaterial="addObjToArray($event, 'subMaterials')"
-            @removeSubMaterial="removeItem"
-          />
 
           <div class="list-chips">
             <v-text-field
@@ -229,6 +254,23 @@
                 :key="idx"
                 close
                 @click:close="removeItem('indications', idx)"
+                >{{ indication }}</v-chip
+              >
+            </v-chip-group>
+          </div>
+
+          <div class="list-chips">
+            <v-text-field
+              v-model="model.dBankIndications"
+              label="DrugBank's Indications"
+              @keypress.enter.prevent="addItemToArray('dBankIndications')"
+            />
+            <v-chip-group column>
+              <v-chip
+                v-for="(indication, idx) in editedMaterial.dBankIndications"
+                :key="idx"
+                close
+                @click:close="removeItem('dBankIndications', idx)"
                 >{{ indication }}</v-chip
               >
             </v-chip-group>
@@ -330,47 +372,18 @@
             </v-chip-group>
           </div>
 
+          <h3 class="text-center mb-2">References</h3>
           <reference-table
+            class="ref-table mb-6"
             :isEdit="true"
             @edit-ref="openRefDialog"
-            class="ref-table"
             :references="editedMaterial.refs"
           />
-
-          <v-text-field
-            type="text"
-            v-model="editedMaterial.draft"
-            label="Draft"
-          ></v-text-field>
-
-          <v-textarea
-            type="text"
-            rows="1"
-            auto-grow
-            v-model="editedMaterial.editorDraft"
-            label="Editor Draft"
-          />
-
-          <v-textarea
-            type="text"
-            rows="1"
-            auto-grow
-            v-model="editedMaterial.drugBankInfo.desc"
-            label="Description"
-          />
-          <v-textarea
-            type="text"
-            rows="1"
-            auto-grow
-            v-model="editedMaterial.drugBankInfo.clinicalDesc"
-            label="Clinical description"
-          />
-          <v-textarea
-            type="text"
-            rows="1"
-            auto-grow
-            v-model="editedMaterial.drugBankInfo.pharmacology"
-            label="Pharmacology"
+          
+          <d-bank-refs-table 
+            :refs="editedMaterial.dBankRefs"
+            :isEdit="true"
+            @edit-ref="openDBankRefDialog"
           />
 
           <div class="list-chips">
@@ -415,20 +428,7 @@
               @updateRegions="updateRegions"
             />
           </div>
-          <v-textarea
-            type="text"
-            rows="1"
-            auto-grow
-            v-model="editedMaterial.drugBankInfo.boxedWarnings"
-            label="Boxed warnings"
-          />
-          <v-textarea
-            type="text"
-            rows="1"
-            auto-grow
-            v-model="editedMaterial.drugBankInfo.foodInteractions"
-            label="Food interactions"
-          />
+          
           <pathway-table 
             :items="editedMaterial.pathways"
             :isEdit="true"
@@ -446,33 +446,19 @@
             >Save Material</v-btn>
         </div>
       </v-card>
-      <v-card class="portal-container">
-        <transition name="fade">
-          <aside v-if="isPortalActive">
-            <header>
-              <v-btn icon @click="isPortalActive = false" class="close-portal">
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
-            </header>
-            <d-bank-material-details 
-              :material="editedMaterial.dBankMaterial[0]" 
-              @drugbank-data-export="importDrugBankData"
-            />
-          </aside>
-        </transition>
-      </v-card>
     </div>
   </section>
 </template>
 
 <script>
 import { materialService } from '@/services/material.service';
+import { drugBankService } from '@/services/drug-bank.service';
 import { eventBus, EV_addMaterial } from '@/services/eventBus.service';
-import confirmDeleteItem from '../../cmps/common/ConfirmDeleteItem';
-import searchSubMaterial from '../../cmps/material/edit/SearchSubMaterial';
-import referenceTable from '../../cmps/common/ReferenceTable';
-import regionsSelector from '../../cmps/material/edit/RegionsSelector';
-import dBankMaterialDetails from '@/cmps/material/edit/DbankMaterialDetails';
+import confirmDeleteItem from '@/cmps/common/ConfirmDeleteItem';
+import referenceTable from '@/cmps/common/ReferenceTable';
+import dBankRefsTable from '@/cmps/common/DBankRefsTable';
+import dBankRefEdit from '@/cmps/common/DBankRefEdit';
+import regionsSelector from '@/cmps/material/edit/RegionsSelector';
 import autocomplete from '@/cmps/Autocomplete';
 import pathwayTable from '@/cmps/common/PathwayTable';
 import CKEditor from 'ckeditor4-vue';
@@ -486,14 +472,15 @@ export default {
     return {
       editedMaterial: null,
       editedRef: materialService.getEmptyRef(),
+      editedDBankRef: drugBankService.getEmptyRef(),
       editedPathway: materialService.getEmptyPathway(),
       editedPathwayIdx: undefined,
       valid: true,
       dialog: false,
       refDialog: false,
+      dBankRefDialog: false,
       pathwayDialog: false,
       itemToRemove: null,
-      isPortalActive: false,
       CKEditorConfig: {
         extraPlugins: 'autogrow',
         autoGrow_minHeight: 50,
@@ -505,13 +492,15 @@ export default {
       model: {
         labels: '',
         aliases: '',
+        dBankAliases: '',
         brands: '',
         compounds: '',
         medicinalActions: '',
         indications: '',
+        dBankIndications: '',
         qualities: '',
+        atcIds: ''
       },
-      subMaterialName: '',
       materialType: [
         {
           text: 'Drug',
@@ -521,33 +510,34 @@ export default {
           text: 'Herb',
           value: 'herb',
         },
-          {
-            text: 'Vitamin',
-            value: 'vitamin'
-          },
-          {
-            text: 'Amino acid',
-            value: 'amino acid'
-          },
-          {
-            text: 'Mineral',
-            value: 'mineral'
-          },
-          {
-            text: 'Nutraceutical',
-            value: 'nutraceutical'
-          },
-          {
-            text: 'Essential oil',
-            value: 'essential oil'
-          }
+        {
+          text: 'Vitamin',
+          value: 'vitamin'
+        },
+        {
+          text: 'Amino acid',
+          value: 'amino acid'
+        },
+        {
+          text: 'Mineral',
+          value: 'mineral'
+        },
+        {
+          text: 'Nutraceutical',
+          value: 'nutraceutical'
+        },
+        {
+          text: 'Essential oil',
+          value: 'essential oil'
+        },
+        {
+          text: 'Food',
+          value: 'food'
+        }
       ],
     };
   },
   computed: {
-    materials() {
-      return this.$store.getters.materials;
-    },
     labels() {
       return this.$store.getters.labels;
     },
@@ -577,11 +567,16 @@ export default {
     }
   },
   methods: {
-    importDrugBankData(data) {
-      Object.entries(data).forEach(entry => {
-        const [ key, value ] = entry;
-        this.editedMaterial[key] = value;
-      });
+    saveDBankRef() {
+      console.log(this.editedDBankRef);
+    },
+    openDBankRefDialog(ref) {
+      if (ref) this.editedDBankRef = { ...ref };
+      this.dBankRefDialog = true;
+    },
+    closeDBankRefDialog() {
+      this.editedDBankRef = drugBankService.getEmptyRef();
+      this.dBankRefDialog = false;
     },
     editPathway() {
       const isEdit = this.editedPathwayIdx !== undefined;
@@ -640,10 +635,6 @@ export default {
       }
       this.editedMaterial = JSON.parse(JSON.stringify(material));
     },
-    loadMaterials() {
-      const criteria = { type: 'drug' };
-      this.$store.dispatch({ type: 'loadMaterials', criteria });
-    },
     async saveMaterial() {
       if (!this.editedMaterial.name || !this.editedMaterial.type) return;
       try {
@@ -681,10 +672,6 @@ export default {
       this.editedMaterial.regions = regions;
     },
     removeItemFromArray(itemIdx, arrName) {
-      if (arrName === 'subMaterials')
-        itemIdx = this.editedMaterial.subMaterials.findIndex(
-          (subMaterial) => subMaterial._id === itemIdx
-        );
       this.editedMaterial[arrName].splice(itemIdx, 1);
     },
     addItemToArray(arrName) {
@@ -713,16 +700,15 @@ export default {
       this.loadLabels();
     }
     this.loadMaterial();
-    this.loadMaterials();
   },
   components: {
     regionsSelector,
-    searchSubMaterial,
     referenceTable,
+    dBankRefsTable,
+    dBankRefEdit,
     confirmDeleteItem,
     autocomplete,
     pathwayTable,
-    dBankMaterialDetails,
     ckeditor: CKEditor.component
   },
 };

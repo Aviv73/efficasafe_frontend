@@ -76,6 +76,10 @@ export default {
         isShrinked: {
             type: Boolean,
             default: false
+        },
+        isFlat: {
+            type: Boolean,
+            default: false
         }
     },
     data() {

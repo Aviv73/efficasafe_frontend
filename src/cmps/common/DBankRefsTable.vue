@@ -1,18 +1,21 @@
 <template>
   <section class="d-bank-refs-table">
-            <v-icon 
-                v-if="isEdit"
-                @click="$emit('edit-ref')"
-                class="reference-table-add-btn"
-                title="Add Reference"
-            >
-                mdi-plus-circle
-            </v-icon>
+        <v-icon 
+            v-if="isEdit"
+            @click="$emit('edit-ref')"
+            class="reference-table-add-btn"
+            title="Add Reference"
+        >
+            mdi-plus-circle
+        </v-icon>
       <v-data-table
-        caption="References"
+        caption="DrugBank's References"
         :headers="computedHeaders"
         :items="refs"
       >
+        <template #[`item.draftIdx`]="{ value, item }">
+            {{ value || refs.findIndex(currItem => currItem.ref_id === item.ref_id) + 1 }}
+        </template>
         <template #[`item.citation`]="{ value, item }">
             <p>
                 {{ value || item.title | ref-txt }}
@@ -40,7 +43,6 @@
 
 <script>
 export default {
-    refIdx: 1,
     props: {
         refs: {
             type: Array,

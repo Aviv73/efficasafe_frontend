@@ -120,68 +120,11 @@
                 @close-dialog="materialPickerDialog = false"
             />
             <v-dialog v-model="refEditDialog" persistent max-width="600">
-                <v-card>
-                    <v-card-title class="primary headline" style="color:white; font-weight:bold;">
-                        <v-icon dark left>mdi-plus-circle</v-icon>{{ (editedRef.draftIdx) ? 'Edit' : 'Add' }} Reference
-                        <v-spacer />
-                        <v-btn 
-                            color="transparent"
-                            elevation="0"
-                            fab
-                            dark
-                            @click="closeRefDialog"
-                        >
-                            <v-icon>mdi-close</v-icon>
-                        </v-btn>
-                    </v-card-title>
-                    <v-form @submit.prevent="saveRef" v-model="refFormValid" class="px-6 py-2">
-                        <v-text-field
-                            type="text"
-                            label="Ref id*"
-                            v-model="editedRef.ref_id"
-                            required
-                            autofocus
-                            :rules="[(v) => !!v || 'Ref id is required']"
-                        />
-                        <v-text-field
-                            type="text"
-                            label="Pubmed id"
-                            v-model="editedRef.pubmed_id"
-                        />
-                        <v-textarea
-                            type="text"
-                            label="Citation"
-                            v-model="editedRef.citation"
-                            rows="1"
-                            auto-grow
-                        />
-                        <v-text-field
-                            type="text"
-                            label="Title"
-                            v-model="editedRef.title"
-                        />
-                        <v-text-field
-                            type="text"
-                            label="URL"
-                            v-model="editedRef.url"
-                        />
-                        <footer class="pt-6 pb-1">
-                            <v-btn 
-                                class="mr-2"
-                                @click="closeRefDialog"
-                            >
-                                Cancel
-                            </v-btn>
-                            <v-btn
-                                type="submit"
-                                color="success"
-                                :disabled="!refFormValid"
-                            >
-                                Save
-                            </v-btn>
-                        </footer>
-                    </v-form>
-                </v-card>
+                <d-bank-ref-edit 
+                    :editedRef="editedRef"
+                    @d-bank-ref-dialog-close="closeRefDialog"
+                    @d-bank-ref-saved="saveRef"
+                />
             </v-dialog>
       </div>
   </section>
@@ -191,7 +134,8 @@
 import { drugBankService } from '@/services/drug-bank.service';
 import { eventBus, EV_addInteraction } from '@/services/eventBus.service';
 import materialPicker from '@/cmps/featured-interaction/MaterialPicker';
-import dBankRefsTable from '@/cmps/d-bank-interaction/DBankRefsTable';
+import dBankRefsTable from '@/cmps/common/DBankRefsTable';
+import dBankRefEdit from '@/cmps/common/DBankRefEdit';
 import entityNotFound from '@/cmps/general/EntityNotFound';
 import loader from '@/cmps/general/LoadingCmp';
 import CKEditor from 'ckeditor4-vue';
@@ -199,7 +143,6 @@ import CKEditor from 'ckeditor4-vue';
 export default {
     data() {
         return {
-            refFormValid: false,
             editedRef: drugBankService.getEmptyRef(),
             refEditDialog: false,
             isRefsFormatted: false,
@@ -300,6 +243,7 @@ export default {
     components: {
         materialPicker,
         dBankRefsTable,
+        dBankRefEdit,
         entityNotFound,
         loader,
         ckeditor: CKEditor.component
