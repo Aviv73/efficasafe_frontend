@@ -25,7 +25,13 @@
         class="elevation-0"
       >
         <template #[`item.name`]="{ item }">
-          <div class="text-uppercase">{{ item.name }}</div>
+          <div 
+            class="text-uppercase"
+            :title="item.fullName"
+            :style="{cursor: (item.fullName) ? 'help' : 'default' }"
+          >
+            {{ item.name }}
+          </div>
           <span>({{ item.type }})</span>
         </template>
         <template #[`item.influence`]="{ value }">
