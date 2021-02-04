@@ -120,7 +120,7 @@ export default {
   },
   methods: {
     itemIdx(item) {
-        return this.items.findIndex(currItem => currItem === item);
+      return this.items.findIndex(currItem => currItem === item);
     }
   }
 };

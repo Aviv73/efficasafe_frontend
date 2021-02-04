@@ -45,9 +45,18 @@
             text-align: start;
         }
 
-        .side-by-side-row {
+        .external-links {
+            &-actions {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+
+        .multi-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 16px;
         }
 

@@ -98,6 +98,45 @@
           @d-bank-ref-saved="saveDBankRef"
         />
       </v-dialog>
+      <v-dialog v-model="externalLinksDialog" persistent max-width="600">
+        <v-card>
+          <v-card-title class="primary headline" style="color:white; font-weight:bold;">
+            <v-icon dark left>mdi-plus-circle</v-icon>Add / Edit External link
+            <v-spacer />
+            <v-btn
+              icon
+              dark
+              @click="closeExternalLinkDialog"
+            >
+              <v-icon dark>mdi-close</v-icon>
+            </v-btn>
+          </v-card-title>
+          <v-form class="pa-6" @submit.prevent="saveExternalLink">
+            <v-text-field
+              type="text"
+              label="Resource"
+              v-model="editedExternalLink.resource"
+              required
+              :rules="[(v) => !!v || 'Resource is required']"
+            />
+            <v-text-field
+              type="text"
+              label="Resource"
+              v-model="editedExternalLink.url"
+              required
+              :rules="[(v) => !!v || 'URL is required']"
+            />
+            <div class="mt-6 d-flex justify-center align-center">
+              <v-btn class="cancel-btn mr-2" @click="closeExternalLinkDialog" color="normal">cancel</v-btn>
+              <v-btn
+                type="submit"
+                class="submit-btn ml-2"
+                color="success"
+              >Save</v-btn>
+            </div>
+          </v-form>
+        </v-card>
+      </v-dialog>
     <div>
       <v-card class="material-edit" v-if="editedMaterial" width="90%" max-width="1200">
         <v-form v-model="valid" @submit.prevent="saveMaterial">
@@ -109,7 +148,7 @@
             :rules="[(v) => !!v || 'Material Name is required']"
           />
 
-          <div class="side-by-side-row">
+          <div class="multi-row">
             <v-select
               class="mat-type"
               v-model="editedMaterial.type"
@@ -124,7 +163,18 @@
               v-model="editedMaterial.drugBankId"
               label="DrugBank ID"
             />
+
+            <v-checkbox
+              class="mx-auto"
+              label="Is Narrow Therapeutic"
+              v-model="editedMaterial.isNarrowTherapeutic"
+            />
           </div>
+
+          <v-text-field
+            v-model="editedMaterial.fdaLabel"
+            label="FDA Label"
+          />
 
            <div class="list-chips">
              <v-text-field
@@ -435,6 +485,53 @@
             :isHerb="editedMaterial.type === 'herb'"
             @edit-pathway="openPathwayDialog"
           />
+
+          <v-expansion-panels flat class="external-links mt-8">
+            <v-expansion-panel>
+              <v-expansion-panel-header class="pa-0">
+                <h5 class="text-lg-left">External Links:</h5>
+                <v-btn
+                  class="flex-grow-0 mr-4"
+                  title="Add External Link"
+                  icon
+                  @click.stop="openExternalLinksDialog"
+                >
+                  <v-icon>mdi-plus-circle</v-icon>
+                </v-btn>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <v-list subheader two-line>
+                  <v-list-item
+                    v-for="(link, idx) in editedMaterial.externalLinks"
+                    :key="idx"
+                  >
+                    <v-list-item-content>
+                      <v-list-item-title>{{ link.resource }}</v-list-item-title>
+                      <v-list-item-subtitle>
+                        <a :href="link.url" target="_blank">{{ link.url }}</a>
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+                    <v-list-item-action class="external-links-actions">
+                      <v-btn 
+                        title="Edit"
+                        icon
+                        @click="openExternalLinksDialog(link, idx)"
+                      >
+                        <v-icon>mdi-pencil</v-icon>
+                      </v-btn>
+                      <v-btn 
+                        title="Delete"
+                        icon
+                        @click="removeExternalLink(idx)"
+                      >
+                        <v-icon>mdi-delete</v-icon>
+                      </v-btn>
+                    </v-list-item-action>
+                  </v-list-item>
+                </v-list>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
         </v-form>
         <div class="form-actions">
           <v-btn class="cancel-btn" to="/material/" color="normal">cancel</v-btn>
@@ -480,6 +577,12 @@ export default {
       refDialog: false,
       dBankRefDialog: false,
       pathwayDialog: false,
+      externalLinksDialog: false,
+      editedExternalLink: {
+        resource: '',
+        url: ''
+      },
+      editedExternalLinkIdx: 0,
       itemToRemove: null,
       CKEditorConfig: {
         extraPlugins: 'autogrow',
@@ -499,7 +602,7 @@ export default {
         indications: '',
         dBankIndications: '',
         qualities: '',
-        atcIds: ''
+        atcIds: '',
       },
       materialType: [
         {
@@ -568,7 +671,35 @@ export default {
   },
   methods: {
     saveDBankRef() {
+      // ~~~ generated draftIdx's to dBankRefs IN CREATION PROCCESS  - need to start with fresh data ~~~
+      //// so i can differ between Add / Edit and use same kind of func like in FeaturedInteractionEdit
       console.log(this.editedDBankRef);
+    },
+    removeExternalLink(idx) {
+      this.editedMaterial.externalLinks.splice(idx, 1);
+    },
+    saveExternalLink() {
+      if (this.editedExternalLinkIdx) {
+        this.editedMaterial.externalLinks.splice(this.editedExternalLinkIdx, 1, { ...this.editedExternalLink });
+      } else {
+        this.editedMaterial.externalLinks.push({ ...this.editedExternalLink });
+      }
+      this.closeExternalLinkDialog();
+    },
+    openExternalLinksDialog(externalLink, idx) {
+      if (externalLink) {
+        this.editedExternalLink = { ...externalLink };
+        this.editedExternalLinkIdx = idx;
+      } else {
+        this.editedExternalLink = { resource: '', url: '' };
+        this.editedExternalLinkIdx = 0;
+      }
+      this.externalLinksDialog = true;
+    },
+    closeExternalLinkDialog() {
+      this.editedExternalLink = { resource: '', url: '' };
+      this.editedExternalLinkIdx = 0;
+      this.externalLinksDialog = false;
     },
     openDBankRefDialog(ref) {
       if (ref) this.editedDBankRef = { ...ref };
