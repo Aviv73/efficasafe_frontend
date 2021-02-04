@@ -79,6 +79,13 @@ export default {
           color: "",
         },
         {
+          name: "food",
+          label: "food",
+          path: "@/assets/icons/food",
+          mdi: "",
+          color: "",
+        },
+        {
           name: "custom",
           label: "Label",
           path: "@/assets/icons/custom",

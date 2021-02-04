@@ -24,8 +24,9 @@
         :search="search"
         class="elevation-0"
       >
-        <template #[`item.enzyme`]="{ value }">
-          <span class="text-uppercase">{{ value }}</span>
+        <template #[`item.enzyme`]="{ item }">
+          <div class="text-uppercase">{{ item.enzyme }}</div>
+          <span>({{ item.type }})</span>
         </template>
         <template #[`item.influence`]="{ value }">
           <div v-if="isHerb" v-html="value" class="pathway-table-influence"></div>

@@ -114,6 +114,7 @@ function getEmptyRef() {
 function getEmptyPathway() {
     return {
         enzyme: '',
+        type: '',
         influence: '',
         references: [],
         fullReferences: []

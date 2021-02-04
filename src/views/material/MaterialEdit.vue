@@ -63,6 +63,14 @@
               label="Enzyme*"
               v-model="editedPathway.enzyme"
               required
+              :rules="[(v) => !!v || 'Pathway name is required']"
+            />
+            <v-select
+              label="Type*"
+              v-model="editedPathway.type"
+              :items="$options.pathwayTypes"
+              required
+              :rules="[(v) => !!v || 'Pathway type is required']"
             />
             <h4>Influence</h4>
             <ckeditor
@@ -71,12 +79,12 @@
             ></ckeditor>
             <v-text-field 
               type="text"
-              label="References (provide space seperated values)"
+              label="References (provide double underscore ('__') seperated values)"
               v-model="editedPathwayReferences"
             />
-            <v-text-field 
+            <v-textarea
               type="text"
-              label="Full References (provide space seperated values)"
+              label="Full References (provide double underscore ('__') seperated values)"
               v-model="editedPathwayFullReferences"
             />
             <div class="pathway-form-actions">
@@ -452,24 +460,32 @@
               >
             </v-chip-group>
           </div>
-
-          <div class="list-chips">
-            <v-text-field
-              v-model="model.compounds"
-              label="Compounds"
-              @keypress.enter.prevent="addItemToArray('compounds')"
-            />
-            <v-chip-group column>
-                <v-chip
-                  v-for="(compound, idx) in editedMaterial.compounds"
-                  :key="idx"
-                  close
-                @click:close="removeItem('compounds', idx)"
-                >
-                {{ compound }}
-                </v-chip>
-            </v-chip-group>
-          </div>
+          <v-expansion-panels flat>
+            <v-expansion-panel>
+              <v-expansion-panel-header class="pa-0 my-6">
+                <h5 class="text-lg-left font-weight-bold">Compounds:</h5>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <div class="list-chips">
+                  <v-text-field
+                    v-model="model.compounds"
+                    label="Compounds"
+                    @keypress.enter.prevent="addItemToArray('compounds')"
+                  />
+                  <v-chip-group column>
+                      <v-chip
+                        v-for="(compound, idx) in editedMaterial.compounds"
+                        :key="idx"
+                        close
+                      @click:close="removeItem('compounds', idx)"
+                      >
+                      {{ compound }}
+                      </v-chip>
+                  </v-chip-group>
+                </div>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
 
           <div>
             <label for="mat-regions">Regions:</label>
@@ -489,7 +505,7 @@
           <v-expansion-panels flat class="external-links mt-8">
             <v-expansion-panel>
               <v-expansion-panel-header class="pa-0">
-                <h5 class="text-lg-left">External Links:</h5>
+                <h5 class="text-lg-left font-weight-bold">External Links:</h5>
                 <v-btn
                   class="flex-grow-0 mr-4"
                   title="Add External Link"
@@ -565,6 +581,7 @@ export default {
     'clinical', 'meta', 'systematic', 'drug label', 'animal',
     'in vitro', 'retrospective', 'case', 'review'
   ],
+  pathwayTypes: [ 'enzyme', 'transporter', 'carrier' ],
   data() {
     return {
       editedMaterial: null,
@@ -654,26 +671,32 @@ export default {
     },
     editedPathwayReferences: {
       get() {
-        return this.editedPathway.references.join(' ');
+        return this.editedPathway.references.join('__');
       },
       set(val) {
-        this.editedPathway.references = val.split(' ');
+        this.editedPathway.references = val.split('__');
       }
     },
     editedPathwayFullReferences: {
       get() {
-        return this.editedPathway.fullReferences.join(' ');
+        return this.editedPathway.fullReferences.join('__');
       },
       set(val) {
-        this.editedPathway.fullReferences = val.split(' ');
+        this.editedPathway.fullReferences = val.split('__');
       }
     }
   },
   methods: {
     saveDBankRef() {
-      // ~~~ generated draftIdx's to dBankRefs IN CREATION PROCCESS  - need to start with fresh data ~~~
-      //// so i can differ between Add / Edit and use same kind of func like in FeaturedInteractionEdit
-      console.log(this.editedDBankRef);
+      const isEdit = !!this.editedDBankRef.draftIdx;
+      if (isEdit) {
+        const idx = this.editedMaterial.dBankRefs.findIndex(ref => ref.draftIdx === this.editedDBankRef.draftIdx);
+        this.editedMaterial.dBankRefs.splice(idx, 1, { ...this.editedDBankRef });
+      } else {
+        this.editedDBankRef.draftIdx = this.editedMaterial.dBankRefs.length + 1;
+        this.editedMaterial.dBankRefs.push({ ...this.editedDBankRef });
+      }
+      this.closeDBankRefDialog();
     },
     removeExternalLink(idx) {
       this.editedMaterial.externalLinks.splice(idx, 1);
@@ -717,6 +740,7 @@ export default {
         this.editedMaterial.pathways.push({ ...this.editedPathway });
       }
       this.closePathwayDialog();
+      this.setPathwayRefs();
     },
     openPathwayDialog(pathway, pathwayIdx) {
       if (pathway) {
@@ -752,6 +776,24 @@ export default {
     },
     async loadLabels() {
       this.$store.dispatch({ type: 'loadLabels' });
+    },
+    setPathwayRefs() {
+      const { pathways } = this.editedMaterial;
+      let nextIdx = 1;
+      this.editedMaterial.pathwayRefs = pathways.reduce((acc, pathway) => {
+        pathway.references.forEach((reference, idx) => {
+          const isValidUrl = (typeof reference === 'string' && reference.startsWith('http'));
+          const ref = {
+            draftIdx: nextIdx++,
+            type: '',
+            txt: pathway.fullReferences[idx],
+            link: (isValidUrl) ? reference : `https://pubmed.ncbi.nlm.nih.gov/${reference}`,
+            pubmedId: (isValidUrl) ? 0 : +reference
+          }
+          acc.push(ref);
+        });
+        return acc;
+      }, []);
     },
     async loadMaterial() {
       const matId = this.$route.params.id;
