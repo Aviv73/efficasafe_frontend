@@ -24,8 +24,8 @@
         :search="search"
         class="elevation-0"
       >
-        <template #[`item.enzyme`]="{ item }">
-          <div class="text-uppercase">{{ item.enzyme }}</div>
+        <template #[`item.name`]="{ item }">
+          <div class="text-uppercase">{{ item.name }}</div>
           <span>({{ item.type }})</span>
         </template>
         <template #[`item.influence`]="{ value }">
@@ -78,10 +78,10 @@ export default {
       search: '',
       headers: [
         {
-          text: 'Enzyme',
+          text: 'Name',
           align: 'start',
           sortable: false,
-          value: 'enzyme',
+          value: 'name',
         },
         {
           text: 'Influence',

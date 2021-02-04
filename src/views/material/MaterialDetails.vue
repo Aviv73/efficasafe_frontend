@@ -271,7 +271,7 @@
                     <h3 class="info-title" v-if="material.pathways.length">Pathways:</h3>
                     <v-chip-group column v-if="material.pathways.length">
                         <v-chip v-for="(pathway, idx) in material.pathways" :key="idx">
-                            {{ pathway.enzyme.toUpperCase() }}
+                            {{ pathway.name.toUpperCase() }}
                         </v-chip>
                     </v-chip-group>
 

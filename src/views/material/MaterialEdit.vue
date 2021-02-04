@@ -60,8 +60,8 @@
           <v-form @submit.prevent="editPathway" class="pathway-form">
             <v-text-field 
               type="text"
-              label="Enzyme*"
-              v-model="editedPathway.enzyme"
+              label="Name*"
+              v-model="editedPathway.name"
               required
               :rules="[(v) => !!v || 'Pathway name is required']"
             />
@@ -71,6 +71,11 @@
               :items="$options.pathwayTypes"
               required
               :rules="[(v) => !!v || 'Pathway type is required']"
+            />
+            <v-text-field 
+              type="text"
+              label="Full Name"
+              v-model="editedPathway.fullName"
             />
             <h4>Influence</h4>
             <ckeditor
@@ -783,8 +788,8 @@ export default {
       return type && txt;
     },
     isPathwayValid() {
-      const { enzyme } = this.editedPathway;
-      return !!enzyme;
+      const { name } = this.editedPathway;
+      return !!name;
     },
     editedPathwayReferences: {
       get() {

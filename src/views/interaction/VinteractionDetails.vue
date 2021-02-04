@@ -57,7 +57,7 @@
                         is metabolized by the enzymes:
                         <span v-for="(pathway, idx) in material.pathways" :key="idx">
                             <span>{{ idx === 0 ? '' : ',' }} </span>
-                            <span class="text-uppercase">{{ pathway.enzyme }} </span>
+                            <span class="text-uppercase">{{ pathway.name }} </span>
                             <sub>{{ getMaterialRefNums(pathway.references) }}</sub>
                         </span>
                     </p>
@@ -67,17 +67,17 @@
                             effect on the enzymes:
                             <span v-for="(pathway, idx) in relevantSide1Pathways" :key="idx">
                                 <span>{{ idx === 0 ? '' : ',' }} </span>
-                                <span class="text-uppercase">{{ pathway.enzyme }}</span>
+                                <span class="text-uppercase">{{ pathway.name }}</span>
                             </span>
                         </p>
                         <div v-for="(pathway, idx) in relevantSide1Pathways" :key="'pathway' + idx">
-                            <h6>{{ pathway.enzyme }}</h6>
+                            <h6>{{ pathway.name }}</h6>
                             <p v-highlight-text:[material.name] v-html="txtWithRefs(pathway.influence, true)" />
                         </div>
                         <div>
                             <p>
                                 There is no evidence regarding the effect of {{ interaction.side1Material.name }} on
-                                <span v-for="(pathway, idx) in unRelevantSide1Pathways" :key="'unrelevantPathway' + idx">{{ (idx === 0) ? '' : ', ' }}{{ pathway.enzyme.toUpperCase() }}</span> activity.
+                                <span v-for="(pathway, idx) in unRelevantSide1Pathways" :key="'unrelevantPathway' + idx">{{ (idx === 0) ? '' : ', ' }}{{ pathway.name.toUpperCase() }}</span> activity.
                             </p>
                         </div>
                     </div>
@@ -142,13 +142,13 @@ export default {
         },
         relevantSide1Pathways() {
             return this.side1Pathways.filter(pathway => {
-                const idx = this.material.pathways.findIndex(matPathway => matPathway.enzyme.replace('CYP', '').toUpperCase() === pathway.enzyme.replace('CYP', '').toUpperCase());
+                const idx = this.material.pathways.findIndex(matPathway => matPathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
                 return idx !== -1;
             });
         },
         unRelevantSide1Pathways() {
             return this.material.pathways.filter(pathway => {
-                const idx = this.side1Pathways.findIndex(matPathway => matPathway.enzyme.replace('CYP', '').toUpperCase() === pathway.enzyme.replace('CYP', '').toUpperCase());
+                const idx = this.side1Pathways.findIndex(matPathway => matPathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
                 return idx === -1;
             });
         },

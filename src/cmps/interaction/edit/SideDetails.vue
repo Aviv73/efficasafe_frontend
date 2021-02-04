@@ -81,7 +81,7 @@
         <span class="text-capitalize">Pathways:</span>
         <v-chip-group column>
             <v-chip v-for="(pathway, idx) in side.pathways" :key="'pathway' + idx">
-                {{ pathway.enzyme.toUpperCase() }}
+                {{ pathway.name.toUpperCase() }}
             </v-chip>
         </v-chip-group>
     </div>
