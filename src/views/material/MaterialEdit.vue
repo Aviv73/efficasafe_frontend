@@ -548,6 +548,120 @@
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
+          <h3>Pharmacology:</h3>
+          <h4>Indication:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.indication"
+            :config="CKEditorConfig"
+          />
+          <h4>Pharmacodynamics:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.pharmacodynamics"
+            :config="CKEditorConfig"
+          />
+          <h4>Mechanism Of Action:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.mechanismOfAction"
+            :config="CKEditorConfig"
+          />
+          <h4>Absorption:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.absorption"
+            :config="CKEditorConfig"
+          />
+          <h4>Toxicity:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.toxicity"
+            :config="CKEditorConfig"
+          />
+          <h4>Protein Binding:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.proteinBinding"
+            :config="CKEditorConfig"
+          />
+          <h4>Metabolism:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.metabolism"
+            :config="CKEditorConfig"
+          />
+          <h4>Half Life:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.halfLife"
+            :config="CKEditorConfig"
+          />
+          <h4>Route Of Elimination:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.routeOfElimination"
+            :config="CKEditorConfig"
+          />
+          <h4>Volume Of Distribution:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.volumeOfDistribution"
+            :config="CKEditorConfig"
+          />
+          <h4>Clearance:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.clearance"
+            :config="CKEditorConfig"
+          />
+          <div class="list-chips">
+            <v-text-field
+              v-model="model.structuredAdverseEffects"
+              label="Structured Adverse Effects"
+              @keypress.enter.prevent="addItemToArray('structuredAdverseEffects')"
+            />
+            <v-chip-group column>
+              <v-chip
+                v-for="(effect, idx) in editedMaterial.structuredAdverseEffects"
+                :key="idx"
+                close
+                @click:close="removeItem('structuredAdverseEffects', idx)"
+              >
+              {{ effect }}
+              </v-chip>
+          </v-chip-group>
+          </div>
+          <div class="list-chips">
+            <v-text-field
+              v-model="model.structuredContraIndications"
+              label="Structured Contra Indications"
+              @keypress.enter.prevent="addItemToArray('structuredContraIndications')"
+            />
+            <v-chip-group column>
+              <v-chip
+                v-for="(indication, idx) in editedMaterial.structuredContraIndications"
+                :key="idx"
+                close
+                @click:close="removeItem('structuredContraIndications', idx)"
+              >
+              {{ indication }}
+              </v-chip>
+          </v-chip-group>
+          </div>
+          <div class="list-chips">
+            <v-text-field
+              v-model="model.foodInteractions"
+              label="Food Interactions"
+              @keypress.enter.prevent="addItemToArray('foodInteractions')"
+            />
+            <v-list>
+              <v-list-item
+                class="food-interaction"
+                v-for="(interaction, idx) in editedMaterial.foodInteractions"
+                :key="idx"
+              >
+                <v-list-item-content>{{ interaction }}</v-list-item-content>
+                <v-list-item-action>
+                  <v-btn
+                    icon
+                    @click="removeItem('foodInteractions', idx)"
+                  >
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </v-list-item-action>
+              </v-list-item>
+            </v-list>
+          </div>
         </v-form>
         <div class="form-actions">
           <v-btn class="cancel-btn" to="/material/" color="normal">cancel</v-btn>
@@ -620,6 +734,9 @@ export default {
         dBankIndications: '',
         qualities: '',
         atcIds: '',
+        structuredAdverseEffects: '',
+        structuredContraIndications: '',
+        foodInteractions: ''
       },
       materialType: [
         {
