@@ -9,161 +9,278 @@
         </v-avatar>
         {{ side.name }}
     </v-card-title>
+    <div class="side-details-row" v-if="side.isNarrowTherapeutic">
+        <v-icon>mdi-pill</v-icon>
+        Narrow therapeutic drug.
+    </div>
     <div class="side-details-row" v-if="side.type">
-        <span class="text-capitalize">Type:</span>
+        <span class="side-details-row-header">Type:</span>
         {{ side.type }}
     </div>
-    <div class="side-details-row" v-if="side.atcId">
-        <span class="text-capitalize">ATC code:</span>
-        {{ side.atcId }}
+    <div class="side-details-row" v-if="side.drugBankId">
+        <span class="side-details-row-header">DrugBank id:</span>
+        {{ side.drugBankId }}
     </div>
-    <div class="side-details-row" v-if="side.dragBankId">
-        <span class="text-capitalize">DrugBank id:</span>
-        {{ side.dragBankId }}
+    <div class="side-details-row" v-if="side.fdaLabel">
+        <span class="side-details-row-header">FDA label:</span>
+        <a :href="side.fdaLabel" target="_blank">{{ side.fdaLabel }}</a>
+    </div>
+    <div class="side-details-row" v-if="side.atcIds.length">
+        <span class="side-details-row-header">ATC ID's:</span>
+        <v-chip-group column>
+            <v-chip v-for="(id, idx) in side.atcIds" :key="idx">
+                {{ id }}
+            </v-chip>
+        </v-chip-group>
     </div>
     <div class="side-details-row" v-if="side.brands.length">
-        <span class="text-capitalize">Brands:</span>
+        <span class="side-details-row-header">Brands:</span>
         <v-chip-group column>
-            <v-chip v-for="(brand, idx) in side.brands" :key="'brand' + idx">
+            <v-chip v-for="(brand, idx) in side.brands" :key="idx">
                 {{ brand }}
             </v-chip>
         </v-chip-group>
     </div>
     <div class="side-details-row" v-if="side.aliases.length">
-        <span class="text-capitalize">Synonyms:</span>
+        <span class="side-details-row-header">Synonyms:</span>
         <v-chip-group column>
-            <v-chip v-for="(alias, idx) in side.aliases" :key="'alias' + idx">
+            <v-chip v-for="(alias, idx) in side.aliases" :key="idx">
+                {{ alias }}
+            </v-chip>
+        </v-chip-group>
+    </div>
+    <div class="side-details-row" v-if="side.dBankAliases.length">
+        <span class="side-details-row-header">DrugBank's synonyms:</span>
+        <v-chip-group column>
+            <v-chip v-for="(alias, idx) in side.dBankAliases" :key="idx">
                 {{ alias }}
             </v-chip>
         </v-chip-group>
     </div>
     <div class="side-details-row" v-if="side.botanicalFamily">
-        <span class="text-capitalize">Botanical family:</span>
+        <span class="side-details-row-header">Botanical family:</span>
         {{ side.botanicalFamily }}
     </div>
-    <div class="side-details-row" v-if="side.desc">
-        <span class="text-capitalize">Description:</span>
-        <div v-html="side.desc"></div>
-    </div>
     <div class="side-details-row" v-if="side.plantPartUsed">
-        <span class="text-capitalize">Plant part used:</span>
+        <span class="side-details-row-header">Plant part used:</span>
         {{ side.plantPartUsed }}
     </div>
+    <div class="side-details-row" v-if="side.desc">
+        <span class="side-details-row-header">Description:</span>
+        <div v-html="side.desc"></div>
+    </div>
+    <div class="side-details-row" v-if="side.dBankDesc">
+        <span class="side-details-row-header">DrugBank's description:</span>
+        <div v-html="side.dBankDesc"></div>
+    </div>
+    <div class="side-details-row" v-if="side.dBankClinicalDesc">
+        <span class="side-details-row-header">DrugBank's clinical description:</span>
+        <div v-html="side.dBankClinicalDesc"></div>
+    </div>
     <div class="side-details-row" v-if="side.qualities.length">
-        <span class="text-capitalize">Qualities:</span>
+        <span class="side-details-row-header">Qualities:</span>
         <v-chip-group column>
-            <v-chip v-for="(quality, idx) in side.qualities" :key="'quality' + idx">
+            <v-chip v-for="(quality, idx) in side.qualities" :key="idx">
                 {{ quality }}
             </v-chip>
         </v-chip-group>
     </div>
     <div class="side-details-row" v-if="side.activeConstituents">
-        <span class="text-capitalize">Active constituents:</span>
+        <span class="side-details-row-header">Active constituents:</span>
         <div v-html="side.activeConstituents"></div>
     </div>
     <div class="side-details-row" v-if="side.medicinalActions.length">
-        <span class="text-capitalize">Medicinal actions:</span>
+        <span class="side-details-row-header">Medicinal actions:</span>
         <v-chip-group column>
-            <v-chip v-for="(action, idx) in side.medicinalActions" :key="'med-action' + idx">
+            <v-chip v-for="(action, idx) in side.medicinalActions" :key="idx">
                 {{ action }}
             </v-chip>
         </v-chip-group>
     </div>
     <div class="side-details-row" v-if="side.indications.length">
-        <span class="text-capitalize">Indications:</span>
+        <span class="side-details-row-header">Indications:</span>
         <v-chip-group column>
-            <v-chip v-for="(indication, idx) in side.indications" :key="'indication' + idx">
+            <v-chip v-for="(indication, idx) in side.indications" :key="idx">
                 {{ indication }}
             </v-chip>
         </v-chip-group>
     </div>
+    <div class="side-details-row" v-if="side.dBankIndications.length">
+        <v-expansion-panels flat>
+            <v-expansion-panel>
+                <v-expansion-panel-header class="pa-0">
+                    <span class="side-details-row-header">DrugBank's Indications:</span>    
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="pa-0">
+                    <v-chip-group column>
+                        <v-chip v-for="(indication, idx) in side.dBankIndications" :key="idx">
+                            {{ indication }}
+                        </v-chip>
+                    </v-chip-group>
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+        </v-expansion-panels>
+    </div>
     <div class="side-details-row" v-if="side.pathways.length">
-        <span class="text-capitalize">Pathways:</span>
+        <span class="side-details-row-header">Pathways:</span>
         <v-chip-group column>
-            <v-chip v-for="(pathway, idx) in side.pathways" :key="'pathway' + idx">
-                {{ pathway.name.toUpperCase() }}
-            </v-chip>
+            <v-tooltip
+                v-for="(pathway, idx) in side.pathways"
+                :key="idx"
+                bottom
+            >
+                <template v-slot:activator="{ on, attrs }">
+                        <v-chip v-bind="attrs" v-on="on">
+                            {{ pathway.name.toUpperCase() }}
+                        </v-chip>
+                </template>
+                <div>{{ pathway.fullName }}</div>
+                <div class="text-capitalize">{{ pathway.type }}</div>
+                <span
+                    class="text-capitalize"
+                    v-for="action in pathway.actions"
+                    :key="action"
+                >
+                    {{ action }} 
+                </span>
+            </v-tooltip>
         </v-chip-group>
     </div>
     <div class="side-details-row" v-if="side.dosage">
-        <span class="text-capitalize">Dosage:</span>
+        <span class="side-details-row-header">Dosage:</span>
         <div v-html="side.dosage"></div>
     </div>
     <div class="side-details-row" v-if="side.sensitivities">
-        <span class="text-capitalize">Sensitivities:</span>
+        <span class="side-details-row-header">Sensitivities:</span>
         <div v-html="side.sensitivities"></div>
     </div>
     <div class="side-details-row" v-if="side.adverseReactions">
-        <span class="text-capitalize">Adverse reactions:</span>
+        <span class="side-details-row-header">Adverse reactions:</span>
         <div v-html="side.adverseReactions"></div>
     </div>
     <div class="side-details-row" v-if="side.overdosage">
-        <span class="text-capitalize">Overdosage:</span>
+        <span class="side-details-row-header">Overdosage:</span>
         <div v-html="side.overdosage"></div>
     </div>
     <div class="side-details-row" v-if="side.precautions">
-        <span class="text-capitalize">Precautions:</span>
+        <span class="side-details-row-header">Precautions:</span>
         <div v-html="side.precautions"></div>
     </div>
     <div class="side-details-row" v-if="side.contraindications">
-        <span class="text-capitalize">Contraindications:</span>
+        <span class="side-details-row-header">Contraindications:</span>
         <div v-html="side.contraindications"></div>
     </div>
     <div class="side-details-row" v-if="side.toxicity">
-        <span class="text-capitalize">Toxicity:</span>
+        <span class="side-details-row-header">Toxicity:</span>
         <div v-html="side.toxicity"></div>
     </div>
     <div class="side-details-row" v-if="side.pregnancy">
-        <span class="text-capitalize">Pregnancy:</span>
+        <span class="side-details-row-header">Pregnancy:</span>
         <div v-html="side.pregnancy"></div>
     </div>
     <div class="side-details-row" v-if="side.lactation">
-        <span class="text-capitalize">Lactation:</span>
+        <span class="side-details-row-header">Lactation:</span>
         <div v-html="side.lactation"></div>
     </div>
-    <div class="side-details-row" v-if="side.draft">
-        <span class="text-capitalize">Draft:</span>
-        <div v-html="side.draft"></div>
-    </div>
     <div class="side-details-row" v-if="side.effectOnDrugMetabolism">
-        <span class="text-capitalize">Effect on drug metabolism:</span>
+        <span class="side-details-row-header">Effect on drug metabolism:</span>
         <div v-html="side.effectOnDrugMetabolism"></div>
     </div>
     <div class="side-details-row" v-if="side.detailedPharmacology">
-        <span class="text-capitalize">Detailed pharmacology:</span>
+        <span class="side-details-row-header">Detailed pharmacology:</span>
         <div v-html="side.detailedPharmacology"></div>
     </div>
     <div class="side-details-row" v-if="side.mechanismOfAction">
-        <span class="text-capitalize">Mechanism of action:</span>
+        <span class="side-details-row-header">Mechanism of action:</span>
         <div v-html="side.mechanismOfAction"></div>
     </div>
-    <div class="side-details-row" v-if="side.editorDraft">
-        <span class="text-capitalize">Editor draft:</span>
-        {{ side.editorDraft }}
-    </div>
     <div class="side-details-row" v-if="side.regions.length">
-        <span class="text-capitalize">Regions:</span>
+        <span class="side-details-row-header">Regions:</span>
         <v-chip-group column>
             <v-chip v-for="(region, idx) in side.regions" :key="'region' + idx" class="text-uppercase">
                 <v-avatar left>
                     <v-img
-                        :src="require(`@/assets/icons/regions/${region}.svg`)"
+                        :src="require(`@/assets/icons/regions/${region.toLowerCase()}.svg`)"
                     ></v-img>
                 </v-avatar>
                 {{ region }}
             </v-chip>
         </v-chip-group>
     </div>
+    <div class="side-details-row" v-if="side.dBankCategories.length">
+        <span class="side-details-row-header">DrugBank's Categories:</span>
+        <v-chip-group column>
+            <v-chip v-for="(category, idx) in side.dBankCategories" :key="idx">
+                {{ category }}
+            </v-chip>
+        </v-chip-group>
+    </div>
+    <div class="side-details-row" v-if="side.compounds.length">
+        <v-expansion-panels flat>
+            <v-expansion-panel>
+                <v-expansion-panel-header class="pa-0">
+                    <span class="side-details-row-header">Compounds:</span>    
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="pa-0">
+                    <v-chip-group column>
+                        <v-chip v-for="(compound, idx) in side.compounds" :key="idx">
+                            {{ compound }}
+                        </v-chip>
+                    </v-chip-group>
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+        </v-expansion-panels>
+    </div>
+    <div class="side-details-row" v-if="side.structuredAdverseEffects.length">
+        <v-expansion-panels flat>
+            <v-expansion-panel>
+                <v-expansion-panel-header class="pa-0">
+                    <span class="side-details-row-header">Structured adverse effects:</span>    
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="pa-0">
+                    <v-chip-group column>
+                        <v-chip v-for="(effect, idx) in side.structuredAdverseEffects" :key="idx">
+                            {{ effect }}
+                        </v-chip>
+                    </v-chip-group>
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+        </v-expansion-panels>
+    </div>
+    <div class="side-details-row" v-if="side.structuredContraIndications.length">
+        <v-expansion-panels flat>
+            <v-expansion-panel>
+                <v-expansion-panel-header class="pa-0">
+                    <span class="side-details-row-header">Structured contraindications:</span>    
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="pa-0">
+                    <v-chip-group column>
+                        <v-chip v-for="(indication, idx) in side.structuredContraIndications" :key="idx">
+                            {{ indication }}
+                        </v-chip>
+                    </v-chip-group>
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+        </v-expansion-panels>
+    </div>
     <div class="side-details-row" v-if="side.atcPaths.length">
-        <span class="text-capitalize">ATC paths:</span>
-        <label-path-list
-            class="narrow"
-            :atcPaths="side.atcPaths"
-            :isEdit="false"
-        />
+        <v-expansion-panels flat>
+            <v-expansion-panel>
+                <v-expansion-panel-header class="pa-0">
+                    <span class="side-details-row-header">ATC paths:</span>    
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="pa-0">
+                    <label-path-list
+                        class="narrow"
+                        :atcPaths="side.atcPaths"
+                        :isEdit="false"
+                    />
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+        </v-expansion-panels>
     </div>
     <div class="side-details-row" v-if="side.labels.length">
-        <span class="text-capitalize">Labels:</span>
+        <span class="side-details-row-header">Labels:</span>
         <v-chip-group column>
             <v-chip v-for="label in side.labels" :key="label._id" :style="label.color">
                 <router-link :to="`/label/${label._id}`">
@@ -172,11 +289,89 @@
             </v-chip>
         </v-chip-group>
     </div>
-    <reference-table
-        class="ref-table"
-        :references="side.refs"
-        v-if="side.refs.length"
-    />
+    <div class="side-details-row" v-if="side.refs.length">
+        <v-expansion-panels flat>
+            <v-expansion-panel>
+                <v-expansion-panel-header class="pa-0">
+                    <span class="side-details-row-header">References table:</span>    
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="pa-0">
+                    <reference-table
+                        class="ref-table"
+                        :references="side.refs"
+                    />
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+        </v-expansion-panels>
+    </div>
+    <div class="side-details-row ref-table" v-if="side.dBankRefs.length">
+        <v-expansion-panels flat>
+            <v-expansion-panel>
+                <v-expansion-panel-header class="pa-0">
+                    <span class="side-details-row-header">DrugBank's references table:</span>    
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="pa-0">
+                    <d-bank-reference-table
+                        class="d-bank-ref-table"
+                        :refs="side.dBankRefs"
+                    />
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+        </v-expansion-panels>
+    </div>
+    <v-divider />
+    <div class="side-details-row" v-if="side.externalLinks.length">
+        <v-expansion-panels flat>
+            <v-expansion-panel>
+                <v-expansion-panel-header class="pa-0">
+                    <span class="side-details-row-header">External links:</span>    
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="pa-0">
+                    <v-list>
+                        <v-list-item
+                            v-for="(link ,idx) in side.externalLinks"
+                            :key="idx"
+                        >
+                            <v-list-item-content>
+                                <v-list-item-title>{{ link.resource }}</v-list-item-title>
+                                <v-list-item-subtitle>
+                                    <a :href="link.url" target="_blank">{{ link.url }}</a>
+                                </v-list-item-subtitle>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list>
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+        </v-expansion-panels>
+        <pharmacology-details :pharmacology="side.pharmacology">
+            <template #header>
+                <v-expansion-panel-header class="pa-0">
+                    <span class="side-details-row-header">Pharmacology:</span>    
+                </v-expansion-panel-header>
+            </template>
+        </pharmacology-details>
+        <div class="side-details-row" v-if="side.foodInteractions.length">
+            <v-expansion-panels flat>
+                <v-expansion-panel>
+                    <v-expansion-panel-header class="pa-0">
+                        <span class="side-details-row-header">Food interactions:</span>    
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content class="pa-0">
+                        <v-list>
+                            <v-list-item
+                                v-for="(interaction ,idx) in side.foodInteractions"
+                                :key="idx"
+                            >
+                                <v-list-item-content class="pa-0">
+                                    &bull; {{ interaction }}
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-list>
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+            </v-expansion-panels>
+        </div>
+    </div>
   </v-card>
 </section>
 </template>
@@ -184,6 +379,8 @@
 <script>
 import labelPathList from '@/cmps/material/details/LabelPathList';
 import referenceTable from '@/cmps/common/ReferenceTable';
+import dBankReferenceTable from '@/cmps/common/DBankRefsTable';
+import pharmacologyDetails from '@/cmps/material/details/PharmacologyDetails';
 
 export default {
     props: {
@@ -216,7 +413,9 @@ export default {
     },
     components: {
         labelPathList,
-        referenceTable
+        referenceTable,
+        dBankReferenceTable,
+        pharmacologyDetails
     }
 }
 </script>

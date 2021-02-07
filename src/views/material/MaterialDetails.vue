@@ -110,15 +110,6 @@
                         {{ material.botanicalFamily }}
                     </div>
 
-                    <h3 class="info-title" v-if="material.desc">Description:</h3>
-                    <p class="info-value" v-if="material.desc" v-html="material.desc"></p>
-
-                    <h3 class="info-title text-capitalize" v-if="material.dBankDesc">DrugBank's description:</h3>
-                    <p class="info-value" v-if="material.dBankDesc" v-html="material.dBankDesc"></p>
-
-                    <h3 class="info-title text-capitalize" v-if="material.dBankClinicalDesc">DrugBank's clinical description:</h3>
-                    <p class="info-value" v-if="material.dBankClinicalDesc" v-html="material.dBankClinicalDesc"></p>
-
                     <h3
                         class="info-title"
                         v-if="material.plantPartUsed"
@@ -131,6 +122,15 @@
                     >
                         {{ material.plantPartUsed }}
                     </div>
+
+                    <h3 class="info-title" v-if="material.desc">Description:</h3>
+                    <p class="info-value" v-if="material.desc" v-html="material.desc"></p>
+
+                    <h3 class="info-title text-capitalize" v-if="material.dBankDesc">DrugBank's description:</h3>
+                    <p class="info-value" v-if="material.dBankDesc" v-html="material.dBankDesc"></p>
+
+                    <h3 class="info-title text-capitalize" v-if="material.dBankClinicalDesc">DrugBank's clinical description:</h3>
+                    <p class="info-value" v-if="material.dBankClinicalDesc" v-html="material.dBankClinicalDesc"></p>
 
                     <h3 class="info-title" v-if="material.qualities.length">
                         Qualities:
@@ -450,92 +450,18 @@
                     </v-expansion-panels>
 
                     <h3 class="text-capitalize info-title">Pharmacology:</h3>
-                    <v-expansion-panels class="material-details-expand-panel" flat>
-                        <v-expansion-panel>
-                            <v-expansion-panel-header class="material-details-expand-panel-header pa-0">
+                    <pharmacology-details
+                        class="material-details-expand-panel"
+                        :pharmacology="material.pharmacology"
+                    >
+                        <template #header>
+                            <v-expansion-panel-header
+                                class="material-details-expand-panel-header pa-0"
+                            >
                                 Click to view pharmacology:
                             </v-expansion-panel-header>
-                            <v-expansion-panel-content>
-                                <h6 v-if="material.pharmacology.indication">Indication:</h6>  
-                                <p
-                                    class="mb-4"
-                                    v-if="material.pharmacology.indication"
-                                    v-html="material.pharmacology.indication"
-                                />
-                                
-                                <h6 v-if="material.pharmacology.pharmacodynamics">Pharmacodynamics:</h6>  
-                                <p
-                                    class="mb-4"
-                                    v-if="material.pharmacology.pharmacodynamics"
-                                    v-html="material.pharmacology.pharmacodynamics"
-                                />
-
-                                <h6 v-if="material.pharmacology.mechanismOfAction">Mechanism Of Action:</h6>  
-                                <p
-                                    class="mb-4"
-                                    v-if="material.pharmacology.mechanismOfAction"
-                                    v-html="material.pharmacology.mechanismOfAction"
-                                />
-
-                                <h6 v-if="material.pharmacology.absorption">Absorption:</h6>  
-                                <p
-                                    class="mb-4"
-                                    v-if="material.pharmacology.absorption"
-                                    v-html="material.pharmacology.absorption"
-                                />
-
-                                <h6 v-if="material.pharmacology.toxicity">Toxicity:</h6>  
-                                <p
-                                    class="mb-4"
-                                    v-if="material.pharmacology.toxicity"
-                                    v-html="material.pharmacology.toxicity"
-                                />
-
-                                <h6 v-if="material.pharmacology.proteinBinding">Protein Binding:</h6>  
-                                <p
-                                    class="mb-4"
-                                    v-if="material.pharmacology.proteinBinding"
-                                    v-html="material.pharmacology.proteinBinding"
-                                />
-
-                                <h6 v-if="material.pharmacology.metabolism">Metabolism:</h6>  
-                                <p
-                                    class="mb-4"
-                                    v-if="material.pharmacology.metabolism"
-                                    v-html="material.pharmacology.metabolism"
-                                />
-
-                                <h6 v-if="material.pharmacology.halfLife">Half Life:</h6>  
-                                <p
-                                    class="mb-4"
-                                    v-if="material.pharmacology.halfLife"
-                                    v-html="material.pharmacology.halfLife"
-                                />
-
-                                <h6 v-if="material.pharmacology.routeOfElimination">Route Of Elimination:</h6>  
-                                <p
-                                    class="mb-4"
-                                    v-if="material.pharmacology.routeOfElimination"
-                                    v-html="material.pharmacology.routeOfElimination"
-                                />
-
-                                <h6 v-if="material.pharmacology.volumeOfDistribution">Volume Of Distribution:</h6>  
-                                <p
-                                    class="mb-4"
-                                    v-if="material.pharmacology.volumeOfDistribution"
-                                    v-html="material.pharmacology.volumeOfDistribution"
-                                />
-
-                                <h6 v-if="material.pharmacology.clearance">Clearance:</h6>  
-                                <p
-                                    class="mb-4"
-                                    v-if="material.pharmacology.clearance"
-                                    v-html="material.pharmacology.clearance"
-                                />
-
-                            </v-expansion-panel-content>
-                        </v-expansion-panel>
-                    </v-expansion-panels>
+                        </template>
+                    </pharmacology-details>
 
                     <h3 class="text-capitalize info-title" v-if="material.foodInteractions.length">Food Interactions:</h3>
                     <v-expansion-panels
@@ -554,7 +480,7 @@
                                         :key="idx"
                                     >
                                         <v-list-item-content class="pa-0">
-                                            * {{ interaction }}
+                                            &bull; {{ interaction }}
                                         </v-list-item-content>
                                     </v-list-item>
                                 </v-list>
@@ -576,6 +502,7 @@ import labelPathList from '@/cmps/material/details/LabelPathList';
 import confirmDelete from '@/cmps/general/ConfirmDelete';
 import referenceTable from '@/cmps/common/ReferenceTable';
 import dBankReferenceTable from '@/cmps/common/DBankRefsTable';
+import pharmacologyDetails from '@/cmps/material/details/PharmacologyDetails';
 import iconsMap from '@/cmps/general/IconsMap';
 import entityNotFound from '@/cmps/general/EntityNotFound';
 
@@ -701,6 +628,7 @@ export default {
         labelPathList,
         referenceTable,
         dBankReferenceTable,
+        pharmacologyDetails,
         confirmDelete,
         iconsMap,
         entityNotFound
