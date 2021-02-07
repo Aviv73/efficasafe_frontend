@@ -62,6 +62,7 @@ function getEmptyMaterial() {
         medicinalActions: [],
         indications: [],
         dBankIndications: [],
+        dBankCategories: [],
         labels: [],
         atcPaths: [],
         regions: [],
@@ -117,6 +118,7 @@ function getEmptyPathway() {
         type: '',
         fullName: '',
         influence: '',
+        actions: [],
         references: [],
         fullReferences: []
     }

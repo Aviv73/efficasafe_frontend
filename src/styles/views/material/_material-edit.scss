@@ -44,7 +44,7 @@
         label {
             text-align: start;
         }
-        .food-interaction:not(:last-child) {
+        .list-item:not(:last-child) {
             border-bottom: 1px solid rgba(#000, .1);
         }
         .external-links {

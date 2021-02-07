@@ -34,9 +34,17 @@
           </div>
           <span>({{ item.type }})</span>
         </template>
-        <template #[`item.influence`]="{ value }">
-          <div v-if="isHerb" v-html="value" class="pathway-table-influence"></div>
-          <p v-else>{{ value }}</p>
+        <template #[`item.itemActions`]="{ item }">
+          <v-avatar
+            class="action-types my-1"
+            v-for="(action, idx) in item.actions"
+            :key="idx"
+            size="36"
+            :title="action | capitalize"
+            color="primary"
+          >
+            {{ action.charAt(0).toUpperCase() }}
+          </v-avatar>
         </template>
         <template #[`item.fullReferences`]="{ value, item }">
           <div class="pathway-table-full-ref">
@@ -90,10 +98,10 @@ export default {
           value: 'name',
         },
         {
-          text: 'Influence',
-          align: 'start',
+          text: 'Role',
+          align: 'center',
           sortable: false,
-          value: 'influence',
+          value: 'itemActions'
         },
         {
           text: 'Full References',
@@ -112,17 +120,9 @@ export default {
   },
   computed: {
     computedHeaders() {
-      let headers = [];
-      if (this.isHerb) {
-        headers = this.headers.filter(
-          (header) => header.value !== 'fullReferences'
-        );
-      } else {
-        headers = this.headers.filter((header) => header.value !== 'influence');
-      }
-      return this.isEdit
-        ? headers
-        : headers.filter((header) => header.value !== 'actions');
+      return this.isEdit ?
+        this.headers :
+        this.headers.filter((header) => header.value !== 'actions');
     },
   },
   methods: {

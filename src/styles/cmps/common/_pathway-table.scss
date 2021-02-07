@@ -15,16 +15,9 @@
             margin-bottom: 0;
         }
     }
-    &-influence {
-        padding: 12px 0;
-        p {
-            margin-bottom: 0;
-
-            sub {
-                cursor: default;
-                color: inherit;
-            }
-        }
+    .action-types {
+        color: white !important;
+        cursor: help;
     }
     &-actions {
         text-align: center;

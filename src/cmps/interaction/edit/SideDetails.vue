@@ -154,10 +154,6 @@
             </v-chip>
         </v-chip-group>
     </div>
-    <div class="side-details-row" v-if="side.subMaterials.length">
-        <span class="text-capitalize">Sub materials:</span>
-        <sub-material-list :subMats="side.subMaterials" />
-    </div>
     <div class="side-details-row" v-if="side.atcPaths.length">
         <span class="text-capitalize">ATC paths:</span>
         <label-path-list
@@ -186,7 +182,6 @@
 </template>
 
 <script>
-import subMaterialList from '@/cmps/material/SubMaterialList';
 import labelPathList from '@/cmps/material/details/LabelPathList';
 import referenceTable from '@/cmps/common/ReferenceTable';
 
@@ -203,8 +198,11 @@ export default {
         }
     },
     watch: {
-        id() {
-            this.loadSide();
+        id: {
+            handler() {
+                this.loadSide();
+            },
+            immediate: true
         }
     },
     methods: {
@@ -216,11 +214,7 @@ export default {
             }
         }
     },
-    created() {
-        this.loadSide();
-    },
     components: {
-        subMaterialList,
         labelPathList,
         referenceTable
     }

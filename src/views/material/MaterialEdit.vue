@@ -72,6 +72,12 @@
               required
               :rules="[(v) => !!v || 'Pathway type is required']"
             />
+            <v-select
+              label="Actions"
+              v-model="editedPathway.actions"
+              :items="$options.pathwayActions"
+              multiple
+            />
             <v-text-field 
               type="text"
               label="Full Name"
@@ -553,6 +559,33 @@
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
+          <v-divider />
+
+          <div class="list-chips">
+            <v-text-field
+              v-model="model.dBankCategories"
+              label="DrugBank's Categories"
+              @keypress.enter.prevent="addItemToArray('dBankCategories')"
+            />
+            <v-list>
+              <v-list-item
+                class="list-item"
+                v-for="(category, idx) in editedMaterial.dBankCategories"
+                :key="idx"
+              >
+                <v-list-item-content>{{ category }}</v-list-item-content>
+                <v-list-item-action>
+                  <v-btn
+                    icon
+                    @click="removeItem('dBankCategories', idx)"
+                  >
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </v-list-item-action>
+              </v-list-item>
+            </v-list>
+          </div>
+
           <h3>Pharmacology:</h3>
           <h4>Indication:</h4>
           <ckeditor
@@ -651,7 +684,7 @@
             />
             <v-list>
               <v-list-item
-                class="food-interaction"
+                class="list-item"
                 v-for="(interaction, idx) in editedMaterial.foodInteractions"
                 :key="idx"
               >
@@ -701,6 +734,7 @@ export default {
     'in vitro', 'retrospective', 'case', 'review'
   ],
   pathwayTypes: [ 'enzyme', 'transporter', 'carrier' ],
+  pathwayActions: [ 'substrate', 'inhibitor', 'inducer', 'no effect' ],
   data() {
     return {
       editedMaterial: null,
@@ -737,6 +771,7 @@ export default {
         medicinalActions: '',
         indications: '',
         dBankIndications: '',
+        dBankCategories: '',
         qualities: '',
         atcIds: '',
         structuredAdverseEffects: '',
@@ -919,7 +954,7 @@ export default {
     },
     async loadMaterial() {
       const matId = this.$route.params.id;
-      var material = null;
+      let material = null;
       if (matId) {
         material = await this.$store.dispatch({
           type: 'loadMaterial',
@@ -928,7 +963,7 @@ export default {
       } else {
         material = materialService.getEmptyMaterial();
       }
-      this.editedMaterial = JSON.parse(JSON.stringify(material));
+      this.editedMaterial = material;
     },
     async saveMaterial() {
       if (!this.editedMaterial.name || !this.editedMaterial.type) return;

@@ -18,3 +18,7 @@ Vue.filter('ref-txt', (val) => {
 Vue.filter('material-name', (val) => {
     return val.replace(/\[(.*?)\]/g, '');
 });
+
+Vue.filter('capitalize', (val) => {
+    return val.charAt(0).toUpperCase() + val.slice(1);
+});
