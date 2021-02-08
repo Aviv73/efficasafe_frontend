@@ -52,10 +52,18 @@
           </v-form>
         </v-card>
       </v-dialog>
-      <v-dialog v-model="pathwayDialog" persistent max-width="600">
+      <v-dialog v-model="pathwayDialog" class="pathway-dialog" persistent max-width="600">
         <v-card>
           <v-card-title class="primary headline" style="color:white; font-weight:bold;">
             <v-icon dark left>mdi-plus-circle</v-icon>Add / Edit Pathway
+            <v-spacer />
+            <v-btn 
+              icon
+              dark
+              @click="closePathwayDialog"
+            >
+              <v-icon dark>mdi-close</v-icon>
+            </v-btn>
           </v-card-title>
           <v-form @submit.prevent="editPathway" class="pathway-form">
             <v-text-field 

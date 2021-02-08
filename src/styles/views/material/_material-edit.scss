@@ -95,6 +95,9 @@
         }
     }
 }
+.v-dialog:not(.v-dialog--fullscreen) {
+    max-height: 95vh;
+}
 
 .ref-form,
 .pathway-form {

@@ -32,7 +32,7 @@
           >
             {{ item.name }}
           </div>
-          <span>({{ item.type }})</span>
+          <span v-if="item.type">({{ item.type }})</span>
         </template>
         <template #[`item.itemActions`]="{ item }">
           <v-avatar
@@ -98,7 +98,7 @@ export default {
           value: 'name',
         },
         {
-          text: 'Role',
+          text: 'Roles',
           align: 'center',
           sortable: false,
           value: 'itemActions'
@@ -111,7 +111,7 @@ export default {
         },
         {
           text: 'Actions',
-          align: 'start',
+          align: 'center',
           sortable: false,
           value: 'actions',
         },

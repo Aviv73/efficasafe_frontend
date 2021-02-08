@@ -196,7 +196,7 @@
                     <p
                         class="info-value"
                         v-if="material.sensitivities"
-                        v-html="material.sensitivities"
+                        v-html="txtWithRefs('sensitivities')"
                     ></p>
 
                     <h3 class="info-title" v-if="material.adverseReactions">Adverse Reactions:</h3>
