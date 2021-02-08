@@ -69,7 +69,7 @@
                         <a :href="material.fdaLabel" target="_blank">{{ material.fdaLabel }}</a>
                     </div>
 
-                    <h3 class="info-title" v-if="material.atcIds">ATC IDs:</h3>
+                    <h3 class="info-title" v-if="material.atcIds.length">ATC IDs:</h3>
                     <v-chip-group column v-if="material.atcIds.length">
                         <v-chip v-for="id in material.atcIds" :key="id">
                             {{ id }}
@@ -308,6 +308,7 @@
                             >
                                 {{ action }} 
                             </span>
+                            <p v-if="!pathway.fullName && !pathway.type && !pathway.actions.length" class="ma-0">No additional info :(</p>
                         </v-tooltip>
                     </v-chip-group>
 
