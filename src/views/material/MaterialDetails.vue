@@ -299,9 +299,9 @@
                                     {{ pathway.name.toUpperCase() }}
                                 </v-chip>
                             </template>
-                            <div>{{ pathway.fullName }}</div>
-                            <div class="text-capitalize">{{ pathway.type }}</div>
-                            <span class="text-capitalize">
+                            <div v-if="pathway.fullName">{{ pathway.fullName }}</div>
+                            <div class="text-capitalize" v-if="pathway.type">{{ pathway.type }}</div>
+                            <span class="text-capitalize" v-if="pathway.actions.length">
                                 {{ pathway.actions.join(', ') }} 
                             </span>
                             <p v-if="!pathway.fullName && !pathway.type && !pathway.actions.length" class="ma-0">No additional info :(</p>

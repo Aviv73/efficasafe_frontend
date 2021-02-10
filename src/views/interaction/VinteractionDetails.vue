@@ -68,8 +68,8 @@
                                 <span>{{ idx === 0 ? '' : ',' }} </span>
                                 <span :class="`text-uppercase pathway-name pathway-${idx}`">{{ pathway.name }} </span>
                                 <v-tooltip bottom :activator="`.pathway-${idx}`">
-                                    <div>{{ pathway.fullName }}</div>
-                                    <span class="text-capitalize">
+                                    <div v-if="pathway.fullName">{{ pathway.fullName }}</div>
+                                    <span class="text-capitalize" v-if="pathway.actions.length">
                                         {{ pathway.actions.join(', ') }} 
                                     </span>
                                     <p v-if="!pathway.fullName && !pathway.actions.length" class="ma-0">No additional info :(</p>
