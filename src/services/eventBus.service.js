@@ -7,6 +7,7 @@ export const EV_addMaterial = 'add-material';
 export const EV_addLabel = 'add-label';
 export const EV_addInteraction = 'add-interaction';
 export const EV_emptySelection = 'empty-selection';
+export const EV_cleanSelection = 'clean-selection';
 export const EV_material_unselected = 'material-unselected';
 export const EV_primary_material_changed = 'primary-material-changed';
 export const EV_refresh_root_tree_view = 'refresh-root-tree-view';

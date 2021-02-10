@@ -52,6 +52,7 @@
         <span>
           <input
             type="checkbox"
+            class="selection-input"
             v-show="item.children || item.materialIds"
             :key="checkboxRenderKey"
             :ref="`selectionInput_${item.id}`"
@@ -62,11 +63,10 @@
         </span>
         <span>
           <label :for="`expandInput_${item.id}`" @contextmenu.prevent="emitPrimaryMaterial(item)">
-            <h6 class="atc-id">{{ item.atcId }}</h6>
             <h6 v-html="labelTxt(item.name)"></h6>
              <v-icon 
               class="primary-icon"
-              v-if="isPrimaryMaterial(item._id)"
+              v-if="isPrimaryMaterial(item.materialIds)"
               >mdi-shield-star</v-icon>
           </label>
           <tree-view
@@ -91,7 +91,7 @@
 
 <script>
 import { utilService } from '@/services/util.service';
-import { eventBus, EV_emptySelection, EV_material_unselected, EV_primary_material_changed, EV_refresh_root_tree_view } from '@/services/eventBus.service';
+import { eventBus, EV_emptySelection, EV_cleanSelection, EV_material_unselected, EV_primary_material_changed, EV_refresh_root_tree_view } from '@/services/eventBus.service';
 
 export default {
   name: 'tree-view',
@@ -206,29 +206,20 @@ export default {
         this.traverse(item, 0, doExpand);
       });
     },
-    isPrimaryMaterial(matId) {
-      return this.primaryMaterialIds.includes(matId);
+    isPrimaryMaterial(matIds) {
+      if (!matIds) return false;
+      return this.primaryMaterialIds.some(id => matIds.includes(id));
     },
     refreshCmps() {
       this.checkboxRenderKey++;
     },
-    emitPrimaryMaterial(mat) {
-      if (!mat._id) return;
-      eventBus.$emit(EV_primary_material_changed, mat._id);
+    emitPrimaryMaterial(node) {
+      if (!node.materialIds) return;
+      eventBus.$emit(EV_primary_material_changed, node.materialIds);
     },
     cleanSelection() {
-      const removeAllFromSelection = (node) => {
-        if (this.selection.find((currItem) => currItem.id === node.id)) {
-          const idx = this.selection.findIndex((currItem) => currItem.id === node.id);
-          this.selection.splice(idx, 1);
-          eventBus.$emit(EV_emptySelection, node.parentId);
-          eventBus.$emit(EV_material_unselected, node);
-        }
-      }
-      this.items.forEach(item => {
-        this.traverse(item, 0, removeAllFromSelection);
-      });
       this.selection = [];
+      eventBus.$emit(EV_cleanSelection);
       this.emitSelection();
     },
     closeAllBranches() {
@@ -357,7 +348,7 @@ export default {
     checkOffspringSelected() {
       const indeterminatePaths = (node) => {
         if (this.depth < 4 && this.isNodeChecked(node)) {
-          if (this.primaryMaterialIds.includes(node.id)) {
+          if (this.primaryMaterialIds.some(_id => node.materialIds.includes(_id))) {
             var primaryPath = [];
             this.getNodePath(node, primaryPath);
             const primaryParent = this.items.find(currItem => primaryPath.includes(currItem.id));
@@ -463,7 +454,7 @@ h6:hover {
 .no-material {
   opacity: .5;
 }
-.atc-id {
+.selection-input {
   margin: 0 6px;
 }
 </style>

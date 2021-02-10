@@ -69,7 +69,7 @@
                 v-for="material in materials"
                 :key="material._id"
                 @click="toggleFromSelection(material)"
-                @contextmenu.prevent="setPrimaryMaterial(material._id)"
+                @contextmenu.prevent="setPrimaryMaterial([material._id])"
                 class="material-list-item"
                 :class="{ 'blue lighten-4': isInSelection(material._id) }"
               >
@@ -113,7 +113,7 @@
 </template>
 
 <script>
-import { eventBus, EV_material_unselected, EV_primary_material_changed, EV_refresh_root_tree_view } from '@/services/eventBus.service';
+import { eventBus, EV_material_unselected, EV_cleanSelection, EV_primary_material_changed, EV_refresh_root_tree_view } from '@/services/eventBus.service';
 import materialTreeView from '@/cmps/common/MaterialTreeView';
 import autocomplete from '@/cmps/Autocomplete';
 import InfiniteLoading from 'vue-infinite-loading';
@@ -191,12 +191,14 @@ export default {
       this.materialSelection.push(material);
       eventBus.$emit(EV_refresh_root_tree_view);
     },
-    setPrimaryMaterial(matId) {
-      if (!this.selection.find(mat => mat._id === matId)) return;
-      const idx = this.primaryMaterialIds.findIndex(id => id === matId);
-      if (idx !== -1) {
-        this.primaryMaterialIds.splice(idx, 1);
-      } else this.primaryMaterialIds.push(matId);
+    setPrimaryMaterial(matIds) {
+      if (!this.selection.some(mat => matIds.includes(mat._id))) return;
+      matIds.forEach(matId => {
+        const idx = this.primaryMaterialIds.findIndex(id => id === matId);
+        if (idx !== -1) {
+          this.primaryMaterialIds.splice(idx, 1);
+        } else this.primaryMaterialIds.push(matId);
+      });
     },
     async infiScrollHandler($state) {
       this.$options.currPage++;
@@ -271,7 +273,9 @@ export default {
           this.toggleFromSelection(material);
         });
       }
-      
+    });
+    eventBus.$on(EV_cleanSelection, () => {
+      this.materialSelection = [];
     });
     eventBus.$on(EV_primary_material_changed, this.setPrimaryMaterial);
     if (this.side2MaterialId) {
@@ -287,6 +291,7 @@ export default {
   destroyed() {
     eventBus.$off(EV_material_unselected);
     eventBus.$off(EV_primary_material_changed);
+    eventBus.$off(EV_cleanSelection);
   },
   components: {
     materialTreeView,
