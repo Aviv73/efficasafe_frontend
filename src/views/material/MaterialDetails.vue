@@ -301,12 +301,8 @@
                             </template>
                             <div>{{ pathway.fullName }}</div>
                             <div class="text-capitalize">{{ pathway.type }}</div>
-                            <span
-                                class="text-capitalize"
-                                v-for="action in pathway.actions"
-                                :key="action"
-                            >
-                                {{ action }} 
+                            <span class="text-capitalize">
+                                {{ pathway.actions.join(', ') }} 
                             </span>
                             <p v-if="!pathway.fullName && !pathway.type && !pathway.actions.length" class="ma-0">No additional info :(</p>
                         </v-tooltip>

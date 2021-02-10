@@ -102,7 +102,14 @@
               is metabolized by the enzymes:
               <span v-for="(pathway, idx) in side2Pathways" :key="idx">
                 <span>{{ idx === 0 ? '' : ',' }} </span>
-                <span class="text-uppercase">{{ pathway.name }} </span>
+                <span :class="`text-uppercase pathway-name pathway-${idx}`">{{ pathway.name }} </span>
+                <v-tooltip bottom :activator="`.pathway-${idx}`">
+                  <div>{{ pathway.fullName }}</div>
+                  <span class="text-capitalize">
+                      {{ pathway.actions.join(', ') }} 
+                  </span>
+                  <p v-if="!pathway.fullName && !pathway.actions.length" class="ma-0">No additional info :(</p>
+                </v-tooltip>
                 <sub>{{ getMaterialRefNums(pathway.references) }}</sub>
               </span>
             </p>
