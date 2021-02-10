@@ -41,7 +41,6 @@ function remove(id) {
 
 function formatRefStrs(refStr) {
     const formatedRefs = getRefsOrder(refStr);
-
     let formatedRefStr = '';
     let isSequence = false;
     for (let i = 0; i < formatedRefs.length; i++) {
@@ -76,6 +75,7 @@ function getRefsOrder(txt, isUnique = true, withRange = true) {
     if (!notUniqueRefs) return [];
 
     const refs = (isUnique) ? notUniqueRefs.filter(_onlyUnique) : notUniqueRefs;
+    
     let cleanRefs = refs.map(ref => {
         ref = ref.substring(1, ref.length - 1);
         if (!ref.includes(',') && !ref.includes('-')) ref = +ref;

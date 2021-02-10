@@ -188,7 +188,7 @@ export default {
             this.isLoading = false;
             if (this.material) {
                 this.side2Refs = this.material.pathwayRefs.filter((ref, idx, refs) => {
-                    return refs.findIndex(currRef => currRef.pubmedId === ref.pubmedId) === idx;
+                    return refs.findIndex(currRef => currRef.link === ref.link) === idx;
                 });
             }
             if (this.interaction) {
@@ -198,8 +198,10 @@ export default {
         },
         getMaterialRefNums(pubmedIds) {
             if (!this.interactionRefs.length || !this.side2Refs.length || !pubmedIds.length) return;
-            const refIdx  = this.combinedRefs.findIndex(ref => pubmedIds.includes(ref.pubmedId));
+            if (!pubmedIds.length) return '';
             if (pubmedIds.length === 1) {
+                const field = (typeof pubmedIds[0] === 'number') ? 'pubmedId' : 'link';
+                const refIdx  = this.combinedRefs.findIndex(ref => pubmedIds.includes(ref[field]));
                 return `(${refIdx + 1})`;
             }
             let refsStr = '';
@@ -287,10 +289,11 @@ export default {
                         draftIdx = this.side2Refs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx) + 1 + this.interactionRefs.length;
                     } 
                     
-                    htmlStr += `<li class="tooltip-item">
-                                    <p><span>${draftIdx}</span>. ${this.formatedRefTxt(refs[j].txt)}</p>
-                                    <a href="${refs[j].link}" class="ref-link" target="_blank">${refs[j].link}</a>
-                                </li>`;
+                    htmlStr += `
+                    <li class="tooltip-item">
+                        <p><span>${draftIdx}</span>. ${this.formatedRefTxt(refs[j].txt)}</p>
+                        <a href="${refs[j].link}" class="ref-link" target="_blank">${refs[j].link}</a>
+                    </li>`;
                 }
                 htmlStr += '</ul>';
                 elTooltip.innerHTML = htmlStr;

@@ -119,7 +119,7 @@
                 <h6>{{ pathway.name }}</h6>
                 <p 
                   class="mb-4"
-                  v-highlight-text:[interaction.side1Material.name]
+                  v-highlight-text:[interaction.side2Material.name]
                   v-html="txtWithRefs(pathway.influence, true)"
                 />
               </div>
@@ -257,26 +257,25 @@ export default {
   methods: {
     async getPathways() {
       const { _id } = this.interaction.side2Material;
-      const { pathways, refs } = await this.$store.dispatch({ type: 'loadMaterial', matId: _id });
+      const { pathways, pathwayRefs } = await this.$store.dispatch({ type: 'loadMaterial', matId: _id });
       this.side2Pathways = pathways;
-      for (let i = 0; i < refs.length; i++) {
-        const idx = this.side2Refs.findIndex(ref => ref.pubmedId === refs[i].pubmedId);
-        if (idx === -1) {
-          this.side2Refs.push(refs[i]);
-        }
-      }
+      this.side2Refs = pathwayRefs.filter((ref, idx, refs) => {
+        return refs.findIndex(currRef => currRef.link === ref.link) === idx;
+      });
     },
     getMaterialRefNums(pubmedIds) {
       if (!this.interactionRefs.length || !this.side2Refs.length || !pubmedIds.length) return;
-      const refIdx  = this.combinedRefs.findIndex(ref => pubmedIds.includes(ref.pubmedId));
       if (!pubmedIds.length) return '';
       if (pubmedIds.length === 1) {
+        const field = (typeof pubmedIds[0] === 'number') ? 'pubmedId' : 'link';
+        const refIdx  = this.combinedRefs.findIndex(ref => pubmedIds.includes(ref[field]));
         return `(${refIdx + 1})`;
       }
       let refsStr = '';
       for (let i = 0; i < pubmedIds.length; i++) {
-          const idx = this.combinedRefs.findIndex(ref => pubmedIds[i] === ref.pubmedId);
-          refsStr += (idx + 1) + ', ';
+        const field = (typeof pubmedIds[i] === 'number') ? 'pubmedId' : 'link';
+        const idx = this.combinedRefs.findIndex(ref => pubmedIds[i] === ref[field]);
+        refsStr += (idx + 1) + ', ';
       }
       return `(${refsStr.split(', ').filter(ref => ref).sort((a, b) => a - b).join(', ')})`;
     },
@@ -349,10 +348,11 @@ export default {
         });
         this.interaction = interaction;
         if (this.interaction) {
-          this.getReferences();
+          await this.getReferences();
           if (this.interaction.side2Material) {
-            this.getPathways();
+            await this.getPathways();
           }
+          this.setRefsToolTip();
         } else {
           this.isNotFound = true;
         }
@@ -393,7 +393,7 @@ export default {
       for (let i = 0; i < elSubs.length; i++) {
         const refIdxs = interactionService.getRefsOrder(elSubs[i].innerText);
         if (!refIdxs.length) continue;
-
+        
         elSubs[i].innerText = interactionService.formatRefStrs(elSubs[i].innerText);
         elSubs[i].addEventListener('mouseenter', this.setTooltipPos);
         
@@ -446,11 +446,6 @@ export default {
       this.isArchive = true;
     }
     this.loadInteraction();
-  },
-  updated() {
-    if (this.interaction) {
-      this.setRefsToolTip();
-    }
   },
   components: {
     confirmDelete,
