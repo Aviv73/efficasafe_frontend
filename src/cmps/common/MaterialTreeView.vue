@@ -72,7 +72,7 @@ export default {
         }
         return acc;
       }, []);
-      const criteria = { materialId: materialIds };
+      const criteria = { materialId: materialIds, page: 0, limit: 0 };
       const materials = await this.$store.dispatch({ type: 'getMaterials', criteria });
       this.atcSelection = materials;
     },

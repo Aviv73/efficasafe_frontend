@@ -304,7 +304,7 @@ export default {
         }
         this.traverse(node, 0, findSelected);
         isChecked = !selectedOffsprings.length;
-      } 
+      }
       const addToSelection = (node) => {
         const isExists = this.selection.find(currNode => currNode.id === node.id);
         if (!isExists) this.selection.push(node);
