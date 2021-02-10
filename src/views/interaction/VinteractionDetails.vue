@@ -204,7 +204,8 @@ export default {
             }
             let refsStr = '';
             for (let i = 0; i < pubmedIds.length; i++) {
-                const idx = this.combinedRefs.findIndex(ref => pubmedIds[i] === ref.pubmedId);
+                const field = (typeof pubmedIds[i] === 'number') ? 'pubmedId' : 'link';
+                const idx = this.combinedRefs.findIndex(ref => pubmedIds[i] === ref[field]);
                 refsStr += (idx + 1) + ', ';
             }
             return `(${refsStr.split(', ').filter(str => str).sort((a, b) => a - b).join(', ')})`;
