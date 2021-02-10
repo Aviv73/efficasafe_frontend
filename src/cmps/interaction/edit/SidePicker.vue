@@ -263,8 +263,15 @@ export default {
   },
   created() {
     this.loadMaterials(this.sortBy);
-    eventBus.$on(EV_material_unselected, (mat) => {
-      this.toggleFromSelection(mat);
+    eventBus.$on(EV_material_unselected, async ({ materialIds }) => {
+      if (materialIds && materialIds.length) {
+        const criteria = { materialId: materialIds };
+        const materials = await this.$store.dispatch({ type: 'getMaterials', criteria });
+        materials.forEach(material => {
+          this.toggleFromSelection(material);
+        });
+      }
+      
     });
     eventBus.$on(EV_primary_material_changed, this.setPrimaryMaterial);
     if (this.side2MaterialId) {

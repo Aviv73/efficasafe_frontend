@@ -63,8 +63,18 @@ export default {
     }
   },
   methods: {
-    saveSelection(selection) {
-      this.atcSelection = selection;
+    async saveSelection(selection) {
+      const materialIds = selection.reduce((acc, node) => {
+        if (node.materialIds && node.materialIds.length) {
+          node.materialIds.forEach(_id => {
+            if (!acc.includes(_id)) acc.push( _id);
+          });
+        }
+        return acc;
+      }, []);
+      const criteria = { materialId: materialIds };
+      const materials = await this.$store.dispatch({ type: 'getMaterials', criteria });
+      this.atcSelection = materials;
     },
     handleSearch(val) {
       let timerId;
