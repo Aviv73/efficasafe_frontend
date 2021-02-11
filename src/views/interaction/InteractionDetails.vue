@@ -151,7 +151,7 @@
                 </span>
               </div>
             </div>
-            <div ref="pathways2">
+            <div ref="pathways2" class="mt-12">
               <p class="mb-4" v-if="relevantSide1Pathways.length">
                 <span class="font-weight-medium">{{ interaction.side1Material.name }}</span>
                 effect on the enzymes:
