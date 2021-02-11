@@ -31,7 +31,7 @@
               title="Save Interaction"
               :disabled="!isFormValid"
             >
-            <v-icon>mdi-content-save-edit</v-icon>
+              <v-icon>mdi-content-save-edit</v-icon>
             </v-btn>
           </div>
           <v-form v-model="valid" @submit.prevent="onSaveInteraction(false)">

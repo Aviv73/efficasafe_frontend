@@ -14,7 +14,12 @@
         align-self: flex-start;
         padding: 16px 0;
     }
-
+    .floating-btn {
+        position: fixed;
+        bottom: 36px;
+        right: 24px;
+        z-index: 9;
+    }
     .form-actions {
         align-self: flex-end;
         display: flex;

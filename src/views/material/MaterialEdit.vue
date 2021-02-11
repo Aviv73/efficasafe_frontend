@@ -166,6 +166,17 @@
       </v-dialog>
     <div>
       <v-card class="material-edit" v-if="editedMaterial" width="90%" max-width="1200">
+        <v-btn
+          fab
+          elevation="5"
+          class="floating-btn submit-btn"
+          color="success"
+          title="Save Material"
+          :disabled="!valid"
+          @click="saveMaterial"
+        >
+          <v-icon>mdi-content-save-edit</v-icon>
+        </v-btn>
         <v-form v-model="valid" @submit.prevent="saveMaterial">
           <v-text-field
             type="text"
