@@ -59,24 +59,62 @@
 
                     <div class="text-capitalize" v-if="material.pathways.length">Pathways:</div>
                     <div v-if="material.pathways.length">
-                        <p ref="pathway">
-                            <span class="font-weight-medium">
-                                {{ material.name }}
-                            </span>
-                            is metabolized by the enzymes:
-                            <span v-for="(pathway, idx) in material.pathways" :key="idx">
-                                <span>{{ idx === 0 ? '' : ',' }} </span>
-                                <span :class="`text-uppercase pathway-name pathway-${idx}`">{{ pathway.name }} </span>
-                                <v-tooltip bottom :activator="`.pathway-${idx}`">
-                                    <div v-if="pathway.fullName">{{ pathway.fullName }}</div>
-                                    <span class="text-capitalize" v-if="pathway.actions.length">
-                                        {{ pathway.actions.join(', ') }} 
-                                    </span>
-                                    <p v-if="!pathway.fullName && !pathway.actions.length" class="ma-0">No additional info :(</p>
-                                </v-tooltip>
-                                <sub>{{ getMaterialRefNums(pathway.references) }}</sub>
-                            </span>
-                        </p>
+                        <div ref="pathway">
+                            <div v-if="enzymePathways.length" class="mb-4">
+                                <span class="font-weight-medium">
+                                    {{ material.name }}
+                                </span>
+                                is metabolized by the enzymes:
+                                <span v-for="(pathway, idx) in enzymePathways" :key="idx">
+                                    <span>{{ idx === 0 ? '' : ',' }} </span>
+                                    <span :class="`text-uppercase pathway-name enzyme-${idx}`">{{ pathway.name }} </span>
+                                    <v-tooltip bottom :activator="`.enzyme-${idx}`">
+                                        <div v-if="pathway.fullName">{{ pathway.fullName }}</div>
+                                        <span class="text-capitalize" v-if="pathway.actions.length">
+                                            {{ pathway.actions.join(', ') }} 
+                                        </span>
+                                        <p v-if="!pathway.fullName && !pathway.actions.length" class="ma-0">No additional info :(</p>
+                                    </v-tooltip>
+                                    <sub>{{ getMaterialRefNums(pathway.references) }}</sub>
+                                </span>
+                            </div>
+                            <div v-if="transporterPathways.length" class="mb-4">
+                                <span class="font-weight-medium">
+                                    {{ material.name }}
+                                </span>
+                                is metabolized by the transporters:
+                                <span v-for="(pathway, idx) in transporterPathways" :key="idx">
+                                    <span>{{ idx === 0 ? '' : ',' }} </span>
+                                    <span :class="`text-uppercase pathway-name transporter-${idx}`">{{ pathway.name }} </span>
+                                    <v-tooltip bottom :activator="`.transporter-${idx}`">
+                                        <div v-if="pathway.fullName">{{ pathway.fullName }}</div>
+                                        <span class="text-capitalize" v-if="pathway.actions.length">
+                                            {{ pathway.actions.join(', ') }} 
+                                        </span>
+                                        <p v-if="!pathway.fullName && !pathway.actions.length" class="ma-0">No additional info :(</p>
+                                    </v-tooltip>
+                                    <sub>{{ getMaterialRefNums(pathway.references) }}</sub>
+                                </span>
+                            </div>
+                            <div v-if="carrierPathways.length" class="mb-4">
+                                <span class="font-weight-medium">
+                                    {{ material.name }}
+                                </span>
+                                is metabolized by the carriers:
+                                <span v-for="(pathway, idx) in carrierPathways" :key="idx">
+                                    <span>{{ idx === 0 ? '' : ',' }} </span>
+                                    <span :class="`text-uppercase pathway-name carrier-${idx}`">{{ pathway.name }} </span>
+                                    <v-tooltip bottom :activator="`.carrier-${idx}`">
+                                        <div v-if="pathway.fullName">{{ pathway.fullName }}</div>
+                                        <span class="text-capitalize" v-if="pathway.actions.length">
+                                            {{ pathway.actions.join(', ') }} 
+                                        </span>
+                                        <p v-if="!pathway.fullName && !pathway.actions.length" class="ma-0">No additional info :(</p>
+                                    </v-tooltip>
+                                    <sub>{{ getMaterialRefNums(pathway.references) }}</sub>
+                                </span>
+                            </div>
+                        </div>
                         <div ref="pathway2">
                             <p v-if="relevantSide1Pathways.length">
                                 <span class="font-weight-medium">{{ interaction.side1Material.name }}</span>
@@ -180,6 +218,15 @@ export default {
         isPrimaryMaterial() {
             if (!this.interaction || !this.material) return false;
             return this.interaction.side2Label.primaryMaterialIds.includes(this.material._id);
+        },
+        enzymePathways() {
+            return this.material.pathways.filter(e => e.type === 'enzyme');
+        },
+        transporterPathways() {
+            return this.material.pathways.filter(e => e.type === 'transporter');
+        },
+        carrierPathways() {
+            return this.material.pathways.filter(e => e.type === 'carrier');
         }
     },
     methods: {
