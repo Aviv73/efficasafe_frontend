@@ -9,43 +9,56 @@
           required
           :rules="[(v) => !!v || 'Label Name is required']"
         />
-        <h3>Label Color:</h3>
+        <h3 class="mt-4">Label Color:</h3>
         <v-color-picker
           v-model="editedLabel.color"
           hide-inputs
+          class="mx-auto"
           mode="hexa"
           value="string"
         />
-        <div>
-          <h3>Is 'Super'?</h3>
+        <div class="d-flex align-center justify-center mt-4">
+          <h3 class="mr-6">Is 'Super'?</h3>
           <v-switch
             v-model="editedLabel.isSuper"
             inset
             :label="`${editedLabel.isSuper}`"
           ></v-switch>
         </div>
-        <div>
+        <h3 class="mt-4">Pick Materials:</h3>
+        <div class="label-edit-material-picker">
           <v-btn 
             color="primary"
-            class="label-edit-btn"
             @click="isDialogActive = true"
-          >Pick Materials</v-btn>
-          <span class="text--secondary">
-            {{ relatedMaterials.length }} Materials are picked.
-            {{ editedLabel.primaryMaterialIds.length ? 'Has primary material/s.' : '' }}
-          </span>
+            outlined
+            rounded
+          >
+            Material picker
+          </v-btn>
+          <v-btn
+            color="primary"
+            outlined
+            rounded
+          >
+            Browse categories
+          </v-btn>
+        </div>
+        <span class="text--secondary">
+          {{ relatedMaterials.length }} Materials are picked.
+          {{ editedLabel.primaryMaterialIds.length ? 'Has primary material/s.' : '' }}
+        </span>
+        <v-divider class="mt-4" />
+        <div class="form-actions">
+          <v-btn class="cancel-btn" to="/label/" color="normal">cancel</v-btn>
+          <v-btn
+            class="submit-btn"
+            @click="saveLabel"
+            color="success"
+            :disabled="!valid || !relatedMaterials.length"
+            >Save Label</v-btn
+          >
         </div>
       </v-form>
-      <div class="form-actions">
-        <v-btn class="cancel-btn" to="/label/" color="normal">cancel</v-btn>
-        <v-btn
-          class="submit-btn"
-          @click="saveLabel"
-          color="success"
-          :disabled="!valid || !relatedMaterials.length"
-          >Save Label</v-btn
-        >
-      </div>
     </v-card>
     <v-dialog v-model="isDialogActive" persistent max-width="1400">
       <side-picker
