@@ -26,9 +26,9 @@
       </span>
 
       <v-spacer></v-spacer>
-      <v-icon dark right @click="$emit('close-dialog')"
-        >mdi-window-close</v-icon
-      >
+      <v-icon dark right @click="$emit('close-dialog')">
+        mdi-window-close
+      </v-icon>
     </v-card-title>
     <v-tabs dark background-color="primary" fixed-tabs>
       <v-tab @click="handleNavigation('atc')">ATC Tree</v-tab>
@@ -176,12 +176,14 @@ export default {
           this.$store.dispatch({ type: 'getMaterials', criteria }),
           this.$store.dispatch({ type: 'loadLabel', labelId })
         ]);
-        this.primaryMaterialIds = [ ...label.primaryMaterialIds ];
-        this.materialSelection = [ ...materials ];
-      } else {
-        this.materialSelection = [];
+        this.primaryMaterialIds = [ ...new Set([ ...this.primaryMaterialIds, ...label.primaryMaterialIds ]) ];
+        materials.forEach(material => {
+          if (this.materialSelection.findIndex(currMaterial => currMaterial._id === material._id) === -1) {
+            this.materialSelection.push(material);
+          }
+        });
+        eventBus.$emit(EV_refresh_root_tree_view);
       }
-      eventBus.$emit(EV_refresh_root_tree_view);
     },
     async getMaterial(matId) {
       const material = await this.$store.dispatch({

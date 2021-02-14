@@ -154,7 +154,6 @@ export default {
     emitMaterials() {
       this.$emit('import-materials', this.materials);
       this.reset();
-      this.closeDialog();
     }
   }
 }
