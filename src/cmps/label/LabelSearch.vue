@@ -15,7 +15,15 @@
         <v-icon>mdi-window-close</v-icon>
       </v-btn>
     </v-card-title>
-    <main>
+    <main class="pt-5">
+      <v-select
+        class="label-search-select"
+        v-model="searchField"
+        :items="searchFieldOptions"
+        label="Search in"
+        outlined
+        hide-details
+      />
       <v-radio-group
         class="label-search-radios"
         v-model="search.action"
@@ -23,7 +31,7 @@
         :column="false"
       >
         <v-radio
-          label="ONE FIELD"
+          label="SINGLE VALUE"
           value=""
         />
         <v-radio
@@ -40,16 +48,18 @@
           class="label-search-inputs-field"
           v-model="search.query1"
           append-icon="mdi-magnify"
-          placeholder="Search first category"
+          placeholder="Category includes"
           @keypress.enter="getMaterials"
+          outlined
         />
         <v-text-field
           class="label-search-inputs-field"
           v-model="search.query2"
           append-icon="mdi-magnify"
-          placeholder="Search second category"
+          placeholder="Category includes"
           :disabled="!search.action"
           @keypress.enter="getMaterials"
+          outlined
         />
       </div>
       <div class="label-search-actions mb-4 mt-2">
@@ -105,7 +115,12 @@ export default {
         query1: '',
         query2: ''
       },
+      searchField: 'dBankCategories',
       materials: [],
+      searchFieldOptions: [
+        { text: 'DrugBank\'s Categories', value: 'dBankCategories' },
+        { text: 'Labels', value: 'labels' }
+      ],
       isLoading: false
     }
   },
@@ -116,6 +131,7 @@ export default {
       const criteria = {
         operator: action,
         category: (action) ? [ query1, query2 ] : query1,
+        field: this.searchField,
         limit: 0,
         page: 0
       };
@@ -125,6 +141,7 @@ export default {
     },
     reset() {
       this.materials = [];
+      this.searchField = 'dBankCategories';
       this.search = {
         action: '',
         query1: '',
