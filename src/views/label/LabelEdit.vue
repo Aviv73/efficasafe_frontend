@@ -39,6 +39,7 @@
             color="primary"
             outlined
             rounded
+            @click="isCategoriesDialogActive = true"
           >
             Browse categories
           </v-btn>
@@ -68,6 +69,12 @@
         :relatedMaterials="relatedMaterials"
       />
     </v-dialog>
+    <v-dialog v-model="isCategoriesDialogActive" max-width="1200">
+      <label-search
+        @close-search-dialog="isCategoriesDialogActive = false"
+        @import-materials="addMaterials"
+      />
+    </v-dialog>
   </div>
 </template>
 
@@ -75,6 +82,7 @@
 import { labelService } from '@/services/label.service';
 import { eventBus, EV_addLabel } from '@/services/eventBus.service';
 import sidePicker from '@/cmps/interaction/edit/SidePicker';
+import labelSearch from '@/cmps/label/LabelSearch';
 
 export default {
   name: 'label-edit',
@@ -83,6 +91,7 @@ export default {
       editedLabel: null,
       valid: true,
       isDialogActive: false,
+      isCategoriesDialogActive: false,
       relatedMaterials: []
     };
   },
@@ -140,7 +149,7 @@ export default {
         console.log('Error:', err);
       }
     },
-    async addMaterials(DBKIds) {
+    async getMaterials(DBKIds) {
       const materials = await Promise.all(DBKIds.map(drugBankId => {
           return this.$store.dispatch({
               type: 'getMaterials',
@@ -148,15 +157,23 @@ export default {
           });
       }));
       this.relatedMaterials = materials.flat(1);
+    },
+    addMaterials(materials) {
+      materials.forEach(material => {
+        if (this.relatedMaterials.findIndex(currMaterial => currMaterial._id === material._id) === -1) {
+          this.relatedMaterials.push(material);
+        }
+      });
     }
   },
   async created() {
     const { materials } = this.$route.query;
-    if (materials) await this.addMaterials(materials.split(','));
+    if (materials) await this.getMaterials(materials.split(','));
     this.loadLabel();
   },
   components: {
-    sidePicker
+    sidePicker,
+    labelSearch
   }
 };
 </script>

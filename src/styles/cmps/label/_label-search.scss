@@ -1,0 +1,32 @@
+.label-search {
+    main {
+        padding: 0 72px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    &-radios {
+        width: 30%;
+
+        [role=radiogroup] {
+            justify-content: space-between;
+        }
+    }
+    &-inputs {
+        align-self: stretch;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &-field {
+            max-width: 45%;
+            
+            .v-input--is-disabled:not(.v-input--is-readonly) {
+                opacity: .5;
+            }
+        }
+    }
+    hr {
+        align-self: stretch;
+    }
+}
