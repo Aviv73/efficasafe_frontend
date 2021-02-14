@@ -273,6 +273,8 @@ export default {
                     return 'teal';
                 case 'essential oil':
                     return 'cyan';
+                case 'food':
+                    return 'orange';
             }
         },
         getInteractionName(interaction) {

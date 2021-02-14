@@ -64,6 +64,10 @@ export default {
           {
             text: 'Essential oil',
             value: 'essential oil'
+          },
+          {
+            text: 'Food',
+            value: 'food'
           }
         ],
       },
