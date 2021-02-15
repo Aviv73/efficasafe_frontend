@@ -145,7 +145,7 @@ export default {
         case 'labels':
           return 'Label name';
         case 'pathways':
-          return 'Pathway action\\s';
+          return 'Pathway action';
         default:
           return '';
       }
