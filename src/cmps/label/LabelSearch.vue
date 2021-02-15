@@ -48,7 +48,7 @@
           class="label-search-inputs-field"
           v-model="search.query1"
           append-icon="mdi-magnify"
-          placeholder="Category includes"
+          :placeholder="placeholder1"
           @keypress.enter="getMaterials"
           outlined
         />
@@ -56,7 +56,7 @@
           class="label-search-inputs-field"
           v-model="search.query2"
           append-icon="mdi-magnify"
-          placeholder="Category includes"
+          :placeholder="placeholder2"
           :disabled="!search.action"
           @keypress.enter="getMaterials"
           outlined
@@ -119,9 +119,36 @@ export default {
       materials: [],
       searchFieldOptions: [
         { text: 'DrugBank\'s Categories', value: 'dBankCategories' },
-        { text: 'Labels', value: 'labels' }
+        { text: 'Labels', value: 'labels' },
+        { text: 'Pathways', value: 'pathways' }
       ],
       isLoading: false
+    }
+  },
+  computed: {
+    placeholder1() {
+      switch (this.searchField) {
+        case 'dBankCategories':
+          return 'Category name';
+        case 'labels':
+          return 'Label name';
+        case 'pathways':
+          return 'Pathway name';
+        default:
+          return '';
+      }
+    },
+    placeholder2() {
+      switch (this.searchField) {
+        case 'dBankCategories':
+          return 'Category name';
+        case 'labels':
+          return 'Label name';
+        case 'pathways':
+          return 'Pathway action\\s';
+        default:
+          return '';
+      }
     }
   },
   methods: {
