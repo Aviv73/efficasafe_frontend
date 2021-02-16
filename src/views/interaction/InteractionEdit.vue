@@ -355,7 +355,6 @@ export default {
       },
       set(val) {
         this.editedInteraction.evidenceLevel = val.charAt(0);
-        console.log(this.editedInteraction.evidenceLevel);
       }
     },
     isFormValid() {

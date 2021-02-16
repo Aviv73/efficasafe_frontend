@@ -60,6 +60,8 @@
                             :pageCount="pageCount"
                             :dBankInteractions="dBankInteractions"
                             :dBankPageCount="dBankPageCount"
+                            :featuredInteractions="featuredInteractions"
+                            :featuredPageCount="featuredPageCount"
                             @d-bank-page-changed="getDBankInteractions"
                             @page-changed="getInteractions"
                         />
@@ -84,6 +86,8 @@ export default {
             pageCount: 0,
             dBankInteractions: [],
             dBankPageCount: 0,
+            featuredInteractions: [],
+            featuredPageCount: 0,
             isLoading: false
         }
     },
@@ -138,7 +142,18 @@ export default {
             const { interactions, pageCount } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
             this.pageCount = pageCount;
             this.interactions = interactions;
+            await this.getFeaturedInteractions(page);
             this.isLoading = false;
+        },
+        async getFeaturedInteractions(page) {
+            const DBKIds = this.materials.reduce((acc, { drugBankId }) => {
+                if (!acc.includes(drugBankId)) acc.push(drugBankId);
+                return acc;
+            }, []);
+            const filterBy = { page, drugBankId: DBKIds, isSearchResults: true };
+            const { featuredInteractions , pageCount } = await this.$store.dispatch({ type: 'getFeaturedInteractions', filterBy });
+            this.featuredPageCount = pageCount;
+            this.featuredInteractions = featuredInteractions;
         },
         async getMaterials() {
             if (!this.$route.query.materialId || !this.$route.query.materialId.length) {

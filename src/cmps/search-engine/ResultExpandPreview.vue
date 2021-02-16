@@ -128,7 +128,7 @@ export default {
             this.isLoading = true;
             const { interaction } = this;
             const labelId = interaction.side2Label._id;
-            const criteria = { limit: 0, labelId };
+            const criteria = { limit: 0, page: 0, labelId };
             const relatedMaterials = await this.$store.dispatch({
                 type: 'getMaterials',
                 criteria,
