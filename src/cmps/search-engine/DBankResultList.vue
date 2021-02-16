@@ -24,13 +24,13 @@
       No results :(
     </p>
     <v-footer 
-      v-if="materialCount && pageCount > 1 && dBankInteractions.length"
+      v-if="materialCount && dBankPageCount > 1 && dBankInteractions.length"
       class="results-list-footer"
       tile 
     >
       <v-pagination 
         v-model="page"
-        :length="pageCount"
+        :length="dBankPageCount"
         :total-visible="10"
         light
         circle
@@ -57,7 +57,7 @@ export default {
       type: Number,
       required: true
     },
-    pageCount: {
+    dBankPageCount: {
       type: Number,
       required: true
     }
@@ -70,7 +70,7 @@ export default {
   watch: {
     page(val) {
       if (this.materialCount) {
-        this.$emit('page-changed', val);
+        this.$emit('d-bank-page-changed', val);
       }
     },
     materialCount() {

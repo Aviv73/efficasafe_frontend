@@ -48,8 +48,8 @@ export const interactionStore = ({
             return interactions;
         },
         async getInteractions(context, { filterBy }) {
-            const { interactions } = await interactionService.list(filterBy);
-            return interactions;
+            const { interactions, pageCount } = await interactionService.list(filterBy);
+            return { interactions, pageCount };
         },
         async loadInteraction(context, { intId }) {
             return await interactionService.getById(intId);

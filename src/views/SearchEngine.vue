@@ -57,9 +57,11 @@
                             :isLoading="isLoading"
                             :materialCount="materialCount"
                             :interactions="interactions"
+                            :pageCount="pageCount"
                             :dBankInteractions="dBankInteractions"
-                            :pageCount="dBankPageCount"
-                            @page-changed="getDBankInteractions"
+                            :dBankPageCount="dBankPageCount"
+                            @d-bank-page-changed="getDBankInteractions"
+                            @page-changed="getInteractions"
                         />
                     </div>
                 </main>
@@ -79,6 +81,7 @@ export default {
         return {
             materials: [],
             interactions: [],
+            pageCount: 0,
             dBankInteractions: [],
             dBankPageCount: 0,
             isLoading: false
@@ -117,12 +120,12 @@ export default {
             const drugBankIds = this.materials.map(mat => mat.drugBankId);
             const drugBankId = (drugBankIds.length === 1) ? drugBankIds[0] : drugBankIds;
             const criteria = { drugBankId, page: --page };
-            const { dBankInteractions, total } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria });
+            const { dBankInteractions, pageCount } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria });
             this.dBankInteractions = dBankInteractions;
-            this.dBankPageCount = total;
+            this.dBankPageCount = pageCount;
             this.isLoading = false;
         },
-        async getInteractions() {
+        async getInteractions(page = 1) {
             this.isLoading = true;
             const ids = this.materials.reduce((acc, { _id, labels }) => {
                 if (!acc.includes(_id)) acc.push(_id);
@@ -131,10 +134,10 @@ export default {
                 });
                 return acc;
             }, []);
-            const filterBy = { isSearchResults: true, page: 0, id: ids };
-            const interactions = await this.$store.dispatch({ type: 'getInteractions', filterBy });
+            const filterBy = { isSearchResults: true, page: --page, id: ids };
+            const { interactions, pageCount } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
+            this.pageCount = pageCount;
             this.interactions = interactions;
-            console.log(this.interactions);
             this.isLoading = false;
         },
         async getMaterials() {

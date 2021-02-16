@@ -58,7 +58,7 @@ export default {
     async getResults(q) {
       this.isLoading = true;
       const filterBy = { q: q || '', limit: 0, page: 0 };
-      const interactions = await this.$store.dispatch({ type: 'getInteractions', filterBy });
+      const { interactions } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
       this.items = interactions;
       this.isLoading = false;
     },
