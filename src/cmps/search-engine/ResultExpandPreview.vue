@@ -30,7 +30,7 @@
                                 class="results-list-link"
                                 :to="`/interaction/${vInteraction._id}/${vInteraction.side2Material._id}`" 
                             >
-                                {{ `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}` | material-name }}
+                                {{ `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}` }}
                             </router-link>
                         </v-chip>
                     </v-chip-group>
@@ -50,7 +50,7 @@
                     class="results-list-link"
                     :to="`/interaction/${vInteraction._id}/${vInteraction.side2Material._id}`" 
                 >
-                    {{ `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}` | material-name }}
+                    {{ `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}` }}
                 </router-link>
             </v-chip>
         </v-chip-group>

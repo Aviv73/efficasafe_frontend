@@ -15,7 +15,7 @@
             class="results-list-link"
             :to="(interaction.isVirtual) ? `/interaction/${interaction._id}/${interaction.side2Material._id}` : `/interaction/${interaction._id}`" 
           >
-            {{ getInteractionName(interaction) | material-name }}
+            {{ getInteractionName(interaction) }}
           </router-link>
         </v-chip>
         <v-expansion-panels v-else flat class="results-list-expand-panel">
@@ -30,7 +30,7 @@
                 outlined
                 v-recommendation-color:[interaction.recommendation]
               >
-                {{ getInteractionName(interaction) | material-name }}
+                {{ getInteractionName(interaction) }}
                 <v-icon small class="ml-2">mdi-family-tree</v-icon>
               </v-chip>
             </v-expansion-panel-header>

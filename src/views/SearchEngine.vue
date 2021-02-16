@@ -19,7 +19,7 @@
                         <v-chip-group column>
                             <v-chip
                                 class="mb-4"
-                                v-for="{ material } in results"
+                                v-for="material in materials"
                                 :key="material._id"
                                 close
                                 outlined
@@ -33,7 +33,7 @@
                                         "
                                     ></v-img>
                                 </v-avatar>
-                                {{ material.name | material-name }}
+                                {{ material.name }}
                             </v-chip>
                         </v-chip-group>
                     </div>
@@ -52,14 +52,14 @@
                                 Drug to drug
                             </v-tab>
                         </v-tabs>
-                        <router-view 
-                            class="px-2 py-4" 
+                        <router-view
+                            class="px-2 py-4"
                             :isLoading="isLoading"
                             :materialCount="materialCount"
-                            :interactions="relevantInteractions"
+                            :interactions="interactions"
                             :dBankInteractions="dBankInteractions"
                             :pageCount="dBankPageCount"
-                            @page-changed="getDBankResults"
+                            @page-changed="getDBankInteractions"
                         />
                     </div>
                 </main>
@@ -71,119 +71,75 @@
 
 <script>
 import { eventBus, EV_clear_autocomplete } from '@/services/eventBus.service';
-import { interactionService } from '@/services/interaction.service';
 import autocomplete from '@/cmps/Autocomplete';
 import iconsMap from '@/cmps/general/IconsMap';
 
 export default {
-    recommendationOrderMap: interactionService.getRecommendationOrderMap(),
     data() {
         return {
-            results: [],
+            materials: [],
+            interactions: [],
             dBankInteractions: [],
             dBankPageCount: 0,
             isLoading: false
-        };
+        }
     },
     watch: {
-        '$route'(to, from) {
-            if (JSON.stringify(from.query) !== JSON.stringify(to.query)) {
-                this.getResults();
-            }
-            if (from.name !== to.name) {
-                if (this.$route.name === 'DBankResults') this.getDBankResults();
-                else this.getResults();
-            }
-        },
-        'results.length'() {
-            if (this.$route.name === 'DBankResults') {
-                this.getDBankResults();
-            }
+        '$route.query': {
+            async handler() {
+                const { materialId } = this.$route.query; 
+                if (!materialId) return;
+                if (!Array.isArray(materialId) && materialId) {
+                    this.$route.query.materialId = [ materialId ];
+                }
+                await this.getMaterials();
+                if (this.$route.name === 'Results') this.getInteractions();
+                else this.getDBankInteractions();
+            },
+            deep: true,
+            immediate: true
         }
     },
     computed: {
-        relevantInteractions() {
-            if (!this.results.length) return [];
-            if (this.results.length === 1) {
-                return this.getSortedResults(this.results[0].interactions);
-            }
-            const relevantIdsCountMap = this.results.reduce((acc, { interactions }) => {
-                interactions.forEach(interaction => {
-                    if (!acc[interaction._id]) acc[interaction._id] = 1;
-                    else acc[interaction._id]++;
-                });
-                return acc;
-            }, {});
-            const relevantResults = this.results.reduce((acc, { interactions }) => {
-                interactions.forEach(interaction => {
-                    if (relevantIdsCountMap[interaction._id] > 1 && (acc.findIndex(int => int._id === interaction._id) === -1)) {
-                        if (interaction.side2Label) {
-                            const materials = this.results.filter(({ material }) => material.labelIds.includes(interaction.side2Label._id)).map(res => res.material);
-                            materials.forEach(material => {
-                                const vinteraction = {
-                                    _id: interaction._id,
-                                    side1Material: interaction.side1Material,
-                                    side2Material: {
-                                        _id: material._id,
-                                        name: material.name,
-                                        type: material.type
-                                    },
-                                    side2Label: null,
-                                    recommendation: interaction.recommendation,
-                                    isVirtual: true,
-                                    side2DraftName: interaction.side2DraftName,
-                                    evidenceLevel: interaction.evidenceLevel
-                                };
-                                acc.push(vinteraction);
-                            });
-                        } else acc.push(interaction);
-                    }
-                });
-                return acc;
-            }, []);
-            return this.getSortedResults(relevantResults);
-        },
         materialCount() {
             return (this.$route.query.materialId) ? this.$route.query.materialId.length : 0;
         }
     },
     methods: {
-        getSortedResults(results) {
-            return results.slice().sort((a, b) => {
-                return this.$options.recommendationOrderMap[a.recommendation] - this.$options.recommendationOrderMap[b.recommendation]
-                || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())
-                || this.getInteractionName(a).toLowerCase().localeCompare(this.getInteractionName(b).toLowerCase());
-            });
-        },
-        async getDBankResults(page = 1) {
-            if (this.$route.name !== 'DBankResults') return;
+        async getDBankInteractions(page = 1) {
             this.isLoading = true;
-            const isAllHerbs = this.results.every(({ material }) => material.type === 'herb');
-            if (!this.results.length || isAllHerbs) {
-                this.isLoading = false;
+            const isAllNotDrugs = this.materials.every(material => material.type !== 'drug');
+            if (!this.materials.length || isAllNotDrugs) {
                 this.dBankInteractions = [];
+                this.isLoading = false;
                 return;
             }
-            const drugBankIds = this.results.reduce((acc, { material: { drugBankId } }) => {
-                if (!acc.includes(drugBankId)) acc.push(drugBankId);
-                return acc;
-            }, []);
+            const drugBankIds = this.materials.map(mat => mat.drugBankId);
             const drugBankId = (drugBankIds.length === 1) ? drugBankIds[0] : drugBankIds;
-            if (!drugBankId) {
-                this.isLoading = false;
-                this.dBankInteractions = [];
-                return;
-            }
             const criteria = { drugBankId, page: --page };
             const { dBankInteractions, total } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria });
             this.dBankInteractions = dBankInteractions;
             this.dBankPageCount = total;
             this.isLoading = false;
         },
-        async getResults() {
+        async getInteractions() {
             this.isLoading = true;
+            const ids = this.materials.reduce((acc, { _id, labels }) => {
+                if (!acc.includes(_id)) acc.push(_id);
+                labels.forEach(label => {
+                    if (!acc.includes(label._id)) acc.push(label._id);
+                });
+                return acc;
+            }, []);
+            const filterBy = { isSearchResults: true, page: 0, id: ids };
+            const interactions = await this.$store.dispatch({ type: 'getInteractions', filterBy });
+            this.interactions = interactions;
+            console.log(this.interactions);
+            this.isLoading = false;
+        },
+        async getMaterials() {
             if (!this.$route.query.materialId || !this.$route.query.materialId.length) {
-                this.results = [];
+                this.materials = [];
                 this.isLoading = false;
                 return;
             }
@@ -192,54 +148,22 @@ export default {
                 limit: 0,
                 materialId: this.$route.query.materialId,
             };
-            const materials = await this.$store.dispatch({
-                type: 'getMaterials',
-                criteria
+            const materials = (await this.$store.dispatch({ type: 'getMaterials', criteria }))
+                .map(({  _id, labels, name, type, drugBankId }) => ({  _id, labels, name, type, drugBankId }));
+            this.materials = this.sortMaterials(materials);
+        },
+        sortMaterials(materials) {
+            const order = this.$route.query.materialId;
+            const res = [];
+            order.forEach((id, idx) => {
+                res[idx] = materials.find(({ _id }) => _id === id);
             });
-            this.results = materials.map(({  _id, labels, name, type, drugBankId }) => {
-                return { 
-                    material: {  
-                        _id, 
-                        labelIds: labels.map(label => label._id), 
-                        name, 
-                        type,
-                        drugBankId 
-                    },
-                    interactions: [] 
-                }
-            });
-            if (this.$route.name === 'DBankResults') return;
-            const prms = this.results.map(async result => {
-                const { _id, labelIds } = result.material;
-                const filterBy = { limit: 0, page: 0, id: [ _id, ...labelIds ] };
-                const interactions = await this.$store.dispatch({ type: 'getInteractions', filterBy });
-                const miniInteractions = interactions.reduce(
-                    (acc, { _id, side1Material, side2Material, side2Label, recommendation, evidenceLevel, side2DraftName, isActive }) => {
-                    if (isActive) {
-                        const interaction = {
-                            _id,
-                            side1Material,
-                            side2Material,
-                            side2Label,
-                            recommendation,
-                            isVirtual: false,
-                            side2DraftName,
-                            evidenceLevel
-                        };
-                        acc.push(interaction);
-                    }
-                    return acc;
-                }, []);
-                result.interactions = miniInteractions;
-                return miniInteractions;
-            });
-            await Promise.all(prms);
-            this.isLoading = false;
+            return res;
         },
         addMaterial(material) {
             if (!material) return;
             if (this.$route.query.materialId) {
-                if (!this.isQueryExists(material._id)) {
+                if (!this.isMaterialExists(material._id)) {
                     const ids = [...this.$route.query.materialId, material._id];
                     this.$router.replace({ query: { materialId: ids } });
                 }
@@ -248,13 +172,11 @@ export default {
             }
             eventBus.$emit(EV_clear_autocomplete);
         },
-        removeMaterial(matId) {
-            const ids = this.$route.query.materialId.filter(
-                (id) => id !== matId
-            );
+        removeMaterial(materialId) {
+            const ids = this.$route.query.materialId.filter(id => id !== materialId);
             this.$router.replace({ query: { materialId: ids } });
         },
-        isQueryExists(matId) {
+        isMaterialExists(matId) {
             return this.$route.query.materialId.includes(matId);
         },
         getMaterialColor(type) {
@@ -276,23 +198,11 @@ export default {
                 case 'food':
                     return 'orange';
             }
-        },
-        getInteractionName(interaction) {
-            if (interaction.side2Material) {
-                return `${interaction.side1Material.name} & ${interaction.side2Material.name}`
-            }
-            return interaction.side2Label.name;
         }
-    },
-    created() {
-        if (!Array.isArray(this.$route.query.materialId) && this.$route.query.materialId) {
-            this.$route.query.materialId = [ this.$route.query.materialId ];
-        }
-        this.getResults();
     },
     components: {
         autocomplete,
         iconsMap
-    },
-};
+    }
+}
 </script>
