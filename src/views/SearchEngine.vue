@@ -6,11 +6,8 @@
                     <v-card-title class="text-capitalize px-0">
                         Search engine
                     </v-card-title>
-                    <autocomplete
-                        class="search-engine-header-search-field"
-                        :isSoloInverted="true"
-                        color="white"
-                        @emitAutocomplete="addMaterial"
+                    <search-autocomplete
+                        @materials-selected="addMaterials"
                     />
                 </header>
                 <v-divider />
@@ -75,7 +72,7 @@
 
 <script>
 import { eventBus, EV_clear_autocomplete } from '@/services/eventBus.service';
-import autocomplete from '@/cmps/Autocomplete';
+import searchAutocomplete from '@/cmps/search-engine/SearchAutocomplete'
 import iconsMap from '@/cmps/general/IconsMap';
 
 export default {
@@ -207,17 +204,18 @@ export default {
             });
             return res;
         },
-        addMaterial(material) {
-            if (!material) return;
-            if (this.$route.query.materialId) {
-                if (!this.isMaterialExists(material._id)) {
-                    const ids = [...this.$route.query.materialId, material._id];
-                    this.$router.replace({ query: { materialId: ids } });
+        addMaterials({ value: materialIds }) {
+            materialIds.forEach(id => {
+                if (this.$route.query.materialId) {
+                    if (!this.isMaterialExists(id)) {
+                        const ids = [...this.$route.query.materialId, id];
+                        this.$router.replace({ query: { materialId: ids } });
+                    }
+                } else {
+                    this.$router.push({ query: { materialId: [ id ] } });
                 }
-            } else {
-                this.$router.push({ query: { materialId: [ material._id ] } });
-            }
-            eventBus.$emit(EV_clear_autocomplete);
+                eventBus.$emit(EV_clear_autocomplete);
+            });
         },
         removeMaterial(materialId) {
             const ids = this.$route.query.materialId.filter(id => id !== materialId);
@@ -248,7 +246,7 @@ export default {
         }
     },
     components: {
-        autocomplete,
+        searchAutocomplete,
         iconsMap
     }
 }

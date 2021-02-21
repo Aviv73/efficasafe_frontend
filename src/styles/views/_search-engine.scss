@@ -4,10 +4,6 @@
         flex-direction: column;
         padding: 0 16px;
 
-        &-search-field {
-            width: 100%;
-            align-self: center;
-        }
         .theme--light.v-text-field--solo-inverted.v-input--is-focused > .v-input__control > .v-input__slot {
             background: #42A5F5;
         }
