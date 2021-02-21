@@ -168,10 +168,10 @@
                   v-html="txtWithRefs(pathway.influence, true)"
                 />
               </div>
-              <div v-if="unRelevantSide1Pathways.length">
+              <div v-if="unRelevantSide2Pathways.length">
                 <p>
                   There is no evidence regarding the effect of {{ interaction.side1Material.name }} on
-                  <span v-for="(pathway, idx) in unRelevantSide1Pathways" :key="'unrelevantPathway' + idx">{{ (idx === 0) ? '' : ', ' }}{{ pathway.name.toUpperCase() }}</span> activity.
+                  <span v-for="(pathway, idx) in unRelevantSide2Pathways" :key="'unrelevantPathway' + idx">{{ (idx === 0) ? '' : ', ' }}{{ pathway.name.toUpperCase() }}</span> activity.
                 </p>
               </div>
             </div>
@@ -277,28 +277,34 @@ export default {
           return idx !== -1;
       });
     },
-    unRelevantSide1Pathways() {
-      return this.side1Pathways.filter(pathway => {
-        const idx = this.side2Pathways.findIndex(side2Pathway => side2Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
+    unRelevantSide2Pathways() {
+      return this.side2Pathways.filter(pathway => {
+        const idx = this.side1Pathways.findIndex(side1Pathway => side1Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
         return idx === -1;
       });
     },
     pathwayRefs() {
       const txt = this.relevantSide1Pathways.reduce((acc, pathway) => {
-          acc += pathway.influence + ' ';
-          return acc;
+        acc += pathway.influence + ' ';
+        return acc;
       }, '');
       const sortedRefs = interactionService.getSortedRefs(txt, this.$options.side1Refs);
       return sortedRefs.filter(ref => this.interactionRefs.findIndex(currRef => currRef === ref) === -1);
     },
     enzymePathways() {
-      return this.side2Pathways.filter(pathway => pathway.type === 'enzyme');
+      return this.side2Pathways.filter(
+        pathway => pathway.type === 'enzyme' && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))
+      );
     },
     transporterPathways() {
-      return this.side2Pathways.filter(pathway => pathway.type === 'transporter');
+      return this.side2Pathways.filter(
+        pathway => pathway.type === 'transporter' && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))
+      );
     },
     carrierPathways() {
-      return this.side2Pathways.filter(pathway => pathway.type === 'carrier');
+      return this.side2Pathways.filter(
+        pathway => pathway.type === 'carrier' && (!pathway.actions.includes('inducer') || !pathway.actions.includes('inhibitor'))
+      );
     },
     recommendation() {
       var reco = this.interaction.recommendation;

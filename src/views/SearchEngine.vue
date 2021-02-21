@@ -56,7 +56,7 @@
                             class="px-2 py-4"
                             :isLoading="isLoading"
                             :materialCount="materialCount"
-                            :interactions="interactions"
+                            :interactions="formatedInteractions"
                             :pageCount="pageCount"
                             :dBankInteractions="dBankInteractions"
                             :dBankPageCount="dBankPageCount"
@@ -108,6 +108,35 @@ export default {
         }
     },
     computed: {
+        formatedInteractions() {
+            if (this.materials.length <= 1) return this.interactions;
+            return this.interactions.reduce((acc, interaction) => {
+                if (!interaction.side2Label) acc.push(interaction);
+                else {
+                    const materials = this.materials.filter(
+                        material => material.labels.findIndex(label => label._id === interaction.side2Label._id) !== -1
+                    );
+                    const vInteractions = materials.map(
+                        ({ _id, name, type, drugBankId }) => ({
+                            _id: interaction._id,
+                            side1Material: interaction.side1Material,
+                            side2Material: {
+                                _id,
+                                name,
+                                type,
+                            },
+                            side2Label: null,
+                            recommendation: interaction.recommendation,
+                            isVirtual: true,
+                            side2DraftName: interaction.side2DraftName,
+                            drugBankId
+                        })
+                    );
+                    acc = acc.concat(vInteractions);
+                }
+                return acc;
+            }, []);
+        },
         materialCount() {
             return (this.$route.query.materialId) ? this.$route.query.materialId.length : 0;
         }

@@ -220,13 +220,19 @@ export default {
             return this.interaction.side2Label.primaryMaterialIds.includes(this.material._id);
         },
         enzymePathways() {
-            return this.material.pathways.filter(e => e.type === 'enzyme');
+            return this.material.pathways.filter(
+                pathway => pathway.type === 'enzyme' && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))
+            );
         },
         transporterPathways() {
-            return this.material.pathways.filter(e => e.type === 'transporter');
+            return this.material.pathways.filter(
+                pathway => pathway.type === 'transporter' && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))
+            );
         },
         carrierPathways() {
-            return this.material.pathways.filter(e => e.type === 'carrier');
+            return this.material.pathways.filter(
+                pathway => pathway.type === 'carrier' && (!pathway.actions.includes('inducer') || !pathway.actions.includes('inhibitor'))
+            );
         }
     },
     methods: {
