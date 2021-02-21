@@ -22,6 +22,7 @@
 import { eventBus, EV_clear_autocomplete } from '@/services/eventBus.service';
 
 export default {
+    timerId: null,
     data: () => ({
         isLoading: false,
         search: null,
@@ -31,7 +32,12 @@ export default {
     watch: {
         search: {
             handler(val) {
-                if (val && val.length >= 3) this.getResults(val);
+                if (val && val.length >= 3) {
+                    clearTimeout(this.$options.timerId);
+                    this.$options.timerId = setTimeout(() => {
+                        this.getResults(val);
+                    }, 300);
+                }
             },
             immediate: true
         }
