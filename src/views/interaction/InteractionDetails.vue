@@ -279,9 +279,7 @@ export default {
     },
     unRelevantSide2Pathways() {
       return this.side2Pathways.filter(pathway => {
-        const idx = this.side1Pathways.findIndex(side1Pathway => {
-          return side1Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase()
-        });
+        const idx = this.side1Pathways.findIndex(side1Pathway => side1Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
         return idx === -1;
       });
     },

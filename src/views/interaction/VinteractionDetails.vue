@@ -131,7 +131,7 @@
                             <div>
                                 <p>
                                     There is no evidence regarding the effect of {{ interaction.side1Material.name }} on
-                                    <span v-for="(pathway, idx) in unRelevantSide1Pathways" :key="'unrelevantPathway' + idx">{{ (idx === 0) ? '' : ', ' }}{{ pathway.name.toUpperCase() }}</span> activity.
+                                    <span v-for="(pathway, idx) in unRelevantSide2Pathways" :key="'unrelevantPathway' + idx">{{ (idx === 0) ? '' : ', ' }}{{ pathway.name.toUpperCase() }}</span> activity.
                                 </p>
                             </div>
                         </div>
@@ -209,7 +209,7 @@ export default {
                 return idx !== -1;
             });
         },
-        unRelevantSide1Pathways() {
+        unRelevantSide2Pathways() {
             return this.material.pathways.filter(pathway => {
                 const idx = this.side1Pathways.findIndex(matPathway => matPathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
                 return idx === -1;
