@@ -106,7 +106,7 @@ export default {
     },
     computed: {
         formatedInteractions() {
-            if (this.materials.length <= 1) return this.interactions;
+            if (!this.materials.length || (this.materials.length === 1 && this.materials[0].type !== 'drug')) return this.interactions;
             return this.interactions.reduce((acc, interaction) => {
                 if (!interaction.side2Label) acc.push(interaction);
                 else {
@@ -164,7 +164,7 @@ export default {
                 });
                 return acc;
             }, []);
-            const filterBy = { isSearchResults: true, page: --page, id: ids };
+            const filterBy = { isSearchResults: true, page: --page, id: ids, materialCount: this.materials.length };
             const { interactions, pageCount } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
             this.pageCount = pageCount;
             this.interactions = interactions;
