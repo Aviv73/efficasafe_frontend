@@ -75,10 +75,10 @@
             <span class="text-capitalize">Lab tests: </span>
             <span>{{ interaction.monitor.labTests }}</span>
 
-            <span class="text-capitalize" v-if="interaction.monitor.otherTests">Other tests: </span>
+            <span class="text-capitalize" v-if="interaction.monitor.otherTests"> Other tests: </span>
             <span v-if="interaction.monitor.otherTests">{{ interaction.monitor.otherTests }}</span>
 
-            <span class="text-capitalize" v-if="interaction.monitor.symptons">Symptons: </span>
+            <span class="text-capitalize" v-if="interaction.monitor.symptons"> Symptons: </span>
             <span v-if="interaction.monitor.symptons">{{ interaction.monitor.symptons }}</span>
           </div>
 
