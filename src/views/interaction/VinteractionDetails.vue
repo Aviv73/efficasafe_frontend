@@ -34,19 +34,19 @@
                     >
                         What to monitor:
                     </div>
-                    <div> 
+                    <div v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptons"> 
                         <div v-if="interaction.monitor.labTests" class="mb-2">
                             <span class="text-capitalize">Lab tests: </span>
                             <span>{{ interaction.monitor.labTests }}</span>
                         </div>
 
                         <div v-if="interaction.monitor.otherTests" class="mb-2">
-                            <span class="text-capitalize">Other tests: </span>
+                            <span class="text-capitalize"> Other tests: </span>
                             <span>{{ interaction.monitor.otherTests }}</span>
                         </div>
 
                         <div v-if="interaction.monitor.symptons" class="mb-2">
-                            <span class="text-capitalize">Symptons: </span>
+                            <span class="text-capitalize"> Symptons: </span>
                             <span>{{ interaction.monitor.symptons }}</span>
                         </div>
                     </div>
