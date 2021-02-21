@@ -221,17 +221,23 @@ export default {
         },
         enzymePathways() {
             return this.material.pathways.filter(
-                pathway => pathway.type === 'enzyme' && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))
+                pathway => pathway.type === 'enzyme' &&
+                (pathway.actions.includes('substrate') || pathway.actions.includes('binder') ||
+                pathway.actions.includes('Substrate') || pathway.actions.includes('Binder'))
             );
         },
         transporterPathways() {
             return this.material.pathways.filter(
-                pathway => pathway.type === 'transporter' && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))
+                pathway => pathway.type === 'transporter' &&
+                (pathway.actions.includes('substrate') || pathway.actions.includes('binder') ||
+                pathway.actions.includes('Substrate') || pathway.actions.includes('Binder'))
             );
         },
         carrierPathways() {
             return this.material.pathways.filter(
-                pathway => pathway.type === 'carrier' && (!pathway.actions.includes('inducer') || !pathway.actions.includes('inhibitor'))
+                pathway => pathway.type === 'carrier' &&
+                (!pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor') &&
+                !pathway.actions.includes('Inducer') && !pathway.actions.includes('Inhibitor'))
             );
         }
     },
