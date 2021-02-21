@@ -106,9 +106,9 @@ export default {
     },
     computed: {
         formatedInteractions() {
-            if (!this.materials.length || (this.materials.length === 1 && this.materials[0].type !== 'drug')) return this.interactions;
             return this.interactions.reduce((acc, interaction) => {
-                if (!interaction.side2Label) acc.push(interaction);
+                if (!interaction.side2Label || 
+                (this.materials.length === 1 && this.materials[0]._id === interaction.side1Material._id)) acc.push(interaction);
                 else {
                     const materials = this.materials.filter(
                         material => material.labels.findIndex(label => label._id === interaction.side2Label._id) !== -1
