@@ -3,7 +3,7 @@ export const utilService = {
     escapeStrRegex
 }
 
-function makeId(length = 10) {
+function makeId(length = 20) {
     var id = '';
     var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (var i = 0; i < length; i++) {

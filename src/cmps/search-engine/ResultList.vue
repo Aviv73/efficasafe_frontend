@@ -8,7 +8,7 @@
         >
           <v-chip
             class="mb-4"
-            v-if="!interaction.side2Label"
+            v-if="!interaction.side2Label && interaction.side2Material"
             outlined
             v-recommendation-color:[interaction.recommendation]
           >
@@ -19,7 +19,7 @@
               {{ getInteractionName(interaction) }}
             </router-link>
           </v-chip>
-          <v-expansion-panels v-else flat class="results-list-expand-panel">
+          <v-expansion-panels v-else-if="interaction.side2Label && !interaction.side2Material" flat class="results-list-expand-panel">
             <v-expansion-panel class="results-list-expand-panel-panel">
               <v-expansion-panel-header 
                 class="results-list-expand-panel-panel-header pa-0"
@@ -37,6 +37,39 @@
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <result-expand-preview :interaction="interaction" />
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+          <v-expansion-panels v-else flat class="results-list-expand-panel">
+            <v-expansion-panel class="results-list-expand-panel-panel">
+              <v-expansion-panel-header 
+                class="results-list-expand-panel-panel-header pa-0"
+                disable-icon-rotate
+                hide-actions
+              >
+                <v-chip
+                  class="results-list-expand-panel-panel-chip mb-4"
+                  outlined
+                  v-recommendation-color:[interaction.recommendation]
+                >
+                  {{ interaction.name }}
+                </v-chip>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <v-chip
+                  class="mb-4"
+                  v-for="(vInteraction, idx) in interaction.vInteractions"
+                  :key="idx"
+                  outlined
+                  v-recommendation-color:[vInteraction.recommendation]
+                >
+                  <router-link 
+                    class="results-list-link"
+                    :to="`/interaction/${vInteraction._id}/${vInteraction.side2Material._id}`" 
+                  >
+                    {{ `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name} (${vInteraction.side2DraftName})` }}
+                </router-link>
+                </v-chip>
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
@@ -139,16 +172,7 @@ export default {
   },
   methods: {
     getInteractionName(interaction) {
-      const side1Id = interaction.side1Material._id;
-      const side2Id = (interaction.side2Material) ? interaction.side2Material._id : '';
-      let name = (interaction.side2Material) ? `${interaction.side1Material.name} & ${interaction.side2Material.name}` : interaction.side2Label.name;
-      const vInteractionsCount = this.interactions.filter(int => (int.side2Material && int.side2Material._id === side2Id) && int.side1Material._id === side1Id).length;
-      
-      if (interaction.isVirtual && vInteractionsCount > 1) {
-        name += ` (${interaction.side2DraftName})`;
-      }
-
-      return name;
+      return (interaction.side2Material) ? `${interaction.side1Material.name} & ${interaction.side2Material.name}` : interaction.side2Label.name;
     },
     getInteractionKey(interaction) {
       return (interaction.side2Material) ? `${interaction._id}-${interaction.side2Material._id}` : interaction._id;

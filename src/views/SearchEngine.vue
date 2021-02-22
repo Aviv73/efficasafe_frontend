@@ -72,7 +72,7 @@
 
 <script>
 import { eventBus, EV_clear_autocomplete } from '@/services/eventBus.service';
-import searchAutocomplete from '@/cmps/search-engine/SearchAutocomplete'
+import searchAutocomplete from '@/cmps/search-engine/SearchAutocomplete';
 import iconsMap from '@/cmps/general/IconsMap';
 
 export default {
@@ -114,7 +114,7 @@ export default {
                         material => material.labels.findIndex(label => label._id === interaction.side2Label._id) !== -1
                     );
                     const vInteractions = materials.map(
-                        ({ _id, name, type, drugBankId }) => ({
+                        ({ _id, name, type }) => ({
                             _id: interaction._id,
                             side1Material: interaction.side1Material,
                             side2Material: {
@@ -126,12 +126,30 @@ export default {
                             recommendation: interaction.recommendation,
                             isVirtual: true,
                             side2DraftName: interaction.side2DraftName,
-                            drugBankId
                         })
                     );
-                    console.log('ACC:', acc);
-                    console.log('vInteractions:', vInteractions);
-                    acc = acc.concat(vInteractions);
+                    ///~~ create composed 'interaction', put inside vInteraction and vInteractions[idx]
+                    vInteractions.forEach(vInteraction => {
+                        const idx = acc.findIndex(vin => vin.side2Material && vin.side2Material._id === vInteraction.side2Material._id);
+                        const groupIdx = acc.findIndex(vin => vin._id === `${vInteraction.side1Material._id}-${vInteraction.side2Material._id}`);
+                        if (idx === -1 && groupIdx === -1) acc.push(vInteraction);
+                        else if (idx !== -1 && groupIdx === -1) {
+                            const vInteractionGroup = {
+                                _id: `${vInteraction.side1Material._id}-${vInteraction.side2Material._id}`,
+                                name: `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}`,
+                                recommendation: this.getMoreSeverRecomm(acc[idx].recommendation, vInteraction.recommendation),
+                                vInteractions: [
+                                    acc[idx],
+                                    vInteraction
+                                ]
+                            };
+                            acc.splice(idx, 1, vInteractionGroup);
+                        } else if (groupIdx !== -1 && idx === -1) {
+                            acc[groupIdx].vInteractions.push(vInteraction);
+                            acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, vInteraction.recommendation);
+                        }
+                    });
+                    // acc = acc.concat(vInteractions);
                 }
                 return acc;
             }, []);
@@ -141,6 +159,21 @@ export default {
         }
     },
     methods: {
+        getMoreSeverRecomm(recomm1, recomm2) {
+            const recommendationMap = {
+                'avoid coadministration': 3,
+                'coadministration is not advised': 3,
+                'caution should be taken': 2,
+                'coadministration is not contraindicated but caution should be taken': 2,
+                'coadministration is possible but caution should be taken': 2,
+                'coadministration is not contraindicated': 1,
+                'coadministration is possible': 1,
+                'coadministration is advised': 1,
+                'coadministration is not contraindicated and may even be advised': 1,
+                'coadministration is possible and may even be advised': 1
+            };
+            return (recommendationMap[recomm1.toLowerCase()] > recommendationMap[recomm2.toLowerCase()]) ? recomm1 : recomm2;
+        },
         async getDBankInteractions(page = 1) {
             this.isLoading = true;
             const isAllNotDrugs = this.materials.every(material => material.type !== 'drug');
