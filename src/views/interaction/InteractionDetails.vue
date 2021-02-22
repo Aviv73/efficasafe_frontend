@@ -294,22 +294,19 @@ export default {
     enzymePathways() {
       return this.side2Pathways.filter(
         pathway => pathway.type === 'enzyme' &&
-        (pathway.actions.includes('substrate') || pathway.actions.includes('binder') ||
-        pathway.actions.includes('Substrate') || pathway.actions.includes('Binder'))
+        (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))
       );
     },
     transporterPathways() {
       return this.side2Pathways.filter(
         pathway => pathway.type === 'transporter' &&
-        (pathway.actions.includes('substrate') || pathway.actions.includes('binder') ||
-          pathway.actions.includes('Substrate') || pathway.actions.includes('Binder'))
+        (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))
       );
     },
     carrierPathways() {
       return this.side2Pathways.filter(
         pathway => pathway.type === 'carrier' && 
-        (!pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor') &&
-        !pathway.actions.includes('Inducer') && !pathway.actions.includes('Inhibitor'))
+        (!pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor'))
       );
     },
     recommendation() {
