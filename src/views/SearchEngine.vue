@@ -129,6 +129,8 @@ export default {
                             drugBankId
                         })
                     );
+                    console.log('ACC:', acc);
+                    console.log('vInteractions:', vInteractions);
                     acc = acc.concat(vInteractions);
                 }
                 return acc;

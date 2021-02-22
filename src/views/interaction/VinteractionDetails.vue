@@ -210,7 +210,8 @@ export default {
             });
         },
         unRelevantSide2Pathways() {
-            return this.material.pathways.filter(pathway => {
+            const side2Pathways = [ ...this.enzymePathways, ...this.transporterPathways, ...this.carrierPathways ];
+            return side2Pathways.filter(pathway => {
                 const idx = this.side1Pathways.findIndex(matPathway => matPathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
                 return idx === -1;
             });
@@ -222,22 +223,19 @@ export default {
         enzymePathways() {
             return this.material.pathways.filter(
                 pathway => pathway.type === 'enzyme' &&
-                (pathway.actions.includes('substrate') || pathway.actions.includes('binder') ||
-                pathway.actions.includes('Substrate') || pathway.actions.includes('Binder'))
+                (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))
             );
         },
         transporterPathways() {
             return this.material.pathways.filter(
                 pathway => pathway.type === 'transporter' &&
-                (pathway.actions.includes('substrate') || pathway.actions.includes('binder') ||
-                pathway.actions.includes('Substrate') || pathway.actions.includes('Binder'))
+                (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))
             );
         },
         carrierPathways() {
             return this.material.pathways.filter(
                 pathway => pathway.type === 'carrier' &&
-                (!pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor') &&
-                !pathway.actions.includes('Inducer') && !pathway.actions.includes('Inhibitor'))
+                (!pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor'))
             );
         }
     },
