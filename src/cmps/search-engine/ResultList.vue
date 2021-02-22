@@ -53,6 +53,7 @@
                   v-recommendation-color:[interaction.recommendation]
                 >
                   {{ interaction.name }}
+                  <v-icon small class="ml-2">mdi-family-tree</v-icon>
                 </v-chip>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
