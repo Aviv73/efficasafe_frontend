@@ -106,10 +106,31 @@ export default {
     },
     computed: {
         formatedInteractions() {
+            const insertInteraction = (acc, interaction) => {
+                const idx = acc.findIndex(vin => vin.side2Material && vin.side2Material._id === interaction.side2Material._id);
+                const groupIdx = acc.findIndex(vin => vin._id === `${interaction.side1Material._id}-${interaction.side2Material._id}`);
+                if (idx === -1 && groupIdx === -1) acc.push(interaction);
+                else if (idx !== -1 && groupIdx === -1) {
+                    const vInteractionGroup = {
+                        _id: `${interaction.side1Material._id}-${interaction.side2Material._id}`,
+                        name: `${interaction.side1Material.name} & ${interaction.side2Material.name}`,
+                        recommendation: this.getMoreSeverRecomm(acc[idx].recommendation, interaction.recommendation),
+                        vInteractions: [
+                            acc[idx],
+                            interaction
+                        ]
+                    };
+                    acc.splice(idx, 1, vInteractionGroup);
+                } else if (groupIdx !== -1 && idx === -1) {
+                    acc[groupIdx].vInteractions.push(interaction);
+                    acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, interaction.recommendation);
+                }
+            };
             return this.interactions.reduce((acc, interaction) => {
-                if (!interaction.side2Label || 
-                (this.materials.length === 1 && this.materials[0]._id === interaction.side1Material._id)) acc.push(interaction);
-                else {
+                if (this.materials.length === 1 && this.materials[0]._id === interaction.side1Material._id) acc.push(interaction);
+                else if (!interaction.side2Label) {
+                    insertInteraction(acc, interaction);
+                } else {
                     const materials = this.materials.filter(
                         material => material.labels.findIndex(label => label._id === interaction.side2Label._id) !== -1
                     );
@@ -128,28 +149,9 @@ export default {
                             side2DraftName: interaction.side2DraftName,
                         })
                     );
-                    ///~~ create composed 'interaction', put inside vInteraction and vInteractions[idx]
                     vInteractions.forEach(vInteraction => {
-                        const idx = acc.findIndex(vin => vin.side2Material && vin.side2Material._id === vInteraction.side2Material._id);
-                        const groupIdx = acc.findIndex(vin => vin._id === `${vInteraction.side1Material._id}-${vInteraction.side2Material._id}`);
-                        if (idx === -1 && groupIdx === -1) acc.push(vInteraction);
-                        else if (idx !== -1 && groupIdx === -1) {
-                            const vInteractionGroup = {
-                                _id: `${vInteraction.side1Material._id}-${vInteraction.side2Material._id}`,
-                                name: `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}`,
-                                recommendation: this.getMoreSeverRecomm(acc[idx].recommendation, vInteraction.recommendation),
-                                vInteractions: [
-                                    acc[idx],
-                                    vInteraction
-                                ]
-                            };
-                            acc.splice(idx, 1, vInteractionGroup);
-                        } else if (groupIdx !== -1 && idx === -1) {
-                            acc[groupIdx].vInteractions.push(vInteraction);
-                            acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, vInteraction.recommendation);
-                        }
+                        insertInteraction(acc, vInteraction);
                     });
-                    // acc = acc.concat(vInteractions);
                 }
                 return acc;
             }, []);

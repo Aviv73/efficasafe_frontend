@@ -53,24 +53,28 @@
                   v-recommendation-color:[interaction.recommendation]
                 >
                   {{ interaction.name }}
-                  <v-icon small class="ml-2">mdi-family-tree</v-icon>
+                  <v-icon small class="ml-2">mdi-chevron-down</v-icon>
                 </v-chip>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
-                <v-chip
-                  class="mb-4"
-                  v-for="(vInteraction, idx) in interaction.vInteractions"
-                  :key="idx"
-                  outlined
-                  v-recommendation-color:[vInteraction.recommendation]
-                >
-                  <router-link 
-                    class="results-list-link"
-                    :to="`/interaction/${vInteraction._id}/${vInteraction.side2Material._id}`" 
+                <v-chip-group>
+                  <v-chip
+                    class="mb-4"
+                    v-for="(vInteraction, idx) in interaction.vInteractions"
+                    :key="idx"
+                    outlined
+                    v-recommendation-color:[vInteraction.recommendation]
                   >
-                    {{ `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name} (${vInteraction.side2DraftName})` }}
-                </router-link>
-                </v-chip>
+                    <router-link 
+                      class="results-list-link"
+                      :to="`/interaction/${vInteraction._id}/${vInteraction.side2Material._id}`" 
+                    >
+                      {{ `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}` }}
+                      <span v-if="vInteraction.side2DraftName">{{ `(${vInteraction.side2DraftName})` }}</span>
+                  </router-link>
+                  </v-chip>
+                </v-chip-group>
+                <v-divider />
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
