@@ -157,10 +157,10 @@ export default {
                         ]
                     };
                     acc.splice(idx, 1, vInteractionGroup);
-                } else if (groupIdx !== -1 && idx === -1) {
+                } else {
                     acc[groupIdx].vInteractions.push(interaction);
                     acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, interaction.recommendation);
-                }
+                } 
             };
             return this.interactions.reduce((acc, interaction) => {
                 if (this.materials.length === 1 && this.materials[0]._id === interaction.side1Material._id) acc.push(interaction);
