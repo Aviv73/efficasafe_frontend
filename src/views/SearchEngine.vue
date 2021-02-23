@@ -14,24 +14,45 @@
                 <main class="search-engine-results">
                     <div class="search-engine-results-materials px-6 py-4">
                         <v-chip-group column>
-                            <v-chip
-                                class="mb-4"
-                                v-for="material in materials"
-                                :key="material._id"
-                                close
-                                outlined
-                                :color="getMaterialColor(material.type)"
-                                @click:close="removeMaterial(material._id)"
+                            <span
+                                v-for="(result, idx) in formatedMaterials"
+                                :key="idx"
                             >
-                                <v-avatar left class="mr-2">
-                                    <v-img
-                                        :src="
-                                            require(`@/assets/icons/${material.type}.svg`)
-                                        "
-                                    ></v-img>
-                                </v-avatar>
-                                {{ material.name }}
-                            </v-chip>
+                                <v-chip
+                                    :class="`mb-4 result-${idx}`"
+                                    color="primary"
+                                    outlined
+                                    close
+                                    @click:close="removeMaterials(result.txt)"
+                                >
+                                    {{ result.txt }}
+                                    <v-icon class="info-icon">
+                                        mdi-information-variant
+                                    </v-icon>
+                                </v-chip>
+                                <v-tooltip class="pa-0" bottom :activator="`.result-${idx}`">
+                                    <v-list dense flat color="transparent" dark>
+                                        <v-subheader class="pa-0">Materials</v-subheader>
+                                        <v-list-item
+                                            class="d-flex align-center"
+                                            v-for="material in result.materials"
+                                            :key="material._id"
+                                            dense
+                                        >
+                                            <v-list-item-icon>
+                                                <v-avatar class="mr-2" size="24" rounded>
+                                                    <v-img
+                                                        :src="require(`@/assets/icons/${material.type}.svg`)"
+                                                    />
+                                                </v-avatar>
+                                                <v-list-item-content>
+                                                <v-list-item-title>{{ material.name }}</v-list-item-title>
+                                                </v-list-item-content>
+                                            </v-list-item-icon>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-tooltip>
+                            </span>
                         </v-chip-group>
                     </div>
                     <v-divider vertical />
@@ -91,10 +112,13 @@ export default {
     watch: {
         '$route.query': {
             async handler() {
-                const { materialId } = this.$route.query; 
-                if (!materialId) return;
-                if (!Array.isArray(materialId) && materialId) {
-                    this.$route.query.materialId = [ materialId ];
+                const { queries } = this.$route.query; 
+                if (!queries) {
+                    this.reset();
+                    return;
+                }
+                if (!Array.isArray(queries) && queries) {
+                    this.$route.query.queries = [ queries ];
                 }
                 await this.getMaterials();
                 if (this.$route.name === 'Results') this.getInteractions();
@@ -105,6 +129,18 @@ export default {
         }
     },
     computed: {
+        formatedMaterials() {
+            const results = this.materials.reduce((acc, material) => {
+                const result = acc.find(res => res.txt === material.userQuery);
+                if (result) result.materials.push(material);
+                else {
+                    const newResult = { txt: material.userQuery, materials: [ material ] };
+                    acc.push(newResult);
+                }
+                return acc;
+            }, []);
+            return results;
+        },
         formatedInteractions() {
             const insertInteraction = (acc, interaction) => {
                 const idx = acc.findIndex(vin => vin.side2Material && vin.side2Material._id === interaction.side2Material._id);
@@ -157,7 +193,7 @@ export default {
             }, []);
         },
         materialCount() {
-            return (this.$route.query.materialId) ? this.$route.query.materialId.length : 0;
+            return (this.$route.query.queries) ? this.$route.query.queries.length : 0;
         }
     },
     methods: {
@@ -219,7 +255,7 @@ export default {
             this.featuredInteractions = featuredInteractions;
         },
         async getMaterials() {
-            if (!this.$route.query.materialId || !this.$route.query.materialId.length) {
+            if (!this.$route.query.queries || !this.$route.query.queries.length) {
                 this.materials = [];
                 this.isLoading = false;
                 return;
@@ -227,59 +263,52 @@ export default {
             const criteria = {
                 page: 0,
                 limit: 0,
-                materialId: this.$route.query.materialId,
+                q: this.$route.query.queries.map(q => q.txt),
             };
-            const materials = (await this.$store.dispatch({ type: 'getMaterials', criteria }))
-                .map(({  _id, labels, name, type, drugBankId }) => ({  _id, labels, name, type, drugBankId }));
+            const materials = (await this.$store.dispatch({ type: 'getMaterials', criteria })).map(
+                ({  _id, labels, name, type, drugBankId }) => ({  _id, labels, name, type, drugBankId, userQuery: this.getMaterialUserQuery(_id) })
+            );
             this.materials = this.sortMaterials(materials);
         },
         sortMaterials(materials) {
-            const order = this.$route.query.materialId;
-            const res = [];
-            order.forEach((id, idx) => {
-                res[idx] = materials.find(({ _id }) => _id === id);
-            });
-            return res;
+            const orderBy = this.$route.query.queries.map(({ txt }) => txt);
+            return materials.sort((a, b) => orderBy.indexOf(a.userQuery) - orderBy.indexOf(b.userQuery));
         },
-        addMaterials({ value: materialIds }) {
-            materialIds.forEach(id => {
-                if (this.$route.query.materialId) {
-                    if (!this.isMaterialExists(id)) {
-                        const ids = [...this.$route.query.materialId, id];
-                        this.$router.replace({ query: { materialId: ids } });
+        addMaterials({ text: txt, value: materialIds }) {
+            if (this.$route.query.queries) {
+                if (!this.isQueryExists(txt)) {
+                    const newIds = materialIds.filter(matId => {
+                        return !this.$route.query.queries.some(({ materialIds }) => materialIds.includes(matId));
+                    });
+                    if (newIds.length) {
+                        const queries = [ ...this.$route.query.queries, { txt, materialIds: newIds } ];
+                        this.$router.replace({ query: { queries } });
                     }
-                } else {
-                    this.$router.push({ query: { materialId: [ id ] } });
                 }
-                eventBus.$emit(EV_clear_autocomplete);
-            });
-        },
-        removeMaterial(materialId) {
-            const ids = this.$route.query.materialId.filter(id => id !== materialId);
-            this.$router.replace({ query: { materialId: ids } });
-        },
-        isMaterialExists(matId) {
-            return this.$route.query.materialId.includes(matId);
-        },
-        getMaterialColor(type) {
-            switch (type) {
-                case 'herb':
-                    return 'success';
-                case 'drug':
-                    return 'primary';
-                case 'vitamin':
-                    return 'amber';
-                case 'mineral':
-                    return 'orange';
-                case 'amino acid':
-                    return 'deep-orange';
-                case 'nutraceutical':
-                    return 'teal';
-                case 'essential oil':
-                    return 'cyan';
-                case 'food':
-                    return 'orange';
+            } else {
+                this.$router.push({ query: { queries: [ { txt, materialIds } ] } });
             }
+            eventBus.$emit(EV_clear_autocomplete);
+        },
+        removeMaterials(userQuery) {
+            const queries = this.$route.query.queries.filter(q => q.txt !== userQuery);
+            this.$router.replace({ query: { queries } });
+        },
+        isQueryExists(txt) {
+            return this.$route.query.queries.findIndex(q => q.txt === txt) !== -1;
+        },
+        getMaterialUserQuery(materialId) {
+            return this.$route.query.queries.find(q => q.materialIds.includes(materialId)).txt;
+        },
+        reset() {
+            this.materials = [];
+            this.interactions = [];
+            this.pageCount = 0;
+            this.dBankInteractions = [];
+            this.dBankPageCount = 0;
+            this.featuredInteractions = [];
+            this.featuredPageCount = 0;
+            this.isLoading = false;
         }
     },
     components: {

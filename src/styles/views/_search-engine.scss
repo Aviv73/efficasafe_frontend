@@ -17,6 +17,10 @@
 
         &-materials {
             flex-basis: 30%;
+
+            .info-icon {
+                cursor: help;
+            }
         }
         &-interactions {         
             flex-basis: 70%;
