@@ -13,16 +13,19 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    isLoading: false
+    materialNamesMap: null
   },
   getters: {
-    isLoading(state) {
-      return state.isLoading;
+    materialNamesMap(state) {
+      return state.materialNamesMap;
     }
   },
   mutations: {
-    toggleIsLoading(state) {
-      state.isLoading = !state.isLoading;
+    makeMaterialNamesMap(state, { materials }) {
+      state.materialNamesMap = materials.reduce((acc, material) => {
+        acc[material.name] = material.userQuery;
+        return acc;
+      }, {});
     }
   },
   modules: {

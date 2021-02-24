@@ -269,6 +269,7 @@ export default {
                 ({  _id, labels, name, type, drugBankId }) => ({  _id, labels, name, type, drugBankId, userQuery: this.getMaterialUserQuery(_id) })
             );
             this.materials = this.sortMaterials(materials);
+            this.$store.commit({ type: 'makeMaterialNamesMap', materials });
         },
         sortMaterials(materials) {
             const orderBy = this.$route.query.queries.map(({ txt }) => txt);

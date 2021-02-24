@@ -25,6 +25,7 @@
                             :key="vInteraction.side2Material._id"
                             outlined
                             v-recommendation-color:[interaction.recommendation]
+                            v-material-query-name
                         >
                             <router-link 
                                 class="results-list-link"
@@ -45,6 +46,7 @@
                 :key="vInteraction.side2Material._id"
                 outlined
                 v-recommendation-color:[interaction.recommendation]
+                v-material-query-name
             >
                 <router-link 
                     class="results-list-link"

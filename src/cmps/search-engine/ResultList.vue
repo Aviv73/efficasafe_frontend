@@ -11,6 +11,7 @@
             v-if="!interaction.side2Label && interaction.side2Material"
             outlined
             v-recommendation-color:[interaction.recommendation]
+            v-material-query-name
           >
             <router-link 
               class="results-list-link"
@@ -30,6 +31,7 @@
                   class="results-list-expand-panel-panel-chip mb-4"
                   outlined
                   v-recommendation-color:[interaction.recommendation]
+                  v-material-query-name
                 >
                   {{ getInteractionName(interaction) }}
                   <v-icon small class="ml-2">mdi-family-tree</v-icon>
@@ -51,6 +53,7 @@
                   class="results-list-expand-panel-panel-chip mb-4"
                   outlined
                   v-recommendation-color:[interaction.recommendation]
+                  v-material-query-name
                 >
                   {{ interaction.name }}
                   <v-icon small class="ml-2">mdi-chevron-down</v-icon>
@@ -64,6 +67,7 @@
                     :key="idx"
                     outlined
                     v-recommendation-color:[vInteraction.recommendation]
+                    v-material-query-name
                   >
                     <router-link 
                       class="results-list-link"
@@ -89,6 +93,7 @@
           :key="idx"
           outlined
           v-recommendation-color:[interaction.recommendation]
+          v-material-query-name
         >
           <router-link 
             class="results-list-link"
