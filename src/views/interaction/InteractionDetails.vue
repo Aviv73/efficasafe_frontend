@@ -70,10 +70,15 @@
           <h3 class="info-title">Summary:</h3>
           <p class="info-value" v-html="txtWithRefs(interaction.summary)" ref="summary"></p>
 
-          <div class="info-title text-capitalize">What to monitor:</div>
-          <div class="info-value"> 
-            <span class="text-capitalize">Lab tests: </span>
-            <span>{{ interaction.monitor.labTests }}</span>
+          <div 
+            class="info-title text-capitalize"
+            v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptons"
+          > 
+            What to monitor:
+          </div>
+          <div class="info-value" v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptons"> 
+            <span class="text-capitalize" v-if="interaction.monitor.labTests">Lab tests: </span>
+            <span v-if="interaction.monitor.labTests">{{ interaction.monitor.labTests }}</span>
 
             <span class="text-capitalize" v-if="interaction.monitor.otherTests"> Other tests: </span>
             <span v-if="interaction.monitor.otherTests">{{ interaction.monitor.otherTests }}</span>

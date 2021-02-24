@@ -36,8 +36,13 @@
                     </div>
                     <div v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptons"> 
                         <div v-if="interaction.monitor.labTests" class="mb-2">
-                            <span class="text-capitalize">Lab tests: </span>
-                            <span>{{ interaction.monitor.labTests }}</span>
+                            <span 
+                                class="text-capitalize"
+                                v-if="interaction.monitor.labTests"    
+                            >
+                                Lab tests: 
+                            </span>
+                            <span v-if="interaction.monitor.labTests">{{ interaction.monitor.labTests }}</span>
                         </div>
 
                         <div v-if="interaction.monitor.otherTests" class="mb-2">
