@@ -266,8 +266,7 @@ export default {
             }
         },
         getMaterialRefNums(pubmedIds) {
-            if (!this.interactionRefs.length || !this.side2Refs.length || !pubmedIds.length) return;
-            if (!pubmedIds.length) return '';
+            if (!this.interactionRefs.length || !this.side2Refs.length || !pubmedIds.length) return '';
             if (pubmedIds.length === 1) {
                 const field = (typeof pubmedIds[0] === 'number') ? 'pubmedId' : 'link';
                 const refIdx  = this.combinedRefs.findIndex(ref => pubmedIds.includes(ref[field]));

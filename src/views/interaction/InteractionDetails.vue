@@ -99,88 +99,20 @@
           </div>
 
           <span class="info-title" v-if="side2Pathways.length">Pathways:</span>
-          <div class="info-value" v-if="side2Pathways.length">
-            <div class="mb-4" ref="pathways">
-              <div v-if="enzymePathways.length" class="mb-4">
-                <span class="font-weight-medium">
-                  {{ interaction.side2Material.name }}
-                </span>
-                is metabolized by the enzymes:
-                <span v-for="(pathway, idx) in enzymePathways" :key="idx">
-                  <span>{{ idx === 0 ? '' : ',' }} </span>
-                  <span :class="`text-uppercase pathway-name enzyme-${idx}`">{{ pathway.name }} </span>
-                  <v-tooltip bottom :activator="`.enzyme-${idx}`">
-                    <div v-if="pathway.fullName">{{ pathway.fullName }}</div>
-                    <span class="text-capitalize" v-if="pathway.actions.length">
-                        {{ pathway.actions.join(', ') }} 
-                    </span>
-                    <p v-if="!pathway.fullName && !pathway.actions.length" class="ma-0">No additional info :(</p>
-                  </v-tooltip>
-                  <sub>{{ getMaterialRefNums(pathway.references) }}</sub>
-                </span>
-              </div>
-              <div v-if="transporterPathways.length" class="mb-4">
-                <span class="font-weight-medium">
-                  {{ interaction.side2Material.name }}
-                </span>
-                is metabolized by the transporters:
-                <span v-for="(pathway, idx) in transporterPathways" :key="idx">
-                  <span>{{ idx === 0 ? '' : ',' }} </span>
-                  <span :class="`text-uppercase pathway-name transporter-${idx}`">{{ pathway.name }} </span>
-                  <v-tooltip bottom :activator="`.transporter-${idx}`">
-                    <div v-if="pathway.fullName">{{ pathway.fullName }}</div>
-                    <span class="text-capitalize" v-if="pathway.actions.length">
-                        {{ pathway.actions.join(', ') }} 
-                    </span>
-                    <p v-if="!pathway.fullName && !pathway.actions.length" class="ma-0">No additional info :(</p>
-                  </v-tooltip>
-                  <sub>{{ getMaterialRefNums(pathway.references) }}</sub>
-                </span>
-              </div>
-              <div v-if="carrierPathways.length" class="mb-4">
-                <span class="font-weight-medium">
-                  {{ interaction.side2Material.name }}
-                </span>
-                is metabolized by the carriers:
-                <span v-for="(pathway, idx) in carrierPathways" :key="idx">
-                  <span>{{ idx === 0 ? '' : ',' }} </span>
-                  <span :class="`text-uppercase pathway-name carrier-${idx}`">{{ pathway.name }} </span>
-                  <v-tooltip bottom :activator="`.carrier-${idx}`">
-                    <div v-if="pathway.fullName">{{ pathway.fullName }}</div>
-                    <span class="text-capitalize" v-if="pathway.actions.length">
-                        {{ pathway.actions.join(', ') }} 
-                    </span>
-                    <p v-if="!pathway.fullName && !pathway.actions.length" class="ma-0">No additional info :(</p>
-                  </v-tooltip>
-                  <sub>{{ getMaterialRefNums(pathway.references) }}</sub>
-                </span>
-              </div>
-            </div>
-            <div ref="pathways2" class="mt-12">
-              <p class="mb-4" v-if="relevantSide1Pathways.length">
-                <span class="font-weight-medium">{{ interaction.side1Material.name }}</span>
-                effect on the enzymes:
-                <span v-for="(pathway, idx) in relevantSide1Pathways" :key="idx">
-                    <span>{{ idx === 0 ? '' : ',' }} </span>
-                    <span class="text-uppercase">{{ pathway.name }}</span>
-                </span>
-              </p>
-              <div v-for="(pathway, idx) in relevantSide1Pathways" :key="'pathway' + idx">
-                <h6>{{ pathway.name }}</h6>
-                <p 
-                  class="mb-4"
-                  v-highlight-text:[interaction.side2Material.name]
-                  v-html="txtWithRefs(pathway.influence, true)"
-                />
-              </div>
-              <div v-if="unRelevantSide2Pathways.length">
-                <p>
-                  There is no evidence regarding the effect of {{ interaction.side1Material.name }} on
-                  <span v-for="(pathway, idx) in unRelevantSide2Pathways" :key="'unrelevantPathway' + idx">{{ (idx === 0) ? '' : ', ' }}{{ pathway.name.toUpperCase() }}</span> activity.
-                </p>
-              </div>
-            </div>
-          </div>
+          <interaction-pathways
+            ref="pathwaySection"
+            class="info-value"
+            v-if="side2Pathways.length"
+            :side1Pathways="side1Pathways"
+            :side2Pathways="side2Pathways"
+            :side2Name="interaction.side2Material.name"
+            :side1Name="interaction.side1Material.name"
+            :interactionRefsLength="interactionRefs.length"
+            :side2RefsLength="side2Refs.length"
+            :combinedRefs="combinedRefs"
+            :relevantSide1Pathways="relevantSide1Pathways"
+            :txtWithRefs="txtWithRefs"
+          />
 
           <reference-table
             class="refs-table"
@@ -246,6 +178,7 @@ import referenceTable from '@/cmps/common/ReferenceTable';
 import labelPeek from '@/cmps/interaction/edit/LabelPeek';
 import iconsMap from '@/cmps/general/IconsMap';
 import entityNotFound from '@/cmps/general/EntityNotFound'; 
+import InteractionPathways from '@/cmps/interaction/InteractionPathways';
 
 export default {
   side1Refs: [],
@@ -282,13 +215,6 @@ export default {
           return idx !== -1;
       });
     },
-    unRelevantSide2Pathways() {
-      const side2Pathways = [ ...this.enzymePathways, ...this.transporterPathways, ...this.carrierPathways ];
-      return side2Pathways.filter(pathway => {
-        const idx = this.side1Pathways.findIndex(side1Pathway => side1Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
-        return idx === -1;
-      });
-    },
     pathwayRefs() {
       const txt = this.relevantSide1Pathways.reduce((acc, pathway) => {
         acc += pathway.influence + ' ';
@@ -296,24 +222,6 @@ export default {
       }, '');
       const sortedRefs = interactionService.getSortedRefs(txt, this.$options.side1Refs);
       return sortedRefs.filter(ref => this.interactionRefs.findIndex(currRef => currRef === ref) === -1);
-    },
-    enzymePathways() {
-      return this.side2Pathways.filter(
-        pathway => pathway.type === 'enzyme' &&
-        (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))
-      );
-    },
-    transporterPathways() {
-      return this.side2Pathways.filter(
-        pathway => pathway.type === 'transporter' &&
-        (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))
-      );
-    },
-    carrierPathways() {
-      return this.side2Pathways.filter(
-        pathway => pathway.type === 'carrier' && 
-        (!pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor'))
-      );
     },
     recommendation() {
       var reco = this.interaction.recommendation;
@@ -331,22 +239,6 @@ export default {
       this.side2Refs = pathwayRefs.filter((ref, idx, refs) => {
         return refs.findIndex(currRef => currRef.link === ref.link) === idx;
       });
-    },
-    getMaterialRefNums(pubmedIds) {
-      if (!this.interactionRefs.length || !this.side2Refs.length || !pubmedIds.length) return;
-      if (!pubmedIds.length) return '';
-      if (pubmedIds.length === 1) {
-        const field = (typeof pubmedIds[0] === 'number') ? 'pubmedId' : 'link';
-        const refIdx  = this.combinedRefs.findIndex(ref => pubmedIds.includes(ref[field]));
-        return `(${refIdx + 1})`;
-      }
-      let refsStr = '';
-      for (let i = 0; i < pubmedIds.length; i++) {
-        const field = (typeof pubmedIds[i] === 'number') ? 'pubmedId' : 'link';
-        const idx = this.combinedRefs.findIndex(ref => pubmedIds[i] === ref[field]);
-        refsStr += (idx + 1) + ', ';
-      }
-      return `(${refsStr.split(', ').filter(ref => ref).sort((a, b) => a - b).join(', ')})`;
     },
     async cloneInteraction() {
       const interactionCopy = JSON.parse(JSON.stringify(this.interaction));
@@ -453,7 +345,8 @@ export default {
       return refs;
     },
     setRefsToolTip() {
-      const { summary, reviewOfStudies, pathways, pathways2 } = this.$refs;
+      const { pathways, pathways2 } = this.$refs.pathwaySection.$refs;
+      const { summary, reviewOfStudies } = this.$refs;
       const summarySubs = summary ? summary.querySelectorAll('sub') : [];
       const reviewSubs = reviewOfStudies ? reviewOfStudies.querySelectorAll('sub') : [];
       const pathwaySubs = (pathways) ? pathways.querySelectorAll('sub') : [];
@@ -520,8 +413,10 @@ export default {
     confirmDelete,
     referenceTable,
     labelPeek,
+    InteractionPathways,
     iconsMap,
-    entityNotFound,
+    entityNotFound
   }
 };
 </script>
+    InteractionPathways
