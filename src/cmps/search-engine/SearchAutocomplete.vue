@@ -44,8 +44,11 @@ export default {
     },
     computed: {
         autocompleteResults() {
-            return this.results.map(result => ({ text: result.hit, value: result.materialIds }))
-                .sort((a, b) => a.text.toLowerCase().localeCompare(b.text.toLowerCase()));
+            return this.results.map(result => ({ text: result.hit, value: result.materialIds, isMaterialName: result.isMaterialName }))
+                .sort((a, b) => {
+                    return (a.isMaterialName < b.isMaterialName) ? 1 : 
+                    a.text.toLowerCase() < b.text.toLowerCase() ? -1 : a.text.toLowerCase() > b.text.toLowerCase() ? 1 : 0;
+                });
         }
     },
     methods: {
