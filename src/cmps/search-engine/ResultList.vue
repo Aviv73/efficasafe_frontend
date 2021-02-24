@@ -71,7 +71,7 @@
                   >
                     <router-link 
                       class="results-list-link"
-                      :to="`/interaction/${vInteraction._id}/${vInteraction.side2Material._id}`" 
+                      :to="(vInteraction.isVirtual) ? `/interaction/${vInteraction._id}/${vInteraction.side2Material._id}` : `/interaction/${vInteraction._id}`" 
                     >
                       {{ `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}` }}
                       <span v-if="vInteraction.side2DraftName">{{ `(${vInteraction.side2DraftName})` }}</span>

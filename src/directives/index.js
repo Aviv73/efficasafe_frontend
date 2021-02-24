@@ -24,9 +24,6 @@ Vue.directive('material-query-name', {
                 utilService.replaceTextContent(el, materialName, materialNamesMap[materialName]);
             }
         });
-    },
-    update(el) {
-        console.log(el);
     }
 });
 
