@@ -345,12 +345,12 @@ export default {
       return refs;
     },
     setRefsToolTip() {
-      const { pathways, pathways2 } = this.$refs.pathwaySection.$refs;
+      const { pathways, pathways2 } = this.$refs.pathwaySection ? this.$refs.pathwaySection.$refs : { pathways: null, pathways2: null };
       const { summary, reviewOfStudies } = this.$refs;
       const summarySubs = summary ? summary.querySelectorAll('sub') : [];
       const reviewSubs = reviewOfStudies ? reviewOfStudies.querySelectorAll('sub') : [];
-      const pathwaySubs = (pathways) ? pathways.querySelectorAll('sub') : [];
-      const pathway2Subs = (pathways2) ? pathways2.querySelectorAll('sub') : [];
+      const pathwaySubs = pathways ? pathways.querySelectorAll('sub') : [];
+      const pathway2Subs = pathways2 ? pathways2.querySelectorAll('sub') : [];
       const elSubs = [...summarySubs, ...reviewSubs, ...pathwaySubs, ...pathway2Subs ];
       for (let i = 0; i < elSubs.length; i++) {
         const refIdxs = interactionService.getRefsOrder(elSubs[i].innerText);
