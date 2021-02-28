@@ -1,0 +1,15 @@
+
+
+// Aspect-Ratio Helpers
+.ratio-16-9 {
+    @include aspect-ratio(100, 56);
+}
+.ratio-square {
+    @include aspect-ratio(100, 100);
+}
+.ratio-card {
+    @include aspect-ratio(80, 100);
+}
+.ratio-poster {
+    @include aspect-ratio(100, 150);
+}
