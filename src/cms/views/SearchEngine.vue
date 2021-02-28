@@ -261,45 +261,36 @@ export default {
                 return;
             }
             const criteria = {
-                page: 0,
-                limit: 0,
-                q: this.$route.query.queries.map(q => q.txt),
+                isSearchResults: true,
+                q: this.$route.query.queries,
             };
             const materials = (await this.$store.dispatch({ type: 'getMaterials', criteria })).map(
-                ({  _id, labels, name, type, drugBankId }) => ({  _id, labels, name, type, drugBankId, userQuery: this.getMaterialUserQuery(_id) })
+                ({  _id, labels, name, type, drugBankId, userQuery }) => ({  _id, labels, name, type, drugBankId, userQuery })
             );
             this.materials = this.sortMaterials(materials);
             this.$store.commit({ type: 'makeMaterialNamesMap', materials });
         },
         sortMaterials(materials) {
-            const orderBy = this.$route.query.queries.map(({ txt }) => txt);
-            return materials.sort((a, b) => orderBy.indexOf(a.userQuery) - orderBy.indexOf(b.userQuery));
+            const { queries } = this.$route.query;
+            return materials.sort((a, b) => queries.indexOf(a.userQuery) - queries.indexOf(b.userQuery));
         },
-        addMaterials({ text: txt, value: materialIds }) {
+        addMaterials(q) {
             if (this.$route.query.queries) {
-                if (!this.isQueryExists(txt)) {
-                    const newIds = materialIds.filter(matId => {
-                        return !this.$route.query.queries.some(({ materialIds }) => materialIds.includes(matId));
-                    });
-                    if (newIds.length) {
-                        const queries = [ ...this.$route.query.queries, { txt, materialIds: newIds } ];
-                        this.$router.replace({ query: { queries } });
-                    }
+                if (!this.isQueryExists(q)) {
+                    const queries = [ ...this.$route.query.queries, q ];
+                    this.$router.replace({ query: { queries } });
                 }
             } else {
-                this.$router.push({ query: { queries: [ { txt, materialIds } ] } });
+                this.$router.push({ query: { queries: [ q ] } });
             }
             eventBus.$emit(EV_clear_autocomplete);
         },
         removeMaterials(userQuery) {
-            const queries = this.$route.query.queries.filter(q => q.txt !== userQuery);
+            const queries = this.$route.query.queries.filter(q => q !== userQuery);
             this.$router.replace({ query: { queries } });
         },
-        isQueryExists(txt) {
-            return this.$route.query.queries.findIndex(q => q.txt === txt) !== -1;
-        },
-        getMaterialUserQuery(materialId) {
-            return this.$route.query.queries.find(q => q.materialIds.includes(materialId)).txt;
+        isQueryExists(q) {
+            return this.$route.query.queries.indexOf(q) !== -1;
         },
         reset() {
             this.materials = [];

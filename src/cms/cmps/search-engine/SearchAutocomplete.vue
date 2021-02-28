@@ -5,7 +5,7 @@
             label="Search Material"
             ref="searchInput"
             color="white"
-            :items="autocompleteResults"
+            :items="results"
             :search-input.sync="search"
             :loading="isLoading"
             @change="emitSelected"
@@ -13,7 +13,6 @@
             hide-selected
             flat
             solo-inverted
-            return-object
         />
     </section>
 </template>
@@ -40,15 +39,6 @@ export default {
                 }
             },
             immediate: true
-        }
-    },
-    computed: {
-        autocompleteResults() {
-            return this.results.map(result => ({ text: result.hit, value: result.materialIds, isMaterialName: result.isMaterialName }))
-                .sort((a, b) => {
-                    return (a.isMaterialName < b.isMaterialName) ? 1 : 
-                    a.text.toLowerCase() < b.text.toLowerCase() ? -1 : a.text.toLowerCase() > b.text.toLowerCase() ? 1 : 0;
-                });
         }
     },
     methods: {

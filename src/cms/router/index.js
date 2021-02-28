@@ -2,7 +2,6 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from '@/cms/store';
 import Home from '../views/Home';
-import qs from 'qs';
 import LoginPage from '../views/LoginPage';
 import materialApp from '../views/material/MaterialApp';
 import materialEdit from '../views/material/MaterialEdit';
@@ -181,14 +180,7 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes,
-  parseQuery: (query) => {
-    return qs.parse(query);
-  },
-  stringifyQuery: (query) => {
-    const result = qs.stringify(query);
-    return result ? ('?' + result) : '';
-  }
+  routes
 })
 
 router.beforeEach((to, from, next) => {
