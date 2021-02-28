@@ -40,22 +40,22 @@ export default {
       modules: [
         {
           name: 'Material',
-          path: '/material',
+          path: '/cms/material',
           icon: 'mdi-rhombus-split',
         },
         {
           name: 'Label',
-          path: '/label',
+          path: '/cms/label',
           icon: 'mdi-rhombus-split',
         },
         {
           name: 'Interaction',
-          path: '/interaction',
+          path: '/cms/interaction',
           icon: 'mdi-rhombus-split',
         },
         {
           name: 'Archive',
-          path: '/archive',
+          path: '/cms/archive',
           icon: 'mdi-archive',
         },
       ],

@@ -1,7 +1,7 @@
 <template>
   <v-card class="interaction-preview">
     <div class="int-details-container">
-      <router-link class="int-edit" :to="`/interaction/${interaction._id}`">
+      <router-link class="int-edit" :to="`/cms/interaction/${interaction._id}`">
         <div class="int-side" v-if="interaction.side1Material">
           <img
             class="mat-type"
@@ -25,7 +25,7 @@
           <span class="int-label">{{ interaction.side2Label.name }}</span>
         </div>
       </router-link>
-      <v-btn small color="primary" :to="`/interaction/edit/${interaction._id}`">
+      <v-btn small color="primary" :to="`/cms/interaction/edit/${interaction._id}`">
         <v-icon small left>mdi-pencil</v-icon>Edit
       </v-btn>
     </div>

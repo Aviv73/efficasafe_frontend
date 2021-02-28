@@ -5,7 +5,7 @@
         <tbody>
           <tr class="tr-interaction" v-for="item in items" :key="item._id">
             <td class="td-side">
-              <router-link :to="`/archive/interaction/${item._id}`">
+              <router-link :to="`/cms/archive/interaction/${item._id}`">
                 <div v-if="item.side1Material">
                   <img
                     :src="
@@ -28,7 +28,7 @@
               </router-link>
             </td>
             <td class="td-side">
-              <router-link :to="`/archive/interaction/${item._id}`">
+              <router-link :to="`/cms/archive/interaction/${item._id}`">
                 <div v-if="item.side2Material">
                   <img
                     :src="

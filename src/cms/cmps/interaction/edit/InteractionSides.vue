@@ -44,7 +44,7 @@
       >
         Pick Side 2
       </v-btn>
-      <router-link :to="`/label/edit/${side2LabelId}`" v-if="isLabelEdit" title="Edit Label">
+      <router-link :to="`/cms/label/edit/${side2LabelId}`" v-if="isLabelEdit" title="Edit Label">
         <v-icon color="primary">mdi-pencil</v-icon>
       </router-link>
       <v-dialog 

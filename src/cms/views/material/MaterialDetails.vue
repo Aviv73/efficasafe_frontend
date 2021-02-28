@@ -17,7 +17,7 @@
                         class="base-btn action-btn"
                         color="primary"
                         :to="{
-                            path: '/interaction',
+                            path: '/cms/interaction',
                             query: { material: `${material._id}` },
                         }"
                     >
@@ -27,7 +27,7 @@
                     <v-btn
                         class="base-btn action-btn"
                         color="primary"
-                        :to="`/material/edit/${material._id}`"
+                        :to="`/cms/material/edit/${material._id}`"
                         v-if="!isArchive"
                     >
                         <v-icon small left>mdi-pencil</v-icon>Edit
@@ -400,7 +400,7 @@
                             v-for="label in material.labels"
                             :key="label._id"
                         >
-                        <router-link :to="`/label/${label._id}`">
+                        <router-link :to="`/cms/label/${label._id}`">
                             {{ label.name }}
                         </router-link>
                         </v-chip>
@@ -605,7 +605,7 @@ export default {
                 matId,
             });
             Promise.all([saveToArchive, removeMaterial]).then(() => {
-                this.$router.push('/material');
+                this.$router.push('/cms/material');
             });
         },
         displayDialog() {

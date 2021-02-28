@@ -34,7 +34,7 @@
               style="max-width: 200px;"
               :title="item.side1Material.name"
             >
-              <router-link :to="`/interaction/${item._id}`">
+              <router-link :to="`/cms/interaction/${item._id}`">
                 <div class="side-name-img" v-if="item.side1Material">
                   <img
                     :src="require(`@/cms/assets/icons/${item.side1Material.type}.svg`)"
@@ -48,7 +48,7 @@
               </router-link>
             </td>
             <td class="td-side">
-              <router-link :to="`/interaction/${item._id}`">
+              <router-link :to="`/cms/interaction/${item._id}`">
                 <div class="side-name-img" v-if="item.side2Material">
                   <img
                     :src="
@@ -100,7 +100,7 @@
               <v-btn
                 small
                 color="primary"
-                :to="`/interaction/edit/${item._id}`"
+                :to="`/cms/interaction/edit/${item._id}`"
               >
                 <v-icon small>mdi-pencil</v-icon>
               </v-btn>

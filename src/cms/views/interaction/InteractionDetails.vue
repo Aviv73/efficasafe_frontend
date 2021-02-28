@@ -17,7 +17,7 @@
           <v-btn color="primary" v-if="!isArchive" @click="cloneInteraction">
             <v-icon small left>mdi-content-copy</v-icon>Clone
           </v-btn>
-          <v-btn color="primary" :to="`/interaction/edit/${interaction._id}`" v-if="!isArchive">
+          <v-btn color="primary" :to="`/cms/interaction/edit/${interaction._id}`" v-if="!isArchive">
             <v-icon small left>mdi-pencil</v-icon>Edit
           </v-btn>
           <v-btn color="error" @click="displayDialog" v-if="!isArchive">
@@ -47,7 +47,7 @@
             Side 2 Label:
           </span>
           <div class="info-value" v-if="interaction.side2Label">
-            <router-link :to="`/label/${interaction.side2Label._id}`">
+            <router-link :to="`/cms/label/${interaction.side2Label._id}`">
               {{ interaction.side2Label.name }}
             </router-link>
             <v-btn
@@ -127,7 +127,7 @@
           <router-link
             class="info-value"
             v-if="interaction.side1Material"
-            :to="`/material/${interaction.side1Material._id}`"
+            :to="`/cms/material/${interaction.side1Material._id}`"
           >
             {{ interaction.side1Material.name }}
           </router-link>
@@ -138,7 +138,7 @@
           <router-link
             class="info-value"
             v-if="interaction.side2Material"
-            :to="`/material/${interaction.side2Material._id}`"
+            :to="`/cms/material/${interaction.side2Material._id}`"
             >
               {{ interaction.side2Material.name }}
             </router-link>
@@ -251,10 +251,10 @@ export default {
           type: 'interaction COPY',
           _id: savedInteraction._id,
       });
-      this.$router.push(`/interaction/edit/${savedInteraction._id}`);
+      this.$router.push(`/cms/interaction/edit/${savedInteraction._id}`);
     },
     goToVinteraction(material) {
-      this.$router.push(`/interaction/${this.$route.params.id}/${material._id}`);
+      this.$router.push(`/cms/interaction/${this.$route.params.id}/${material._id}`);
     },
     txtWithRefs(txt, isPathwaysRefs = false) {
       if (!this.combinedRefs.length) return;
@@ -331,7 +331,7 @@ export default {
         intId,
       });
       Promise.all([saveToArchive, removeInteraction]).then(() => {
-        this.$router.push('/interaction');
+        this.$router.push('/cms/interaction');
       });
     },
     displayDialog() {

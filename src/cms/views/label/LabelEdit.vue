@@ -50,7 +50,7 @@
         </span>
         <v-divider class="mt-4" />
         <div class="form-actions">
-          <v-btn class="cancel-btn" to="/label/" color="normal">cancel</v-btn>
+          <v-btn class="cancel-btn" to="/cms/label/" color="normal">cancel</v-btn>
           <v-btn
             class="submit-btn"
             @click="saveLabel"

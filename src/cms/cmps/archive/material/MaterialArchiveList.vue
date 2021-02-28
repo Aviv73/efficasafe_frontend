@@ -5,7 +5,7 @@
         <tbody>
           <tr class="tr-material" v-for="item in items" :key="item._id">
             <td class="td-name-img">
-              <router-link :to="`/archive/material/${item._id}`">
+              <router-link :to="`/cms/archive/material/${item._id}`">
                 <img
                   :src="require(`@/cms/assets/icons/${item.type}.svg`)"
                   :alt="item.type"

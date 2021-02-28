@@ -721,7 +721,7 @@
           </div>
         </v-form>
         <div class="form-actions">
-          <v-btn class="cancel-btn" to="/material/" color="normal">cancel</v-btn>
+          <v-btn class="cancel-btn" to="/cms/material/" color="normal">cancel</v-btn>
           <v-btn
             class="submit-btn"
             @click="saveMaterial"

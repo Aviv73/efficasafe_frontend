@@ -26,126 +26,126 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
+    path: '/cms',
     name: 'Home',
     component: Home,
     meta: { requiresAuth: true }
   },
   {
-    path: '/login',
+    path: '/cms/login',
     name: 'Login',
     component: LoginPage,
   },
   {
-    path: '/material',
+    path: '/cms/material',
     name: 'Materials',
     component: materialApp,
     meta: { requiresAuth: true }
   },
   {
-    path: '/material/edit/:id?',
+    path: '/cms/material/edit/:id?',
     name: 'MaterialEdit',
     component: materialEdit,
     meta: { requiresAuth: true }
   },
   {
-    path: '/material/:id',
+    path: '/cms/material/:id',
     name: 'MaterialDetails',
     component: materialDetails,
     meta: { requiresAuth: true }
   },
   {
-    path: '/label',
+    path: '/cms/label',
     name: 'Labels',
     component: LabelApp,
     meta: { requiresAuth: true }
   },
   {
-    path: '/label/edit/:id?',
+    path: '/cms/label/edit/:id?',
     name: 'LabelEdit',
     component: labelEdit,
     meta: { requiresAuth: true }
   },
   {
-    path: '/label/:id',
+    path: '/cms/label/:id',
     name: 'LabelDetails',
     component: labelDetails,
     meta: { requiresAuth: true }
   },
   {
-    path: '/interaction',
+    path: '/cms/interaction',
     name: 'Interactions',
     component: interactionApp,
     meta: { requiresAuth: true }
   },
   {
-    path: '/interaction/edit/:id?',
+    path: '/cms/interaction/edit/:id?',
     name: 'InteractionsEdit',
     component: interactionEdit,
     meta: { requiresAuth: true }
   },
   {
-    path: '/interaction/:id/:matId',
+    path: '/cms/interaction/:id/:matId',
     name: 'vInteractionsDetails',
     component: vInteractionDetails,
     meta: { requiresAuth: true }
   },
   {
-    path: '/interaction/:id',
+    path: '/cms/interaction/:id',
     name: 'InteractionsDetails',
     component: interactionDetails,
     meta: { requiresAuth: true }
   },
   {
-    path: '/featured-interaction',
+    path: '/cms/featured-interaction',
     name: 'FeaturedInteraction',
     component: featuredInteractionApp,
     meta: { requiresAuth: true }
   },
   {
-    path: '/featured-interaction/edit/:id',
+    path: '/cms/featured-interaction/edit/:id',
     name: 'FeaturedInteractionEdit',
     component: featuredInteractionEdit,
     meta: { requiresAuth: true }
   },
   {
-    path: '/featured-interaction/:id',
+    path: '/cms/featured-interaction/:id',
     name: 'FeaturedInteractionDetails',
     component: dBankInteractionDetails,
     meta: { requiresAuth: true }
   },
   {
-    path: '/archive',
+    path: '/cms/archive',
     name: 'Archives',
     component: archiveApp,
     meta: { requiresAuth: true, requiresAdmin: true }
   },
   {
-    path: '/archive/label/:id',
+    path: '/cms/archive/label/:id',
     name: 'ArchiveLabelDetails',
     component: labelDetails,
     meta: { requiresAuth: true }
   },
   {
-    path: '/archive/interaction/:id',
+    path: '/cms/archive/interaction/:id',
     name: 'ArchiveInteractionDetails',
     component: interactionDetails,
     meta: { requiresAuth: true }
   },
   {
-    path: '/archive/material/:id',
+    path: '/cms/archive/material/:id',
     name: 'ArchiveMaterialDetails',
     component: materialDetails,
     meta: { requiresAuth: true }
   },
   {
-    path: '/data-integrity',
+    path: '/cms/data-integrity',
     name: 'DataIntegrity',
     component: DataIntegrity,
     meta: { requiresAuth: true }
   },
   {
-    path: '/search',
+    path: '/cms/search',
     component: searchEngine,
     meta: { requiresAuth: true },
     children: [
@@ -162,13 +162,13 @@ const routes = [
     ]
   },
   {
-    path: '/d-bank-interaction/:id',
+    path: '/cms/d-bank-interaction/:id',
     name: 'DBankInteractionDetails',
     component: dBankInteractionDetails,
     meta: { requiresAuth: true }
   },
   {
-    path: '/about',
+    path: '/cms/about',
     name: 'About',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route

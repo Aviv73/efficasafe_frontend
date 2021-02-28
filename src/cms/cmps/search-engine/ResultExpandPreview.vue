@@ -29,7 +29,7 @@
                         >
                             <router-link 
                                 class="results-list-link"
-                                :to="`/interaction/${vInteraction._id}/${vInteraction.side2Material._id}`" 
+                                :to="`/cms/interaction/${vInteraction._id}/${vInteraction.side2Material._id}`" 
                             >
                                 {{ `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}` }}
                             </router-link>
@@ -50,7 +50,7 @@
             >
                 <router-link 
                     class="results-list-link"
-                    :to="`/interaction/${vInteraction._id}/${vInteraction.side2Material._id}`" 
+                    :to="`/cms/interaction/${vInteraction._id}/${vInteraction.side2Material._id}`" 
                 >
                     {{ `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}` }}
                 </router-link>

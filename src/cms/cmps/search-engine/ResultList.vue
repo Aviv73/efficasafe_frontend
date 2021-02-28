@@ -15,7 +15,7 @@
           >
             <router-link 
               class="results-list-link"
-              :to="(interaction.isVirtual) ? `/interaction/${interaction._id}/${interaction.side2Material._id}` : `/interaction/${interaction._id}`" 
+              :to="(interaction.isVirtual) ? `/cms/interaction/${interaction._id}/${interaction.side2Material._id}` : `/cms/interaction/${interaction._id}`" 
             >
               {{ getInteractionName(interaction) }}
             </router-link>
@@ -71,7 +71,7 @@
                   >
                     <router-link 
                       class="results-list-link"
-                      :to="(vInteraction.isVirtual) ? `/interaction/${vInteraction._id}/${vInteraction.side2Material._id}` : `/interaction/${vInteraction._id}`" 
+                      :to="(vInteraction.isVirtual) ? `/cms/interaction/${vInteraction._id}/${vInteraction.side2Material._id}` : `/cms/interaction/${vInteraction._id}`" 
                     >
                       {{ `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}` }}
                       <span v-if="vInteraction.side2DraftName">{{ `(${vInteraction.side2DraftName})` }}</span>
@@ -97,7 +97,7 @@
         >
           <router-link 
             class="results-list-link"
-            :to="`/featured-interaction/${interaction._id}`"
+            :to="`/cms/featured-interaction/${interaction._id}`"
           >
           {{ `${interaction.subject_drug.name} & ${interaction.affected_drug.name}` }}
         </router-link>
