@@ -143,7 +143,10 @@ export default {
         },
         formatedInteractions() {
             const insertInteraction = (acc, interaction) => {
-                const idx = acc.findIndex(vin => vin.side2Material && vin.side2Material._id === interaction.side2Material._id);
+                const idx = acc.findIndex(
+                    vin => (vin.side2Material && vin.side2Material._id === interaction.side2Material._id) &&
+                    (vin.side1Material._id === interaction.side1Material._id)
+                );
                 const groupIdx = acc.findIndex(vin => vin._id === `${interaction.side1Material._id}-${interaction.side2Material._id}`);
                 if (idx === -1 && groupIdx === -1) acc.push(interaction);
                 else if (idx !== -1 && groupIdx === -1) {
@@ -237,7 +240,7 @@ export default {
                 });
                 return acc;
             }, []);
-            const filterBy = { isSearchResults: true, page: --page, id: ids, materialCount: this.materials.length };
+            const filterBy = { isSearchResults: true, page: --page, id: ids, materialCount: this.$route.query.queries.length };
             const { interactions, pageCount } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
             this.pageCount = pageCount;
             this.interactions = interactions;
