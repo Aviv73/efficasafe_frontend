@@ -8,8 +8,9 @@
 @import './global/typography';
 @import './global/base';
 @import './global/helpers';
-// ... layout, elements(?)
-
 
 /// CMPS
 @import './cmps/navbar';
+
+/// VIEWS
+@import './views/home';

@@ -1,3 +1,33 @@
 .navbar {
+    font-size: rem(12px);
+    color: $white;
     background-image: linear-gradient(90deg, $gradient-clr1, $gradient-clr2);
+    padding: rem(10px) 0;
+
+    &-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    &-nav {
+        display: flex;
+        align-items: center;
+
+        &-item:not(:last-child) {
+            margin-inline-end: 14px;
+
+            button {
+                padding: rem(5px) rem(10px);
+                border: 1px solid $clr3;
+                border-radius: rem(100px);
+
+                &.subscribe-btn {
+                    background-color: $clr4;
+                }
+                &:not(.subscribe-btn) {
+                    margin-inline-end: 7px;
+                }
+            }
+        }
+    }
 }

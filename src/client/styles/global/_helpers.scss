@@ -3,7 +3,17 @@
 .container {
     max-width: 1440px;
     margin: 0 auto;
+    padding: 0 rem(40px);
 }
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.d-block {
+    display: block;
+}
+
 
 // Aspect-Ratio Helpers
 .ratio-16-9 {

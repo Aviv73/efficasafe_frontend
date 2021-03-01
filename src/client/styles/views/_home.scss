@@ -1,0 +1,95 @@
+.home {
+    flex-grow: 1;
+    text-align: center;
+    
+    header {
+        background-image: url('../assets/imgs/home-bg.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: 100% 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-block-start: 150px;
+    }
+    h1 {
+        margin-block-end: 60px;
+        text-indent: -999px;
+        a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+    &-search {
+        align-self: stretch;
+        background-color: yellow;
+        margin-block-end: 40px;
+    }
+    &-subheader {
+        margin-block-end: 130px;
+        font-size: rem(21px);
+        padding: rem(20px) rem(72px);
+        background-color: rgba($white, .8);
+        border-radius: rem(100px);
+    }
+    &-stats {
+        background-color: $clr5;
+        color: $white;
+        padding: rem(35px) 0 rem(45px);
+        align-self: stretch;
+
+        ul {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 40%;
+            margin: 0 auto;
+
+            li {
+                flex-basis: 33.33%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                font-family: roboto-light, sans-serif;
+                font-weight: 300;
+                position: relative;
+                
+                &:not(:last-child) {
+                    border-inline-end: 1px solid $white;
+                }
+                span {
+                    font-size: rem(18px);
+                    font-family: roboto-bold, sans-serif;
+                    font-weight: 700;
+                    display: inline-block;
+                    margin-block-end: rem(10px);
+                }
+            }
+        }
+    }
+    &-footer {
+        line-height: rem(31px);
+        font-size: rem(18px);
+        font-family: roboto-light, sans-serif;
+        font-weight: 300;
+        color: rgba($clr5, .8);
+        padding: rem(53px) 0;
+        position: relative;
+        
+        &-logo {
+            width: 24px;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%, 50%);
+        }
+    }
+    .hr {
+        display: block;
+        height: 1px;
+        background-image: linear-gradient(90deg, $clr6 0%, $clr6 calc(50% - 62px), transparent calc(50% - 62px), transparent calc(50% + 62px), $clr6 calc(50% + 62px), $clr6 100%);
+        margin: 0 rem(32px) rem(53px);
+    }
+}

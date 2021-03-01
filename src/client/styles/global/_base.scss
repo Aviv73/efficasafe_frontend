@@ -8,6 +8,11 @@ body {
     font-size: rem(16px);
     font-weight: normal;
     font-size: rem(16px);
-    font-family: roboto;
+    font-family: roboto, sans-serif;
     color: $clr-txt-dark;
+}
+#app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
