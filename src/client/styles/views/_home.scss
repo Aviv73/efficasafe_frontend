@@ -30,9 +30,10 @@
     &-subheader {
         margin-block-end: 130px;
         font-size: rem(21px);
-        padding: rem(20px) rem(72px);
-        background-color: rgba($white, .8);
+        color: rgba($clr-txt-dark, .85);
+        background-color: rgba($white, .65);
         border-radius: rem(100px);
+        padding: rem(20px) rem(72px);
     }
     &-stats {
         background-color: $clr5;
