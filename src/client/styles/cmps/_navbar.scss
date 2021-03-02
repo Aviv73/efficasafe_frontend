@@ -2,7 +2,7 @@
     font-size: rem(12px);
     color: $white;
     background-image: linear-gradient(90deg, $gradient-clr1, $gradient-clr2);
-    padding: rem(10px) 0;
+    padding: rem(10px) rem(40px);
 
     &-content {
         display: flex;

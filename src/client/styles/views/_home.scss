@@ -3,7 +3,7 @@
     text-align: center;
     
     header {
-        background-image: url('../assets/imgs/home-bg.jpg');
+        background-image: url('../assets/imgs/home-bg-mobile.jpg');
         background-repeat: no-repeat;
         background-size: cover;
         background-attachment: fixed;
@@ -12,6 +12,16 @@
         flex-direction: column;
         align-items: center;
         padding-block-start: 150px;
+        
+        @include for-mobile-layout {
+            background-image: url('../assets/imgs/home-bg.jpg');
+        }
+        img:first-child {
+            width: 70px;
+        }
+        img:last-child {
+            width: 220px;
+        }
     }
     h1 {
         margin-block-end: 60px;
@@ -24,21 +34,50 @@
     }
     &-content {
         align-self: stretch;
-        margin-block-end: 40px;
+        margin-block-end: 120px;
         
-        &-form {
-            padding: rem(6px);
-            position: relative;
-            font-size: rem(15px);
+        @include for-mobile-layout {
+            margin-block-end: 40px;
 
+        }
+        &-container {
+            padding: 0 rem(10px);
+            @include flex-center;
+            
+            @include for-narrow-layout {
+                padding: 0 rem(40px);
+                @include flex-space-between;
+            }
+        }
+        &-form {
+            width: 600px;
+            font-size: rem(14px);
+            padding: rem(6px);
+            background-color: rgba($clr7, .5);
+            border-radius: rem(100px);
+            position: relative;
+            
+            @include for-mobile-layout {
+                font-size: rem(15px);
+                width: 87.5%;
+            }
+            @include for-narrow-layout {
+                width: 736px;
+            }
             input {
-                border-radius: rem(100px);
                 width: 50%;
-                padding: rem(14px) 0 rem(14px) rem(24px);
+                text-align: center;
+                padding: rem(14px) 0;
                 font-family: roboto-medium, sans-serif;
+                border-radius: rem(100px);
                 border-width: 0;
                 position: relative;
-
+                
+                @include for-mobile-layout {
+                    padding: rem(14px) 0 rem(14px) rem(24px);
+                    text-align: initial;
+                    font-size: rem(15px);
+                }
                 &::placeholder {
                     font-family: roboto, sans-serif;
                 }
@@ -54,23 +93,39 @@
             }
         }
         .chevron {
+            display: none;
+            cursor: pointer;
             color: $clr7;
             transition: color .3s;
             @include hover-supported {
                 color: $white;
             }
+            @include for-narrow-layout {
+                display: initial;
+            }
         }
     }
-    &-subheader, &-content-form {
-        width: 736px;
-        background-color: rgba($white, .65);
-        border-radius: rem(100px);
-    }
     &-subheader {
+        width: 303px;
+        font-size: rem(16px);
+        color: $clr-txt-dark;
+        padding: rem(20px) rem(35px);
+        background-color: $white;
         margin-block-end: 130px;
-        font-size: rem(21px);
-        color: rgba($clr-txt-dark, .85);
-        padding: rem(20px) 0;
+        border-radius: rem(100px);
+        
+        @include for-mobile-layout {
+            width: 87.5%;
+            color: rgba($clr-txt-dark, .85);
+            padding: rem(20px) rem(5px);
+            background-color: rgba($white, .65);
+            
+        }
+        @include for-narrow-layout {
+            width: 736px;
+            font-size: rem(21px);
+            padding: rem(20px) 0;
+        }
     }
     &-stats {
         background-color: $clr5;
@@ -79,9 +134,18 @@
         align-self: stretch;
 
         ul {
-            width: 40%;
+            width: 100%;
             margin: 0 auto;
 
+            @include for-mobile-layout {
+                width: 80%;
+            }
+            @include for-narrow-layout {
+                width: 60%;
+            }
+            @include for-wide-layout {
+                width: 40%;
+            }
             li {
                 flex-basis: 33.33%;
                 display: flex;
@@ -106,13 +170,28 @@
     }
     &-footer {
         line-height: rem(31px);
-        font-size: rem(18px);
+        font-size: rem(14px);
         font-family: roboto-light, sans-serif;
         font-weight: 300;
         color: rgba($clr5, .8);
         padding: rem(53px) 0;
+        margin-block-end: 40px;
         position: relative;
         
+        @include for-mobile-layout {
+            font-size: rem(18px);
+            margin-block-end: 0;
+        }
+        &-txt {
+            display: inline-block;
+            width: 35ch;
+            @include for-mobile-layout {
+                width: 50ch;
+            }
+            @include for-narrow-layout {
+                width: 60ch;
+            }
+        }
         &-logo {
             width: 24px;
             position: absolute;
@@ -122,9 +201,13 @@
         }
     }
     .hr {
-        display: block;
+        display: none;
         height: 1px;
         background-image: linear-gradient(90deg, $clr6 0%, $clr6 calc(50% - 62px), transparent calc(50% - 62px), transparent calc(50% + 62px), $clr6 calc(50% + 62px), $clr6 100%);
         margin: 0 rem(32px) rem(53px);
+
+        @include for-mobile-layout {
+            display: block;
+        }
     }
 }

@@ -15,7 +15,7 @@
             </h1>
             <section class="home-content">
               <div class="container">
-                <div class="flex-space-between">
+                <div class="home-content-container">
                   <font-awesome-icon icon="chevron-left" class="chevron fa-2x" />
                   <form @submit.prevent="" class="home-content-form">
                     <input type="text" placeholder="Search herb / drug" />
@@ -46,11 +46,10 @@
             </ul>
         </section>
         <footer class="home-footer">
-            Cross-check multiple drugs, herbs and supplements in order to
-            optimize
-            <span class="d-block"
-                >safety and efficiency of integrative medical care.</span
-            >
+            <span class="home-footer-txt">
+                Cross-check multiple drugs, herbs and supplements in order to
+                optimize safety and efficiency of integrative medical care.
+            </span>
             <img
                 src="@/client/assets/imgs/logo-symbol.png"
                 alt="Logo"
