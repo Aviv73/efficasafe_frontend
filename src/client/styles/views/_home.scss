@@ -16,11 +16,11 @@
         @include for-mobile-layout {
             background-image: url('../assets/imgs/home-bg.jpg');
         }
-        img:first-child {
-            width: 70px;
-        }
-        img:last-child {
-            width: 220px;
+        [alt=Logo] {
+            width: 151px;
+            @include for-mobile-layout {
+                width: initial;
+            }
         }
     }
     h1 {
@@ -115,7 +115,7 @@
         border-radius: rem(100px);
         
         @include for-mobile-layout {
-            width: 87.5%;
+            width: 85%;
             color: rgba($clr-txt-dark, .85);
             padding: rem(20px) rem(5px);
             background-color: rgba($white, .65);

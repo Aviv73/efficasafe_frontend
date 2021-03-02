@@ -4,12 +4,8 @@
             <h1>
                 <a href="/">
                     <img
-                        src="@/client/assets/imgs/logo-symbol.png"
+                        src="@/client/assets/imgs/logo-img.png"
                         alt="Logo"
-                    />
-                    <img
-                        src="@/client/assets/imgs/logo-txt.png"
-                        alt="Efficasafe"
                     />
                 </a>
             </h1>
