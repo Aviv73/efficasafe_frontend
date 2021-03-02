@@ -9,25 +9,108 @@
         align-items: center;
         justify-content: space-between;
     }
-    &-nav {
-        display: flex;
+    &-actions {
+        display: inline-flex;
         align-items: center;
 
         &-item:not(:last-child) {
-            margin-inline-end: 14px;
-
+            margin-inline-end: rem(14px);
+        }
+        @include for-mobile-layout {
+            display: none;
+        }
+    }
+    &-nav {
+        display: inline-flex;
+        align-items: center;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: 85%;
+        background-color: $clr1;
+        z-index: 9;
+        font-size: rem(20px);
+        font-family: segoe-ui, sans-serif;
+        line-height: rem(70px);
+        transform: translateX(100%);
+        transition: transform .6s ease-in-out;
+        
+        @include for-mobile-layout {
+            flex-direction: row;
+            position: unset; 
+            top: unset;
+            right: unset;
+            height: unset;
+            width: unset;
+            background-color: unset;
+            transform: unset;
+            transition: unset;
+            font-size: unset;
+            font-family: unset;
+            line-height: unset;
+        }
+        &.active {
+            transform: translateX(0);
+        }
+        &-logo {
+            margin-block-end: rem(20px);
+            @include for-mobile-layout {
+                display: none;
+            }
+        }
+        &-close-btn {
+            align-self: flex-end;
+            margin: 10px 10px 0 0;
+            @include for-mobile-layout {
+                display: none;
+            }
+        }
+        &-item {
+            &:first-of-type, &:nth-of-type(2) {
+                align-self: stretch;
+                
+                button {
+                    width: 90%;
+                    margin: 0 5%;
+                }
+            }
+            @include for-mobile-layout {
+                &:not(:last-child) {
+                    margin-inline-end: rem(14px);
+                }
+                &:first-of-type, &:nth-of-type(2) {
+                    align-self: unset;
+                    button {
+                        width: unset;
+                        margin: unset;
+                    }
+                }
+            }
+            
             button {
                 padding: rem(5px) rem(10px);
                 border: 1px solid $clr3;
-                border-radius: rem(100px);
-
-                &.subscribe-btn {
-                    background-color: $clr4;
+                border-radius: rem(6px);
+                @include for-mobile-layout {
+                    border-radius: rem(100px);
                 }
-                &:not(.subscribe-btn) {
-                    margin-inline-end: 7px;
+                @include for-mobile-layout {
+                    &.subscribe-btn {
+                        
+                        background-color: $clr4;
+                    }
+                    &:not(.subscribe-btn) {
+                        margin-inline-end: rem(7px);
+                    }
                 }
             }
+        }
+    }
+    &-toggle {
+        @include for-mobile-layout {
+            display: none;
         }
     }
 }

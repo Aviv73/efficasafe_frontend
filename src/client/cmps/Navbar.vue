@@ -8,7 +8,22 @@
                         <font-awesome-icon icon="chevron-right" />
                     </span>
                 </div>
-                <ul class="navbar-nav">
+                <ul class="navbar-actions">
+                    <li class="navbar-actions-item">
+                        <button class="subscribe-btn">Subscribe</button>
+                    </li>
+                    <li class="navbar-actions-item">
+                        <button>Login</button>
+                    </li>
+                </ul>
+                <button class="navbar-toggle" @click="isNavActive = true">
+                    <font-awesome-icon icon="ellipsis-h" class="fa-2x" />
+                </button>
+                <ul class="navbar-nav" :class="{ active: isNavActive }">
+                    <button class="navbar-nav-close-btn" @click="isNavActive = false">
+                        <font-awesome-icon icon="times" />
+                    </button>
+                    <img src="@/client/assets/imgs/logo-white.png" alt="Efficasafe" class="navbar-nav-logo" />
                     <li class="navbar-nav-item">
                         <button class="subscribe-btn">Subscribe</button>
                     </li>
@@ -35,6 +50,9 @@
 
 <script>
 export default {
-    name: 'Navbar'
+    name: 'Navbar',
+    data: () => ({
+        isNavActive: false
+    })
 }
 </script>
