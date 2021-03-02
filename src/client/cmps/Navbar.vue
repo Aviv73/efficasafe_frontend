@@ -3,7 +3,10 @@
         <div class="container">
             <div class="navbar-content">
                 <div class="navbar-msgs">
-                    <span>Try our onboarding wizard &#x3009;</span>
+                    <span>
+                        Try our onboarding wizard
+                        <font-awesome-icon icon="chevron-right" />
+                    </span>
                 </div>
                 <ul class="navbar-nav">
                     <li class="navbar-nav-item">
