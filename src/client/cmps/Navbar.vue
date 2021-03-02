@@ -4,8 +4,8 @@
             <div class="navbar-content">
                 <div class="navbar-msgs">
                     <span>
-                        Try our onboarding wizard
-                        <font-awesome-icon icon="chevron-right" />
+                        {{ (isScreenNarrow) ? 'Get a Free trial' : 'Try our onboarding wizard' }}
+                        <font-awesome-icon icon="chevron-right" v-if="!isScreenNarrow" />
                     </span>
                 </div>
                 <ul class="navbar-actions">
@@ -52,7 +52,21 @@
 export default {
     name: 'Navbar',
     data: () => ({
+        isScreenNarrow: window.innerWidth < 600,
         isNavActive: false
-    })
+    }),
+    mounted() {
+        this.$nextTick(() => {
+            window.addEventListener('resize', this.onResize);
+        });
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.onResize);
+    },
+    methods: {  
+        onResize() {
+            this.isScreenNarrow = window.innerWidth < 600;
+        }
+    }
 }
 </script>
