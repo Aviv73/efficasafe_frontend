@@ -156,11 +156,18 @@ export default {
             return results;
         },
         formatedInteractions() {
+            // if (this.$route.query.queries.length === 1 && this.materials.length > 1) {
+            //     //// it's one 'material' and it's a compound
+            //     this.setMsg('Compound as a single result isn\'t supported, Please provide more material/s');
+            //     return [];
+            // }
             const insertInteraction = (acc, interaction) => {
+                /// index of vinteraction between the same 2 materials
                 const idx = acc.findIndex(
                     vin => (vin.side2Material && vin.side2Material._id === interaction.side2Material._id) &&
                     (vin.side1Material._id === interaction.side1Material._id)
                 );
+                /// index of a group holding vinteractions between the same 2 materials
                 const groupIdx = acc.findIndex(vin => vin._id === `${interaction.side1Material._id}-${interaction.side2Material._id}`);
                 if (idx === -1 && groupIdx === -1) acc.push(interaction);
                 else if (idx !== -1 && groupIdx === -1) {
@@ -180,10 +187,13 @@ export default {
                 } 
             };
             return this.interactions.reduce((acc, interaction) => {
+                /// it's the only case we render label interactions as is
                 if (this.materials.length === 1 && this.materials[0]._id === interaction.side1Material._id) acc.push(interaction);
                 else if (!interaction.side2Label) {
+                    /// insert material 2 material interaction
                     insertInteraction(acc, interaction);
                 } else {
+                    /// format label interactions to vinteractions
                     const materials = this.materials.filter(
                         material => material.labels.findIndex(label => label._id === interaction.side2Label._id) !== -1
                     );
@@ -319,7 +329,7 @@ export default {
             this.featuredPageCount = 0;
             this.isLoading = false;
         },
-        renderMsg(msg) {
+        setMsg(msg) {
             this.msg = msg;
         }
     },

@@ -50,8 +50,8 @@
           <div class="pathway-table-full-ref">
             <p v-for="(fullRef, idx) in value" :key="idx">
               {{ fullRef | ref-txt }}
-              <a :href="`https://pubmed.ncbi.nlm.nih.gov/${item.references[idx]}`" class="ref-link">
-                {{ `https://pubmed.ncbi.nlm.nih.gov/${item.references[idx]}` }}
+              <a :href="getPathwayLink(item.references[idx])" class="ref-link">
+                {{ getPathwayLink(item.references[idx]) }}
               </a>
             </p>
           </div>
@@ -60,7 +60,7 @@
           <div class="pathway-table-actions">
             <v-icon
               class="edit-icon"
-              @click="$emit('edit-pathway', item, itemIdx(item))"
+              @click="$emit('edit-pathway', item, getItemIdx(item))"
               title="Edit Pathway"
               >mdi-pencil</v-icon
             >
@@ -126,7 +126,10 @@ export default {
     },
   },
   methods: {
-    itemIdx(item) {
+    getPathwayLink(pubmedId) {
+      return (typeof pubmedId === 'number') ? `https://pubmed.ncbi.nlm.nih.gov/${pubmedId}` : pubmedId;
+    },
+    getItemIdx(item) {
       return this.items.findIndex(currItem => currItem === item);
     }
   }
