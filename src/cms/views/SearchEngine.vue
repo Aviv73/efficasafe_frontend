@@ -94,6 +94,7 @@
                             :featuredPageCount="featuredPageCount"
                             @d-bank-page-changed="getDBankInteractions"
                             @page-changed="getInteractions"
+                            :msg="msg"
                         />
                     </div>
                 </main>
@@ -118,7 +119,8 @@ export default {
             dBankPageCount: 0,
             featuredInteractions: [],
             featuredPageCount: 0,
-            isLoading: false
+            isLoading: false,
+            msg: 'No results :('
         }
     },
     watch: {
@@ -316,6 +318,9 @@ export default {
             this.featuredInteractions = [];
             this.featuredPageCount = 0;
             this.isLoading = false;
+        },
+        renderMsg(msg) {
+            this.msg = msg;
         }
     },
     components: {

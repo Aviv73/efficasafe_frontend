@@ -109,7 +109,7 @@
       class="text-center"
       v-if="!isLoading && materialCount && !interactions.length && !featuredInteractions.length"
     >
-      No results :(
+      {{ msg }}
     </p>
     <v-footer 
       v-if="materialCount && biggerPageCount > 1 && (interactions.length || featuredInteractions.length)"
@@ -157,6 +157,10 @@ export default {
     featuredPageCount: {
       type: Number,
       required: true
+    },
+    msg: {
+      type: String,
+      default: 'No results :('
     }
   },
   data() {

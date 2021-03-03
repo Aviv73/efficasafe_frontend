@@ -22,7 +22,7 @@
       class="text-center"
       v-if="!isLoading && !dBankInteractions.length && materialCount"
     >
-      No results :(
+      {{ msg }}
     </p>
     <v-footer 
       v-if="materialCount && dBankPageCount > 1 && dBankInteractions.length"
@@ -61,6 +61,10 @@ export default {
     dBankPageCount: {
       type: Number,
       required: true
+    },
+    msg: {
+      type: String,
+      default: 'No results :('
     }
   },
   data() {
