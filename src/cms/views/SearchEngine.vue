@@ -156,11 +156,13 @@ export default {
             return results;
         },
         formatedInteractions() {
+            /**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~**/
             // if (this.$route.query.queries.length === 1 && this.materials.length > 1) {
             //     //// it's one 'material' and it's a compound
             //     this.setMsg('Compound as a single result isn\'t supported, Please provide more material/s');
             //     return [];
             // }
+            /**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~**/
             const insertInteraction = (acc, interaction) => {
                 /// index of vinteraction between the same 2 materials
                 const idx = acc.findIndex(
@@ -186,7 +188,7 @@ export default {
                     acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, interaction.recommendation);
                 } 
             };
-            return this.interactions.reduce((acc, interaction) => {
+            const formatedInteractions = this.interactions.reduce((acc, interaction) => {
                 /// it's the only case we render label interactions as is
                 if (this.materials.length === 1 && this.materials[0]._id === interaction.side1Material._id) acc.push(interaction);
                 else if (!interaction.side2Label) {
@@ -218,6 +220,29 @@ export default {
                 }
                 return acc;
             }, []);
+            /**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~**/
+            /// here double vint's are grouped, now grouping compounds interactions
+            // const queryApearanceMap = {};
+            // formatedInteractions.reduce((acc, interaction) => {
+            //     if (!interaction.vInteractions) {
+            //         const userQuery = this.$store.getters.materialNamesMap[interaction.side2Material.name];
+            //         if (!queryApearanceMap[userQuery]) queryApearanceMap[userQuery] = interaction;
+            //         else {
+            //             console.log('group it!');
+            //         }
+            //     } else {
+            //             interaction.vInteractions.forEach((vInteraction) => {
+            //                 const userQuery = this.$store.getters.materialNamesMap[vInteraction.side2Material.name];
+            //             if (!queryApearanceMap[userQuery]) queryApearanceMap[userQuery] = interaction;
+            //             else {
+            //                 console.log('group it!');
+            //             }
+            //         });
+            //     }
+            //     return acc;
+            // }, []);
+            /**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~**/
+            return formatedInteractions;
         },
         materialCount() {
             return (this.$route.query.queries) ? this.$route.query.queries.length : 0;

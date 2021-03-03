@@ -107,7 +107,7 @@
             :side2Pathways="side2Pathways"
             :side2Name="interaction.side2Material.name"
             :side1Name="interaction.side1Material.name"
-            :interactionRefsLength="interactionRefs.length"
+            :side1RefsLength="interactionRefs.length"
             :side2RefsLength="side2Refs.length"
             :combinedRefs="combinedRefs"
             :relevantSide1Pathways="relevantSide1Pathways"
