@@ -10,7 +10,7 @@
                 </a>
             </h1>
             <section class="home-content">
-              <div class="container">
+              <div class="main-container">
                 <div class="home-content-container">
                   <font-awesome-icon icon="chevron-left" class="chevron fa-2x" />
                   <form @submit.prevent="" class="home-content-form">
