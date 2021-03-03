@@ -25,12 +25,24 @@
                                     close
                                     @click:close="removeMaterials(result.txt)"
                                 >
+                                    <v-avatar left size="16" v-if="result.materials.length === 1">
+                                        <img
+                                            :src="require(`@/cms/assets/icons/${result.materials[0].type}.svg`)"
+                                        />
+                                    </v-avatar>
                                     {{ result.txt }}
-                                    <v-icon class="info-icon">
+                                    <v-icon class="info-icon" v-if="result.materials.length > 1">
                                         mdi-information-variant
                                     </v-icon>
                                 </v-chip>
-                                <v-tooltip class="pa-0" bottom :activator="`.result-${idx}`">
+                                <v-tooltip 
+                                    class="pa-0" 
+                                    v-if="
+                                        result.materials.length > 1 || result.txt !== result.materials[0].name
+                                    "
+                                    bottom 
+                                    :activator="`.result-${idx}`"
+                                >
                                     <v-list dense flat color="transparent" dark>
                                         <v-subheader class="pa-0">Materials</v-subheader>
                                         <v-list-item
