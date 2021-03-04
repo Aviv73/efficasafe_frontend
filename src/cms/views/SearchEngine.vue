@@ -156,13 +156,11 @@ export default {
             return results;
         },
         formatedInteractions() {
-            /**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~**/
-            // if (this.$route.query.queries.length === 1 && this.materials.length > 1) {
-            //     //// it's one 'material' and it's a compound
-            //     this.setMsg('Compound as a single result isn\'t supported, Please provide more material/s');
-            //     return [];
-            // }
-            /**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~**/
+            if (this.$route.query.queries.length === 1 && this.materials.length > 1) {
+                //// it's one 'material' and it's a compound
+                this.setMsg('Compound as a single result isn\'t supported, Please provide more material/s');
+                return [];
+            }
             const formatedInteractions = this.interactions.reduce((acc, interaction) => {
                 /// it's the only case we render label interactions as is
                 if (this.materials.length === 1 && this.materials[0]._id === interaction.side1Material._id) acc.push(interaction);
