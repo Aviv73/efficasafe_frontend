@@ -156,7 +156,7 @@ export default {
             return results;
         },
         formatedInteractions() {
-            if (this.$route.query.queries.length === 1 && this.materials.length > 1) {
+            if ((this.$route.query.queries && this.$route.query.queries.length) === 1 && this.materials.length > 1) {
                 //// it's one 'material' and it's a compound
                 this.setMsg('Compound as a single result isn\'t supported, Please provide more material/s');
                 return [];
