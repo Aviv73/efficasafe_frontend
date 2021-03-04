@@ -163,37 +163,12 @@ export default {
             //     return [];
             // }
             /**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~**/
-            const insertInteraction = (acc, interaction) => {
-                /// index of vinteraction between the same 2 materials
-                const idx = acc.findIndex(
-                    vin => (vin.side2Material && vin.side2Material._id === interaction.side2Material._id) &&
-                    (vin.side1Material._id === interaction.side1Material._id)
-                );
-                /// index of a group holding vinteractions between the same 2 materials
-                const groupIdx = acc.findIndex(vin => vin._id === `${interaction.side1Material._id}-${interaction.side2Material._id}`);
-                if (idx === -1 && groupIdx === -1) acc.push(interaction);
-                else if (idx !== -1 && groupIdx === -1) {
-                    const vInteractionGroup = {
-                        _id: `${interaction.side1Material._id}-${interaction.side2Material._id}`,
-                        name: `${interaction.side1Material.name} & ${interaction.side2Material.name}`,
-                        recommendation: this.getMoreSeverRecomm(acc[idx].recommendation, interaction.recommendation),
-                        vInteractions: [
-                            acc[idx],
-                            interaction
-                        ]
-                    };
-                    acc.splice(idx, 1, vInteractionGroup);
-                } else {
-                    acc[groupIdx].vInteractions.push(interaction);
-                    acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, interaction.recommendation);
-                } 
-            };
             const formatedInteractions = this.interactions.reduce((acc, interaction) => {
                 /// it's the only case we render label interactions as is
                 if (this.materials.length === 1 && this.materials[0]._id === interaction.side1Material._id) acc.push(interaction);
                 else if (!interaction.side2Label) {
                     /// insert material 2 material interaction
-                    insertInteraction(acc, interaction);
+                    this.groupDoubleInteractions(acc, interaction);
                 } else {
                     /// format label interactions to vinteractions
                     const materials = this.materials.filter(
@@ -215,40 +190,73 @@ export default {
                         })
                     );
                     vInteractions.forEach(vInteraction => {
-                        insertInteraction(acc, vInteraction);
+                        this.groupDoubleInteractions(acc, vInteraction);
                     });
                 }
                 return acc;
             }, []);
-            /**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~**/
-            /// here double vint's are grouped, now grouping compounds interactions
-            // const queryApearanceMap = {};
-            // formatedInteractions.reduce((acc, interaction) => {
-            //     if (!interaction.vInteractions) {
-            //         const userQuery = this.$store.getters.materialNamesMap[interaction.side2Material.name];
-            //         if (!queryApearanceMap[userQuery]) queryApearanceMap[userQuery] = interaction;
-            //         else {
-            //             console.log('group it!');
-            //         }
-            //     } else {
-            //             interaction.vInteractions.forEach((vInteraction) => {
-            //                 const userQuery = this.$store.getters.materialNamesMap[vInteraction.side2Material.name];
-            //             if (!queryApearanceMap[userQuery]) queryApearanceMap[userQuery] = interaction;
-            //             else {
-            //                 console.log('group it!');
-            //             }
-            //         });
-            //     }
-            //     return acc;
-            // }, []);
-            /**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~**/
-            return formatedInteractions;
+            const queryApearanceMap = {};
+            return formatedInteractions.reduce((acc, interaction) => {
+                let side1Name = '';
+                let side2Name = '';
+                if (interaction.name) {
+                    [ side1Name, side2Name ] = interaction.name.split('&').map(str => str.trim());
+                } else {
+                    side1Name = interaction.side1Material.name;
+                    side2Name = interaction.side2Material.name;
+                }
+                const userQuery = this.$store.getters.materialNamesMap[side2Name];
+                if (!queryApearanceMap[`${side1Name}-${userQuery}`]) {
+                    queryApearanceMap[`${side1Name}-${userQuery}`] = interaction;
+                    acc.push(interaction);
+                } else {
+                    const compoundGroup = {
+                        _id: `${queryApearanceMap[`${side1Name}-${userQuery}`]._id}-${interaction._id}`,
+                        name: `${side1Name}-${userQuery}`,
+                        recommendation: this.getMoreSeverRecomm(queryApearanceMap[`${side1Name}-${userQuery}`].recommendation, interaction.recommendation),
+                        vInteractions: [
+                            queryApearanceMap[`${side1Name}-${userQuery}`],
+                            interaction
+                        ],
+                        isCompoundGroup: true
+                    };
+                    const existingItemIdx = acc.findIndex(i => i._id === queryApearanceMap[`${side1Name}-${userQuery}`]._id);
+                    acc.splice(existingItemIdx, 1, compoundGroup);
+                }
+                return acc;
+            }, []);
         },
         materialCount() {
             return (this.$route.query.queries) ? this.$route.query.queries.length : 0;
         }
     },
     methods: {
+        groupDoubleInteractions(acc, interaction) {
+            /// index of vinteraction between the same 2 materials
+            const idx = acc.findIndex(
+                vin => (vin.side2Material && vin.side2Material._id === interaction.side2Material._id) &&
+                (vin.side1Material._id === interaction.side1Material._id)
+            );
+            /// index of a group holding vinteractions between the same 2 materials
+            const groupIdx = acc.findIndex(vin => vin._id === `${interaction.side1Material._id}-${interaction.side2Material._id}`);
+            if (idx === -1 && groupIdx === -1) acc.push(interaction);
+            else if (idx !== -1 && groupIdx === -1) {
+                const vInteractionGroup = {
+                    _id: `${interaction.side1Material._id}-${interaction.side2Material._id}`,
+                    name: `${interaction.side1Material.name} & ${interaction.side2Material.name}`,
+                    recommendation: this.getMoreSeverRecomm(acc[idx].recommendation, interaction.recommendation),
+                    vInteractions: [
+                        acc[idx],
+                        interaction
+                    ],
+                    isCompoundGroup: false
+                };
+                acc.splice(idx, 1, vInteractionGroup);
+            } else {
+                acc[groupIdx].vInteractions.push(interaction);
+                acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, interaction.recommendation);
+            } 
+        },
         getMoreSeverRecomm(recomm1, recomm2) {
             const recommendationMap = {
                 'avoid coadministration': 3,

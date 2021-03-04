@@ -15,7 +15,7 @@ Vue.directive('highlight-text', {
     }
 });
 
-Vue.directive('material-query-name', {
+Vue.directive('localize-material-name', {
     inserted(el, binding, vnode) {
         const { materialNamesMap } = vnode.context.$store.getters;
         if (!materialNamesMap) return;

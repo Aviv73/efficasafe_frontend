@@ -39,7 +39,7 @@
                         &-header {
                             pointer-events: none;
                         } 
-                        &-chip {
+                        &-chip, .fake-chip {
                             pointer-events: all;
                             cursor: row-resize;
                         }

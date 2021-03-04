@@ -152,6 +152,7 @@ export default {
     },
     methods: {
         getMaterialRefNums(pubmedIds) {
+            console.log(this.side2Pathways);
             /**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~**/
             // pathways that are not 'substrate' are being omitted - and refIdx is not
             // necessary the next valid idx.. an option (BAD one) is to keep count on how many
