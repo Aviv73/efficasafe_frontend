@@ -193,38 +193,37 @@ export default {
                 }
                 return acc;
             }, []);
-            return formatedInteractions
-            // const queryApearanceMap = {};
-            // if (this.materials.length === 1) return formatedInteractions;
-            // return formatedInteractions.reduce((acc, interaction) => {
-            //     let side1Name = '';
-            //     let side2Name = '';
-            //     if (interaction.name) {
-            //         [ side1Name, side2Name ] = interaction.name.split('&').map(str => str.trim());
-            //     } else {
-            //         side1Name = interaction.side1Material.name;
-            //         side2Name = interaction.side2Material.name;
-            //     }
-            //     const userQuery = this.$store.getters.materialNamesMap[side2Name];
-            //     if (!queryApearanceMap[`${side1Name}-${userQuery}`]) {
-            //         queryApearanceMap[`${side1Name}-${userQuery}`] = interaction;
-            //         acc.push(interaction);
-            //     } else {
-            //         const compoundGroup = {
-            //             _id: `${queryApearanceMap[`${side1Name}-${userQuery}`]._id}-${interaction._id}`,
-            //             name: `${side1Name}-${userQuery}`,
-            //             recommendation: this.getMoreSeverRecomm(queryApearanceMap[`${side1Name}-${userQuery}`].recommendation, interaction.recommendation),
-            //             vInteractions: [
-            //                 queryApearanceMap[`${side1Name}-${userQuery}`],
-            //                 interaction
-            //             ],
-            //             isCompoundGroup: true
-            //         };
-            //         const existingItemIdx = acc.findIndex(i => i._id === queryApearanceMap[`${side1Name}-${userQuery}`]._id);
-            //         acc.splice(existingItemIdx, 1, compoundGroup);
-            //     }
-            //     return acc;
-            // }, []);
+            const queryApearanceMap = {};
+            if (this.materials.length === 1) return formatedInteractions;
+            return formatedInteractions.reduce((acc, interaction) => {
+                let side1Name = '';
+                let side2Name = '';
+                if (interaction.name) {
+                    [ side1Name, side2Name ] = interaction.name.split('&').map(str => str.trim());
+                } else {
+                    side1Name = interaction.side1Material.name;
+                    side2Name = interaction.side2Material.name;
+                }
+                const userQuery = this.$store.getters.materialNamesMap[side2Name];
+                if (!queryApearanceMap[`${side1Name}-${userQuery}`]) {
+                    queryApearanceMap[`${side1Name}-${userQuery}`] = interaction;
+                    acc.push(interaction);
+                } else {
+                    const compoundGroup = {
+                        _id: `${queryApearanceMap[`${side1Name}-${userQuery}`]._id}-${interaction._id}`,
+                        name: `${side1Name}-${userQuery}`,
+                        recommendation: this.getMoreSeverRecomm(queryApearanceMap[`${side1Name}-${userQuery}`].recommendation, interaction.recommendation),
+                        vInteractions: [
+                            queryApearanceMap[`${side1Name}-${userQuery}`],
+                            interaction
+                        ],
+                        isCompoundGroup: true
+                    };
+                    const existingItemIdx = acc.findIndex(i => i._id === queryApearanceMap[`${side1Name}-${userQuery}`]._id);
+                    acc.splice(existingItemIdx, 1, compoundGroup);
+                }
+                return acc;
+            }, []);
         },
         materialCount() {
             return (this.$route.query.queries) ? this.$route.query.queries.length : 0;
