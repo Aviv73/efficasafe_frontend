@@ -43,7 +43,7 @@
             </v-expansion-panel>
           </v-expansion-panels>
           <v-expansion-panels v-else flat class="results-list-expand-panel">
-            <v-expansion-panel v-if="!interaction.isCompoundGroup" class="results-list-expand-panel-panel">
+            <v-expansion-panel class="results-list-expand-panel-panel">
               <v-expansion-panel-header 
                 class="results-list-expand-panel-panel-header pa-0"
                 disable-icon-rotate
@@ -61,50 +61,13 @@
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-chip-group>
-                  <v-chip
-                    class="mb-4"
-                    v-for="(vInteraction, idx) in interaction.vInteractions"
-                    :key="idx"
-                    outlined
-                    v-recommendation-color:[vInteraction.recommendation]
-                    v-localize-material-name
-                  >
-                    <router-link 
-                      class="results-list-link"
-                      :to="(vInteraction.isVirtual) ? `/cms/interaction/${vInteraction._id}/${vInteraction.side2Material._id}` : `/cms/interaction/${vInteraction._id}`" 
-                    >
-                      {{ `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}` }}
-                      <span v-if="vInteraction.side2DraftName">{{ `(${vInteraction.side2DraftName})` }}</span>
-                    </router-link>
-                  </v-chip>
-                </v-chip-group>
-                <v-divider />
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-            <v-expansion-panel v-else class="results-list-expand-panel-panel">
-              <v-expansion-panel-header 
-                class="results-list-expand-panel-panel-header pa-0"
-                disable-icon-rotate
-                hide-actions
-              >
-                <v-chip
-                  class="results-list-expand-panel-panel-chip mb-4"
-                  outlined
-                  v-recommendation-color:[interaction.recommendation]
-                  v-localize-material-name
-                >
-                  {{ interaction.name }}
-                  <v-icon small class="ml-2">mdi-chevron-down</v-icon>
-                </v-chip>
-              </v-expansion-panel-header>
-              <v-expansion-panel-content>
-                <span v-for="(vInteraction, idx) in interaction.vInteractions" :key="idx">
-                  <v-chip-group>
+                  <span v-for="(vInteraction, idx) in interaction.vInteractions" :key="idx">
                     <v-chip
                       class="mb-4"
                       v-if="!vInteraction.vInteractions"
                       outlined
                       v-recommendation-color:[vInteraction.recommendation]
+                      v-localize-material-name
                     >
                       <router-link 
                         class="results-list-link"
@@ -112,10 +75,10 @@
                       >
                         {{ `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}` }}
                         <span v-if="vInteraction.side2DraftName">{{ `(${vInteraction.side2DraftName})` }}</span>
-                      </router-link>
+                    </router-link>
                     </v-chip>
-                    <v-expansion-panels flat v-else>
-                        <v-expansion-panel class="results-list-expand-panel-panel">
+                    <v-expansion-panels v-else flat class="results-list-expand-panel">
+                      <v-expansion-panel class="results-list-expand-panel-panel">
                         <v-expansion-panel-header 
                           class="results-list-expand-panel-panel-header pa-0"
                           disable-icon-rotate
@@ -124,35 +87,20 @@
                           <v-chip
                             class="results-list-expand-panel-panel-chip mb-4"
                             outlined
-                            v-recommendation-color:[vInteraction.recommendation]
+                            v-recommendation-color:[interaction.recommendation]
                           >
-                            {{ vInteraction.name }}
+                            {{ interaction.name }}
                             <v-icon small class="ml-2">mdi-chevron-down</v-icon>
                           </v-chip>
                         </v-expansion-panel-header>
                         <v-expansion-panel-content>
-                          <v-chip-group>
-                            <v-chip
-                              class="mb-4"
-                              v-for="(innerVinteraction, idx) in vInteraction.vInteractions"
-                              :key="idx"
-                              outlined
-                              v-recommendation-color:[innerVinteraction.recommendation]
-                            >
-                              <router-link 
-                                class="results-list-link"
-                                :to="(innerVinteraction.isVirtual) ? `/cms/interaction/${innerVinteraction._id}/${innerVinteraction.side2Material._id}` : `/cms/interaction/${innerVinteraction._id}`" 
-                              >
-                                {{ `${innerVinteraction.side1Material.name} & ${innerVinteraction.side2Material.name}` }}
-                                <span v-if="innerVinteraction.side2DraftName">{{ `(${innerVinteraction.side2DraftName})` }}</span>
-                              </router-link>
-                            </v-chip>
-                          </v-chip-group>
+                          
                         </v-expansion-panel-content>
                       </v-expansion-panel>
                     </v-expansion-panels>
-                  </v-chip-group>
-                </span>
+                  </span>
+                </v-chip-group>
+                <v-divider />
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>

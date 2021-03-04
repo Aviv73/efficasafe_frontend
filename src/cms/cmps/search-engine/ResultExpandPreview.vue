@@ -25,7 +25,7 @@
                             :key="vInteraction.side2Material._id"
                             outlined
                             v-recommendation-color:[interaction.recommendation]
-                            localize-material-name
+                            v-localize-material-name
                         >
                             <router-link 
                                 class="results-list-link"
