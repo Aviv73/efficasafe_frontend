@@ -152,14 +152,6 @@ export default {
     },
     methods: {
         getMaterialRefNums(pubmedIds) {
-            /**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~**/
-            // pathways that are not 'substrate' are being omitted - and refIdx is not
-            // necessary the next valid idx.. an option (BAD one) is to keep count on how many
-            // side2Refs were rendered and give it as idx (fix all the way down)
-            // OR: filter combinedRefs from un-relevant pathway refs (of inducers atc) 
-            // and use relevantCombinedRefs in this way - BETTER (also remove from refs table)
-            // SO it's a computed that returns filtered relevant combinedRefs and idxs from him !
-            /**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~**/
             if (!this.side1RefsLength || !this.side2RefsLength || !pubmedIds.length) return '';
             if (pubmedIds.length === 1) {
                 const field = (typeof pubmedIds[0] === 'number') ? 'pubmedId' : 'link';
