@@ -137,28 +137,27 @@ export default {
             let nextDraftIdx = 1;
             /// this reduce is necessary because some pathways are omitted, so pathwayRefs isn't relevant
             /// otherways this.side2Refs instead of side2Refs will do
-            const side2Refs = this.material.pathways.reduce((acc, pathway) => {
-                if (
-                    (pathway.type === 'enzyme' && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))) ||
-                    (pathway.type === 'transporter' && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))) ||
-                    (pathway.type === 'carrier' && (!pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor')))
-                ) {
-                    pathway.references.forEach((pubmedId, idx) => {
-                        const isValidUrl = (typeof pubmedId === 'string' && pubmedId.startsWith('http'));
-                        const ref = {
-                            draftIdx: nextDraftIdx++,
-                            type: '',
-                            txt: pathway.fullReferences[idx],
-                            link: (isValidUrl) ? pubmedId : `https://pubmed.ncbi.nlm.nih.gov/${pubmedId}`,
-                            pubmedId: (isValidUrl) ? 0 : pubmedId
-                        };
-                        const isUnique = acc.findIndex(currRef => currRef.link === ref.link) === -1;
-                        if (isUnique) acc.push(ref);
-                    });
-                }
+            const side2Refs = this.relevantSide2Pathways.reduce((acc, pathway) => {
+                pathway.references.forEach((pubmedId, idx) => {
+                    const isValidUrl = (typeof pubmedId === 'string' && pubmedId.startsWith('http'));
+                    const ref = {
+                        draftIdx: nextDraftIdx++,
+                        type: '',
+                        txt: pathway.fullReferences[idx],
+                        link: (isValidUrl) ? pubmedId : `https://pubmed.ncbi.nlm.nih.gov/${pubmedId}`,
+                        pubmedId: (isValidUrl) ? 0 : pubmedId
+                    };
+                    const isUnique = acc.findIndex(currRef => currRef.link === ref.link) === -1;
+                    if (isUnique) acc.push(ref);
+                });
                 return acc;
             }, []);
             return this.interactionRefs.concat(side2Refs, this.pathwayRefs);
+        },
+        relevantSide2Pathways() {
+            return this.material.pathways.filter(pathway => (pathway.type === 'enzyme' && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))) ||
+            (pathway.type === 'transporter' && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))) ||
+            (pathway.type === 'carrier' && (!pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor'))))
         },
         pathwayRefs() {
             const txt = this.relevantSide1Pathways.reduce((acc, pathway) => {
@@ -170,7 +169,7 @@ export default {
         },
         relevantSide1Pathways() {
             return this.side1Pathways.filter(pathway => {
-                const idx = this.material.pathways.findIndex(matPathway => matPathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
+                const idx = this.relevantSide2Pathways.findIndex(matPathway => matPathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
                 return idx !== -1;
             });
         },
@@ -270,7 +269,7 @@ export default {
                     if (i >= elSubs.length - pathway2Subs.length) {
                         const sameRefs = this.combinedRefs.filter(ref => ref && ref.draftIdx === refs[j].draftIdx);
                         if (sameRefs.length > 1) {
-                            const ref = sameRefs.find(ref => this.side2Refs.findIndex(currRef => currRef === ref) === -1);
+                            const ref = sameRefs.find(ref => this.side2Refs.findIndex(currRef => currRef.link === ref.link) === -1);
                             draftIdx = this.combinedRefs.indexOf(ref) + 1;
                         }
                     }
