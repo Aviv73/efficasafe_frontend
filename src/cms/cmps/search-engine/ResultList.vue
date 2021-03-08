@@ -234,7 +234,6 @@ export default {
         }
         return acc;
       }, 0);
-      console.log(sameVinteractionCount);
       return (sameVinteractionCount > 1) && interaction.side2DraftName;
     },
     getInteractionName(interaction) {
