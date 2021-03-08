@@ -144,7 +144,7 @@ export default {
     },
     computed: {
         formatedMaterials() {
-            const results = this.materials.reduce((acc, material) => {
+            return this.materials.reduce((acc, material) => {
                 const result = acc.find(res => res.txt === material.userQuery);
                 if (result) result.materials.push(material);
                 else {
@@ -153,7 +153,6 @@ export default {
                 }
                 return acc;
             }, []);
-            return results;
         },
         formatedInteractions() {
             if ((this.$route.query.queries && this.$route.query.queries.length) === 1 && this.materials.length > 1) {
