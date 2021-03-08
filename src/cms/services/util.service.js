@@ -7,8 +7,8 @@ export const utilService = {
 function replaceTextContent(el, txt, newTxt, isPartOfCompound) {
     if (el.nodeType === 3) {
         if (isPartOfCompound) {
-            const names = el.nodeValue.split(' & ');
-            el.nodeValue = `${names[0].replace(txt, newTxt)} & ${names[1]}`;
+            const idx = el.nodeValue.indexOf(' & ');
+            el.nodeValue = el.nodeValue.substring(0, idx).replace(txt, newTxt) + el.nodeValue.substring(idx);
         } else el.nodeValue = el.nodeValue.replace(txt, newTxt);
     }
     const children = Array.from(el.childNodes);
