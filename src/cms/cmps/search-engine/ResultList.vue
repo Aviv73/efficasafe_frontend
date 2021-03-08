@@ -74,7 +74,6 @@
                         :to="(vInteraction.isVirtual) ? `/cms/interaction/${vInteraction._id}/${vInteraction.side2Material._id}` : `/cms/interaction/${vInteraction._id}`" 
                       >
                         {{ `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}` }}
-                        <span v-if="vInteraction.side2DraftName">{{ `(${vInteraction.side2DraftName})` }}</span>
                     </router-link>
                     </v-chip>
                     <v-expansion-panels v-else flat class="results-list-expand-panel">
@@ -97,17 +96,17 @@
                           <v-chip-group>
                             <v-chip
                               class="mb-4"
-                              v-for="(innerVnteraction, idx) in vInteraction.vInteractions"
+                              v-for="(innerVinteraction, idx) in vInteraction.vInteractions"
                               :key="idx"
                               outlined
-                              v-recommendation-color:[innerVnteraction.recommendation]
+                              v-recommendation-color:[innerVinteraction.recommendation]
                             >
                               <router-link 
                                 class="results-list-link"
-                                :to="(innerVnteraction.isVirtual) ? `/cms/interaction/${innerVnteraction._id}/${innerVnteraction.side2Material._id}` : `/cms/interaction/${innerVnteraction._id}`" 
+                                :to="(innerVinteraction.isVirtual) ? `/cms/interaction/${innerVinteraction._id}/${innerVinteraction.side2Material._id}` : `/cms/interaction/${innerVinteraction._id}`" 
                               >
-                                {{ `${innerVnteraction.side1Material.name} & ${innerVnteraction.side2Material.name}` }}
-                                <span v-if="innerVnteraction.side2DraftName">{{ `(${innerVnteraction.side2DraftName})` }}</span>
+                                {{ `${innerVinteraction.side1Material.name} & ${innerVinteraction.side2Material.name}` }}
+                                <span v-if="innerVinteraction.side2DraftName">{{ `(${innerVinteraction.side2DraftName})` }}</span>
                             </router-link>
                             </v-chip>
                           </v-chip-group>
