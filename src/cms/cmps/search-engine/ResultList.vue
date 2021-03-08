@@ -85,9 +85,10 @@
                           hide-actions
                         >
                           <v-chip
+                            v-localize-material-name:[true]
                             class="results-list-expand-panel-panel-chip mb-4"
-                            outlined
                             v-recommendation-color:[vInteraction.recommendation]
+                            outlined
                           >
                             {{ vInteraction.name }}
                             <v-icon small class="ml-2">mdi-chevron-down</v-icon>
@@ -96,6 +97,7 @@
                         <v-expansion-panel-content>
                           <v-chip-group>
                             <v-chip
+                              v-localize-material-name:[true]
                               class="mb-4"
                               v-for="(innerVinteraction, idx) in vInteraction.vInteractions"
                               :key="idx"

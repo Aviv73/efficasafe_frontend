@@ -195,7 +195,6 @@ export default {
             const queryApearanceMap = {};
             if (this.materials.length === 1) return formatedInteractions;
             return formatedInteractions.reduce((acc, interaction) => {
-                interaction = JSON.parse(JSON.stringify(interaction));
                 let side1Name = '';
                 let side2Name = '';
                 if (interaction.name) {
@@ -252,7 +251,6 @@ export default {
     },
     methods: {
         groupDoubleInteractions(acc, interaction) {
-            interaction = JSON.parse(JSON.stringify(interaction));
             /// index of vinteraction between the same 2 materials
             const idx = acc.findIndex(
                 vin => (vin.side2Material && vin.side2Material._id === interaction.side2Material._id) &&

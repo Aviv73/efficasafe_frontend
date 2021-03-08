@@ -18,10 +18,10 @@ Vue.directive('highlight-text', {
 Vue.directive('localize-material-name', {
     inserted(el, binding, vnode) {
         const { materialNamesMap } = vnode.context.$store.getters;
-        if (!materialNamesMap || binding.arg) return;
+        if (!materialNamesMap) return;
         Object.keys(materialNamesMap).forEach(materialName => {
             if (el.innerText.includes(materialName)) {
-                utilService.replaceTextContent(el, materialName, materialNamesMap[materialName]);
+                utilService.replaceTextContent(el, materialName, materialNamesMap[materialName], !!binding.arg);
             }
         });
     }

@@ -4,14 +4,17 @@ export const utilService = {
     replaceTextContent
 }
 
-function replaceTextContent(el, txt, newTxt) {
+function replaceTextContent(el, txt, newTxt, isPartOfCompound) {
     if (el.nodeType === 3) {
-        el.nodeValue = el.nodeValue.replace(txt, newTxt);
+        if (isPartOfCompound) {
+            const names = el.nodeValue.split(' & ');
+            el.nodeValue = `${names[0].replace(txt, newTxt)} & ${names[1]}`;
+        } else el.nodeValue = el.nodeValue.replace(txt, newTxt);
     }
     const children = Array.from(el.childNodes);
     if (children.length) {
         Array.from(children).forEach(childNode => {
-            replaceTextContent(childNode, txt, newTxt)
+            replaceTextContent(childNode, txt, newTxt, isPartOfCompound)
         });
     }
 }
