@@ -204,22 +204,43 @@ export default {
                     side2Name = interaction.side2Material.name;
                 }
                 const userQuery = this.$store.getters.materialNamesMap[side2Name];
+                const queryApearanceCount = this.$store.getters.queryApearanceCount(userQuery);
                 if (!queryApearanceMap[`${side1Name}-${userQuery}`]) {
-                    queryApearanceMap[`${side1Name}-${userQuery}`] = interaction;
-                    acc.push(interaction);
+                    queryApearanceMap[`${side1Name}-${userQuery}`] = [ interaction ];
+                    if (queryApearanceCount <= 1) acc.push(interaction);
+                    else {
+                        const compoundGroup = {
+                            _id: interaction._id,
+                            name: `${side1Name}-${userQuery}`,
+                            recommendation: interaction.recommendation,
+                            vInteractions: [
+                                interaction
+                            ],
+                            isCompoundGroup: true
+                        }
+                        acc.push(compoundGroup);
+                    }
                 } else {
-                    const compoundGroup = {
-                        _id: `${queryApearanceMap[`${side1Name}-${userQuery}`]._id}-${interaction._id}`,
-                        name: `${side1Name}-${userQuery}`,
-                        recommendation: this.getMoreSeverRecomm(queryApearanceMap[`${side1Name}-${userQuery}`].recommendation, interaction.recommendation),
-                        vInteractions: [
-                            queryApearanceMap[`${side1Name}-${userQuery}`],
-                            interaction
-                        ],
-                        isCompoundGroup: true
-                    };
-                    const existingItemIdx = acc.findIndex(i => i._id === queryApearanceMap[`${side1Name}-${userQuery}`]._id);
-                    acc.splice(existingItemIdx, 1, compoundGroup);
+                    const groupIdx = acc.findIndex(item => item._id === `${queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i._id).join('-')}-${interaction._id}`);
+                    if (groupIdx === -1) {
+                        const compoundGroup = {
+                            _id: `${queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i._id).join('-')}-${interaction._id}`,
+                            name: `${side1Name}-${userQuery}`,
+                            recommendation: this.getMoreSeverRecomm(...queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i.recommendation), interaction.recommendation),
+                            vInteractions: [
+                                ...queryApearanceMap[`${side1Name}-${userQuery}`],
+                                interaction
+                            ],
+                            isCompoundGroup: true
+                        };
+                        queryApearanceMap[`${side1Name}-${userQuery}`].forEach(currInteraction => {
+                            acc = acc.filter(i => i._id !== currInteraction._id);
+                            acc.push(compoundGroup);
+                        });
+                    } else {
+                        acc[groupIdx].vInteractions.push(interaction);
+                        acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, interaction.recommendation);
+                    }
                 }
                 return acc;
             }, []);
@@ -255,7 +276,7 @@ export default {
                 acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, interaction.recommendation);
             } 
         },
-        getMoreSeverRecomm(recomm1, recomm2) {
+        getMoreSeverRecomm(...recommendations) {
             const recommendationMap = {
                 'avoid coadministration': 3,
                 'coadministration is not advised': 3,
@@ -268,7 +289,10 @@ export default {
                 'coadministration is not contraindicated and may even be advised': 1,
                 'coadministration is possible and may even be advised': 1
             };
-            return (recommendationMap[recomm1.toLowerCase()] > recommendationMap[recomm2.toLowerCase()]) ? recomm1 : recomm2;
+            recommendations.sort((a, b) => {
+                return (recommendationMap[a.toLowerCase()] > recommendationMap[b.toLowerCase()]) ? -1 : (recommendationMap[a.toLowerCase()] < recommendationMap[b.toLowerCase()]) ? 1 : 0;
+            });
+            return recommendations[0];
         },
         async getDBankInteractions(page = 1) {
             this.isLoading = true;

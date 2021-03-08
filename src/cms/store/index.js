@@ -18,6 +18,12 @@ export default new Vuex.Store({
   getters: {
     materialNamesMap(state) {
       return state.materialNamesMap;
+    },
+    queryApearanceCount: (state) => (query) => {
+      return Object.values(state.materialNamesMap).reduce((acc, currQuery) => {
+        if (currQuery === query) acc++;
+        return acc;
+      }, 0);
     }
   },
   mutations: {
