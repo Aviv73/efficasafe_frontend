@@ -233,7 +233,7 @@ export default {
           acc++;
         }
         return acc;
-      }, 1);
+      }, 0);
       console.log(sameVinteractionCount);
       return (sameVinteractionCount > 1) && interaction.side2DraftName;
     },
