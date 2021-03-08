@@ -74,6 +74,7 @@
                         :to="(vInteraction.isVirtual) ? `/cms/interaction/${vInteraction._id}/${vInteraction.side2Material._id}` : `/cms/interaction/${vInteraction._id}`" 
                       >
                         {{ `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}` }}
+                        <span v-if="doRenderDraftName(vInteraction, interaction)">{{ `(${vInteraction.side2DraftName})` }}</span>
                     </router-link>
                     </v-chip>
                     <v-expansion-panels v-else flat class="results-list-expand-panel">
@@ -106,7 +107,7 @@
                                 :to="(innerVinteraction.isVirtual) ? `/cms/interaction/${innerVinteraction._id}/${innerVinteraction.side2Material._id}` : `/cms/interaction/${innerVinteraction._id}`" 
                               >
                                 {{ `${innerVinteraction.side1Material.name} & ${innerVinteraction.side2Material.name}` }}
-                                <span v-if="innerVinteraction.side2DraftName">{{ `(${innerVinteraction.side2DraftName})` }}</span>
+                                <span v-if="doRenderDraftName(innerVinteraction, vInteraction)">{{ `(${innerVinteraction.side2DraftName})` }}</span>
                             </router-link>
                             </v-chip>
                           </v-chip-group>
@@ -222,6 +223,20 @@ export default {
     }
   },
   methods: {
+    doRenderDraftName(interaction, parentGroup) {
+      const sameVinteractionCount = parentGroup.vInteractions.reduce((acc, vin) => {
+        if (
+          ((vin.side1Material && vin.side1Material._id) === (interaction.side1Material && interaction.side1Material._id))
+          && 
+          ((vin.side2Material && vin.side2Material._id) === (interaction.side2Material && interaction.side2Material._id))
+          ) {
+          acc++;
+        }
+        return acc;
+      }, 1);
+      console.log(sameVinteractionCount);
+      return (sameVinteractionCount > 1) && interaction.side2DraftName;
+    },
     getInteractionName(interaction) {
       return (interaction.side2Material) ? `${interaction.side1Material.name} & ${interaction.side2Material.name}` : interaction.side2Label.name;
     },
