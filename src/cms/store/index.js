@@ -29,7 +29,7 @@ export default new Vuex.Store({
   mutations: {
     makeMaterialNamesMap(state, { materials }) {
       state.materialNamesMap = materials.reduce((acc, material) => {
-        acc[material.name] = material.userQuery;
+        if (!acc[material.name]) acc[material.name] = material.userQuery;
         return acc;
       }, {});
     }

@@ -265,7 +265,7 @@ export default {
                     _id: `${interaction.side1Material._id}-${interaction.side2Material._id}`,
                     name: `${interaction.side1Material.name} & ${interaction.side2Material.name}`,
                     recommendation: this.getMoreSeverRecomm(acc[idx].recommendation, interaction.recommendation),
-                    vInteractions: [
+                    vInteractions: (acc[idx]._id === interaction._id) ? [ acc[idx] ] : [
                         acc[idx],
                         interaction
                     ],
@@ -273,8 +273,10 @@ export default {
                 };
                 acc.splice(idx, 1, vInteractionGroup);
             } else {
-                acc[groupIdx].vInteractions.push(interaction);
-                acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, interaction.recommendation);
+                if (acc[groupIdx].vInteractions.findIndex(i => i._id === interaction._id) === -1) {
+                    acc[groupIdx].vInteractions.push(interaction);
+                    acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, interaction.recommendation);
+                }
             } 
         },
         getMoreSeverRecomm(...recommendations) {
