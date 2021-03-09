@@ -7,212 +7,184 @@
         background-repeat: no-repeat;
         background-size: cover;
         background-attachment: fixed;
-        background-position: left center;
+        background-position: 0 -275px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding-block-start: 100px;
+        padding-block-start: 55px;
         
         @include for-mobile-layout {
-            padding-block-start: 150px;
+            padding-block-start: 66px;
+            background-position: 0 center;
             background-image: url('../assets/imgs/home-bg.jpg');
-        }
-        [alt=Logo] {
-            width: 151px;
-            @include for-mobile-layout {
-                width: initial;
-            }
         }
     }
     h1 {
-        margin-block-end: 60px;
-        text-indent: -999px;
-        a {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-    }
-    &-content {
-        align-self: stretch;
-        margin-block-end: 120px;
+        margin-block-end: rem(40px);
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        font-size: rem(18px);
+        line-height: rem(24px);
+        color: rgba($clr-txt-dark, .85);
         
         @include for-mobile-layout {
-            margin-block-end: 40px;
+            font-size: rem(24px);
+            line-height: rem(30px);
         }
-        &-container {
-            padding: 0 rem(10px);
-            @include flex-center;
-            
-            @include for-narrow-layout {
-                padding: 0 rem(40px);
-                @include flex-space-between;
+        [alt="Efficasafe Logo"] {
+            width: 170px;
+            margin-block-end: rem(40px);
+            @include for-mobile-layout {
+                width: 220px;
             }
         }
-        &-form {
-            width: 600px;
+        .keyword1, .keyword2 {
+            font-family: roboto-bold, sans-serif;
+            font-weight: 700;
+        }
+        .keyword1 { color: $gradient-clr1; }
+        .keyword2 { color: $gradient-clr2; }
+        .sub {
+            display: block;
             font-size: rem(14px);
-            padding: rem(6px);
-            background-color: rgba($clr7, .5);
+
+            @include for-mobile-layout {
+                font-size: rem(18px);
+            }
+        }
+    }
+    &-container {
+        width: calc(100% - 25px);
+        max-width: 736px;
+        margin: 0 auto;
+    }
+    &-form {
+        width: 100%;
+        font-size: rem(14px);
+        padding: rem(6px);
+        background-color: rgba($clr7, .5);
+        border-radius: rem(100px);
+        position: relative;
+        margin-block-end: rem(220px);
+        
+        
+        input {
+            width: 50%;
+            text-align: center;
+            padding: rem(14px) 0;
+            background-color: $white;
+            font-family: roboto-medium, sans-serif;
             border-radius: rem(100px);
+            border-width: 0;
             position: relative;
             
             @include for-mobile-layout {
+                padding: rem(14px) 0 rem(14px) rem(24px);
+                text-align: initial;
                 font-size: rem(15px);
-                width: 87.5%;
             }
-            @include for-narrow-layout {
-                width: 736px;
+            &::placeholder {
+                font-family: roboto, sans-serif;
             }
-            input {
-                width: 50%;
-                text-align: center;
-                padding: rem(14px) 0;
-                background-color: $white;
-                font-family: roboto-medium, sans-serif;
-                border-radius: rem(100px);
-                border-width: 0;
-                position: relative;
-                
-                @include for-mobile-layout {
-                    padding: rem(14px) 0 rem(14px) rem(24px);
-                    text-align: initial;
-                    font-size: rem(15px);
-                }
+            &:first-child {
+                box-shadow: -8px 0px 0px 0px $clr8 inset;
+                border-inline-end: 0 solid $clr8;
                 &::placeholder {
-                    font-family: roboto, sans-serif;
-                }
-                &:first-child {
-                    box-shadow: -8px 0px 0px 0px $clr8 inset;
-                    border-inline-end: 0 solid $clr8;
-                    &::placeholder {
-                        color: inherit;
-                        font-family: roboto-medium, sans-serif;
-                    }
-                }
-                &:last-child {
-                    border: 1px dashed $black;
-                    box-shadow: 8px 0px 0px 0px $clr9 inset;
-                    border-inline-start: 0 solid $clr9;
+                    color: inherit;
+                    font-family: roboto-medium, sans-serif;
                 }
             }
-        }
-        .chevron {
-            display: none;
-            cursor: pointer;
-            color: $clr7;
-            transition: color .3s;
-            @include hover-supported {
-                color: $white;
+            &:last-child {
+                border: 1px dashed $black;
+                box-shadow: 8px 0px 0px 0px $clr9 inset;
+                border-inline-start: 0 solid $clr9;
             }
-            @include for-narrow-layout {
-                display: initial;
-            }
-        }
-    }
-    &-subheader {
-        width: 303px;
-        font-size: rem(16px);
-        color: $clr-txt-dark;
-        padding: rem(20px) rem(35px);
-        background-color: $white;
-        margin-block-end: 130px;
-        border-radius: rem(100px);
-        
-        @include for-mobile-layout {
-            width: 85%;
-            color: rgba($clr-txt-dark, .85);
-            padding: rem(20px) rem(5px);
-            background-color: rgba($white, .65);
-            
-        }
-        @include for-narrow-layout {
-            width: 736px;
-            font-size: rem(21px);
-            padding: rem(20px) 0;
         }
     }
     &-stats {
+        height: 210px;
         background-color: $clr5;
         color: $white;
         padding: rem(35px) 0 rem(45px);
         align-self: stretch;
-
+        
+        @include for-mobile-layout {
+            font-size: rem(18px);
+        }
         ul {
-            width: 100%;
-            margin: 0 auto;
-
-            @include for-mobile-layout {
-                width: 80%;
-            }
-            @include for-narrow-layout {
-                width: 60%;
-            }
-            @include for-wide-layout {
-                width: 40%;
-            }
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             li {
-                flex-basis: 33.33%;
+                flex-grow: 1;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 font-family: roboto-light, sans-serif;
+                line-height: rem(36px);
                 font-weight: 300;
                 position: relative;
                 
                 &:not(:last-child) {
-                    border-inline-end: 1px solid $white;
+                    border-inline-end: 1px solid rgba($white, .3);
+                }
+                &:first-child {
+                    align-items: flex-start;
+                }
+                &:last-child {
+                    align-items: flex-end;
                 }
                 span {
                     font-size: rem(18px);
                     font-family: roboto-bold, sans-serif;
                     font-weight: 700;
                     display: inline-block;
-                    margin-block-end: rem(10px);
+                    @include for-mobile-layout {
+                        font-size: rem(24px);
+                    }
                 }
             }
         }
-    }
-    &-footer {
-        line-height: rem(31px);
-        font-size: rem(14px);
-        font-family: roboto-light, sans-serif;
-        font-weight: 300;
-        color: rgba($clr5, .8);
-        padding: rem(53px) 0;
-        margin-block-end: 40px;
-        position: relative;
-        
-        @include for-mobile-layout {
-            font-size: rem(18px);
-            margin-block-end: 0;
-        }
-        &-txt {
-            display: inline-block;
-            width: 35ch;
+        &-quote {
+            position: relative;
+            transform: translateY(20%);
+            background-color: $white;
+            box-shadow: 0px 3px 22px rgba($black, .85);
+            border-radius: 12px;
+            color: rgba($clr-txt-dark, .85);
+            padding: rem(35px) rem(35px) rem(30px);
+            line-height: rem(20px);
+            
             @include for-mobile-layout {
-                width: 50ch;
+                padding: rem(35px) rem(70px) rem(30px);
             }
-            @include for-narrow-layout {
-                width: 60ch;
+
+            &::before {
+                content: url("../assets/icons/quate-start.svg");
+                top: 0;
+                left: 0;
             }
-        }
-        &-logo {
-            width: 24px;
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translate(-50%, 50%);
+            &::after {
+                content: url("../assets/icons/quate-end.svg");
+                bottom: 0;
+                right: 10px;
+            }
+            &::before, &::after {
+                position: absolute;
+                width: rem(35px);
+            }
+            span {
+                display: block;
+                margin-block-start: rem(22px);
+                color: rgba($clr10, .85);
+                font-style: rem(14px);
+            }
         }
     }
-    .hr {
-        display: none;
-        height: 1px;
-        background-image: linear-gradient(90deg, $clr6 0%, $clr6 calc(50% - 62px), transparent calc(50% - 62px), transparent calc(50% + 62px), $clr6 calc(50% + 62px), $clr6 100%);
-        margin: 0 rem(32px) rem(53px);
-
-        @include for-mobile-layout {
-            display: block;
-        }
+    &-content {
+        background-image: linear-gradient(90deg, $gradient-clr1, $gradient-clr2);
+        height: 50vh;/// DELETE THIS WHEN THERE IS CONTENT!
     }
 }
