@@ -211,7 +211,7 @@ export default {
                     else {
                         const compoundGroup = {
                             _id: interaction._id,
-                            name: `${side1Name}-${userQuery}`,
+                            name: `${side1Name} & ${userQuery}`,
                             recommendation: interaction.recommendation,
                             vInteractions: [
                                 interaction
@@ -225,7 +225,7 @@ export default {
                     if (groupIdx === -1) {
                         const compoundGroup = {
                             _id: `${queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i._id).join('-')}-${interaction._id}`,
-                            name: `${side1Name}-${userQuery}`,
+                            name: `${side1Name} & ${userQuery}`,
                             recommendation: this.getMoreSeverRecomm(...queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i.recommendation), interaction.recommendation),
                             vInteractions: [
                                 ...queryApearanceMap[`${side1Name}-${userQuery}`],
@@ -258,8 +258,9 @@ export default {
             );
             /// index of a group holding vinteractions between the same 2 materials
             const groupIdx = acc.findIndex(vin => vin._id === `${interaction.side1Material._id}-${interaction.side2Material._id}`);
-            if (idx === -1 && groupIdx === -1) acc.push(interaction);
-            else if (idx !== -1 && groupIdx === -1) {
+            if (idx === -1 && groupIdx === -1) {
+                acc.push(interaction);
+            } else if (idx !== -1 && groupIdx === -1) {
                 const vInteractionGroup = {
                     _id: `${interaction.side1Material._id}-${interaction.side2Material._id}`,
                     name: `${interaction.side1Material.name} & ${interaction.side2Material.name}`,
