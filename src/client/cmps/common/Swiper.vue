@@ -4,13 +4,19 @@
             v-for="(slide, idx) in $slots.default"
             :key="idx"
         >   
-            <transition name="fade" mode="out-in">
-                <slide
-                    :idx="idx"
-                    v-if="idx === currSlideIdx"
-                    v-hammer:swipe.left="onSwipeLeft"
-                />
-            </transition>
+            <div 
+                class="swipe-target"
+                v-hammer:swipe.horizontal="onSwipe"
+                @keyup="onKey"
+                tabindex="0"
+            >
+                <transition name="fade" mode="out-in">
+                    <slide
+                        :idx="idx"
+                        v-if="idx === currSlideIdx"
+                    />
+                </transition>
+            </div>
         </span>
         <slot name="navigation-prev">
             <font-awesome-icon
@@ -47,21 +53,37 @@ export default {
         currSlideIdx: 0,
     }),
     methods: {
-        onSwipeLeft() {
-            console.log('Swiped left!');
-            alert('Swiped left!');
-        },
         doSlide(diff) {
             this.currSlideIdx += diff;
             if (this.currSlideIdx < 0) this.currSlideIdx = this.$slots.default.length - 1;
             else if (this.currSlideIdx === this.$slots.default.length) this.currSlideIdx = 0;
         },
+        onSwipe({ type }) {
+            switch (type) {
+                case 'swiperight':
+                    this.doSlide(1);
+                    break;
+                case 'swipeleft':
+                    this.doSlide(-1);
+                    break;
+            }
+        },
+        onKey({ key }) {
+            switch (key) {
+                case 'ArrowRight':
+                    this.doSlide(1);
+                    break;
+                case 'ArrowLeft':
+                    this.doSlide(-1);
+                    break;
+            }
+        }
     },
     components: {
         Slide: {
             functional: true,
             render: (h, ctx) => {
-                return ctx.parent.$slots.default[ctx.data.attrs.idx]
+                return ctx.parent.$slots.default[ctx.data.attrs.idx];
             }
         }
     }
@@ -69,6 +91,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .swipe-target {
+        cursor: grab;
+        &:active {
+            cursor: grabbing;
+        }
+    }
     .fade-leave-active,
     .fade-enter-active {
         transition: opacity .4s linear;
