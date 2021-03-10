@@ -8,7 +8,7 @@
                 <slide
                     :idx="idx"
                     v-if="idx === currSlideIdx"
-                    v-touch:swipe="onSwipe"
+                    v-hammer:swipe.left="onSwipeLeft"
                 />
             </transition>
         </span>
@@ -47,9 +47,9 @@ export default {
         currSlideIdx: 0,
     }),
     methods: {
-        onSwipe(direction) {
-            console.log(direction);
-            alert(direction);
+        onSwipeLeft() {
+            console.log('Swiped left!');
+            alert('Swiped left!');
         },
         doSlide(diff) {
             this.currSlideIdx += diff;
