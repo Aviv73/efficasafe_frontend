@@ -49,6 +49,7 @@ export default {
     methods: {
         onSwipe(direction) {
             console.log(direction);
+            alert(direction);
         },
         doSlide(diff) {
             this.currSlideIdx += diff;
