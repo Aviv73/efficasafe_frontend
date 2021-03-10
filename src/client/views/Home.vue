@@ -59,7 +59,23 @@
                 </swiper>
             </div>
         </section>
-        <section class="home-content"></section>
+        <section class="home-content">
+            <ul class="home-content-list">
+                <li class="home-content-list-item">
+                    <!-- <article>
+                        <h1>Search</h1>
+                        <p>
+                            Cross check multiple Drug-Drug and Herb-Supplement-Drug interactions instantly.
+                            Receive concise recommendations, summaries, and detailed study reviews.
+                        </p>
+                    </article> -->
+                </li>
+                <li class="home-content-list-item"></li>
+                <li class="home-content-list-item"></li>
+                <li class="home-content-list-item"></li>
+                <li class="home-content-list-item"></li>
+            </ul>
+        </section>
     </section>
 </template>
 
