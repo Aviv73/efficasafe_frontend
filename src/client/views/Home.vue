@@ -39,12 +39,24 @@
                 </ul>
             </div>
             <div class="home-container">
-                <p class="home-stats-quote">
-                    Finally! One site with everything in it. I believe
-                    that professionals have been waiting for something
-                    like this to come along for a very long time.
-                    <span>Dr. Jonathan Rosenzweig, MD</span>
-                </p>
+                <swiper class="home-swiper home-container">
+                    <p class="home-stats-quote">
+                        Finally! One site with everything in it. I believe
+                        that professionals have been waiting for something
+                        like this to come along for a very long time.
+                        <span>Dr. Jonathan Rosenzweig, MD</span>
+                    </p>
+                    <p class="home-stats-quote">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        <span>Dr. Meshulam Nahari, MD</span>
+                    </p>
+                    <p class="home-stats-quote">
+                        Chicken pig doner, beef ribs picanha venison prosciutto fatback ribeye brisket.
+                        Beef ribs chislic ribeye turducken filet mignon prosciutto.
+                        <span>Dr. Sus, MD</span>
+                    </p>
+                </swiper>
             </div>
         </section>
         <section class="home-content"></section>
@@ -52,8 +64,12 @@
 </template>
 
 <script>
+import Swiper from '@/client/cmps/common/Swiper';
 
 export default {
-    name: 'Home'
+    name: 'Home',
+    components: {
+        Swiper
+    }
 };
 </script>

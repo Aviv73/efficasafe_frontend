@@ -7,7 +7,7 @@
         background-repeat: no-repeat;
         background-size: cover;
         background-attachment: fixed;
-        background-position: 0 -275px;
+        background-position: 0 0;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -15,7 +15,6 @@
         
         @include for-mobile-layout {
             padding-block-start: 66px;
-            background-position: 0 center;
             background-image: url('../assets/imgs/home-bg.jpg');
         }
     }
@@ -103,6 +102,55 @@
             }
         }
     }
+    &-swiper {
+        position: relative;
+        transform: translateY(20%);
+        
+        .chevron {
+            position: absolute;
+            top: calc(40% - 10px);
+            cursor: pointer;
+            display: none;
+
+            @include for-narrow-layout {
+                display: initial;
+            }
+
+            &-prev {
+                left: rem(-36px);
+            }
+            &-next {
+                right: rem(-36px);
+            }
+        }
+        .pagination {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%, 30px);
+            @include for-narrow-layout {
+                display: none;
+            }
+
+            label:not(:last-child) {
+                display: inline-block;
+                margin-inline-end: 10px;
+            }
+            .dot {
+                cursor: pointer;
+                display: inline-block;
+                height: 10px;
+                width: 10px;
+                background-color: $white;
+                border-radius: 50%;
+                opacity: .3;
+                transition: opacity .2s linear;
+            }
+            [type=radio]:checked + .dot {
+                opacity: 1;
+            }
+        }
+    }
     &-stats {
         height: 210px;
         background-color: $clr5;
@@ -131,10 +179,14 @@
                     border-inline-end: 1px solid rgba($white, .3);
                 }
                 &:first-child {
-                    align-items: flex-start;
+                    @include for-mobile-layout {
+                        padding-inline-end: 20%;
+                    }
                 }
                 &:last-child {
-                    align-items: flex-end;
+                    @include for-mobile-layout {
+                        padding-inline-start: 20%;
+                    }
                 }
                 span {
                     font-size: rem(18px);
@@ -148,14 +200,12 @@
             }
         }
         &-quote {
-            position: relative;
-            transform: translateY(20%);
             background-color: $white;
             box-shadow: 0px 3px 22px rgba($black, .85);
-            border-radius: 12px;
+            border-radius: 12px; 
             color: rgba($clr-txt-dark, .85);
-            padding: rem(35px) rem(35px) rem(30px);
             line-height: rem(20px);
+            padding: rem(35px) rem(35px) rem(30px);
             
             @include for-mobile-layout {
                 padding: rem(35px) rem(70px) rem(30px);
@@ -163,13 +213,19 @@
 
             &::before {
                 content: url("../assets/icons/quate-start.svg");
-                top: 0;
+                top: 10px;
                 left: 0;
+                @include for-narrow-layout {
+                   top: 0;
+                }
             }
             &::after {
                 content: url("../assets/icons/quate-end.svg");
-                bottom: 0;
+                bottom: 30px;
                 right: 10px;
+                @include for-narrow-layout {
+                   bottom: 0;
+                }
             }
             &::before, &::after {
                 position: absolute;
