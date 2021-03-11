@@ -18,6 +18,12 @@
     display: block;
 }
 
+// Typography helpers
+.bold {
+    font-family: roboto-bold, sans-serif;
+    font-weight: 700;
+}
+
 
 // Aspect-Ratio Helpers
 .ratio-16-9 {

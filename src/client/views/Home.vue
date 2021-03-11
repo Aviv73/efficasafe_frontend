@@ -62,18 +62,48 @@
         <section class="home-content">
             <ul class="home-content-list">
                 <li class="home-content-list-item">
-                    <!-- <article>
+                    <article class="main-container">
                         <h1>Search</h1>
                         <p>
-                            Cross check multiple Drug-Drug and Herb-Supplement-Drug interactions instantly.
-                            Receive concise recommendations, summaries, and detailed study reviews.
+                            <span class="bold">Cross check</span> multiple Drug-Drug and Herb-Supplement-Drug interactions instantly.
+                            <span class="bold">Receive</span> concise recommendations, summaries, and detailed study reviews.
                         </p>
-                    </article> -->
+                    </article>
+                    <img src="@/client/assets/imgs/capsules1.svg" alt="Capsules" class="capsules capsules-1" />
                 </li>
-                <li class="home-content-list-item"></li>
-                <li class="home-content-list-item"></li>
-                <li class="home-content-list-item"></li>
-                <li class="home-content-list-item"></li>
+                <li class="home-content-list-item">
+                    <article class="main-container">
+                        <h1>Optimize treatment</h1>
+                        <p>
+                            <span class="bold">Provide</span> the best integrative treatment through access to vital information on both negative and synergistic Herb-Supplement-Drug interactions.
+                        </p>
+                    </article>
+                    <img src="@/client/assets/imgs/capsules2.svg" alt="Capsules" class="capsules capsules-2" />
+                </li>
+                <li class="home-content-list-item">
+                    <article class="main-container">
+                        <h1>Ensure safety</h1>
+                        <p>
+                            <span class="bold">Provide</span> optimal protection from undesired interactions.
+                        </p>
+                    </article>
+                </li>
+                <li class="home-content-list-item">
+                    <article class="main-container">
+                        <h1>Monitor</h1>
+                        <p>
+                            <span class="bold">Gain valuable</span> insights on which clinical and laboratory parameters to monitor per individual patient profile or interaction.
+                        </p>
+                    </article>
+                </li>
+                <li class="home-content-list-item">
+                    <article class="main-container">
+                        <h1>Empower patients</h1>
+                        <p>
+                            <span class="bold">Supply</span> reliable, referenced information to help patients better understand their medications and/or supplements.
+                        </p>
+                    </article>
+                </li>
             </ul>
         </section>
     </section>
