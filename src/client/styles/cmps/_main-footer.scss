@@ -1,0 +1,23 @@
+.main-footer {
+    font-size: rem(12px);
+    line-height: rem(18px);
+    color: rgba($clr10, .85);
+    padding: 26px 26px 62px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &-logo {
+        width: 23px;
+        margin-block-end: rem(20px);
+    }
+    &-details {
+        @include for-mobile-layout {
+            width: 82ch;
+        }
+        @include for-narrow-layout {
+            width: 92ch;
+        }
+    }
+}
