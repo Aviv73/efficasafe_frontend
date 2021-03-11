@@ -1,39 +1,38 @@
 <template>
-    <section class="swiper">
+    <section
+        class="swiper"
+        @keyup="onKey"      
+        tabindex="0"
+        v-hammer:swipe.horizontal="onSwipe"
+        :class="{ 'grab-cursor': cursor }"
+    >
         <span
             v-for="(slide, idx) in $slots.default"
             :key="idx"
-        >   
-            <div 
-                :class="{ 'grab-cursor': cursor }"
-                v-hammer:swipe.horizontal="onSwipe"
-                @keyup="onKey"
-                tabindex="0"
-            >
-                <transition name="fade" mode="out-in">
-                    <slide
-                        :idx="idx"
-                        v-if="idx === currSlideIdx"
-                    />
-                </transition>
-            </div>
+        >  
+            <transition name="fade" mode="out-in">
+                <slide
+                    :idx="idx"
+                    v-if="idx === currSlideIdx"
+                />
+            </transition>
         </span>
-        <button
+        <i
             @click="doSlide(-1)"
             class="chevron chevron-prev"
         >
             <slot name="navigation-prev">
                 <span class="navigation-default">&lsaquo;</span>
             </slot>
-        </button>
-        <button
+        </i>
+        <i
             @click="doSlide(1)"
             class="chevron chevron-next"
         >
             <slot name="navigation-next">
                 <span class="navigation-default">&rsaquo;</span>
             </slot>
-        </button>
+        </i>
         <slot name="pagination">
             <span class="pagination">
                 <label
@@ -132,12 +131,13 @@ export default {
     }
     .fade-leave-active,
     .fade-enter-active {
-        transition: opacity .4s linear;
+        transition: opacity .6s linear;
     }
     .fade-enter {
         position: absolute;
         top: 0;
         visibility: hidden;
+        color: rgba(0, 0, 0, 0);
     }
     .fade-leave-to {
         box-shadow: none;

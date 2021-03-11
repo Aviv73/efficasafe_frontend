@@ -16,11 +16,15 @@
                         <button>Login</button>
                     </li>
                 </ul>
-                <button class="navbar-toggle" @click="isNavActive = true">
+                <button class="navbar-toggle" @click="toggleNavActive">
                     <font-awesome-icon icon="ellipsis-h" class="fa-2x" />
                 </button>
-                <ul class="navbar-nav" :class="{ active: isNavActive }">
-                    <button class="navbar-nav-close-btn" @click="isNavActive = false">
+                <ul
+                    class="navbar-nav"
+                    :class="{ active: isNavActive }"
+                    v-hammer:swipe.right="toggleNavActive"
+                >
+                    <button class="navbar-nav-close-btn" @click="toggleNavActive">
                         <font-awesome-icon icon="times" />
                     </button>
                     <img src="@/client/assets/imgs/logo-white.png" alt="Efficasafe" class="navbar-nav-logo" />
@@ -66,6 +70,9 @@ export default {
     methods: {  
         onResize() {
             this.isScreenNarrow = window.innerWidth < 600;
+        },
+        toggleNavActive() {
+            this.isNavActive = !this.isNavActive;
         }
     }
 }

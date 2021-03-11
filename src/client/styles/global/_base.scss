@@ -18,3 +18,9 @@ body {
     display: flex;
     flex-direction: column;
 }
+input, button, a, .swiper {
+    &:focus {
+        outline: 1px dashed darken($white, 50%);
+        outline-offset: 4px;
+    }
+}
