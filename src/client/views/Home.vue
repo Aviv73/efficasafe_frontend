@@ -39,23 +39,50 @@
                 </ul>
             </div>
             <div class="home-container">
-                <swiper class="home-swiper home-container">
+                <swiper 
+                    class="home-swiper home-container"
+                    :auto-play="true"
+                >
                     <p class="home-stats-quote">
                         Finally! One site with everything in it. I believe
                         that professionals have been waiting for something
                         like this to come along for a very long time.
-                        <span>Dr. Jonathan Rosenzweig, MD</span>
+                        <span>Dr. Mark Epstein</span>
                     </p>
                     <p class="home-stats-quote">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        <span>Dr. Meshulam Nahari, MD</span>
+                        Efficasafe allows me to search,
+                        cross-reference and get all the information I need,
+                        in seconds. It also gives me positive interactions -
+                        something I have never been able to access anywhere else.
+                        <span>Daniel Miller, PHD</span>
                     </p>
                     <p class="home-stats-quote">
-                        Chicken pig doner, beef ribs picanha venison prosciutto fatback ribeye brisket.
-                        Beef ribs chislic ribeye turducken filet mignon prosciutto.
-                        <span>Dr. Sus, MD</span>
+                        This site is one of the most fully comprehensive,
+                        reliable resources I have come across for herb-drug interactions.
+                        This kind of scientifically backed information is priceless to me as a physician.
+                        <span>Dr. John Barrion</span>
                     </p>
+                    <p class="home-stats-quote">
+                        I'll admit that I'm not the most tech-savvy person.
+                        This site is so easy to use it has quickly become my go-to for all
+                        medicinal interactions and an integral part of my everyday practice
+                        as a pharmacist.
+                        <span>Silvia Augustus, PharmD</span>
+                    </p>
+                    <p class="home-stats-quote">
+                        ...So much more than just an interaction checker.
+                        I can save my searches and even get recommendations on what to monitor.
+                        Both features enable better patient care,
+                        which at the end of the day,
+                        is what we are all aiming for.
+                        <span>Margaret Elsindor</span>
+                    </p>
+                    <template v-slot:navigation-prev>
+                        <font-awesome-icon icon="chevron-left" />
+                    </template>
+                    <template v-slot:navigation-next>
+                        <font-awesome-icon icon="chevron-right" />
+                    </template>
                 </swiper>
             </div>
         </section>

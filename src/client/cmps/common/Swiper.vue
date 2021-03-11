@@ -5,7 +5,7 @@
             :key="idx"
         >   
             <div 
-                class="swipe-target"
+                :class="{ 'grab-cursor': cursor }"
                 v-hammer:swipe.horizontal="onSwipe"
                 @keyup="onKey"
                 tabindex="0"
@@ -18,20 +18,22 @@
                 </transition>
             </div>
         </span>
-        <slot name="navigation-prev">
-            <font-awesome-icon
-                icon="chevron-left"
-                class="chevron chevron-prev"
-                @click="doSlide(-1)"
-            />
-        </slot>
-        <slot name="navigation-next">
-            <font-awesome-icon
-                icon="chevron-right"
-                class="chevron chevron-next"
-                @click="doSlide(1)"
-            />
-        </slot>
+        <button
+            @click="doSlide(-1)"
+            class="chevron chevron-prev"
+        >
+            <slot name="navigation-prev">
+                <span class="navigation-default">&lsaquo;</span>
+            </slot>
+        </button>
+        <button
+            @click="doSlide(1)"
+            class="chevron chevron-next"
+        >
+            <slot name="navigation-next">
+                <span class="navigation-default">&rsaquo;</span>
+            </slot>
+        </button>
         <slot name="pagination">
             <span class="pagination">
                 <label
@@ -48,7 +50,22 @@
 
 <script>
 export default {
+    intervalId: null,
     name: 'Swiper',
+    props: {
+        cursor: {
+            type: Boolean,
+            default: true
+        },
+        autoPlay: {
+            type: Boolean,
+            default: false
+        },
+        delay: {
+            type: Number,
+            default: 15
+        }
+    },
     data: () => ({
         currSlideIdx: 0,
     }),
@@ -79,6 +96,16 @@ export default {
             }
         }
     },
+    mounted() {
+        if (this.autoPlay) {
+            this.$options.intervalId = setInterval(() => {
+                this.doSlide(1);
+            }, this.delay * 1000);
+        }
+    },
+    beforeDestroy() {
+        clearInterval(this.$options.intervalId);
+    },
     components: {
         Slide: {
             functional: true,
@@ -91,7 +118,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .swipe-target {
+    .navigation {
+        &-default {
+            font-size: 36px;
+            font-weight: 700;
+        }
+    }
+    .grab-cursor {
         cursor: grab;
         &:active {
             cursor: grabbing;

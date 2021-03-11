@@ -104,13 +104,18 @@
     }
     &-swiper {
         position: relative;
-        transform: translateY(20%);
+        transform: translateY(15%);
         
         .chevron {
             position: absolute;
-            top: calc(40% - 10px);
+            top: calc(30% - 10px);
             cursor: pointer;
             display: none;
+            @include hover-supported {
+                transition: transform .3s ease;
+                color: rgba($white, .85);
+                transform: scale(1.1);
+            }
 
             @include for-narrow-layout {
                 display: initial;
@@ -200,17 +205,23 @@
             }
         }
         &-quote {
+            min-height: rem(267px);
             background-color: $white;
             box-shadow: 0px 3px 22px rgba($black, .85);
             border-radius: 12px; 
             color: rgba($clr-txt-dark, .85);
             line-height: rem(20px);
             padding: rem(35px) rem(35px) rem(30px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             
             @include for-mobile-layout {
+                min-height: rem(187px);
                 padding: rem(35px) rem(70px) rem(30px);
             }
-
+            
             &::before {
                 background-image: url("../assets/icons/quote-start.png");
                 top: 0;
