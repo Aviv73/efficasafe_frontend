@@ -91,7 +91,9 @@
 
 <script>
 import { utilService } from '@/cms/services/util.service';
-import { eventBus, EV_emptySelection, EV_cleanSelection, EV_material_unselected, EV_primary_material_changed, EV_refresh_root_tree_view } from '@/cms/services/eventBus.service';
+import { eventBus, EV_emptySelection, EV_set_tree_view_selection, 
+  EV_cleanSelection, EV_material_unselected, EV_primary_material_changed,
+  EV_refresh_root_tree_view } from '@/cms/services/eventBus.service';
 
 export default {
   name: 'tree-view',
@@ -295,16 +297,6 @@ export default {
       });
     },
     handleSelection(isChecked, node) {
-      if (!node.materialIds) {
-        const selectedOffsprings = [];
-        const findSelected = (node) => {
-          if (this.isNodeChecked(node)) {
-            selectedOffsprings.push(node);
-          }
-        }
-        this.traverse(node, 0, findSelected);
-        isChecked = !selectedOffsprings.length;
-      }
       const addToSelection = (node) => {
         const isExists = this.selection.find(currNode => currNode.id === node.id);
         if (!isExists) this.selection.push(node);
@@ -319,18 +311,29 @@ export default {
           eventBus.$emit(EV_material_unselected, node);
         }
       };
+      if (!node.materialIds) {
+        const selectedOffsprings = [];
+        const findSelected = (node) => {
+          if (this.isNodeChecked(node)) {
+            selectedOffsprings.push(node);
+          }
+        }
+        this.traverse(node, this.depth, findSelected);
+        isChecked = !selectedOffsprings.length;
+      }
       const visitFunc = isChecked ? addToSelection : removeFromSelection;
 
-      this.traverse(node, 0, visitFunc);
+      this.traverse(node, this.depth, visitFunc);
       this.emitSelection();
       this.checkForIndeterminate();
     },
     isNodeChecked(node) {
       if (!node.materialIds) return false;
-      return !!this.finalSelection.find((material) => node.materialIds.includes(material._id));
+      return !!this.finalSelection.find(material => node.materialIds.includes(material._id));
     },
     saveSelection(selection) {
       this.selection = selection;
+      eventBus.$emit(EV_set_tree_view_selection, selection);
       this.emitSelection();
     },
     emitSelection() {
@@ -397,6 +400,9 @@ export default {
     eventBus.$on(EV_emptySelection, this.unIndeterminateInput);
     this.checkOffspringSelected();
     eventBus.$on(EV_refresh_root_tree_view, this.refreshCmps);
+    eventBus.$on(EV_set_tree_view_selection, (selection) => {
+      this.selection = selection;
+    });
   },
   mounted() {
     if (this.doExpandOnMount) {
