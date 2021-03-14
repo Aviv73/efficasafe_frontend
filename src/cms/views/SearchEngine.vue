@@ -13,6 +13,18 @@
                 <v-divider />
                 <main class="search-engine-results">
                     <div class="search-engine-results-materials px-6 py-4">
+                        <v-btn
+                            to="/cms/search"
+                            v-if="materials.length"
+                            title="Clear All"
+                            color="error"
+                            outlined
+                            rounded
+                            icon
+                            small
+                        >
+                            <v-icon small>mdi-close</v-icon>
+                        </v-btn>
                         <v-chip-group column>
                             <span
                                 v-for="(result, idx) in formatedMaterials"

@@ -16,8 +16,14 @@
         display: flex;
 
         &-materials {
+            position: relative;
             flex-basis: 30%;
 
+            [title="Clear All"] {
+                position: absolute;
+                bottom: 12px;
+                right: 12px;
+            }
             .info-icon {
                 cursor: help;
             }
