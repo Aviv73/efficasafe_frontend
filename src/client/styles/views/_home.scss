@@ -73,6 +73,8 @@
             text-align: center;
             padding: rem(14px) 0;
             background-color: $white;
+            background-repeat: no-repeat;
+            background-size: contain;
             font-family: roboto-medium, sans-serif;
             border-radius: rem(100px);
             border-width: 0;
@@ -90,8 +92,8 @@
                 font-family: roboto, sans-serif;
             }
             &:first-child {
-                box-shadow: -8px 0px 0px 0px $clr8 inset;
-                border-inline-end: 0 solid $clr8;
+                background-image: url(../assets/icons/cap-left.svg);
+                background-position: 100% 0;
                 &::placeholder {
                     color: inherit;
                     font-family: roboto-medium, sans-serif;
@@ -99,8 +101,9 @@
             }
             &:last-child {
                 border: 1px dashed $black;
-                box-shadow: 8px 0px 0px 0px $clr9 inset;
-                border-inline-start: 0 solid $clr9;
+                border-inline-start-width: 0;
+                background-image: url(../assets/icons/cap-right.svg);
+                background-position: 0 0;
             }
         }
     }
