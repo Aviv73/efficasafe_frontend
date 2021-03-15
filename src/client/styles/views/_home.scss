@@ -67,14 +67,32 @@
         position: relative;
         margin-block-end: rem(220px);
         
-        
-        input {
+        &-field {
+            display: inline-block;
             width: 50%;
-            text-align: center;
+            position: relative;
+            
+            .cap {
+                position: absolute;
+                height: 100%;
+                top: 0;
+                
+                &-left {
+                    right: 0;
+                }
+                &-right {
+                    left: 0;
+                }
+            }
+        }
+        input {
+            width: 100%;
+            height: 100%;
             padding: rem(14px) 0;
+            text-align: center;
             background-color: $white;
-            background-repeat: no-repeat;
-            background-size: contain;
+            // background-repeat: no-repeat;
+            // background-size: contain;
             font-family: roboto-medium, sans-serif;
             border-radius: rem(100px);
             border-width: 0;
@@ -91,19 +109,14 @@
             &::placeholder {
                 font-family: roboto, sans-serif;
             }
-            &:first-child {
-                background-image: url(../assets/icons/cap-left.svg);
-                background-position: 100% 0;
+            &.primary {
                 &::placeholder {
                     color: inherit;
                     font-family: roboto-medium, sans-serif;
                 }
             }
-            &:last-child {
-                border: 1px dashed $black;
-                border-inline-start-width: 0;
-                background-image: url(../assets/icons/cap-right.svg);
-                background-position: 0 0;
+            &.secondary {
+                background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23333' stroke-width='1' stroke-dasharray='6%2c 18' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
             }
         }
     }
