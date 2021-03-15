@@ -16,6 +16,9 @@
             padding-block-start: 66px;
             background-image: url('../assets/imgs/home-bg.jpg');
         }
+        @include for-mobile-horizontal {
+            padding-block-start: 30px;
+        }
     }
     h1 {
         margin-block-end: rem(40px);
@@ -27,15 +30,22 @@
         line-height: rem(24px);
         color: rgba($clr-txt-dark, .85);
         
-        @include for-mobile-layout {
+        @include for-narrow-layout {
             font-size: rem(24px);
             line-height: rem(30px);
         }
+        @include for-mobile-horizontal {
+            margin-block-end: rem(24px);
+        }
+
         [alt="Efficasafe Logo"] {
             width: 170px;
             margin-block-end: rem(40px);
-            @include for-mobile-layout {
+            @include for-narrow-layout {
                 width: 220px;
+            }
+            @include for-mobile-horizontal {
+                margin-block-end: rem(30px);
             }
         }
         .keyword1, .keyword2 {
@@ -48,7 +58,7 @@
             display: block;
             font-size: rem(14px);
 
-            @include for-mobile-layout {
+            @include for-narrow-layout {
                 font-size: rem(18px);
             }
         }
@@ -57,6 +67,10 @@
         width: calc(100% - 25px);
         max-width: 736px;
         margin: 0 auto;
+
+        @include for-mobile-horizontal {
+            max-width: 425px;
+        }
     }
     &-form {
         width: 100%;
@@ -67,6 +81,10 @@
         position: relative;
         margin-block-end: rem(220px);
         
+        @include for-mobile-horizontal {
+            margin-block-end: rem(42px);
+        }
+
         &-field {
             display: inline-block;
             width: 50%;
@@ -78,7 +96,7 @@
                 top: 0;
                 
                 &-left {
-                    right: 0;
+                    right: -1px;
                 }
                 &-right {
                     left: 0;
@@ -91,14 +109,12 @@
             padding: rem(14px) 0;
             text-align: center;
             background-color: $white;
-            // background-repeat: no-repeat;
-            // background-size: contain;
             font-family: roboto-medium, sans-serif;
             border-radius: rem(100px);
             border-width: 0;
             position: relative;
             
-            @include for-mobile-layout {
+            @include for-narrow-layout {
                 padding: rem(14px) 0 rem(14px) rem(24px);
                 text-align: initial;
                 font-size: rem(15px);
@@ -181,13 +197,14 @@
         padding: rem(35px) 0 rem(45px);
         align-self: stretch;
         
-        @include for-mobile-layout {
+        @include for-narrow-layout {
             font-size: rem(18px);
         }
         ul {
             display: flex;
             align-items: center;
             justify-content: space-between;
+
             li {
                 flex-grow: 1;
                 display: flex;
@@ -202,12 +219,12 @@
                     border-inline-end: 1px solid rgba($white, .3);
                 }
                 &:first-child {
-                    @include for-mobile-layout {
+                    @include for-narrow-layout {
                         padding-inline-end: 20%;
                     }
                 }
                 &:last-child {
-                    @include for-mobile-layout {
+                    @include for-narrow-layout {
                         padding-inline-start: 20%;
                     }
                 }
@@ -216,7 +233,7 @@
                     font-family: roboto-bold, sans-serif;
                     font-weight: 700;
                     display: inline-block;
-                    @include for-mobile-layout {
+                    @include for-narrow-layout {
                         font-size: rem(24px);
                     }
                 }
@@ -239,6 +256,9 @@
                 min-height: rem(187px);
                 padding: rem(35px) rem(70px) rem(30px);
             }
+            @include for-mobile-horizontal {
+                min-height: rem(267px);
+            }
             
             &::before {
                 background-image: url("../assets/icons/quote-start.png");
@@ -258,7 +278,7 @@
                 width: rem(20px);
                 height: rem(55px);
 
-                @include for-mobile-layout {
+                @include for-narrow-layout {
                     width: rem(35px);
                     height: rem(90px);
                 }

@@ -56,7 +56,7 @@
 export default {
     name: 'Navbar',
     data: () => ({
-        isScreenNarrow: window.innerWidth < 600,
+        isScreenNarrow: window.innerWidth < 900,
         isNavActive: false
     }),
     mounted() {
@@ -69,7 +69,7 @@ export default {
     },
     methods: {  
         onResize() {
-            this.isScreenNarrow = window.innerWidth < 600;
+            this.isScreenNarrow = window.innerWidth < 900;
         },
         toggleNavActive() {
             this.isNavActive = !this.isNavActive;

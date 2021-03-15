@@ -18,6 +18,15 @@
     }
 }
 
+@mixin for-mobile-horizontal {
+    @media only screen 
+        and (min-device-width: $break-mobile) 
+        and (max-device-width: $break-narrow) 
+        and (orientation: landscape) {
+            @content;
+    }
+}
+
 
 /* Helpers  Mixins */
 @mixin flex-center {

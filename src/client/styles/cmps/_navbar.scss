@@ -10,13 +10,18 @@
         justify-content: space-between;
     }
     &-actions {
+        flex-grow: 1;
         display: inline-flex;
         align-items: center;
-
-        &-item:not(:last-child) {
+        justify-content: flex-end;
+        
+        &-item {
             margin-inline-end: rem(14px);
+            @include for-mobile-layout {
+                margin-inline-end: 10%;
+            }
         }
-        @include for-mobile-layout {
+        @include for-narrow-layout {
             display: none;
         }
     }
@@ -27,17 +32,18 @@
         position: fixed;
         top: 0;
         right: 0;
-        height: 100%;
+        height: 100vh;
         width: 85%;
         background-color: $clr1;
         z-index: 9;
         font-size: rem(20px);
         font-family: segoe-ui, sans-serif;
+        overflow-y: auto;
         line-height: rem(70px);
         transform: translateX(100%);
         transition: transform .6s ease-in-out;
         
-        @include for-mobile-layout {
+        @include for-narrow-layout {
             flex-direction: row;
             position: unset; 
             top: unset;
@@ -55,15 +61,16 @@
             transform: translateX(0);
         }
         &-logo {
+            width: 100%;
             margin-block-end: rem(20px);
-            @include for-mobile-layout {
+            @include for-narrow-layout {
                 display: none;
             }
         }
         &-close-btn {
             align-self: flex-end;
             margin: 10px 10px 0 0;
-            @include for-mobile-layout {
+            @include for-narrow-layout {
                 display: none;
             }
         }
@@ -76,7 +83,7 @@
                     margin: 0 5%;
                 }
             }
-            @include for-mobile-layout {
+            @include for-narrow-layout {
                 &:not(:last-child) {
                     margin-inline-end: rem(14px);
                 }
@@ -93,10 +100,10 @@
                 padding: rem(5px) rem(10px);
                 border: 1px solid $clr3;
                 border-radius: rem(6px);
-                @include for-mobile-layout {
+                @include for-narrow-layout {
                     border-radius: rem(100px);
                 }
-                @include for-mobile-layout {
+                @include for-narrow-layout {
                     &.subscribe-btn {
                         
                         background-color: $clr4;
@@ -109,7 +116,7 @@
         }
     }
     &-toggle {
-        @include for-mobile-layout {
+        @include for-narrow-layout {
             display: none;
         }
     }
