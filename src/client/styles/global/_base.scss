@@ -20,7 +20,7 @@ body {
 }
 input, button, a, .swiper {
     &:focus {
-        outline: 1px dashed darken($white, 50%);
-        outline-offset: 4px;
+        outline: 2px solid $clr1;
+        outline-offset: 2px;
     }
 }
