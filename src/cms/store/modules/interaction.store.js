@@ -36,6 +36,11 @@ export const interactionStore = ({
             const idx = state.interactions.findIndex(currInteraction => currInteraction._id === intId);
             state.interactions.splice(idx, 1);
         },
+        removeInteractions(state, { ids }) {
+            state.interactions = state.interactions.filter(interaction => {
+                return !ids.includes(interaction._id);
+            });
+        },
         setInteractionCount(state, { total }) {
             state.interactionCount = total;
         }
@@ -72,6 +77,10 @@ export const interactionStore = ({
                 type: 'removeInteraction',
                 intId
             });
+        },
+        async removeInteractions(context, { ids }) {
+            await interactionService.removeMany(ids);
+            context.commit({ type: 'removeInteractions', ids });
         }
     }
 })

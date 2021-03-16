@@ -442,4 +442,3 @@ export default {
   }
 };
 </script>
-    InteractionPathways

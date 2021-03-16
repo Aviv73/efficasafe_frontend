@@ -7,6 +7,7 @@ export const interactionService = {
     getById,
     save,
     remove,
+    removeMany,
     restore,
     getSortedRefs,
     getRefsOrder,
@@ -37,6 +38,10 @@ function restore(interaction) {
 
 function remove(id) {
     httpService.delete(`${END_POINT}/${id}`);
+}
+
+function removeMany(ids) {
+    httpService.delete(END_POINT, ids);
 }
 
 function formatRefStrs(refStr) {

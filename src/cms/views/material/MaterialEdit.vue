@@ -22,12 +22,11 @@
             />
             <v-select 
               type="text"
-              label="Type*"
+              label="Type"
               :items="$options.refTypes"
               v-model="editedRef.type"
               clearable
               required
-              :rules="[(v) => !!v || 'Reference type is required']"
             />
             <v-text-field 
               type="text"

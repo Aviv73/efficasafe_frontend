@@ -17,6 +17,7 @@
           @options-updated="setFilter"
           @header-clicked="setFilter"
           @toggle-is-active="toggleIsActive"
+          @delete-many-interactions="removeMany"
         />
       </v-card>
       <icons-map />
@@ -53,6 +54,9 @@ export default {
     },
   },
   methods: {
+    async removeMany(ids) {
+      await this.$store.dispatch({ type: 'removeInteractions', ids });
+    },
     setFilter(filterBy) {
       const criteria = {
         ...this.$route.query,
