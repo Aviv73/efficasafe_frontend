@@ -11,7 +11,7 @@
       >
         <router-link 
           class="results-list-link"
-          :to="`/cms/d-bank-interaction/${interaction._id}`"
+          :to="`/d-bank-interaction/${interaction._id}`"
         >
           {{ `${interaction.subject_drug.name} & ${interaction.affected_drug.name}` }}
         </router-link>

@@ -5,7 +5,7 @@
                 <v-card-title>
                     Labels collection
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" to="/cms/label/edit/">new label</v-btn>
+                    <v-btn color="primary" to="/label/edit/">new label</v-btn>
                 </v-card-title>
                 <label-filter :labels="labels" @emit-filter="setFilter" />
                 <label-list

@@ -84,7 +84,7 @@
                 </td>
                 <td>
                   <v-btn
-                    :to="`/cms/${entityType(alert.entity)}/edit/${
+                    :to="`/${entityType(alert.entity)}/edit/${
                       alert.entity._id
                     }`"
                     elevation="0"

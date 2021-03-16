@@ -26,126 +26,126 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/cms',
+    path: '/',
     name: 'Home',
     component: Home,
     meta: { requiresAuth: true }
   },
   {
-    path: '/cms/login',
+    path: '/login',
     name: 'Login',
     component: LoginPage,
   },
   {
-    path: '/cms/material',
+    path: '/material',
     name: 'Materials',
     component: materialApp,
     meta: { requiresAuth: true }
   },
   {
-    path: '/cms/material/edit/:id?',
+    path: '/material/edit/:id?',
     name: 'MaterialEdit',
     component: materialEdit,
     meta: { requiresAuth: true }
   },
   {
-    path: '/cms/material/:id',
+    path: '/material/:id',
     name: 'MaterialDetails',
     component: materialDetails,
     meta: { requiresAuth: true }
   },
   {
-    path: '/cms/label',
+    path: '/label',
     name: 'Labels',
     component: LabelApp,
     meta: { requiresAuth: true }
   },
   {
-    path: '/cms/label/edit/:id?',
+    path: '/label/edit/:id?',
     name: 'LabelEdit',
     component: labelEdit,
     meta: { requiresAuth: true }
   },
   {
-    path: '/cms/label/:id',
+    path: '/label/:id',
     name: 'LabelDetails',
     component: labelDetails,
     meta: { requiresAuth: true }
   },
   {
-    path: '/cms/interaction',
+    path: '/interaction',
     name: 'Interactions',
     component: interactionApp,
     meta: { requiresAuth: true }
   },
   {
-    path: '/cms/interaction/edit/:id?',
+    path: '/interaction/edit/:id?',
     name: 'InteractionsEdit',
     component: interactionEdit,
     meta: { requiresAuth: true }
   },
   {
-    path: '/cms/interaction/:id/:matId',
+    path: '/interaction/:id/:matId',
     name: 'vInteractionsDetails',
     component: vInteractionDetails,
     meta: { requiresAuth: true }
   },
   {
-    path: '/cms/interaction/:id',
+    path: '/interaction/:id',
     name: 'InteractionsDetails',
     component: interactionDetails,
     meta: { requiresAuth: true }
   },
   {
-    path: '/cms/featured-interaction',
+    path: '/featured-interaction',
     name: 'FeaturedInteraction',
     component: featuredInteractionApp,
     meta: { requiresAuth: true }
   },
   {
-    path: '/cms/featured-interaction/edit/:id',
+    path: '/featured-interaction/edit/:id',
     name: 'FeaturedInteractionEdit',
     component: featuredInteractionEdit,
     meta: { requiresAuth: true }
   },
   {
-    path: '/cms/featured-interaction/:id',
+    path: '/featured-interaction/:id',
     name: 'FeaturedInteractionDetails',
     component: dBankInteractionDetails,
     meta: { requiresAuth: true }
   },
   {
-    path: '/cms/archive',
+    path: '/archive',
     name: 'Archives',
     component: archiveApp,
     meta: { requiresAuth: true, requiresAdmin: true }
   },
   {
-    path: '/cms/archive/label/:id',
+    path: '/archive/label/:id',
     name: 'ArchiveLabelDetails',
     component: labelDetails,
     meta: { requiresAuth: true }
   },
   {
-    path: '/cms/archive/interaction/:id',
+    path: '/archive/interaction/:id',
     name: 'ArchiveInteractionDetails',
     component: interactionDetails,
     meta: { requiresAuth: true }
   },
   {
-    path: '/cms/archive/material/:id',
+    path: '/archive/material/:id',
     name: 'ArchiveMaterialDetails',
     component: materialDetails,
     meta: { requiresAuth: true }
   },
   {
-    path: '/cms/data-integrity',
+    path: '/data-integrity',
     name: 'DataIntegrity',
     component: DataIntegrity,
     meta: { requiresAuth: true }
   },
   {
-    path: '/cms/search',
+    path: '/search',
     component: searchEngine,
     meta: { requiresAuth: true },
     children: [
@@ -162,18 +162,10 @@ const routes = [
     ]
   },
   {
-    path: '/cms/d-bank-interaction/:id',
+    path: '/d-bank-interaction/:id',
     name: 'DBankInteractionDetails',
     component: dBankInteractionDetails,
     meta: { requiresAuth: true }
-  },
-  {
-    path: '/cms/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   }
 ]
 

@@ -34,7 +34,7 @@
         <tbody>
           <tr class="tr-material" v-for="item in items" :key="item._id">
             <td class="td-name-img">
-              <router-link :to="`/cms/material/${item._id}`">
+              <router-link :to="`/material/${item._id}`">
                 <img
                   :src="require(`@/cms/assets/icons/${item.type || 'drug'}.svg`)"
                   :alt="item.type"
@@ -45,13 +45,13 @@
             </td>
 
             <td class="td-type" width="80">
-              <router-link class="link-clean" :to="`/cms/material/${item._id}`">
+              <router-link class="link-clean" :to="`/material/${item._id}`">
                 <span class="text-capitalize">{{ item.type }}</span>
               </router-link>
             </td>
 
             <td class="td-actions" width="120" align="center">
-              <v-btn small color="primary" :to="`/cms/material/edit/${item._id}`">
+              <v-btn small color="primary" :to="`/material/edit/${item._id}`">
                 <v-icon small>mdi-pencil</v-icon>
               </v-btn>
             </td>

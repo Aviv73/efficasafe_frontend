@@ -57,7 +57,7 @@ export default {
           type: 'login',
           credentials
         });
-        if (result) this.$router.push('/cms/');
+        if (result) this.$router.push('/');
       } catch {
         console.log('Try again');
       }

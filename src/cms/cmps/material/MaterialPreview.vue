@@ -1,11 +1,11 @@
 <template>
   <v-card class="material-preview">
     <div class="mat-details-container">
-      <router-link class="mat-go-link" :to="`/cms/material/${material._id}`">
+      <router-link class="mat-go-link" :to="`/material/${material._id}`">
         <img class="mat-type" :src="materialType" :alt="material.type" />
         <span class="mat-name">{{material.name}}</span>
       </router-link>
-      <v-btn small color="primary" :to="`/cms/material/edit/${material._id}`">
+      <v-btn small color="primary" :to="`/material/edit/${material._id}`">
         <v-icon small left>mdi-pencil</v-icon>Edit
       </v-btn>
     </div>

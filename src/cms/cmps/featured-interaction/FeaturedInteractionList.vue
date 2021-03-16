@@ -177,7 +177,7 @@
                             color="primary" 
                             x-small
                             title="Edit interaction"
-                            :to="`/cms/featured-interaction/edit/${item._id}`"
+                            :to="`/featured-interaction/edit/${item._id}`"
                         >
                             <v-icon x-small>mdi-pencil</v-icon>
                         </v-btn>
@@ -185,7 +185,7 @@
                             color="primary" 
                             x-small
                             title="View interaction"
-                            :to="`/cms/featured-interaction/${item._id}`"
+                            :to="`/featured-interaction/${item._id}`"
                         >
                             <v-icon x-small>mdi-eye</v-icon>
                         </v-btn>
@@ -311,7 +311,7 @@ export default {
             const side2DBKId = this.selected.map(interactionId => {
                 return this.interactions.find(interaction => interaction._id === interactionId).affected_drug.drugbank_id;
             });
-            this.$router.push(`/cms/label/edit?materials=${side2DBKId}`);
+            this.$router.push(`/label/edit?materials=${side2DBKId}`);
         },
         async editInteractions(field, value) {
             const filterBy = {

@@ -5,7 +5,7 @@
         <tbody>
           <tr class="tr-label" v-for="item in items" :key="item._id">
             <td class="td-name-img">
-              <router-link :to="`/cms/archive/label/${item._id}`">
+              <router-link :to="`/archive/label/${item._id}`">
                 <img
                   :src="require(`@/cms/assets/icons/custom.svg`)"
                   alt="label icon"

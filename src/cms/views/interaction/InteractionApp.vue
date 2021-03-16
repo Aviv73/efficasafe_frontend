@@ -5,7 +5,7 @@
         <v-card-title>
           Interactions collection
           <v-spacer></v-spacer>
-          <v-btn color="primary" to="/cms/interaction/edit/">new interaction</v-btn>
+          <v-btn color="primary" to="/interaction/edit/">new interaction</v-btn>
         </v-card-title>
         <interaction-filter
           @emit-filter="setFilter"

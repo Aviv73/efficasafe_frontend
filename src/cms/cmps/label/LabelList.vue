@@ -31,7 +31,7 @@
         <tbody>
           <tr class="tr-label" v-for="item in items" :key="item._id">
             <td class="td-name-img">
-              <router-link :to="`/cms/label/${item._id}`">
+              <router-link :to="`/label/${item._id}`">
                 <img
                   :src="require(`@/cms/assets/icons/custom.svg`)"
                   alt="Label"
@@ -59,7 +59,7 @@
             </td>
 
             <td class="td-actions" width="120" align="center">
-              <v-btn small color="primary" :to="`/cms/label/edit/${item._id}`">
+              <v-btn small color="primary" :to="`/label/edit/${item._id}`">
                 <v-icon small>mdi-pencil</v-icon>
               </v-btn>
             </td>

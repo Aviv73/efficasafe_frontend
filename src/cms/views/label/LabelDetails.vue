@@ -14,19 +14,19 @@
         </v-btn>
         <v-btn
           color="primary"
-          :to="{ path: '/cms/interaction', query: { id: `${label._id}` } }"
+          :to="{ path: '/interaction', query: { id: `${label._id}` } }"
         >
           <v-icon small left>mdi-view-list</v-icon>Interactions
         </v-btn>
         <v-btn
           color="primary"
-          :to="{ path: '/cms/material', query: { labelId: `${label._id}` } }"
+          :to="{ path: '/material', query: { labelId: `${label._id}` } }"
           v-if="!isArchive"
         >
           <v-icon small left>mdi-view-list</v-icon>Related Materials
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="primary" :to="`/cms/label/edit/${label._id}`" v-if="!isArchive">
+        <v-btn color="primary" :to="`/label/edit/${label._id}`" v-if="!isArchive">
           <v-icon small left>mdi-pencil</v-icon>Edit
         </v-btn>
         <v-btn color="error" @click="displayDialog" v-if="!isArchive">
@@ -62,7 +62,7 @@
                   <v-avatar left size="16">
                     <img :src="require(`@/cms/assets/icons/${material.type}.svg`)" :alt="material.type" />
                   </v-avatar>
-                  <router-link :to="`/cms/material/${material._id}`">
+                  <router-link :to="`/material/${material._id}`">
                     {{ material.name }}
                   </router-link>
                 </v-chip>
@@ -134,7 +134,7 @@ export default {
         labelId,
       });
       Promise.all([saveToArchive, removeLabel]).then(() => {
-        this.$router.push('/cms/label');
+        this.$router.push('/label');
       });
     },
     displayDialog() {

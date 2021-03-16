@@ -212,7 +212,7 @@
             />
           </v-form>
           <div class="form-actions">
-            <v-btn class="cancel-btn" to="/cms/interaction/" color="normal"
+            <v-btn class="cancel-btn" to="/interaction/" color="normal"
               >cancel</v-btn
             >
             <v-btn
@@ -529,7 +529,7 @@ export default {
           type: 'interaction',
           _id: this.editedInteraction._id,
         });
-        if (isRouteChange) this.$router.push('/cms/interaction');
+        if (isRouteChange) this.$router.push('/interaction');
       } catch (err) {
         console.log('Error:', err);
       }

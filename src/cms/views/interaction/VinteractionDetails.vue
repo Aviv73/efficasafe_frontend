@@ -87,7 +87,7 @@
                     <div class="text-capitalize">Side 1 material:</div>
                     <div>
                         <router-link
-                            :to="`/cms/material/${interaction.side1Material._id}`"
+                            :to="`/material/${interaction.side1Material._id}`"
                         >
                             {{ interaction.side1Material.name }}
                         </router-link>
@@ -95,7 +95,7 @@
 
                     <div class="text-capitalize">Side 2 material:</div>
                     <div>
-                        <router-link :to="`/cms/material/${material._id}`">
+                        <router-link :to="`/material/${material._id}`">
                             {{ material.name }}
                         </router-link>
                     </div>

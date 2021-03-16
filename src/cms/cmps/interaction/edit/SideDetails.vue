@@ -283,7 +283,7 @@
         <span class="side-details-row-header">Labels:</span>
         <v-chip-group column>
             <v-chip v-for="label in side.labels" :key="label._id" :style="label.color">
-                <router-link :to="`/cms/label/${label._id}`">
+                <router-link :to="`/label/${label._id}`">
                     {{ label.name }}
                 </router-link>
             </v-chip>

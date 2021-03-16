@@ -5,7 +5,7 @@
         <v-card-title>
           Materials collection
           <v-spacer></v-spacer>
-          <v-btn color="primary" to="/cms/material/edit/">new material</v-btn>
+          <v-btn color="primary" to="/material/edit/">new material</v-btn>
         </v-card-title>
 
         <material-filter

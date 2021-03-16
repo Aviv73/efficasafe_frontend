@@ -14,7 +14,7 @@
                 <main class="search-engine-results">
                     <div class="search-engine-results-materials px-6 py-4">
                         <v-btn
-                            to="/cms/search"
+                            to="/search"
                             v-if="materials.length"
                             title="Clear All"
                             color="error"

@@ -15,7 +15,7 @@
           >
             <router-link 
               class="results-list-link"
-              :to="(interaction.isVirtual) ? `/cms/interaction/${interaction._id}/${interaction.side2Material._id}` : `/cms/interaction/${interaction._id}`" 
+              :to="(interaction.isVirtual) ? `/interaction/${interaction._id}/${interaction.side2Material._id}` : `/interaction/${interaction._id}`" 
             >
               {{ getInteractionName(interaction) }}
             </router-link>
@@ -71,7 +71,7 @@
                     >
                       <router-link 
                         class="results-list-link"
-                        :to="(vInteraction.isVirtual) ? `/cms/interaction/${vInteraction._id}/${vInteraction.side2Material._id}` : `/cms/interaction/${vInteraction._id}`" 
+                        :to="(vInteraction.isVirtual) ? `/interaction/${vInteraction._id}/${vInteraction.side2Material._id}` : `/interaction/${vInteraction._id}`" 
                       >
                         {{ `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}` }}
                         <span v-if="doRenderDraftName(vInteraction, interaction)">{{ `(${vInteraction.side2DraftName})` }}</span>
@@ -106,7 +106,7 @@
                             >
                               <router-link 
                                 class="results-list-link"
-                                :to="(innerVinteraction.isVirtual) ? `/cms/interaction/${innerVinteraction._id}/${innerVinteraction.side2Material._id}` : `/cms/interaction/${innerVinteraction._id}`" 
+                                :to="(innerVinteraction.isVirtual) ? `/interaction/${innerVinteraction._id}/${innerVinteraction.side2Material._id}` : `/interaction/${innerVinteraction._id}`" 
                               >
                                 {{ `${innerVinteraction.side1Material.name} & ${innerVinteraction.side2Material.name}` }}
                                 <span v-if="doRenderDraftName(innerVinteraction, vInteraction)">{{ `(${innerVinteraction.side2DraftName})` }}</span>
@@ -137,7 +137,7 @@
         >
           <router-link 
             class="results-list-link"
-            :to="`/cms/featured-interaction/${interaction._id}`"
+            :to="`/featured-interaction/${interaction._id}`"
           >
           {{ `${interaction.subject_drug.name} & ${interaction.affected_drug.name}` }}
         </router-link>
