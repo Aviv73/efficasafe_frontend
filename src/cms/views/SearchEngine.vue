@@ -184,23 +184,20 @@ export default {
                     const materials = this.materials.filter(
                         material => material.labels.findIndex(label => label._id === interaction.side2Label._id) !== -1
                     );
-                    const vInteractions = materials.map(
-                        ({ _id, name, type }) => ({
+                    materials.forEach(({ _id, name, type }) => {
+                        const vInteraction = {
                             _id: interaction._id,
                             side1Material: interaction.side1Material,
                             side2Material: {
                                 _id,
                                 name,
-                                type,
+                                type
                             },
                             side2Label: null,
                             recommendation: interaction.recommendation,
                             isVirtual: true,
-                            side2DraftName: interaction.side2DraftName,
-                        })
-                    );
-                    /// TODO: call groupDoubleInteractions for every vInteraction in the same loop after every object initiation
-                    vInteractions.forEach(vInteraction => {
+                            side2DraftName: interaction.side2DraftName
+                        };
                         this.groupDoubleInteractions(acc, vInteraction);
                     });
                 }
@@ -264,7 +261,8 @@ export default {
         }
     },
     methods: {
-        /// TODO: outer function changing acc isn't good practice
+        ///~~ TODO: outer function changing acc isn't good practice
+        ///~~ try doing it without changing the inputs
         groupDoubleInteractions(acc, interaction) {
             /// index of vinteraction between the same 2 materials
             const idx = acc.findIndex(
