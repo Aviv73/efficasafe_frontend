@@ -212,6 +212,7 @@ export default {
   methods: {
     confirmDelete() {
       this.$emit('delete-many-interactions', [ ...this.selected ]);
+      this.selected = [];
       this.confirmDialog = false;
     },
     onSort(sortBy, isDesc) {
