@@ -172,6 +172,7 @@ export default {
                 this.setMsg('Compound as a single result isn\'t supported, Please provide more material/s');
                 return [];
             }
+            /// TODO: each reduce in a function with a proper name
             const formatedInteractions = this.interactions.reduce((acc, interaction) => {
                 /// it's the only case we render label interactions as is
                 if (this.materials.length === 1 && this.materials[0]._id === interaction.side1Material._id) acc.push(interaction);
@@ -198,6 +199,7 @@ export default {
                             side2DraftName: interaction.side2DraftName,
                         })
                     );
+                    /// TODO: call groupDoubleInteractions for every vInteraction in the same loop after every object initiation
                     vInteractions.forEach(vInteraction => {
                         this.groupDoubleInteractions(acc, vInteraction);
                     });
@@ -262,6 +264,7 @@ export default {
         }
     },
     methods: {
+        /// TODO: outer function changing acc isn't good practice
         groupDoubleInteractions(acc, interaction) {
             /// index of vinteraction between the same 2 materials
             const idx = acc.findIndex(
