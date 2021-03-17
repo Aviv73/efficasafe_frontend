@@ -233,6 +233,7 @@ export default {
                                 ],
                                 isCompoundGroup: true
                             }
+                            console.log('Compound group content:', compoundGroup.vInteractions);
                             acc.push(compoundGroup);
                         }
                     } else {
@@ -289,8 +290,6 @@ export default {
                     ],
                     isCompoundGroup: false
                 };
-                console.log('Group name:', vInteractionGroup.name);
-                console.log('Vinteraction name:', vInteractionGroup.vInteractions.map(v => v.name || v));
                 acc.splice(idx, 1, vInteractionGroup);
             } else {
                 if (acc[groupIdx].vInteractions.findIndex(i => i._id === interaction._id) === -1) {
