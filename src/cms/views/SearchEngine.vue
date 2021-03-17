@@ -233,7 +233,6 @@ export default {
                                 ],
                                 isCompoundGroup: true
                             };
-                            console.log('PUSHING C GROUP (first interaction):', compoundGroup);
                             acc.push(compoundGroup);
                         }
                     } else {
@@ -249,12 +248,14 @@ export default {
                                 isCompoundGroup: true
                             };
                             if (compoundGroup.vInteractions.findIndex(i => i._id === interaction._id ) === -1) {
-                                console.log('PUSHING INTO C GROUP:', interaction);
-                                compoundGroup.vInteractions.push(interaction);
+                                if (!interaction.vInteractions || interaction.vInteractions.length > 1) compoundGroup.vInteractions.push(interaction);
+                                else if (interaction.vInteractions.length === 1) {
+                                    const vInteraction = JSON.parse(JSON.stringify(interaction.vInteractions[0]));
+                                    compoundGroup.vInteractions.push(vInteraction);
+                                }
                             }
                             queryApearanceMap[`${side1Name}-${userQuery}`].forEach(currInteraction => {
                                 acc = acc.filter(i => i._id !== currInteraction._id && i._id !== `${currInteraction._id}-${currInteraction._id}`);
-                                console.log('PUSHING C GROUP:', compoundGroup);
                                 acc.push(compoundGroup);
                             });
                         } else {
