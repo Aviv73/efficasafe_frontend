@@ -233,7 +233,6 @@ export default {
                                 ],
                                 isCompoundGroup: true
                             };
-                            console.log('Pushing c group:', interaction);
                             acc.push(compoundGroup);
                         }
                     } else {
@@ -261,9 +260,13 @@ export default {
                             });
                         } else {
                             if (acc[groupIdx].vInteractions.findIndex(i => i._id === interaction._id ) === -1) {
-                                console.log('Pushing to group:', interaction);
-                                acc[groupIdx].vInteractions.push(interaction);
-                                acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, interaction.recommendation);
+                                if (!interaction.vInteractions || interaction.vInteractions.length > 1) {
+                                    acc[groupIdx].vInteractions.push(interaction);
+                                    acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, interaction.recommendation);
+                                } else if (interaction.vInteractions.length === 1) {
+                                    const vInteraction = JSON.parse(JSON.stringify(interaction.vInteractions[0]));
+                                    acc[groupIdx].vInteractions.push(vInteraction);
+                                }
                             }
                         }
                     }
