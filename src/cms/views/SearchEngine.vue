@@ -207,8 +207,8 @@ export default {
             formatedInteractions = formatedInteractions.reduce((acc, interaction) => {
                 const { side1Name, side2Name } = this.getInteractionSidesNames(interaction);
                 if (
-                    this.$store.getters.materialNamesMap[side1Name].length > 1 ||
-                    this.$store.getters.materialNamesMap[side2Name].length > 1
+                    this.$store.getters.materialNamesMap[side1Name] && this.$store.getters.materialNamesMap[side1Name].length > 1 ||
+                    this.$store.getters.materialNamesMap[side2Name] && this.$store.getters.materialNamesMap[side2Name].length > 1
                     ) {
                         acc.push(JSON.parse(JSON.stringify(interaction)));
                     }
