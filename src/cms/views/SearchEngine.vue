@@ -213,6 +213,7 @@ export default {
                 acc.push(interaction);
                 return acc;
             }, []);
+            console.log(formatedInteractions);
             /// group same compound vinteractions under compound's name
             return formatedInteractions.reduce((acc, interaction) => {
                 const { side1Name, side2Name } = this.getInteractionSidesNames(interaction);
