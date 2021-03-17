@@ -213,7 +213,6 @@ export default {
                 acc.push(interaction);
                 return acc;
             }, []);
-            console.log(formatedInteractions);
             /// group same compound vinteractions under compound's name
             return formatedInteractions.reduce((acc, interaction) => {
                 const { side1Name, side2Name } = this.getInteractionSidesNames(interaction);
@@ -290,6 +289,8 @@ export default {
                     ],
                     isCompoundGroup: false
                 };
+                console.log('Group name:', vInteractionGroup.name);
+                console.log('Vinteraction name:', vInteractionGroup.vInteractions.map(v => v.name || v));
                 acc.splice(idx, 1, vInteractionGroup);
             } else {
                 if (acc[groupIdx].vInteractions.findIndex(i => i._id === interaction._id) === -1) {
