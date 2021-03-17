@@ -232,7 +232,8 @@ export default {
                                     interaction
                                 ],
                                 isCompoundGroup: true
-                            }
+                            };
+                            console.log('PUSHING C GROUP (first interaction):', compoundGroup);
                             acc.push(compoundGroup);
                         }
                     } else {
@@ -248,16 +249,14 @@ export default {
                                 isCompoundGroup: true
                             };
                             if (compoundGroup.vInteractions.findIndex(i => i._id === interaction._id ) === -1) {
-                                if (!interaction.vInteractions || interaction.vInteractions.length > 1) compoundGroup.vInteractions.push(interaction);
-                                else if (interaction.vInteractions.length === 1) {
-                                    const vInteraction = JSON.parse(JSON.stringify(interaction.vInteractions[0]));
-                                    compoundGroup.vInteractions.push(vInteraction);
-                                }
+                                console.log('PUSHING INTO C GROUP:', interaction);
+                                compoundGroup.vInteractions.push(interaction);
                             }
-                                queryApearanceMap[`${side1Name}-${userQuery}`].forEach(currInteraction => {
-                                    acc = acc.filter(i => i._id !== currInteraction._id && i._id !== `${currInteraction._id}-${currInteraction._id}`);
-                                    acc.push(compoundGroup);
-                                });
+                            queryApearanceMap[`${side1Name}-${userQuery}`].forEach(currInteraction => {
+                                acc = acc.filter(i => i._id !== currInteraction._id && i._id !== `${currInteraction._id}-${currInteraction._id}`);
+                                console.log('PUSHING C GROUP:', compoundGroup);
+                                acc.push(compoundGroup);
+                            });
                         } else {
                             if (acc[groupIdx].vInteractions.findIndex(i => i._id === interaction._id ) === -1) {
                                 acc[groupIdx].vInteractions.push(interaction);
@@ -282,9 +281,8 @@ export default {
             );
             /// index of a group holding vinteractions between the same 2 materials
             const groupIdx = acc.findIndex(vin => vin._id === `${interaction.side1Material._id}-${interaction.side2Material._id}`);
-            if (idx === -1 && groupIdx === -1) {
-                acc.push(interaction);
-            } else if (idx !== -1 && groupIdx === -1) {
+            if (idx === -1 && groupIdx === -1) acc.push(interaction);
+            else if (idx !== -1 && groupIdx === -1) {
                 const vInteractionGroup = {
                     _id: `${interaction.side1Material._id}-${interaction.side2Material._id}`,
                     name: `${interaction.side1Material.name} & ${interaction.side2Material.name}`,
