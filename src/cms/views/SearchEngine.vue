@@ -218,6 +218,7 @@ export default {
             return formatedInteractions.reduce((acc, interaction) => {
                 const { side1Name, side2Name } = this.getInteractionSidesNames(interaction);
                 const userQueries = this.$store.getters.materialNamesMap[side2Name];
+                if (!userQueries) return acc;
                 userQueries.forEach(userQuery => {
                     const queryApearanceCount = this.$store.getters.queryApearanceCount(userQuery);
                     if (!queryApearanceMap[`${side1Name}-${userQuery}`]) {
