@@ -238,7 +238,6 @@ export default {
                     } else {
                         const groupIdx = acc.findIndex(item => item._id === `${queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i._id).join('-')}-${interaction._id}`);
                         if (groupIdx === -1) {
-                            console.log('Compound group content:', queryApearanceMap[`${side1Name}-${userQuery}`]);
                             const compoundGroup = {
                                 _id: `${queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i._id).join('-')}-${interaction._id}`,
                                 name: `${side1Name} & ${userQuery}`,
@@ -248,7 +247,10 @@ export default {
                                 ],
                                 isCompoundGroup: true
                             };
-                            if (compoundGroup.vInteractions.findIndex(i => i._id === interaction._id ) === -1) compoundGroup.vInteractions.push(interaction);
+                            if (compoundGroup.vInteractions.findIndex(i => i._id === interaction._id ) === -1) {
+                                console.log(interaction);
+                                compoundGroup.vInteractions.push(interaction);
+                            }
                                 queryApearanceMap[`${side1Name}-${userQuery}`].forEach(currInteraction => {
                                     acc = acc.filter(i => i._id !== currInteraction._id && i._id !== `${currInteraction._id}-${currInteraction._id}`);
                                     acc.push(compoundGroup);
