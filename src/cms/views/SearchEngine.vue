@@ -251,6 +251,7 @@ export default {
                                 if (!interaction.vInteractions || interaction.vInteractions.length > 1) compoundGroup.vInteractions.push(interaction);
                                 else if (interaction.vInteractions.length === 1) {
                                     const vInteraction = JSON.parse(JSON.stringify(interaction.vInteractions[0]));
+                                    console.log(vInteraction);
                                     compoundGroup.vInteractions.push(vInteraction);
                                 }
                             }
@@ -265,6 +266,7 @@ export default {
                                     acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, interaction.recommendation);
                                 } else if (interaction.vInteractions.length === 1) {
                                     const vInteraction = JSON.parse(JSON.stringify(interaction.vInteractions[0]));
+                                    console.log(vInteraction);
                                     acc[groupIdx].vInteractions.push(vInteraction);
                                 }
                             }
