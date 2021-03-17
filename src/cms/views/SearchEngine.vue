@@ -251,7 +251,7 @@ export default {
                                 if (!interaction.vInteractions || interaction.vInteractions.length > 1) compoundGroup.vInteractions.push(interaction);
                                 else if (interaction.vInteractions.length === 1) {
                                     const vInteraction = JSON.parse(JSON.stringify(interaction.vInteractions[0]));
-                                    if (compoundGroup.vInteractions.findIndex(vi => vi._id === vInteraction._id) === 1) {
+                                    if (compoundGroup.vInteractions.findIndex(vi => vi._id === vInteraction._id) === -1) {
                                         compoundGroup.vInteractions.push(vInteraction);
                                     }
                                 }
@@ -267,7 +267,7 @@ export default {
                                     acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, interaction.recommendation);
                                 } else if (interaction.vInteractions.length === 1) {
                                     const vInteraction = JSON.parse(JSON.stringify(interaction.vInteractions[0]));
-                                    if (acc[groupIdx].vInteractions.findIndex(vi => vi._id === vInteraction._id) === 1) {
+                                    if (acc[groupIdx].vInteractions.findIndex(vi => vi._id === vInteraction._id) === -1) {
                                         acc[groupIdx].vInteractions.push(vInteraction);
                                     }
                                 }
