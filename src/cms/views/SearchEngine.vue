@@ -168,18 +168,15 @@ export default {
         },
         formatedInteractions() {
             if ((this.$route.query.queries && this.$route.query.queries.length) === 1 && this.materials.length > 1) {
-                //// it's one 'material' and it's a compound
                 this.setMsg('Compound as a single result isn\'t supported, Please provide more material/s');
                 return [];
             }
+            /// formatting real interactions into vinteractions if needed & group double vinteractions
             let formatedInteractions = this.interactions.reduce((acc, interaction) => {
-                /// it's the only case we render label interactions as is
                 if (this.materials.length === 1 && this.materials[0]._id === interaction.side1Material._id) acc.push(interaction);
                 else if (!interaction.side2Label) {
-                    /// insert material 2 material interaction
                     this.insertInteraction(acc, interaction);
                 } else {
-                    /// format label interactions to vinteractions
                     const materials = this.materials.filter(
                         material => material.labels.findIndex(label => label._id === interaction.side2Label._id) !== -1
                     );
@@ -204,6 +201,7 @@ export default {
             }, []);
             const queryApearanceMap = {};
             if (this.materials.length === 1) return formatedInteractions;
+            /// duplicating vinteractions if needed - for same material in different compounds
             formatedInteractions = formatedInteractions.reduce((acc, interaction) => {
                 const { side1Name, side2Name } = this.getInteractionSidesNames(interaction);
                 if (
@@ -215,6 +213,7 @@ export default {
                 acc.push(interaction);
                 return acc;
             }, []);
+            /// group same compound vinteractions under compound's name
             return formatedInteractions.reduce((acc, interaction) => {
                 const { side1Name, side2Name } = this.getInteractionSidesNames(interaction);
                 const userQueries = this.$store.getters.materialNamesMap[side2Name];
@@ -239,7 +238,6 @@ export default {
                     } else {
                         const groupIdx = acc.findIndex(item => item._id === `${queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i._id).join('-')}-${interaction._id}`);
                         if (groupIdx === -1) {
-                            //~ remove duplicating here...
                             const compoundGroup = {
                                 _id: `${queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i._id).join('-')}-${interaction._id}`,
                                 name: `${side1Name} & ${userQuery}`,
@@ -251,7 +249,7 @@ export default {
                             };
                             if (compoundGroup.vInteractions.findIndex(i => i._id === interaction._id ) === -1) compoundGroup.vInteractions.push(interaction);
                             queryApearanceMap[`${side1Name}-${userQuery}`].forEach(currInteraction => {
-                                acc = acc.filter(i => i._id !== currInteraction._id);
+                                acc = acc.filter(i => i._id !== currInteraction._id && i._id !== `${currInteraction._id}-${currInteraction._id}`);
                                 acc.push(compoundGroup);
                             });
                         } else {
