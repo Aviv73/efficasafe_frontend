@@ -233,7 +233,6 @@ export default {
                                 ],
                                 isCompoundGroup: true
                             }
-                            console.log('Compound group content:', compoundGroup.vInteractions);
                             acc.push(compoundGroup);
                         }
                     } else {
@@ -249,12 +248,13 @@ export default {
                                 isCompoundGroup: true
                             };
                             if (compoundGroup.vInteractions.findIndex(i => i._id === interaction._id ) === -1) compoundGroup.vInteractions.push(interaction);
-                            queryApearanceMap[`${side1Name}-${userQuery}`].forEach(currInteraction => {
-                                acc = acc.filter(i => i._id !== currInteraction._id && i._id !== `${currInteraction._id}-${currInteraction._id}`);
-                                acc.push(compoundGroup);
-                            });
+                                queryApearanceMap[`${side1Name}-${userQuery}`].forEach(currInteraction => {
+                                    acc = acc.filter(i => i._id !== currInteraction._id && i._id !== `${currInteraction._id}-${currInteraction._id}`);
+                                    acc.push(compoundGroup);
+                                });
                         } else {
                             if (acc[groupIdx].vInteractions.findIndex(i => i._id === interaction._id ) === -1) {
+                                console.log('Compound group content:', interaction);
                                 acc[groupIdx].vInteractions.push(interaction);
                                 acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, interaction.recommendation);
                             }
