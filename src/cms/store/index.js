@@ -20,8 +20,10 @@ export default new Vuex.Store({
       return state.materialNamesMap;
     },
     queryApearanceCount: (state) => (query) => {
-      return Object.values(state.materialNamesMap).reduce((acc, currQuery) => {
-        if (currQuery === query) acc++;
+      return Object.values(state.materialNamesMap).reduce((acc, currQueries) => {
+        currQueries.forEach(currQuery => {
+          if (currQuery === query) acc++;
+        });
         return acc;
       }, 0);
     }
@@ -29,7 +31,8 @@ export default new Vuex.Store({
   mutations: {
     makeMaterialNamesMap(state, { materials }) {
       state.materialNamesMap = materials.reduce((acc, material) => {
-        if (!acc[material.name]) acc[material.name] = material.userQuery;
+        if (!acc[material.name]) acc[material.name] = [ material.userQuery ];
+        else acc[material.name].push(material.userQuery);
         return acc;
       }, {});
     }
