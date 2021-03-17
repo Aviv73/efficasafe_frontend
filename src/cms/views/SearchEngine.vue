@@ -233,7 +233,6 @@ export default {
                                 ],
                                 isCompoundGroup: true
                             };
-                            console.log(compoundGroup);
                             acc.push(compoundGroup);
                         }
                     } else {
