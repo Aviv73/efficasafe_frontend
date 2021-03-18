@@ -334,7 +334,7 @@ export default {
     methods: {
         getCompoundName(materialName, query) {
             const queries = this.$store.getters.materialNamesMap[materialName];
-            return queries.find(q => q !== query);
+            return queries.filter(q => q !== query).join(', ');
         },
         sortInteractions(interactions) {
             const { recommendationsOrderMap: map } = this.$options;
