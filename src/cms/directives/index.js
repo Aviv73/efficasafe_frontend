@@ -21,7 +21,7 @@ Vue.directive('localize-material-name', {
         if (!materialNamesMap) return;
         Object.keys(materialNamesMap).forEach(materialName => {
             if (el.innerText.includes(materialName)) {
-                utilService.replaceTextContent(el, materialName, materialNamesMap[materialName], !!binding.arg);
+                utilService.replaceTextContent(el, materialName, materialNamesMap[materialName].join(', '), !!binding.arg);
             }
         });
     }
