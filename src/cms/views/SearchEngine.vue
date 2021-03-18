@@ -50,7 +50,7 @@
                                 <v-tooltip 
                                     class="pa-0" 
                                     v-if="
-                                        result.materials.length > 1 || result.txt !== result.materials[0].name
+                                        result.materials.length > 1 || result.txt !== result.materials[0].name || result.isIncluded
                                     "
                                     bottom 
                                     :activator="`.result-${idx}`"
