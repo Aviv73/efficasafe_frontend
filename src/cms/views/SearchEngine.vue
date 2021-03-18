@@ -208,13 +208,13 @@ export default {
                     this.$store.getters.materialNamesMap[side1Name] && this.$store.getters.materialNamesMap[side1Name].length > 1 ||
                     this.$store.getters.materialNamesMap[side2Name] && this.$store.getters.materialNamesMap[side2Name].length > 1
                     ) {
-                        acc.push(JSON.parse(JSON.stringify(interaction)));
-                    }
-                acc.push(interaction);
+                        const copy = JSON.parse(JSON.stringify((interaction.vInteractions.length === 1) ? interaction.vInteractions[0] : interaction));
+                        acc.push(copy);
+                    } else acc.push(interaction);
                 return acc;
             }, []);
             /// group same compound vinteractions under compound's name
-            return formatedInteractions.reduce((acc, interaction) => {
+            formatedInteractions = formatedInteractions.reduce((acc, interaction) => {
                 const { side1Name, side2Name } = this.getInteractionSidesNames(interaction);
                 const userQueries = this.$store.getters.materialNamesMap[side2Name];
                 if (!userQueries) return acc;
@@ -277,6 +277,8 @@ export default {
                 });
                 return acc;
             }, []);
+            console.log(formatedInteractions);
+            return formatedInteractions;
         },
         materialCount() {
             return (this.$route.query.queries) ? this.$route.query.queries.length : 0;

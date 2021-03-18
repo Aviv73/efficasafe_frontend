@@ -110,8 +110,10 @@ function getRefsOrder(txt, isUnique = true, withRange = true) {
 function calculateEvidenceLevel(refs) {
     const map = _evidenceLevelMap(refs)
 
-    if ((map.meta || map.systematic || map['drug label']) ||
-        (map.clinical && map.clinical > 1)) {
+    if (
+        (map.meta || map.systematic || map['drug label']) ||
+        ((map.clinical && map.clinical > 1) || (map.retrospective && map.retrospective > 1) || (map.retrospective && map.clinical))
+        ) {
         return 'A';
     } else if (
         (map.clinical && map.animal) ||
