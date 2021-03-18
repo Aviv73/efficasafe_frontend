@@ -294,18 +294,21 @@ export default {
                 });
                 return acc;
             }, []);
-            const { recommendationsOrderMap: map } = this.$options;
-            return formatedInteractions.sort((a, b) => {
-                return map[b.recommendation.toLowerCase()] - map[a.recommendation.toLowerCase()] ||
-                a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) ||
-                a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-            });
+            return this.sortInteractions(formatedInteractions);
         },
         materialCount() {
             return (this.$route.query.queries) ? this.$route.query.queries.length : 0;
         }
     },
     methods: {
+        sortInteractions(interactions) {
+            const { recommendationsOrderMap: map } = this.$options;
+            return interactions.slice().sort((a, b) => {
+                return map[b.recommendation.toLowerCase()] - map[a.recommendation.toLowerCase()] ||
+                a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) ||
+                a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+            });
+        },
         insertInteraction(acc, interaction) {
             /// index of vinteraction between the same 2 materials
             const idx = acc.findIndex(
