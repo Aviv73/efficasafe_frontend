@@ -417,6 +417,23 @@ export default {
             );
             this.materials = this.sortMaterials(materials);
             this.$store.commit({ type: 'makeMaterialNamesMap', materials });
+            this.checkForIncludedMaterials();
+        },
+        checkForIncludedMaterials() {
+            const countMap = {};
+            const dups = this.materials.filter(material => {
+                if (!countMap[material._id]) countMap[material._id] = 1;
+                else return true;
+            });
+            dups.forEach(material => {
+                const queries = this.$store.getters.materialNamesMap[material.name];
+                queries.forEach(query => {
+                    if (this.$store.getters.queryApearanceCount(query) < 2) {
+                        const includedMaterial = this.materials.find(m => m._id === material._id && m.userQuery === query);
+                        includedMaterial.isIncluded = true;
+                    }
+                });
+            });
         },
         sortMaterials(materials) {
             const { queries } = this.$route.query;
