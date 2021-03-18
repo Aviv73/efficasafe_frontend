@@ -27,6 +27,12 @@
             .info-icon {
                 cursor: help;
             }
+            .result {
+                cursor: default;
+            }
+            .ghost {
+                opacity: .5;
+            }
         }
         &-interactions {         
             flex-basis: 70%;

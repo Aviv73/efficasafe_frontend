@@ -31,7 +31,7 @@
                                 :key="idx"
                             >
                                 <v-chip
-                                    :class="`mb-4 result-${idx}`"
+                                    :class="[ `mb-4 result result-${idx}`, { 'ghost': result.isIncluded } ]"
                                     color="primary"
                                     outlined
                                     close
@@ -55,7 +55,12 @@
                                     bottom 
                                     :activator="`.result-${idx}`"
                                 >
-                                    <v-list dense flat color="transparent" dark>
+                                    <v-list
+                                        color="transparent"
+                                        dense
+                                        flat
+                                        dark
+                                    >
                                         <v-subheader class="pa-0">Materials</v-subheader>
                                         <v-list-item
                                             class="d-flex align-center"
@@ -75,6 +80,20 @@
                                             </v-list-item-icon>
                                         </v-list-item>
                                     </v-list>
+                                    <div
+                                        v-if="result.isIncluded"
+                                        class="d-flex flex-column align-center"
+                                    >
+                                        <v-divider class="align-self-stretch" dark />
+                                        <v-icon color="error lighten-1" class="my-2">mdi-alert-circle-outline</v-icon>
+                                        <p
+                                            class="pb-4 text-center error--text text--lighten-1 body-1 font-weight-medium"
+                                            style="width: 35ch; margin: 0 auto;"
+                                        >
+                                            There is no additional interactions for {{ result.materials[0].name }}
+                                            as it is a part of {{ getCompoundName(result.materials[0].name, result.txt) }}.
+                                        </p>
+                                    </div>
                                 </v-tooltip>
                             </span>
                         </v-chip-group>
@@ -172,7 +191,11 @@ export default {
                 const result = acc.find(res => res.txt === material.userQuery);
                 if (result) result.materials.push(material);
                 else {
-                    const newResult = { txt: material.userQuery, materials: [ material ] };
+                    const newResult = { 
+                        txt: material.userQuery,
+                        materials: [ material ],
+                        isIncluded: material.isIncluded || false
+                    };
                     acc.push(newResult);
                 }
                 return acc;
@@ -301,6 +324,10 @@ export default {
         }
     },
     methods: {
+        getCompoundName(materialName, query) {
+            const queries = this.$store.getters.materialNamesMap[materialName];
+            return queries.find(q => q !== query);
+        },
         sortInteractions(interactions) {
             const { recommendationsOrderMap: map } = this.$options;
             return interactions.slice().sort((a, b) => {
