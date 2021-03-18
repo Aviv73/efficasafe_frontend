@@ -262,8 +262,13 @@ export default {
                     const queryApearanceCount = this.$store.getters.queryApearanceCount(userQuery);
                     if (!queryApearanceMap[`${side1Name}-${userQuery}`]) {
                         queryApearanceMap[`${side1Name}-${userQuery}`] = [ interaction ];
-                        if (queryApearanceCount <= 1) acc.push(interaction);
-                        else {
+                        if (queryApearanceCount <= 1) {
+                            const includedMaterial = this.materials.find(
+                                m => m._id === (interaction.side2Material && interaction.side2Material._id)
+                                && m.isIncluded
+                            );
+                            if (!includedMaterial) acc.push(interaction);
+                        } else {
                             const compoundGroup = {
                                 _id: interaction._id,
                                 name: `${side1Name} & ${userQuery}`,

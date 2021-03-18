@@ -16,6 +16,7 @@
         display: flex;
 
         &-materials {
+            height: 100%;
             position: relative;
             flex-basis: 30%;
 
@@ -23,7 +24,7 @@
                 position: absolute;
                 top: 12px;
                 right: 12px;
-                z-index: 9;
+                z-index: 2;
 
                 &::before {
                     background-color: transparent;
