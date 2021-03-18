@@ -12,18 +12,21 @@
                 </header>
                 <v-divider />
                 <main class="search-engine-results">
-                    <div class="search-engine-results-materials px-6 py-4">
+                    <div
+                        class="search-engine-results-materials px-6 pb-4"
+                        :class="{ 'pt-8': !!formatedMaterials.length}"
+                    >
                         <v-btn
                             to="/search"
                             v-if="materials.length"
                             title="Clear All"
                             color="error"
-                            outlined
+                            text
                             rounded
-                            icon
                             small
                         >
-                            <v-icon small>mdi-close</v-icon>
+                        Clear all
+                            <!-- <v-icon small>mdi-close</v-icon> -->
                         </v-btn>
                         <v-chip-group column>
                             <span
