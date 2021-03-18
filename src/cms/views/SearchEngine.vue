@@ -122,6 +122,18 @@ import searchAutocomplete from '@/cms/cmps/search-engine/SearchAutocomplete';
 import iconsMap from '@/cms/cmps/general/IconsMap';
 
 export default {
+    recommendationsOrderMap: {
+        'avoid coadministration': 3,
+        'coadministration is not advised': 3,
+        'caution should be taken': 2,
+        'coadministration is not contraindicated but caution should be taken': 2,
+        'coadministration is possible but caution should be taken': 2,
+        'coadministration is not contraindicated': 1,
+        'coadministration is possible': 1,
+        'coadministration is advised': 1,
+        'coadministration is not contraindicated and may even be advised': 1,
+        'coadministration is possible and may even be advised': 1
+    },
     data() {
         return {
             materials: [],
@@ -190,7 +202,9 @@ export default {
                                 type
                             },
                             side2Label: null,
+                            name: `${interaction.side1Material.name} & ${name}`,
                             recommendation: interaction.recommendation,
+                            evidenceLevel: interaction.evidenceLevel,
                             isVirtual: true,
                             side2DraftName: interaction.side2DraftName
                         };
@@ -208,7 +222,7 @@ export default {
                     this.$store.getters.materialNamesMap[side1Name] && this.$store.getters.materialNamesMap[side1Name].length > 1 ||
                     this.$store.getters.materialNamesMap[side2Name] && this.$store.getters.materialNamesMap[side2Name].length > 1
                     ) {
-                        const copy = JSON.parse(JSON.stringify((interaction.vInteractions.length === 1) ? interaction.vInteractions[0] : interaction));
+                        const copy = JSON.parse(JSON.stringify((interaction.vInteractions && interaction.vInteractions.length === 1) ? interaction.vInteractions[0] : interaction));
                         acc.push(copy);
                     } else acc.push(interaction);
                 return acc;
@@ -228,6 +242,7 @@ export default {
                                 _id: interaction._id,
                                 name: `${side1Name} & ${userQuery}`,
                                 recommendation: interaction.recommendation,
+                                evidenceLevel: interaction.evidenceLevel,
                                 vInteractions: [
                                     interaction
                                 ],
@@ -242,6 +257,7 @@ export default {
                                 _id: `${queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i._id).join('-')}-${interaction._id}`,
                                 name: `${side1Name} & ${userQuery}`,
                                 recommendation: this.getMoreSeverRecomm(...queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i.recommendation), interaction.recommendation),
+                                evidenceLevel: this.getMoreSeverEvidenceLevel(...queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i.evidenceLevel), interaction.evidenceLevel),
                                 vInteractions: [
                                     ...queryApearanceMap[`${side1Name}-${userQuery}`],
                                 ],
@@ -265,6 +281,7 @@ export default {
                                 if (!interaction.vInteractions || interaction.vInteractions.length > 1) {
                                     acc[groupIdx].vInteractions.push(interaction);
                                     acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, interaction.recommendation);
+                                    acc[groupIdx].evidenceLevel = this.getMoreSeverEvidenceLevel(acc[groupIdx].evidenceLevel, interaction.evidenceLevel);
                                 } else if (interaction.vInteractions.length === 1) {
                                     const vInteraction = JSON.parse(JSON.stringify(interaction.vInteractions[0]));
                                     if (acc[groupIdx].vInteractions.findIndex(vi => vi._id === vInteraction._id) === -1) {
@@ -277,8 +294,12 @@ export default {
                 });
                 return acc;
             }, []);
-            console.log(formatedInteractions);
-            return formatedInteractions;
+            const { recommendationsOrderMap: map } = this.$options;
+            return formatedInteractions.sort((a, b) => {
+                return map[b.recommendation.toLowerCase()] - map[a.recommendation.toLowerCase()] ||
+                a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) ||
+                a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+            });
         },
         materialCount() {
             return (this.$route.query.queries) ? this.$route.query.queries.length : 0;
@@ -299,6 +320,7 @@ export default {
                     _id: `${interaction.side1Material._id}-${interaction.side2Material._id}`,
                     name: `${interaction.side1Material.name} & ${interaction.side2Material.name}`,
                     recommendation: this.getMoreSeverRecomm(acc[idx].recommendation, interaction.recommendation),
+                    evidenceLevel: this.getMoreSeverEvidenceLevel(acc[idx].evidenceLevel, interaction.evidenceLevel),
                     vInteractions: (acc[idx]._id === interaction._id) ? [ acc[idx] ] : [
                         acc[idx],
                         interaction
@@ -310,26 +332,19 @@ export default {
                 if (acc[groupIdx].vInteractions.findIndex(i => i._id === interaction._id) === -1) {
                     acc[groupIdx].vInteractions.push(interaction);
                     acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, interaction.recommendation);
+                    acc[groupIdx].evidenceLevel = this.getMoreSeverEvidenceLevel(acc[groupIdx].evidenceLevel, interaction.evidenceLevel);
                 }
             } 
         },
         getMoreSeverRecomm(...recommendations) {
-            const recommendationMap = {
-                'avoid coadministration': 3,
-                'coadministration is not advised': 3,
-                'caution should be taken': 2,
-                'coadministration is not contraindicated but caution should be taken': 2,
-                'coadministration is possible but caution should be taken': 2,
-                'coadministration is not contraindicated': 1,
-                'coadministration is possible': 1,
-                'coadministration is advised': 1,
-                'coadministration is not contraindicated and may even be advised': 1,
-                'coadministration is possible and may even be advised': 1
-            };
+            const { recommendationsOrderMap } = this.$options;
             recommendations.sort((a, b) => {
-                return (recommendationMap[a.toLowerCase()] > recommendationMap[b.toLowerCase()]) ? -1 : (recommendationMap[a.toLowerCase()] < recommendationMap[b.toLowerCase()]) ? 1 : 0;
+                return (recommendationsOrderMap[a.toLowerCase()] > recommendationsOrderMap[b.toLowerCase()]) ? -1 : (recommendationsOrderMap[a.toLowerCase()] < recommendationsOrderMap[b.toLowerCase()]) ? 1 : 0;
             });
             return recommendations[0];
+        },
+        getMoreSeverEvidenceLevel(...evidenceLevels) {
+            return evidenceLevels.sort()[0];
         },
         getInteractionSidesNames(interaction) {
             let side1Name = '';
