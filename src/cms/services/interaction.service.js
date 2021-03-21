@@ -78,7 +78,6 @@ function getRefsOrder(txt, isUnique = true, withRange = true) {
     const regex = /\(([\d- ,\d]+)\)/g;
     const notUniqueRefs = txt.match(regex);
     if (!notUniqueRefs) return [];
-
     const refs = (isUnique) ? notUniqueRefs.filter(_onlyUnique) : notUniqueRefs;
     
     let cleanRefs = refs.map(ref => {
@@ -96,6 +95,7 @@ function getRefsOrder(txt, isUnique = true, withRange = true) {
     cleanRefs = cleanRefs.map(ref => {
         if (typeof ref === 'string' && ref.includes('-')) {
             const [ num1, num2 ] = ref.split('-').map(currRef => +currRef);
+            if (num1 > num2) return [ num1, num2 ];
             const numsBetween = (withRange) ? _getAllNumbersBetween(num1, num2) : [ num1, num2 ];
             
             return numsBetween;
