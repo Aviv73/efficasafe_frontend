@@ -235,7 +235,7 @@ export default {
                     }
                 }
                 let refIdx = txt.indexOf(refNum, lastRefIdx);
-                if (!utilService.checkIfInsideRef(txt, refIdx)) {
+                if (!utilService.checkIfInsideRef(txt, refIdx) || lastRefIdx === refIdx) {
                     refIdx = txt.indexOf(refNum, refIdx + 1);
                 }
                 lastRefIdx = refIdx;
