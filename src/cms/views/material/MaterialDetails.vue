@@ -196,21 +196,21 @@
                     <p
                         class="info-value"
                         v-if="material.sensitivities"
-                        v-html="txtWithRefs('sensitivities')"
+                        v-html="formatRefs('sensitivities')"
                     />
 
                     <h3 class="info-title" v-if="material.adverseReactions">Adverse Reactions:</h3>
-                    <p class="info-value" v-if="material.adverseReactions" v-html="txtWithRefs('adverseReactions')"></p>
+                    <p class="info-value" v-if="material.adverseReactions" v-html="formatRefs('adverseReactions')"></p>
 
                     <h3 class="info-title" v-if="material.overdosage">Overdosage:</h3>
                     <p
                         class="info-value"
                         v-if="material.overdosage"
-                        v-html="txtWithRefs('overdosage')"
+                        v-html="formatRefs('overdosage')"
                     ></p>
 
                     <h3 class="info-title" v-if="material.precautions">Precautions:</h3>
-                    <p class="info-value" v-if="material.precautions" v-html="txtWithRefs('precautions')"></p>
+                    <p class="info-value" v-if="material.precautions" v-html="formatRefs('precautions')"></p>
 
                     <h3 class="info-title" v-if="material.contraindications">
                         Contraindications:
@@ -218,28 +218,28 @@
                     <p
                         class="info-value"
                         v-if="material.contraindications"
-                        v-html="txtWithRefs('contraindications')"
+                        v-html="formatRefs('contraindications')"
                     ></p>
 
                     <h3 class="info-title" v-if="material.toxicity">Toxicity:</h3>
                     <p
                         class="info-value"
                         v-if="material.toxicity"
-                        v-html="txtWithRefs('toxicity')"
+                        v-html="formatRefs('toxicity')"
                     ></p>
 
                     <h3 class="info-title" v-if="material.pregnancy">Pregnancy:</h3>
                     <p
                         class="info-value"
                         v-if="material.pregnancy"
-                        v-html="txtWithRefs('pregnancy')"
+                        v-html="formatRefs('pregnancy')"
                     ></p>
 
                     <h3 class="info-title" v-if="material.lactation">Lactation:</h3>
                     <p
                         class="info-value"
                         v-if="material.lactation"
-                        v-html="txtWithRefs('lactation')"
+                        v-html="formatRefs('lactation')"
                     ></p>
 
                     <h3 class="info-title" v-if="material.effectOnDrugMetabolism">
@@ -248,7 +248,7 @@
                     <p
                         class="info-value"
                         v-if="material.effectOnDrugMetabolism"
-                        v-html="txtWithRefs('effectOnDrugMetabolism')"
+                        v-html="formatRefs('effectOnDrugMetabolism')"
                     ></p>
 
                     <h3 class="info-title" v-if="material.detailedPharmacology">
@@ -257,7 +257,7 @@
                     <p
                         class="info-value"
                         v-if="material.detailedPharmacology"
-                        v-html="txtWithRefs('detailedPharmacology')"
+                        v-html="formatRefs('detailedPharmacology')"
                     ></p>
 
                     <h3 class="info-title" v-if="material.mechanismOfAction">
@@ -539,7 +539,7 @@ export default {
                 elSubs[i].appendChild(elTooltip);
             }
         },
-        txtWithRefs(propName) {
+        formatRefs(propName) {
             const regex = /\(([\d- ,\d]+)\)|<sub>\(([\d- ,\d]+)\)<\/sub>/g;
             let txt = this.material[propName];
             const matches = txt.match(regex);

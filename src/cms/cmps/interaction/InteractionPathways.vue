@@ -70,7 +70,7 @@
                 <p 
                   class="mb-4"
                   v-highlight-text:[side2Name]
-                  v-html="txtWithRefs(pathway.influence, true)"
+                  v-html="formatRefs(pathway.influence, true)"
                 />
             </div>
             <div v-if="unRelevantSide2Pathways.length">
@@ -118,7 +118,7 @@ export default {
             type: Number,
             required: true
         },
-        txtWithRefs: {
+        formatRefs: {
             type: Function,
             required: true
         }

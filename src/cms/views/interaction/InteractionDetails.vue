@@ -68,7 +68,7 @@
           <p class="info-value" v-if="interaction.updatedAt">{{ interaction.updatedAt | moment('MMM Do YYYY') }}</p>
 
           <h3 class="info-title">Summary:</h3>
-          <p class="info-value" v-html="txtWithRefs(interaction.summary)" ref="summary"></p>
+          <p class="info-value" v-html="formatRefs(interaction.summary)" ref="summary"></p>
 
           <div 
             class="info-title text-capitalize"
@@ -93,7 +93,7 @@
           <h3 class="info-title" v-if="interaction.reviewOfStudies">Review of studies:</h3>
           <div class="info-value" v-if="interaction.reviewOfStudies">
             <p
-              v-html="txtWithRefs(interaction.reviewOfStudies)"
+              v-html="formatRefs(interaction.reviewOfStudies)"
               ref="reviewOfStudies"
             />
           </div>
@@ -111,7 +111,7 @@
             :side2RefsLength="side2Refs.length"
             :combinedRefs="combinedRefs"
             :relevantSide1Pathways="relevantSide1Pathways"
-            :txtWithRefs="txtWithRefs"
+            :formatRefs="formatRefs"
           />
 
           <reference-table
@@ -280,7 +280,7 @@ export default {
     goToVinteraction(material) {
       this.$router.push(`/interaction/${this.$route.params.id}/${material._id}`);
     },
-    txtWithRefs(txt, isPathwaysRefs = false) {
+    formatRefs(txt, isPathwaysRefs = false) {
       if (!this.combinedRefs.length) return;
       const refsOrder = interactionService.getRefsOrder(txt, false, false).filter(num => txt.indexOf(num) > -1);
       let lastRefIdx = 0;

@@ -26,7 +26,7 @@
                     <div v-if="!isPrimaryMaterial && interaction.note">{{ interaction.note }}</div>
 
                     <div class="text-capitalize">Summary:</div>
-                    <div v-html="txtWithRefs(interaction.summary)" ref="summary"></div>
+                    <div v-html="formatRefs(interaction.summary)" ref="summary"></div>
 
                     <div
                         class="text-capitalize"
@@ -58,7 +58,7 @@
 
                     <div class="text-capitalize">Review of studies:</div>
                     <div
-                        v-html="txtWithRefs(interaction.reviewOfStudies)"
+                        v-html="formatRefs(interaction.reviewOfStudies)"
                         ref="reviewOfStudies"
                     ></div>
 
@@ -74,7 +74,7 @@
                         :side2RefsLength="side2Refs.length"
                         :combinedRefs="combinedRefs"
                         :relevantSide1Pathways="relevantSide1Pathways"
-                        :txtWithRefs="txtWithRefs"
+                        :formatRefs="formatRefs"
                     />
                 
                     <reference-table
@@ -221,7 +221,7 @@ export default {
             );
             this.interactionRefs = sortedRefs;
         },
-        txtWithRefs(txt, isPathwaysRefs = false) {
+        formatRefs(txt, isPathwaysRefs = false) {
             if (!this.interactionRefs.length) return;
             const refsOrder = interactionService.getRefsOrder(txt, false, false).filter(num => txt.indexOf(num) > -1);
             let lastRefIdx = 0;
