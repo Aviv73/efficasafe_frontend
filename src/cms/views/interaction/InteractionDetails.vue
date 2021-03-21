@@ -172,6 +172,7 @@
 
 <script>
 import { interactionService } from '@/cms/services/interaction.service';
+import { utilService } from '@/cms/services/util.service';
 import { eventBus, EV_addInteraction } from '@/cms/services/eventBus.service';
 import confirmDelete from '@/cms/cmps/general/ConfirmDelete';
 import referenceTable from '@/cms/cmps/common/ReferenceTable';
@@ -293,10 +294,8 @@ export default {
           }
         }
         let refIdx = txt.indexOf(refNum, lastRefIdx);
-        ///~ this is in case CYP1A2 will match if refNum is 2
-        ///~ maybe a better way is to fix the regex instead
-        if (txt.charAt(refIdx - 1).match(/[a-z]/i)) {
-            refIdx = txt.indexOf(refNum, refIdx + 1);
+        if (!utilService.checkIfInsideRef(txt, refIdx)) {
+          refIdx = txt.indexOf(refNum, refIdx + 1);
         }
         lastRefIdx = refIdx;
         if (refIdx > -1) {

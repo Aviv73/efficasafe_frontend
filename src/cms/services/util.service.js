@@ -2,7 +2,29 @@ export const utilService = {
     makeId,
     escapeStrRegex,
     replaceTextContent,
-    regexIndexOf
+    regexIndexOf,
+    checkIfInsideRef
+}
+
+function checkIfInsideRef(txt, refIdx) {
+    let isOpenerExists = false;
+    let iscloserExists = false;
+
+    for (let i = refIdx - 1; i >= 0; i--) {
+        if (txt.charAt(i) === '(') {
+            isOpenerExists = true;
+            break;
+        }
+        if (txt.charAt(i).match(/[A-Za-z]/g)) return false;
+    }
+    for (let i = refIdx + 1; i < txt.length; i++) {
+        if (txt.charAt(i) === ')') {
+            iscloserExists = true;
+            break;
+        }
+        if (txt.charAt(i).match(/[A-Za-z]/g)) return false;
+    }
+    return isOpenerExists && iscloserExists;
 }
 
 function regexIndexOf(string, regex, startpos) {
