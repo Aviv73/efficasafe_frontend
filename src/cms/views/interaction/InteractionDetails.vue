@@ -292,7 +292,12 @@ export default {
             draftIdx = this.combinedRefs.indexOf(ref) + 1;
           }
         }
-        const refIdx = txt.indexOf(refNum, lastRefIdx);
+        let refIdx = txt.indexOf(refNum, lastRefIdx);
+        ///~ this is in case CYP1A2 will match if refNum is 2
+        ///~ maybe a better way is to fix the regex instead
+        if (txt.charAt(refIdx - 1).match(/[a-z]/i)) {
+            refIdx = txt.indexOf(refNum, refIdx + 1);
+        }
         lastRefIdx = refIdx;
         if (refIdx > -1) {
           txt = txt.slice(0, lastRefIdx) +

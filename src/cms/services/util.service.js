@@ -1,7 +1,13 @@
 export const utilService = {
     makeId,
     escapeStrRegex,
-    replaceTextContent
+    replaceTextContent,
+    regexIndexOf
+}
+
+function regexIndexOf(string, regex, startpos) {
+    var indexOf = string.substring(startpos || 0).search(regex);
+    return (indexOf >= 0) ? (indexOf + (startpos || 0)) : indexOf;
 }
 
 function replaceTextContent(el, txt, newTxt, isPartOfCompound) {
