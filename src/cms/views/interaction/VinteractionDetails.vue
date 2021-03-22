@@ -234,7 +234,7 @@ export default {
                         draftIdx = this.combinedRefs.indexOf(ref) + 1;
                     }
                 }
-                let refIdx = txt.indexOf(refNum, lastRefIdx);
+                let refIdx = txt.indexOf(refNum, lastRefIdx + draftIdx.toString().length);
                 if (!utilService.checkIfInsideRef(txt, refIdx) || lastRefIdx === refIdx) {
                     let cnt = 0;
                     while (txt.charAt(refIdx) === txt.charAt(refIdx + cnt)) {

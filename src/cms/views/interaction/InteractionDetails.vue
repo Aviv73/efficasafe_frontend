@@ -293,7 +293,7 @@ export default {
             draftIdx = this.combinedRefs.indexOf(ref) + 1;
           }
         }
-        let refIdx = txt.indexOf(refNum, lastRefIdx);
+        let refIdx = txt.indexOf(refNum, lastRefIdx + draftIdx.toString().length);
         if (!utilService.checkIfInsideRef(txt, refIdx) || lastRefIdx === refIdx) {
           let cnt = 0;
           while (txt.charAt(refIdx) === txt.charAt(refIdx + cnt)) {
@@ -303,6 +303,9 @@ export default {
         }
         if (lastRefIdx + draftIdx.toString().length > refIdx) lastRefIdx = refIdx + draftIdx.toString().length;
         else lastRefIdx = refIdx;
+        if (txt.startsWith('<p>A systematic revie')) {
+          console.log(txt);
+        }
         if (refIdx > -1) {
           txt = txt.slice(0, lastRefIdx) +
           txt.slice(lastRefIdx, (lastRefIdx + refNum.toString().length)).replace(refNum, draftIdx) +
