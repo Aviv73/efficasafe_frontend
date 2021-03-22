@@ -104,6 +104,7 @@ function getRefsOrder(txt, isUnique = true, withRange = true) {
     });
     cleanRefs = cleanRefs.flat(1);
     cleanRefs.filter(ref => ref.toString().length < 4);
+    
     return (isUnique) ? _removeDuplicates(cleanRefs) : cleanRefs;
 }
 
