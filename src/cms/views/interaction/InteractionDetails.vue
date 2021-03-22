@@ -295,7 +295,11 @@ export default {
         }
         let refIdx = txt.indexOf(refNum, lastRefIdx);
         if (!utilService.checkIfInsideRef(txt, refIdx) || lastRefIdx === refIdx) {
-          refIdx = txt.indexOf(refNum, refIdx + 1);
+          let cnt = 0;
+          while (txt.charAt(refIdx) === txt.charAt(refIdx + cnt)) {
+            cnt++;
+          }
+          refIdx = txt.indexOf(refNum, refIdx + cnt);
         }
         lastRefIdx = refIdx;
         if (refIdx > -1) {
