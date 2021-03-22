@@ -402,27 +402,17 @@ export default {
     },
     makeRefsSub() {
       const regex = /\(([\d- ,\d]+)\)|<sub>\(([\d- ,\d]+)\)<\/sub>/g;
-      const summaryMatches = this.editedInteraction.summary.match(regex);
-      const reviewOfStudiesMatches = this.editedInteraction.reviewOfStudies.match(regex);
-
-      if (summaryMatches) {
-        summaryMatches.forEach((match) => {
-          const strToDisplay = `<sub>${interactionService.formatRefStrs(match)}</sub>`;
-          this.editedInteraction.summary = this.editedInteraction.summary.replaceAll(
-            match,
-            strToDisplay
-          );
+      const allMatches = [
+        { matches: this.editedInteraction.summary.match(regex), field: 'summary' },
+        { matches: this.editedInteraction.reviewOfStudies.match(regex), field: 'reviewOfStudies' }
+      ];
+      allMatches.forEach(({ matches, field }) => {
+        if (!matches) return;
+        matches.forEach(match => {
+          const strToDisplay = `<sub>${match.replaceAll('<sub>', '').replaceAll('</sub>', '')}</sub>`;
+          this.editedInteraction[field] = this.editedInteraction[field].replaceAll(match, strToDisplay);
         });
-      }
-      if (reviewOfStudiesMatches) {
-        reviewOfStudiesMatches.forEach((match) => {
-          const strToDisplay = `<sub>${interactionService.formatRefStrs(match)}</sub>`;
-          this.editedInteraction.reviewOfStudies = this.editedInteraction.reviewOfStudies.replaceAll(
-            match,
-            strToDisplay
-          );
-        });
-      }
+      });
     },
     setInteractionRefs() {
       const txt = `${this.editedInteraction.summary} ${this.editedInteraction.reviewOfStudies}`;
