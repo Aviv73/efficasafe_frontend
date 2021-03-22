@@ -236,9 +236,14 @@ export default {
                 }
                 let refIdx = txt.indexOf(refNum, lastRefIdx);
                 if (!utilService.checkIfInsideRef(txt, refIdx) || lastRefIdx === refIdx) {
-                    refIdx = txt.indexOf(refNum, refIdx + 1);
+                    let cnt = 0;
+                    while (txt.charAt(refIdx) === txt.charAt(refIdx + cnt)) {
+                        cnt++;
+                    }
+                    refIdx = txt.indexOf(refNum, refIdx + cnt);
                 }
-                lastRefIdx = refIdx;
+                if (lastRefIdx + draftIdx.toString().length > refIdx) lastRefIdx = refIdx + draftIdx.toString().length;
+                else lastRefIdx = refIdx;
                 if (refIdx > -1) {
                     txt = txt.slice(0, lastRefIdx) +
                     txt.slice(lastRefIdx, (lastRefIdx + refNum.toString().length)).replace(refNum, draftIdx) +
