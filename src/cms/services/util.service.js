@@ -15,14 +15,14 @@ function checkIfInsideRef(txt, refIdx) {
             isOpenerExists = true;
             break;
         }
-        if (txt.charAt(i).match(/[A-Za-z]/g)) return false;
+        if (txt.charAt(i).match(/[A-Za-z%]/g)) return false;
     }
     for (let i = refIdx + 1; i < txt.length; i++) {
         if (txt.charAt(i) === ')') {
             iscloserExists = true;
             break;
         }
-        if (txt.charAt(i).match(/[A-Za-z]/g)) return false;
+        if (txt.charAt(i).match(/[A-Za-z%]/g)) return false;
     }
     return isOpenerExists && iscloserExists;
 }

@@ -301,6 +301,10 @@ export default {
           }
           refIdx = txt.indexOf(refNum, refIdx + cnt);
         }
+        // if (txt.startsWith('<p>A Cochrane systematic re') && refNum === 82) {
+        //   console.log(refNum, '->', draftIdx);
+        //   console.log(txt.slice(0, refIdx));
+        // }
         if (lastRefIdx + draftIdx.toString().length > refIdx) lastRefIdx = refIdx + draftIdx.toString().length;
         else lastRefIdx = refIdx;
         if (refIdx > -1) {
