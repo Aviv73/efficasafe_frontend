@@ -267,7 +267,11 @@ export default {
                                 m => m._id === (interaction.side2Material && interaction.side2Material._id)
                                 && m.isIncluded
                             );
-                            if (!includedMaterial) acc.push(interaction);
+                            if (!includedMaterial) {
+                                if (acc.findIndex(vi => vi._id === interaction._id) === -1) {
+                                    acc.push(interaction);
+                                }
+                            }
                         } else {
                             const compoundGroup = {
                                 _id: interaction._id,
@@ -455,17 +459,21 @@ export default {
             this.checkForIncludedMaterials();
         },
         checkForIncludedMaterials() {
-            const countMap = {};
-            const dups = this.materials.filter(material => {
-                if (!countMap[material._id]) countMap[material._id] = 1;
-                else return true;
-            });
+            const seenMap = {};
+            const dups = this.materials.reduce((acc, material) => {
+                if (!seenMap[material._id]) seenMap[material._id] = material;
+                else {
+                    const included = (material.name === material.userQuery) ? seenMap[material._id] : material;
+                    acc.push(included);
+                }
+                return acc;
+            }, []);
             dups.forEach(material => {
                 const queries = this.$store.getters.materialNamesMap[material.name];
                 queries.forEach(query => {
                     if (this.$store.getters.queryApearanceCount(query) < 2) {
                         const includedMaterial = this.materials.find(m => m._id === material._id && m.userQuery === query);
-                        includedMaterial.isIncluded = true;
+                        includedMaterial.isIncluded = includedMaterial.name !== includedMaterial.userQuery;
                     }
                 });
             });
