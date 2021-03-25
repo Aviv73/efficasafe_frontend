@@ -263,14 +263,8 @@ export default {
                     if (!queryApearanceMap[`${side1Name}-${userQuery}`]) {
                         queryApearanceMap[`${side1Name}-${userQuery}`] = [ interaction ];
                         if (queryApearanceCount <= 1) {
-                            const includedMaterial = this.materials.find(
-                                m => m._id === (interaction.side2Material && interaction.side2Material._id)
-                                && m.isIncluded
-                            );
-                            if (!includedMaterial) {
-                                if (acc.findIndex(vi => vi._id === interaction._id) === -1) {
-                                    acc.push(interaction);
-                                }
+                            if (acc.findIndex(vi => vi._id === interaction._id) === -1) {
+                                acc.push(interaction);
                             }
                         } else {
                             const compoundGroup = {
@@ -475,10 +469,10 @@ export default {
             }, []);
             dups.forEach(material => {
                 const queries = this.$store.getters.materialNamesMap[material.name];
-                queries.forEach(query => {
+                queries.forEach((query, idx) => {
                     if (this.$store.getters.queryApearanceCount(query) < 2) {
                         const includedMaterial = this.materials.find(m => m._id === material._id && m.userQuery === query);
-                        includedMaterial.isIncluded = includedMaterial.name !== includedMaterial.userQuery;
+                        includedMaterial.isIncluded = idx !== 0;
                     }
                 });
             });
