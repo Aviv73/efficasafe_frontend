@@ -93,7 +93,7 @@
                                             class="pb-4 text-center error--text text--lighten-1 body-1 font-weight-medium"
                                             style="width: 35ch; margin: 0 auto;"
                                         >
-                                            There is no additional interactions for {{ result.materials[0].name }}
+                                            There is no additional interactions for {{ result.materials[0].userQuery }}
                                             as it is a part of {{ getCompoundName(result.materials[0].name, result.txt) }}.
                                         </p>
                                     </div>
