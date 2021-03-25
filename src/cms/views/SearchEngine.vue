@@ -424,7 +424,12 @@ export default {
                 });
                 return acc;
             }, []);
-            const filterBy = { isSearchResults: true, page: --page, id: ids, materialCount: this.$route.query.queries.length };
+            const filterBy = {
+                isSearchResults: true,
+                page: --page,
+                id: ids,
+                materialCount: this.materials.filter(({ isIncluded }) => !isIncluded).length
+            };
             const { interactions, pageCount } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
             this.pageCount = pageCount;
             this.interactions = interactions;
