@@ -9,6 +9,7 @@
           v-model="credentials.username"
           prepend-icon="mdi-account-circle"
           required
+          autocomplete
           :rules="[(v) => !!v || 'Username is required']"
         />
         <v-text-field
@@ -18,6 +19,7 @@
           prepend-icon="mdi-lock"
           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
           required
+          autocomplete
           :rules="[(v) => !!v || 'Password is required']"
           @click:append="showPassword = !showPassword"
         />

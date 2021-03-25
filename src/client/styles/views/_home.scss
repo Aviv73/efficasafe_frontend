@@ -352,6 +352,10 @@
                         
                         h1 {
                             align-self: flex-end;
+                            direction: ltr;
+                        }
+                        p {
+                            direction: ltr;
                         }
                     }
                 }
