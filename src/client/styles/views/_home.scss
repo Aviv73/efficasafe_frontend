@@ -221,6 +221,11 @@
                         align-items: flex-start;
                     }
                 }
+                &:nth-child(2) {
+                    @include for-narrow-layout {
+                        width: 33%;
+                    }
+                }
                 &:last-child {
                     @include for-narrow-layout {
                         padding-inline-end: rem(20px);

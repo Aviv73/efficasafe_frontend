@@ -8,10 +8,16 @@ import gsap from 'gsap';
 export default {
     props: {
         value: {
+            type: Number,
             default: 0
         },
         duration: {
+            type: Number,
             default: 1.5
+        },
+        locale: {
+            type: String,
+            default: 'en-US'
         }
     },
     data() {
@@ -33,7 +39,7 @@ export default {
     },
     computed: {
         valueToDisplay() {
-            return this.displayValue.toLocaleString('en-US');
+            return this.displayValue.toLocaleString(this.locale);
         }
     }
 }
