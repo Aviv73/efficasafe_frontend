@@ -56,6 +56,9 @@ export const materialStore = {
             const { materials } = await materialService.list(criteria);
             return materials;
         },
+        async getStatistics() {
+            return await materialService.list({ isStats: true });
+        },
         async loadMaterial(context, { matId }) {
             return await materialService.getById(matId);
         },

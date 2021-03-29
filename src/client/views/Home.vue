@@ -42,15 +42,15 @@
             <div class="home-container">
                 <ul class="flex-space-between">
                     <li>
-                        <span>1,150</span>
+                        <animated-integer :value="stats.totalClinicalCount" />
                         Clinical trials
                     </li>
                     <li>
-                        <span>48,000</span>
+                        <animated-integer :value="stats.totalPreClinicalCount" />
                         Pre-clinical trials
                     </li>
                     <li>
-                        <span>93,414</span>
+                        <animated-integer :value="stats.totalArticlesCount" />
                         Articles
                     </li>
                 </ul>
@@ -155,11 +155,25 @@
 
 <script>
 import Swiper from '@/client/cmps/common/Swiper';
+import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
 
 export default {
     name: 'Home',
+    data() {
+        return {
+            stats: {
+                totalClinicalCount: 0,
+                totalPreClinicalCount: 0,
+                totalArticlesCount: 0
+            }
+        }
+    },
+    async created() {
+        this.stats = await this.$store.dispatch({ type: 'getStatistics' });
+    },
     components: {
-        Swiper
+        Swiper,
+        AnimatedInteger
     }
 };
 </script>

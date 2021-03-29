@@ -76,7 +76,7 @@
           > 
             What to monitor:
           </div>
-          <div class="info-value" v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptons"> 
+          <div class="info-value" v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptons || interaction.monitor.general"> 
             <span class="text-capitalize" v-if="interaction.monitor.labTests">Lab tests: </span>
             <span v-if="interaction.monitor.labTests">{{ interaction.monitor.labTests }}</span>
 
@@ -85,6 +85,9 @@
 
             <span class="text-capitalize" v-if="interaction.monitor.symptons"> Symptons: </span>
             <span v-if="interaction.monitor.symptons">{{ interaction.monitor.symptons }}</span>
+            
+            <span class="text-capitalize" v-if="interaction.monitor.general"> General: </span>
+            <span v-if="interaction.monitor.general">{{ interaction.monitor.general }}</span>
           </div>
 
           <span class="info-title" v-if="interaction.note">Note:</span>
@@ -301,10 +304,6 @@ export default {
           }
           refIdx = txt.indexOf(refNum, refIdx + cnt);
         }
-        // if (txt.startsWith('<p>A Cochrane systematic re') && refNum === 82) {
-        //   console.log(refNum, '->', draftIdx);
-        //   console.log(txt.slice(0, refIdx));
-        // }
         if (lastRefIdx + draftIdx.toString().length > refIdx) lastRefIdx = refIdx + draftIdx.toString().length;
         else lastRefIdx = refIdx;
         if (refIdx > -1) {
