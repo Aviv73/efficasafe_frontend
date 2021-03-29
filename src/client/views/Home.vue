@@ -17,7 +17,7 @@
             <div class="home-container">
                 <form @submit.prevent="" class="home-form">
                     <div class="home-form-field">
-                        <input type="text" class="primary" placeholder="Search herb / drug" />
+                        <input type="text" class="primary" :placeholder="isScreenNarrow ? 'Search drug / herb' : 'Search drug / herb / supplement'" />
                         <svg xmlns="http://www.w3.org/2000/svg" class="cap cap-left" width="24.192" height="48.001" viewBox="0 0 24.192 48.001">
                             <path 
                                 fill="#56c596"
@@ -42,15 +42,15 @@
             <div class="home-container">
                 <ul class="flex-space-between">
                     <li>
-                        <animated-integer :value="stats.totalClinicalCount" />
+                        <animated-integer :duration="2.5" :value="stats.totalClinicalCount" />
                         Clinical trials
                     </li>
                     <li>
-                        <animated-integer :value="stats.totalPreClinicalCount" />
+                        <animated-integer :duration="2.5" :value="stats.totalPreClinicalCount" />
                         Pre-clinical trials
                     </li>
                     <li>
-                        <animated-integer :value="stats.totalArticlesCount" />
+                        <animated-integer :duration="2.5" :value="stats.totalArticlesCount" />
                         Articles
                     </li>
                 </ul>
@@ -166,6 +166,11 @@ export default {
                 totalPreClinicalCount: 0,
                 totalArticlesCount: 0
             }
+        }
+    },
+    computed: {
+        isScreenNarrow() {
+            return this.$store.getters.isScreenNarrow;
         }
     },
     async created() {

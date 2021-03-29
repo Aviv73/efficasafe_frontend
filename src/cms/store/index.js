@@ -13,9 +13,13 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    materialNamesMap: null
+    materialNamesMap: null,
+    isScreenNarrow: null
   },
   getters: {
+    isScreenNarrow(state) {
+      return state.isScreenNarrow;
+    },
     materialNamesMap(state) {
       return state.materialNamesMap;
     },
@@ -35,8 +39,19 @@ export default new Vuex.Store({
         else acc[material.name].push(material.userQuery);
         return acc;
       }, {});
+    },
+    setIsScreenNarrow(state) {
+      state.isScreenNarrow = window.innerWidth < 900;
     }
   },
+  plugins: [
+    (store) => {
+      store.commit({ type: 'setIsScreenNarrow' });
+      window.addEventListener('resize', () => {
+        store.commit({ type: 'setIsScreenNarrow' });
+      });
+    }
+  ],
   modules: {
     userStore,
     materialStore,

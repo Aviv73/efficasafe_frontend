@@ -56,21 +56,14 @@
 export default {
     name: 'Navbar',
     data: () => ({
-        isScreenNarrow: window.innerWidth < 900,
         isNavActive: false
     }),
-    mounted() {
-        this.$nextTick(() => {
-            window.addEventListener('resize', this.onResize);
-        });
-    },
-    beforeDestroy() {
-        window.removeEventListener('resize', this.onResize);
+    computed: {
+        isScreenNarrow() {
+            return this.$store.getters.isScreenNarrow;
+        }
     },
     methods: {  
-        onResize() {
-            this.isScreenNarrow = window.innerWidth < 900;
-        },
         toggleNavActive() {
             this.isNavActive = !this.isNavActive;
         }
