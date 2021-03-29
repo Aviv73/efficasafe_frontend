@@ -217,15 +217,18 @@
                 }
                 &:first-child {
                     @include for-narrow-layout {
-                        padding-inline-end: 20%;
+                        padding-inline-start: rem(20px);
+                        align-items: flex-start;
                     }
                 }
                 &:last-child {
                     @include for-narrow-layout {
-                        padding-inline-start: 20%;
+                        padding-inline-end: rem(20px);
+                        align-items: flex-end;
                     }
                 }
                 span {
+                    min-width: rem(80px);
                     font-size: rem(18px);
                     font-family: roboto-bold, sans-serif;
                     font-weight: 700;
@@ -254,18 +257,26 @@
                 padding: rem(35px) rem(70px) rem(30px);
             }
             @include for-mobile-horizontal {
-                min-height: rem(267px);
+                min-height: rem(187px);
+                width: 140%;
+                margin-left: -20%;
             }
             
             &::before {
                 background-image: url("../assets/icons/quote-start.png");
                 top: 0;
                 left: 10px;
+                @include for-mobile-horizontal {
+                    left: calc(-20% + 10px);
+                }
             }
             &::after {
                 background-image: url("../assets/icons/quote-end.png");
                 bottom: 0;
                 right: 10px;
+                @include for-mobile-horizontal {
+                    right: calc(-20% + 10px);
+                }
             }
             &::before, &::after {
                 content: "";

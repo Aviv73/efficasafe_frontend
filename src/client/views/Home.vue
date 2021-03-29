@@ -42,15 +42,24 @@
             <div class="home-container">
                 <ul class="flex-space-between">
                     <li>
-                        <animated-integer :duration="2.5" :value="stats.totalClinicalCount" />
+                        <animated-integer
+                            :value="stats.totalClinicalCount"
+                            :duration="2.5"
+                        />
                         Clinical trials
                     </li>
                     <li>
-                        <animated-integer :duration="2.5" :value="stats.totalPreClinicalCount" />
+                        <animated-integer
+                            :value="stats.totalPreClinicalCount"
+                            :duration="2.5"
+                        />
                         Pre-clinical trials
                     </li>
                     <li>
-                        <animated-integer :duration="2.5" :value="stats.totalArticlesCount" />
+                        <animated-integer
+                            :value="stats.totalArticlesCount"
+                            :duration="2.5"
+                        />
                         Articles
                     </li>
                 </ul>
