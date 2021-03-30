@@ -7,9 +7,6 @@
         background-repeat: no-repeat;
         background-size: cover;
         background-position: 0 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
         padding-block-start: 55px;
         
         @include for-mobile-layout {
@@ -22,9 +19,6 @@
     }
     h1 {
         margin-block-end: rem(40px);
-        display: flex;
-        flex-direction: column;
-        text-align: center;
         align-items: center;
         font-size: rem(18px);
         line-height: rem(24px);
@@ -72,64 +66,24 @@
             max-width: 425px;
         }
     }
-    &-form {
+    &-search {
         width: 100%;
-        font-size: rem(14px);
         padding: rem(6px);
         background-color: rgba($clr7, .5);
-        border-radius: rem(100px);
-        position: relative;
         margin-block-end: rem(220px);
         
         @include for-mobile-horizontal {
             margin-block-end: rem(42px);
         }
 
-        &-field {
-            display: inline-block;
-            width: 50%;
-            position: relative;
-            
-            .cap {
-                position: absolute;
-                height: 100%;
-                top: 0;
-                
-                &-left {
-                    right: -1px;
-                }
-                &-right {
-                    left: 0;
-                }
-            }
-        }
         input {
-            width: 100%;
-            height: 100%;
-            padding: rem(14px) 0;
+            padding: rem(12px) 0;
             text-align: center;
-            background-color: $white;
-            font-family: roboto-medium, sans-serif;
-            border-radius: rem(100px);
-            border-width: 0;
-            position: relative;
             
             @include for-narrow-layout {
-                padding: rem(14px) 0 rem(14px) rem(24px);
+                padding: rem(16px) 0 rem(14px) rem(24px);
                 text-align: initial;
                 font-size: rem(15px);
-            }
-            &:focus {
-                outline: none;
-            }
-            &::placeholder {
-                font-family: roboto, sans-serif;
-            }
-            &.primary {
-                &::placeholder {
-                    color: inherit;
-                    font-family: roboto-medium, sans-serif;
-                }
             }
         }
     }
@@ -204,9 +158,6 @@
 
             li {
                 flex-grow: 1;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
                 font-family: roboto-light, sans-serif;
                 line-height: rem(36px);
                 font-weight: 300;

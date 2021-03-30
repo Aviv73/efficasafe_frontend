@@ -8,10 +8,13 @@
 @import './global/typography';
 @import './global/base';
 @import './global/helpers';
+@import './global/elements';
 
 /// CMPS
 @import './cmps/navbar';
 @import './cmps/main-footer';
+@import './cmps/shared/search-bar';
 
 /// VIEWS
 @import './views/home';
+@import './views/search-engine';

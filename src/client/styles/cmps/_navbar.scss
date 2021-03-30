@@ -2,7 +2,7 @@
     font-size: rem(12px);
     color: $white;
     background-image: linear-gradient(90deg, $gradient-clr1, $gradient-clr2);
-    padding: rem(10px) rem(40px);
+    padding: rem(10px) 0;
 
     &-content {
         display: flex;
@@ -84,9 +84,7 @@
                 }
             }
             @include for-narrow-layout {
-                &:not(:last-child) {
-                    margin-inline-end: rem(14px);
-                }
+                margin-inline-end: rem(14px);
                 &:first-of-type, &:nth-of-type(2) {
                     align-self: unset;
                     button {

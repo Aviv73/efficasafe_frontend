@@ -1,7 +1,7 @@
 <template>
     <section class="home">
-        <header>
-            <h1>
+        <header class="flex-coloumn">
+            <h1 class="flex-coloumn">
                 <a href="/">
                     <img
                         src="@/client/assets/imgs/logo.png"
@@ -15,47 +15,30 @@
                 </span>
             </h1>
             <div class="home-container">
-                <form @submit.prevent="" class="home-form">
-                    <div class="home-form-field">
-                        <input type="text" class="primary" :placeholder="isScreenNarrow ? 'Search drug / herb' : 'Search drug / herb / supplement'" />
-                        <svg xmlns="http://www.w3.org/2000/svg" class="cap cap-left" width="24.192" height="48.001" viewBox="0 0 24.192 48.001">
-                            <path 
-                                fill="#56c596"
-                                d="M24.192,48h-.221A23.973,23.973,0,0,1,0,24,23.96,23.96,0,0,1,23.972,0h.221V4.132a21.046,21.046,0,0,0-6.841,1.532A20.58,20.58,0,0,0,10.8,9.929a19.82,19.82,0,0,0-4.414,6.326,19.338,19.338,0,0,0,0,15.492A19.81,19.81,0,0,0,10.8,38.071a20.585,20.585,0,0,0,6.548,4.265,21.043,21.043,0,0,0,6.841,1.532V48Z"
-                                transform="translate(24.192 48.001) rotate(180)"
-                            />
-                        </svg>
-                    </div>
-                    <div class="home-form-field">
-                        <input type="text" class="secondary" placeholder="Add another" />
-                        <svg xmlns="http://www.w3.org/2000/svg" class="cap cap-right" viewBox="0 0 24.192 48.001">
-                            <path
-                                fill="#a4b8c6"
-                                d="M24.192,0h-.221A23.973,23.973,0,0,0,0,24,23.96,23.96,0,0,0,23.971,48h.221V43.869a21.046,21.046,0,0,1-6.841-1.532A20.58,20.58,0,0,1,10.8,38.072a19.82,19.82,0,0,1-4.414-6.326,19.338,19.338,0,0,1,0-15.492A19.81,19.81,0,0,1,10.8,9.93a20.585,20.585,0,0,1,6.548-4.265,21.042,21.042,0,0,1,6.841-1.532V0Z"
-                            />
-                        </svg>
-                    </div>
-                </form>
+                <search-bar
+                    class="home-search"
+                    :placeholder="isScreenNarrow ? 'Search drug / herb' : 'Search drug / herb / supplement'"
+                />
             </div>
         </header>
         <section class="home-stats">
             <div class="home-container">
                 <ul class="flex-space-between">
-                    <li>
+                    <li class="flex-coloumn">
                         <animated-integer
                             :value="stats.totalClinicalCount"
                             :duration="2.5"
                         />
                         Clinical trials
                     </li>
-                    <li>
+                    <li class="flex-coloumn">
                         <animated-integer
                             :value="stats.totalPreClinicalCount"
                             :duration="2.5"
                         />
                         Pre-clinical trials
                     </li>
-                    <li>
+                    <li class="flex-coloumn">
                         <animated-integer
                             :value="stats.totalArticlesCount"
                             :duration="2.5"
@@ -165,6 +148,7 @@
 <script>
 import Swiper from '@/client/cmps/common/Swiper';
 import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
+import SearchBar from '@/client/cmps/shared/SearchBar';
 
 export default {
     name: 'Home',
@@ -187,7 +171,8 @@ export default {
     },
     components: {
         Swiper,
-        AnimatedInteger
+        AnimatedInteger,
+        SearchBar
     }
 };
 </script>

@@ -1,0 +1,23 @@
+.btn {
+    background-color: $clr2;
+    padding: rem(16px) rem(40px);
+    font-family: roboto-medium, sans-serif;
+    font-weight: 500;
+    letter-spacing: rem(.08px);
+    color: $white;
+    border-radius: 6px; 
+    transition: box-shadow .4s ease;
+    
+    &:focus {
+        outline: none;
+    }
+    &:focus {       
+        box-shadow: 0 0 5px rgba($black, .4);
+    }
+    @include hover-supported {
+        box-shadow: 0 0 5px rgba($black, .4);
+    }
+    &:active {
+        box-shadow: none;
+    }
+}

@@ -28,19 +28,6 @@
 }
 
 
-/* Helpers  Mixins */
-@mixin flex-center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-@mixin flex-space-between {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-
 /* Media  Mixins */
 
 //aspect ratio mixin

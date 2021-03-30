@@ -7,13 +7,12 @@ html {
 body {
     font-size: rem(16px);
     font-weight: normal;
-    font-size: rem(16px);
     font-family: roboto, sans-serif;
     color: $clr-txt-dark;
     letter-spacing: 0;
     line-height: rem(20px);
 }
-#app {
+#app > main {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
