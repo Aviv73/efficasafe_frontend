@@ -152,9 +152,8 @@ export default {
             isLoading: false,
             editedInteraction: null,
             CKEditorConfig: {
-                extraPlugins: 'autogrow',
-                autoGrow_minHeight: 50,
-                removeButtons: '',
+                height: 400,
+                removeButtons: ''
             }
         }
     },

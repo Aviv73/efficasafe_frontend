@@ -20,8 +20,6 @@
         }
     }
     .material-list {
-        min-height: 580px;
-        height: 60vh;
         font-size: 24px;
 
         img {
@@ -43,6 +41,7 @@
     }
     .infinite-wrapper {
         overflow-y: auto;
-        max-height: 580px;
+        min-height: 380px;
+        max-height: 60vh;
     }
 }

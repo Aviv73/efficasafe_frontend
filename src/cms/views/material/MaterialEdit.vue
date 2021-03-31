@@ -73,11 +73,9 @@
               :rules="[(v) => !!v || 'Pathway name is required']"
             />
             <v-select
-              label="Type*"
+              label="Type"
               v-model="editedPathway.type"
               :items="$options.pathwayTypes"
-              required
-              :rules="[(v) => !!v || 'Pathway type is required']"
             />
             <v-select
               label="Actions"
@@ -524,6 +522,7 @@
             />
           </div>
           
+          <h3 class="text-center mb-2">Pathways</h3>
           <pathway-table 
             :items="editedMaterial.pathways"
             :isEdit="true"
@@ -773,8 +772,7 @@ export default {
       editedExternalLinkIdx: 0,
       itemToRemove: null,
       CKEditorConfig: {
-        extraPlugins: 'autogrow',
-        autoGrow_minHeight: 50,
+        height: 400,
         removeButtons: ''
       },
       alerts: {

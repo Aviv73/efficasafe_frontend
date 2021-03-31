@@ -299,9 +299,8 @@ export default {
         evidenceLevel: interactionService.getEvidenceLevelDictionary(),
       },
       CKEditorConfig: {
-        extraPlugins: 'autogrow',
-        autoGrow_minHeight: 50,
-        removeButtons: '',
+        height: 400,
+        removeButtons: ''
       },
       side1MaterialRefs: [],
       interactionRefs: []

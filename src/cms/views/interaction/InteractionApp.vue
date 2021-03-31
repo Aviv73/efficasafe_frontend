@@ -81,7 +81,7 @@ export default {
     async toggleIsActive(intId) {
       try {
         var interaction = await this.loadInteraction(intId);
-        if (!interaction.side1Material || (!interaction.side2Material && !interaction.side2Label)) {
+        if ((!interaction.side2Material && !interaction.side2Label) && !interaction.isActive) {
           eventBus.$emit(EV_edit_interaction_failed, { type: 'interaction', isError: true });
           return;
         }
