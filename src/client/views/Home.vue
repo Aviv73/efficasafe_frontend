@@ -101,8 +101,8 @@
                     <article class="main-container">
                         <h1>Search</h1>
                         <p>
-                            <span class="bold">Cross check</span> multiple Drug-Drug and Herb-Supplement-Drug interactions instantly.
-                            <span class="bold">Receive</span> concise recommendations, summaries, and detailed study reviews.
+                            <span class="font-bold">Cross check</span> multiple Drug-Drug and Herb-Supplement-Drug interactions instantly.
+                            <span class="font-bold">Receive</span> concise recommendations, summaries, and detailed study reviews.
                         </p>
                     </article>
                     <img src="@/client/assets/imgs/capsules1.svg" alt="Capsules" class="capsules capsules-1" />
@@ -111,7 +111,7 @@
                     <article class="main-container">
                         <h1>Optimize treatment</h1>
                         <p>
-                            <span class="bold">Provide</span> the best integrative treatment through access to vital information on both negative and synergistic Herb-Supplement-Drug interactions.
+                            <span class="font-bold">Provide</span> the best integrative treatment through access to vital information on both negative and synergistic Herb-Supplement-Drug interactions.
                         </p>
                     </article>
                     <img src="@/client/assets/imgs/capsules2.svg" alt="Capsules" class="capsules capsules-2" />
@@ -120,7 +120,7 @@
                     <article class="main-container">
                         <h1>Ensure safety</h1>
                         <p>
-                            <span class="bold">Provide</span> optimal protection from undesired interactions.
+                            <span class="font-bold">Provide</span> optimal protection from undesired interactions.
                         </p>
                     </article>
                 </li>
@@ -128,7 +128,7 @@
                     <article class="main-container">
                         <h1>Monitor</h1>
                         <p>
-                            <span class="bold">Gain valuable</span> insights on which clinical and laboratory parameters to monitor per individual patient profile or interaction.
+                            <span class="font-bold">Gain valuable</span> insights on which clinical and laboratory parameters to monitor per individual patient profile or interaction.
                         </p>
                     </article>
                 </li>
@@ -136,7 +136,7 @@
                     <article class="main-container">
                         <h1>Empower patients</h1>
                         <p>
-                            <span class="bold">Supply</span> reliable, referenced information to help patients better understand their medications and/or supplements.
+                            <span class="font-bold">Supply</span> reliable, referenced information to help patients better understand their medications and/or supplements.
                         </p>
                     </article>
                 </li>

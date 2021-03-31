@@ -28,25 +28,12 @@
     }
     &-search {
         padding: rem(20px) rem(24px) 0;
-        position: relative;
-        border-right: 1px solid $white;
         
         @include for-narrow-layout {
             padding: rem(90px) rem(24px) 0;
         }
         @include for-wide-layout {
             padding: rem(90px) rem(24px) 0 0;
-        }
-        &::after {
-            @include for-narrow-layout {
-                content: "";
-                position: absolute;
-                top: 0;
-                right: 0;
-                height: 100%;
-                width: 8px;
-                background-color: $clr6;
-            }
         }
         .logo {
             display: flex;
