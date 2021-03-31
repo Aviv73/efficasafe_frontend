@@ -18,6 +18,7 @@
                 <autocomplete
                     class="home-search"
                     :placeholder="isScreenNarrow ? 'Search drug / herb' : 'Search drug / herb / supplement'"
+                    @item-selected="goToSearch"
                 />
             </div>
         </header>
@@ -164,6 +165,11 @@ export default {
     computed: {
         isScreenNarrow() {
             return this.$store.getters.isScreenNarrow;
+        }
+    },
+    methods: {
+        goToSearch(query) {
+            this.$router.push(`/search?q=${query}`);
         }
     },
     async created() {

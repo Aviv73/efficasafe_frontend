@@ -104,7 +104,8 @@ export default {
             this.isLoading = false;
         },
         emitSelection(item) {
-            console.log('emitting:', item);
+            this.search = '';
+            this.results = [];
             this.$emit('item-selected', item);
         },
         shiftFocus(itemIdx) {
