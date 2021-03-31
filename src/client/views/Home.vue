@@ -15,7 +15,7 @@
                 </span>
             </h1>
             <div class="home-container">
-                <search-bar
+                <autocomplete
                     class="home-search"
                     :placeholder="isScreenNarrow ? 'Search drug / herb' : 'Search drug / herb / supplement'"
                 />
@@ -43,7 +43,7 @@
                             :value="stats.totalArticlesCount"
                             :duration="2.5"
                         />
-                        Articles
+                        Other articles
                     </li>
                 </ul>
             </div>
@@ -148,7 +148,7 @@
 <script>
 import Swiper from '@/client/cmps/common/Swiper';
 import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
-import SearchBar from '@/client/cmps/shared/SearchBar';
+import Autocomplete from '@/client/cmps/shared/Autocomplete';
 
 export default {
     name: 'Home',
@@ -172,7 +172,7 @@ export default {
     components: {
         Swiper,
         AnimatedInteger,
-        SearchBar
+        Autocomplete
     }
 };
 </script>

@@ -1,10 +1,13 @@
 <template>
-    <form @submit.prevent="" class="search-bar">
-        <div class="search-bar-field" :class="{ 'inset': isOnSearchPage }">
+    <form @submit.prevent="" class="autocomplete">
+        <div class="autocomplete-field" :class="{ 'inset': isOnSearchPage }">
             <input
+                v-model="search"
                 type="text"
                 class="primary"
                 :placeholder="placeholder"
+                @keyup.down="shiftFocus(0)"
+                v-debounce="getResults"
             />
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -24,13 +27,28 @@
                     transform="translate(24.192 48.001) rotate(180)"
                 />
             </svg>
+            <ul class="autocomplete-results" :class="{ 'active': !!search && !!results.length }">
+                <li
+                    tabindex="0"
+                    v-for="(result, idx) in results"
+                    :ref="`result${idx}`"
+                    :key="idx"
+                    class="autocomplete-results-result"
+                    @click="emitSelection(result)"
+                    @keyup.enter="emitSelection(result)"
+                    @keydown.up.prevent="shiftFocus(idx - 1)"
+                    @keydown.down.prevent="shiftFocus(idx + 1)"
+                >
+                    {{ result }}
+                </li>
+            </ul>
         </div>
-        <div class="search-bar-field" :class="{ 'inset': isOnSearchPage }">
+        <div class="autocomplete-field" :class="{ 'inset': isOnSearchPage }">
             <input
                 type="text"
                 class="secondary"
                 placeholder="Add another"
-                :disabled="isOnSearchPage"
+                disabled
             />
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -55,6 +73,7 @@
 
 <script>
 export default {
+    timerId: null,
     props: {
         placeholder: {
             type: String,
@@ -63,6 +82,38 @@ export default {
         isOnSearchPage: {
             type: Boolean,
             default: false
+        }
+    },
+    data() {
+        return {
+            search: '',
+            results: [],
+            isLoading: false
+        }
+    },
+    methods: {
+        async getResults(q) {
+            if (!q || q.length < 3) {
+                this.results = [];
+                return;
+            }
+            this.isLoading = true;
+            const criteria = { autocomplete: true, q };
+            const results = await this.$store.dispatch({ type: 'getMaterials', criteria });
+            this.results = results;
+            this.isLoading = false;
+        },
+        emitSelection(item) {
+            console.log('emitting:', item);
+            this.$emit('item-selected', item);
+        },
+        shiftFocus(itemIdx) {
+            const { length } = Object.keys(this.$refs);
+            if (itemIdx < 0) itemIdx = length - 1;
+            else if (itemIdx === length) itemIdx = 0;
+            const elItem = this.$refs['result' + itemIdx];
+            if (!elItem) return;
+            elItem[0].focus();
         }
     }
 }

@@ -18,7 +18,7 @@
                     Free searches left
                 </p>
                 <button class="btn">Register for free trial</button>
-                <search-bar
+                <autocomplete
                     class="search-engine-search-bar"
                     :isOnSearchPage="true"
                     placeholder="+   Search herb / drug"
@@ -36,12 +36,12 @@
 </template>
 
 <script>
-import SearchBar from '@/client/cmps/shared/SearchBar';
+import Autocomplete from '@/client/cmps/shared/Autocomplete';
 
 export default {
     name: 'SearchEngine',
     components: {
-        SearchBar
+        Autocomplete
     }
 };
 </script>
