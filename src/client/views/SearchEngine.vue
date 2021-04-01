@@ -39,7 +39,14 @@
                 </ul>
                 <div class="search-engine-search-actions">
                     <router-link to="/search">Clear search</router-link> |
-                    Save search
+                    <tooltip>
+                        <template #content>
+                            <span>Subscribed users can save their search results</span>
+                        </template>
+                        <button :disabled="!loggedInUser">
+                            Save search
+                        </button>
+                    </tooltip>
                 </div>
             </div>
             <div class="search-engine-results"></div>
@@ -50,6 +57,7 @@
 
 <script>
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
+import Tooltip from '@/client/cmps/common/Tooltip';
 
 export default {
     name: 'SearchEngine',
@@ -91,6 +99,9 @@ export default {
                 }
                 return acc;
             }, []);
+        },
+        loggedInUser() {
+            return null;
         }
     },
     methods: {
@@ -162,7 +173,8 @@ export default {
         }
     },
     components: {
-        Autocomplete
+        Autocomplete,
+        Tooltip
     }
 };
 </script>

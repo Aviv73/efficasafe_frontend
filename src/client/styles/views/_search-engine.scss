@@ -142,14 +142,12 @@
             opacity: .8;
             color: $clr7;
             
-            a {
+            a, button {
+                color: $clr1;
                 transition: color .3s ease;
-                @include hover-supported {
-                    color: $clr1;
-                }
-                &:focus {
-                    outline: none;
-                    color: $clr1;
+                &:disabled {
+                    color: $clr7;
+                    cursor: default;
                 }
             }
         }
