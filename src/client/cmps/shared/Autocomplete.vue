@@ -3,6 +3,7 @@
         <div class="autocomplete-field" :class="{ 'inset': isOnSearchPage }">
             <input
                 v-model="search"
+                ref="searchInput"
                 type="text"
                 class="primary"
                 :placeholder="placeholder"
@@ -107,9 +108,12 @@ export default {
             this.search = '';
             this.results = [];
             this.$emit('item-selected', item);
+            if (this.isOnSearchPage) {
+                this.$refs.searchInput.focus();
+            }
         },
         shiftFocus(itemIdx) {
-            const { length } = Object.keys(this.$refs);
+            const { length } = Object.keys(this.$refs).filter(key => key.startsWith('result'));
             if (itemIdx < 0) itemIdx = length - 1;
             else if (itemIdx === length) itemIdx = 0;
             const elItem = this.$refs['result' + itemIdx];

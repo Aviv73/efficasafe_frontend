@@ -153,7 +153,8 @@ export default {
             return this.$route.query.q.indexOf(query) !== -1;
         },
         getResultIcon(result) {
-            return result.materials.length === 1 ? require(`@/client/assets/icons/types/${result.materials[0].type}.svg`) : '';
+            const filePath = (result.materials.length === 1) ? `types/${result.materials[0].type}` : 'info';
+            return require(`@/client/assets/icons/${filePath}.svg`);
         },
         reset() {
             this.materials = [];

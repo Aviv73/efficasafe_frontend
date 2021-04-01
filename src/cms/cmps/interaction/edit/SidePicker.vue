@@ -290,7 +290,7 @@ export default {
       if (this.labelPrimaryMaterialIds) this.primaryMaterialIds = [ ...this.labelPrimaryMaterialIds ];
     }
   },
-  destroyed() {
+  beforeDestroy() {
     eventBus.$off(EV_material_unselected);
     eventBus.$off(EV_primary_material_changed);
     eventBus.$off(EV_cleanSelection);

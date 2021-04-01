@@ -59,7 +59,7 @@ export default {
             this.$refs.searchInput.setValue('');
         });
     },
-    destroyed() {
+    beforeDestroy() {
         eventBus.$off(EV_clear_autocomplete);
     }
 }

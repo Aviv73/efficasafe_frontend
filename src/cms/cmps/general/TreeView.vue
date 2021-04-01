@@ -409,7 +409,7 @@ export default {
       this.expandToSelection();
     }
   },
-  destroyed() {
+  beforeDestroy() {
     eventBus.$off(EV_emptySelection);
     eventBus.$off(EV_refresh_root_tree_view);
   }

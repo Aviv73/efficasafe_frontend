@@ -133,7 +133,7 @@ export default {
       this.$refs.autocomplete.setValue('');
     });
   },
-  destroyed() {
+  beforeDestroy() {
     eventBus.$off(EV_clear_autocomplete);
   }
 };
