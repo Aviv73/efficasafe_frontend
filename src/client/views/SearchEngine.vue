@@ -39,9 +39,11 @@
                 </ul>
                 <div class="search-engine-search-actions">
                     <router-link to="/search">Clear search</router-link> |
-                    <tooltip>
+                    <tooltip :offsetY="120">
                         <template #content>
-                            <span>Subscribed users can save their search results</span>
+                            <span class="msg">
+                                Subscribed users can save their search results
+                            </span>
                         </template>
                         <button :disabled="!loggedInUser">
                             Save search

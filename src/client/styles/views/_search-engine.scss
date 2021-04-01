@@ -150,6 +150,13 @@
                     cursor: default;
                 }
             }
+            .msg {
+                display: inline-block;
+                text-align: center;
+                line-height: rem(19px);
+                padding: rem(22px) rem(18px) rem(12px);
+                max-width: rem(206px);
+            }
         }
     }
     &-results {

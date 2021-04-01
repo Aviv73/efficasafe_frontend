@@ -5,8 +5,8 @@
             :class="{ 'fade': fade }"
             :style="{
                 'transition-duration': duration + 's',
-                'top': offSetY + '%',
-                'left': offSetX + '%'
+                'top': offsetY + '%',
+                'left': offsetX + '%'
             }"
         >
             <slot name="content" />
@@ -34,13 +34,13 @@ export default {
         },
         duration: {
             type: Number,
-            default: 0.6
+            default: 0.8
         },
-        offSetX: {
+        offsetX: {
             type: Number,
             default: 50
         },
-        offSetY: {
+        offsetY: {
             type: Number,
             default: 100
         }
@@ -52,6 +52,8 @@ export default {
     .tooltip-box { 
         position: relative;
         display: inline-block;
+        opacity: initial;
+        color: initial;
 
         &:hover .tooltip {
             visibility: visible;
