@@ -102,8 +102,20 @@
                 }
             }
         }
-        &-list {
-            margin-block-end: rem(40px);
+        &-materials {
+            align-self: stretch;
+            margin: rem(10px) 0 rem(40px);
+            font-family: roboto-medium, sans-serif;
+            font-weight: 500;
+            font-size: rem(14px);
+            line-height: rem(17px);
+
+            &-chip {
+                display: inline-block;
+                border: 1px solid $clr6;
+                border-radius: 100px;
+                padding: rem(10px) rem(30px);
+            }
         }
         &-actions {
             line-height: rem(36px);
