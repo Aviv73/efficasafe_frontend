@@ -115,6 +115,25 @@
                 border: 1px solid $clr6;
                 border-radius: 100px;
                 padding: rem(10px) rem(30px);
+                text-align: center;
+                width: 50%;
+                overflow: hidden; 
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                margin-block-end: rem(6px);
+                position: relative;
+                background-repeat: no-repeat;
+                background-position: rem(15px) center;
+                background-size: 8.3px 10.6px;
+
+                .remove-btn {
+                    position: absolute;
+                    font-size: rem(12px);
+                    top: 50%;
+                    right: rem(15px);
+                    transform: translateY(-50%);
+                    color: $clr7;
+                }
             }
         }
         &-actions {

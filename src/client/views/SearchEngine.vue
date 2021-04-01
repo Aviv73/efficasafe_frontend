@@ -29,8 +29,12 @@
                         class="search-engine-search-materials-chip"
                         v-for="(result, idx) in formatedMaterials"
                         :key="idx"
+                        :style="{ 'background-image': `url('${getResultIcon(result)}')` }"
                     >
                         {{ result.txt }}
+                        <button class="remove-btn" @click="removeMaterials(result.txt)">
+                            <font-awesome-icon icon="times" />
+                        </button>
                     </li>
                 </ul>
                 <div class="search-engine-search-actions">
@@ -147,6 +151,9 @@ export default {
         },
         isQueryExists(query) {
             return this.$route.query.q.indexOf(query) !== -1;
+        },
+        getResultIcon(result) {
+            return result.materials.length === 1 ? require(`@/client/assets/icons/types/${result.materials[0].type}.svg`) : '';
         },
         reset() {
             this.materials = [];
