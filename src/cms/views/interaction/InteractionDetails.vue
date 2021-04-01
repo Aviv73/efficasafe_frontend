@@ -72,7 +72,7 @@
 
           <div 
             class="info-title text-capitalize"
-            v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptons"
+            v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptons || interaction.monitor.general"
           > 
             What to monitor:
           </div>
