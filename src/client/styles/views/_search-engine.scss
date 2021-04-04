@@ -113,13 +113,16 @@
             font-size: rem(14px);
             line-height: rem(17px);
 
+            .tooltip-box {
+                width: 50%;
+            }
             &-chip {
                 display: inline-block;
+                width: 100%;
                 border: 1px solid $clr6;
                 border-radius: 100px;
                 padding: rem(10px) rem(30px);
                 text-align: center;
-                width: 50%;
                 overflow: hidden; 
                 text-overflow: ellipsis;
                 white-space: nowrap;

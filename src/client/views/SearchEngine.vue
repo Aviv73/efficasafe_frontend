@@ -25,17 +25,28 @@
                     @item-selected="addMaterials"
                 />
                 <ul class="search-engine-search-materials">
-                    <li
-                        class="search-engine-search-materials-chip"
+                    <tooltip
                         v-for="(result, idx) in formatedMaterials"
                         :key="idx"
-                        :style="{ 'background-image': `url('${getResultIcon(result)}')` }"
+                        :offsetY="25"
+                        :offsetX="100"
                     >
-                        {{ result.txt }}
-                        <button class="remove-btn" @click="removeMaterials(result.txt)">
-                            <close-icon :size="16" />
-                        </button>
-                    </li>
+                        <template #content>
+                            <material-interactions-preview
+                                :materials="result.materials"
+                                :disabled="result.isIncluded"
+                            />
+                        </template>
+                        <li
+                            class="search-engine-search-materials-chip"
+                            :style="{ 'background-image': `url('${getResultIcon(result)}')` }"
+                        >
+                            {{ result.txt }}
+                            <button class="remove-btn" @click="removeMaterials(result.txt)">
+                                <close-icon :size="16" />
+                            </button>
+                        </li>
+                    </tooltip>
                 </ul>
                 <div class="search-engine-search-actions">
                     <router-link to="/search">Clear search</router-link> |
@@ -92,6 +103,7 @@
 <script>
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import Tooltip from '@/client/cmps/common/Tooltip';
+import MaterialInteractionsPreview from '@/client/cmps/search-engine/MaterialInteractionsPreview';
 import MobileMenuIcon from '@/client/cmps/common/icons/MobileMenuIcon';
 import MobileShareIcon from '@/client/cmps/common/icons/MobileShareIcon';
 import CloseIcon from 'vue-material-design-icons/Close';
@@ -217,6 +229,7 @@ export default {
     components: {
         Autocomplete,
         Tooltip,
+        MaterialInteractionsPreview,
         CloseIcon,
         PrinterIcon,
         ShareIcon,
