@@ -1,12 +1,10 @@
 <template>
     <nav class="navbar">
         <div class="main-container">
-            <div class="navbar-content">
+            <div class="flex-space-between">
                 <div class="navbar-msgs">
-                    <span>
-                        {{ (isScreenNarrow) ? 'Get a Free trial' : 'Try our onboarding wizard' }}
-                        <font-awesome-icon icon="chevron-right" v-if="!isScreenNarrow" />
-                    </span>
+                    {{ (isScreenNarrow) ? 'Get a Free trial' : 'Try our onboarding wizard' }}
+                    <chevron-right-icon :size="20" v-if="!isScreenNarrow" />
                 </div>
                 <ul class="navbar-nav">
                     <li class="navbar-nav-item">
@@ -27,10 +25,8 @@
                     </li>
                 </ul>
                 <button class="navbar-toggle" @click="toggleNavActive">
-                    <font-awesome-icon
+                    <dots-horizontal-icon
                         v-if="isScreenNarrow"
-                        icon="ellipsis-h"
-                        class="fa-2x"
                     />
                     <span v-else>More...</span>
                 </button>
@@ -40,7 +36,7 @@
                     v-hammer:swipe.right="toggleNavActive"
                 >
                     <button class="navbar-mobile-nav-close-btn" @click="toggleNavActive">
-                        <font-awesome-icon icon="times" />
+                        <close-icon />
                     </button>
                     <img src="@/client/assets/imgs/logo-white.png" alt="Efficasafe" class="navbar-mobile-nav-logo" />
                     <li class="navbar-mobile-nav-item">
@@ -68,6 +64,10 @@
 </template>
 
 <script>
+import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
+import CloseIcon from 'vue-material-design-icons/Close';
+import DotsHorizontalIcon from 'vue-material-design-icons/DotsHorizontal';
+
 export default {
     name: 'Navbar',
     data: () => ({
@@ -85,6 +85,11 @@ export default {
         toggleNavActive() {
             this.isNavActive = !this.isNavActive;
         }
+    },
+    components: {
+        ChevronRightIcon,
+        CloseIcon,
+        DotsHorizontalIcon
     }
 }
 </script>

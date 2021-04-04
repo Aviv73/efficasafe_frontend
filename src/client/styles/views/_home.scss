@@ -93,7 +93,7 @@
         
         .chevron {
             position: absolute;
-            top: calc(30% - 10px);
+            top: calc(30% - 20px);
             cursor: pointer;
             display: none;
             @include hover-supported {

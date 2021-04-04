@@ -14,7 +14,7 @@
             grid-template-rows: auto;
         }
         @include for-wide-layout {
-            grid-template-columns: auto 500px 940px auto;
+            grid-template-columns: auto 500px 920px auto;
         }
     }
     .brim-start, .brim-end {
@@ -148,6 +148,7 @@
             a, button {
                 color: $clr1;
                 transition: color .3s ease;
+                
                 &:disabled {
                     color: $clr7;
                     cursor: default;
@@ -164,5 +165,40 @@
     }
     &-results {
         background-color: $clr6;
+
+        header {
+            padding: rem(48px) 0 rem(20px);
+            overflow: hidden;
+            padding-inline-end: 24px;
+            color: $clr1;
+    
+            @include for-wide-layout {
+                padding-inline-end: 0;
+            }
+        }
+        nav {
+            background-color: rgba($white, .75);
+            padding: rem(20px) rem(28px);
+        }
+        &-amount {
+            display: inline-block;
+            padding: rem(12px) rem(56px) rem(12px) rem(20px);
+            background-color: $clr1;
+            border-radius: 0 100px 100px 0;
+            font-size: rem(21px);
+            line-height: rem(25px);
+            margin-block-end: rem(20px);
+            color: $white;
+        }
+        &-actions {
+            button:first-child {
+                margin-inline-end: rem(24px);
+            }
+        }
+        &-stats {
+            font-size: rem(12px);
+            letter-spacing: rem(.06px);
+            opacity: .8;
+        }
     }
 }

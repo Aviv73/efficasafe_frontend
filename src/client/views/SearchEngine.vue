@@ -1,7 +1,7 @@
 <template>
     <section class="search-engine">
         <div class="search-engine-container">
-            <span class="brim-start"></span>
+            <span class="brim-start" />
             <div class="search-engine-search flex-coloumn">
                 <figure class="logo">
                     <img
@@ -33,7 +33,7 @@
                     >
                         {{ result.txt }}
                         <button class="remove-btn" @click="removeMaterials(result.txt)">
-                            <font-awesome-icon icon="times" />
+                            <close-icon :size="16" />
                         </button>
                     </li>
                 </ul>
@@ -51,8 +51,30 @@
                     </tooltip>
                 </div>
             </div>
-            <div class="search-engine-results"></div>
-            <span class="brim-end"></span>
+            <div class="search-engine-results">
+                <header>
+                    <div class="flex-space-between">
+                        <span class="search-engine-results-amount font-medium">
+                            350 Interactions
+                        </span>
+                        <span class="search-engine-results-actions">
+                            <button title="Print">
+                                <printer-icon />
+                            </button>
+                            <button title="Share">
+                                <share-icon />
+                            </button>
+                        </span>
+                    </div>
+                    <div class="search-engine-results-stats">
+                        Based on 780 Clinical Trials, 950 Pre-Clinical Trials and 1589 articles >>
+                    </div>
+                </header>
+                <nav>
+                    
+                </nav>
+            </div>
+            <span class="brim-end" />
         </div>
     </section>
 </template>
@@ -60,6 +82,9 @@
 <script>
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import Tooltip from '@/client/cmps/common/Tooltip';
+import CloseIcon from 'vue-material-design-icons/Close';
+import PrinterIcon from 'vue-material-design-icons/Printer';
+import ShareIcon from 'vue-material-design-icons/Share';
 
 export default {
     name: 'SearchEngine',
@@ -176,7 +201,10 @@ export default {
     },
     components: {
         Autocomplete,
-        Tooltip
+        Tooltip,
+        CloseIcon,
+        PrinterIcon,
+        ShareIcon
     }
 };
 </script>

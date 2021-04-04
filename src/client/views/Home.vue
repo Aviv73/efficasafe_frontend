@@ -88,10 +88,10 @@
                         <span>Margaret Elsindor</span>
                     </p>
                     <template v-slot:navigation-prev>
-                        <font-awesome-icon icon="chevron-left" />
+                        <chevron-left-icon :size="36" />
                     </template>
                     <template v-slot:navigation-next>
-                        <font-awesome-icon icon="chevron-right" />
+                        <chevron-right-icon :size="36" />
                     </template>
                 </swiper>
             </div>
@@ -150,6 +150,8 @@
 import Swiper from '@/client/cmps/common/Swiper';
 import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
+import ChevronRightIcon from 'vue-material-design-icons/ChevronRight.vue';
+import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft.vue';
 
 export default {
     name: 'Home',
@@ -178,7 +180,9 @@ export default {
     components: {
         Swiper,
         AnimatedInteger,
-        Autocomplete
+        Autocomplete,
+        ChevronRightIcon,
+        ChevronLeftIcon
     }
 };
 </script>
