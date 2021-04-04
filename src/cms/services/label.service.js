@@ -7,6 +7,7 @@ export const labelService = {
     getById,
     save,
     remove,
+    removeMany,
     restore,
     getEmptyLabel,
     getLabelPaths
@@ -49,6 +50,9 @@ function remove(id) {
     httpService.delete(`${END_POINT}/${id}`);
 }
 
+function removeMany(ids) {
+    httpService.delete(END_POINT, ids);
+}
 
 function getEmptyLabel() {
     return {

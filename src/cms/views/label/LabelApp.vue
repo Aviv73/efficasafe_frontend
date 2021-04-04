@@ -14,6 +14,7 @@
                     :loading="isLoading"
                     @options-updated="setFilter"
                     @header-clicked="setFilter"
+                    @delete-many-labels="removeMany"
                 />
             </v-card>
             <icons-map />
@@ -61,13 +62,16 @@ export default {
             this.isLoading = true;
             const filterBy = this.$route.query;
 
-            filterBy.sortBy = filterBy.sortBy || 'isSuper';
-            filterBy.isDesc = filterBy.isDesc || 1;
+            filterBy.sortBy = filterBy.sortBy || [ 'isSuper', 'name' ];
+            filterBy.isDesc = filterBy.isDesc || [ true, false ];
             filterBy.limit = filterBy.limit || 15;
             if (filterBy.q) filterBy.page = 0;
 
             await this.$store.dispatch({ type: 'loadLabels', filterBy });
             this.isLoading = false;
+        },
+        async removeMany(ids) {
+            await this.$store.dispatch({ type: 'removeLabels', ids });
         }
     },
     components: {

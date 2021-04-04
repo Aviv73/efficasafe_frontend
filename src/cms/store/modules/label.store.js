@@ -24,13 +24,19 @@ export const labelStore = ({
             const idx = state.labels.findIndex(currLabel => currLabel._id === labelId);
             state.labels.splice(idx, 1);
         },
+
+        removeLabels(state, { ids }) {
+            state.labels = state.labels.filter(label => {
+                return !ids.includes(label._id);
+            });
+        },
         updateLabel(state, { label }) {
             const idx = state.labels.findIndex(currLabel => currLabel._id === label._id);
             state.labels.splice(idx, 1, label);
         },
         setLabelCount(state, { total }) {
             state.labelsCount = total;
-        }
+        }  
     },
     actions: {
         async loadLabels(context, { filterBy }) {
@@ -64,6 +70,10 @@ export const labelStore = ({
                 type: "removeLabel",
                 labelId
             });
+        },
+        async removeLabels(context, { ids }) {
+            await labelService.removeMany(ids);
+            context.commit({ type: 'removeLabels', ids });
         },
         async getLabelPaths(context, { selectedPaths }) {
             return await labelService.getLabelPaths(selectedPaths);

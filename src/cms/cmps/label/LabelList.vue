@@ -58,7 +58,12 @@
               ></div>
             </td>
 
-            <td class="td-actions" width="120" align="center">
+            <td class="td-actions d-flex align-center justify-space-around" width="120" align="center">
+              <v-checkbox
+                v-model="selected"
+                :value="item._id"
+                title="Toggle Interaction"
+              />
               <v-btn small color="primary" :to="`/label/edit/${item._id}`">
                 <v-icon small>mdi-pencil</v-icon>
               </v-btn>
@@ -67,6 +72,37 @@
         </tbody>
       </template>
     </v-data-table>
+    <v-fab-transition>
+      <v-btn
+          v-if="selected.length"
+          :title="`Delete ${selected.length} labels`"
+          @click="confirmDialog = true"
+          color="error"
+          fab
+          fixed
+          right
+          bottom
+      >
+        <v-icon>mdi-delete</v-icon>
+      </v-btn>
+    </v-fab-transition>
+    <v-dialog v-model="confirmDialog" max-width="400">
+      <v-card>
+          <v-card-title class="primary headline" style="color:white; font-weight:bold;">
+            <v-icon dark left>mdi-delete</v-icon>
+            Confirm delete
+          </v-card-title>
+          <v-card-text class="py-4" style="text-align: center;">
+            Are you sure you want to delete {{ selected.length }} labels?
+          </v-card-text>
+          <v-divider />
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="normal" @click="confirmDialog = false">Cancel</v-btn>
+            <v-btn color="primary" @click="confirmDelete">Ok</v-btn>
+          </v-card-actions>
+      </v-card>
+    </v-dialog>
   </section>
 </template>
 
@@ -103,6 +139,8 @@ export default {
   },
   data() {
     return {
+      selected: [],
+      confirmDialog: false,
       isMounted: false,
       options: {},
       isDesc: true,
@@ -124,7 +162,7 @@ export default {
           sortable: false
         },
         {
-          text: 'Action',
+          text: 'Actions',
           name: 'Action',
           value: 'action',
           sortable: false,
@@ -134,6 +172,11 @@ export default {
     };
   },
   methods: {
+    confirmDelete() {
+      this.$emit('delete-many-labels', [ ...this.selected ]);
+      this.selected = [];
+      this.confirmDialog = false;
+    },
     onSort(sortBy, isDesc) {
       this.$emit('header-clicked', { sortBy, isDesc });
     },
