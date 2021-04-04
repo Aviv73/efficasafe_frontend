@@ -58,20 +58,30 @@
                             350 Interactions
                         </span>
                         <span class="search-engine-results-actions">
-                            <button title="Print">
+                            <button
+                                class="print-btn"
+                                title="Print"
+                            >
                                 <printer-icon />
                             </button>
-                            <button title="Share">
-                                <share-icon />
+                            <button
+                                class="share-btn"
+                                title="Share"
+                            >
+                                <mobile-share-icon v-if="isScreenNarrow" />
+                                <share-icon v-else />
                             </button>
                         </span>
+                        <button class="mobile-menu-btn">
+                            <mobile-menu-icon />
+                        </button>
                     </div>
                     <div class="search-engine-results-stats">
                         Based on 780 Clinical Trials, 950 Pre-Clinical Trials and 1589 articles >>
                     </div>
                 </header>
                 <nav>
-                    
+
                 </nav>
             </div>
             <span class="brim-end" />
@@ -82,6 +92,8 @@
 <script>
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import Tooltip from '@/client/cmps/common/Tooltip';
+import MobileMenuIcon from '@/client/cmps/common/icons/MobileMenuIcon';
+import MobileShareIcon from '@/client/cmps/common/icons/MobileShareIcon';
 import CloseIcon from 'vue-material-design-icons/Close';
 import PrinterIcon from 'vue-material-design-icons/Printer';
 import ShareIcon from 'vue-material-design-icons/Share';
@@ -129,6 +141,9 @@ export default {
         },
         loggedInUser() {
             return null;
+        },
+        isScreenNarrow() {
+            return this.$store.getters.isScreenNarrow;
         }
     },
     methods: {
@@ -204,7 +219,9 @@ export default {
         Tooltip,
         CloseIcon,
         PrinterIcon,
-        ShareIcon
+        ShareIcon,
+        MobileMenuIcon,
+        MobileShareIcon
     }
 };
 </script>
