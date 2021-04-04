@@ -55,9 +55,13 @@ export default {
         opacity: initial;
         color: initial;
 
-        &:hover .tooltip {
-            visibility: visible;
-            opacity: 1;
+        @media not all and (pointer: coarse) {
+            &:hover {
+                .tooltip {
+                    visibility: visible;
+                    opacity: 1;
+                }
+            }
         }
     }
     .tooltip { 

@@ -25,8 +25,12 @@
                     <div class="text-capitalize" v-if="!isPrimaryMaterial && interaction.note">Note:</div>
                     <div v-if="!isPrimaryMaterial && interaction.note">{{ interaction.note }}</div>
 
-                    <div class="text-capitalize">Summary:</div>
-                    <div v-html="formatRefs(interaction.summary)" ref="summary"></div>
+                    <div class="text-capitalize" v-if="interaction.summary">Summary:</div>
+                    <div
+                        v-if="interaction.summary"
+                        ref="summary"
+                        v-html="formatRefs(interaction.summary)"
+                    />
 
                     <div
                         class="text-capitalize"

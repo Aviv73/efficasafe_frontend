@@ -67,8 +67,13 @@
           <h3 class="info-title" v-if="interaction.updatedAt">Updated At:</h3>
           <p class="info-value" v-if="interaction.updatedAt">{{ interaction.updatedAt | moment('MMM Do YYYY') }}</p>
 
-          <h3 class="info-title">Summary:</h3>
-          <p class="info-value" v-html="formatRefs(interaction.summary)" ref="summary"></p>
+          <h3 class="info-title"  v-if="interaction.summary">Summary:</h3>
+          <p
+            v-if="interaction.summary"
+            class="info-value"
+            ref="summary"
+            v-html="formatRefs(interaction.summary)"
+          />
 
           <div 
             class="info-title text-capitalize"

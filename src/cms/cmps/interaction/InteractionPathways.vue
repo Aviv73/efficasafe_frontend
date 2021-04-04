@@ -152,7 +152,7 @@ export default {
     },
     methods: {
         getMaterialRefNums(pubmedIds) {
-            if (!this.side1RefsLength || !this.side2RefsLength || !pubmedIds.length) return '';
+            if (!this.side2RefsLength || !pubmedIds.length) return '';
             if (pubmedIds.length === 1) {
                 const field = (typeof pubmedIds[0] === 'number') ? 'pubmedId' : 'link';
                 const refIdx  = this.combinedRefs.findIndex(ref => pubmedIds.includes(ref[field]));
