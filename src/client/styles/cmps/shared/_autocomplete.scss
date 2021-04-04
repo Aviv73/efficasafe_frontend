@@ -29,6 +29,10 @@
             &:focus {
                 outline: none;
                 box-shadow: inset 0px 0px 2px 0 $clr9;
+
+                &::placeholder {
+                    opacity: 0;
+                }
             }
             &::placeholder {
                 font-family: roboto, sans-serif;
