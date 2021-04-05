@@ -1,15 +1,10 @@
 .interactions-preview {
     padding: rem(20px) rem(16px);
-    position: relative;
+    box-shadow: 0px 2px 4px rgba($black, .1);
+    border: 1px solid $clr6;
     color: $clr1;
     font-size: rem(14px);
-
-    .dismiss-btn {
-        position: absolute;
-        top: rem(14px);
-        right: rem(14px);
-        color: $clr7;
-    }
+    
     h6 {
         font-size: rem(12px);
         line-height: rem(22px);
@@ -18,14 +13,27 @@
     }
     &-warnning {
         color: $red;
-        padding-block-start: rem(14px);
         text-align: center;
         max-width: rem(200px);
+
+        hr {
+            align-self: stretch;
+        }
     }
-    &-composites-composite {
-        background-repeat: no-repeat;
-        background-position: rem(0px) center;
-        background-size: 14px 16px;
-        padding-inline-start: 18px;
+    &-composites {
+        &-composite {
+            background-repeat: no-repeat;
+            background-position: rem(0px) center;
+            background-size: 14px 16px;
+            padding-inline-start: 18px;
+        }
+    }
+    &-actions {
+        padding-block-start: rem(4px);
+        text-align: center;
+    }
+    hr {
+        margin-block-start: rem(20px);
+        border-top: 1px solid rgba($clr6, .4);
     }
 }

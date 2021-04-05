@@ -1,12 +1,24 @@
 <template>
-    <div class="tooltip-box">
+    <div
+        class="tooltip-box"
+        @mouseenter="checkIfInViewport"
+    >
         <aside
             class="tooltip"
-            :class="{ 'fade': fade }"
+            ref="tooltip"
+            :class="{
+                'fade': fade,
+                'exceed-right': exceedsRight,
+                'exceed-left': exceedsLeft,
+                bottom,
+                top,
+                left,
+                right
+            }"
             :style="{
                 'transition-duration': duration + 's',
-                'top': offsetY + '%',
-                'left': offsetX + '%'
+                'margin-top': offsetY + 'px',
+                'margin-left': offsetX + 'px'
             }"
         >
             <slot name="content" />
@@ -38,11 +50,47 @@ export default {
         },
         offsetX: {
             type: Number,
-            default: 50
+            default: 0
         },
         offsetY: {
             type: Number,
-            default: 100
+            default: 0
+        },
+        bottom: {
+            type: Boolean,
+            default: false
+        },
+        top: {
+            type: Boolean,
+            default: false
+        },
+        left: {
+            type: Boolean,
+            default: false
+        },
+        right: {
+            type: Boolean,
+            default: false
+        }
+    },
+    data() {
+        return {
+            exceedsRight: false,
+            exceedsLeft: false
+        }
+    },
+    methods: {
+        checkIfInViewport() {
+            const el = this.$refs.tooltip;
+            const { right, left } = el.getBoundingClientRect();
+            this.exceedsRight = false;
+            this.exceedsLeft = false;
+
+            if (right > window.innerWidth) {
+                this.exceedsRight = true;
+            } else if (left < 0) {
+                this.exceedsLeft = true;
+            }
         }
     }
 }
@@ -66,17 +114,46 @@ export default {
     }
     .tooltip { 
         position: absolute;
-        top: 100%;
-        left: 50%;
         width: max-content;
         visibility: hidden;
-        transform: translateX(-50%);
         z-index: 1;
         opacity: 0;
 
         &.fade {
             transition-property: opacity;
             transition-timing-function: ease;
+        }
+        &.bottom {
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        &.top {
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        &.left {
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+
+            &.exceed-right {
+                left: unset;
+                right: 100%;
+                transform: translateY(-50%);
+            }
+        }
+        &.right {
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+
+            &.exceed-left {
+                right: unset;
+                left: 100%;
+                transform: translateY(-50%);
+            }
         }
     }
 </style>

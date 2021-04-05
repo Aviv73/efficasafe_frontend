@@ -158,6 +158,8 @@
                 }
             }
             .msg {
+                box-shadow: 0px 2px 4px rgba($black, .1);
+                border: 1px solid $clr6;
                 display: inline-block;
                 text-align: center;
                 line-height: rem(19px);

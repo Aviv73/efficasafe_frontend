@@ -11,6 +11,7 @@ body {
     color: $clr-txt-dark;
     letter-spacing: 0;
     line-height: rem(20px);
+    overflow-x: hidden;
 }
 #app > main {
     min-height: 100vh;

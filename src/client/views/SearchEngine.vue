@@ -28,8 +28,7 @@
                     <tooltip
                         v-for="(result, idx) in formatedMaterials"
                         :key="idx"
-                        :offsetY="25"
-                        :offsetX="100"
+                        left
                     >
                         <template #content>
                             <material-interactions-preview
@@ -51,7 +50,7 @@
                 </ul>
                 <div class="search-engine-search-actions">
                     <router-link to="/search">Clear search</router-link> |
-                    <tooltip :offsetY="120">
+                    <tooltip bottom>
                         <template #content>
                             <span class="msg">
                                 Subscribed users can save their search results

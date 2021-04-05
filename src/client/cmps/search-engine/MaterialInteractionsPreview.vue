@@ -1,8 +1,5 @@
 <template>
     <section class="interactions-preview">
-        <button class="dismiss-btn">
-            <close-icon :size="18" />
-        </button>
         <div
             v-if="disabled"
             class="interactions-preview-warnning flex-coloumn"
@@ -10,12 +7,13 @@
             <alert-circle-outline-icon />
             There is no additional results for {{ userQuery }}
             as it is part of {{ getCompoundName(materials[0].name, userQuery) }}
+            <hr />
         </div>
         <div
             v-else-if="materials.length > 1 || userQuery !== materials[0].name"
             class="interactions-preview-composites"
         >
-            <h6>{{ materials.length }} Materials</h6>
+            <h6>{{ previewHeader }}</h6>
             <ul>
                 <li
                     class="interactions-preview-composites-composite"
@@ -28,12 +26,26 @@
                     {{ material.name }}
                 </li>
             </ul>
+            <hr />
+        </div>
+        <div
+            v-if="interactions.length"
+            class="interactions-preview-interactions"
+        >
+            <ul>
+               ~~~ interactions preview here ~~~ 
+            </ul>
+            <hr />
+        </div>
+        <div class="interactions-preview-actions">
+            <router-link :to="`/search?q=${userQuery}`" target="_blank">
+                See all interactions
+            </router-link>
         </div>
     </section>
 </template>
 
 <script>
-import CloseIcon from 'vue-material-design-icons/Close';
 import AlertCircleOutlineIcon from 'vue-material-design-icons/AlertCircleOutline';
 
 export default {
@@ -49,6 +61,17 @@ export default {
         userQuery: {
             type: String,
             required: true
+        },
+        interactions: {
+            type: Array,
+            default: () => []
+        }
+    },
+    computed: {
+        previewHeader() {
+            if (this.materials.length > 1) return `${this.materials.length} Materials`;
+            if (this.userQuery !== this.materials[0].name) return this.materials[0].type;
+            return '';
         }
     },
     methods: {
@@ -58,7 +81,6 @@ export default {
         }
     },
     components: {
-        CloseIcon,
         AlertCircleOutlineIcon
     }
 }
