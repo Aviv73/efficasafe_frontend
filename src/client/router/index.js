@@ -3,6 +3,9 @@ import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import SearchEngine from '../views/SearchEngine';
 
+import ResultList from '@/client/cmps/search-engine/ResultList';
+import DBankResultList from '@/client/cmps/search-engine/DBankResultList';
+
 
 Vue.use(VueRouter);
 
@@ -14,8 +17,19 @@ const routes = [
   },
   {
     path: '/search',
-    name: 'SearchEngine',
-    component: SearchEngine
+    component: SearchEngine,
+    children: [
+      {
+        path: '',
+        name: 'ResultList',
+        component: ResultList
+      },
+      {
+        path: 'drug2drug',
+        name: 'DBankResultList',
+        component: DBankResultList
+      }
+    ]
   },
   {
     path: '/about',

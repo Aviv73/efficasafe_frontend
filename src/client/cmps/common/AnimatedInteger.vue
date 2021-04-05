@@ -1,5 +1,5 @@
 <template>
-    <span>{{ valueToDisplay }}</span>
+    <span class="animated-integer">{{ valueToDisplay }}</span>
 </template>
 
 <script>

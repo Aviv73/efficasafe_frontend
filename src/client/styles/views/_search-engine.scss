@@ -132,6 +132,9 @@
                 background-position: rem(15px) center;
                 background-size: 14px 16px;
 
+                &.disabled {
+                    opacity: .5;
+                }
                 .remove-btn {
                     position: absolute;
                     font-size: rem(12px);

@@ -26,7 +26,7 @@
                     {{ material.name }}
                 </li>
             </ul>
-            <hr />
+            <hr v-if="interactions.length || materials.length === 1" />
         </div>
         <div
             v-if="interactions.length"
@@ -35,9 +35,9 @@
             <ul>
                ~~~ interactions preview here ~~~ 
             </ul>
-            <hr />
+            <hr v-if="materials.length === 1" />
         </div>
-        <div class="interactions-preview-actions">
+        <div v-if="materials.length === 1" class="interactions-preview-actions">
             <router-link :to="`/search?q=${userQuery}`" target="_blank">
                 See all interactions of {{ userQuery }}
             </router-link>
@@ -69,8 +69,7 @@ export default {
     },
     computed: {
         previewHeader() {
-            if (this.materials.length > 1) return `${this.materials.length} Materials`;
-            if (this.userQuery !== this.materials[0].name) return this.materials[0].type;
+            if (this.materials.length === 1 && this.userQuery !== this.materials[0].name) return this.materials[0].type;
             return '';
         }
     },
@@ -90,8 +89,9 @@ export default {
                 case 'mineral':
                 case 'amino acid':
                 case 'nutraceutical':
-                case 'food':
                     return 'other';
+                case 'food':
+                    return 'food';
             }
         }
     },

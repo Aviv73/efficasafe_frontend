@@ -39,6 +39,7 @@
                         </template>
                         <li
                             class="search-engine-search-materials-chip"
+                            :class="{ 'disabled': result.isIncluded }" 
                             :style="{ 'background-image': `url('${getResultIcon(result)}')` }"
                         >
                             {{ result.txt }}
@@ -66,7 +67,8 @@
                 <header>
                     <div class="flex-space-between">
                         <span class="search-engine-results-amount font-medium">
-                            350 Interactions
+                            <animated-integer :value="totalInteractionCount" />
+                            Interactions
                         </span>
                         <span class="search-engine-results-actions">
                             <button
@@ -94,6 +96,7 @@
                 <nav>
 
                 </nav>
+                <router-view />
             </div>
             <span class="brim-end" />
         </div>
@@ -103,6 +106,7 @@
 <script>
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import Tooltip from '@/client/cmps/common/Tooltip';
+import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
 import MaterialInteractionsPreview from '@/client/cmps/search-engine/MaterialInteractionsPreview';
 import MobileMenuIcon from '@/client/cmps/common/icons/MobileMenuIcon';
 import MobileShareIcon from '@/client/cmps/common/icons/MobileShareIcon';
@@ -114,13 +118,19 @@ export default {
     name: 'SearchEngine',
     data() {
         return {
+            isLoading: false,
             materials: [],
-            isLoading: false
+            interactions: [],
+            pageCount: 0,
+            total: 0,
+            dBankInteractions: [],
+            dBankPageCount: 0,
+            dBankTotal: 0
         }
     },
     watch: {
         '$route.query': {
-            async handler() {
+            handler() {
                 const { q } = this.$route.query; 
                 if (!q) {
                     this.reset();
@@ -129,7 +139,7 @@ export default {
                 if (!Array.isArray(q) && q) {
                     this.$route.query.q = [ q ];
                 }
-                await this.getMaterials();
+                this.getResults();
             },
             deep: true,
             immediate: true
@@ -151,6 +161,9 @@ export default {
                 return acc;
             }, []);
         },
+        totalInteractionCount() {
+            return this.total + this.dBankTotal;
+        },
         loggedInUser() {
             return null;
         },
@@ -159,6 +172,49 @@ export default {
         }
     },
     methods: {
+        async getResults() {
+            this.isLoading = true;
+            await this.getMaterials();
+            await Promise.all([
+                this.getInteractions(),
+                this.getDBankInteractions()
+            ]);
+            this.isLoading = false;
+        },
+        async getInteractions(page = 1) {
+            const ids = this.materials.reduce((acc, { _id, labels }) => {
+                if (!acc.includes(_id)) acc.push(_id);
+                labels.forEach(label => {
+                    if (!acc.includes(label._id)) acc.push(label._id);
+                });
+                return acc;
+            }, []);
+            const filterBy = {
+                isSearchResults: true,
+                page: --page,
+                id: ids,
+                materialCount: this.materials.filter(({ isIncluded }) => !isIncluded).length
+            };
+            const { interactions, pageCount, total } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
+            this.pageCount = pageCount;
+            this.total = total;
+            this.interactions = interactions;
+        },
+        async getDBankInteractions(page = 1) {
+            const isAllNotDrugs = this.materials.every(material => material.type !== 'drug');
+            if (!this.materials.length || isAllNotDrugs) {
+                this.dBankInteractions = [];
+                this.isLoading = false;
+                return;
+            }
+            const drugBankIds = this.materials.map(mat => mat.drugBankId);
+            const drugBankId = (drugBankIds.length === 1) ? drugBankIds[0] : drugBankIds;
+            const criteria = { drugBankId, page: --page };
+            const { dBankInteractions, pageCount, total } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria });
+            this.dBankInteractions = dBankInteractions;
+            this.dBankPageCount = pageCount;
+            this.dBankTotal = total;
+        },
         async getMaterials() {
             if (!this.$route.query.q || !this.$route.query.q.length) {
                 this.materials = [];
@@ -231,8 +287,10 @@ export default {
                 case 'mineral':
                 case 'amino acid':
                 case 'nutraceutical':
-                case 'food':
                     fileName = 'other';
+                    break;
+                case 'food':
+                    fileName = 'food';
                     break;
             }
             const filePath = (result.materials.length === 1) ? `types/${fileName}` : 'info';
@@ -251,7 +309,8 @@ export default {
         PrinterIcon,
         ShareIcon,
         MobileMenuIcon,
-        MobileShareIcon
+        MobileShareIcon,
+        AnimatedInteger
     }
 };
 </script>
