@@ -39,7 +39,7 @@
         </div>
         <div class="interactions-preview-actions">
             <router-link :to="`/search?q=${userQuery}`" target="_blank">
-                See all interactions
+                See all interactions of {{ userQuery }}
             </router-link>
         </div>
     </section>
