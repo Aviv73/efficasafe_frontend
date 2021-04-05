@@ -90,7 +90,8 @@
                         </button>
                     </div>
                     <div class="search-engine-results-stats">
-                        Based on 780 Clinical Trials, 950 Pre-Clinical Trials and 1589 articles >>
+                        Based on <animated-integer :value="totalRefsCount" />
+                        Clinical Trials, Pre-Clinical Trials and articles >>
                     </div>
                 </header>
                 <nav>
@@ -161,6 +162,25 @@ export default {
                 return acc;
             }, []);
         },
+        totalRefsCount() {
+            const refsCount = this.interactions.reduce((acc, { refsCount }) => {
+                acc += refsCount;
+                return acc;
+            }, 0);
+            const dBankRefsCount = this.dBankInteractions.reduce((acc, { references }) => {
+                acc += Object.values(references).reduce((innerAcc, refsArr) => {
+                    innerAcc += refsArr.length;
+                    return innerAcc;
+                }, 0);
+                return acc;
+            }, 0);
+            const pathwayRefsCount = this.materials.reduce((acc, { pathwayRefsCount }) => {
+                acc += pathwayRefsCount;
+                return acc;
+            }, 0);
+
+            return refsCount + dBankRefsCount + pathwayRefsCount;
+        },
         totalInteractionCount() {
             return this.total + this.dBankTotal;
         },
@@ -225,9 +245,7 @@ export default {
                 isSearchResults: true,
                 q: this.$route.query.q,
             };
-            const materials = (await this.$store.dispatch({ type: 'getMaterials', criteria })).map(
-                ({  _id, labels, name, type, drugBankId, userQuery }) => ({  _id, labels, name, type, drugBankId, userQuery })
-            );
+            const materials = (await this.$store.dispatch({ type: 'getMaterials', criteria }));
             this.materials = this.sortMaterials(materials);
             this.$store.commit({ type: 'makeMaterialNamesMap', materials });
             this.checkForIncludedMaterials();
