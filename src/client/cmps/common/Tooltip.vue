@@ -1,6 +1,6 @@
 <template>
-    <aside class="tooltip-box">
-        <div
+    <div class="tooltip-box">
+        <aside
             class="tooltip"
             :class="{ 'fade': fade }"
             :style="{
@@ -16,9 +16,9 @@
             >
                 {{ txt }}
             </span>
-        </div>
+        </aside>
         <slot />
-    </aside>
+    </div>
 </template>
 
 <script>

@@ -34,6 +34,7 @@
                         <template #content>
                             <material-interactions-preview
                                 :materials="result.materials"
+                                :userQuery="result.txt"
                                 :disabled="result.isIncluded"
                             />
                         </template>
