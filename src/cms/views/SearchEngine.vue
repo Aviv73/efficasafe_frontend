@@ -139,23 +139,13 @@
 </template>
 
 <script>
+import { interactionService } from '@/cms/services/interaction.service';
 import { eventBus, EV_clear_autocomplete } from '@/cms/services/eventBus.service';
 import searchAutocomplete from '@/cms/cmps/search-engine/SearchAutocomplete';
 import iconsMap from '@/cms/cmps/general/IconsMap';
 
 export default {
-    recommendationsOrderMap: {
-        'avoid coadministration': 3,
-        'coadministration is not advised': 3,
-        'caution should be taken': 2,
-        'coadministration is not contraindicated but caution should be taken': 2,
-        'coadministration is possible but caution should be taken': 2,
-        'coadministration is not contraindicated': 1,
-        'coadministration is possible': 1,
-        'coadministration is advised': 1,
-        'coadministration is not contraindicated and may even be advised': 1,
-        'coadministration is possible and may even be advised': 1
-    },
+    recommendationsOrderMap: interactionService.getRecommendationOrderMap(),
     data() {
         return {
             materials: [],

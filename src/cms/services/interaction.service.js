@@ -170,16 +170,16 @@ function getEmptyInteraction() {
 
 function getRecommendationOrderMap() {
     return {
-        'Avoid coadministration': 1,
-        'Coadministration is not advised': 1,
+        'Avoid coadministration': 3,
+        'Coadministration is not advised': 3,
         'Caution should be taken': 2,
         'Coadministration is not contraindicated but caution should be taken': 2,
         'Coadministration is possible but caution should be taken': 2,
-        'Coadministration is not contraindicated': 3,
-        'Coadministration is not contraindicated and may even be advised': 3,
-        'Coadministration is possible': 3,
-        'Coadministration is possible and may even be advised': 3,
-        'Coadministration is advised': 3
+        'Coadministration is not contraindicated': 1,
+        'Coadministration is not contraindicated and may even be advised': 1,
+        'Coadministration is possible': 1,
+        'Coadministration is possible and may even be advised': 1,
+        'Coadministration is advised': 1
     }
 }
 

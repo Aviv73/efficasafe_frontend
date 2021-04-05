@@ -94,9 +94,7 @@
                         Clinical Trials, Pre-Clinical Trials and articles >>
                     </div>
                 </header>
-                <nav>
-
-                </nav>
+                <nav></nav>
                 <router-view />
             </div>
             <span class="brim-end" />
@@ -105,10 +103,12 @@
 </template>
 
 <script>
+import { interactionService } from '@/cms/services/interaction.service';
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import Tooltip from '@/client/cmps/common/Tooltip';
 import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
 import MaterialInteractionsPreview from '@/client/cmps/search-engine/MaterialInteractionsPreview';
+
 import MobileMenuIcon from '@/client/cmps/common/icons/MobileMenuIcon';
 import MobileShareIcon from '@/client/cmps/common/icons/MobileShareIcon';
 import CloseIcon from 'vue-material-design-icons/Close';
@@ -116,6 +116,7 @@ import PrinterIcon from 'vue-material-design-icons/Printer';
 import ShareIcon from 'vue-material-design-icons/Share';
 
 export default {
+    recommendationsOrderMap: interactionService.getRecommendationOrderMap(),
     name: 'SearchEngine',
     data() {
         return {
@@ -126,7 +127,8 @@ export default {
             total: 0,
             dBankInteractions: [],
             dBankPageCount: 0,
-            dBankTotal: 0
+            dBankTotal: 0,
+            msg: ''
         }
     },
     watch: {
@@ -147,6 +149,124 @@ export default {
         }
     },
     computed: {
+        formatedInteractions() {
+            if ((this.$route.query.q && this.$route.query.q.length) === 1 && this.materials.length > 1) {
+                this.setMsg('Compound as a single result isn\'t supported, Please provide more material/s');
+                return [];
+            }
+            let formatedInteractions = this.interactions.reduce((acc, interaction) => {
+                if (this.materials.length === 1 && this.materials[0]._id === interaction.side1Material._id) acc.push(interaction);
+                else if (!interaction.side2Label) {
+                    this.insertInteraction(acc, interaction);
+                } else {
+                    const materials = this.materials.filter(
+                        material => material.labels.findIndex(label => label._id === interaction.side2Label._id) !== -1
+                    );
+                    materials.forEach(({ _id, name, type }) => {
+                        const vInteraction = {
+                            _id: interaction._id,
+                            side1Material: interaction.side1Material,
+                            side2Material: {
+                                _id,
+                                name,
+                                type
+                            },
+                            side2Label: null,
+                            name: `${interaction.side1Material.name} & ${name}`,
+                            recommendation: interaction.recommendation,
+                            evidenceLevel: interaction.evidenceLevel,
+                            isVirtual: true,
+                            side2DraftName: interaction.side2DraftName
+                        };
+                        this.insertInteraction(acc, vInteraction);
+                    });
+                }
+                return acc;
+            }, []);
+            const queryApearanceMap = {};
+            if (this.materials.length === 1) return formatedInteractions;
+            formatedInteractions = formatedInteractions.reduce((acc, interaction) => {
+                const { side1Name, side2Name } = this.getInteractionSidesNames(interaction);
+                if (
+                    this.$store.getters.materialNamesMap[side1Name] && this.$store.getters.materialNamesMap[side1Name].length > 1 ||
+                    this.$store.getters.materialNamesMap[side2Name] && this.$store.getters.materialNamesMap[side2Name].length > 1
+                    ) {
+                        const copy = JSON.parse(JSON.stringify((interaction.vInteractions && interaction.vInteractions.length === 1) ? interaction.vInteractions[0] : interaction));
+                        acc.push(copy);
+                    } else acc.push(interaction);
+                return acc;
+            }, []);
+            formatedInteractions = formatedInteractions.reduce((acc, interaction) => {
+                const { side1Name, side2Name } = this.getInteractionSidesNames(interaction);
+                const userQueries = this.$store.getters.materialNamesMap[side2Name];
+                if (!userQueries) return acc;
+                userQueries.forEach(userQuery => {
+                    const queryApearanceCount = this.$store.getters.queryApearanceCount(userQuery);
+                    if (!queryApearanceMap[`${side1Name}-${userQuery}`]) {
+                        queryApearanceMap[`${side1Name}-${userQuery}`] = [ interaction ];
+                        if (queryApearanceCount <= 1) {
+                            if (acc.findIndex(vi => vi._id === interaction._id) === -1) {
+                                acc.push(interaction);
+                            }
+                        } else {
+                            const compoundGroup = {
+                                _id: interaction._id,
+                                name: `${side1Name} & ${userQuery}`,
+                                recommendation: interaction.recommendation,
+                                evidenceLevel: interaction.evidenceLevel,
+                                vInteractions: [
+                                    interaction
+                                ],
+                                isCompoundGroup: true
+                            };
+                            acc.push(compoundGroup);
+                        }
+                    } else {
+                        const groupIdx = acc.findIndex(item => item._id === `${queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i._id).join('-')}-${interaction._id}`);
+                        if (groupIdx === -1) {
+                            const compoundGroup = {
+                                _id: `${queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i._id).join('-')}-${interaction._id}`,
+                                name: `${side1Name} & ${userQuery}`,
+                                recommendation: this.getMoreSeverRecomm(...queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i.recommendation), interaction.recommendation),
+                                evidenceLevel: this.getMoreSeverEvidenceLevel(...queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i.evidenceLevel), interaction.evidenceLevel),
+                                vInteractions: [
+                                    ...queryApearanceMap[`${side1Name}-${userQuery}`],
+                                ],
+                                isCompoundGroup: true
+                            };
+                            if (compoundGroup.vInteractions.findIndex(i => i._id === interaction._id ) === -1) {
+                                if (!interaction.vInteractions || interaction.vInteractions.length > 1) compoundGroup.vInteractions.push(interaction);
+                                else if (interaction.vInteractions.length === 1) {
+                                    const vInteraction = JSON.parse(JSON.stringify(interaction.vInteractions[0]));
+                                    if (compoundGroup.vInteractions.findIndex(vi => vi._id === vInteraction._id) === -1) {
+                                        compoundGroup.vInteractions.push(vInteraction);
+                                    }
+                                }
+                            }
+                            queryApearanceMap[`${side1Name}-${userQuery}`].forEach(currInteraction => {
+                                acc = acc.filter(i => i._id !== currInteraction._id && i._id !== `${currInteraction._id}-${currInteraction._id}`);
+                                acc.push(compoundGroup);
+                            });
+                        } else {
+                            if (acc[groupIdx].vInteractions.findIndex(i => i._id === interaction._id ) === -1) {
+                                if (!interaction.vInteractions || interaction.vInteractions.length > 1) {
+                                    acc[groupIdx].vInteractions.push(interaction);
+                                    acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, interaction.recommendation);
+                                    acc[groupIdx].evidenceLevel = this.getMoreSeverEvidenceLevel(acc[groupIdx].evidenceLevel, interaction.evidenceLevel);
+                                } else if (interaction.vInteractions.length === 1) {
+                                    const vInteraction = JSON.parse(JSON.stringify(interaction.vInteractions[0]));
+                                    if (acc[groupIdx].vInteractions.findIndex(vi => vi._id === vInteraction._id) === -1) {
+                                        acc[groupIdx].vInteractions.push(vInteraction);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                return acc;
+            }, []);
+            return this.sortInteractions(formatedInteractions);
+        },
         formatedMaterials() {
             return this.materials.reduce((acc, material) => {
                 const result = acc.find(res => res.txt === material.userQuery);
@@ -250,6 +370,63 @@ export default {
             this.$store.commit({ type: 'makeMaterialNamesMap', materials });
             this.checkForIncludedMaterials();
         },
+        sortInteractions(interactions) {
+            const { recommendationsOrderMap: map } = this.$options;
+            return interactions.slice().sort((a, b) => {
+                return map[b.recommendation.toLowerCase()] - map[a.recommendation.toLowerCase()] ||
+                a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) ||
+                a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+            });
+        },
+        insertInteraction(acc, interaction) {
+            const idx = acc.findIndex(
+                vin => (vin.side2Material && vin.side2Material._id === interaction.side2Material._id) &&
+                (vin.side1Material._id === interaction.side1Material._id)
+            );
+            const groupIdx = acc.findIndex(vin => vin._id === `${interaction.side1Material._id}-${interaction.side2Material._id}`);
+            if (idx === -1 && groupIdx === -1) acc.push(interaction);
+            else if (idx !== -1 && groupIdx === -1) {
+                const vInteractionGroup = {
+                    _id: `${interaction.side1Material._id}-${interaction.side2Material._id}`,
+                    name: `${interaction.side1Material.name} & ${interaction.side2Material.name}`,
+                    recommendation: this.getMoreSeverRecomm(acc[idx].recommendation, interaction.recommendation),
+                    evidenceLevel: this.getMoreSeverEvidenceLevel(acc[idx].evidenceLevel, interaction.evidenceLevel),
+                    vInteractions: (acc[idx]._id === interaction._id) ? [ acc[idx] ] : [
+                        acc[idx],
+                        interaction
+                    ],
+                    isCompoundGroup: false
+                };
+                acc.splice(idx, 1, vInteractionGroup);
+            } else {
+                if (acc[groupIdx].vInteractions.findIndex(i => i._id === interaction._id) === -1) {
+                    acc[groupIdx].vInteractions.push(interaction);
+                    acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, interaction.recommendation);
+                    acc[groupIdx].evidenceLevel = this.getMoreSeverEvidenceLevel(acc[groupIdx].evidenceLevel, interaction.evidenceLevel);
+                }
+            } 
+        },
+        getMoreSeverRecomm(...recommendations) {
+            const { recommendationsOrderMap } = this.$options;
+            recommendations.sort((a, b) => {
+                return (recommendationsOrderMap[a.toLowerCase()] > recommendationsOrderMap[b.toLowerCase()]) ? -1 : (recommendationsOrderMap[a.toLowerCase()] < recommendationsOrderMap[b.toLowerCase()]) ? 1 : 0;
+            });
+            return recommendations[0];
+        },
+        getMoreSeverEvidenceLevel(...evidenceLevels) {
+            return evidenceLevels.sort()[0];
+        },
+        getInteractionSidesNames(interaction) {
+            let side1Name = '';
+            let side2Name = '';
+            if (interaction.name) {
+                [ side1Name, side2Name ] = interaction.name.split('&').map(str => str.trim());
+            } else {
+                side1Name = interaction.side1Material.name;
+                side2Name = interaction.side2Material.name;
+            }
+            return { side1Name, side2Name };
+        },
         checkForIncludedMaterials() {
             const seenMap = {};
             const dups = this.materials.reduce((acc, material) => {
@@ -314,8 +491,17 @@ export default {
             const filePath = (result.materials.length === 1) ? `types/${fileName}` : 'info';
             return require(`@/client/assets/icons/${filePath}.svg`);
         },
+        setMsg(msg) {
+            this.msg = msg;
+        },
         reset() {
             this.materials = [];
+            this.interactions = [];
+            this.dBankInteractions = [];
+            this.pageCount = 0;
+            this.dBankPageCount = 0;
+            this.total = 0;
+            this.dBankTotal = 0;
             this.isLoading = false;
         }
     },
