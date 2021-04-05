@@ -20,7 +20,7 @@
                     v-for="material in materials"
                     :key="material._id"
                     :style="{
-                        'background-image': `url('${require(`@/client/assets/icons/types/${material.type}.svg`)}')`
+                        'background-image': `url('${require(`@/client/assets/icons/types/${getTypeImgName(material.type)}.svg`)}')`
                     }"
                 >
                     {{ material.name }}
@@ -78,6 +78,21 @@ export default {
         getCompoundName(materialName, query) {
             const queries = this.$store.getters.materialNamesMap[materialName];
             return queries.filter(q => q !== query).join(', ');
+        },
+        getTypeImgName(type) {
+            switch (type) {
+                case 'drug':
+                    return 'drug';
+                case 'herb':
+                case 'essential oil':
+                    return 'herb';
+                case 'vitamin':
+                case 'mineral':
+                case 'amino acid':
+                case 'nutraceutical':
+                case 'food':
+                    return 'other';
+            }
         }
     },
     components: {

@@ -218,7 +218,24 @@ export default {
             return this.$route.query.q.indexOf(query) !== -1;
         },
         getResultIcon(result) {
-            const filePath = (result.materials.length === 1) ? `types/${result.materials[0].type}` : 'info';
+            let fileName = '';
+            switch (result.materials[0].type) {
+                case 'drug':
+                    fileName = 'drug';
+                    break;
+                case 'herb':
+                case 'essential oil':
+                    fileName = 'herb';
+                    break;
+                case 'vitamin':
+                case 'mineral':
+                case 'amino acid':
+                case 'nutraceutical':
+                case 'food':
+                    fileName = 'other';
+                    break;
+            }
+            const filePath = (result.materials.length === 1) ? `types/${fileName}` : 'info';
             return require(`@/client/assets/icons/${filePath}.svg`);
         },
         reset() {
