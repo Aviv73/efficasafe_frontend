@@ -35,7 +35,7 @@
                                 :materials="result.materials"
                                 :userQuery="result.txt"
                                 :disabled="result.isIncluded"
-                                :interactions="getResultInteractions(result.txt)"
+                                :interactions="getResultInteractions(result)"
                             />
                         </template>
                         <li
@@ -285,13 +285,13 @@ export default {
         },
         totalRefsCount() {
             const seenRefsMap = {};
-            const refsCount = this.interactions.reduce((acc, { _id, refs }) => {
+            const refsCount = this.interactions.reduce((acc, { side1Material, refs }) => {
                 refs.forEach(ref => {
-                    if (!seenRefsMap[_id]) seenRefsMap[_id] = {};
+                    if (!seenRefsMap[side1Material._id]) seenRefsMap[side1Material._id] = {};
 
-                    if (!seenRefsMap[_id][ref + '']) {
+                    if (!seenRefsMap[side1Material._id][ref + '']) {
                         acc++;
-                        seenRefsMap[_id][ref + ''] = true;
+                        seenRefsMap[side1Material._id][ref + ''] = true;
                     }
                 });
                 return acc;
@@ -386,12 +386,10 @@ export default {
             this.$store.commit({ type: 'makeMaterialNamesMap', materials });
             this.checkForIncludedMaterials();
         },
-        getResultInteractions() {// userQuery
-            ///~~~ yet experimental - it's goes to material interactions tooltip
-            //     needs return not empty array if there is more than one material & not included   
-            //     than display list of only material related interactions (other side names only) & img     
-            // const materialName = this.$store.getters.materialNamesMap[userQuery];
-            // console.log(this.formatedInteractions.filter(({name}) => name.includes(materialName) || name.includes(userQuery)));
+        getResultInteractions(result) {
+            if (this.materials.length <= 1 || result.isIncluded) return [];
+            // const materialName = this.$store.getters.materialNamesMap[result.txt];
+            // console.log(this.formatedInteractions.filter(({name}) => name.includes(materialName) || name.includes(result.txt)));
             return [];
         },
         sortInteractions(interactions) {
