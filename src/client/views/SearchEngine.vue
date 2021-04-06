@@ -303,14 +303,22 @@ export default {
                 }, 0);
                 return acc;
             }, 0);
-            const pathwayRefsCount = this.materials.reduce((acc, { _id, pathwayRefs }) => {
-                pathwayRefs.forEach(ref => {
+            const pathwayRefsCount = this.materials.reduce((acc, { _id, pathways }) => {
+                pathways.forEach(pathway => {
+                    if (
+                            ((pathway.type === 'enzyme' || pathway.type === 'transporter') &&
+                            (!pathway.actions.includes('substrate') && !pathway.actions.includes('binder')))
+                            ||
+                            (pathway.type === 'carrier' &&
+                            (pathway.actions.includes('inducer') || pathway.actions.includes('inhibitor')))
+                        ) return;
                     if (!seenRefsMap[_id]) seenRefsMap[_id] = {};
-
-                    if (!seenRefsMap[_id][ref.link]) {
-                        acc++;
-                        seenRefsMap[_id][ref.link] = true;
-                    }
+                    pathway.references.forEach(ref => {
+                        if (!seenRefsMap[_id][ref + '']) {
+                            acc++;
+                            seenRefsMap[_id][ref + ''] = true;
+                        }
+                    });
                 });
                 return acc;
             }, 0);
