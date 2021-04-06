@@ -518,8 +518,11 @@ export default {
                     fileName = 'food';
                     break;
             }
-            const filePath = (result.materials.length === 1) ? `types/${fileName}` : 'info';
-            return require(`@/client/assets/icons/${filePath}.svg`);
+            if (result.materials.length > 1) {
+                const isDrugCompound = result.materials.some(({ type }) => type === 'drug');
+                fileName = (isDrugCompound) ? 'drug' : 'other';
+            }
+            return require(`@/client/assets/icons/types/${fileName}.svg`);
         },
         setMsg(msg) {
             this.msg = msg;
