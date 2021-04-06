@@ -83,14 +83,16 @@ export default {
         checkIfInViewport() {
             const el = this.$refs.tooltip;
             const { right, left } = el.getBoundingClientRect();
-            this.exceedsRight = false;
-            this.exceedsLeft = false;
+            let isExceedsRight = false;
+            let isExceedsLeft = false;
 
             if (right > window.innerWidth) {
-                this.exceedsRight = true;
+                isExceedsRight = true;
             } else if (left < 0) {
-                this.exceedsLeft = true;
+                isExceedsLeft = true;
             }
+            this.exceedsRight = isExceedsRight;
+            this.exceedsLeft = isExceedsLeft;
         }
     }
 }

@@ -186,10 +186,6 @@
                 padding: rem(48px) 0 rem(20px);
             }
         }
-        nav {
-            background-color: rgba($white, .75);
-            padding: rem(20px) rem(28px);
-        }
         &-amount {
             display: inline-block;
             padding: rem(12px) 0 rem(12px);
@@ -232,6 +228,42 @@
             @include for-narrow-layout {
                 text-align: initial;
             }
+        }
+    }
+    &-nav {
+        background-color: rgba($white, .75);
+        padding: 0 rem(16px);
+        font-size: rem(14px);
+        line-height: rem(14px);
+        text-transform: capitalize;
+        color: rgba($clr-txt-dark, .6);
+        overflow-x: auto;
+        max-width: 100vw;
+        
+        
+        ul {
+            display: flex;
+
+            li {
+                min-width: max-content;
+                padding: rem(20px) rem(35px);
+                text-align: center;
+                flex-grow: 1;
+            }
+        }
+        .display-toggle:first-child {
+            margin-inline-end: 15px;
+        }
+        .link {
+            transition: color .3s linear;
+            &:focus {
+                outline: none;
+            }
+        }
+        .exact-active {
+            font-family: roboto-bold, sans-serif;
+            font-weight: 700;
+            color: $clr-txt-dark;
         }
     }
 }

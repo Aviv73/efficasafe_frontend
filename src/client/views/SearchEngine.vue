@@ -96,7 +96,62 @@
                         Clinical Trials, Pre-Clinical Trials and articles >>
                     </div>
                 </header>
-                <nav></nav>
+                <nav class="search-engine-nav">
+                    <ul>
+                        <li class="flex-center">
+                            <router-link
+                                class="link"
+                                :to="{ name: 'ResultList', query: this.$route.query }"
+                            >
+                                Supplement - Drug ({{ total }})
+                            </router-link>
+                        </li>
+                        <li class="flex-center">
+                            <router-link
+                                class="link"
+                                :to="{ name: 'DBankResultList', query: this.$route.query }"
+                            >
+                                Drug - Drug ({{ dBankTotal }})
+                            </router-link>
+                        </li>
+                        <li class="flex-center">
+                            <router-link
+                                class="link"
+                                :to="{ name: 'Boosters', query: this.$route.query }"
+                            >
+                                NEW - Positive boosters (25)
+                            </router-link>
+                        </li>
+                        <li class="flex-center">
+                            <router-link
+                                class="link"
+                                :to="{ name: 'Monitor', query: this.$route.query }"
+                            >
+                                What to monitor
+                            </router-link>
+                        </li>
+                        <li class="flex-center">
+                            <label class="display-toggle">
+                                <input
+                                    type="radio"
+                                    name="display"
+                                    value="horizontal"
+                                    hidden
+                                />
+                                <mobile-menu-icon />
+                            </label>
+                            <label class="display-toggle">
+                                <input
+                                    type="radio"
+                                    name="display"
+                                    value="vertical"
+                                    hidden
+                                />
+                                <mobile-menu-icon />
+                            </label>
+                        </li>
+                    </ul>
+                </nav>
                 <router-view />
             </div>
             <span class="brim-end" />
