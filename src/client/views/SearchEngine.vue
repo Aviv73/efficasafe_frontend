@@ -36,6 +36,7 @@
                                 :userQuery="result.txt"
                                 :disabled="result.isIncluded"
                                 :interactions="getResultInteractions(result)"
+                                :isOneMaterial="materials.length === 1"
                             />
                         </template>
                         <li
@@ -396,9 +397,8 @@ export default {
         },
         getResultInteractions(result) {
             if (this.materials.length <= 1 || result.isIncluded) return [];
-            // const materialName = this.$store.getters.materialNamesMap[result.txt];
-            // console.log(this.formatedInteractions.filter(({name}) => name.includes(materialName) || name.includes(result.txt)));
-            return [];
+            const [ materialName ] = this.$store.getters.materialRealName(result.txt);
+            return this.formatedInteractions.filter(({ name }) => name.includes(materialName) || name.includes(result.txt));
         },
         sortInteractions(interactions) {
             const { recommendationsOrderMap: map } = this.$options;

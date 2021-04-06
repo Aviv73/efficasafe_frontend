@@ -23,6 +23,9 @@ export default new Vuex.Store({
     materialNamesMap(state) {
       return state.materialNamesMap;
     },
+    materialRealName: (state) => (userQuery) => {
+      return Object.entries(state.materialNamesMap).find(entry => entry[1].includes(userQuery));
+    },
     queryApearanceCount: (state) => (query) => {
       return Object.values(state.materialNamesMap).reduce((acc, currQueries) => {
         currQueries.forEach(currQuery => {

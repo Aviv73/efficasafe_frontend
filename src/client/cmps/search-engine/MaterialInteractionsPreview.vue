@@ -1,5 +1,8 @@
 <template>
-    <section class="interactions-preview">
+    <section
+        v-if="disabled || (materials.length > 1 || userQuery !== materials[0].name) || interactions.length || (materials.length === 1 && !isOneMaterial)"
+        class="interactions-preview"
+    >
         <div
             v-if="disabled"
             class="interactions-preview-warnning flex-coloumn"
@@ -7,7 +10,7 @@
             <alert-circle-outline-icon />
             There is no additional results for {{ userQuery }}
             as it is part of {{ getCompoundName(materials[0].name, userQuery) }}
-            <hr />
+            <hr v-if="interactions.length || (materials.length === 1 && !isOneMaterial)" />
         </div>
         <div
             v-else-if="materials.length > 1 || userQuery !== materials[0].name"
@@ -26,18 +29,28 @@
                     {{ material.name }}
                 </li>
             </ul>
-            <hr v-if="interactions.length || materials.length === 1" />
+            <hr v-if="interactions.length || (materials.length === 1 && !isOneMaterial)" />
         </div>
         <div
             v-if="interactions.length"
             class="interactions-preview-interactions"
         >
             <ul>
-               ~~~ interactions preview here ~~~ 
+                <li
+                    class="interactions-preview-interactions-interaction"
+                    v-for="interaction in interactions"
+                    :key="interaction._id"
+                >
+                    <interaction-icon
+                        class="interaction-icon"
+                        :color="getInteractionColor(interaction.recommendation)"
+                    />
+                    {{ getInteractionShortName(interaction.name) }}
+                </li>
             </ul>
-            <hr v-if="materials.length === 1" />
+            <hr v-if="materials.length === 1 && !isOneMaterial" />
         </div>
-        <div v-if="materials.length === 1" class="interactions-preview-actions">
+        <div v-if="materials.length === 1 && !isOneMaterial" class="interactions-preview-actions">
             <router-link :to="`/search?q=${userQuery}`" target="_blank">
                 See all interactions of {{ userQuery }}
             </router-link>
@@ -46,7 +59,9 @@
 </template>
 
 <script>
+import { interactionService } from '@/cms/services/interaction.service';
 import AlertCircleOutlineIcon from 'vue-material-design-icons/AlertCircleOutline';
+import InteractionIcon from '@/client/cmps/common/icons/InteractionIcon';
 
 export default {
     props: {
@@ -65,15 +80,29 @@ export default {
         interactions: {
             type: Array,
             default: () => []
+        },
+        isOneMaterial: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {
         previewHeader() {
-            if (this.materials.length === 1 && this.userQuery !== this.materials[0].name) return this.materials[0].type;
+            if (this.materials.length === 1 && this.userQuery !== this.materials[0].name) {
+                return this.materials[0].type;
+            }
             return '';
         }
     },
     methods: {
+        getInteractionColor(recommendation) {
+            return interactionService.getInteractionColor(recommendation);
+        },
+        getInteractionShortName(name) {
+            const sideNames = name.split(' & ');
+            const [ materialName ] = this.$store.getters.materialRealName(this.userQuery);
+            return sideNames.find(sideName => sideName !== this.userQuery && sideName !== materialName);
+        },
         getCompoundName(materialName, query) {
             const queries = this.$store.getters.materialNamesMap[materialName];
             return queries.filter(q => q !== query).join(', ');
@@ -96,7 +125,8 @@ export default {
         }
     },
     components: {
-        AlertCircleOutlineIcon
+        AlertCircleOutlineIcon,
+        InteractionIcon
     }
 }
 </script>

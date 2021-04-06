@@ -32,8 +32,23 @@
             }
         }
     }
+    &-interactions {
+        padding-block-start: rem(14px);
+        line-height: rem(29px);
+
+        &-interaction {
+            display: flex;
+            align-items: center;
+
+            .interaction-icon {
+                display: inline-block;
+                max-height: 25px;
+                margin-inline-end: rem(10px);
+            }
+        }
+    }
     &-actions {
-        padding-block-start: rem(4px);
+        padding-block-start: rem(8px);
         text-align: center;
 
         a {

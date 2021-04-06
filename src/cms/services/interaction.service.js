@@ -2,6 +2,7 @@ import { httpService } from './http.service.js';
 
 const END_POINT = 'interaction';
 
+// TODO: split this service into interactionService and interactionUIService
 export const interactionService = {
     list,
     getById,
@@ -15,7 +16,8 @@ export const interactionService = {
     getEmptyInteraction,
     calculateEvidenceLevel,
     getEvidenceLevelDictionary,
-    getRecommendationOrderMap
+    getRecommendationOrderMap,
+    getInteractionColor
 }
 
 function list(filterBy) {
@@ -180,6 +182,26 @@ function getRecommendationOrderMap() {
         'Coadministration is possible': 1,
         'Coadministration is possible and may even be advised': 1,
         'Coadministration is advised': 1
+    }
+}
+
+function getInteractionColor(recommendation) {
+    switch (recommendation.toLowerCase()) {
+        case 'avoid coadministration':
+        case 'coadministration is not advised':
+            return '#E63946'; // $red
+        case 'caution should be taken':
+        case 'coadministration is not contraindicated but caution should be taken':
+        case 'coadministration is possible but caution should be taken':
+            return '#F6D55C'; // $yellow
+        case 'coadministration is not contraindicated':
+        case 'coadministration is not contraindicated and may even be advised':
+        case 'coadministration is possible':
+        case 'coadministration is possible and may even be advised':
+        case 'coadministration is advised':
+            return '#56C596'; // $green 
+        default:
+            return '#a4b8c6';
     }
 }
 
