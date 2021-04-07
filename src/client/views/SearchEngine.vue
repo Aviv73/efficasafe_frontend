@@ -37,7 +37,7 @@
                                 :materials="result.materials"
                                 :userQuery="result.txt"
                                 :disabled="result.isIncluded"
-                                :interactions="getResultInteractions(result)"
+                                :interactions="getMaterialInteractions(result)"
                                 :isOneMaterial="materials.length === 1"
                             />
                         </template>
@@ -103,7 +103,7 @@
                 </header>
                 <nav class="search-engine-nav">
                     <ul>
-                        <li class="flex-center">
+                        <li class="flex-center link">
                             <router-link
                                 class="link"
                                 :to="{ name: 'ResultList', query: this.$route.query }"
@@ -111,7 +111,7 @@
                                 Supplement - Drug ({{ total }})
                             </router-link>
                         </li>
-                        <li class="flex-center">
+                        <li class="flex-center link">
                             <router-link
                                 class="link"
                                 :to="{ name: 'DBankResultList', query: this.$route.query }"
@@ -119,18 +119,18 @@
                                 Drug - Drug ({{ dBankTotal }})
                             </router-link>
                         </li>
-                        <li class="flex-center">
+                        <li class="flex-center link">
                             <router-link
                                 class="link"
-                                :to="{ name: 'Boosters', query: this.$route.query }"
+                                :to="{ name: 'Home', query: this.$route.query }"
                             >
                                 NEW - Positive boosters (25)
                             </router-link>
                         </li>
-                        <li class="flex-center">
+                        <li class="flex-center link">
                             <router-link
                                 class="link"
-                                :to="{ name: 'Monitor', query: this.$route.query }"
+                                :to="{ name: 'Home', query: this.$route.query }"
                             >
                                 What to monitor
                             </router-link>
@@ -459,16 +459,38 @@ export default {
             this.$store.commit({ type: 'makeMaterialNamesMap', materials });
             this.checkForIncludedMaterials();
         },
-        getResultInteractions(result) {
+        getMaterialInteractions(result) {
             if (this.materials.length <= 1 || result.isIncluded) return [];
             const [ materialName ] = this.$store.getters.materialRealName(result.txt);
             const seenIds = {};
-            const res = this.formatedInteractions.filter(({ _id, name }) => {
-                const doTake = !seenIds[_id] && (name.includes(materialName) || name.includes(result.txt));
-                seenIds[_id] = true;
-                return doTake;
-            });
-            return this.sortInteractions(res);
+            let interactions = this.formatedInteractions.reduce((acc, interaction) => {
+                const doTake = !seenIds[interaction._id] && (interaction.name.includes(materialName) || interaction.name.includes(result.txt));
+                seenIds[interaction._id] = true;
+                if (doTake) {
+                    const { _id, name, recommendation, evidenceLevel } = interaction;
+                    acc.push({
+                        _id,
+                        name,
+                        recommendation,
+                        evidenceLevel
+                    });
+                }
+                return acc;
+            }, []);
+            const dBankInteractions = this.dBankInteractions.reduce((acc, interaction) => {
+                if (interaction.name.includes(materialName)) {
+                    const { _id, name, recommendation } = interaction;
+                    acc.push({
+                        _id,
+                        name,
+                        recommendation,
+                        evidenceLevel: 'A'
+                    });
+                }
+                return acc;
+            }, []);
+            interactions = interactions.concat(dBankInteractions);
+            return this.sortInteractions(interactions);
         },
         sortInteractions(interactions) {
             const { recommendationsOrderMap: map } = this.$options;

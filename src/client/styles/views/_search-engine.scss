@@ -253,6 +253,13 @@
                 @include for-wide-layout {
                     padding: rem(20px) 0;
                 }
+
+                &:not(.link) {
+                    display: none;
+                    @include for-narrow-layout {
+                        display: initial;
+                    }
+                }
             }
         }
         [type=radio]:checked + svg {
@@ -265,6 +272,7 @@
         }
         .display-toggle {
             display: inline-block;
+            cursor: pointer;
 
             rect {
                 fill: transparent;
