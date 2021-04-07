@@ -3,7 +3,7 @@
         <div class="search-engine-container">
             <span class="brim-start" />
             <div class="search-engine-search flex-coloumn">
-                <figure class="logo">
+                <router-link to="/" class="logo">
                     <img
                         src="@/client/assets/imgs/logo-symbol.png"
                         alt="Logo"
@@ -12,7 +12,7 @@
                         src="@/client/assets/imgs/logo-txt.png"
                         alt="Efficasafe"
                     />
-                </figure>
+                </router-link>
                 <p class="search-engine-search-msg">
                     <span class="font-medium">6</span>
                     Free searches left
