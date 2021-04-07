@@ -1,7 +1,12 @@
 <template>
     <div
         class="tooltip-box"
-        @mouseenter="checkIfInViewport"
+        :class="{
+            'hoverable': on === 'hover',
+            'tooltip-active': isActive,
+        }"
+        ref="activator"
+        @click="onToggle"
     >
         <aside
             class="tooltip"
@@ -35,7 +40,12 @@
 
 <script>
 export default {
+    EV_sibling_toggle: 'ev-sibling-toggle',
     props: {
+        on: {
+            type: String,
+            default: 'hover'
+        },
         txt: {
             type: String,
             default: ''
@@ -71,29 +81,49 @@ export default {
         right: {
             type: Boolean,
             default: false
+        },
+        isSolo: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
         return {
+            isActive: false,
             exceedsRight: false,
             exceedsLeft: false
         }
     },
     methods: {
+        onToggle() {
+            if (this.on !== 'click') return;
+            if (this.isSolo) {
+                this.$parent.$emit(this.$options.EV_sibling_toggle, !this.isActive);
+            }
+            this.checkIfInViewport();
+            this.isActive = !this.isActive;
+        },
         checkIfInViewport() {
-            const el = this.$refs.tooltip;
-            const { right, left } = el.getBoundingClientRect();
+            const { activator, tooltip } = this.$refs;
+            const { right, left } = activator.getBoundingClientRect();
+            const { width } = tooltip.getBoundingClientRect();
             let isExceedsRight = false;
             let isExceedsLeft = false;
 
-            if (right > window.innerWidth) {
+            if (right + width > window.innerWidth) {
                 isExceedsRight = true;
-            } else if (left < 0) {
+            } else if (left - width < 0) {
                 isExceedsLeft = true;
             }
             this.exceedsRight = isExceedsRight;
             this.exceedsLeft = isExceedsLeft;
         }
+    },
+    created() {
+        if (!this.isSolo) return; 
+        this.$parent.$on(this.$options.EV_sibling_toggle, (isSibActivated) => {
+            if (this.isActive && isSibActivated) this.isActive = false;
+        });
     }
 }
 </script>
@@ -104,9 +134,13 @@ export default {
         display: inline-block;
         opacity: initial;
         color: initial;
-
+        
+        &.tooltip-active .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
         @media not all and (pointer: coarse) {
-            &:hover {
+            &.hoverable:hover {
                 .tooltip {
                     visibility: visible;
                     opacity: 1;

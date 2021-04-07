@@ -28,6 +28,8 @@
                     <tooltip
                         v-for="(result, idx) in formatedMaterials"
                         :key="idx"
+                        on="click"
+                        isSolo
                         left
                     >
                         <template #content>
@@ -45,7 +47,7 @@
                             :style="{ 'background-image': `url('${getResultIcon(result)}')` }"
                         >
                             {{ result.txt }}
-                            <button class="remove-btn" @click="removeMaterials(result.txt)">
+                            <button class="remove-btn" @click.stop="removeMaterials(result.txt)">
                                 <close-icon :size="16" />
                             </button>
                         </li>

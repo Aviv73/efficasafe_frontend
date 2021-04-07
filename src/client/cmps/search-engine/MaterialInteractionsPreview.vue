@@ -52,7 +52,7 @@
         </div>
         <div v-if="materials.length === 1 && !isOneMaterial" class="interactions-preview-actions">
             <router-link :to="`/search?q=${userQuery}`" target="_blank">
-                See all interactions of {{ userQuery }}
+                All interactions of {{ userQuery }}
             </router-link>
         </div>
     </section>
