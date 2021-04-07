@@ -65,7 +65,10 @@
                     </tooltip>
                 </div>
             </div>
-            <div class="search-engine-results">
+            <div
+                class="search-engine-results"
+                :style="{ 'max-width': `calc(100vw - ${scrollBarWidth})` }"
+            >
                 <header>
                     <div class="flex-space-between">
                         <span class="search-engine-results-amount font-medium">
@@ -134,8 +137,9 @@
                             <label class="display-toggle">
                                 <input
                                     type="radio"
-                                    name="display"
-                                    value="horizontal"
+                                    name="isHorizontal"
+                                    v-model="isViewHorizontal"
+                                    :value="false"
                                     hidden
                                 />
                                 <mobile-menu-icon />
@@ -143,8 +147,9 @@
                             <label class="display-toggle">
                                 <input
                                     type="radio"
-                                    name="display"
-                                    value="vertical"
+                                    name="isHorizontal"
+                                    v-model="isViewHorizontal"
+                                    :value="true"
                                     hidden
                                 />
                                 <mobile-menu-icon />
@@ -185,7 +190,9 @@ export default {
             dBankInteractions: [],
             dBankPageCount: 0,
             dBankTotal: 0,
-            msg: ''
+            msg: '',
+            isViewHorizontal: false,
+            scrollBarWidth: '0px'
         }
     },
     watch: {
@@ -582,6 +589,9 @@ export default {
         setMsg(msg) {
             this.msg = msg;
         },
+        setScrollBarWidth() {
+            this.scrollBarWidth = (window.innerWidth - document.body.clientWidth) + 'px';
+        },
         reset() {
             this.materials = [];
             this.interactions = [];
@@ -592,6 +602,9 @@ export default {
             this.dBankTotal = 0;
             this.isLoading = false;
         }
+    },
+    mounted() {
+        this.setScrollBarWidth();
     },
     components: {
         Autocomplete,
