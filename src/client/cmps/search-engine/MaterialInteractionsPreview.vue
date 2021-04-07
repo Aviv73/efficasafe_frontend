@@ -101,7 +101,14 @@ export default {
         getInteractionShortName(name) {
             const sideNames = name.split(' & ');
             const [ materialName ] = this.$store.getters.materialRealName(this.userQuery);
-            return sideNames.find(sideName => sideName !== this.userQuery && sideName !== materialName);
+            let side2Name = sideNames.find(sideName => sideName !== this.userQuery && sideName !== materialName);
+            if (
+                this.$store.getters.materialNamesMap[side2Name] &&
+                !this.$store.getters.materialNamesMap[side2Name].includes(side2Name)
+            ) {
+                side2Name = this.$store.getters.materialNamesMap[side2Name].join(', ');
+            }
+            return side2Name;
         },
         getCompoundName(materialName, query) {
             const queries = this.$store.getters.materialNamesMap[materialName];
