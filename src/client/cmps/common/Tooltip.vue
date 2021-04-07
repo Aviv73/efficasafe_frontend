@@ -205,8 +205,8 @@ export default {
         }
         .tooltip-close-btn {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 8px;
+            right: 8px;
             color: #C1C1C1;
             z-index: 2;
             cursor: pointer;

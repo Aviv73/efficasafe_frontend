@@ -24,6 +24,17 @@
     }
     .brim-end {
         background-color: $clr6;
+        position: relative;
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-image: linear-gradient(to bottom, transparent 0px, transparent rem(157px), rgba($white, .75) rem(157px), rgba($white, .75) rem(224px), transparent rem(224px), transparent 100%);
+        }
     }
     &-search {
         padding: rem(20px) rem(24px) 0;
@@ -240,25 +251,28 @@
         overflow-x: auto;
         width: 100%;
         
-        
+        @include for-narrow-layout {
+            padding: 0 0 0 rem(16px);
+        }
+
         ul {
             display: flex;
+        }
+        &-link {
+            min-width: max-content;
+            padding: rem(20px) 2%;
+            text-align: center;
+            flex-grow: 1;
+            
+            @include for-wide-layout {
+                padding: rem(20px) 0;
+            }
 
-            li {
-                min-width: max-content;
-                padding: rem(20px) 2%;
-                text-align: center;
-                flex-grow: 1;
-                
-                @include for-wide-layout {
-                    padding: rem(20px) 0;
-                }
-
-                &:not(.link) {
-                    display: none;
-                    @include for-narrow-layout {
-                        display: initial;
-                    }
+            &:last-child {
+                display: none;
+                @include for-narrow-layout {
+                    display: flex;
+                    justify-content: flex-end;
                 }
             }
         }
