@@ -98,7 +98,7 @@
                     </div>
                     <div class="search-engine-results-stats">
                         Based on <animated-integer :value="totalRefsCount" />
-                        Clinical Trials, Pre-Clinical Trials and articles >>
+                        scientific articles
                     </div>
                 </header>
                 <nav class="search-engine-nav">
@@ -462,12 +462,18 @@ export default {
         getResultInteractions(result) {
             if (this.materials.length <= 1 || result.isIncluded) return [];
             const [ materialName ] = this.$store.getters.materialRealName(result.txt);
-            return this.formatedInteractions.filter(({ name }) => name.includes(materialName) || name.includes(result.txt));
+            const seenIds = {};
+            const res = this.formatedInteractions.filter(({ _id, name }) => {
+                const doTake = !seenIds[_id] && (name.includes(materialName) || name.includes(result.txt));
+                seenIds[_id] = true;
+                return doTake;
+            });
+            return this.sortInteractions(res);
         },
         sortInteractions(interactions) {
             const { recommendationsOrderMap: map } = this.$options;
             return interactions.slice().sort((a, b) => {
-                return map[b.recommendation.toLowerCase()] - map[a.recommendation.toLowerCase()] ||
+                return map[b.recommendation] - map[a.recommendation] ||
                 a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) ||
                 a.name.toLowerCase().localeCompare(b.name.toLowerCase());
             });
