@@ -25,7 +25,15 @@
                 'margin-top': offsetY + 'px',
                 'margin-left': offsetX + 'px'
             }"
-        >
+            @click.stop=""
+        >   
+            <button
+                class="tooltip-close-btn"
+                v-if="closable"
+                @click="isActive = false"
+            >
+                <slot name="close-icon">&#10006;</slot>
+            </button>
             <slot name="content" />
             <span
                 class="txt"
@@ -83,6 +91,10 @@ export default {
             default: false
         },
         isSolo: {
+            type: Boolean,
+            default: false
+        },
+        closable: {
             type: Boolean,
             default: false
         }
@@ -190,6 +202,14 @@ export default {
                 left: 100%;
                 transform: translateY(-50%);
             }
+        }
+        .tooltip-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #C1C1C1;
+            z-index: 2;
+            cursor: pointer;
         }
     }
 </style>

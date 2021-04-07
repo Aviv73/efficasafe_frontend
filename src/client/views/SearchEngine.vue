@@ -30,8 +30,12 @@
                         :key="idx"
                         on="click"
                         isSolo
+                        closable
                         left
                     >
+                        <template #close-icon>
+                            <close-icon :size="16" />
+                        </template>
                         <template #content>
                             <material-interactions-preview
                                 :materials="result.materials"
