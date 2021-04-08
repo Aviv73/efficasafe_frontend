@@ -107,7 +107,7 @@
                 </header>
                 <nav class="search-engine-nav">
                     <ul>
-                        <li class="flex-center search-engine-nav-link">
+                        <li class="search-engine-nav-link">
                             <router-link
                                 class="link"
                                 :to="{ name: 'ResultList', query: this.$route.query }"
@@ -115,7 +115,7 @@
                                 Supplement - Drug ({{ total }})
                             </router-link>
                         </li>
-                        <li class="flex-center search-engine-nav-link">
+                        <li class="search-engine-nav-link">
                             <router-link
                                 class="link"
                                 :to="{ name: 'DBankResultList', query: this.$route.query }"
@@ -123,7 +123,7 @@
                                 Drug - Drug ({{ dBankTotal }})
                             </router-link>
                         </li>
-                        <li class="flex-center search-engine-nav-link">
+                        <li class="search-engine-nav-link">
                             <router-link
                                 class="link"
                                 :to="{ name: 'Home', query: this.$route.query }"
@@ -131,7 +131,7 @@
                                 NEW - Positive boosters (25)
                             </router-link>
                         </li>
-                        <li class="flex-center search-engine-nav-link">
+                        <li class="search-engine-nav-link">
                             <router-link
                                 class="link"
                                 :to="{ name: 'Home', query: this.$route.query }"
@@ -139,7 +139,7 @@
                                 What to monitor
                             </router-link>
                         </li>
-                        <li class="flex-center search-engine-nav-link">
+                        <li class="search-engine-nav-link">
                             <label class="display-toggle">
                                 <input
                                     type="radio"
