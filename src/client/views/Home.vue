@@ -17,7 +17,8 @@
             <div class="home-container">
                 <autocomplete
                     class="home-search"
-                    :placeholder="isScreenNarrow ? 'Search drug / herb' : 'Search drug / herb / supplement'"
+                    :placeholder1="isScreenNarrow ? 'Search drug / herb' : 'Search drug / herb / supplement'"
+                    placeholder2="Add another"
                     @item-selected="goToSearch"
                 />
             </div>

@@ -21,7 +21,7 @@
                 <autocomplete
                     class="search-engine-search-bar"
                     :isOnSearchPage="true"
-                    placeholder="+   Search herb / drug"
+                    placeholder1="+   Add another"
                     @item-selected="addMaterials"
                 />
                 <ul class="search-engine-search-materials">

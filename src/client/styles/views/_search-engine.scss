@@ -267,7 +267,6 @@
                 display: none;
                 @include for-narrow-layout {
                     display: flex;
-                    height: 100%;
                     padding: rem(20px) 2%;
                     justify-content: flex-end;
                     align-items: center;
@@ -294,15 +293,17 @@
             }
             &:first-child {
                 transform: rotateZ(270deg);
-                margin-inline-end: 15px;
+            }
+            &:last-child {
+                margin-inline-start: 15px;
             }
         }
         .link {
-            min-width: max-content;
+            min-width: rem(110px);
             display: inline-flex;
             align-items: center;
             height: 100%;
-            padding: rem(20px) 2%;
+            padding: rem(20px) rem(10px);
             transition: color .3s linear;
 
             @include for-wide-layout {
@@ -310,8 +311,6 @@
             }
 
             @include hover-supported {
-                font-family: roboto-bold, sans-serif;
-                font-weight: 700;
                 color: $clr-txt-dark;
 
                 &::after {

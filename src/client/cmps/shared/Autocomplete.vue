@@ -6,7 +6,7 @@
                 ref="searchInput"
                 type="text"
                 class="primary"
-                :placeholder="placeholder"
+                :placeholder="placeholder1"
                 @keyup.down="shiftFocus(0)"
                 v-debounce="getResults"
             />
@@ -48,7 +48,7 @@
             <input
                 type="text"
                 class="secondary"
-                placeholder="Add another"
+                :placeholder="placeholder2"
                 disabled
             />
             <svg
@@ -76,9 +76,13 @@
 export default {
     timerId: null,
     props: {
-        placeholder: {
+        placeholder1: {
             type: String,
             default: 'Search drug / herb'
+        },
+        placeholder2: {
+            type: String,
+            default: ''
         },
         isOnSearchPage: {
             type: Boolean,
