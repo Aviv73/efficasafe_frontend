@@ -1,5 +1,5 @@
 <template>
-  <section class="drug-2-drug-page">
+  <section class="boosters-page">
 
   </section>
 </template>

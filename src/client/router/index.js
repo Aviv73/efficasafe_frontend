@@ -5,6 +5,8 @@ import SearchEngine from '../views/SearchEngine';
 
 import Supplement2DrugPage from '@/client/cmps/search-engine/Supplement2DrugPage';
 import Drug2DrugPage from '@/client/cmps/search-engine/Drug2DrugPage';
+import BoostersPage from '@/client/cmps/search-engine/BoostersPage';
+import MonitorPage from '@/client/cmps/search-engine/MonitorPage';
 
 
 Vue.use(VueRouter);
@@ -28,6 +30,16 @@ const routes = [
         path: 'drug2drug',
         name: 'Drug2Drug',
         component: Drug2DrugPage
+      },
+      {
+        path: 'positive-boosters',
+        name: 'Boosters',
+        component: BoostersPage
+      },
+      {
+        path: 'what-to-monitor',
+        name: 'Monitor',
+        component: MonitorPage
       }
     ]
   },

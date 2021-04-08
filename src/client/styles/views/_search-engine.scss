@@ -4,12 +4,13 @@
 
     &-container {
         flex-grow: 1;
+        max-width: 100%;
         display: grid;
         grid-template-columns: 1fr;
         grid-template-rows: min-content auto;
         
         @include for-narrow-layout {
-            grid-template-columns: 45% 55%;
+            grid-template-columns: 40% 60%;
             grid-template-rows: auto;
         }
         @include for-wide-layout {
@@ -184,6 +185,8 @@
     }
     &-results {
         background-color: $clr6;
+        display: flex;
+        flex-direction: column;
 
         header {
             padding: rem(48px) 24px rem(20px);
@@ -310,11 +313,10 @@
             justify-content: center;
             text-align: center;
             height: 100%;
+            width: 100%;
             padding: rem(20px) rem(10px);
             transition: color .3s linear;
             
-            @include for-narrow-layout {
-            }
             @include for-wide-layout {
                 min-width: rem(140px);
                 padding: rem(20px) 0;
@@ -357,6 +359,14 @@
                 transform: scaleX(1);
                 opacity: 1;
             }
+        }
+    }
+    .inner-view {
+        @include for-narrow-layout {
+            // this hack let's 'flex-grow: 1' element to be scrollable
+            flex: 1 1 auto;
+            overflow-y: auto;
+            height: 0px; // act excactly like min-height in this case
         }
     }
 }

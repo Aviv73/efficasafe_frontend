@@ -126,7 +126,7 @@
                         <li class="search-engine-nav-link">
                             <router-link
                                 class="link boosters"
-                                :to="{ name: 'Home', query: this.$route.query }"
+                                :to="{ name: 'Boosters', query: this.$route.query }"
                             >
                                 <span class="highlight">New</span>
                                 {{'\xa0'}}-{{'\xa0'}}Positive boosters (25)
@@ -135,7 +135,7 @@
                         <li class="search-engine-nav-link">
                             <router-link
                                 class="link"
-                                :to="{ name: 'Home', query: this.$route.query }"
+                                :to="{ name: 'Monitor', query: this.$route.query }"
                             >
                                 What to monitor
                             </router-link>
@@ -164,7 +164,10 @@
                         </li>
                     </ul>
                 </nav>
-                <router-view />
+                <router-view
+                    class="inner-view"
+                    :interactions="formatedInteractions"
+                />
             </div>
             <span class="brim-end" />
         </div>
