@@ -251,7 +251,7 @@
         overflow-x: auto;
         width: 100%;
         
-        @include for-narrow-layout {
+        @include for-wide-layout {
             padding: 0 0 0 rem(16px);
         }
 
@@ -267,9 +267,9 @@
                 display: none;
                 @include for-narrow-layout {
                     display: flex;
-                    padding: rem(20px) 2%;
-                    justify-content: flex-end;
                     align-items: center;
+                    justify-content: flex-end;
+                    padding: rem(20px) 0;
                 }
             }
         }
