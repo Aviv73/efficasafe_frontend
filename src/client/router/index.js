@@ -3,8 +3,8 @@ import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import SearchEngine from '../views/SearchEngine';
 
-import ResultList from '@/client/cmps/search-engine/ResultList';
-import DBankResultList from '@/client/cmps/search-engine/DBankResultList';
+import Supplement2DrugPage from '@/client/cmps/search-engine/Supplement2DrugPage';
+import Drug2DrugPage from '@/client/cmps/search-engine/Drug2DrugPage';
 
 
 Vue.use(VueRouter);
@@ -21,13 +21,13 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'ResultList',
-        component: ResultList
+        name: 'Supp2Drug',
+        component: Supplement2DrugPage
       },
       {
         path: 'drug2drug',
-        name: 'DBankResultList',
-        component: DBankResultList
+        name: 'Drug2Drug',
+        component: Drug2DrugPage
       }
     ]
   },

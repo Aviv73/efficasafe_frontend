@@ -110,7 +110,7 @@
                         <li class="search-engine-nav-link">
                             <router-link
                                 class="link"
-                                :to="{ name: 'ResultList', query: this.$route.query }"
+                                :to="{ name: 'Supp2Drug', query: this.$route.query }"
                             >
                                 Supplement - Drug ({{ total }})
                             </router-link>
@@ -118,17 +118,18 @@
                         <li class="search-engine-nav-link">
                             <router-link
                                 class="link"
-                                :to="{ name: 'DBankResultList', query: this.$route.query }"
+                                :to="{ name: 'Drug2Drug', query: this.$route.query }"
                             >
                                 Drug - Drug ({{ dBankTotal }})
                             </router-link>
                         </li>
                         <li class="search-engine-nav-link">
                             <router-link
-                                class="link"
+                                class="link boosters"
                                 :to="{ name: 'Home', query: this.$route.query }"
                             >
-                                NEW - Positive boosters (25)
+                                <span class="highlight">New</span>
+                                {{'\xa0'}}-{{'\xa0'}}Positive boosters (25)
                             </router-link>
                         </li>
                         <li class="search-engine-nav-link">

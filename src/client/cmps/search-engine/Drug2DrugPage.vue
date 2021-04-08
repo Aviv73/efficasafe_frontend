@@ -1,5 +1,5 @@
 <template>
-  <section class="d-bank-result-list">
+  <section class="drug-2-drug">
 
   </section>
 </template>

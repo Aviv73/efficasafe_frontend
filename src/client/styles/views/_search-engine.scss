@@ -259,7 +259,6 @@
             display: flex;
         }
         &-link {
-            text-align: center;
             flex-grow: 1;
             position: relative;
 
@@ -298,18 +297,28 @@
                 margin-inline-start: 15px;
             }
         }
+        .highlight {
+            font-family: roboto-bold, sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: $clr11;
+        }
         .link {
-            min-width: rem(110px);
+            min-width: rem(180px);
             display: inline-flex;
             align-items: center;
+            justify-content: center;
+            text-align: center;
             height: 100%;
             padding: rem(20px) rem(10px);
             transition: color .3s linear;
-
+            
+            @include for-narrow-layout {
+            }
             @include for-wide-layout {
+                min-width: rem(140px);
                 padding: rem(20px) 0;
             }
-
             @include hover-supported {
                 color: $clr-txt-dark;
 
@@ -318,7 +327,10 @@
                     opacity: 1;
                 }
             }
-
+            
+            &.boosters {
+                flex-wrap: wrap;
+            }
             &::after {
                 content: "";
                 position: absolute;

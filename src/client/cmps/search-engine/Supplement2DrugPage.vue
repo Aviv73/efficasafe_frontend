@@ -1,5 +1,5 @@
 <template>
-  <section class="result-list">
+  <section class="supp-2-drug">
 
   </section>
 </template>
