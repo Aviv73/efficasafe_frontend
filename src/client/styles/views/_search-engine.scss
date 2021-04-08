@@ -24,7 +24,7 @@
         }
     }
     .brim-end {
-        background-color: $clr6;
+        background-color: $clr3;
         position: relative;
 
         &::after {
@@ -34,7 +34,7 @@
             left: 0;
             height: 100%;
             width: 100%;
-            background-image: linear-gradient(to bottom, transparent 0px, transparent rem(157px), rgba($white, .75) rem(157px), rgba($white, .75) rem(224px), transparent rem(224px), transparent 100%);
+            background-image: linear-gradient(to bottom, $clr6 0px, $clr6 rem(157px), rgba($white, .75) rem(157px), rgba($white, .75) rem(224px), transparent rem(224px), transparent 100%);
         }
     }
     &-search {
@@ -184,12 +184,13 @@
         }
     }
     &-results {
-        background-color: $clr6;
+        background-color: $clr3;
         display: flex;
         flex-direction: column;
         overflow-x: hidden;
 
-        header {
+        &-header {
+            background-color: $clr6;
             padding: rem(48px) 24px rem(20px);
             overflow: hidden;
             color: $clr1;
@@ -324,11 +325,6 @@
             }
             @include hover-supported {
                 color: $clr-txt-dark;
-
-                &::after {
-                    transform: scaleX(1);
-                    opacity: 1;
-                }
             }
             
             &.boosters {

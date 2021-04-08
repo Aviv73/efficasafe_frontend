@@ -75,7 +75,7 @@
                 class="search-engine-results"
                 :style="{ 'max-width': `calc(100vw - ${scrollBarWidth})` }"
             >
-                <header>
+                <header class="search-engine-results-header">
                     <div class="flex-space-between">
                         <span class="search-engine-results-amount font-medium">
                             <animated-integer :value="totalInteractionCount" />

@@ -1,0 +1,20 @@
+.interaction-list {
+    background-color: $clr3;
+    font-size: rem(12px);
+    line-height: rem(36px);
+    padding: 0 rem(24px);
+
+    @include for-wide-layout {
+        padding: 0 0 0 rem(16px);
+    }
+
+    &-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0px 1px 1px rgba($clr12, .17);
+        color: rgba($clr12, .9);
+    }
+    &-list {
+    }
+}
