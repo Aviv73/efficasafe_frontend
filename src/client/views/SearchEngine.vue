@@ -164,10 +164,13 @@
                         </li>
                     </ul>
                 </nav>
-                <router-view
-                    class="inner-view"
-                    :interactions="formatedInteractions"
-                />
+                <transition :name="routerTransitionName" mode="out-in">
+                    <router-view
+                        class="inner-view"
+                        :key="$route.name"
+                        :listData="routableListData"
+                    />
+                </transition>
             </div>
             <span class="brim-end" />
         </div>
@@ -202,7 +205,8 @@ export default {
             dBankTotal: 0,
             msg: '',
             isViewHorizontal: false,
-            scrollBarWidth: '0px'
+            scrollBarWidth: '0px',
+            routerTransitionName: ''
         }
     },
     watch: {
@@ -220,9 +224,47 @@ export default {
             },
             deep: true,
             immediate: true
+        },
+        '$route'(to, from) {
+            const routesOrder = {
+                'Supp2Drug': 1,
+                'Drug2Drug': 2,
+                'Boosters': 3,
+                'Monitor': 4
+            };
+            this.routerTransitionName = (routesOrder[to.name] < routesOrder[from.name]) ? 'slide-right' : 'slide-left';
         }
     },
     computed: {
+        routableListData() {
+            switch (this.$route.name) {
+                case 'Supp2Drug':
+                    return {
+                        interactions: this.formatedInteractions,
+                        pageCount: this.pageCount,
+                        total: this.total
+                    };
+                    case 'Drug2Drug':
+                    return {
+                        interactions: this.dBankInteractions,
+                        pageCount: this.dBankPageCount,
+                        total: this.dBankTotal
+                    };
+                    case 'Boosters':
+                    return {
+                        interactions: [],
+                        pageCount: 0,
+                        total: 0
+                    };
+                    case 'Monitor':
+                    return {
+                        interactions: [],
+                        pageCount: 0,
+                        total: 0
+                    };
+            }
+            return []
+        },
         formatedInteractions() {
             if ((this.$route.query.q && this.$route.query.q.length) === 1 && this.materials.length > 1) {
                 this.setMsg('Compound as a single result isn\'t supported, Please provide more material/s');

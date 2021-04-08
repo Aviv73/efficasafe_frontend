@@ -3,10 +3,7 @@ import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import SearchEngine from '../views/SearchEngine';
 
-import Supplement2DrugPage from '@/client/cmps/search-engine/Supplement2DrugPage';
-import Drug2DrugPage from '@/client/cmps/search-engine/Drug2DrugPage';
-import BoostersPage from '@/client/cmps/search-engine/BoostersPage';
-import MonitorPage from '@/client/cmps/search-engine/MonitorPage';
+import InteractionList from '@/client/cmps/search-engine/InteractionList';
 
 
 Vue.use(VueRouter);
@@ -24,22 +21,22 @@ const routes = [
       {
         path: '',
         name: 'Supp2Drug',
-        component: Supplement2DrugPage
+        component: InteractionList
       },
       {
         path: 'drug2drug',
         name: 'Drug2Drug',
-        component: Drug2DrugPage
+        component: InteractionList
       },
       {
         path: 'positive-boosters',
         name: 'Boosters',
-        component: BoostersPage
+        component: InteractionList
       },
       {
         path: 'what-to-monitor',
         name: 'Monitor',
-        component: MonitorPage
+        component: InteractionList
       }
     ]
   },

@@ -187,6 +187,7 @@
         background-color: $clr6;
         display: flex;
         flex-direction: column;
+        overflow-x: hidden;
 
         header {
             padding: rem(48px) 24px rem(20px);
@@ -368,5 +369,32 @@
             overflow-y: auto;
             height: 0px; // act excactly like min-height in this case
         }
+    }
+    
+    .slide-left-leave-active,
+    .slide-left-enter-active,
+    .slide-right-leave-active,
+    .slide-right-enter-active {
+        transition: transform .6s ease, opacity .6s ease;
+    }
+
+    .slide-left-enter {
+        transform: translate(100%, 0);
+        opacity: 1;
+    }
+
+    .slide-left-leave-to {
+        transform: translate(-100%, 0);
+        opacity: 0;
+    }
+
+    .slide-right-enter {
+        transform: translate(-100%, 0);
+        opacity: 1;
+    }
+
+    .slide-right-leave-to {
+        transform: translate(100%, 0);
+        opacity: 0;
     }
 }
