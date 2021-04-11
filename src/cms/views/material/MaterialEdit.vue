@@ -835,8 +835,7 @@ export default {
       return this.$store.getters.labels;
     },
     isRefValid() {
-      const { type, txt } = this.editedRef;
-      return type && txt;
+      return this.editedRef.txt;
     },
     isPathwayValid() {
       const { name } = this.editedPathway;
