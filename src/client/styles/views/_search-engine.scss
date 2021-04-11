@@ -134,9 +134,6 @@
                 border-radius: 100px;
                 padding: rem(10px) rem(30px);
                 text-align: center;
-                overflow: hidden; 
-                text-overflow: ellipsis;
-                white-space: nowrap;
                 margin-block-end: rem(6px);
                 position: relative;
                 background-repeat: no-repeat;
@@ -146,6 +143,9 @@
 
                 &.disabled {
                     opacity: .5;
+                }
+                &.not-active {
+                    cursor: default;
                 }
                 .remove-btn {
                     position: absolute;
@@ -236,7 +236,7 @@
         }
         &-stats {
             padding-inline-start: rem(16px);
-            font-size: rem(12px);
+            font-size: rem(14px);
             letter-spacing: rem(.06px);
             opacity: .8;
             text-align: center;
@@ -252,7 +252,7 @@
         font-size: rem(14px);
         line-height: rem(14px);
         text-transform: capitalize;
-        color: rgba($clr-txt-dark, .6);
+        color: rgba($clr-txt-dark, .8);
         overflow-x: auto;
         width: 100%;
         

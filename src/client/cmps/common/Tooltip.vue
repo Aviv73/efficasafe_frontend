@@ -9,6 +9,7 @@
         @click="onToggle"
     >
         <aside
+            v-if="!hidden"
             class="tooltip"
             ref="tooltip"
             :class="{
@@ -97,6 +98,10 @@ export default {
         closable: {
             type: Boolean,
             default: false
+        },
+        hidden: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -108,7 +113,7 @@ export default {
     },
     methods: {
         onToggle() {
-            if (this.on !== 'click') return;
+            if (this.hidden || this.on !== 'click') return;
             if (this.isSolo) {
                 this.$parent.$emit(this.$options.EV_sibling_toggle, !this.isActive);
             }

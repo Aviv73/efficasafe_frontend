@@ -43,6 +43,11 @@ export const materialStore = {
                     if (!label) material.labels.push(data.label);
                 }
             });
+        },
+        removeMaterials(state, { ids }) {
+            state.materials = state.materials.filter(material => {
+                return !ids.includes(material._id);
+            });
         }
     },
     actions: {
@@ -86,6 +91,10 @@ export const materialStore = {
             if (res.ok) {
                 context.commit({ type: 'setMaterialLabels', data });
             }
+        },
+        async removeMaterials(context, { ids }) {
+            await materialService.removeMany(ids);
+            context.commit({ type: 'removeMaterials', ids });
         }
     }
 }

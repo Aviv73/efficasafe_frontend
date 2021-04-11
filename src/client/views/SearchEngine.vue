@@ -21,20 +21,24 @@
                 <autocomplete
                     class="search-engine-search-bar"
                     :isOnSearchPage="true"
-                    placeholder1="+   Add another"
+                    :placeholder1="isScreenNarrow ? 'Add another' : '+   Add another'"
                     @item-selected="addMaterials"
                 />
                 <ul class="search-engine-search-materials">
                     <tooltip
                         v-for="(result, idx) in formatedMaterials"
                         :key="idx"
+                        :hidden="!isTooltipActive(result)"
                         on="click"
                         isSolo
                         closable
                         left
                     >
                         <template #close-icon>
-                            <close-icon :size="16" />
+                            <close-icon
+                                v-if="isTooltipActive(result)"
+                                :size="16"
+                            />
                         </template>
                         <template #content>
                             <material-interactions-preview
@@ -46,8 +50,8 @@
                             />
                         </template>
                         <li
-                            class="search-engine-search-materials-chip"
-                            :class="{ 'disabled': result.isIncluded }" 
+                            class="search-engine-search-materials-chip clip-txt"
+                            :class="{ 'disabled': result.isIncluded, 'not-active': !isTooltipActive(result) }" 
                             :style="{ 'background-image': `url('${getResultIcon(result)}')` }"
                         >
                             {{ result.txt }}
@@ -577,6 +581,9 @@ export default {
                     acc[groupIdx].evidenceLevel = this.getMoreSeverEvidenceLevel(acc[groupIdx].evidenceLevel, interaction.evidenceLevel);
                 }
             } 
+        },
+        isTooltipActive(result) {
+            return result.isIncluded || (result.materials.length > 1 || result.txt !== result.materials[0].name) || this.getMaterialInteractions(result).length || (result.materials.length === 1 && result.materials.length !== 1);
         },
         getMoreSeverRecomm(...recommendations) {
             const { recommendationsOrderMap } = this.$options;

@@ -86,10 +86,10 @@
 
             &:focus {
                 outline: none;
-                background-color: rgba($black, .05);             
+                background-color: rgba($black, .25);             
             }
             @include hover-supported {
-                background-color: rgba($black, .05);             
+                background-color: rgba($black, .25);             
             }
         }
     }

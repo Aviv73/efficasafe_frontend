@@ -18,6 +18,7 @@
           :totalItems="totalItems"
           @options-updated="setFilter"
           @header-clicked="setFilter"
+          @delete-many-materials="removeMany"
         />
       </v-card>
 
@@ -78,6 +79,9 @@ export default {
 
       await this.$store.dispatch({ type: 'loadMaterials', criteria });
       this.loading = false;
+    },
+    async removeMany(ids) {
+      await this.$store.dispatch({ type: 'removeMaterials', ids });
     }
   },
   components: {

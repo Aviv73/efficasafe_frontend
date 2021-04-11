@@ -26,7 +26,7 @@
                         'background-image': `url('${require(`@/client/assets/icons/types/${getTypeImgName(material.type)}.svg`)}')`
                     }"
                 >
-                    {{ material.name }}
+                    <span class="clip-txt">{{ material.name }}</span>
                 </li>
             </ul>
             <hr v-if="interactions.length || (materials.length === 1 && !isOneMaterial)" />
@@ -40,12 +40,14 @@
                     class="interactions-preview-interactions-interaction"
                     v-for="interaction in interactions"
                     :key="interaction._id"
-                >
-                    <interaction-icon
-                        class="interaction-icon"
-                        :color="getInteractionColor(interaction.recommendation)"
-                    />
-                    {{ getInteractionShortName(interaction.name) }}
+                >   
+                    <span class="clip-txt">
+                        <interaction-icon
+                            class="interaction-icon"
+                            :color="getInteractionColor(interaction.recommendation)"
+                        />
+                        {{ getInteractionShortName(interaction.name) }}
+                    </span>
                 </li>
             </ul>
             <hr v-if="materials.length === 1 && !isOneMaterial" />

@@ -11,7 +11,8 @@ export const materialService = {
     getEmptyMaterial,
     updateMaterials,
     getEmptyRef,
-    getEmptyPathway
+    getEmptyPathway,
+    removeMany
 }
 
 function list(filterBy = {}) {
@@ -33,6 +34,10 @@ function restore(material) {
 
 function remove(id) {
     httpService.delete(`${END_POINT}/${id}`);
+}
+
+function removeMany(ids) {
+    httpService.delete(END_POINT, ids);
 }
 
 function updateMaterials(data) {

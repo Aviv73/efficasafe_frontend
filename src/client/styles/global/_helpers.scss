@@ -37,6 +37,13 @@
     font-family: roboto-medium, sans-serif;
     font-weight: 500;
 }
+.clip-txt {
+    display: inline-block;
+    width: 100%;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
 
 // Aspect-Ratio Helpers
