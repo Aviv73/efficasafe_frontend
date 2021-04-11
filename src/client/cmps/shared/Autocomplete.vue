@@ -1,6 +1,9 @@
 <template>
     <form @submit.prevent="" class="autocomplete">
-        <div class="autocomplete-field" :class="{ 'inset': isOnSearchPage }">
+        <div
+            class="autocomplete-field"
+            :class="{ 'inset': isOnSearchPage }"
+        >
             <input
                 v-model="search"
                 ref="searchInput"

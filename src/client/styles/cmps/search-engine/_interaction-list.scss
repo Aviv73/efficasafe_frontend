@@ -9,11 +9,24 @@
     }
 
     &-header {
-        display: flex;
+        display: none;
         align-items: center;
         justify-content: space-between;
         box-shadow: 0px 1px 1px rgba($clr12, .17);
         color: $clr12;
+        
+        @include for-mobile-layout {
+            display: flex;
+        }
+
+        &-item {
+            display: flex;
+            align-items: center;
+
+            & > *:not(:last-child) {
+                margin-inline-end: rem(5px);
+            }
+        }
     }
     &-list {
     }

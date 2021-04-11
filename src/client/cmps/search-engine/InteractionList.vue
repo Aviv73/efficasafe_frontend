@@ -1,27 +1,27 @@
 <template>
   <section class="interaction-list">
       <header class="interaction-list-header">
-          <span>
+          <span class="interaction-list-header-item"> 
               <button>
                 <pan-vertical-icon :size="12" />
               </button>
-              Supplement vs Drug
+              <span>Supplement vs Drug</span>
               <button>
                 <swap-horizontal-icon :size="18" />
               </button>
             </span>
-          <span>
+          <span class="interaction-list-header-item"> 
               <button>
                 <pan-vertical-icon :size="12" />
               </button>
-              Recommendation
+              <span>Recommendation</span>
             </span>
-          <span>
+          <span class="interaction-list-header-item"> 
               <button>
                 <pan-vertical-icon :size="12" />
               </button>
-              Level of Evidence
-            </span>
+              <span>Level of Evidence</span>
+          </span>
       </header>
       <ul class="interaction-list-list">
           <li class="interaction-list-item"
