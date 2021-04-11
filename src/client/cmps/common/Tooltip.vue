@@ -16,6 +16,7 @@
                 'fade': fade,
                 'exceed-right': exceedsRight,
                 'exceed-left': exceedsLeft,
+                'exceed-x': exceedsX,
                 bottom,
                 top,
                 left,
@@ -108,7 +109,8 @@ export default {
         return {
             isActive: false,
             exceedsRight: false,
-            exceedsLeft: false
+            exceedsLeft: false,
+            exceedsX: false
         }
     },
     methods: {
@@ -127,9 +129,15 @@ export default {
             let isExceedsRight = false;
             let isExceedsLeft = false;
 
-            if (right + width > window.innerWidth) {
+            const rightMargin = right + width;
+            const leftMargin = left - width;
+            
+            if (rightMargin > window.innerWidth && leftMargin < 0) {
+                this.exceedsX = true;
+                return;
+            } else if (rightMargin > window.innerWidth) {
                 isExceedsRight = true;
-            } else if (left - width < 0) {
+            } else if (leftMargin < 0) {
                 isExceedsLeft = true;
             }
             this.exceedsRight = isExceedsRight;
@@ -196,6 +204,12 @@ export default {
                 right: 100%;
                 transform: translateY(-50%);
             }
+            &.exceed-x {
+                top: 100%;
+                right: unset;
+                left: 50%;
+                transform: translateX(-50%);
+            }
         }
         &.right {
             right: 100%;
@@ -206,6 +220,12 @@ export default {
                 right: unset;
                 left: 100%;
                 transform: translateY(-50%);
+            }
+            &.exceed-x {
+                top: 100%;
+                right: unset;
+                left: 50%;
+                transform: translateX(-50%);
             }
         }
         .tooltip-close-btn {
