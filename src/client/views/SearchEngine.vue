@@ -585,7 +585,7 @@ export default {
             } 
         },
         isTooltipActive(result) {
-            return result.isIncluded || (result.materials.length > 1 || result.txt !== result.materials[0].name) || this.getMaterialInteractions(result).length || (result.materials.length === 1 && result.materials.length !== 1);
+            return result.isIncluded || (result.materials.length > 1 || result.txt !== result.materials[0].name) || this.getMaterialInteractions(result).length || (result.materials.length === 1 && this.materials.length !== 1);
         },
         getMoreSeverRecomm(...recommendations) {
             const { recommendationsOrderMap } = this.$options;
