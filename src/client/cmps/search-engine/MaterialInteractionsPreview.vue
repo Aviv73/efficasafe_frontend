@@ -19,7 +19,7 @@
             <h6>{{ previewHeader }}</h6>
             <ul>
                 <li
-                    class="interactions-preview-composites-composite"
+                    class="interactions-preview-composites-composite flex-align-center"
                     v-for="material in materials"
                     :key="material._id"
                     :style="{
@@ -42,11 +42,13 @@
                     :key="interaction._id"
                 >   
                     <span class="clip-txt">
-                        <interaction-icon
-                            class="interaction-icon"
-                            :color="getInteractionColor(interaction.recommendation)"
-                        />
-                        {{ getInteractionShortName(interaction.name) }}
+                        <div class="flex-align-center">
+                            <interaction-icon
+                                class="interaction-icon"
+                                :color="getInteractionColor(interaction.recommendation)"
+                            />
+                            {{ getInteractionShortName(interaction.name) }}
+                        </div>
                     </span>
                 </li>
             </ul>

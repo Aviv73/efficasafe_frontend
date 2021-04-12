@@ -44,8 +44,6 @@
 
         &-interaction {
             max-width: rem(130px);
-            display: flex;
-            align-items: center;
 
             @include for-mobile-layout {
                 max-width: rem(180px);

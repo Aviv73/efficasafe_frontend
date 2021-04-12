@@ -30,7 +30,6 @@
                         :key="idx"
                         :hidden="!isTooltipActive(result)"
                         on="focus"
-                        isSolo
                         closable
                         left
                     >

@@ -118,9 +118,7 @@ export default {
     methods: {
         onToggle(isActive) {
             if (this.hidden || this.on !== 'focus') return;
-            if (this.isSolo) {
-                this.$parent.$emit(this.$options.EV_sibling_toggle, !isActive);
-            }
+            
             this.checkIfInViewport();
             this.isActive = isActive;
         },
@@ -145,12 +143,6 @@ export default {
             this.exceedsRight = isExceedsRight;
             this.exceedsLeft = isExceedsLeft;
         }
-    },
-    created() {
-        if (!this.isSolo) return; 
-        this.$parent.$on(this.$options.EV_sibling_toggle, (isSibActivated) => {
-            if (this.isActive && isSibActivated) this.isActive = false;
-        });
     }
 }
 </script>
