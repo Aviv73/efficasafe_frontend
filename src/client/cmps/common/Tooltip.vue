@@ -1,12 +1,14 @@
 <template>
     <div
         class="tooltip-box"
+        :tabindex="(on === 'focus') ? '0' : '-1'"
         :class="{
             'hoverable': on === 'hover',
             'tooltip-active': isActive,
         }"
         ref="activator"
-        @click="onToggle"
+        @focus="onToggle(true)"
+        @blur="onToggle(false)"
     >
         <aside
             v-if="!hidden"
@@ -114,13 +116,13 @@ export default {
         }
     },
     methods: {
-        onToggle() {
-            if (this.hidden || this.on !== 'click') return;
+        onToggle(isActive) {
+            if (this.hidden || this.on !== 'focus') return;
             if (this.isSolo) {
-                this.$parent.$emit(this.$options.EV_sibling_toggle, !this.isActive);
+                this.$parent.$emit(this.$options.EV_sibling_toggle, !isActive);
             }
             this.checkIfInViewport();
-            this.isActive = !this.isActive;
+            this.isActive = isActive;
         },
         checkIfInViewport() {
             const { activator, tooltip } = this.$refs;
@@ -160,6 +162,9 @@ export default {
         opacity: initial;
         color: initial;
         
+        &:focus {
+            outline: none;
+        }
         &.tooltip-active {
             .activator {
                 background-color: darken(white, 5%);

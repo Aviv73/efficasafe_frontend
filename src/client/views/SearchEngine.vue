@@ -29,7 +29,7 @@
                         v-for="(result, idx) in formatedMaterials"
                         :key="idx"
                         :hidden="!isTooltipActive(result)"
-                        on="click"
+                        on="focus"
                         isSolo
                         closable
                         left
