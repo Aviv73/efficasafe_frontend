@@ -293,6 +293,7 @@
                             <template v-slot:activator="{ on, attrs }">
                                 <v-chip
                                     class="pathway"
+                                    :color="getPathwayColor(pathway)"
                                     v-bind="attrs"
                                     v-on="on"
                                 >
@@ -518,6 +519,21 @@ export default {
         },
     },
     methods: {
+        getPathwayColor({ influence }) {
+            let firstLine = influence.split('</p>')[0];
+            if (!firstLine) return 'default';
+            firstLine = firstLine.toLowerCase();
+
+            if (firstLine.includes('may induce') || firstLine.includes('may inhibit')) {
+                return 'error';
+            } else if (firstLine.includes('is unclear')) {
+                return 'warning';
+            } else if (firstLine.includes('not likely to affect')) {
+                return 'success';
+            }
+
+            return 'default';
+        },
         setRefsToolTip() {
             const elSubs = Array.from(this.$refs.materialDetails.querySelectorAll('sub'));
             for (let i = 0; i < elSubs.length; i++) {
