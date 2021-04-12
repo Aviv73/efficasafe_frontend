@@ -160,6 +160,11 @@ export default {
         opacity: initial;
         color: initial;
         
+        &.tooltip-active {
+            .activator {
+                background-color: darken(white, 5%);
+            }
+        }
         &.tooltip-active .tooltip {
             visibility: visible;
             opacity: 1;
@@ -179,7 +184,7 @@ export default {
         visibility: hidden;
         z-index: 1;
         opacity: 0;
-
+        
         &.fade {
             transition-property: opacity;
             transition-timing-function: ease;

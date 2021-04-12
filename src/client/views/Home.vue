@@ -162,7 +162,8 @@ export default {
                 totalClinicalCount: 0,
                 totalPreClinicalCount: 0,
                 totalArticlesCount: 0
-            }
+            },
+            searches: []
         }
     },
     computed: {
@@ -172,7 +173,11 @@ export default {
     },
     methods: {
         goToSearch(query) {
-            this.$router.push(`/search?q=${query}`);
+            this.searches.push(query)
+            if (this.searches.length === 2) {
+                const [ q1, q2 ] = this.searches;
+                this.$router.push(`/search?q=${q1}&q=${q2}`);
+            }
         }
     },
     async created() {

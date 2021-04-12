@@ -50,8 +50,11 @@
                             />
                         </template>
                         <li
-                            class="search-engine-search-materials-chip clip-txt"
-                            :class="{ 'disabled': result.isIncluded, 'not-active': !isTooltipActive(result) }" 
+                            class="search-engine-search-materials-chip clip-txt activator"
+                            :class="{
+                                'disabled': result.isIncluded,
+                                'not-active': !isTooltipActive(result)
+                            }" 
                             :style="{ 'background-image': `url('${getResultIcon(result)}')` }"
                         >
                             {{ result.txt }}

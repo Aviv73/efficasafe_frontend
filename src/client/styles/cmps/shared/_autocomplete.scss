@@ -30,6 +30,9 @@
                 outline: none;
                 box-shadow: inset 0px 0px 2px 0 $clr9;
 
+                & + svg path {
+                    fill: $green;
+                }
                 &::placeholder {
                     opacity: 0;
                 }
@@ -42,6 +45,9 @@
                     color: inherit;
                     font-family: roboto-medium, sans-serif;
                 }
+            }
+            &.un-focus + svg path {
+                fill: $gray;
             }
         }
         .cap {
@@ -63,7 +69,7 @@
         left: rem(24px);
         width: calc(200% - 48px);
         z-index: 1;
-        max-height: 304px;
+        max-height: rem(304px);
         overflow-y: auto;
         background-color: $white;
         border-radius: 0 0 4px 4px;
@@ -78,6 +84,16 @@
         &.active {
             opacity: 1;
             transform: scaleY(1);
+        }
+        &.on-primary {
+            left: rem(24px);
+        }
+        &.on-secondary {
+            left: calc(100% + 24px);
+        }
+        &.on-hero {
+            max-height: rem(230px);
+            width: calc(100% - 48px);
         }
         &-result {
             padding: rem(12px) rem(0px) rem(12px) rem(16px);
