@@ -27,7 +27,7 @@ export default {
     props: {
         isSolo: {
             type: Boolean,
-            default: false
+            default: true
         }
     },
     data() {
@@ -59,9 +59,10 @@ export default {
     }
     .scale-y-enter-active, .scale-y-leave-active {
         transform-origin: top;
-        transition: transform .3s ease;
+        transition: transform .3s ease, opacity .3s ease;
     }
     .scale-y-enter, .scale-y-leave-to {
         transform: scaleY(0);
+        opacity: 0;
     }
 </style>

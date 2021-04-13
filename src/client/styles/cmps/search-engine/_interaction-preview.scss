@@ -1,3 +1,50 @@
 .interaction-preview {
-    
+    font-family: roboto-medium, sans-serif;
+    font-weight: 500;
+    font-size: rem(14px);
+    line-height: rem(17px);
+    color: $clr-txt-darker;
+
+    &-header {
+        padding: rem(24px) 0;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        
+        @include for-narrow-layout {
+            flex-wrap: nowrap;
+        }
+
+        & > span {
+            &:first-child {
+                flex-basis: 100%;
+                text-align: center;
+                
+                @include for-narrow-layout {
+                    flex-basis: 52.66%;
+                    text-align: initial;
+                }
+            }
+            &:nth-child(2) {
+                flex-basis: 50%;
+
+                @include for-narrow-layout {
+                    flex-basis: 33.33%;
+                }
+            }
+            &:nth-child(3) {
+                flex-basis: 50%;
+                display: inline-block;
+                min-width: rem(110px);
+                font-family: roboto-bold, sans-serif;
+                font-weight: 700;
+                text-align: right;
+                
+                @include for-narrow-layout {
+                    text-align: center;
+                    flex-basis: auto;
+                }
+            }
+        }
+    }
 }

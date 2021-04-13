@@ -24,7 +24,6 @@
 // MATERIAL
 @import "cmps/material/material-filter";
 @import "cmps/material/material-list";
-@import "cmps/material/material-preview";
 @import "cmps/material/sub-material-list";
 @import "cmps/material/label-path-list";
 
@@ -36,13 +35,11 @@
 // LABELS
 @import "cmps/label/label-filter";
 @import "cmps/label/label-list";
-@import "cmps/label/label-preview";
 @import "cmps/label/label-search";
 
 // INTERACTIONS
 @import "cmps/interaction/interaction-filter";
 @import "cmps/interaction/interaction-list";
-@import "cmps/interaction/interaction-preview";
 
 // INTERACTIONS EDIT CMPS
 @import "cmps/interaction/edit/interaction-sides";

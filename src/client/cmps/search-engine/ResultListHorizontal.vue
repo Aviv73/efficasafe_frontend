@@ -25,7 +25,7 @@
         </header>
         <ul class="horizontal-list-list">
             <li
-                class="horizontal-list-item"
+                class="horizontal-list-list-item"
                 v-for="interaction in interactions"
                 :key="getInteractionKey(interaction)"
             >

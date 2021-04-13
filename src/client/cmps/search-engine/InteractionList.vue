@@ -1,10 +1,10 @@
 <template>
     <section class="interaction-list">
         <result-list-horizontal
-          v-if="!isVertical"
-          :interactions="listData.interactions"
-          :pageCount="listData.pageCount"
-          :total="listData.total"
+            v-if="!isVertical"
+            :interactions="listData.interactions"
+            :pageCount="listData.pageCount"
+            :total="listData.total"
         />
         <div v-else>VERTIVAL LIST HERE!</div>
     </section>
@@ -25,7 +25,7 @@ export default {
         },
     },
     components: {
-      ResultListHorizontal
-    }
+        ResultListHorizontal,
+    },
 };
 </script>

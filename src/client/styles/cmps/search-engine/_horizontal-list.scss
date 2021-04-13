@@ -11,7 +11,6 @@
     &-header {
         display: none;
         align-items: center;
-        justify-content: space-between;
         box-shadow: 0px 1px 1px rgba($clr12, .17);
         color: $clr12;
         
@@ -22,12 +21,24 @@
         &-item {
             display: flex;
             align-items: center;
+            
+            &:first-child {
+                flex-basis: 52.66%;
+            }
+            &:nth-child(2) {
+                flex-basis: 33.33%;
+            }
+            &:nth-child(3) {
+                flex-basis: auto;
+                min-width: max-content;
+            }
 
             & > *:not(:last-child) {
                 margin-inline-end: rem(5px);
             }
         }
     }
-    &-list {
+    &-list-item:not(:last-child) {
+        box-shadow: 0px 1px 1px rgba($clr12, .17);
     }
 }
