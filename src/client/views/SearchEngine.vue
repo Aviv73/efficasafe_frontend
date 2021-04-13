@@ -150,8 +150,8 @@
                             <label class="display-toggle">
                                 <input
                                     type="radio"
-                                    name="isHorizontal"
-                                    v-model="isViewHorizontal"
+                                    name="isVertical"
+                                    v-model="isViewVertical"
                                     :value="false"
                                     hidden
                                 />
@@ -160,8 +160,8 @@
                             <label class="display-toggle">
                                 <input
                                     type="radio"
-                                    name="isHorizontal"
-                                    v-model="isViewHorizontal"
+                                    name="isVertical"
+                                    v-model="isViewVertical"
                                     :value="true"
                                     hidden
                                 />
@@ -175,6 +175,7 @@
                         class="inner-view"
                         :key="$route.name"
                         :listData="routableListData"
+                        :isVertical="isViewVertical"
                     />
                 </transition>
             </div>
@@ -210,7 +211,7 @@ export default {
             dBankPageCount: 0,
             dBankTotal: 0,
             msg: '',
-            isViewHorizontal: false,
+            isViewVertical: false,
             scrollBarWidth: '0px',
             routerTransitionName: ''
         }
