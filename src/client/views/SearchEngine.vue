@@ -134,8 +134,7 @@
                                 class="link boosters"
                                 :to="{ name: 'Boosters', query: this.$route.query }"
                             >
-                                <span class="highlight">New</span>
-                                {{'\xa0'}}-{{'\xa0'}}Positive boosters (25)
+                                Positive boosters (25)
                             </router-link>
                         </li>
                         <li class="search-engine-nav-link">

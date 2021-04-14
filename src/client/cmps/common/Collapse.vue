@@ -39,6 +39,14 @@ export default {
         rootEl() {
             return this.isSolo ? 'div' : 'li';
         }
+    },
+    created() {
+        this.$parent.$on('close-collapse', () => {
+            this.isContentVisible = false;
+        });
+    },
+    beforeDestroy() {
+        this.$parent.$off('close-collapse');
     }
 }
 </script>

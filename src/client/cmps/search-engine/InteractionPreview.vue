@@ -18,7 +18,31 @@
                 </div>
             </template>
             <template #content>
-                {{ interaction }}
+                <div
+                    class="interaction-preview-content"
+                    v-if="!interaction.side2Label && interaction.side2Material"
+                >
+                    <h3 class="font-bold">Summary</h3>
+                    <long-txt
+                        :txt="interaction.summary"
+                        :maxChars="250"
+                        :expandable="false"
+                        :overflowSymb="getInteractionLink(interaction)"
+                        isHTML
+                    />
+                    <!-- <router-link :to="(interaction.isVirtual) ? `/interaction/${interaction._id}/${interaction.side2Material._id}` : `/interaction/${interaction._id}`">
+                        Read more...
+                    </router-link> -->
+                    <button class="de-activator" @click="$emit('close-collapse')">
+                        <chevron-up-icon />
+                    </button>
+                </div>
+                <div v-else-if="interaction.side2Label && !interaction.side2Material">
+                    Material 2 Label!
+                </div>
+                <div v-else>
+                    vInteractions/Compound group!
+                </div>
             </template>
         </collapse>
     </section>
@@ -28,7 +52,10 @@
 import { interactionService } from '@/cms/services/interaction.service';
 
 import Collapse from '@/client/cmps/common/Collapse';
+import LongTxt from '@/client/cmps/common/LongTxt';
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
+
+import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 
 export default {
     props: {
@@ -38,6 +65,14 @@ export default {
         }
     },
     methods: {
+        getInteractionLink(interaction) {
+            const url = interaction.isVirtual ? `/interaction/${interaction._id}/${interaction.side2Material._id}` : `/interaction/${interaction._id}`;
+            return `.
+                <a class="interaction-link" href="${url}">
+                    Read more...
+                </a>
+            `;
+        },
         getShortRecommendation(fullRec) {
             switch (fullRec.toLowerCase()) {
                 case 'avoid coadministration':
@@ -62,7 +97,9 @@ export default {
     },
     components: {
         Collapse,
-        InteractionCapsules
+        InteractionCapsules,
+        ChevronUpIcon,
+        LongTxt
     }
 }
 </script>
