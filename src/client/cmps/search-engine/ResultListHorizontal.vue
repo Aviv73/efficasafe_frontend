@@ -21,6 +21,10 @@
                     <pan-vertical-icon :size="12" />
                 </button>
                 <span>Level of Evidence</span>
+                <information-outline-icon
+                    class="tooltip-trigger"
+                    :size="12"
+                />
             </span>
         </header>
         <ul class="horizontal-list-list">
@@ -40,6 +44,7 @@ import InteractionPreview from '@/client/cmps/search-engine/InteractionPreview';
 
 import PanVerticalIcon from 'vue-material-design-icons/PanVertical';
 import SwapHorizontalIcon from 'vue-material-design-icons/SwapHorizontal';
+import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
 
 export default {
     props: {
@@ -78,7 +83,8 @@ export default {
     components: {
         InteractionPreview,
         PanVerticalIcon,
-        SwapHorizontalIcon
+        SwapHorizontalIcon,
+        InformationOutlineIcon
     }
 };
 </script>

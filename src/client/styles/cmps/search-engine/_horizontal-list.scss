@@ -36,6 +36,10 @@
             & > *:not(:last-child) {
                 margin-inline-end: rem(5px);
             }
+            .tooltip-trigger {
+                height: 32px;
+                cursor: help;
+            }
         }
     }
     &-list-item:not(:last-child) {
