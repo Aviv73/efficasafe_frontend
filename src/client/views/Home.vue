@@ -11,7 +11,6 @@
                 <span>
                     Optimizing <span class="keyword1">efficacy</span> and
                     <span class="keyword2">safety</span>
-                    <span class="sub"> of integrated medical treatments </span>
                 </span>
             </h1>
             <div class="home-container">
@@ -21,6 +20,9 @@
                     placeholder2="Add another"
                     @item-selected="goToSearch"
                 />
+                <h2 class="home-subheader">
+                    <span class="font-bold">Herb-Drug-Supplement</span> Interaction platform
+                </h2>
             </div>
         </header>
         <section class="home-stats">

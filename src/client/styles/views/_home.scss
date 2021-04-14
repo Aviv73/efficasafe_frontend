@@ -10,7 +10,7 @@
         padding-block-start: 55px;
         
         @include for-mobile-layout {
-            padding-block-start: 66px;
+            padding-block-start: 50px;
             background-image: url('../assets/imgs/home-bg.jpg');
         }
         @include for-mobile-horizontal {
@@ -18,10 +18,10 @@
         }
     }
     h1 {
-        margin-block-end: rem(40px);
+        margin-block-end: rem(36px);
         align-items: center;
         font-size: rem(18px);
-        line-height: rem(24px);
+        line-height: rem(28px);
         color: rgba($clr-txt-dark, .85);
         
         @include for-narrow-layout {
@@ -34,7 +34,8 @@
 
         [alt="Efficasafe Logo"] {
             width: 170px;
-            margin-block-end: rem(40px);
+            margin-block-end: rem(0px);
+
             @include for-narrow-layout {
                 width: 220px;
             }
@@ -48,14 +49,6 @@
         }
         .keyword1 { color: $gradient-clr1; }
         .keyword2 { color: $gradient-clr2; }
-        .sub {
-            display: block;
-            font-size: rem(14px);
-
-            @include for-narrow-layout {
-                font-size: rem(18px);
-            }
-        }
     }
     &-container {
         width: calc(100% - 25px);
@@ -66,11 +59,20 @@
             max-width: 425px;
         }
     }
+    &-subheader {
+        font-size: rem(18px);
+        line-height: rem(28px);
+        margin-block-end: rem(220px);
+
+        @include for-narrow-layout {
+            font-size: rem(24px);
+        }
+    }
     &-search {
         width: 100%;
         padding: rem(6px);
         background-color: rgba($clr7, .5);
-        margin-block-end: rem(220px);
+        margin-block-end: rem(36px);
         
         @include for-mobile-horizontal {
             margin-block-end: rem(42px);
