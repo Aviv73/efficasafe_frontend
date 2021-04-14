@@ -9,6 +9,7 @@
         ref="activator"
         @focus="onToggle(true)"
         @blur="onToggle(false)"
+        @mousedown="dimissTooltip"
     >
         <aside
             v-if="!hidden"
@@ -116,6 +117,11 @@ export default {
         }
     },
     methods: {
+        dimissTooltip() {
+            if (this.isActive) {
+                this.isActive = false;
+            }
+        },
         onToggle(isActive) {
             if (this.hidden || this.on !== 'focus') return;
             
@@ -172,6 +178,9 @@ export default {
                     visibility: visible;
                     opacity: 1;
                 }
+            }
+            .activator:hover {
+                background-color: darken(white, 5%);
             }
         }
     }
