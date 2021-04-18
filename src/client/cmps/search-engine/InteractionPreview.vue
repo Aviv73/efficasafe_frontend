@@ -7,6 +7,7 @@
                         <interaction-capsules
                             :name="interaction.name"
                             :color="getInteractionColor(interaction.recommendation)"
+                            :vInteractionCount="getVinteractionsCount(interaction)"
                         />
                     </span>
                     <span>
@@ -37,8 +38,15 @@
                 <div v-else-if="interaction.side2Label && !interaction.side2Material">
                     <label-interaction-preview />
                 </div>
-                <div v-else>
-                    vInteractions/Compound group!
+                <div
+                    v-else
+                    v-for="(vInteraction, idx) in interaction.vInteractions"
+                    :key="idx"
+                >
+                    <interaction-preview
+                        class="interaction-preview-inner"
+                        :interaction="vInteraction"
+                    />
                 </div>
             </template>
         </collapse>
@@ -56,6 +64,7 @@ import LabelInteractionPreview from '@/client/cmps/search-engine/LabelInteractio
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 
 export default {
+    name: 'InteractionPreview',
     props: {
         interaction: {
             type: Object,
@@ -63,6 +72,9 @@ export default {
         }
     },
     methods: {
+        getVinteractionsCount(interaction) {
+            return ('vInteractions' in interaction) ? interaction.vInteractions.length : 0;
+        },
         getInteractionLink(interaction) {
             const url = interaction.isVirtual ? `/interaction/${interaction._id}/${interaction.side2Material._id}` : `/interaction/${interaction._id}`;
             return `.

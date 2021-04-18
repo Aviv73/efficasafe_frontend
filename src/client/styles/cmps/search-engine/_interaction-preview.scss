@@ -5,6 +5,11 @@
     line-height: rem(17px);
     color: $clr-txt-darker;
 
+    
+    &-inner {
+        padding-inline-start: rem(20px);
+    }
+
     &-header {
         padding: rem(18px) 0;
         display: flex;

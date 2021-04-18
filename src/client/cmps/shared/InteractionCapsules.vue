@@ -27,6 +27,12 @@
                 />
             </svg>
         </div>
+        <span
+            class="layer"
+            v-for="n in vInteractionCount"
+            :key="n"
+            :style="{ 'transform': `translateX(-${n * 5}px)` }"
+        />
     </div>
 </template>
 
@@ -40,6 +46,10 @@ export default {
         color: {
             type: String,
             default: '#b1b1b1'
+        },
+        vInteractionCount: {
+            type: Number,
+            required: true
         }
     },
     computed: {

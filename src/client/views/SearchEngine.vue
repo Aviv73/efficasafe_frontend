@@ -298,7 +298,8 @@ export default {
                             recommendation: interaction.recommendation,
                             evidenceLevel: interaction.evidenceLevel,
                             isVirtual: true,
-                            side2DraftName: interaction.side2DraftName
+                            side2DraftName: interaction.side2DraftName,
+                            summary: interaction.summary
                         };
                         this.insertInteraction(acc, vInteraction);
                     });
