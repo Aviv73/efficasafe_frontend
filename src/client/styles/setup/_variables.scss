@@ -22,7 +22,13 @@ $gray: #b1b1b1;
 $red: #E63946;
 $yellow: #F6D55C;
 $green: #56C596;
+
+
 //// Media break points
 $break-mobile: 600px;
 $break-narrow: 900px;
 $break-wide: 1440px;
+
+//// Others
+$slight-border-bottom: 0px 1px 1px 0 rgba($clr12, .17); 
+$slight-border-y: 0px 0px 1px 2px rgba($clr12, .17); 

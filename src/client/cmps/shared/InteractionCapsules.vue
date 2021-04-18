@@ -15,7 +15,7 @@
             </svg>
         </div>
         <div class="interaction-capsules-side">
-        <span :title="side2Name">{{ side2Name }}</span>
+        <span :title="side2Name">{{ side2Name }}{{ vInteractionCount ? ` (${vInteractionCount})` : '' }}</span>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="cap cap-right"
@@ -29,7 +29,7 @@
         </div>
         <span
             class="layer"
-            v-for="n in vInteractionCount"
+            v-for="n in layerCount"
             :key="n"
             :style="{ 'transform': `translateX(-${n * 5}px)` }"
         />
@@ -53,6 +53,10 @@ export default {
         }
     },
     computed: {
+        layerCount() {
+            if (this.vInteractionCount <= 4) return this.vInteractionCount;
+            return 4;
+        },
         side1Name() {
             return this.name.split('&')[0].trim();
         },

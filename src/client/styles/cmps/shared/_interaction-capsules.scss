@@ -23,6 +23,9 @@
         @include for-narrow-layout {
             width: rem(120px);
         }
+        @media (min-width: 1200px) {
+            width: rem(160px);
+        }
         @include for-wide-layout {
             width: rem(180px);
         }

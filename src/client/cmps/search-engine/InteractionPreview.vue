@@ -6,7 +6,10 @@
                     :is="getHeaderCmp(interaction)"
                     :to="getInteractionUrl(interaction)"
                 >
-                    <div class="interaction-preview-header">
+                    <div
+                        class="interaction-preview-header"
+                        :class="{ 'child': isChild }"
+                    >
                         <span>
                             <interaction-capsules
                                 :name="interaction.name"
@@ -18,7 +21,7 @@
                             {{ getShortRecommendation(interaction.recommendation) }}
                         </span>
                         <span class="evidence-level">
-                            {{ interaction.evidenceLevel }}
+                            {{ interaction.evidenceLevel || interaction.evidence_level }}
                         </span>
                     </div>
                 </component>
@@ -43,19 +46,28 @@
                         </button>
                     </div>
                 </div>
-                <div v-else-if="interaction.side2Label && !interaction.side2Material">
+                <div
+                    class="interaction-preview-content"
+                    :class="{ 'child': isChild }"
+                    v-else-if="interaction.side2Label && !interaction.side2Material"
+                >
                     <label-interaction-preview />
                 </div>
-                <div
+                <div 
                     v-else
-                    v-for="(vInteraction, idx) in interaction.vInteractions"
-                    :key="idx"
+                    class="interaction-preview-content"
+                    :class="{ 'child': isChild }"
                 >
-                    <interaction-preview
-                        class="interaction-preview-inner"
-                        :interaction="vInteraction"
-                        :link="link"
-                    />
+                    <div
+                        v-for="(vInteraction, idx) in interaction.vInteractions"
+                        :key="idx"
+                    >
+                        <interaction-preview
+                            :interaction="vInteraction"
+                            :link="link"
+                            is-child
+                        />
+                    </div>
                 </div>
             </template>
         </collapse>
@@ -82,14 +94,24 @@ export default {
         link: {
             type: Boolean,
             default: false
+        },
+        isChild: {
+            type: Boolean,
+            default: false
         }
     },
     methods: {
         getVinteractionsCount(interaction) {
-            return ('vInteractions' in interaction) ? interaction.vInteractions.length : 0;
+            if (!('vInteractions' in interaction)) return 0;
+            return interaction.vInteractions.reduce((acc, vInteraction) => {
+                if (!vInteraction.vInteractions) acc++;
+                else acc += vInteraction.vInteractions.length;
+
+                return acc;
+            }, 0);
         },
         getHeaderCmp(interaction) {
-            if (!this.link || interaction.vInteractions) return 'span';
+            if (!this.link || interaction.vInteractions || interaction.side2Label) return 'span';
             else return 'router-link';
         },
         getInteractionUrl(interaction) {

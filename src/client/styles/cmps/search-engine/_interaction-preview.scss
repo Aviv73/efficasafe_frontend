@@ -4,19 +4,27 @@
     font-size: rem(14px);
     line-height: rem(17px);
     color: $clr-txt-darker;
-
     
-    &-inner {
-        padding-inline-start: rem(20px);
-    }
     &-header {
-        padding: rem(18px) 0;
+        padding: rem(24px) 0;
         display: flex;
         align-items: center;
         flex-wrap: wrap;
         
         @include for-narrow-layout {
             flex-wrap: nowrap;
+        }
+
+        &.child {
+            box-shadow: none;
+            padding: rem(10px) 0;
+
+            & > span:first-child {
+                transform: translateX(10px);
+                @include for-wide-layout {
+                    transform: translateX(40px);
+                }
+            }
         }
 
         & > span {
@@ -31,6 +39,9 @@
             }
             &:nth-child(2) {
                 text-transform: capitalize;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
                 flex-basis: 50%;
 
                 @include for-narrow-layout {
@@ -53,13 +64,25 @@
         }
     }
     &-content {
-        margin: rem(22px) 0 rem(26px);
         position: relative;
-
+        box-shadow: $slight-border-y;
+        margin: 1px 0;
+        padding: rem(14px) 0;
+        
+        &.child {
+            .interaction-preview-header {
+                & > span:first-child {
+                    transform: translateX(20px);
+                    @include for-wide-layout {
+                        transform: translateX(80px);
+                    }
+                }
+            }
+        }
         &.link {
             margin: 0;
         }
-        
+ 
         .de-activator {
             position: absolute;
             top: 50%;
