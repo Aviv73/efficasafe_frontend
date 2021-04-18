@@ -30,8 +30,8 @@
         <ul class="horizontal-list-list">
             <li
                 class="horizontal-list-list-item"
-                v-for="interaction in interactions"
-                :key="getInteractionKey(interaction)"
+                v-for="(interaction, idx) in interactions"
+                :key="idx"
             >
                 <interaction-preview :interaction="interaction" />
             </li>

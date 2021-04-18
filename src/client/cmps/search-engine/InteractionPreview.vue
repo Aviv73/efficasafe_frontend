@@ -30,15 +30,12 @@
                         :overflowSymb="getInteractionLink(interaction)"
                         isHTML
                     />
-                    <!-- <router-link :to="(interaction.isVirtual) ? `/interaction/${interaction._id}/${interaction.side2Material._id}` : `/interaction/${interaction._id}`">
-                        Read more...
-                    </router-link> -->
                     <button class="de-activator" @click="$emit('close-collapse')">
                         <chevron-up-icon />
                     </button>
                 </div>
                 <div v-else-if="interaction.side2Label && !interaction.side2Material">
-                    Material 2 Label!
+                    <label-interaction-preview />
                 </div>
                 <div v-else>
                     vInteractions/Compound group!
@@ -54,6 +51,7 @@ import { interactionService } from '@/cms/services/interaction.service';
 import Collapse from '@/client/cmps/common/Collapse';
 import LongTxt from '@/client/cmps/common/LongTxt';
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
+import LabelInteractionPreview from '@/client/cmps/search-engine/LabelInteractionPreview';
 
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 
@@ -99,7 +97,8 @@ export default {
         Collapse,
         InteractionCapsules,
         ChevronUpIcon,
-        LongTxt
+        LongTxt,
+        LabelInteractionPreview
     }
 }
 </script>
