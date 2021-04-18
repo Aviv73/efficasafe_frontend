@@ -21,10 +21,32 @@
                     <pan-vertical-icon :size="12" />
                 </button>
                 <span>Level of Evidence</span>
-                <information-outline-icon
-                    class="tooltip-trigger"
-                    :size="12"
-                />
+                <tooltip on="hover" right right-bottom>
+                    <template #content>
+                        <div class="tooltip-content">
+                            <ol v-if="$route.name === 'Drug2Drug'">
+                                <li>
+                                    information formally provided in official prescribing information
+                                </li>
+                                <li>
+                                    based on scientific and clinical knowledge referenced from a variety of evidence sources
+                                </li>
+                            </ol>
+                            <ul v-else>
+                                <li>A - multi clinical or meta analysis</li>
+                                <li>B - 1 clinical or cohort + pre-clinical</li>
+                                <li>C - 1 clinical or cohort</li>
+                                <li>D - case report</li>
+                                <li>E - multi pre-clinical</li>
+                                <li>F - 1 pre-clinical</li>
+                            </ul>
+                        </div>
+                    </template>
+                    <information-outline-icon
+                        class="tooltip-trigger"
+                        :size="12"
+                    />
+                </tooltip>
             </span>
         </header>
         <ul class="horizontal-list-list">
@@ -41,6 +63,7 @@
 
 <script>
 import InteractionPreview from '@/client/cmps/search-engine/InteractionPreview';
+import Tooltip from '@/client/cmps/common/Tooltip';
 
 import PanVerticalIcon from 'vue-material-design-icons/PanVertical';
 import SwapHorizontalIcon from 'vue-material-design-icons/SwapHorizontal';
@@ -84,7 +107,8 @@ export default {
         InteractionPreview,
         PanVerticalIcon,
         SwapHorizontalIcon,
-        InformationOutlineIcon
+        InformationOutlineIcon,
+        Tooltip
     }
 };
 </script>

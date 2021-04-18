@@ -20,6 +20,7 @@
                 'exceed-right': exceedsRight,
                 'exceed-left': exceedsLeft,
                 'exceed-x': exceedsX,
+                'right-bottom': rightBottom,
                 bottom,
                 top,
                 left,
@@ -92,6 +93,10 @@ export default {
             default: false
         },
         right: {
+            type: Boolean,
+            default: false
+        },
+        rightBottom: {
             type: Boolean,
             default: false
         },
@@ -227,6 +232,10 @@ export default {
             top: 50%;
             transform: translateY(-50%);
 
+            &-bottom {
+                top: 0;
+                transform: translateY(0);
+            }
             &.exceed-left {
                 right: unset;
                 left: 100%;

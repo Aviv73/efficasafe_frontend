@@ -37,8 +37,23 @@
                 margin-inline-end: rem(5px);
             }
             .tooltip-trigger {
-                height: 32px;
                 cursor: help;
+                display: inline-block;
+                transform: translateY(2px);
+            }
+        }
+        .tooltip-content {
+            padding: rem(16px) rem(14px);
+            color: $clr-txt-darker;
+            
+            ol {
+                max-width: 28ch;
+                list-style: decimal;
+                margin-inline-start: rem(16px);
+
+                li:not(:last-child) {
+                    margin-block-end: rem(12px);
+                }
             }
         }
     }
