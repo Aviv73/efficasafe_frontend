@@ -2,9 +2,8 @@
     <section class="interaction-preview">
         <collapse>
             <template #header>
-                <router-link
-                    class="interaction-preview-link"
-                    :class="{ 'active': link && !interaction.vInteractions }"
+                <component
+                    :is="getHeaderCmp(interaction)"
                     :to="getInteractionUrl(interaction)"
                 >
                     <div class="interaction-preview-header">
@@ -22,7 +21,7 @@
                             {{ interaction.evidenceLevel }}
                         </span>
                     </div>
-                </router-link>
+                </component>
             </template>
             <template #content>
                 <div
@@ -89,8 +88,11 @@ export default {
         getVinteractionsCount(interaction) {
             return ('vInteractions' in interaction) ? interaction.vInteractions.length : 0;
         },
+        getHeaderCmp(interaction) {
+            if (!this.link || interaction.vInteractions) return 'span';
+            else return 'router-link';
+        },
         getInteractionUrl(interaction) {
-            if (!this.link || interaction.vInteractions) return '';
             return interaction.isVirtual ? `/interaction/${interaction._id}/${interaction.side2Material._id}` : `/interaction/${interaction._id}`;
         },
         getInteractionLink(interaction) {
