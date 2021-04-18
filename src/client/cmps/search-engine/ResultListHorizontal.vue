@@ -55,7 +55,10 @@
                 v-for="(interaction, idx) in interactions"
                 :key="idx"
             >
-                <interaction-preview :interaction="interaction" />
+                <interaction-preview
+                    :interaction="interaction"
+                    link
+                />
             </li>
         </ul>
     </section>

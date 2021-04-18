@@ -2,38 +2,47 @@
     <section class="interaction-preview">
         <collapse>
             <template #header>
-                <div class="interaction-preview-header">
-                    <span>
-                        <interaction-capsules
-                            :name="interaction.name"
-                            :color="getInteractionColor(interaction.recommendation)"
-                            :vInteractionCount="getVinteractionsCount(interaction)"
-                        />
-                    </span>
-                    <span>
-                        {{ getShortRecommendation(interaction.recommendation) }}
-                    </span>
-                    <span class="evidence-level">
-                        {{ interaction.evidenceLevel }}
-                    </span>
-                </div>
+                <router-link
+                    class="interaction-preview-link"
+                    :class="{ 'active': link && !interaction.vInteractions }"
+                    :to="getInteractionUrl(interaction)"
+                >
+                    <div class="interaction-preview-header">
+                        <span>
+                            <interaction-capsules
+                                :name="interaction.name"
+                                :color="getInteractionColor(interaction.recommendation)"
+                                :vInteractionCount="getVinteractionsCount(interaction)"
+                            />
+                        </span>
+                        <span>
+                            {{ getShortRecommendation(interaction.recommendation) }}
+                        </span>
+                        <span class="evidence-level">
+                            {{ interaction.evidenceLevel }}
+                        </span>
+                    </div>
+                </router-link>
             </template>
             <template #content>
                 <div
                     class="interaction-preview-content"
+                    :class="{ 'link': link }"
                     v-if="!interaction.side2Label && interaction.side2Material"
                 >
-                    <h3 class="font-bold">Summary</h3>
-                    <long-txt
-                        :txt="interaction.summary"
-                        :maxChars="250"
-                        :expandable="false"
-                        :overflowSymb="getInteractionLink(interaction)"
-                        isHTML
-                    />
-                    <button class="de-activator" @click="$emit('close-collapse')">
-                        <chevron-up-icon />
-                    </button>
+                    <div v-if="!link">
+                        <h3 class="font-bold">Summary</h3>
+                        <long-txt
+                            :txt="interaction.summary"
+                            :maxChars="250"
+                            :expandable="false"
+                            :overflowSymb="getInteractionLink(interaction)"
+                            isHTML
+                        />
+                        <button class="de-activator" @click="$emit('close-collapse')">
+                            <chevron-up-icon />
+                        </button>
+                    </div>
                 </div>
                 <div v-else-if="interaction.side2Label && !interaction.side2Material">
                     <label-interaction-preview />
@@ -46,6 +55,7 @@
                     <interaction-preview
                         class="interaction-preview-inner"
                         :interaction="vInteraction"
+                        :link="link"
                     />
                 </div>
             </template>
@@ -69,11 +79,19 @@ export default {
         interaction: {
             type: Object,
             required: true
+        },
+        link: {
+            type: Boolean,
+            default: false
         }
     },
     methods: {
         getVinteractionsCount(interaction) {
             return ('vInteractions' in interaction) ? interaction.vInteractions.length : 0;
+        },
+        getInteractionUrl(interaction) {
+            if (!this.link || interaction.vInteractions) return '';
+            return interaction.isVirtual ? `/interaction/${interaction._id}/${interaction.side2Material._id}` : `/interaction/${interaction._id}`;
         },
         getInteractionLink(interaction) {
             const url = interaction.isVirtual ? `/interaction/${interaction._id}/${interaction.side2Material._id}` : `/interaction/${interaction._id}`;

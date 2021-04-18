@@ -9,7 +9,13 @@
     &-inner {
         padding-inline-start: rem(20px);
     }
+    &-link {
+        pointer-events: none;
 
+        &.active {
+            pointer-events: all;
+        }
+    }
     &-header {
         padding: rem(18px) 0;
         display: flex;
@@ -57,6 +63,10 @@
         margin: rem(22px) 0 rem(26px);
         position: relative;
 
+        &.link {
+            margin: 0;
+        }
+        
         .de-activator {
             position: absolute;
             top: 50%;
