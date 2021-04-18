@@ -286,7 +286,7 @@
                 v-for="(alias, idx) in editedMaterial.dBankAliases"
                 :key="idx"
                 close
-                @click:close="removeItem('dBankAliases', idx)"
+                @click:close="removeItem('dBankAliases', idx, false)"
                 >{{ alias }}</v-chip
               >
             </v-chip-group>
@@ -304,7 +304,7 @@
                 v-for="(quality, idx) in editedMaterial.qualities"
                 :key="idx"
                 close
-                @click:close="removeItem('qualities', idx)"
+                @click:close="removeItem('qualities', idx, false)"
                 >{{ quality }}</v-chip
               >
             </v-chip-group>
@@ -355,7 +355,7 @@
                 v-for="(indication, idx) in editedMaterial.dBankIndications"
                 :key="idx"
                 close
-                @click:close="removeItem('dBankIndications', idx)"
+                @click:close="removeItem('dBankIndications', idx, false)"
                 >{{ indication }}</v-chip
               >
             </v-chip-group>
@@ -482,7 +482,7 @@
                 v-for="(brand, idx) in editedMaterial.brands"
                 :key="idx"
                 close
-                @click:close="removeItem('brands', idx)"
+                @click:close="removeItem('brands', idx, false)"
                 >{{ brand }}</v-chip
               >
             </v-chip-group>
@@ -504,7 +504,7 @@
                         v-for="(compound, idx) in editedMaterial.compounds"
                         :key="idx"
                         close
-                      @click:close="removeItem('compounds', idx)"
+                        @click:close="removeItem('compounds', idx, false)"
                       >
                       {{ compound }}
                       </v-chip>
@@ -594,7 +594,7 @@
                 <v-list-item-action>
                   <v-btn
                     icon
-                    @click="removeItem('dBankCategories', idx)"
+                    @click="removeItem('dBankCategories', idx, false)"
                   >
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
@@ -670,7 +670,7 @@
                 v-for="(effect, idx) in editedMaterial.structuredAdverseEffects"
                 :key="idx"
                 close
-                @click:close="removeItem('structuredAdverseEffects', idx)"
+                @click:close="removeItem('structuredAdverseEffects', idx, false)"
               >
               {{ effect }}
               </v-chip>
@@ -687,7 +687,7 @@
                 v-for="(indication, idx) in editedMaterial.structuredContraIndications"
                 :key="idx"
                 close
-                @click:close="removeItem('structuredContraIndications', idx)"
+                @click:close="removeItem('structuredContraIndications', idx, false)"
               >
               {{ indication }}
               </v-chip>
@@ -709,7 +709,7 @@
                 <v-list-item-action>
                   <v-btn
                     icon
-                    @click="removeItem('foodInteractions', idx)"
+                    @click="removeItem('foodInteractions', idx, false)"
                   >
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
@@ -996,12 +996,13 @@ export default {
         console.log('Error:', err);
       }
     },
-    removeItem(type, id) {
+    removeItem(type, id, openDialog = true) {
       this.itemToRemove = {
         type,
         id,
       };
-      this.dialog = true;
+      if (openDialog) this.dialog = true;
+      else this.removeItemConfirmed();
     },
     removeItemCanceled() {
       this.dialog = false;
