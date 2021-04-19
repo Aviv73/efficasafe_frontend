@@ -22,6 +22,7 @@
                         </span>
                         <span class="evidence-level">
                             {{ interaction.evidenceLevel || interaction.evidence_level }}
+                            {{ getRefsCount(interaction) }}
                         </span>
                     </div>
                 </component>
@@ -64,6 +65,7 @@
                     >
                         <interaction-preview
                             :interaction="vInteraction"
+                            :materials="materials"
                             :link="link"
                             is-child
                         />
@@ -102,9 +104,29 @@ export default {
         isChild: {
             type: Boolean,
             default: false
+        },
+        materials: {
+            type: Array,
+            required: true
         }
     },
     methods: {
+        getRefsCount(interaction) {
+            if (interaction.refs) {
+                const pathwayRefCount = this.getSide2PathwaysCount(interaction);
+                return `(${interaction.refs.length + pathwayRefCount})`;
+            }
+            return '';
+        },
+        getSide2PathwaysCount(interaction) {
+            if (!interaction.side2Material) return 0;
+            const side2Material = this.materials.find(material => material._id === interaction.side2Material._id);
+            if (!side2Material) return 0;
+            return side2Material.pathways.reduce((acc, pathway) => {
+                acc += pathway.references.length;
+                return acc;
+            }, 0);
+        },
         getVinteractionsCount(interaction) {
             if (!('vInteractions' in interaction)) return 0;
             return interaction.vInteractions.reduce((acc, vInteraction) => {

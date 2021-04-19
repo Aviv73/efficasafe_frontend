@@ -7,7 +7,7 @@
                 </button>
                 <span>{{ sortBySide }} vs {{ side2Name }}</span>
                 <button @click="changeSortBySide">
-                    <swap-horizontal-icon :size="18" />
+                    <swap-horizontal-icon :size="18" fillColor="#329D9C" />
                 </button>
             </span>
             <span class="horizontal-list-header-item">
@@ -57,6 +57,7 @@
             >
                 <interaction-preview
                     :interaction="interaction"
+                    :materials="materials"
                     link
                 />
             </li>
@@ -85,6 +86,10 @@ export default {
         total: {
             type: Number,
             default: 0
+        },
+        materials: {
+            type: Array,
+            default: () => []
         }
     },
     data() {

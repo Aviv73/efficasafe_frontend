@@ -175,6 +175,7 @@
                         :key="$route.name"
                         :listData="routableListData"
                         :isVertical="isViewVertical"
+                        :materials="materials"
                     />
                 </transition>
             </div>
@@ -299,7 +300,8 @@ export default {
                             evidenceLevel: interaction.evidenceLevel,
                             isVirtual: true,
                             side2DraftName: interaction.side2DraftName,
-                            summary: interaction.summary
+                            summary: interaction.summary,
+                            refs: interaction.refs
                         };
                         this.insertInteraction(acc, vInteraction);
                     });

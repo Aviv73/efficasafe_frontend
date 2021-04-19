@@ -2,6 +2,7 @@
     <section class="interaction-list">
         <result-list-horizontal
             v-if="!isVertical"
+            :materials="materials"
             :interactions="listData.interactions"
             :pageCount="listData.pageCount"
             :total="listData.total"
@@ -23,6 +24,10 @@ export default {
             type: Boolean,
             default: true,
         },
+        materials: {
+            type: Array,
+            required: true
+        }
     },
     components: {
         ResultListHorizontal,
