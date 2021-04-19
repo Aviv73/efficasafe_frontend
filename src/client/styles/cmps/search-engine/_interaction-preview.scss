@@ -60,6 +60,14 @@
                     text-align: center;
                     flex-basis: auto;
                 }
+
+                .refs {
+                    color: $clr1;
+                    font-size: rem(11px);
+                    line-height: rem(14px);
+                    font-family: mulish, sans-serif;
+                    font-weight: normal;
+                }
             }
         }
     }

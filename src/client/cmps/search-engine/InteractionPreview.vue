@@ -20,9 +20,9 @@
                         <span>
                             {{ getShortRecommendation(interaction.recommendation) }}
                         </span>
-                        <span class="evidence-level">
+                        <span>
                             {{ interaction.evidenceLevel || interaction.evidence_level }}
-                            {{ getRefsCount(interaction) }}
+                            <span class="refs">{{ getRefsCount(interaction) }}</span>
                         </span>
                     </div>
                 </component>
