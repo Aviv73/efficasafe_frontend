@@ -15,7 +15,10 @@
             </svg>
         </div>
         <div class="interaction-capsules-side">
-        <span :title="side2Name">{{ side2Name }}{{ vInteractionCount ? ` (${vInteractionCount})` : '' }}</span>
+        <span :title="side2Name">
+            {{ (showDraftName && draftName) ? draftName : side2Name }}
+            {{ vInteractionCount ? ` (${vInteractionCount})` : '' }}
+        </span>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="cap cap-right"
@@ -54,6 +57,14 @@ export default {
         localize: {
             type: Boolean,
             required: true
+        },
+        showDraftName: {
+            type: Boolean,
+            required: true
+        },
+        draftName: {
+            type: String,
+            default: ''
         }
     },
     computed: {

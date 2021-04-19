@@ -16,6 +16,8 @@
                                 :color="getInteractionColor(interaction.recommendation)"
                                 :vInteractionCount="getVinteractionsCount(interaction)"
                                 :localize="!isCompoundPart"
+                                :showDraftName="isDuplicate"
+                                :draftName="interaction.side2DraftName"
                             />
                         </span>
                         <span>
@@ -68,6 +70,7 @@
                             :interaction="vInteraction"
                             :materials="materials"
                             :isCompoundPart="isCompoundPart || interaction.isCompoundGroup"
+                            :isDuplicate="interaction.isCompoundGroup === false"
                             :link="link"
                             is-child
                         />
@@ -112,6 +115,10 @@ export default {
             required: true
         },
         isCompoundPart: {
+            type: Boolean,
+            default: false
+        },
+        isDuplicate: {
             type: Boolean,
             default: false
         }
