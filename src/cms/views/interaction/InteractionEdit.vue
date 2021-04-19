@@ -185,7 +185,7 @@
               type="text"
               rows="1"
               auto-grow
-              v-model="editedInteraction.editorDraft.general"
+              v-model="editedInteraction.monitor.general"
               label="General"
             />
 
