@@ -50,19 +50,33 @@ export default {
         vInteractionCount: {
             type: Number,
             required: true
+        },
+        localize: {
+            type: Boolean,
+            required: true
         }
     },
     computed: {
         layerCount() {
+            if (!this.vInteractionCount) return 0;
             if (this.vInteractionCount < 2) return 2;
             if (this.vInteractionCount <= 4) return this.vInteractionCount;
             return 4;
         },
         side1Name() {
-            return this.name.split('&')[0].trim();
+            const side1Name = this.name.split('&')[0].trim();
+            if (this.$store.getters.materialNamesMap[side1Name]) {
+                return this.$store.getters.materialNamesMap[side1Name].join(', ');
+            }
+            return side1Name;
         },
         side2Name() {
-            return this.name.split('&')[1].trim();
+            const side2Name = this.name.split('&')[1].trim();
+            if (!this.localize) return side2Name;
+            if (this.$store.getters.materialNamesMap[side2Name]) {
+                return this.$store.getters.materialNamesMap[side2Name].join(', ');
+            }
+            return side2Name;
         }
     }
 };

@@ -15,6 +15,7 @@
                                 :name="interaction.name"
                                 :color="getInteractionColor(interaction.recommendation)"
                                 :vInteractionCount="getVinteractionsCount(interaction)"
+                                :localize="!isCompoundPart"
                             />
                         </span>
                         <span>
@@ -66,6 +67,7 @@
                         <interaction-preview
                             :interaction="vInteraction"
                             :materials="materials"
+                            :isCompoundPart="isCompoundPart || interaction.isCompoundGroup"
                             :link="link"
                             is-child
                         />
@@ -108,6 +110,10 @@ export default {
         materials: {
             type: Array,
             required: true
+        },
+        isCompoundPart: {
+            type: Boolean,
+            default: false
         }
     },
     methods: {
