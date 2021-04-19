@@ -83,7 +83,7 @@
           </div>
           <div class="info-value" v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptoms || interaction.monitor.general"> 
             <div v-if="interaction.monitor.labTests">
-              <span class="text-capitalize">tests:</span> {{ interaction.monitor.labTests }}
+              <span class="text-capitalize">Lab tests:</span> {{ interaction.monitor.labTests }}
             </div>
 
             <div v-if="interaction.monitor.otherTests">

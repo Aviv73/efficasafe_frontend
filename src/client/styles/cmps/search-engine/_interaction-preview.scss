@@ -90,7 +90,14 @@
         &.link {
             margin: 0;
         }
- 
+        
+        .msg {
+            color: $clr-txt-darker;
+            font-size: rem(12px);
+            line-height: rem(32px);
+            padding-inline-start: rem(24px);
+            opacity: .8;
+        }
         .de-activator {
             position: absolute;
             top: 50%;

@@ -62,6 +62,12 @@
                     class="interaction-preview-content"
                     :class="{ 'child': isChild }"
                 >
+                    <p
+                        class="msg"
+                        v-if="interaction.isCompoundGroup === false"
+                    >
+                        There are different interactions, dependent on {{ getSide2Name(interaction.name) }} use:
+                    </p>
                     <div
                         v-for="(vInteraction, idx) in interaction.vInteractions"
                         :key="idx"
@@ -124,6 +130,13 @@ export default {
         }
     },
     methods: {
+        getSide2Name(name) {
+            const side2Name = name.split(' & ')[1].trim();
+            if (!this.isCompoundPart && this.$store.getters.materialNamesMap[side2Name]) {
+                return this.$store.getters.materialNamesMap[side2Name].join(', ');
+            }
+            return side2Name;
+        },
         getRefsCount(interaction) {
             if (interaction.refs) {
                 const pathwayRefCount = this.getSide2PathwaysCount(interaction);
