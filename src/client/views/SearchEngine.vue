@@ -578,6 +578,7 @@ export default {
                     ],
                     isCompoundGroup: false
                 };
+                this.total++;
                 acc.splice(idx, 1, vInteractionGroup);
             } else {
                 if (acc[groupIdx].vInteractions.findIndex(i => i._id === interaction._id) === -1) {
