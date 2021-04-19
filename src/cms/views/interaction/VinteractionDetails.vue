@@ -54,9 +54,9 @@
                             <span>{{ interaction.monitor.otherTests }}</span>
                         </div>
 
-                        <div v-if="interaction.monitor.symptons" class="mb-2">
+                        <div v-if="interaction.monitor.symptoms" class="mb-2">
                             <span class="text-capitalize"> Symptons: </span>
-                            <span>{{ interaction.monitor.symptons }}</span>
+                            <span>{{ interaction.monitor.symptoms }}</span>
                         </div>
 
                         <div v-if="interaction.monitor.general" class="mb-2">

@@ -484,10 +484,18 @@ export default {
                 id: ids,
                 materialCount: this.materials.filter(({ isIncluded }) => !isIncluded).length
             };
-            const { interactions, pageCount, total } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
+            const { interactions, pageCount } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
             this.pageCount = pageCount;
-            this.total = total;
             this.interactions = interactions;
+            this.total = interactions.reduce((acc, i) => {
+                if (i.side2Material) acc++;
+                else {
+                    const { _id } = i.side2Label;
+                    const materials = this.materials.filter(material => !material.isIncluded && material.labels.some(label => label._id === _id));
+                    acc += materials.length;
+                }
+                return acc;
+            }, 0);
         },
         async getDBankInteractions(page = 1) {
             const isAllNotDrugs = this.materials.every(material => material.type !== 'drug');
@@ -579,7 +587,6 @@ export default {
                     ],
                     isCompoundGroup: false
                 };
-                this.total++;
                 acc.splice(idx, 1, vInteractionGroup);
             } else {
                 if (acc[groupIdx].vInteractions.findIndex(i => i._id === interaction._id) === -1) {
