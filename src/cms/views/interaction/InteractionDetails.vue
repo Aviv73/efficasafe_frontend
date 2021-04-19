@@ -77,19 +77,19 @@
 
           <div 
             class="info-title text-capitalize"
-            v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptons || interaction.monitor.general"
+            v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptoms || interaction.monitor.general"
           > 
             What to monitor:
           </div>
-          <div class="info-value" v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptons || interaction.monitor.general"> 
+          <div class="info-value" v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptoms || interaction.monitor.general"> 
             <span class="text-capitalize" v-if="interaction.monitor.labTests">Lab tests: </span>
             <span v-if="interaction.monitor.labTests">{{ interaction.monitor.labTests }}</span>
 
             <span class="text-capitalize" v-if="interaction.monitor.otherTests"> Other tests: </span>
             <span v-if="interaction.monitor.otherTests">{{ interaction.monitor.otherTests }}</span>
 
-            <span class="text-capitalize" v-if="interaction.monitor.symptons"> Symptons: </span>
-            <span v-if="interaction.monitor.symptons">{{ interaction.monitor.symptons }}</span>
+            <span class="text-capitalize" v-if="interaction.monitor.symptoms"> Symptoms: </span>
+            <span v-if="interaction.monitor.symptoms">{{ interaction.monitor.symptoms }}</span>
             
             <span class="text-capitalize" v-if="interaction.monitor.general"> General: </span>
             <span v-if="interaction.monitor.general">{{ interaction.monitor.general }}</span>
