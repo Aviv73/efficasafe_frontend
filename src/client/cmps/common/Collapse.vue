@@ -19,15 +19,17 @@
                 </slot>
             </main>
         </transition>
-        <button
-            v-if="isContentVisible"
-            class="close-btn"
-            @click.prevent="isContentVisible = false"
-        >
-            <slot name="de-activator">
-                <span>&times;</span>
-            </slot>
-        </button>
+        <transition name="scale-y">
+            <button
+                v-if="isContentVisible"
+                class="close-btn"
+                @click.prevent="isContentVisible = false"
+            >
+                <slot name="de-activator">
+                    <span>&times;</span>
+                </slot>
+            </button>
+        </transition>
     </component>
 </template>
 

@@ -54,6 +54,7 @@ export default {
     },
     computed: {
         layerCount() {
+            if (this.vInteractionCount < 2) return 2;
             if (this.vInteractionCount <= 4) return this.vInteractionCount;
             return 4;
         },
