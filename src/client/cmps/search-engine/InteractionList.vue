@@ -1,13 +1,24 @@
 <template>
-    <section class="interaction-list">
+    <section>
+        <div
+            v-if="isLoading"
+            class="flex-center"
+        >
+            <img
+                :src="require('@/client/assets/icons/loader.gif')"
+                alt="Loader"
+            />
+        </div>
         <result-list-horizontal
-            v-if="!isVertical"
+            v-else-if="!isLoading && !isVertical"
             :materials="materials"
             :interactions="listData.interactions"
             :pageCount="listData.pageCount"
             :total="listData.total"
         />
-        <div v-else>VERTIVAL LIST HERE!</div>
+        <div v-else-if="!isLoading && isVertical">
+            VERTIVAL LIST HERE!
+        </div>
     </section>
 </template>
 
@@ -27,10 +38,14 @@ export default {
         materials: {
             type: Array,
             required: true
+        },
+        isLoading: {
+            type: Boolean,
+            required: true
         }
     },
     components: {
-        ResultListHorizontal,
+        ResultListHorizontal
     },
 };
 </script>

@@ -176,6 +176,7 @@
                         :listData="routableListData"
                         :isVertical="isViewVertical"
                         :materials="materials"
+                        :isLoading="isLoading"
                     />
                 </transition>
             </div>
