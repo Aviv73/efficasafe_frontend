@@ -92,6 +92,13 @@
             @include for-wide-layout {
                 right: rem(58px);
             }
+
+            &-bottom {
+                position: absolute;
+                left: 50%;
+                bottom: 0;
+                transform: translate(-50%, 50%);
+            }
         }
         h3 {
             margin-block-end: rem(20px);
@@ -111,5 +118,8 @@
                 white-space: nowrap;
             }
         }
+    }
+    .chevron-up-circle-icon path {
+        fill: currentColor;
     }
 }

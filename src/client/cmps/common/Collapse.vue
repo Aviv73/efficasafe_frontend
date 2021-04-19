@@ -19,6 +19,15 @@
                 </slot>
             </main>
         </transition>
+        <button
+            v-if="isContentVisible"
+            class="close-btn"
+            @click.prevent="isContentVisible = false"
+        >
+            <slot name="de-activator">
+                <span>&times;</span>
+            </slot>
+        </button>
     </component>
 </template>
 
@@ -53,6 +62,8 @@ export default {
 
 <style lang="scss" scoped>
     .collapse {
+        position: relative;
+
         &-header {
             cursor: pointer;
             max-width: 100%;
@@ -63,6 +74,12 @@ export default {
         }
         &-content {
             overflow: hidden;
+        }
+        .close-btn {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%, 50%);
         }
     }
     .scale-y-enter-active, .scale-y-leave-active {
