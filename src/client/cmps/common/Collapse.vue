@@ -24,7 +24,7 @@
             <button
                 v-if="isContentVisible"
                 class="close-btn"
-                @click.prevent.stop="isContentVisible = false"
+                @click.prevent="isContentVisible = false"
             >
                 <slot name="de-activator">
                     <span>&times;</span>
