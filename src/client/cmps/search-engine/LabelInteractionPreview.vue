@@ -17,9 +17,7 @@
                                 :color="color"
                             />
                         </span>
-                        <span class="col">
-                            {{ shortRecommendation }}
-                        </span>
+                        <span class="col">{{ shortRecommendation }}</span>
                         <span class="col">
                             {{ interaction.evidenceLevel }}
                             <button
@@ -32,18 +30,117 @@
                     </div>
                 </template>
                 <template #content>
-                    <pre>{{ atcGroup.vInteractions }}</pre>
+                    <component
+                        v-for="vInteraction in atcGroup.vInteractions"
+                        :key="vInteraction.side2Material._id"
+                        :is="vInteractionHeaderEl"
+                        :to="`/interaction/${vInteraction._id}/${vInteraction.side2Material._id}`"
+                    >
+                        <collapse>
+                            <template #header>
+                                <div class="label-interaction-preview-group-header table-row child">
+                                    <span class="col">
+                                        <interaction-capsules
+                                            :name="`${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}`"
+                                            :vInteractionCount="0"    
+                                            :showDraftName="false"
+                                            :localize="true"
+                                            :color="color"
+                                        />
+                                    </span>
+                                    <span class="col">{{ shortRecommendation }}</span>
+                                    <span class="col">
+                                        {{ interaction.evidenceLevel }}
+                                        <span
+                                            class="refs" 
+                                            v-if="interaction.refs"
+                                        >
+                                            {{ `(${interaction.refs.length + side2RefCount(vInteraction.side2Material._id)})` }}
+                                        </span>
+                                    </span>
+                                </div>
+                            </template>
+                            <template #content>
+                                <div v-if="!link" class="summary-container">
+                                    <h3 class="font-bold">Summary</h3>
+                                    <long-txt
+                                        :txt="vInteraction.summary"
+                                        :maxChars="250"
+                                        :expandable="false"
+                                        :overflowSymb="getInteractionLink(vInteraction)"
+                                        isHTML
+                                    />
+                                </div>
+                            </template>
+                            <template #de-activator>
+                                <chevron-up-circle-icon class="chevron-up-circle-icon" />
+                            </template>
+                        </collapse>
+                    </component>
                 </template>
                 <template #de-activator>
                     <chevron-up-circle-icon class="chevron-up-circle-icon" />
                 </template>
             </collapse>
         </div>
+        <div
+            class="label-interaction-preview-list"
+            v-if="restOfVinteractions.length"
+        >
+            <component
+                v-for="vInteraction in restOfVinteractions"
+                :key="vInteraction.side2Material._id"
+                :is="vInteractionHeaderEl"
+                :to="`/interaction/${vInteraction._id}/${vInteraction.side2Material._id}`"
+            >
+                    <collapse>
+                    <template #header>
+                        <div class="label-interaction-preview-group-header table-row">
+                            <span class="col">
+                                <interaction-capsules
+                                    :name="`${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}`"
+                                    :vInteractionCount="0"    
+                                    :showDraftName="false"
+                                    :localize="true"
+                                    :color="color"
+                                />
+                            </span>
+                            <span class="col">{{ shortRecommendation }}</span>
+                            <span class="col">
+                                {{ interaction.evidenceLevel }}
+                                <span
+                                    class="refs" 
+                                    v-if="interaction.refs"
+                                >
+                                    {{ `(${interaction.refs.length + side2RefCount(vInteraction.side2Material._id)})` }}
+                                </span>
+                            </span>
+                        </div>
+                    </template>
+                    <template #content>
+                        <div v-if="!link" class="summary-container">
+                            <h3 class="font-bold">Summary</h3>
+                            <long-txt
+                                :txt="vInteraction.summary"
+                                :maxChars="250"
+                                :expandable="false"
+                                :overflowSymb="getInteractionLink(vInteraction)"
+                                isHTML
+                            />
+                        </div>
+                    </template>
+                    <template #de-activator>
+                        <chevron-up-circle-icon class="chevron-up-circle-icon" />
+                    </template>
+                </collapse>
+            </component>
+        </div>
     </section>
 </template>
 
 <script>
 import Collapse from '@/client/cmps/common/Collapse';
+import LongTxt from '@/client/cmps/common/LongTxt';
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
@@ -62,6 +159,10 @@ export default {
         color: {
             type: String,
             required: true
+        },
+        link: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -113,6 +214,9 @@ export default {
                     }
                     return acc;
             }, []);
+        },
+        vInteractionHeaderEl() {
+            return this.link ? 'router-link' : 'span';
         }
     },
     methods: {
@@ -125,6 +229,7 @@ export default {
                 type: 'getMaterials',
                 criteria
             });
+            this.relatedMaterials = relatedMaterials;
             this.vInteractions = relatedMaterials.map(
                 ({ _id, name, type, atcPaths, drugBankId }) => {
                     return {
@@ -140,14 +245,27 @@ export default {
                         isVirtual: true,
                         side2DraftName: interaction.side2DraftName,
                         drugBankId,
+                        summary: interaction.summary,
                         atcParentGroups: atcPaths.map((atcPath) => atcPath.filter((path, idx) => idx === 3)).flat(1),
                     };
                 }
             );
             this.isLoading = false;
         },
+        getInteractionLink(interaction) {
+            const url = `/interaction/${interaction._id}/${interaction.side2Material._id}`;
+            return `.
+                <a class="interaction-link" href="${url}">
+                    Read more...
+                </a>
+            `;
+        },
         getGroupName(groupName) {
             return `${this.interaction.side1Material.name} & ${groupName}`;
+        },
+        side2RefCount(materialId) {
+            const { pathwayRefs } = this.relatedMaterials.find(m => m._id === materialId);
+            return pathwayRefs.length;
         }
     },
     created() {
@@ -157,7 +275,8 @@ export default {
         Collapse,
         InteractionCapsules,
         ChevronUpIcon,
-        ChevronUpCircleIcon
+        ChevronUpCircleIcon,
+        LongTxt
     }
 }
 </script>

@@ -1,5 +1,52 @@
 .label-interaction-preview {
     &-group-header {
-        padding: rem(24px) 0;
+        padding: rem(10px) 0;
+
+        & > span:first-child {
+            transform: translateX(10px);
+            @include for-wide-layout {
+                transform: translateX(40px);
+            }
+        }
+        &.child > span:first-child {
+            transform: translateX(20px);
+            @include for-wide-layout {
+                transform: translateX(80px);
+            }
+        }
+    }
+    &-list {
+        box-shadow: $slight-border-top;
+        margin-block-start: rem(14px);
+        padding: rem(14px) 0;
+    }
+    .collapse-content {
+        padding: rem(14px) 0;
+        box-shadow: $slight-border-y;
+    }
+    .summary-container {
+        transform: translateX(20px);
+
+        @include for-wide-layout {
+            transform: translateX(80px);
+        }
+    }
+    h3 {
+        margin-block-end: rem(20px);
+        text-transform: uppercase;
+    }
+    .long-txt p {
+        color: rgba($clr1, .8);
+        line-height: rem(20px);
+        font-family: roboto, sans-serif;
+        font-weight: normal;
+        padding-inline-end: 14%;
+        letter-spacing: rem(.07px);
+
+        .interaction-link {
+            text-transform: capitalize;
+            color: rgba($green, .8);
+            white-space: nowrap;
+        }
     }
 }

@@ -68,6 +68,7 @@
                         :interaction="interaction"
                         :shortRecommendation="getShortRecommendation(interaction.recommendation)"
                         :color="getInteractionColor(interaction.recommendation)"
+                        :link="link"
                     />
                 </div>
                 <div 
@@ -152,12 +153,12 @@ export default {
         },
         getRefsCount(interaction) {
             if (interaction.refs) {
-                const pathwayRefCount = this.getSide2PathwaysCount(interaction);
+                const pathwayRefCount = this.getSide2PathwayRefsCount(interaction);
                 return `(${interaction.refs.length + pathwayRefCount})`;
             }
             return '';
         },
-        getSide2PathwaysCount(interaction) {
+        getSide2PathwayRefsCount(interaction) {
             if (!interaction.side2Material) return 0;
             const side2Material = this.materials.find(material => material._id === interaction.side2Material._id);
             if (!side2Material) return 0;
