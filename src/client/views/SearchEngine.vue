@@ -484,10 +484,10 @@ export default {
                 id: ids,
                 materialCount: this.materials.filter(({ isIncluded }) => !isIncluded).length
             };
-            const { interactions, pageCount } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
+            const { interactions, pageCount, total } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
             this.pageCount = pageCount;
             this.interactions = interactions;
-            this.total = interactions.reduce((acc, i) => {
+            this.total = (this.materials.length === 1) ? total : interactions.reduce((acc, i) => {
                 if (i.side2Material) acc++;
                 else {
                     const { _id } = i.side2Label;
