@@ -4,6 +4,7 @@
             tabindex="0"
             class="collapse-header"
             @click="isContentVisible = !isContentVisible"
+            :class="{ 'open': isContentVisible }"
         >
             <slot name="header">
                 Toggle collapse
@@ -72,6 +73,12 @@ export default {
 
             &:focus {
                 outline: none;
+            }
+            .de-activator {
+                display: none;
+            }
+            &.open .de-activator {
+                display: initial;
             }
         }
         &-content {

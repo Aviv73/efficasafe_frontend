@@ -50,7 +50,9 @@
             }
             &:nth-child(3) {
                 flex-basis: 50%;
-                display: inline-block;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
                 min-width: rem(110px);
                 font-family: roboto-bold, sans-serif;
                 font-weight: 700;
@@ -99,15 +101,6 @@
             opacity: .8;
         }
         .de-activator {
-            position: absolute;
-            top: 50%;
-            right: rem(42px);
-            transform: translate(0, -50%);
-            
-            @include for-wide-layout {
-                right: rem(58px);
-            }
-
             &-bottom {
                 position: absolute;
                 left: 50%;

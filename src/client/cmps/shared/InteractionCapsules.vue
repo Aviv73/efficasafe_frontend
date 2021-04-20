@@ -1,7 +1,6 @@
 <template>
     <div
         class="interaction-capsules"
-        :class="{ 'flex-center': showDraftName }"
     >
         <div
             class="interaction-capsules-side"

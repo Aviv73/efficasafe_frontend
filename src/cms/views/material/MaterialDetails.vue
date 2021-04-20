@@ -524,7 +524,7 @@ export default {
             if (!firstLine) return 'default';
             firstLine = firstLine.toLowerCase();
 
-            if (firstLine.includes('may induce') || firstLine.includes('may inhibit')) {
+            if (firstLine.includes('may induce') || firstLine.includes('may inhibit') || firstLine.includes('may bind')) {
                 return 'error';
             } else if (firstLine.includes('is unclear')) {
                 return 'warning';

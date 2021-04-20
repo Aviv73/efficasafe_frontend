@@ -25,7 +25,19 @@
                         </span>
                         <span>
                             {{ interaction.evidenceLevel || interaction.evidence_level }}
-                            <span class="refs">{{ getRefsCount(interaction) }}</span>
+                            <span
+                                class="refs" 
+                                v-if="interaction.refs"
+                            >
+                                {{ getRefsCount(interaction) }}
+                            </span>
+                            <button
+                                v-else
+                                class="de-activator"
+                                @click.stop="$emit('close-collapse')"
+                            >
+                                <chevron-up-icon />
+                            </button>
                         </span>
                     </div>
                 </component>
@@ -45,9 +57,6 @@
                             :overflowSymb="getInteractionLink(interaction)"
                             isHTML
                         />
-                        <button class="de-activator" @click="$emit('close-collapse')">
-                            <chevron-up-icon />
-                        </button>
                     </div>
                 </div>
                 <div
