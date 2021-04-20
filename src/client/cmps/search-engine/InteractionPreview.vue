@@ -98,7 +98,10 @@
                 </div>
             </template>
             <template #de-activator>
-                <chevron-up-circle-icon class="chevron-up-circle-icon" />
+                <img    
+                    src="@/client/assets/icons/collapse-toggle.svg"
+                    class="chevron-up-circle-icon"
+                />
             </template>
         </collapse>
     </section>
@@ -113,7 +116,6 @@ import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 import LabelInteractionPreview from '@/client/cmps/search-engine/LabelInteractionPreview';
 
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
-import ChevronUpCircleIcon from 'vue-material-design-icons/ChevronUpCircle';
 
 export default {
     name: 'InteractionPreview',
@@ -218,8 +220,7 @@ export default {
         InteractionCapsules,
         ChevronUpIcon,
         LongTxt,
-        LabelInteractionPreview,
-        ChevronUpCircleIcon
+        LabelInteractionPreview
     }
 }
 </script>

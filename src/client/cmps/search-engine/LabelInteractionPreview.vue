@@ -73,13 +73,19 @@
                                 </div>
                             </template>
                             <template #de-activator>
-                                <chevron-up-circle-icon class="chevron-up-circle-icon" />
+                                <img    
+                                    src="@/client/assets/icons/collapse-toggle.svg"
+                                    class="chevron-up-circle-icon"
+                                />
                             </template>
                         </collapse>
                     </component>
                 </template>
                 <template #de-activator>
-                    <chevron-up-circle-icon class="chevron-up-circle-icon" />
+                    <img    
+                        src="@/client/assets/icons/collapse-toggle.svg"
+                        class="chevron-up-circle-icon"
+                    />
                 </template>
             </collapse>
         </div>
@@ -130,7 +136,10 @@
                         </div>
                     </template>
                     <template #de-activator>
-                        <chevron-up-circle-icon class="chevron-up-circle-icon" />
+                        <img    
+                            src="@/client/assets/icons/collapse-toggle.svg"
+                            class="chevron-up-circle-icon"
+                        />
                     </template>
                 </collapse>
             </component>
@@ -149,7 +158,6 @@ import LongTxt from '@/client/cmps/common/LongTxt';
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
-import ChevronUpCircleIcon from 'vue-material-design-icons/ChevronUpCircle';
 
 export default {
     props: {
@@ -280,7 +288,6 @@ export default {
         Collapse,
         InteractionCapsules,
         ChevronUpIcon,
-        ChevronUpCircleIcon,
         LongTxt
     }
 }

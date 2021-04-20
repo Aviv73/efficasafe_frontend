@@ -24,7 +24,7 @@
             <button
                 v-if="isContentVisible"
                 class="close-btn"
-                @click.prevent="isContentVisible = false"
+                @click.prevent.stop="isContentVisible = false"
             >
                 <slot name="de-activator">
                     <span>&times;</span>
@@ -89,6 +89,7 @@ export default {
             bottom: 0;
             left: 50%;
             transform: translate(-50%, 50%);
+            z-index: 1;
         }
     }
     .scale-y-enter-active, .scale-y-leave-active {
