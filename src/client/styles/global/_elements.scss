@@ -71,6 +71,7 @@
             
             @include for-narrow-layout {
                 flex-basis: auto;
+                max-width: max-content;
                 text-align: center;
             }
 

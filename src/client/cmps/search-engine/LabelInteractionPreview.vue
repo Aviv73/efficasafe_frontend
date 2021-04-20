@@ -75,7 +75,7 @@
                             <template #de-activator>
                                 <img    
                                     src="@/client/assets/icons/collapse-toggle.svg"
-                                    class="chevron-up-circle-icon"
+                                    alt="Chevron up circle icon"
                                 />
                             </template>
                         </collapse>
@@ -84,7 +84,7 @@
                 <template #de-activator>
                     <img    
                         src="@/client/assets/icons/collapse-toggle.svg"
-                        class="chevron-up-circle-icon"
+                        alt="Chevron up circle icon"
                     />
                 </template>
             </collapse>
@@ -138,7 +138,7 @@
                     <template #de-activator>
                         <img    
                             src="@/client/assets/icons/collapse-toggle.svg"
-                            class="chevron-up-circle-icon"
+                            alt="Chevron up circle icon"
                         />
                     </template>
                 </collapse>

@@ -196,6 +196,7 @@ export default {
         z-index: 1;
         opacity: 0;
         
+        
         &.fade {
             transition-property: opacity;
             transition-timing-function: ease;

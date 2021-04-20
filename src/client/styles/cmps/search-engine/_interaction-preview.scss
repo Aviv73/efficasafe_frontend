@@ -74,7 +74,13 @@
             }
         }
     }
-    .chevron-up-circle-icon path {
-        fill: currentColor;
+    .txt {
+        display: inline-block;
+        padding: rem(12px) rem(18px);
+        font-family: roboto, sans-serif;
+        font-weight: 300;
+        font-size: rem(14px);
+        line-height: 1;
+        color: $clr-txt-darker;
     }
 }

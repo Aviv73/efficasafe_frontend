@@ -24,7 +24,12 @@
                             {{ getShortRecommendation(interaction.recommendation) }}
                         </span>
                         <span class="col">
-                            {{ interaction.evidenceLevel || interaction.evidence_level }}
+                            <tooltip
+                                :txt="getLongEvidenceLevel(interaction.evidenceLevel || interaction.evidence_level)"
+                                right
+                            >
+                                <span>{{ interaction.evidenceLevel || interaction.evidence_level }}</span>
+                            </tooltip>
                             <span
                                 class="refs" 
                                 v-if="interaction.refs"
@@ -100,7 +105,7 @@
             <template #de-activator>
                 <img    
                     src="@/client/assets/icons/collapse-toggle.svg"
-                    class="chevron-up-circle-icon"
+                    alt="Chevron up circle icon"
                 />
             </template>
         </collapse>
@@ -111,6 +116,7 @@
 import { interactionService } from '@/cms/services/interaction.service';
 
 import Collapse from '@/client/cmps/common/Collapse';
+import Tooltip from '@/client/cmps/common/Tooltip';
 import LongTxt from '@/client/cmps/common/LongTxt';
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 import LabelInteractionPreview from '@/client/cmps/search-engine/LabelInteractionPreview';
@@ -193,6 +199,29 @@ export default {
                 </a>
             `;
         },
+        getLongEvidenceLevel(evidenceLevel) {
+            if (!evidenceLevel) return '';
+            switch (evidenceLevel.toString().toUpperCase()) {
+                case 'A':
+                    return 'A - multi clinical or meta analysis';
+                case 'B':
+                    return 'B - 1 clinical or cohort + pre-clinical';
+                case 'C':
+                    return 'C - 1 clinical or cohort';
+                case 'D':
+                    return 'D - case report';
+                case 'E':
+                    return 'E - multi pre-clinical';
+                case 'F':
+                    return 'F - 1 pre-clinical';
+                case '1':
+                    return 'information formally provided in official prescribing information';
+                case '2':
+                    return 'based on scientific and clinical knowledge referenced from a variety of evidence sources';
+                default:
+                    return '';
+            }
+        },
         getShortRecommendation(fullRec) {
             switch (fullRec.toLowerCase()) {
                 case 'avoid coadministration':
@@ -220,7 +249,8 @@ export default {
         InteractionCapsules,
         ChevronUpIcon,
         LongTxt,
-        LabelInteractionPreview
+        LabelInteractionPreview,
+        Tooltip
     }
 }
 </script>
