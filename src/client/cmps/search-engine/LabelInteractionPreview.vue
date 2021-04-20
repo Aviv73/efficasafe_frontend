@@ -135,6 +135,11 @@
                 </collapse>
             </component>
         </div>
+        <img
+            v-if="isLoading"
+            :src="require('@/client/assets/icons/loader.gif')"
+            alt="Loader"
+        />
     </section>
 </template>
 
