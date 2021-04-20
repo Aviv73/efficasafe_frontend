@@ -7,10 +7,10 @@
                     :to="getInteractionUrl(interaction)"
                 >
                     <div
-                        class="interaction-preview-header"
+                        class="interaction-preview-header table-row"
                         :class="{ 'child': isChild }"
                     >
-                        <span>
+                        <span class="col">
                             <interaction-capsules
                                 :name="interaction.name"
                                 :color="getInteractionColor(interaction.recommendation)"
@@ -20,10 +20,10 @@
                                 :draftName="interaction.side2DraftName"
                             />
                         </span>
-                        <span>
+                        <span class="col">
                             {{ getShortRecommendation(interaction.recommendation) }}
                         </span>
-                        <span>
+                        <span class="col">
                             {{ interaction.evidenceLevel || interaction.evidence_level }}
                             <span
                                 class="refs" 
@@ -32,7 +32,7 @@
                                 {{ getRefsCount(interaction) }}
                             </span>
                             <button
-                                v-else
+                                v-if="!interaction.refs || interaction.side2Label"
                                 class="de-activator"
                                 @click.stop="$emit('close-collapse')"
                             >
@@ -64,7 +64,11 @@
                     :class="{ 'child': isChild }"
                     v-else-if="interaction.side2Label && !interaction.side2Material"
                 >
-                    <label-interaction-preview />
+                    <label-interaction-preview
+                        :interaction="interaction"
+                        :shortRecommendation="getShortRecommendation(interaction.recommendation)"
+                        :color="getInteractionColor(interaction.recommendation)"
+                    />
                 </div>
                 <div 
                     v-else
