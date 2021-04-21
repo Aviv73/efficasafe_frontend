@@ -93,7 +93,17 @@
         }
         &.on-hero {
             max-height: rem(230px);
-            width: calc(100% - 48px);
+
+            @include for-narrow-layout {
+                width: calc(100% - 48px);
+            }
+        }
+        &.on-hero.on-secondary {
+            left: rem(24px);
+
+            @include for-narrow-layout {
+                left: calc(100% + 24px);
+            }
         }
         &-result {
             padding: rem(12px) rem(0px) rem(12px) rem(16px);
