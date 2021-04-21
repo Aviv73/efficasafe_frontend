@@ -9,10 +9,11 @@
         
         
         &.inset {
-            box-shadow: 0px 0px 4px rgba($clr7, .6);
-            background-color: $clr3;
+            border: 8px solid rgba($clr7, .5);
             border-radius: 100px;
-            padding: rem(6px);
+            flex-basis: 90%;
+            margin: 0 auto;
+            max-width: rem(304px);
         }
         
         input {
@@ -66,8 +67,8 @@
     &-results {
         position: absolute;
         top: calc(100% + 6px);
-        left: rem(24px);
-        width: calc(200% - 48px);
+        left: rem(12px);
+        width: calc(100% - 24px);
         z-index: 1;
         max-height: rem(304px);
         overflow-y: auto;
@@ -92,6 +93,8 @@
             left: calc(100% + 24px);
         }
         &.on-hero {
+            left: rem(24px);
+            width: calc(200% - 48px);
             max-height: rem(230px);
 
             @include for-narrow-layout {
@@ -99,7 +102,6 @@
             }
         }
         &.on-hero.on-secondary {
-            left: rem(24px);
 
             @include for-narrow-layout {
                 left: calc(100% + 24px);
