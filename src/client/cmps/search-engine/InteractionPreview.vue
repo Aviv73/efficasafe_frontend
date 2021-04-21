@@ -8,9 +8,15 @@
                 >
                     <div
                         class="interaction-preview-header table-row"
-                        :class="{ 'child': isChild }"
+                        :class="{
+                            'child': isChild,
+                            'dups-list': isDuplicate,
+                        }"
                     >
-                        <span class="col">
+                        <span
+                            class="col"
+                            :class="{ 'flex-align-center': isDuplicate }"
+                        >
                             <interaction-capsules
                                 :name="interaction.name"
                                 :color="getInteractionColor(interaction.recommendation)"

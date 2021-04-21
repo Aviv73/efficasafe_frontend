@@ -13,10 +13,12 @@
             box-shadow: none;
             margin: rem(5px) 0;
 
-            & > span:first-child {
-                transform: translateX(10px);
-                @include for-wide-layout {
-                    transform: translateX(40px);
+            &:not(.dups-list) {
+                & > span:first-child {
+                    transform: translateX(10px);
+                    @include for-wide-layout {
+                        transform: translateX(40px);
+                    }
                 }
             }
         }
@@ -35,6 +37,16 @@
                     transform: translateX(20px);
                     @include for-wide-layout {
                         transform: translateX(80px);
+                    }
+                }
+            }
+            &:not(.dups-list) {
+                .interaction-preview-header {
+                    & > span:first-child {
+                        transform: translateX(10px);
+                        @include for-wide-layout {
+                            transform: translateX(40px);
+                        }
                     }
                 }
             }

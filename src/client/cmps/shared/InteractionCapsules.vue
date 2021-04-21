@@ -1,6 +1,7 @@
 <template>
     <div
         class="interaction-capsules"
+        :class="{ 'dup': showDraftName }"
     >
         <div
             class="interaction-capsules-side"

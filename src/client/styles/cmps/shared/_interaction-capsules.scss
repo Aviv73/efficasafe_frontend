@@ -4,6 +4,9 @@
     z-index: 0;
     position: relative;
     
+    &.dup {
+        transform: translateX(50%);
+    }
     &-side {
         display: inline-block;
         width: rem(120px);
