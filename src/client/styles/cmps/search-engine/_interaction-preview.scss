@@ -15,7 +15,10 @@
 
             &:not(.dups-list) {
                 & > span:first-child {
-                    transform: translateX(10px);
+                    @include for-narrow-layout {
+                        transform: translateX(10px);
+                    }
+                    
                     @include for-wide-layout {
                         transform: translateX(40px);
                     }

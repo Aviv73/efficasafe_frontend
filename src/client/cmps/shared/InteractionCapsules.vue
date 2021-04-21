@@ -1,7 +1,10 @@
 <template>
     <div
         class="interaction-capsules"
-        :class="{ 'dup': showDraftName }"
+        :class="{
+            'dup': showDraftName,
+            'group': isGroup || isLabel
+        }"
     >
         <div
             class="interaction-capsules-side"

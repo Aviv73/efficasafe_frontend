@@ -62,24 +62,27 @@
         &:nth-child(3) {
             flex-basis: 50%;
             display: inline-flex;
-            justify-content: center;
+            justify-content: flex-end;
             align-items: center;
             min-width: rem(110px);
             font-family: roboto-bold, sans-serif;
             font-weight: 700;
             text-align: right;
+            padding-inline-end: rem(40px);
             position: relative;
             
             @include for-narrow-layout {
                 flex-basis: auto;
                 max-width: max-content;
+                justify-content: center;
                 text-align: center;
+                padding-inline-end: 0;
             }
 
             .refs {
                 position: absolute;
                 top: 50%;
-                right: 25%;
+                right: rem(20px);
                 transform: translateY(-50%);
                 color: $clr1;
                 font-size: rem(11px);
@@ -87,6 +90,10 @@
                 font-family: mulish, sans-serif;
                 font-weight: normal;
                 margin-inline-start: 3px;
+
+                @include for-narrow-layout {
+                    right: 25%;
+                }
             }
         }
     }
