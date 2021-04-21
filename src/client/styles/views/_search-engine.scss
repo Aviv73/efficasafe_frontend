@@ -96,6 +96,7 @@
         }
         &-bar {
             width: 100%;
+            margin-block-end: rem(10px);
 
             input {
                 border: 2px solid $clr6;
@@ -131,8 +132,7 @@
                 width: 100%;
                 border: 1px solid $clr6;
                 border-radius: 100px;
-                padding: rem(10px) rem(30px);
-                text-align: center;
+                padding: rem(10px) rem(52px) rem(10px) rem(36px);
                 margin-block-end: rem(6px);
                 position: relative;
                 background-repeat: no-repeat;
@@ -146,13 +146,20 @@
                 &.not-active {
                     cursor: default;
                 }
-                .remove-btn {
+                &-actions {
                     position: absolute;
-                    font-size: rem(12px);
                     top: 50%;
                     right: rem(15px);
                     transform: translateY(-50%);
+                    display: flex;
+                    align-items: center;
+                    font-size: rem(12px);
                     color: $clr7;
+
+                    .info-icon {
+                        height: 19px;
+                        margin-inline-end: 5px;
+                    }
                 }
             }
         }

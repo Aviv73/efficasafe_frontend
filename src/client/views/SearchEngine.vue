@@ -57,9 +57,15 @@
                             :style="{ 'background-image': `url('${getResultIcon(result)}')` }"
                         >
                             {{ result.txt }}
-                            <button class="remove-btn" @click.stop="removeMaterials(result.txt)">
-                                <close-icon :size="16" />
-                            </button>
+                            <span class="search-engine-search-materials-chip-actions">
+                                <information-outline-icon
+                                    class="info-icon"
+                                    :size="16"
+                                />
+                                <button @click.stop="removeMaterials(result.txt)">
+                                    <close-icon :size="16" />
+                                </button>
+                            </span>
                         </li>
                     </tooltip>
                 </ul>
@@ -197,6 +203,7 @@ import MobileShareIcon from '@/client/cmps/common/icons/MobileShareIcon';
 import CloseIcon from 'vue-material-design-icons/Close';
 import PrinterIcon from 'vue-material-design-icons/Printer';
 import ShareIcon from 'vue-material-design-icons/Share';
+import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
 
 export default {
     recommendationsOrderMap: interactionService.getRecommendationOrderMap(),
@@ -716,7 +723,8 @@ export default {
         ShareIcon,
         MobileMenuIcon,
         MobileShareIcon,
-        AnimatedInteger
+        AnimatedInteger,
+        InformationOutlineIcon
     }
 };
 </script>

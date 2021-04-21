@@ -9,12 +9,12 @@
         
         
         &.inset {
-            border: 8px solid rgba($clr7, .5);
-            border-radius: 100px;
             flex-basis: 90%;
             margin: 0 auto;
             max-width: rem(304px);
-            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='29' ry='29' stroke='%23333' stroke-width='1' stroke-dasharray='1%2c 6' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e")
+            border-radius: 100px;
+            box-shadow: 0px 0px 0px 8px rgba($clr7, .6);
+            border: 1px dashed $clr2;
         }
         
         input {
