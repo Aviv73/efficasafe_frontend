@@ -60,7 +60,7 @@
             }
         }
     }
-    &-list-item:not(:last-child) {
+    &-list-item {
         box-shadow: $slight-border-bottom;
     }
 }
