@@ -23,7 +23,8 @@
                             <span
                                 class="de-activator"
                             >
-                                <chevron-up-icon />
+                                <chevron-up-icon class="opened" />
+                                <chevron-down-icon class="closed" />
                             </span>
                         </span>
                     </div>
@@ -157,6 +158,7 @@ import LongTxt from '@/client/cmps/common/LongTxt';
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
+import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
 
 export default {
     props: {
@@ -287,7 +289,8 @@ export default {
         Collapse,
         InteractionCapsules,
         ChevronUpIcon,
-        LongTxt
+        LongTxt,
+        ChevronDownIcon
     }
 }
 </script>

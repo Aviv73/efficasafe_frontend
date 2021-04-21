@@ -69,6 +69,8 @@ export default {
 
         &-header {
             cursor: pointer;
+            pointer-events: none;
+            padding: .05px 0;
             max-width: 100%;
 
             &:focus {

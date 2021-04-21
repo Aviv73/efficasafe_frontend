@@ -1,6 +1,7 @@
 .label-interaction-preview {
     &-group-header {
-        padding: rem(10px) 0;
+        pointer-events: all;
+        margin: rem(5px) 0;
 
         & > span:first-child {
             transform: translateX(10px);
@@ -22,6 +23,7 @@
     }
     .collapse-content {
         padding: rem(14px) 0;
+        margin: rem(14px) 0;
         box-shadow: $slight-border-y;
     }
     .summary-container {

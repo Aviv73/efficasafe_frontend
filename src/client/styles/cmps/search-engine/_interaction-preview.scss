@@ -6,11 +6,12 @@
     color: $clr-txt-darker;
     
     &-header {
-        padding: rem(24px) 0;
+        pointer-events: all;
+        margin: rem(16px) 0;
 
         &.child {
             box-shadow: none;
-            padding: rem(10px) 0;
+            margin: rem(5px) 0;
 
             & > span:first-child {
                 transform: translateX(10px);
@@ -27,6 +28,8 @@
         padding: rem(14px) 0;
         
         &.child {
+            margin-block-start: rem(14px);
+
             .interaction-preview-header {
                 & > span:first-child {
                     transform: translateX(20px);
