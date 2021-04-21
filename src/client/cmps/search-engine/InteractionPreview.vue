@@ -24,6 +24,7 @@
                                 :localize="!isCompoundPart"
                                 :showDraftName="isDuplicate"
                                 :draftName="interaction.side2DraftName"
+                                :isLabel="!!interaction.side2Label"
                             />
                         </span>
                         <span class="col">

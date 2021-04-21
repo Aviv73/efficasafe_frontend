@@ -48,12 +48,16 @@
                 />
             </svg>
         </div>
-        <span
-            class="layer"
-            v-for="n in layerCount"
-            :key="n"
-            :style="{ 'transform': `translateX(-${n * 5}px)` }"
-        />
+        <span v-if="isGroup || isLabel">
+            <span
+                class="layer"
+                v-for="n in 3"
+                :key="n"
+                :style="{
+                    'transform': `translateX(-${n * 5}px)`
+                }"
+            />
+        </span>
     </div>
 </template>
 
@@ -83,14 +87,15 @@ export default {
         draftName: {
             type: String,
             default: ''
+        },
+        isLabel: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {
-        layerCount() {
-            if (!this.vInteractionCount) return 0;
-            if (this.vInteractionCount < 2) return 2;
-            if (this.vInteractionCount <= 4) return this.vInteractionCount;
-            return 4;
+        isGroup() {
+            return this.vInteractionCount > 0;
         },
         side1Name() {
             const side1Name = this.name.split('&')[0].trim();
