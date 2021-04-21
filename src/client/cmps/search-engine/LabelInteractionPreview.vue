@@ -20,12 +20,11 @@
                         <span class="col">{{ shortRecommendation }}</span>
                         <span class="col">
                             {{ interaction.evidenceLevel }}
-                            <button
+                            <span
                                 class="de-activator"
-                                @click.stop="$emit('close-collapse')"
                             >
                                 <chevron-up-icon />
-                            </button>
+                            </span>
                         </span>
                     </div>
                 </template>

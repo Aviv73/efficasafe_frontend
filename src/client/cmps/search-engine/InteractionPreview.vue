@@ -36,13 +36,13 @@
                             >
                                 {{ getRefsCount(interaction) }}
                             </span>
-                            <button
+                            <span
                                 v-if="!interaction.refs || interaction.side2Label"
                                 class="de-activator"
-                                @click.stop="$emit('close-collapse')"
                             >
-                                <chevron-up-icon />
-                            </button>
+                                <chevron-up-icon class="opened" />
+                                <chevron-down-icon class="closed" />
+                            </span>
                         </span>
                     </div>
                 </component>
@@ -122,6 +122,7 @@ import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 import LabelInteractionPreview from '@/client/cmps/search-engine/LabelInteractionPreview';
 
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
+import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
 
 export default {
     name: 'InteractionPreview',
@@ -250,7 +251,8 @@ export default {
         ChevronUpIcon,
         LongTxt,
         LabelInteractionPreview,
-        Tooltip
+        Tooltip,
+        ChevronDownIcon
     }
 }
 </script>

@@ -7,7 +7,7 @@
                     <v-spacer></v-spacer>
                     <v-btn color="primary" to="/label/edit/">new label</v-btn>
                 </v-card-title>
-                <label-filter :labels="labels" @emit-filter="setFilter" />
+                <label-filter @emit-filter="setFilter" />
                 <label-list
                     :labels="labels"
                     :totalItems="totalItems"

@@ -48,10 +48,17 @@
             opacity: .8;
         }
         .de-activator {
+            position: absolute;
+            top: 50%;
+            right: 25%;
+            transform: translateY(-50%);
+
             &-bottom {
                 position: absolute;
                 left: 50%;
                 bottom: 0;
+                top: unset;
+                right: unset;
                 transform: translate(-50%, 50%);
             }
         }

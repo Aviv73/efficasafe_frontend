@@ -75,10 +75,22 @@ export default {
                 outline: none;
             }
             .de-activator {
-                display: none;
+                position: absolute;
+                top: 50%;
+                right: 0;
+                transform: translateY(-50%);
+                
+                .opened {
+                    display: none;
+                }
             }
             &.open .de-activator {
-                display: initial;
+                .opened {
+                    display: initial;
+                }
+                .closed {
+                    display: none;
+                }
             }
         }
         &-content {
