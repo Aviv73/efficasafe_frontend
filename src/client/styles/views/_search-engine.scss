@@ -38,9 +38,11 @@
         }
     }
     &-search {
+        overflow: hidden;
         padding: rem(20px) rem(24px) 0;
         
         @include for-narrow-layout {
+            overflow: initial;
             padding: rem(90px) rem(24px) 0;
         }
         @include for-wide-layout {
@@ -193,7 +195,6 @@
         background-color: $clr3;
         display: flex;
         flex-direction: column;
-        overflow-x: hidden;
 
         &-header {
             background-color: $clr6;
@@ -253,6 +254,10 @@
         }
     }
     &-nav {
+        position: sticky;
+        top: rem(43px);
+        left: 0;
+        z-index: 4;
         background-color: rgba($white, .75);
         padding: 0 rem(16px);
         font-size: rem(14px);
@@ -261,9 +266,21 @@
         color: rgba($clr-txt-dark, .8);
         overflow-x: auto;
         width: 100%;
-        
+        transition: box-shadow .2s linear, background-color .2s linear;
+
+        @include for-narrow-layout {
+            position: static;
+            top: unset;
+            left: unset;
+            z-index: unset;
+        }
         @include for-wide-layout {
             padding: 0 0 0 rem(16px);
+        }
+
+        &.pinned {
+            background-color: $white;
+            box-shadow: 0px 20px 20px 0px rgba($black, .4);
         }
 
         ul {
@@ -305,7 +322,7 @@
                 transform: rotateZ(270deg);
             }
             &:last-child {
-                margin-inline-start: 15px;
+                margin-inline-start: 5px;
             }
         }
         .highlight {

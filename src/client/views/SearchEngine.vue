@@ -117,7 +117,10 @@
                         scientific articles
                     </div>
                 </header>
-                <nav class="search-engine-nav">
+                <nav
+                    class="search-engine-nav"
+                    v-set-sticky-class-name:[`pinned`]
+                >
                     <ul>
                         <li class="search-engine-nav-link">
                             <router-link

@@ -13,10 +13,9 @@ body {
     line-height: rem(20px);
 }
 #app > main {
-    min-height: calc(100vh - 43px);
+    min-height: calc(100vh - 2.6875rem);
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
 }
 input, button, a, .swiper {
     &:focus {
