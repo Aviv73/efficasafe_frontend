@@ -188,6 +188,13 @@ export default {
             const side2Material = this.materials.find(material => material._id === interaction.side2Material._id);
             if (!side2Material) return 0;
             return side2Material.pathways.reduce((acc, pathway) => {
+                if (
+                    ((pathway.type === 'enzyme' || pathway.type === 'transporter') &&
+                    (!pathway.actions.includes('substrate') && !pathway.actions.includes('binder')))
+                    ||
+                    (pathway.type === 'carrier' &&
+                    (pathway.actions.includes('inducer') || pathway.actions.includes('inhibitor')))
+                ) return acc;
                 acc += pathway.references.length;
                 return acc;
             }, 0);

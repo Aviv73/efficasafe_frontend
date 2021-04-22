@@ -196,6 +196,10 @@
         display: flex;
         flex-direction: column;
 
+        @include for-narrow-layout {
+            overflow-x: hidden;
+        }
+
         &-header {
             background-color: $clr6;
             padding: rem(48px) 24px rem(20px);
