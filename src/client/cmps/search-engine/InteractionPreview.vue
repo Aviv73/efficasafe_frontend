@@ -17,6 +17,10 @@
                             class="col"
                             :class="{ 'flex-align-center': isDuplicate }"
                         >
+                            <minus-icon
+                                class="minus-icon"
+                                v-if="isChild"
+                            />
                             <interaction-capsules
                                 :name="interaction.name"
                                 :color="getInteractionColor(interaction.recommendation)"
@@ -134,6 +138,7 @@ import LabelInteractionPreview from '@/client/cmps/search-engine/LabelInteractio
 
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
+import MinusIcon from 'vue-material-design-icons/Minus';
 
 export default {
     name: 'InteractionPreview',
@@ -263,7 +268,8 @@ export default {
         LongTxt,
         LabelInteractionPreview,
         Tooltip,
-        ChevronDownIcon
+        ChevronDownIcon,
+        MinusIcon
     }
 }
 </script>

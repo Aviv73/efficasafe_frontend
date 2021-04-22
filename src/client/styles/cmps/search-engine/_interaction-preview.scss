@@ -25,6 +25,15 @@
                 }
             }
         }
+        .minus-icon {
+            position: absolute;
+            top: rem(15px);
+            left: 0;
+
+            @include for-narrow-layout {
+                display: none;
+            }
+        }
     }
     &-content {
         position: relative;
