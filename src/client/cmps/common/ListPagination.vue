@@ -3,7 +3,6 @@
         <button
             v-for="n in length"
             :key="n"
-            
         >
             {{ n }}
         </button>
