@@ -12,13 +12,11 @@ body {
     letter-spacing: 0;
     line-height: rem(20px);
 }
-#app {
-    overflow-x: hidden;
-}
 #app > main {
-    min-height: 100vh;
+    min-height: calc(100vh - 43px);
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 }
 input, button, a, .swiper {
     &:focus {
