@@ -44,7 +44,7 @@
                                 {{ getRefsCount(interaction) }}
                             </span>
                             <span
-                                v-if="!interaction.refs || interaction.side2Label"
+                                v-if="(!interaction.refs && !interaction.severity) || interaction.side2Label"
                                 class="de-activator"
                             >
                                 <chevron-up-icon class="opened" />
@@ -70,6 +70,7 @@
                             isHTML
                         />
                     </div>
+                    <chevron-up-icon class="chevron-icon" />
                 </div>
                 <div
                     class="interaction-preview-content"
@@ -86,7 +87,10 @@
                 <div 
                     v-else
                     class="interaction-preview-content"
-                    :class="{ 'child': isChild }"
+                    :class="{
+                        'child': isChild,
+                        'group': true
+                    }"
                 >
                     <p
                         class="msg"
