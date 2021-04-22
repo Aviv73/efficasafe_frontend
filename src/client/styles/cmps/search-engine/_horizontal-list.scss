@@ -30,6 +30,12 @@
             }
             &:nth-child(2) {
                 flex-basis: 33.33%;
+                @include for-narrow-layout {
+                    flex-basis: 25%;
+                }
+                @include for-wide-layout {
+                    flex-basis: 33.33%;
+                }
             }
             &:nth-child(3) {
                 flex-basis: auto;

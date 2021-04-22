@@ -9,6 +9,9 @@
                 <template #header>
                     <div class="label-interaction-preview-group-header table-row">
                         <span class="col">
+                            <minus-icon
+                                class="minus-icon"
+                            />
                             <interaction-capsules
                                 :name="getGroupName(atcGroup.name)"
                                 :vInteractionCount="4"    
@@ -40,6 +43,9 @@
                             <template #header>
                                 <div class="label-interaction-preview-group-header table-row child">
                                     <span class="col">
+                                        <minus-icon
+                                            class="minus-icon"
+                                        />
                                         <interaction-capsules
                                             :name="`${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}`"
                                             :vInteractionCount="0"    
@@ -103,6 +109,9 @@
                     <template #header>
                         <div class="label-interaction-preview-group-header table-row">
                             <span class="col">
+                                <minus-icon
+                                    class="minus-icon"
+                                />
                                 <interaction-capsules
                                     :name="`${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}`"
                                     :vInteractionCount="0"    
@@ -159,6 +168,7 @@ import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
+import MinusIcon from 'vue-material-design-icons/Minus';
 
 export default {
     props: {
@@ -290,7 +300,8 @@ export default {
         InteractionCapsules,
         ChevronUpIcon,
         LongTxt,
-        ChevronDownIcon
+        ChevronDownIcon,
+        MinusIcon
     }
 }
 </script>

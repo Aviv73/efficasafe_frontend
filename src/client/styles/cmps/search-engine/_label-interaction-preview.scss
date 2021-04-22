@@ -4,15 +4,28 @@
         margin: rem(5px) 0;
 
         & > span:first-child {
-            transform: translateX(10px);
+            @include for-narrow-layout {
+                transform: translateX(10px);
+            }
             @include for-wide-layout {
                 transform: translateX(40px);
             }
         }
         &.child > span:first-child {
-            transform: translateX(20px);
+            @include for-narrow-layout {
+                transform: translateX(20px);
+            }
             @include for-wide-layout {
                 transform: translateX(80px);
+            }
+        }
+        .minus-icon {
+            position: absolute;
+            top: rem(15px);
+            left: 0;
+
+            @include for-narrow-layout {
+                display: none;
             }
         }
     }
