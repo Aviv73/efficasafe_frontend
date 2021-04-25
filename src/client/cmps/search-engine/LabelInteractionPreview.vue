@@ -61,7 +61,7 @@
                                             class="refs" 
                                             v-if="interaction.refs"
                                         >
-                                            {{ `(${interaction.refs.length + side2RefCount(vInteraction.side2Material._id)})` }}
+                                            {{ `(${interaction.refs.length + getPathwayRefCount(vInteraction.side2Material._id)})` }}
                                         </span>
                                     </span>
                                 </div>
@@ -127,7 +127,7 @@
                                     class="refs" 
                                     v-if="interaction.refs"
                                 >
-                                    {{ `(${interaction.refs.length + side2RefCount(vInteraction.side2Material._id)})` }}
+                                    {{ `(${interaction.refs.length + getPathwayRefCount(vInteraction.side2Material._id)})` }}
                                 </span>
                             </span>
                         </div>
@@ -162,6 +162,8 @@
 </template>
 
 <script>
+import { interactionService } from '@/cms/services/interaction.service';
+
 import Collapse from '@/client/cmps/common/Collapse';
 import LongTxt from '@/client/cmps/common/LongTxt';
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
@@ -173,6 +175,10 @@ import MinusIcon from 'vue-material-design-icons/Minus';
 export default {
     props: {
         interaction: {
+            type: Object,
+            required: true
+        },
+        material: {
             type: Object,
             required: true
         },
@@ -287,9 +293,48 @@ export default {
         getGroupName(groupName) {
             return `${this.interaction.side1Material.name} & ${groupName}`;
         },
-        side2RefCount(materialId) {
-            const { pathwayRefs } = this.relatedMaterials.find(m => m._id === materialId);
-            return pathwayRefs.length;
+        getPathwayRefCount(materialId) {
+            const { pathways } = this.relatedMaterials.find(m => m._id === materialId);
+            const side2Pathways = pathways.reduce((acc, pathway) => {
+                if (
+                    ((pathway.type === 'enzyme' || pathway.type === 'transporter') &&
+                    (pathway.actions.includes('substrate') || pathway.actions.includes('binder')))
+                    ||
+                    (pathway.type === 'carrier' &&
+                    (!pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor')))
+                ) {
+                    acc.push(pathway)
+                }
+
+                return acc;
+            }, []);
+            const seenRefsMap = {};
+            const side2Refs = side2Pathways.reduce((acc, pathway) => {
+                pathway.references.forEach(ref => {
+                        if (!seenRefsMap[ref]) {
+                            acc.push(ref);
+                            seenRefsMap[ref] = true;
+                        }
+                    });
+                return acc;
+            }, []);
+            const side2PathwayRefs = this.material.pathways.reduce((acc, pathway) => {
+                const idx = side2Pathways.findIndex(side2Pathway => side2Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
+                if (idx !== -1) {
+                    const refs = interactionService.getRefsOrder(pathway.influence);
+                    refs.forEach(ref => {
+                        if (!seenRefsMap[ref]) {
+                            if (!this.interaction.refs.includes(ref)) {
+                                acc.push(ref);
+                            }
+                            seenRefsMap[ref] = true;
+                        }
+                    });
+                }
+                return acc;
+            }, []);
+            
+            return side2Refs.length + side2PathwayRefs.length;
         }
     },
     created() {

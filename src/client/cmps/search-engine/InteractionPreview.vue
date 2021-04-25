@@ -85,6 +85,7 @@
                 >
                     <label-interaction-preview
                         :interaction="interaction"
+                        :material="materials[0]"
                         :shortRecommendation="getShortRecommendation(interaction.recommendation)"
                         :color="getInteractionColor(interaction.recommendation)"
                         :link="link"

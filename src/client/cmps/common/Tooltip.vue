@@ -123,6 +123,7 @@ export default {
     },
     methods: {
         toggleIsActive() {
+            if (this.hidden || this.on !== 'focus') return;
             this.isActive = !this.isActive;
         },
         onToggle(isActive) {
