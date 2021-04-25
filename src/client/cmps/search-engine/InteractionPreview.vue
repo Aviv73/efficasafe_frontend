@@ -45,7 +45,7 @@
                             </tooltip>
                             <span
                                 class="refs" 
-                                v-if="interaction.refs"
+                                v-if="interaction.refs && !interaction.side2Label"
                             >
                                 {{ getRefsCount(interaction) }}
                             </span>
