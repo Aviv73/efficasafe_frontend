@@ -73,7 +73,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .user-edit-inputs {
   width: 50%;
   margin: 0 auto;

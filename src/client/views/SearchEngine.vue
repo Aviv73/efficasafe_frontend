@@ -113,7 +113,7 @@
                         </button>
                     </div>
                     <div class="search-engine-results-stats">
-                        Based on <animated-integer :value="totalRefsCount" />
+                        Based on over <animated-integer :value="totalRefsCount" />
                         scientific articles
                     </div>
                 </header>
