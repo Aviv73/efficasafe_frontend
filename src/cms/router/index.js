@@ -9,6 +9,9 @@ import materialDetails from '../views/material/MaterialDetails';
 import LabelApp from '../views/label/LabelApp';
 import labelEdit from '../views/label/LabelEdit';
 import labelDetails from '../views/label/LabelDetails';
+import UserApp from '../views/user/UserApp'
+import UserDetails from '../views/user/UserDetails'
+import UserEdit from '../views/user/UserEdit'
 import interactionApp from '../views/interaction/InteractionApp';
 import interactionEdit from '../views/interaction/InteractionEdit';
 import interactionDetails from '../views/interaction/InteractionDetails';
@@ -70,6 +73,24 @@ const routes = [
     path: '/label/:id',
     name: 'LabelDetails',
     component: labelDetails,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/user',
+    name: 'Users',
+    component: UserApp,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/user/:id',
+    name: 'UserDetails',
+    component: UserDetails,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/user/edit/:id',
+    name: 'UserEdit',
+    component: UserEdit,
     meta: { requiresAuth: true }
   },
   {
