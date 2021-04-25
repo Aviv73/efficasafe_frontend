@@ -181,9 +181,6 @@ export default {
         getRefsCount(interaction) {
             if (interaction.refs) {
                 const pathwayRefCount = this.getSide2PathwayRefsCount(interaction);
-                console.log(interaction.name);
-                console.log('REFS:', interaction.refs.length);
-                console.log('PATHWAYS:', pathwayRefCount);
                 return `(${interaction.refs.length + pathwayRefCount})`;
             }
             return '';
