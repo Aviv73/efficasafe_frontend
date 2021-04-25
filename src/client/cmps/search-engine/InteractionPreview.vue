@@ -196,27 +196,40 @@ export default {
                     ||
                     (pathway.type === 'carrier' &&
                     (!pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor')))
-                ) acc.push(pathway);
-
-                return acc;
-            }, []);
-            const side1Material = this.materials.find(material => material._id === interaction.side1Material._id);
-            const side1RefsCount = side1Material.pathways.reduce((acc, pathway) => {
-                const idx = side2Pathways.findIndex(side2Pathway => side2Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
-                if (idx !== -1) {
-                    // get number of refs from influence field refs inside text :(
-                    // pathway.references.length is allways 0 in side1Materials 
-                    // console.log(pathway.influence);
+                ) {
+                    acc.push(pathway);
                 }
 
                 return acc;
-            }, 0);
-            const side2RefsCount = side2Pathways.reduce((acc, pathway) => {
-                acc += pathway.references.length;
+            }, []);
+            const seenRefsMap = {};
+            const side2Refs = side2Pathways.reduce((acc, pathway) => {
+                pathway.references.forEach(ref => {
+                    if (!seenRefsMap[ref]) {
+                        acc.push(ref);
+                        seenRefsMap[ref] = true;
+                    }
+                });
                 return acc;
-            }, 0);
+            }, []);
+            const side1Material = this.materials.find(material => material._id === interaction.side1Material._id);
+            const side1PathwayRefs = side1Material.pathways.reduce((acc, pathway) => {
+                const idx = side2Pathways.findIndex(side2Pathway => side2Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
+                if (idx !== -1) {
+                    const refs = interactionService.getRefsOrder(pathway.influence);
+                    refs.forEach(ref => {
+                        if (!seenRefsMap[ref]) {
+                            if (!interaction.refs.includes(ref)) {
+                                acc.push(ref);
+                            }
+                            seenRefsMap[ref] = true;
+                        }
+                    });
+                }
+                return acc;
+            }, []);
             
-            return side1RefsCount + side2RefsCount;
+            return side1PathwayRefs.length + side2Refs.length;
         },
         getVinteractionsCount(interaction) {
             if (!('vInteractions' in interaction)) return 0;
