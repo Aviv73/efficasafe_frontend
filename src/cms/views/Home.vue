@@ -31,32 +31,32 @@
 </template>
 
 <script>
-import iconsMap from '@/cms/cmps/general/IconsMap';
+import iconsMap from "@/cms/cmps/general/IconsMap";
 
 export default {
-  name: 'Home',
+  name: "Home",
   data() {
     return {
       modules: [
         {
-          name: 'Material',
-          path: '/material',
-          icon: 'mdi-rhombus-split',
+          name: "Material",
+          path: "/material",
+          icon: "mdi-rhombus-split",
         },
         {
-          name: 'Label',
-          path: '/label',
-          icon: 'mdi-rhombus-split',
+          name: "Label",
+          path: "/label",
+          icon: "mdi-rhombus-split",
         },
         {
-          name: 'Interaction',
-          path: '/interaction',
-          icon: 'mdi-rhombus-split',
+          name: "Interaction",
+          path: "/interaction",
+          icon: "mdi-rhombus-split",
         },
         {
-          name: 'Archive',
-          path: '/archive',
-          icon: 'mdi-archive',
+          name: "Archive",
+          path: "/archive",
+          icon: "mdi-archive",
         },
       ],
     };
@@ -68,6 +68,6 @@ export default {
   },
   components: {
     iconsMap,
-  }
+  },
 };
 </script>
