@@ -38,7 +38,7 @@
     @include for-narrow-layout {
         flex-wrap: nowrap;
     }
-    & > .col {
+    & > .table-col {
         &:first-child {
             flex-basis: 100%;
             text-align: center;

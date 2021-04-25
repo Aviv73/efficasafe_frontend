@@ -8,7 +8,7 @@
             <collapse>
                 <template #header>
                     <div class="label-interaction-preview-group-header table-row">
-                        <span class="col">
+                        <span class="table-col">
                             <minus-icon
                                 class="minus-icon"
                             />
@@ -20,8 +20,8 @@
                                 :color="color"
                             />
                         </span>
-                        <span class="col">{{ shortRecommendation }}</span>
-                        <span class="col">
+                        <span class="table-col">{{ shortRecommendation }}</span>
+                        <span class="table-col">
                             {{ interaction.evidenceLevel }}
                             <span
                                 class="de-activator"
@@ -42,7 +42,7 @@
                         <collapse>
                             <template #header>
                                 <div class="label-interaction-preview-group-header table-row child">
-                                    <span class="col">
+                                    <span class="table-col">
                                         <minus-icon
                                             class="minus-icon"
                                         />
@@ -54,8 +54,8 @@
                                             :color="color"
                                         />
                                     </span>
-                                    <span class="col">{{ shortRecommendation }}</span>
-                                    <span class="col">
+                                    <span class="table-col">{{ shortRecommendation }}</span>
+                                    <span class="table-col">
                                         {{ interaction.evidenceLevel }}
                                         <span
                                             class="refs" 
@@ -108,7 +108,7 @@
                     <collapse>
                     <template #header>
                         <div class="label-interaction-preview-group-header table-row">
-                            <span class="col">
+                            <span class="table-col">
                                 <minus-icon
                                     class="minus-icon"
                                 />
@@ -120,8 +120,8 @@
                                     :color="color"
                                 />
                             </span>
-                            <span class="col">{{ shortRecommendation }}</span>
-                            <span class="col">
+                            <span class="table-col">{{ shortRecommendation }}</span>
+                            <span class="table-col">
                                 {{ interaction.evidenceLevel }}
                                 <span
                                     class="refs" 

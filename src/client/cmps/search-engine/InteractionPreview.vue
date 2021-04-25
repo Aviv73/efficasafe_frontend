@@ -14,7 +14,7 @@
                         }"
                     >
                         <span
-                            class="col"
+                            class="table-col"
                             :class="{ 'flex-align-center': isDuplicate }"
                         >
                             <minus-icon
@@ -31,10 +31,10 @@
                                 :isLabel="!!interaction.side2Label"
                             />
                         </span>
-                        <span class="col">
+                        <span class="table-col">
                             {{ getShortRecommendation(interaction.recommendation) }}
                         </span>
-                        <span class="col">
+                        <span class="table-col">
                             <tooltip
                                 :txt="getLongEvidenceLevel(interaction.evidenceLevel || interaction.evidence_level)"
                                 right
