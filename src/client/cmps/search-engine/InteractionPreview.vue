@@ -214,7 +214,9 @@ export default {
                 return acc;
             }, []);
             const side1Material = this.materials.find(material => material._id === interaction.side1Material._id);
-            const side1PathwayRefs = side1Material.pathways.reduce((acc, pathway) => {
+            let side1PathwayRefs = [];
+            if (side1Material) {
+                side1PathwayRefs = side1Material.pathways.reduce((acc, pathway) => {
                 const idx = side2Pathways.findIndex(side2Pathway => side2Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
                 if (idx !== -1) {
                     const refs = interactionService.getRefsOrder(pathway.influence);
@@ -227,8 +229,9 @@ export default {
                         }
                     });
                 }
-                return acc;
-            }, []);
+                    return acc;
+                }, []);
+            }
             
             return side1PathwayRefs.length + side2Refs.length;
         },
