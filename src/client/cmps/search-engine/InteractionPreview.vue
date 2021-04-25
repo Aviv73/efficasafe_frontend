@@ -179,6 +179,9 @@ export default {
         getRefsCount(interaction) {
             if (interaction.refs) {
                 const pathwayRefCount = this.getSide2PathwayRefsCount(interaction);
+                console.log(interaction.name);
+                console.log('REFS:', interaction.refs.length);
+                console.log('PATHWAYS:', pathwayRefCount);
                 return `(${interaction.refs.length + pathwayRefCount})`;
             }
             return '';
@@ -190,12 +193,12 @@ export default {
             return side2Material.pathways.reduce((acc, pathway) => {
                 if (
                     ((pathway.type === 'enzyme' || pathway.type === 'transporter') &&
-                    (!pathway.actions.includes('substrate') && !pathway.actions.includes('binder')))
+                    (pathway.actions.includes('substrate') || pathway.actions.includes('binder')))
                     ||
                     (pathway.type === 'carrier' &&
-                    (pathway.actions.includes('inducer') || pathway.actions.includes('inhibitor')))
-                ) return acc;
-                acc += pathway.references.length;
+                    (!pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor')))
+                ) acc += pathway.references.length;
+
                 return acc;
             }, 0);
         },
