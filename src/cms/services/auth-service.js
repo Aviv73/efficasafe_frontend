@@ -14,9 +14,10 @@ var options = {
     theme: {
         labeledSubmitButton: true,
         logo: "https://i.ibb.co/ZHXvGqx/logo-symbol.png",
-        primaryColor: "green",
+        primaryColor: "#4FB891",
 
     },
+
     autoclose: true,
     avatar: null,
 

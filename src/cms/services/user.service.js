@@ -2,7 +2,8 @@
 import { httpService } from './http.service';
 import { storageService } from './storage.service';
 
-const END_POINT = 'auth';
+const USER_END_POINT = 'auth';
+const ACCOUNT_END_POINT = 'account';
 const KEY = 'loggedInUser';
 
 export const userService = {
@@ -13,27 +14,33 @@ export const userService = {
     loadUsers,
     getById,
     getEmptyUser,
-    save
+    save,
+    removeMany
+}
+
+
+async function removeMany(ids) {
+    return httpService.delete(`${ACCOUNT_END_POINT}`, ids);
 }
 
 
 async function save(user) {
-    return httpService.put(`account/${user._id}`, user);
+    return httpService.put(`${ACCOUNT_END_POINT}/${user._id}`, user);
 
 }
 async function loadUsers(filterBy) {
-    return await httpService.get(`account/`, filterBy)
+    return await httpService.get(`${ACCOUNT_END_POINT}/`, filterBy)
 }
 
 async function getById(id) {
-    return httpService.get(`account/${id}`);
+    return httpService.get(`${ACCOUNT_END_POINT}/${id}`);
 
 }
 
 async function getUser() {
     const token = storageService.load('token')
     if (token) {
-        return await httpService.get(`${END_POINT}/userInfo`)
+        return await httpService.get(`${USER_END_POINT}/userInfo`)
     }
 
 }
@@ -44,7 +51,7 @@ function getLoggedInUser() {
 
 
 async function login(credentials) {
-    const res = await httpService.post(`${END_POINT}/login`, credentials);
+    const res = await httpService.post(`${USER_END_POINT}/login`, credentials);
     if (res.account) {
         storageService.store(KEY, res.account);
     }
@@ -52,7 +59,7 @@ async function login(credentials) {
 }
 
 async function logout() {
-    await httpService.post(`${END_POINT}/logout`);
+    await httpService.post(`${USER_END_POINT}/logout`);
 }
 
 async function getEmptyUser() {
