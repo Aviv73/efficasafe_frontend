@@ -180,26 +180,43 @@ export default {
         },
         getRefsCount(interaction) {
             if (interaction.refs) {
-                const pathwayRefCount = this.getSide2PathwayRefsCount(interaction);
+                const pathwayRefCount = this.getPathwayRefsCount(interaction);
                 return `(${interaction.refs.length + pathwayRefCount})`;
             }
             return '';
         },
-        getSide2PathwayRefsCount(interaction) {
+        getPathwayRefsCount(interaction) {
             if (!interaction.side2Material) return 0;
             const side2Material = this.materials.find(material => material._id === interaction.side2Material._id);
             if (!side2Material) return 0;
-            return side2Material.pathways.reduce((acc, pathway) => {
+            const side2Pathways = side2Material.pathways.reduce((acc, pathway) => {
                 if (
                     ((pathway.type === 'enzyme' || pathway.type === 'transporter') &&
                     (pathway.actions.includes('substrate') || pathway.actions.includes('binder')))
                     ||
                     (pathway.type === 'carrier' &&
                     (!pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor')))
-                ) acc += pathway.references.length;
+                ) acc.push(pathway);
+
+                return acc;
+            }, []);
+            const side1Material = this.materials.find(material => material._id === interaction.side1Material._id);
+            const side1RefsCount = side1Material.pathways.reduce((acc, pathway) => {
+                const idx = side2Pathways.findIndex(side2Pathway => side2Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
+                if (idx !== -1) {
+                    // get number of refs from influence field refs inside text :(
+                    // pathway.references.length is allways 0 in side1Materials 
+                    console.log(pathway.influence);
+                }
 
                 return acc;
             }, 0);
+            const side2RefsCount = side2Pathways.reduce((acc, pathway) => {
+                acc += pathway.references.length;
+                return acc;
+            }, 0);
+            
+            return side1RefsCount + side2RefsCount;
         },
         getVinteractionsCount(interaction) {
             if (!('vInteractions' in interaction)) return 0;
