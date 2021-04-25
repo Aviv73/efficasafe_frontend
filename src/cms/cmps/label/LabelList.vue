@@ -74,15 +74,10 @@
               ></div>
             </td>
 
-<<<<<<< HEAD
             <td
-              class="td-actions d-flex align-center justify-space-around"
-              width="120"
+              class="td-actions d-flex align-center justify-center"
               align="center"
             >
-=======
-            <td class="td-actions d-flex align-center justify-center" align="center">
->>>>>>> 0e39bcccda74d6ed0840e3a45c10e44277b3d247
               <v-checkbox
                 v-model="selected"
                 :value="item._id"
