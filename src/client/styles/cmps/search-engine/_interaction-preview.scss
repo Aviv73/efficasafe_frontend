@@ -34,6 +34,10 @@
                 display: none;
             }
         }
+        .evidence-level {
+            display: inline-block;
+            margin-inline-end: 3px;
+        }
     }
     &-content {
         position: relative;

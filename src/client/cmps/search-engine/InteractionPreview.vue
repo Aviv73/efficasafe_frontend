@@ -39,7 +39,9 @@
                                 :txt="getLongEvidenceLevel(interaction.evidenceLevel || interaction.evidence_level)"
                                 right
                             >
-                                <span>{{ interaction.evidenceLevel || interaction.evidence_level }}</span>
+                                <span class="evidence-level">
+                                    {{ interaction.evidenceLevel || interaction.evidence_level }}
+                                </span>
                             </tooltip>
                             <span
                                 class="refs" 
