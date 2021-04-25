@@ -206,7 +206,7 @@ export default {
                 if (idx !== -1) {
                     // get number of refs from influence field refs inside text :(
                     // pathway.references.length is allways 0 in side1Materials 
-                    console.log(pathway.influence);
+                    // console.log(pathway.influence);
                 }
 
                 return acc;
