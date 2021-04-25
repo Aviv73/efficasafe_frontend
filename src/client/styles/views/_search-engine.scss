@@ -38,9 +38,11 @@
         }
     }
     &-search {
+        overflow: hidden;
         padding: rem(20px) rem(24px) 0;
         
         @include for-narrow-layout {
+            overflow: initial;
             padding: rem(90px) rem(24px) 0;
         }
         @include for-wide-layout {
@@ -96,6 +98,7 @@
         }
         &-bar {
             width: 100%;
+            margin-block-end: rem(40px);
 
             input {
                 border: 2px solid $clr6;
@@ -104,7 +107,6 @@
                     padding-inline-start: rem(24px);
                     text-align: left;
                     border-width: 0;
-                    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='29' ry='29' stroke='%23333' stroke-width='1' stroke-dasharray='1%2c 6' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
                     
                     &::placeholder {
                         color: $clr2;
@@ -132,8 +134,7 @@
                 width: 100%;
                 border: 1px solid $clr6;
                 border-radius: 100px;
-                padding: rem(10px) rem(30px);
-                text-align: center;
+                padding: rem(10px) rem(52px) rem(10px) rem(36px);
                 margin-block-end: rem(6px);
                 position: relative;
                 background-repeat: no-repeat;
@@ -147,13 +148,20 @@
                 &.not-active {
                     cursor: default;
                 }
-                .remove-btn {
+                &-actions {
                     position: absolute;
-                    font-size: rem(12px);
                     top: 50%;
                     right: rem(15px);
                     transform: translateY(-50%);
+                    display: flex;
+                    align-items: center;
+                    font-size: rem(12px);
                     color: $clr7;
+
+                    .info-icon {
+                        height: 19px;
+                        margin-inline-end: 5px;
+                    }
                 }
             }
         }
@@ -187,7 +195,10 @@
         background-color: $clr3;
         display: flex;
         flex-direction: column;
-        overflow-x: hidden;
+
+        @include for-narrow-layout {
+            overflow-x: hidden;
+        }
 
         &-header {
             background-color: $clr6;
@@ -247,6 +258,10 @@
         }
     }
     &-nav {
+        position: sticky;
+        top: rem(43px);
+        left: 0;
+        z-index: 4;
         background-color: rgba($white, .75);
         padding: 0 rem(16px);
         font-size: rem(14px);
@@ -255,9 +270,21 @@
         color: rgba($clr-txt-dark, .8);
         overflow-x: auto;
         width: 100%;
-        
+        transition: box-shadow .2s linear, background-color .2s linear;
+
+        @include for-narrow-layout {
+            position: static;
+            top: unset;
+            left: unset;
+            z-index: unset;
+        }
         @include for-wide-layout {
             padding: 0 0 0 rem(16px);
+        }
+
+        &.pinned {
+            background-color: $white;
+            box-shadow: 0px 20px 20px 0px rgba($black, .4);
         }
 
         ul {
@@ -299,7 +326,7 @@
                 transform: rotateZ(270deg);
             }
             &:last-child {
-                margin-inline-start: 15px;
+                margin-inline-start: 5px;
             }
         }
         .highlight {
@@ -364,6 +391,10 @@
             flex: 1 1 auto;
             overflow-y: auto;
             height: 0px; // act excactly like min-height in this case
+        }
+
+        .flex-center {
+            height: 100%;
         }
     }
     

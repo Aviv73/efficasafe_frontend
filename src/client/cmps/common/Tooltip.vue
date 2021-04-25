@@ -9,7 +9,7 @@
         ref="activator"
         @focus="onToggle(true)"
         @blur="onToggle(false)"
-        @mousedown="dimissTooltip"
+        @mousedown="toggleIsActive"
     >
         <aside
             v-if="!hidden"
@@ -122,10 +122,8 @@ export default {
         }
     },
     methods: {
-        dimissTooltip() {
-            if (this.isActive) {
-                this.isActive = false;
-            }
+        toggleIsActive() {
+            this.isActive = !this.isActive;
         },
         onToggle(isActive) {
             if (this.hidden || this.on !== 'focus') return;
@@ -195,6 +193,7 @@ export default {
         visibility: hidden;
         z-index: 1;
         opacity: 0;
+        
         
         &.fade {
             transition-property: opacity;

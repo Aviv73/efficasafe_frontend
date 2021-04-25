@@ -3,22 +3,22 @@
         <header class="horizontal-list-header">
             <span class="horizontal-list-header-item">
                 <button>
-                    <pan-vertical-icon :size="12" />
+                    <sort-vertical-icon :size="12" />
                 </button>
                 <span>{{ sortBySide }} vs {{ side2Name }}</span>
                 <button @click="changeSortBySide">
-                    <swap-horizontal-icon :size="18" />
+                    <swap-horizontal-icon :size="18" fillColor="#329D9C" />
                 </button>
             </span>
             <span class="horizontal-list-header-item">
                 <button>
-                    <pan-vertical-icon :size="12" />
+                    <sort-vertical-icon :size="12" />
                 </button>
                 <span>Recommendation</span>
             </span>
             <span class="horizontal-list-header-item">
                 <button>
-                    <pan-vertical-icon :size="12" />
+                    <sort-vertical-icon :size="12" />
                 </button>
                 <span>Level of Evidence</span>
                 <tooltip on="hover" right right-bottom>
@@ -57,18 +57,24 @@
             >
                 <interaction-preview
                     :interaction="interaction"
+                    :materials="materials"
                     link
                 />
             </li>
         </ul>
+        <list-pagination
+            class="horizontal-list-pagination flex-center"
+            :length="pageCount"
+        />
     </section>
 </template>
 
 <script>
 import InteractionPreview from '@/client/cmps/search-engine/InteractionPreview';
 import Tooltip from '@/client/cmps/common/Tooltip';
+import ListPagination from '@/client/cmps/common/ListPagination';
 
-import PanVerticalIcon from 'vue-material-design-icons/PanVertical';
+import SortVerticalIcon from '@/client/cmps/common/icons/SortVerticalIcon';
 import SwapHorizontalIcon from 'vue-material-design-icons/SwapHorizontal';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
 
@@ -85,6 +91,10 @@ export default {
         total: {
             type: Number,
             default: 0
+        },
+        materials: {
+            type: Array,
+            default: () => []
         }
     },
     data() {
@@ -108,10 +118,11 @@ export default {
     },
     components: {
         InteractionPreview,
-        PanVerticalIcon,
+        SortVerticalIcon,
         SwapHorizontalIcon,
         InformationOutlineIcon,
-        Tooltip
+        Tooltip,
+        ListPagination
     }
 };
 </script>

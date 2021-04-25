@@ -77,22 +77,26 @@
 
           <div 
             class="info-title text-capitalize"
-            v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptons || interaction.monitor.general"
+            v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptoms || interaction.monitor.general"
           > 
             What to monitor:
           </div>
-          <div class="info-value" v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptons || interaction.monitor.general"> 
-            <span class="text-capitalize" v-if="interaction.monitor.labTests">Lab tests: </span>
-            <span v-if="interaction.monitor.labTests">{{ interaction.monitor.labTests }}</span>
+          <div class="info-value" v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptoms || interaction.monitor.general"> 
+            <div v-if="interaction.monitor.labTests">
+              <span class="text-capitalize">Lab tests:</span> {{ interaction.monitor.labTests }}
+            </div>
 
-            <span class="text-capitalize" v-if="interaction.monitor.otherTests"> Other tests: </span>
-            <span v-if="interaction.monitor.otherTests">{{ interaction.monitor.otherTests }}</span>
+            <div v-if="interaction.monitor.otherTests">
+              <span class="text-capitalize">Other tests:</span> {{ interaction.monitor.otherTests }}
+            </div>
 
-            <span class="text-capitalize" v-if="interaction.monitor.symptons"> Symptons: </span>
-            <span v-if="interaction.monitor.symptons">{{ interaction.monitor.symptons }}</span>
+            <div v-if="interaction.monitor.symptoms">
+              <span class="text-capitalize">Symptoms:</span> {{ interaction.monitor.symptoms }}
+            </div>
             
-            <span class="text-capitalize" v-if="interaction.monitor.general"> General: </span>
-            <span v-if="interaction.monitor.general">{{ interaction.monitor.general }}</span>
+            <div v-if="interaction.monitor.general">
+              <span class="text-capitalize">General:</span> {{ interaction.monitor.general }}
+            </div>
           </div>
 
           <span class="info-title" v-if="interaction.note">Note:</span>

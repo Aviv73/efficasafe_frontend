@@ -1,6 +1,15 @@
 <template>
-    <div class="interaction-capsules">
-        <div class="interaction-capsules-side">
+    <div
+        class="interaction-capsules"
+        :class="{
+            'dup': showDraftName,
+            'group': isGroup || isLabel
+        }"
+    >
+        <div
+            class="interaction-capsules-side"
+            v-if="!showDraftName"
+        >
             <span :title="side1Name">{{ side1Name }}</span>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -15,7 +24,22 @@
             </svg>
         </div>
         <div class="interaction-capsules-side">
-        <span :title="side2Name">{{ side2Name }}</span>
+        <svg
+            v-if="showDraftName"
+            xmlns="http://www.w3.org/2000/svg"
+            class="cap cap-left"
+            viewBox="0 0 24.192 48.001"
+        >
+            <path 
+                :fill="color"
+                d="M24.192,48h-.221A23.973,23.973,0,0,1,0,24,23.96,23.96,0,0,1,23.972,0h.221V4.132a21.046,21.046,0,0,0-6.841,1.532A20.58,20.58,0,0,0,10.8,9.929a19.82,19.82,0,0,0-4.414,6.326,19.338,19.338,0,0,0,0,15.492A19.81,19.81,0,0,0,10.8,38.071a20.585,20.585,0,0,0,6.548,4.265,21.043,21.043,0,0,0,6.841,1.532V48Z"
+                transform="translate(24.192 48.001) rotate(180)"
+            />
+        </svg>
+        <span :title="(showDraftName && draftName) ? draftName : side2Name">
+            {{ (showDraftName && draftName) ? draftName : side2Name }}
+            {{ vInteractionCount ? ` (${vInteractionCount})` : '' }}
+        </span>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="cap cap-right"
@@ -27,12 +51,16 @@
                 />
             </svg>
         </div>
-        <span
-            class="layer"
-            v-for="n in vInteractionCount"
-            :key="n"
-            :style="{ 'transform': `translateX(-${n * 5}px)` }"
-        />
+        <span v-if="isGroup || isLabel">
+            <span
+                class="layer"
+                v-for="n in 3"
+                :key="n"
+                :style="{
+                    'transform': `translateX(-${n * 5}px)`
+                }"
+            />
+        </span>
     </div>
 </template>
 
@@ -50,14 +78,42 @@ export default {
         vInteractionCount: {
             type: Number,
             required: true
+        },
+        localize: {
+            type: Boolean,
+            required: true
+        },
+        showDraftName: {
+            type: Boolean,
+            required: true
+        },
+        draftName: {
+            type: String,
+            default: ''
+        },
+        isLabel: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {
+        isGroup() {
+            return this.vInteractionCount > 0;
+        },
         side1Name() {
-            return this.name.split('&')[0].trim();
+            const side1Name = this.name.split('&')[0].trim();
+            if (this.$store.getters.materialNamesMap[side1Name]) {
+                return this.$store.getters.materialNamesMap[side1Name].join(', ');
+            }
+            return side1Name;
         },
         side2Name() {
-            return this.name.split('&')[1].trim();
+            const side2Name = this.name.split('&')[1].trim();
+            if (!this.localize) return side2Name;
+            if (this.$store.getters.materialNamesMap[side2Name]) {
+                return this.$store.getters.materialNamesMap[side2Name].join(', ');
+            }
+            return side2Name;
         }
     }
 };

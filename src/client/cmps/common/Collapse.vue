@@ -4,6 +4,7 @@
             tabindex="0"
             class="collapse-header"
             @click="isContentVisible = !isContentVisible"
+            :class="{ 'open': isContentVisible }"
         >
             <slot name="header">
                 Toggle collapse
@@ -18,6 +19,17 @@
                     Collapse content here!
                 </slot>
             </main>
+        </transition>
+        <transition name="scale-y">
+            <button
+                v-if="isContentVisible"
+                class="close-btn"
+                @click.prevent="isContentVisible = false"
+            >
+                <slot name="de-activator">
+                    <span>&times;</span>
+                </slot>
+            </button>
         </transition>
     </component>
 </template>
@@ -53,16 +65,45 @@ export default {
 
 <style lang="scss" scoped>
     .collapse {
+        position: relative;
+
         &-header {
             cursor: pointer;
+            pointer-events: none;
+            padding: .05px 0;
             max-width: 100%;
 
             &:focus {
                 outline: none;
             }
+            .de-activator {
+                position: absolute;
+                top: 50%;
+                right: 0;
+                transform: translateY(-50%);
+                
+                .opened {
+                    display: none;
+                }
+            }
+            &.open .de-activator {
+                .opened {
+                    display: initial;
+                }
+                .closed {
+                    display: none;
+                }
+            }
         }
         &-content {
             overflow: hidden;
+        }
+        .close-btn {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%, 50%);
+            z-index: 1;
         }
     }
     .scale-y-enter-active, .scale-y-leave-active {

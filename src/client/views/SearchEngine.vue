@@ -57,9 +57,15 @@
                             :style="{ 'background-image': `url('${getResultIcon(result)}')` }"
                         >
                             {{ result.txt }}
-                            <button class="remove-btn" @click.stop="removeMaterials(result.txt)">
-                                <close-icon :size="16" />
-                            </button>
+                            <span class="search-engine-search-materials-chip-actions">
+                                <information-outline-icon
+                                    class="info-icon"
+                                    :size="16"
+                                />
+                                <button @click.stop="removeMaterials(result.txt)">
+                                    <close-icon :size="16" />
+                                </button>
+                            </span>
                         </li>
                     </tooltip>
                 </ul>
@@ -111,7 +117,10 @@
                         scientific articles
                     </div>
                 </header>
-                <nav class="search-engine-nav">
+                <nav
+                    class="search-engine-nav"
+                    v-set-sticky-class-name:[`pinned`]
+                >
                     <ul>
                         <li class="search-engine-nav-link">
                             <router-link
@@ -175,6 +184,8 @@
                         :key="$route.name"
                         :listData="routableListData"
                         :isVertical="isViewVertical"
+                        :materials="materials"
+                        :isLoading="isLoading"
                     />
                 </transition>
             </div>
@@ -195,6 +206,7 @@ import MobileShareIcon from '@/client/cmps/common/icons/MobileShareIcon';
 import CloseIcon from 'vue-material-design-icons/Close';
 import PrinterIcon from 'vue-material-design-icons/Printer';
 import ShareIcon from 'vue-material-design-icons/Share';
+import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
 
 export default {
     recommendationsOrderMap: interactionService.getRecommendationOrderMap(),
@@ -299,7 +311,8 @@ export default {
                             evidenceLevel: interaction.evidenceLevel,
                             isVirtual: true,
                             side2DraftName: interaction.side2DraftName,
-                            summary: interaction.summary
+                            summary: interaction.summary,
+                            refs: interaction.refs
                         };
                         this.insertInteraction(acc, vInteraction);
                     });
@@ -483,8 +496,16 @@ export default {
             };
             const { interactions, pageCount, total } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
             this.pageCount = pageCount;
-            this.total = total;
             this.interactions = interactions;
+            this.total = (this.materials.length === 1) ? total : interactions.reduce((acc, i) => {
+                if (i.side2Material) acc++;
+                else {
+                    const { _id } = i.side2Label;
+                    const materials = this.materials.filter(material => !material.isIncluded && material.labels.some(label => label._id === _id));
+                    acc += materials.length;
+                }
+                return acc;
+            }, 0);
         },
         async getDBankInteractions(page = 1) {
             const isAllNotDrugs = this.materials.every(material => material.type !== 'drug');
@@ -705,7 +726,8 @@ export default {
         ShareIcon,
         MobileMenuIcon,
         MobileShareIcon,
-        AnimatedInteger
+        AnimatedInteger,
+        InformationOutlineIcon
     }
 };
 </script>

@@ -3,7 +3,10 @@
     font-size: rem(12px);
     line-height: rem(36px);
     padding: 0 rem(24px);
-
+    
+    @include for-narrow-layout {
+        padding: 0 rem(12px);
+    }
     @include for-wide-layout {
         padding: 0 0 0 rem(16px);
     }
@@ -11,7 +14,7 @@
     &-header {
         display: none;
         align-items: center;
-        box-shadow: 0px 1px 1px rgba($clr12, .17);
+        box-shadow: $slight-border-bottom;
         color: $clr12;
         
         @include for-mobile-layout {
@@ -27,6 +30,12 @@
             }
             &:nth-child(2) {
                 flex-basis: 33.33%;
+                @include for-narrow-layout {
+                    flex-basis: 25%;
+                }
+                @include for-wide-layout {
+                    flex-basis: 33.33%;
+                }
             }
             &:nth-child(3) {
                 flex-basis: auto;
@@ -57,7 +66,10 @@
             }
         }
     }
-    &-list-item:not(:last-child) {
-        box-shadow: 0px 1px 1px rgba($clr12, .17);
+    &-list-item {
+        box-shadow: $slight-border-bottom;
+    }
+    &-pagination {
+        padding: rem(16px) 0;
     }
 }

@@ -22,9 +22,6 @@ import autocomplete from '@/cms/cmps/Autocomplete';
 
 export default {
   name: 'labelFilter',
-  props: {
-    labels: Array,
-  },
   data() {
     return {
       filterBy: {
