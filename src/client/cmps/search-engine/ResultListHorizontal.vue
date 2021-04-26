@@ -2,25 +2,39 @@
     <section class="horizontal-list">
         <header class="horizontal-list-header">
             <span class="horizontal-list-header-item">
-                <button>
-                    <sort-vertical-icon :size="12" />
+                <button
+                    class="flex-align-center"
+                    title="Sort A-Z / Z-A"
+                    @click="onSort('name')"
+                >
+                    <sort-vertical-icon class="sort-icon" :size="12" />
+                    <span>{{ side1Name }} vs {{ side2Name }}</span>
                 </button>
-                <span>{{ sortBySide }} vs {{ side2Name }}</span>
-                <button @click="changeSortBySide">
+                <button
+                    @click="changeSortBySide"
+                >
                     <swap-horizontal-icon :size="18" fillColor="#329D9C" />
                 </button>
             </span>
             <span class="horizontal-list-header-item">
-                <button>
-                    <sort-vertical-icon :size="12" />
+                <button
+                    class="flex-align-center"
+                    title="Sort by recommendation"
+                    @click="onSort('recommendation')"
+                >
+                    <sort-vertical-icon class="sort-icon" :size="12" />
+                    <span>Recommendation</span>
                 </button>
-                <span>Recommendation</span>
             </span>
             <span class="horizontal-list-header-item">
-                <button>
-                    <sort-vertical-icon :size="12" />
+                <button
+                    class="flex-align-center"
+                    title="Sort by level of evidence"
+                    @click="onSort('evidenceLevel')"
+                >
+                    <sort-vertical-icon class="sort-icon" :size="12" />
+                    <span>Level of Evidence</span>
                 </button>
-                <span>Level of Evidence</span>
                 <tooltip on="hover" right right-bottom>
                     <template #content>
                         <div class="tooltip-content">
@@ -94,21 +108,32 @@ export default {
     },
     data() {
       return {
-        sortBySide: 'Supplement'
+        sortBySide: 1
       }
     },
     computed: {
-      side2Name() {
-        return (this.sortBySide === 'Supplement') ? 'Drug' : 'Supplement';
-      }
+        side1Name() {
+            return (this.sortBySide === 1) ? 'Supplement' : 'Drug';
+        },
+        side2Name() {
+            return (this.sortBySide === 1) ? 'Drug' : 'Supplement';
+        }
     },
     methods: {
+        onSort(colName) {
+            let sortBy = '';
+            if (colName === 'name') {
+                sortBy = `side${this.sortBySide}Material.name`;
+            } else sortBy = colName;
+            
+            this.$emit('list-sorted', sortBy);
+        },
         getInteractionKey(interaction) {
             return (interaction.side2Material) ? `${interaction._id}-${interaction.side2Material._id}` : interaction._id;
         },
         changeSortBySide() {
-          if (this.sortBySide === 'Supplement') this.sortBySide = 'Drug';
-          else this.sortBySide = 'Supplement';
+          if (this.sortBySide === 1) this.sortBySide = 2;
+          else this.sortBySide = 1;
         }
     },
     components: {

@@ -187,6 +187,7 @@
                         :materials="materials"
                         :isLoading="isLoading"
                         @page-changed="handlePaging"
+                        @list-sorted="handleSort"
                     />
                 </transition>
             </div>
@@ -472,6 +473,9 @@ export default {
         }
     },
     methods: {
+        handleSort(sortBy) {
+            console.log(sortBy);
+        },
         async handlePaging(page) {
             this.isLoading = true;
             if (this.$route.name === 'Drug2Drug') await this.getDBankInteractions(page);

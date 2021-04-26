@@ -16,6 +16,7 @@
             :pageCount="listData.pageCount"
             :total="listData.total"
             :isLoading="isLoading"
+            @list-sorted="$emit('list-sorted', $event)"
         />
         <div v-else-if="!isLoading && isVertical">
             VERTIVAL LIST HERE!
