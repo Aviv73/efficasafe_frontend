@@ -318,7 +318,7 @@ export default {
                     });
                 return acc;
             }, []);
-            const side2PathwayRefs = this.material.pathways.reduce((acc, pathway) => {
+            const side1PathwayRefs = this.material.pathways.reduce((acc, pathway) => {
                 const idx = side2Pathways.findIndex(side2Pathway => side2Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
                 if (idx !== -1) {
                     const refs = interactionService.getRefsOrder(pathway.influence);
@@ -334,7 +334,7 @@ export default {
                 return acc;
             }, []);
             
-            return side2Refs.length + side2PathwayRefs.length;
+            return side2Refs.length + side1PathwayRefs.length;
         }
     },
     created() {
