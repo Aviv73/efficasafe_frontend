@@ -14,13 +14,11 @@
                     @delete-many-users="removeMany"
                 />
             </v-card>
-            <icons-map />
         </div>
     </section>
 </template>
 
 <script>
-import iconsMap from '@/cms/cmps/general/IconsMap';
 import UserList from '../../cmps/user/UserList';
 import UserFilter from '../../cmps/user/UserFilter.vue';
 export default {
@@ -62,7 +60,6 @@ export default {
         },
     },
     components: {
-        iconsMap,
         UserList,
         UserFilter,
     },
