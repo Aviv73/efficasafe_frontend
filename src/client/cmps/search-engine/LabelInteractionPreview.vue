@@ -206,6 +206,7 @@ export default {
             return this.vInteractions.reduce((acc, vinteraction) => {
                 vinteraction.atcParentGroups.forEach((atcGroup) => {
                     const atcGroupName = atcGroup.split(' ').splice(1).join(' ');
+                    if (atcGroupName.includes('combination') || atcGroupName.includes('and')) return;
                     if (!acc[atcGroupName]) {
                         acc[atcGroupName] = [];
                     }
@@ -318,7 +319,7 @@ export default {
                     });
                 return acc;
             }, []);
-            const side2PathwayRefs = this.material.pathways.reduce((acc, pathway) => {
+            const side1PathwayRefs = this.material.pathways.reduce((acc, pathway) => {
                 const idx = side2Pathways.findIndex(side2Pathway => side2Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
                 if (idx !== -1) {
                     const refs = interactionService.getRefsOrder(pathway.influence);
@@ -334,7 +335,7 @@ export default {
                 return acc;
             }, []);
             
-            return side2Refs.length + side2PathwayRefs.length;
+            return side2Refs.length + side1PathwayRefs.length;
         }
     },
     created() {

@@ -386,6 +386,8 @@
         }
     }
     .inner-view {
+        display: flex;
+        flex-direction: column;
         @include for-narrow-layout {
             // this hack let's 'flex-grow: 1' element to be scrollable
             flex: 1 1 auto;
