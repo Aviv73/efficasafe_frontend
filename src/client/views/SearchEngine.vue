@@ -181,6 +181,7 @@
                 <transition :name="routerTransitionName" mode="out-in">
                     <router-view
                         class="inner-view"
+                        ref="innerView"
                         :key="$route.name"
                         :listData="routableListData"
                         :isVertical="isViewVertical"
@@ -226,7 +227,7 @@ export default {
             msg: '',
             isViewVertical: false,
             scrollBarWidth: '0px',
-            routerTransitionName: ''
+            routerTransitionName: '',
         }
     },
     watch: {
@@ -473,8 +474,10 @@ export default {
         }
     },
     methods: {
-        handleSort(sortBy) {
+        async handleSort(sortBy) {
+            this.isLoading = true;
             console.log(sortBy);
+            this.isLoading = false;
         },
         async handlePaging(page) {
             this.isLoading = true;
@@ -503,7 +506,7 @@ export default {
                 isSearchResults: true,
                 page: --page,
                 id: ids,
-                materialCount: this.materials.filter(({ isIncluded }) => !isIncluded).length
+                materialCount: this.materials.filter(({ isIncluded }) => !isIncluded).length,
             };
             const { interactions, pageCount, total } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
             this.pageCount = pageCount;
