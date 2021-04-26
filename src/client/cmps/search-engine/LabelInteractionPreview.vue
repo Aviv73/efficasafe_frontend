@@ -206,6 +206,7 @@ export default {
             return this.vInteractions.reduce((acc, vinteraction) => {
                 vinteraction.atcParentGroups.forEach((atcGroup) => {
                     const atcGroupName = atcGroup.split(' ').splice(1).join(' ');
+                    if (atcGroupName.includes('combination') || atcGroupName.includes('and')) return;
                     if (!acc[atcGroupName]) {
                         acc[atcGroupName] = [];
                     }
