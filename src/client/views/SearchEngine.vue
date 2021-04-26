@@ -186,6 +186,7 @@
                         :isVertical="isViewVertical"
                         :materials="materials"
                         :isLoading="isLoading"
+                        @page-changed="handlePaging"
                     />
                 </transition>
             </div>
@@ -471,6 +472,12 @@ export default {
         }
     },
     methods: {
+        async handlePaging(page) {
+            this.isLoading = true;
+            if (this.$route.name === 'Drug2Drug') await this.getDBankInteractions(page);
+            else await this.getInteractions(page);
+            this.isLoading = false;
+        },
         async getResults() {
             this.isLoading = true;
             await this.getMaterials();

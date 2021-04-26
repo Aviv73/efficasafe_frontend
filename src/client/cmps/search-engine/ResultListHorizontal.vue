@@ -62,17 +62,12 @@
                 />
             </li>
         </ul>
-        <list-pagination
-            class="horizontal-list-pagination flex-center"
-            :length="pageCount"
-        />
     </section>
 </template>
 
 <script>
 import InteractionPreview from '@/client/cmps/search-engine/InteractionPreview';
 import Tooltip from '@/client/cmps/common/Tooltip';
-import ListPagination from '@/client/cmps/common/ListPagination';
 
 import SortVerticalIcon from '@/client/cmps/common/icons/SortVerticalIcon';
 import SwapHorizontalIcon from 'vue-material-design-icons/SwapHorizontal';
@@ -121,8 +116,7 @@ export default {
         SortVerticalIcon,
         SwapHorizontalIcon,
         InformationOutlineIcon,
-        Tooltip,
-        ListPagination
+        Tooltip
     }
 };
 </script>
