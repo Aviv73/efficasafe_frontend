@@ -4,13 +4,14 @@
 import Auth0Lock from 'auth0-lock';
 import store from '../store'
 
-const clientId = "2hXxEV8p6hFWXRYi08dth8nNzDW1POeo";
-const domain = "dev-kv5bhrqe.us.auth0.com";
+const clientId = "ECULxkc4xSBK8omj6EXcnPbyKuTvJ3Nr";
+const domain = "dev-385wz0kc.us.auth0.com";
 
 var options = {
     languageDictionary: {
         title: 'Efficasafe'
     },
+
     theme: {
         labeledSubmitButton: true,
         logo: "https://i.ibb.co/ZHXvGqx/logo-symbol.png",
@@ -34,6 +35,7 @@ lock.on("unrecoverable_error", function (error) {
 })
 
 lock.on("authenticated", function (authResult) {
+    console.log('im here ', authResult)
     let { accessToken, tokenType } = authResult;
     store.commit({ type: "setToken", token: `${tokenType} ${accessToken}` })
     store.dispatch({ type: "getUserInfo" })
