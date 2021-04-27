@@ -17,5 +17,16 @@
         .interaction-icon {
             margin-inline-end: rem(6px);
         }
+        .count {
+            margin-inline-start: rem(3px);
+        }
+    }
+    &-lists {
+        display: flex;
+
+        & > ul {
+            flex-basis: 33.33%;
+            text-align: center;
+        }
     }
 }
