@@ -41,12 +41,6 @@
                 flex-basis: auto;
                 min-width: max-content;
             }
-            & > label {
-                cursor: pointer;
-                &:focus {
-                    outline: none;
-                }
-            }
             & > *:not(:last-child), .sort-icon {
                 margin-inline-end: rem(5px);
             }

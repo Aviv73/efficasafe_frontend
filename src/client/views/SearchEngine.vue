@@ -181,7 +181,6 @@
                 <transition :name="routerTransitionName" mode="out-in">
                     <router-view
                         class="inner-view"
-                        ref="innerView"
                         :key="$route.name"
                         :listData="routableListData"
                         :isVertical="isViewVertical"
@@ -228,6 +227,7 @@ export default {
             isViewVertical: false,
             scrollBarWidth: '0px',
             routerTransitionName: '',
+            sortOrder: [ 1, 1, 1 ]
         }
     },
     watch: {
@@ -323,7 +323,7 @@ export default {
                 return acc;
             }, []);
             const queryApearanceMap = {};
-            if (this.materials.length === 1) return formatedInteractions;
+            if (this.materials.length === 1) return this.sortInteractions(formatedInteractions);
             formatedInteractions = formatedInteractions.reduce((acc, interaction) => {
                 const { side1Name, side2Name } = this.getInteractionSidesNames(interaction);
                 if (
@@ -474,11 +474,6 @@ export default {
         }
     },
     methods: {
-        async handleSort(sortBy) {
-            this.isLoading = true;
-            console.log(sortBy);
-            this.isLoading = false;
-        },
         async handlePaging(page) {
             this.isLoading = true;
             if (this.$route.name === 'Drug2Drug') await this.getDBankInteractions(page);
@@ -584,12 +579,34 @@ export default {
             interactions = interactions.concat(dBankInteractions);
             return this.sortInteractions(interactions);
         },
+        handleSort(sortDepth) {
+            this.isLoading = true;
+            this.setSortBy(sortDepth);
+            if (this.$route.name === 'Drug2Drug') this.sortdBankInteractions();
+            else {
+                /// TODO: REPLACE THIS HORRIBLE HACK :)
+                // * sort by side2 name as well
+                this.interactions.splice(0, 0);
+            }
+            this.isLoading = false;
+        },
+        setSortBy(sortDepth) {
+            this.sortOrder[sortDepth] = (this.sortOrder[sortDepth] === 1) ? -1 : 1;
+        },
         sortInteractions(interactions) {
             const { recommendationsOrderMap: map } = this.$options;
             return interactions.slice().sort((a, b) => {
-                return map[b.recommendation] - map[a.recommendation] ||
-                a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) ||
-                a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+                return (map[b.recommendation] - map[a.recommendation]) * this.sortOrder[0] ||
+                (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) * this.sortOrder[1] ||
+                (a.name.toLowerCase().localeCompare(b.name.toLowerCase())) * this.sortOrder[2];
+            });
+        },
+        sortdBankInteractions() {
+            const { recommendationsOrderMap: map } = this.$options;
+            this.dBankInteractions.sort((a, b) => {
+                return (map[b.recommendation] - map[a.recommendation]) * this.sortOrder[0] ||
+                (a.evidence_level - b.evidence_level) * this.sortOrder[1] ||
+                (a.subject_drug.name.toLowerCase().localeCompare(b.subject_drug.name.toLowerCase())) * this.sortOrder[2];
             });
         },
         insertInteraction(acc, interaction) {

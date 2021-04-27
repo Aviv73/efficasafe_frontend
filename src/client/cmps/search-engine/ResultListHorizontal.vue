@@ -2,19 +2,14 @@
     <section class="horizontal-list">
         <header class="horizontal-list-header">
             <span class="horizontal-list-header-item">
-                <label
+                <button
                     class="flex-align-center"
                     title="Sort A-Z / Z-A"
-                    tabindex="0"
+                    @click="emitSort(2)"
                 >
-                    <input
-                        type="checkbox"
-                        hidden
-                        v-model="sortOrder.isDesc1"
-                    />
                     <sort-vertical-icon class="sort-icon" :size="12" />
                     <span>{{ side1Name }} vs {{ side2Name }}</span>
-                </label>
+                </button>
                 <button
                     @click="changeSortBySide"
                 >
@@ -22,34 +17,24 @@
                 </button>
             </span>
             <span class="horizontal-list-header-item">
-                <label
+                <button
                     class="flex-align-center"
                     title="Sort by recommendation"
-                    tabindex="0"
+                    @click="emitSort(0)"
                 >
-                    <input
-                        type="checkbox"
-                        hidden
-                        v-model="sortOrder.isDesc2"
-                    />
                     <sort-vertical-icon class="sort-icon" :size="12" />
                     <span>Recommendation</span>
-                </label>
+                </button>
             </span>
             <span class="horizontal-list-header-item">
-                <label
+                <button
                     class="flex-align-center"
                     title="Sort by level of evidence"
-                    tabindex="0"
+                    @click="emitSort(1)"
                 >
-                    <input
-                        type="checkbox"
-                        hidden
-                        v-model="sortOrder.isDesc3"
-                    />
                     <sort-vertical-icon class="sort-icon" :size="12" />
                     <span>Level of Evidence</span>
-                </label>
+                </button>
                 <tooltip on="hover" right right-bottom>
                     <template #content>
                         <div class="tooltip-content">
@@ -123,23 +108,8 @@ export default {
     },
     data() {
       return {
-        sortBySide: 1,
-        sortOrder: {
-            isDesc1: true,
-            isDesc2: true,
-            isDesc3: true
-        }
+        sortBySide: 1
       }
-    },
-    watch: {
-        sortOrder: {
-            handler(val) {
-                const sortBy = Object.values(val).map(bool => bool ? 1 : -1);
-                this.$emit('list-sorted', sortBy);
-            },
-            deep: true,
-            immediate: false
-        }
     },
     computed: {
         side1Name() {
@@ -150,6 +120,9 @@ export default {
         }
     },
     methods: {
+        emitSort(sortDepth) {
+            this.$emit('list-sorted', sortDepth);
+        },
         getInteractionKey(interaction) {
             return (interaction.side2Material) ? `${interaction._id}-${interaction.side2Material._id}` : interaction._id;
         },
