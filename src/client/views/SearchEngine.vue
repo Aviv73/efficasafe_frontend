@@ -227,7 +227,8 @@ export default {
             isViewVertical: false,
             scrollBarWidth: '0px',
             routerTransitionName: '',
-            sortOrder: [ 1, 1, 1 ]
+            sortOrder: [ 1, 1, 1 ],
+            sortBySide: 1
         }
     },
     watch: {
@@ -579,34 +580,35 @@ export default {
             interactions = interactions.concat(dBankInteractions);
             return this.sortInteractions(interactions);
         },
-        handleSort(sortDepth) {
+        handleSort(sortBy) {
             this.isLoading = true;
-            this.setSortBy(sortDepth);
+            this.setSortBy(sortBy);
             if (this.$route.name === 'Drug2Drug') this.sortdBankInteractions();
             else {
-                /// TODO: REPLACE THIS HORRIBLE HACK :)
-                // * sort by side2 name as well
                 this.interactions.splice(0, 0);
             }
             this.isLoading = false;
         },
-        setSortBy(sortDepth) {
-            this.sortOrder[sortDepth] = (this.sortOrder[sortDepth] === 1) ? -1 : 1;
+        setSortBy(sortBy) {
+            this.sortBySide = sortBy.side;
+            this.sortOrder[sortBy.depth] = (this.sortOrder[sortBy.depth] === 1) ? -1 : 1;
         },
         sortInteractions(interactions) {
             const { recommendationsOrderMap: map } = this.$options;
             return interactions.slice().sort((a, b) => {
                 return (map[b.recommendation] - map[a.recommendation]) * this.sortOrder[0] ||
                 (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) * this.sortOrder[1] ||
-                (a.name.toLowerCase().localeCompare(b.name.toLowerCase())) * this.sortOrder[2];
+                (a.name.split(' & ')[this.sortBySide - 1].toLowerCase().localeCompare(b.name.split(' & ')[this.sortBySide - 1].toLowerCase())) * this.sortOrder[2];
             });
         },
         sortdBankInteractions() {
             const { recommendationsOrderMap: map } = this.$options;
+            const side = (this.sortBySide === 1) ? 'subject_drug' : 'affected_drug';
+
             this.dBankInteractions.sort((a, b) => {
                 return (map[b.recommendation] - map[a.recommendation]) * this.sortOrder[0] ||
                 (a.evidence_level - b.evidence_level) * this.sortOrder[1] ||
-                (a.subject_drug.name.toLowerCase().localeCompare(b.subject_drug.name.toLowerCase())) * this.sortOrder[2];
+                (a[side].name.toLowerCase().localeCompare(b[side].name.toLowerCase())) * this.sortOrder[2];
             });
         },
         insertInteraction(acc, interaction) {

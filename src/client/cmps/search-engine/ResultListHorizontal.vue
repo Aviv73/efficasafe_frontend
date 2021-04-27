@@ -121,7 +121,7 @@ export default {
     },
     methods: {
         emitSort(sortDepth) {
-            this.$emit('list-sorted', sortDepth);
+            this.$emit('list-sorted', { depth: sortDepth, side: this.sortBySide});
         },
         getInteractionKey(interaction) {
             return (interaction.side2Material) ? `${interaction._id}-${interaction.side2Material._id}` : interaction._id;
