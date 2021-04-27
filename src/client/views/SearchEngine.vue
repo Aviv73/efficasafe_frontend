@@ -108,9 +108,7 @@
                                 <share-icon v-else />
                             </button>
                         </span>
-                        <button class="mobile-menu-btn">
-                            <mobile-menu-icon />
-                        </button>
+                        <button class="mobile-menu-btn"></button>
                     </div>
                     <div class="search-engine-results-stats">
                         Based on over <animated-integer :value="totalRefsCount" />
@@ -518,8 +516,8 @@ export default {
             }, 0);
         },
         async getDBankInteractions(page = 1) {
-            const isAllNotDrugs = this.materials.every(material => material.type !== 'drug');
-            if (!this.materials.length || isAllNotDrugs) {
+            const isAllSupplements = this.materials.every(material => material.type !== 'drug');
+            if (!this.materials.length || isAllSupplements) {
                 this.dBankInteractions = [];
                 this.isLoading = false;
                 return;

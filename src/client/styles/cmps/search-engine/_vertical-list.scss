@@ -1,0 +1,21 @@
+.vertical-list {
+    &-header {
+        display: flex;
+        align-items: center;
+        text-transform: uppercase;
+        box-shadow: $slight-border-bottom;
+        padding: rem(8px) 0;
+        line-height: rem(14px);
+        font-size: rem(14px);
+        color: $clr-txt-darker;
+        font-family: roboto-bold, sans-serif;
+        font-weight: 700;
+        
+        & > div {
+            flex-basis: 33.33%;
+        }
+        .interaction-icon {
+            margin-inline-end: rem(6px);
+        }
+    }
+}
