@@ -49,6 +49,9 @@
                 display: inline-block;
                 transform: translateY(2px);
             }
+            .swap-side-icon {
+                transform: rotateZ(90deg);
+            }
         }
         .tooltip-content {
             padding: rem(16px) rem(14px);

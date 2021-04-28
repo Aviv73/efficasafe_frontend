@@ -95,7 +95,6 @@
                 </ul>
             </main>
         </div>
-        <div v-else>Loading...</div>
     </section>
 </template>
 

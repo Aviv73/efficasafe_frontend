@@ -59,7 +59,7 @@
                             {{ result.txt }}
                             <span class="search-engine-search-materials-chip-actions">
                                 <information-outline-icon
-                                    class="info-icon"
+                                    class="info-icon hover-activator"
                                     :size="16"
                                 />
                                 <button @click.stop="removeMaterials(result.txt)">
@@ -125,7 +125,14 @@
                                 class="link"
                                 :to="{ name: 'Supp2Drug', query: this.$route.query }"
                             >
-                                Supplement - Drug ({{ total }})
+                                Supplement - Drug
+                                <span
+                                    class="refs"
+                                    :class="`recomm-${worstSupp2DrugRecomm}`"
+                                    v-if="total"
+                                >
+                                    (<span>{{ total }}</span>)
+                                </span>
                             </router-link>
                         </li>
                         <li class="search-engine-nav-link">
@@ -133,7 +140,14 @@
                                 class="link"
                                 :to="{ name: 'Drug2Drug', query: this.$route.query }"
                             >
-                                Drug - Drug ({{ dBankTotal }})
+                                Drug - Drug
+                                <span
+                                    class="refs"
+                                    :class="`recomm-${worstDrug2DrugRecomm}`"
+                                    v-if="dBankTotal"
+                                >
+                                    (<span>{{ dBankTotal }}</span>)
+                                </span>
                             </router-link>
                         </li>
                         <li class="search-engine-nav-link">
@@ -141,7 +155,7 @@
                                 class="link boosters"
                                 :to="{ name: 'Boosters', query: this.$route.query }"
                             >
-                                Positive boosters (25)
+                                Positive boosters <span class="refs">(<span>25</span>)</span>
                             </router-link>
                         </li>
                         <li class="search-engine-nav-link">
@@ -470,6 +484,12 @@ export default {
         },
         isScreenNarrow() {
             return this.$store.getters.isScreenNarrow;
+        },
+        worstSupp2DrugRecomm() {
+            return this.interactions.map(i => i.order)[0];
+        },
+        worstDrug2DrugRecomm() {
+            return this.dBankInteractions.map(i => i.recommendationOrder)[0];
         }
     },
     methods: {

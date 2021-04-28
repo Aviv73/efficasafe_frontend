@@ -7,13 +7,16 @@
                     title="Sort A-Z / Z-A"
                     @click="emitSort(2)"
                 >
-                    <sort-vertical-icon class="sort-icon" :size="12" />
+                    <sort-vertical-icon class="sort-icon" />
                     <span>{{ side1Name }} vs {{ side2Name }}</span>
                 </button>
                 <button
                     @click="changeSortBySide"
                 >
-                    <swap-horizontal-icon :size="18" fillColor="#329D9C" />
+                    <sort-vertical-icon
+                        class="swap-side-icon"
+                        color="#329D9C"
+                    />
                 </button>
             </span>
             <span class="horizontal-list-header-item">
@@ -22,7 +25,7 @@
                     title="Sort by recommendation"
                     @click="emitSort(0)"
                 >
-                    <sort-vertical-icon class="sort-icon" :size="12" />
+                    <sort-vertical-icon class="sort-icon" />
                     <span>Recommendation</span>
                 </button>
             </span>
@@ -32,7 +35,7 @@
                     title="Sort by level of evidence"
                     @click="emitSort(1)"
                 >
-                    <sort-vertical-icon class="sort-icon" :size="12" />
+                    <sort-vertical-icon class="sort-icon" />
                     <span>Level of Evidence</span>
                 </button>
                 <tooltip on="hover" right right-bottom>
@@ -84,7 +87,6 @@ import InteractionPreview from '@/client/cmps/search-engine/InteractionPreview';
 import Tooltip from '@/client/cmps/common/Tooltip';
 
 import SortVerticalIcon from '@/client/cmps/common/icons/SortVerticalIcon';
-import SwapHorizontalIcon from 'vue-material-design-icons/SwapHorizontal';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
 
 export default {
@@ -134,7 +136,6 @@ export default {
     components: {
         InteractionPreview,
         SortVerticalIcon,
-        SwapHorizontalIcon,
         InformationOutlineIcon,
         Tooltip
     }

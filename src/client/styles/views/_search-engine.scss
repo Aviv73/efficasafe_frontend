@@ -156,7 +156,7 @@
                     display: flex;
                     align-items: center;
                     font-size: rem(12px);
-                    color: $clr7;
+                    color: $clr9;
 
                     .info-icon {
                         height: 19px;
@@ -301,6 +301,20 @@
                     align-items: center;
                     justify-content: flex-end;
                     padding: rem(20px) 0;
+                }
+            }
+            .refs {
+                & > span {
+                    color: $clr11;
+                }
+                &.recomm-1 > span {
+                    color: $red;
+                }
+                &.recomm-2 > span {
+                    color: $yellow;
+                }
+                &.recomm-3 > span {
+                    color: $green;
                 }
             }
         }
