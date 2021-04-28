@@ -305,16 +305,27 @@
             }
             .refs {
                 & > span {
-                    color: $clr11;
+                    display: inline-flex;
+                    justify-content: center;
+                    align-items: center;
+                    color: $white;
+                    background-color: $clr11;
+                    border-radius: 50%;
+                    padding: 3px;
+                    font-size: rem(10px);
+                    line-height: 1;
+                    font-family: roboto, sans-serif;
+                    font-weight: normal;
+                    min-width: 14px;
                 }
                 &.recomm-1 > span {
-                    color: $red;
+                    background-color: $red;
                 }
                 &.recomm-2 > span {
-                    color: $yellow;
+                    background-color: $yellow;
                 }
                 &.recomm-3 > span {
-                    color: $green;
+                    background-color: $green;
                 }
             }
         }
