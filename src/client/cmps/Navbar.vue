@@ -2,13 +2,60 @@
     <nav class="navbar">
         <div class="main-container">
             <div class="flex-space-between">
-                <div class="navbar-msgs">
-                    {{
-                        isScreenNarrow
-                            ? 'Get a Free trial'
-                            : 'Try our onboarding wizard'
-                    }}
-                    <chevron-right-icon :size="20" v-if="!isScreenNarrow" />
+                <div class="navbar-msgs flex-center">
+                    <div
+                        class="un-logged user-trial flex-center"
+                        v-if="!loggedInUser"
+                    >
+                        {{
+                            isScreenNarrow
+                                ? 'Get a Free trial'
+                                : 'Try our onboarding wizard'
+                        }}
+                        <chevron-right-icon
+                            class="flex-center"
+                            :size="20"
+                            v-if="!isScreenNarrow"
+                        />
+                    </div>
+
+                    <div class="logged-in" v-else>
+                        <div class="hi-user flex-center">
+                            <img
+                                v-if="loggedInUser.picture"
+                                :src="loggedInUser.picture"
+                                alt=""
+                                class="nav-user-img"
+                            />
+                            <p class="user-name">
+                                {{ `Hi ${loggedInUser.name.split(' ')[0]}` }}
+                            </p>
+                            <p class="seperator">|</p>
+                        </div>
+                        <div
+                            class="free-trial flex-center"
+                            v-if="!loggedInUser.isSubscribe"
+                        >
+                            <p v-if="freeTrialTime < 14 && freeTrialTime > 0">
+                                {{
+                                    `Free Trial - you have ${freeTrialTime} days left`
+                                }}
+                            </p>
+                            <p class="seperator">|</p>
+                        </div>
+                        <div class="user-trial flex-center" v-if="loggedInUser">
+                            {{
+                                isScreenNarrow
+                                    ? 'Get a Free trial'
+                                    : 'Try our onboarding wizard'
+                            }}
+                            <chevron-right-icon
+                                class="flex-center"
+                                :size="20"
+                                v-if="!isScreenNarrow"
+                            />
+                        </div>
+                    </div>
                 </div>
                 <ul class="navbar-nav">
                     <li class="navbar-nav-item">
@@ -33,7 +80,7 @@
                         <button
                             v-if="!loggedInUser"
                             class="login-btn"
-                            @click="onSingUp"
+                            @click="onSignUp"
                         >
                             SignUp
                         </button>
@@ -97,7 +144,6 @@
 import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 import CloseIcon from 'vue-material-design-icons/Close';
 import DotsHorizontalIcon from 'vue-material-design-icons/DotsHorizontal';
-import lock from '../../cms/services/auth-service';
 export default {
     name: 'Navbar',
     data: () => ({
@@ -110,18 +156,19 @@ export default {
         loggedInUser() {
             return this.$store.getters.loggedInUser;
         },
+        freeTrialTime() {
+            return 13;
+        },
     },
     methods: {
         toggleNavActive() {
             this.isNavActive = !this.isNavActive;
         },
         onLogin() {
-            lock.show({ allowSignUp: false });
+            this.$emit('login');
         },
-        onSingUp() {
-            lock.show({
-                allowLogin: false,
-            });
+        onSignUp() {
+            this.$emit('signup');
         },
         onLogout() {
             this.$store.dispatch({ type: 'logout' });
@@ -137,3 +184,20 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+.navbar-msgs {
+    padding-left: 40px;
+}
+.hi-user {
+    & .nav-user-img {
+        width: 24px;
+        border-radius: 50%;
+        margin-right: 10px;
+        margin-left: 40px;
+    }
+}
+.seperator {
+    margin: 0 14px 0 14px;
+}
+</style>

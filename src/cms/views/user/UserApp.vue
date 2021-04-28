@@ -10,6 +10,7 @@
                 <user-list
                     :users="users"
                     :loading="isLoading"
+                    :totalItems="totalItems"
                     @header-clicked="setFilter"
                     @delete-many-users="removeMany"
                 />
@@ -38,6 +39,9 @@ export default {
     computed: {
         users() {
             return this.$store.getters.users;
+        },
+        totalItems() {
+            return this.$store.getters.labelsCount;
         },
     },
     methods: {

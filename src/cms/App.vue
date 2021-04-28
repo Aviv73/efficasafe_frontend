@@ -1,6 +1,7 @@
 <template>
     <v-app>
         <nav-bar />
+
         <v-main class="app-main-container">
             <app-messages />
             <router-view class="app-main-view" />
@@ -14,6 +15,7 @@ import appMessages from '@/cms/cmps/general/AppMessages';
 
 export default {
     name: 'App',
+
     components: {
         navBar,
         appMessages,
@@ -29,6 +31,7 @@ export default {
             this.$store.dispatch({ type: 'loadLabels', filterBy });
         },
     },
+
     created() {
         if (this.loggedInUser) this.loadData();
     },

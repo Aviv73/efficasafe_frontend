@@ -1,9 +1,13 @@
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
 }
+
 html {
     scroll-behavior: smooth;
 }
+
 body {
     font-size: rem(16px);
     font-weight: normal;
@@ -12,18 +16,66 @@ body {
     letter-spacing: 0;
     line-height: rem(20px);
 }
-#app > main {
+
+#app>main {
     min-height: calc(100vh - 2.6875rem);
     display: flex;
     flex-direction: column;
 }
-input, button, a, .swiper {
+
+input,
+button,
+a,
+.swiper {
     &:focus {
         outline: 1px solid $clr1;
         outline-offset: 2px;
     }
 }
+
 sub {
     line-height: unset;
     color: $clr2;
+}
+
+.auth0-lock.auth0-lock .auth0-lock-form {
+    >div>div {
+
+        display: flex;
+        flex-direction: column;
+
+        div+div+div {
+            display: flex;
+            flex-direction: column;
+
+            p {
+                order: 4;
+                margin-top: 15px;
+                margin-bottom: 15px;
+            }
+
+            p.auth0-lock-alternative {
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+                order: 3;
+            }
+        }
+
+        .auth0-lock-pane-separator {
+            order: 2;
+        }
+
+        .auth-lock-social-buttons-pane {
+            order: 3;
+        }
+    }
+}
+
+
+.auth0-lock-widget {
+    width: 100% !important;
+}
+
+.auth0-lock-cred-pane .auth0-lock-quiet {
+    padding: 20px;
 }

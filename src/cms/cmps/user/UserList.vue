@@ -4,7 +4,7 @@
         <v-data-table
             :headers="headers"
             :items="users"
-            :server-items-length="15"
+            :server-items-length="totalItems"
             :options.sync="options"
             :loading="loading"
             disable-sort
@@ -117,6 +117,10 @@ export default {
         },
         loading: {
             type: Boolean,
+            required: true,
+        },
+        totalItems: {
+            type: Number,
             required: true,
         },
     },
