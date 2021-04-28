@@ -10,6 +10,8 @@
                 mdi-plus-circle
             </v-icon>
             <v-file-input
+                v-if="isEdit"
+                title="Upload excel file"
                 class="reference-table-file-btn"
                 accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                 clearable
