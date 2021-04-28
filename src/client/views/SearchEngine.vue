@@ -70,7 +70,7 @@
                     </tooltip>
                 </ul>
                 <div class="search-engine-search-actions">
-                    <router-link to="/search">Clear search</router-link> |
+                    <router-link :to="{ name: $route.name }">Clear search</router-link> |
                     <tooltip bottom>
                         <template #content>
                             <span class="msg">
@@ -473,8 +473,8 @@ export default {
                 });
                 return acc;
             }, 0);
-
-            return refsCount + dBankRefsCount + pathwayRefsCount;
+            
+            return refsCount + dBankRefsCount + pathwayRefsCount + this.$store.getters.supplementsRefs.length;
         },
         totalInteractionCount() {
             return this.total + this.dBankTotal;

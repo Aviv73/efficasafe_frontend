@@ -242,6 +242,7 @@ export default {
                     return acc;
                 }, []);
             }
+            this.$store.commit({ type: 'updateSupplementsRefs', refs: side1PathwayRefs });
             this.pathwayRefCount = side1PathwayRefs.length + side2Refs.length;
         },
         getVinteractionsCount(interaction) {
