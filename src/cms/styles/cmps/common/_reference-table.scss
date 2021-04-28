@@ -1,4 +1,7 @@
 .reference-table {
+    &-file-btn {
+        width: max-content;
+    }
     &-add-btn {
         cursor: pointer;
         float: right;

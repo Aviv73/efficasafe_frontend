@@ -463,6 +463,7 @@
             :isEdit="true"
             @edit-ref="openRefDialog"
             :references="editedMaterial.refs"
+            @refs-uploaded="addRefs"
           />
           
           <d-bank-refs-table 
@@ -859,6 +860,16 @@ export default {
     }
   },
   methods: {
+    addRefs(refs) {
+      if (!this.editedMaterial.refs.length) this.editedMaterial.refs = refs;
+      else {
+        let lastDraftIdx = this.editedMaterial.refs.length;
+        refs.forEach(ref => {
+          ref.draftIdx = ++lastDraftIdx;
+        });
+      }
+      this.editedMaterial.refs = this.editedMaterial.refs.concat(refs);
+    },
     saveDBankRef() {
       const isEdit = !!this.editedDBankRef.draftIdx;
       if (isEdit) {

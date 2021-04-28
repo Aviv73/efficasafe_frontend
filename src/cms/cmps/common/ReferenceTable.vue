@@ -6,7 +6,20 @@
                 class="reference-table-add-btn"
                 @click="$emit('edit-ref')"
                 title="Add Reference"
-                >mdi-plus-circle</v-icon>
+            >
+                mdi-plus-circle
+            </v-icon>
+            <v-file-input
+                class="reference-table-file-btn"
+                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                clearable
+                hide-details
+                show-size
+                dense
+                single-line
+                placeholder="Upload refs"
+                @change="handleRefsUpload"
+            />
             <v-card-title>
                 <v-text-field
                     v-model="search"
@@ -59,6 +72,8 @@
 </template>
 
 <script>
+import readXlsxFile from 'read-excel-file';
+
 export default {
     props: {
         references: {
@@ -119,6 +134,39 @@ export default {
         }
     },
     methods: {
+        async handleRefsUpload(file) {
+           const rows = await readXlsxFile(file);
+            const refs = rows.reduce((acc, row, idx) => {
+               if (idx === 0) return acc;
+                const txt = row[3];
+                let link = '';
+                let pubmedId = '';
+                let linkIdx = txt.indexOf('http://');
+                if (linkIdx === -1) linkIdx = txt.indexOf('https://');
+                if (linkIdx !== -1) {
+                    link = txt.substring(linkIdx, txt.length);
+                }
+                if (link) {
+                    const pubmedIdx = link.indexOf('pubmed');
+                    if (pubmedIdx !== -1) {
+                        const regex = /([\d])/g;
+                        pubmedId = link.match(regex) ? link.match(regex).join('') : 0;
+                    }
+                }
+
+                const ref = {
+                    draftIdx: idx,
+                    type: row[1] || '',
+                    txt,
+                    link,
+                    pubmedId: +pubmedId
+                };
+
+                acc.push(ref);
+                return acc;
+           }, []);
+           this.$emit('refs-uploaded', refs);
+        },
         RefIdxForDisplay(item) {
             const idx = this.references.findIndex(ref => ref === item);
             return idx + 1;
