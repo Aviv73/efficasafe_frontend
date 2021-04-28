@@ -131,7 +131,7 @@
                                     :class="`recomm-${worstSupp2DrugRecomm}`"
                                     v-if="total"
                                 >
-                                    (<span>{{ total }}</span>)
+                                    {{'\xa0'}}(<span>{{ total }}</span>)
                                 </span>
                             </router-link>
                         </li>
@@ -146,7 +146,7 @@
                                     :class="`recomm-${worstDrug2DrugRecomm}`"
                                     v-if="dBankTotal"
                                 >
-                                    (<span>{{ dBankTotal }}</span>)
+                                    {{'\xa0'}}(<span>{{ dBankTotal }}</span>)
                                 </span>
                             </router-link>
                         </li>
@@ -155,7 +155,8 @@
                                 class="link boosters"
                                 :to="{ name: 'Boosters', query: this.$route.query }"
                             >
-                                Positive boosters <span class="refs">(<span>25</span>)</span>
+                                Positive boosters
+                                {{'\xa0'}}<span class="refs">(<span>25</span>)</span>
                             </router-link>
                         </li>
                         <li class="search-engine-nav-link">
@@ -239,8 +240,7 @@ export default {
             isViewVertical: false,
             scrollBarWidth: '0px',
             routerTransitionName: '',
-            sortOrder: [ 1, 1, 1 ],
-            sortBySide: 1
+            sortOptions: null
         }
     },
     watch: {
@@ -598,35 +598,46 @@ export default {
             interactions = interactions.concat(dBankInteractions);
             return this.sortInteractions(interactions);
         },
-        handleSort(sortBy) {
-            this.isLoading = true;
-            this.setSortBy(sortBy);
-            if (this.$route.name === 'Drug2Drug') this.sortdBankInteractions();
-            else {
+        handleSort({ sortBy, side, isDesc }) {
+            const isDBank = this.$route.name === 'Drug2Drug';
+            if (!isDBank) {
+                this.sortOptions = { sortBy, side, isDesc };
                 this.interactions.splice(0, 0);
+                return;
             }
-            this.isLoading = false;
-        },
-        setSortBy(sortBy) {
-            this.sortBySide = sortBy.side;
-            this.sortOrder[sortBy.depth] = (this.sortOrder[sortBy.depth] === 1) ? -1 : 1;
+            const { recommendationsOrderMap: map } = this.$options;
+            const sideName = (side === 1) ? 'subject_drug' : 'affected_drug';
+            const sortOrder = isDesc ? -1 : 1;
+            switch (sortBy) {
+                case 'name':
+                    this.dBankInteractions.sort((a, b) => a[sideName].name.toLowerCase().localeCompare(b[sideName].name.toLowerCase()) * sortOrder);
+                break;
+                case 'recommendation':
+                    this.dBankInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
+                break;
+                case 'evidenceLevel':
+                    this.dBankInteractions.sort((a, b) => (a.evidence_level - b.evidence_level) * sortOrder);
+                break;
+            }
         },
         sortInteractions(interactions) {
             const { recommendationsOrderMap: map } = this.$options;
+            if (this.sortOptions) {
+                const { sortBy, side, isDesc } = this.sortOptions;
+                const sortOrder = isDesc ? -1 : 1;
+                switch (sortBy) {
+                    case 'name':
+                        return interactions.sort((a, b) => (a.name.split(' & ')[side - 1].toLowerCase().localeCompare(b.name.split(' & ')[side - 1].toLowerCase())) * sortOrder);
+                    case 'recommendation':
+                        return interactions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
+                    case 'evidenceLevel':
+                        return interactions.sort((a, b) => (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) * sortOrder);
+                }
+            }
             return interactions.slice().sort((a, b) => {
-                return (map[b.recommendation] - map[a.recommendation]) * this.sortOrder[0] ||
-                (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) * this.sortOrder[1] ||
-                (a.name.split(' & ')[this.sortBySide - 1].toLowerCase().localeCompare(b.name.split(' & ')[this.sortBySide - 1].toLowerCase())) * this.sortOrder[2];
-            });
-        },
-        sortdBankInteractions() {
-            const { recommendationsOrderMap: map } = this.$options;
-            const side = (this.sortBySide === 1) ? 'subject_drug' : 'affected_drug';
-
-            this.dBankInteractions.sort((a, b) => {
-                return (map[b.recommendation] - map[a.recommendation]) * this.sortOrder[0] ||
-                (a.evidence_level - b.evidence_level) * this.sortOrder[1] ||
-                (a[side].name.toLowerCase().localeCompare(b[side].name.toLowerCase())) * this.sortOrder[2];
+                return (map[b.recommendation] - map[a.recommendation]) ||
+                (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
+                (a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
             });
         },
         insertInteraction(acc, interaction) {

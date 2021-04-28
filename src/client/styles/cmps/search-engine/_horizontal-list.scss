@@ -41,6 +41,9 @@
                 flex-basis: auto;
                 min-width: max-content;
             }
+            & > label {
+                cursor: pointer;
+            }
             & > *:not(:last-child), .sort-icon {
                 margin-inline-end: rem(5px);
             }

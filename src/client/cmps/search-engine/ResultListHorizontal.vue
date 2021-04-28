@@ -2,14 +2,15 @@
     <section class="horizontal-list">
         <header class="horizontal-list-header">
             <span class="horizontal-list-header-item">
-                <button
+                <label
                     class="flex-align-center"
                     title="Sort A-Z / Z-A"
-                    @click="emitSort(2)"
+                    tabindex="0"
                 >
+                    <input type="checkbox" hidden @change="emitSort('name', $event.target.checked)" />
                     <sort-vertical-icon class="sort-icon" />
                     <span>{{ side1Name }} vs {{ side2Name }}</span>
-                </button>
+                </label>
                 <button
                     @click="changeSortBySide"
                 >
@@ -20,24 +21,26 @@
                 </button>
             </span>
             <span class="horizontal-list-header-item">
-                <button
+                <label
                     class="flex-align-center"
                     title="Sort by recommendation"
-                    @click="emitSort(0)"
+                    tabindex="0"
                 >
+                    <input type="checkbox" hidden @change="emitSort('recommendation', $event.target.checked)" />
                     <sort-vertical-icon class="sort-icon" />
                     <span>Recommendation</span>
-                </button>
+                </label>
             </span>
             <span class="horizontal-list-header-item">
-                <button
+                <label
                     class="flex-align-center"
                     title="Sort by level of evidence"
-                    @click="emitSort(1)"
+                    tabindex="0"
                 >
+                    <input type="checkbox" hidden @change="emitSort('evidenceLevel', $event.target.checked)" />
                     <sort-vertical-icon class="sort-icon" />
                     <span>Level of Evidence</span>
-                </button>
+                </label>
                 <tooltip on="hover" right right-bottom>
                     <template #content>
                         <div class="tooltip-content">
@@ -122,8 +125,8 @@ export default {
         }
     },
     methods: {
-        emitSort(sortDepth) {
-            this.$emit('list-sorted', { depth: sortDepth, side: this.sortBySide});
+        emitSort(sortBy, isDesc) {
+            this.$emit('list-sorted', { sortBy, side: this.sortBySide, isDesc });
         },
         getInteractionKey(interaction) {
             return (interaction.side2Material) ? `${interaction._id}-${interaction.side2Material._id}` : interaction._id;
