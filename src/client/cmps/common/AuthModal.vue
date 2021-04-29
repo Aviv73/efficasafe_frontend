@@ -6,7 +6,7 @@
             <button class="close-modal" @click="closeModal">X</button>
             <div class="sign-up-modal center" v-if="signUpModal">
                 <img src="../../assets/imgs/flat-logo.png" alt="" />
-                <p class="title">Please confirm you email address</p>
+                <p class="title">Please confirm your email address</p>
 
                 <p class="sub-title">
                     In order to complete registration process, please go to your
@@ -49,7 +49,11 @@ export default {
             this.$emit('closeModal');
         },
 
-        onAuthenticated(authResult) {
+        handleError(err) {
+            console.log(err);
+        },
+
+        async onAuthenticated(authResult) {
             console.log('from login', authResult);
             let { accessToken, tokenType } = authResult;
             this.$store.commit({
@@ -57,27 +61,20 @@ export default {
                 token: `${tokenType} ${accessToken}`,
             });
 
-            await this.$store.dispatch({ type: 'getUserInfo' })
-            const loggedInUser = this.$store.getters.loggedInUser
-            if (loggedInUser.email_verified) {}
-
-
-
-            this.lock.getUserInfo(accessToken, (error, profile) => {
-                if (!error) {
-                    if (profile.email_verified) {
-                        this.$store.dispatch({ type: 'getUserInfo' });
-                        setTimeout(() => {
-                            this.lock.hide();
-                            this.closeModal();
-                        }, 1200);
-                    } else {
-                        this.$store.dispatch({ type: 'getUserInfo' });
-                        this.lock.hide();
-                        this.signUpModal = true;
-                    }
-                }
-            });
+            await this.$store.dispatch({ type: 'getUserInfo' });
+            const loggedInUser = this.$store.getters.loggedInUser;
+            console.log('loggedinuser', loggedInUser);
+            if (loggedInUser.email_verified) {
+                this.$store.dispatch({ type: 'getUserInfo' });
+                setTimeout(() => {
+                    this.lock.hide();
+                    this.closeModal();
+                }, 1200);
+            } else {
+                this.$store.dispatch({ type: 'getUserInfo' });
+                this.lock.hide();
+                this.signUpModal = true;
+            }
         },
     },
 
@@ -109,9 +106,11 @@ export default {
         };
         this.lock = new Auth0Lock(clientId, domain, options);
         this.lock.on('authenticated', this.onAuthenticated);
+        this.lock.on('signup error', this.handleError);
     },
     destroyed() {
         this.lock.off('authenticated', this.onAuthenticated);
+        this.lock.off('signup error', this.handleError);
     },
 };
 </script>

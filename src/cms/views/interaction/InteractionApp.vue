@@ -91,10 +91,10 @@ export default {
         console.log('ERROR', err);
       }
     },
-    async loadInteraction(intId) {
+    async loadInteraction(id) {
       const editedInteraction = await this.$store.dispatch({
         type: 'loadInteraction',
-        intId
+        id
       });
       return JSON.parse(JSON.stringify(editedInteraction));
     },

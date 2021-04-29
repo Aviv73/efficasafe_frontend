@@ -153,6 +153,26 @@ export default {
             this.exceedsRight = isExceedsRight;
             this.exceedsLeft = isExceedsLeft;
         }
+    },
+    mounted() {
+        const el = this.$refs.activator.querySelector('.hover-activator');
+        if (!el) return;
+        el.addEventListener('mouseenter', () => {
+            this.onToggle(true);
+        });
+        el.addEventListener('mouseleave', () => {
+            this.onToggle(false);
+        });
+    },
+    beforeDestroy() {
+        const el = this.$refs.activator.querySelector('.hover-activator');
+        if (!el) return;
+        el.removeEventListener('mouseenter', () => {
+            this.onToggle(true);
+        });
+        el.removeEventListener('mouseleave', () => {
+            this.onToggle(false);
+        });
     }
 }
 </script>

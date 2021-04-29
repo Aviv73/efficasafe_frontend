@@ -17,7 +17,7 @@
         box-shadow: $slight-border-bottom;
         color: $clr12;
         
-        @include for-mobile-layout {
+        @include for-narrow-layout {
             display: flex;
         }
 
@@ -41,14 +41,19 @@
                 flex-basis: auto;
                 min-width: max-content;
             }
-
-            & > *:not(:last-child) {
+            & > label {
+                cursor: pointer;
+            }
+            & > *:not(:last-child), .sort-icon {
                 margin-inline-end: rem(5px);
             }
             .tooltip-trigger {
                 cursor: help;
                 display: inline-block;
                 transform: translateY(2px);
+            }
+            .swap-side-icon {
+                transform: rotateZ(90deg);
             }
         }
         .tooltip-content {

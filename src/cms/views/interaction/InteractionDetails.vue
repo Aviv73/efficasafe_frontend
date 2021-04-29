@@ -345,11 +345,11 @@ export default {
       this.sortRefs();
     },
     async loadInteraction() {
-      const intId = this.$route.params.id;
-      if (intId) {
+      const id = this.$route.params;
+      if (id) {
         const interaction = await this.$store.dispatch({
           type: (this.isArchive) ? 'loadArchiveInteraction' : 'loadInteraction',
-          intId,
+          id,
         });
         this.interaction = interaction;
         if (this.interaction) {

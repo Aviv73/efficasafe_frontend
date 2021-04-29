@@ -19,7 +19,7 @@
                         />
                     </div>
 
-                    <div class="logged-in" v-else>
+                    <div class="logged-in flex-center" v-else>
                         <div class="hi-user flex-center">
                             <img
                                 v-if="loggedInUser.picture"

@@ -43,6 +43,14 @@
         @include for-wide-layout {
             width: rem(180px);
         }
+        
+        &.dense {
+            width: rem(100px);
+
+            @media (min-width: 1200px) {
+                width: rem(120px);
+            }
+        }
 
         .cap {
             position: absolute;

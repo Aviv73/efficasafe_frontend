@@ -13,8 +13,22 @@
             margin: 0 auto;
             max-width: rem(304px);
             border-radius: 100px;
-            box-shadow: 0px 0px 0px 8px rgba($clr7, .6);
-            border: 1px dashed $clr2;
+            border: 1px solid $clr2;
+            box-shadow: 0px 0px 4px rgba($black, .35);
+            position: relative;
+
+            &::after {
+                content: "";
+                box-sizing: content-box;
+                position: absolute;
+                top: -6px;
+                left: -6px;
+                z-index: -1;
+                width: 100%;
+                height: 100%;
+                border-radius: 100px;
+                border: 6px solid $clr13;
+            }
         }
         
         input {

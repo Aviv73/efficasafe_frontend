@@ -1,0 +1,50 @@
+<template>
+    <section class="interaction-details">
+        <pre>{{ interaction }}</pre>
+        <pre>{{ side2Material }}</pre>
+    </section>
+</template>
+
+<script>
+export default {
+    data() {
+        return {
+            interaction: null,
+            side2Material: null,
+            isLoading: false
+        }
+    },
+    watch: {
+        '$route.params': {
+            handler() {
+                this.getInteraction();
+            },
+            immediate: true
+        }
+    },
+    computed: {
+        isVirtual() {
+            return !!this.$route.params.matId;
+        }
+    },
+    methods: {
+        async getInteraction() {
+            this.isLoading = true;
+            const { id, matId } = this.$route.params;
+            if (!this.isVirtual) {
+                const interaction = await this.$store.dispatch({ type: 'loadInteraction', id });
+                this.interaction = interaction;
+            } else {
+                const [ interaction, material ] = await Promise.all([
+                    this.$store.dispatch({ type: 'loadInteraction', id }),
+                    this.$store.dispatch({ type: 'loadMaterial', matId })
+                ]);
+                this.interaction = interaction;
+                this.side2Material = material;
+            }
+            ///~~ set side2 pathway refs and if is virtual - fetch side1Material pathways & refs
+            this.isLoading = false;
+        }
+    }
+}
+</script>

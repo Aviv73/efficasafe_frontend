@@ -16,13 +16,15 @@
             :pageCount="listData.pageCount"
             :total="listData.total"
             :isLoading="isLoading"
+            @list-sorted="$emit('list-sorted', $event)"
         />
-        <div v-else-if="!isLoading && isVertical">
-            VERTIVAL LIST HERE!
-        </div>
+        <result-list-vertical
+            v-else-if="!isLoading && isVertical"
+            :materials="materials"
+        />
         <list-pagination
-            class="interaction-list-pagination"
-            v-if="listData.pageCount > 1"
+            class="list-pagination flex-center"
+            v-if="listData.pageCount > 1 && !isVertical"
             v-model.number="page"
             :pageCount="listData.pageCount"
             :disabled="isLoading"
@@ -45,6 +47,7 @@
 
 <script>
 import ResultListHorizontal from '@/client/cmps/search-engine/ResultListHorizontal';
+import ResultListVertical from '@/client/cmps/search-engine/ResultListVertical';
 import ListPagination from '@/client/cmps/common/ListPagination';
 
 import PageFirstIcon from 'vue-material-design-icons/PageFirst';
@@ -81,6 +84,7 @@ export default {
     },
     components: {
         ResultListHorizontal,
+        ResultListVertical,
         ListPagination,
         PageFirstIcon,
         PageLastIcon

@@ -156,7 +156,7 @@
                     display: flex;
                     align-items: center;
                     font-size: rem(12px);
-                    color: $clr7;
+                    color: $clr9;
 
                     .info-icon {
                         height: 19px;
@@ -303,6 +303,31 @@
                     padding: rem(20px) 0;
                 }
             }
+            .refs {
+                & > span {
+                    display: inline-flex;
+                    justify-content: center;
+                    align-items: center;
+                    color: $white;
+                    background-color: $clr11;
+                    border-radius: 100px;
+                    padding: 3px;
+                    font-size: rem(10px);
+                    line-height: 1;
+                    font-family: roboto, sans-serif;
+                    font-weight: normal;
+                    min-width: 14px;
+                }
+                &.recomm-1 > span {
+                    background-color: $red;
+                }
+                &.recomm-2 > span {
+                    background-color: $yellow;
+                }
+                &.recomm-3 > span {
+                    background-color: $green;
+                }
+            }
         }
         [type=radio]:checked + svg {
             rect {
@@ -389,10 +414,9 @@
         display: flex;
         flex-direction: column;
         @include for-narrow-layout {
-            // this hack let's 'flex-grow: 1' element to be scrollable
             flex: 1 1 auto;
             overflow-y: auto;
-            height: 0px; // act excactly like min-height in this case
+            height: 0px;
         }
 
         .flex-center {

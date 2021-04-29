@@ -59,7 +59,7 @@
                             {{ result.txt }}
                             <span class="search-engine-search-materials-chip-actions">
                                 <information-outline-icon
-                                    class="info-icon"
+                                    class="info-icon hover-activator"
                                     :size="16"
                                 />
                                 <button @click.stop="removeMaterials(result.txt)">
@@ -70,7 +70,7 @@
                     </tooltip>
                 </ul>
                 <div class="search-engine-search-actions">
-                    <router-link to="/search">Clear search</router-link> |
+                    <router-link :to="{ name: $route.name }">Clear search</router-link> |
                     <tooltip bottom>
                         <template #content>
                             <span class="msg">
@@ -108,9 +108,7 @@
                                 <share-icon v-else />
                             </button>
                         </span>
-                        <button class="mobile-menu-btn">
-                            <mobile-menu-icon />
-                        </button>
+                        <button class="mobile-menu-btn"></button>
                     </div>
                     <div class="search-engine-results-stats">
                         Based on over <animated-integer :value="totalRefsCount" />
@@ -127,7 +125,14 @@
                                 class="link"
                                 :to="{ name: 'Supp2Drug', query: this.$route.query }"
                             >
-                                Supplement - Drug ({{ total }})
+                                Supplement - Drug
+                                <span
+                                    class="refs"
+                                    :class="`recomm-${worstSupp2DrugRecomm}`"
+                                    v-if="total"
+                                >
+                                    {{'\xa0'}}<span>{{ total }}</span>
+                                </span>
                             </router-link>
                         </li>
                         <li class="search-engine-nav-link">
@@ -135,7 +140,14 @@
                                 class="link"
                                 :to="{ name: 'Drug2Drug', query: this.$route.query }"
                             >
-                                Drug - Drug ({{ dBankTotal }})
+                                Drug - Drug
+                                <span
+                                    class="refs"
+                                    :class="`recomm-${worstDrug2DrugRecomm}`"
+                                    v-if="dBankTotal"
+                                >
+                                    {{'\xa0'}}<span>{{ dBankTotal }}</span>
+                                </span>
                             </router-link>
                         </li>
                         <li class="search-engine-nav-link">
@@ -143,7 +155,8 @@
                                 class="link boosters"
                                 :to="{ name: 'Boosters', query: this.$route.query }"
                             >
-                                Positive boosters (25)
+                                Positive boosters
+                                {{'\xa0'}}<span class="refs"><span>25</span></span>
                             </router-link>
                         </li>
                         <li class="search-engine-nav-link">
@@ -187,6 +200,7 @@
                         :materials="materials"
                         :isLoading="isLoading"
                         @page-changed="handlePaging"
+                        @list-sorted="handleSort"
                     />
                 </transition>
             </div>
@@ -225,14 +239,15 @@ export default {
             msg: '',
             isViewVertical: false,
             scrollBarWidth: '0px',
-            routerTransitionName: ''
+            routerTransitionName: '',
+            sortOptions: null
         }
     },
     watch: {
         '$route.query': {
             handler() {
-                const { q } = this.$route.query; 
-                if (!q) {
+                const { q } = this.$route.query;
+                if (!q || !q.length) {
                     this.reset();
                     return;
                 }
@@ -321,7 +336,7 @@ export default {
                 return acc;
             }, []);
             const queryApearanceMap = {};
-            if (this.materials.length === 1) return formatedInteractions;
+            if (this.materials.length === 1) return this.sortInteractions(formatedInteractions);
             formatedInteractions = formatedInteractions.reduce((acc, interaction) => {
                 const { side1Name, side2Name } = this.getInteractionSidesNames(interaction);
                 if (
@@ -458,8 +473,8 @@ export default {
                 });
                 return acc;
             }, 0);
-
-            return refsCount + dBankRefsCount + pathwayRefsCount;
+            
+            return refsCount + dBankRefsCount + pathwayRefsCount + this.$store.getters.supplementsRefs.length;
         },
         totalInteractionCount() {
             return this.total + this.dBankTotal;
@@ -469,6 +484,12 @@ export default {
         },
         isScreenNarrow() {
             return this.$store.getters.isScreenNarrow;
+        },
+        worstSupp2DrugRecomm() {
+            return this.interactions.map(i => i.order)[0];
+        },
+        worstDrug2DrugRecomm() {
+            return this.dBankInteractions.map(i => i.recommendationOrder)[0];
         }
     },
     methods: {
@@ -499,7 +520,7 @@ export default {
                 isSearchResults: true,
                 page: --page,
                 id: ids,
-                materialCount: this.materials.filter(({ isIncluded }) => !isIncluded).length
+                materialCount: this.materials.filter(({ isIncluded }) => !isIncluded).length,
             };
             const { interactions, pageCount, total } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
             this.pageCount = pageCount;
@@ -515,8 +536,8 @@ export default {
             }, 0);
         },
         async getDBankInteractions(page = 1) {
-            const isAllNotDrugs = this.materials.every(material => material.type !== 'drug');
-            if (!this.materials.length || isAllNotDrugs) {
+            const isAllSupplements = this.materials.every(material => material.type !== 'drug');
+            if (!this.materials.length || isAllSupplements) {
                 this.dBankInteractions = [];
                 this.isLoading = false;
                 return;
@@ -577,12 +598,46 @@ export default {
             interactions = interactions.concat(dBankInteractions);
             return this.sortInteractions(interactions);
         },
+        handleSort({ sortBy, side, isDesc }) {
+            const isDBank = this.$route.name === 'Drug2Drug';
+            if (!isDBank) {
+                this.sortOptions = { sortBy, side, isDesc };
+                this.interactions.splice(0, 0);
+                return;
+            }
+            const { recommendationsOrderMap: map } = this.$options;
+            const sideName = (side === 1) ? 'subject_drug' : 'affected_drug';
+            const sortOrder = isDesc ? -1 : 1;
+            switch (sortBy) {
+                case 'name':
+                    this.dBankInteractions.sort((a, b) => a[sideName].name.toLowerCase().localeCompare(b[sideName].name.toLowerCase()) * sortOrder);
+                break;
+                case 'recommendation':
+                    this.dBankInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
+                break;
+                case 'evidenceLevel':
+                    this.dBankInteractions.sort((a, b) => (a.evidence_level - b.evidence_level) * sortOrder);
+                break;
+            }
+        },
         sortInteractions(interactions) {
             const { recommendationsOrderMap: map } = this.$options;
+            if (this.sortOptions) {
+                const { sortBy, side, isDesc } = this.sortOptions;
+                const sortOrder = isDesc ? -1 : 1;
+                switch (sortBy) {
+                    case 'name':
+                        return interactions.sort((a, b) => (a.name.split(' & ')[side - 1].toLowerCase().localeCompare(b.name.split(' & ')[side - 1].toLowerCase())) * sortOrder);
+                    case 'recommendation':
+                        return interactions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
+                    case 'evidenceLevel':
+                        return interactions.sort((a, b) => (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) * sortOrder);
+                }
+            }
             return interactions.slice().sort((a, b) => {
-                return map[b.recommendation] - map[a.recommendation] ||
-                a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) ||
-                a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+                return (map[b.recommendation] - map[a.recommendation]) ||
+                (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
+                (a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
             });
         },
         insertInteraction(acc, interaction) {
@@ -718,7 +773,9 @@ export default {
             this.dBankPageCount = 0;
             this.total = 0;
             this.dBankTotal = 0;
+            this.sortOptions = null;
             this.isLoading = false;
+            this.$store.commit({ type: 'resetSupplementsRefs' });
         }
     },
     mounted() {

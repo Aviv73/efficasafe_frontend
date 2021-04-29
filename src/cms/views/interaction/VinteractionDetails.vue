@@ -193,7 +193,7 @@ export default {
             this.isLoading = true;
             const { id, matId } = this.$route.params;
             const [interaction, side2Material] = await Promise.all([
-                this.$store.dispatch({ type: 'loadInteraction', intId: id }),
+                this.$store.dispatch({ type: 'loadInteraction', id }),
                 this.$store.dispatch({ type: 'loadMaterial', matId }),
             ]);
             this.interaction = interaction;

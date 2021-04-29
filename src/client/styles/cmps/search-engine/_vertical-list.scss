@@ -1,0 +1,48 @@
+.vertical-list {
+    
+    &-header {
+        display: flex;
+        align-items: center;
+        text-transform: uppercase;
+        box-shadow: $slight-border-bottom;
+        padding: rem(12px) 0;
+        line-height: rem(14px);
+        font-size: rem(14px);
+        color: $clr-txt-darker;
+        font-family: roboto-bold, sans-serif;
+        font-weight: 700;
+        
+        & > div {
+            flex-basis: 33.33%;
+        }
+        .interaction-icon {
+            margin-inline-end: rem(6px);
+        }
+        .count {
+            margin-inline-start: rem(3px);
+        }
+    }
+    &-lists {
+        display: flex;
+        position: relative;
+
+        & > ul {
+            flex-basis: 33.33%;
+            text-align: center;
+        }
+        &-row {
+            padding: rem(16px) 0;
+            
+            &.longest::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                height: 1px;
+                width: 100%;
+                margin-top: rem(16px);
+                transform: translateY(-100%);
+                box-shadow: $slight-border-bottom;
+            }
+        }
+    }
+}

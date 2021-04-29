@@ -3,7 +3,8 @@ import { interactionService } from '@/cms/services/interaction.service';
 export const interactionStore = ({
     state: {
         interactions: null,
-        interactionCount: 0
+        interactionCount: 0,
+        supplementsRefs: []
     },
     getters: {
         interactions(state) {
@@ -14,6 +15,9 @@ export const interactionStore = ({
         },
         interactionCount(state) {
             return state.interactionCount;
+        },
+        supplementsRefs(state) {
+            return state.supplementsRefs;
         }
     },
     mutations: {
@@ -43,6 +47,18 @@ export const interactionStore = ({
         },
         setInteractionCount(state, { total }) {
             state.interactionCount = total;
+        },
+        updateSupplementsRefs(state, { refs }) {
+            const seenMap = {};
+            refs.forEach(ref => {
+                if (!seenMap[ref.link]) {
+                    state.supplementsRefs.push(ref);
+                    seenMap[ref.link] = true;
+                }
+            });
+        },
+        resetSupplementsRefs(state) {
+            state.supplementsRefs = [];
         }
     },
     actions: {
@@ -55,8 +71,8 @@ export const interactionStore = ({
         async getInteractions(context, { filterBy }) {
             return await interactionService.list(filterBy);
         },
-        async loadInteraction(context, { intId }) {
-            return await interactionService.getById(intId);
+        async loadInteraction(context, { id }) {
+            return await interactionService.getById(id);
         },
         async saveInteraction(context, { interaction }) {
             const isEdit = !!interaction._id;

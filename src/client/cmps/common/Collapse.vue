@@ -13,7 +13,7 @@
         <transition name="scale-y">
             <main
                 class="collapse-content"
-                v-if="isContentVisible"
+                v-show="isContentVisible"
             >
                 <slot name="content">
                     Collapse content here!
