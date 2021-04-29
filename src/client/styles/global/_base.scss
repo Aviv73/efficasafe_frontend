@@ -22,15 +22,11 @@ body {
     display: flex;
     flex-direction: column;
 }
-<<<<<<< HEAD
 
 input,
 button,
 a,
 .swiper {
-=======
-input, button, a, .swiper, label {
->>>>>>> 0935817e58143e662866478191b935fe51c50709
     &:focus {
         outline: none;
     }
