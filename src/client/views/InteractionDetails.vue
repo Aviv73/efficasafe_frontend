@@ -42,8 +42,7 @@ export default {
                 this.interaction = interaction;
                 this.side2Material = material;
             }
-            console.log(this.interaction);
-            console.log(this.side2Material);
+            ///~~ set side2 pathway refs and if is virtual - fetch side1Material pathways & refs
             this.isLoading = false;
         }
     }
