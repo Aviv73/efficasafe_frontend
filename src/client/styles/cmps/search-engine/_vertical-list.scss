@@ -40,7 +40,8 @@
                 height: 1px;
                 width: 100%;
                 margin-top: rem(16px);
-               box-shadow: $slight-border-bottom;
+                transform: translateY(-100%);
+                box-shadow: $slight-border-bottom;
             }
         }
     }
