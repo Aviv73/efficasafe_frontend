@@ -242,7 +242,7 @@ export default {
         getInteractionLink({ _id, side2Material, side2Label }) {
             if (side2Material) return `/interaction/${_id}`;
             const materials = this.getVirtualSide2(side2Label._id);
-            if (materials.length === 1) return `/interction/${_id}/${materials[0]._id}`;
+            if (materials.length === 1) return `/interaction/${_id}/${materials[0]._id}`;
             return '';
         },
         getInteractionName(interaction) {
