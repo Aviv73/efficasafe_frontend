@@ -100,3 +100,11 @@
         }
     }
 }
+
+.list-pagination {
+    margin-top: auto;
+    padding: rem(16px) 0;
+    line-height: normal;
+    font-size: rem(14px);
+    color: rgba($clr-txt-darker, .9);
+}

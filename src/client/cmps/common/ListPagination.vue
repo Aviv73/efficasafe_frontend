@@ -122,9 +122,19 @@ export default {
         }
         .first-btn {
             margin-inline-end: 1rem;
+
+            &.disabled {
+                opacity: .5;
+                pointer-events: none;
+            }
         }
         .last-btn {
             margin-inline-start: 1rem;
+            
+            &.disabled {
+                opacity: .5;
+                pointer-events: none;
+            }
         }
     }
 </style>
