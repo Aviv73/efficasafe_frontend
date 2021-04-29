@@ -45,7 +45,11 @@
         }
         
         &.dense {
-            width: rem(120px);
+            width: rem(100px);
+
+            @media (min-width: 1200px) {
+                width: rem(120px);
+            }
         }
 
         .cap {

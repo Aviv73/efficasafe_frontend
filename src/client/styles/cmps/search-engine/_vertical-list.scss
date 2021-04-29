@@ -1,10 +1,11 @@
 .vertical-list {
+    
     &-header {
         display: flex;
         align-items: center;
         text-transform: uppercase;
         box-shadow: $slight-border-bottom;
-        padding: rem(8px) 0;
+        padding: rem(12px) 0;
         line-height: rem(14px);
         font-size: rem(14px);
         color: $clr-txt-darker;
@@ -23,10 +24,24 @@
     }
     &-lists {
         display: flex;
+        position: relative;
 
         & > ul {
             flex-basis: 33.33%;
             text-align: center;
+        }
+        &-row {
+            padding: rem(16px) 0;
+            
+            &.longest::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                height: 1px;
+                width: 100%;
+                margin-top: rem(16px);
+               box-shadow: $slight-border-bottom;
+            }
         }
     }
 }

@@ -47,6 +47,8 @@
             >
                 <ul>
                     <li
+                        class="vertical-list-lists-row"
+                        :class="{ 'longest': isLongestList(lists.reds) }"
                         v-for="interaction in lists.reds[interactions]"
                         :key="interaction._id"
                     >   
@@ -68,6 +70,8 @@
                 </ul>
                 <ul>
                     <li
+                        class="vertical-list-lists-row"
+                        :class="{ 'longest': isLongestList(lists.yellows) }"
                         v-for="interaction in lists.yellows[interactions]"
                         :key="interaction._id"
                     >
@@ -89,6 +93,8 @@
                 </ul>
                 <ul>
                     <li
+                        class="vertical-list-lists-row"
+                        :class="{ 'longest': isLongestList(lists.greens) }"
                         v-for="interaction in lists.greens[interactions]"
                         :key="interaction._id"
                     >
@@ -250,6 +256,11 @@ export default {
                 const side2Names = materials.map(material => material.name);
                 return `${interaction.side1Material.name} & ${side2Names.join(', ')}`;
             }
+        },
+        isLongestList({ total }) {
+            const totals = Object.values(this.lists).map(list => list.total);
+            const max = Math.max(...totals);
+            return total === max;
         },
         getVirtualSide2(labelId) {
             return this.materials.filter(material => material.labels.some(label => label._id === labelId));
