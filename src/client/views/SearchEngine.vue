@@ -246,8 +246,8 @@ export default {
     watch: {
         '$route.query': {
             handler() {
-                const { q } = this.$route.query; 
-                if (!q) {
+                const { q } = this.$route.query;
+                if (!q || !q.length) {
                     this.reset();
                     return;
                 }
@@ -773,7 +773,9 @@ export default {
             this.dBankPageCount = 0;
             this.total = 0;
             this.dBankTotal = 0;
+            this.sortOptions = null;
             this.isLoading = false;
+            this.$store.commit({ type: 'resetSupplementsRefs' });
         }
     },
     mounted() {

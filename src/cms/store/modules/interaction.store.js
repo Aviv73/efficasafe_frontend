@@ -56,6 +56,9 @@ export const interactionStore = ({
                     seenMap[ref.link] = true;
                 }
             });
+        },
+        resetSupplementsRefs(state) {
+            state.supplementsRefs = [];
         }
     },
     actions: {

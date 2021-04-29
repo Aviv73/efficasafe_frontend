@@ -50,6 +50,10 @@
                         v-for="interaction in lists.reds[interactions]"
                         :key="interaction._id"
                     >   
+                    <component
+                        :is="getPreviewWrapEl(interaction)"
+                        :to="getInteractionLink(interaction)"
+                    >
                         <interaction-capsules
                             :title="interaction.evidenceLevel || interaction.evidence_level"
                             :name="getInteractionName(interaction)"
@@ -59,6 +63,7 @@
                             localize
                             dense
                         />
+                    </component>
                     </li>
                 </ul>
                 <ul>
@@ -66,21 +71,30 @@
                         v-for="interaction in lists.yellows[interactions]"
                         :key="interaction._id"
                     >
-                        <interaction-capsules
-                            :title="interaction.evidenceLevel || interaction.evidence_level"
-                            :name="getInteractionName(interaction)"
-                            :color="getInteractionColor('caution should be taken')"
-                            :vInteractionCount="0"
-                            :showDraftName="false"
-                            localize
-                            dense
-                        />
+                        <component
+                            :is="getPreviewWrapEl(interaction)"
+                            :to="getInteractionLink(interaction)"
+                        >
+                            <interaction-capsules
+                                :title="interaction.evidenceLevel || interaction.evidence_level"
+                                :name="getInteractionName(interaction)"
+                                :color="getInteractionColor('caution should be taken')"
+                                :vInteractionCount="0"
+                                :showDraftName="false"
+                                localize
+                                dense
+                            />
+                        </component>
                     </li>
                 </ul>
                 <ul>
                     <li
                         v-for="interaction in lists.greens[interactions]"
                         :key="interaction._id"
+                    >
+                    <component
+                        :is="getPreviewWrapEl(interaction)"
+                        :to="getInteractionLink(interaction)"
                     >
                         <interaction-capsules
                             :title="interaction.evidenceLevel || interaction.evidence_level"
@@ -91,6 +105,7 @@
                             localize
                             dense
                         />
+                    </component>
                     </li>
                 </ul>
             </main>
@@ -207,10 +222,37 @@ export default {
                 break;
             }
         },
+        getPreviewWrapEl({ side2Material, side2Label }) {
+            if (this.materials.length <= 1) {
+                if (!side2Material) return 'span';
+                return 'router-link';
+            } else {
+                if (side2Material) return 'router-link';
+                const materials = this.getVirtualSide2(side2Label._id);
+                if (materials.length === 1) return 'router-link';
+                return 'span'; 
+            }
+        },
+        getInteractionLink({ _id, side2Material, side2Label }) {
+            if (side2Material) return `/interaction/${_id}`;
+            const materials = this.getVirtualSide2(side2Label._id);
+            if (materials.length === 1) return `/interction/${_id}/${materials[0]._id}`;
+            return '';
+        },
         getInteractionName(interaction) {
             if (interaction.name) return interaction.name;
             if (interaction.side2Material) return `${interaction.side1Material.name} & ${interaction.side2Material.name}`;
-            if (interaction.side2Label) return `${interaction.side2Label.name}`;
+            if (interaction.side2Label) {
+                if (this.materials.length <= 1) return `${interaction.side2Label.name}`;
+                const materials = this.getVirtualSide2(interaction.side2Label._id);
+                
+                if (materials.length === 1) return `${interaction.side1Material.name} & ${materials[0].name}`;
+                const side2Names = materials.map(material => material.name);
+                return `${interaction.side1Material.name} & ${side2Names.join(', ')}`;
+            }
+        },
+        getVirtualSide2(labelId) {
+            return this.materials.filter(material => material.labels.some(label => label._id === labelId));
         },
         getInteractionColor(recommendation) {
             return interactionService.getInteractionColor(recommendation);
