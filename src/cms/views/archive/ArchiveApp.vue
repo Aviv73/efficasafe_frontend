@@ -189,7 +189,7 @@ export default {
     async restoreInteraction(intId, doRestore) {
       const interaction = await this.$store.dispatch({
         type: 'loadArchiveInteraction',
-        intId,
+        id: intId,
       });
       try {
         if (doRestore) {

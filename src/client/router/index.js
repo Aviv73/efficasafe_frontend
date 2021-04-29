@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import SearchEngine from '../views/SearchEngine';
+import InteractionDetails from '../views/InteractionDetails';
 
 import InteractionList from '@/client/cmps/search-engine/InteractionList';
 
@@ -39,6 +40,16 @@ const routes = [
         component: InteractionList
       }
     ]
+  },
+  {
+    path: '/interaction/:id',
+    name: 'InteractionDetails',
+    component: InteractionDetails
+  },
+  {
+    path: '/interaction/:id/:matId',
+    name: 'VinteractionDetails',
+    component: InteractionDetails
   },
   {
     path: '/about',

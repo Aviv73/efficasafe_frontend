@@ -98,8 +98,8 @@ export const archiveStore = ({
         async loadArchiveLabel(context, { labelId }) {
             return await archiveService.getLabelById(labelId);
         },
-        async loadArchiveInteraction(context, { intId }) {
-            return await archiveService.getInteractionById(intId);
+        async loadArchiveInteraction(context, { id }) {
+            return await archiveService.getInteractionById(id);
         },
         async saveMaterialToArchive(context, { material }) {
             await archiveService.saveMaterialToArchive(material);

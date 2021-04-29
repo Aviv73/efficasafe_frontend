@@ -71,8 +71,8 @@ export const interactionStore = ({
         async getInteractions(context, { filterBy }) {
             return await interactionService.list(filterBy);
         },
-        async loadInteraction(context, { intId }) {
-            return await interactionService.getById(intId);
+        async loadInteraction(context, { id }) {
+            return await interactionService.getById(id);
         },
         async saveInteraction(context, { interaction }) {
             const isEdit = !!interaction._id;

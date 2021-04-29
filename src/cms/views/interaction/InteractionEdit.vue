@@ -460,11 +460,11 @@ export default {
     },
     async loadInteraction() {
       try {
-        const intId = this.$route.params.id;
-        if (intId) {
+        const { id } = this.$route.params;
+        if (id) {
           var interaction = await this.$store.dispatch({
             type: 'loadInteraction',
-            intId,
+            id,
           });
           this.editedInteraction = JSON.parse(JSON.stringify(interaction));
           await this.getReferences();
