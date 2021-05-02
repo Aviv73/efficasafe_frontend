@@ -26,28 +26,35 @@
                 </div>
             </div>
         </header>
-        <article class="interaction-details-content">
-            <header class="flex-space-between">
+        <article class="interaction-details-content" v-if="interaction">
+            <header>
                 <div class="main-container">
-                    <interaction-capsules
-                        :name="interactionName"
-                        :color="interactionColor"
-                        :vInteractionCount="0"
-                        :localize="false"
-                        :showDraftName="false"
-                        on-details-page
-                    />
-                    <span
-                        class="recommendation-capsule"
-                        :style="{ 'background-color': interactionColor }"
-                    >
-                        {{ this.interaction ? this.interaction.recommendation : '' }}
-                    </span>
-                    <span class="evidence-level">
-
-                    </span>
+                    <div class="flex-space-between">
+                            <interaction-capsules
+                            :name="interactionName"
+                            :color="interactionColor"
+                            :vInteractionCount="0"
+                            :localize="false"
+                            :showDraftName="false"
+                            on-details-page
+                        />
+                        <span
+                            class="recommendation-capsule"
+                            :style="{ 'background-color': interactionColor }"
+                        >
+                            {{ interaction.recommendation }}
+                        </span>
+                        <span class="evidence-level">
+                            {{ interaction.evidenceLevel }}
+                        </span>
+                    </div>
                 </div>
             </header>
+            <main>
+                <div class="main-container">
+
+                </div>
+            </main>
         </article>
     </section>
 </template>

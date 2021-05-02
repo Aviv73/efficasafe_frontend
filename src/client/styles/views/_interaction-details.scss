@@ -1,4 +1,7 @@
 .interaction-details {
+    background-color: $clr6;
+    flex-grow: 1;
+
     &-header {
         background-color: $clr6;
         padding: rem(48px) 0;
@@ -25,13 +28,23 @@
     }
     &-content {
         header {
+            background-color: $white;
             padding: rem(14px) 0;
-            border: 1px solid $clr12;
+            border-color: rgba($clr12, .75);
+            border-style: solid;
+            border-width: 1px 0;
         }
         .recommendation-capsule {
             color: $white;
             border-radius: 100px;
             padding: rem(10px) rem(22px);
+        }
+        .evidence-level {
+            font-size: rem(14px);
+            line-height: rem(16px);
+        }
+        main {
+            padding-top: rem(14px);
         }
     }
 }

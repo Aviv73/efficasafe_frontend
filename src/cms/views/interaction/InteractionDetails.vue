@@ -345,7 +345,7 @@ export default {
       this.sortRefs();
     },
     async loadInteraction() {
-      const id = this.$route.params;
+      const id = this.$route.params.id;
       if (id) {
         const interaction = await this.$store.dispatch({
           type: (this.isArchive) ? 'loadArchiveInteraction' : 'loadInteraction',
