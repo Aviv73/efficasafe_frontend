@@ -1,3 +1,36 @@
 .interaction-details {
-    
+    &-header {
+        background-color: $clr6;
+        padding: rem(48px) 0;
+
+        &-link {
+            background-color: $clr1;
+            color: $white;
+            font-size: rem(21px);
+            line-height: rem(24px);
+            font-family: roboto-medium, sans-serif;
+            font-weight: 500;
+            border-radius: 0 100px 100px 0;
+            padding: rem(12px) rem(42px) rem(12px) rem(32px);
+
+            .chevron-left-icon {
+                height: rem(24px);
+            }
+        }
+        &-actions {
+            .print-btn {
+                margin-inline-end: rem(24px);
+            }
+        }
+    }
+    &-content {
+        header {
+            padding: rem(14px) 0;
+        }
+        .recommendation-capsule {
+            color: $white;
+            border-radius: 100px;
+            padding: rem(10px) rem(22px);
+        }
+    }
 }

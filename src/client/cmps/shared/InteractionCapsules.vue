@@ -100,6 +100,10 @@ export default {
         dense: {
             type: Boolean,
             default: false
+        },
+        onDetailsPage: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {
@@ -107,13 +111,16 @@ export default {
             return this.vInteractionCount > 0;
         },
         side1Name() {
+            if (!this.name) return '';
             const side1Name = this.name.split('&')[0].trim();
+            if (this.onDetailsPage) return side1Name;
             if (this.$store.getters.materialNamesMap[side1Name]) {
                 return this.$store.getters.materialNamesMap[side1Name].join(', ');
             }
             return side1Name;
         },
         side2Name() {
+            if (!this.name) return '';
             const side2Name = this.name.split('&')[1].trim();
             if (!this.localize) return side2Name;
             if (this.$store.getters.materialNamesMap[side2Name]) {

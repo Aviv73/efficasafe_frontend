@@ -140,13 +140,14 @@ export default {
            const rows = await readXlsxFile(file);
             const refs = rows.reduce((acc, row, idx) => {
                if (idx === 0) return acc;
-                const txt = row[3];
+                let txt = row[3];
                 let link = '';
                 let pubmedId = '';
                 let linkIdx = txt.indexOf('http://');
                 if (linkIdx === -1) linkIdx = txt.indexOf('https://');
                 if (linkIdx !== -1) {
                     link = txt.substring(linkIdx, txt.length);
+                    txt = txt.substring(0, linkIdx);
                 }
                 if (link) {
                     const pubmedIdx = link.indexOf('pubmed');
