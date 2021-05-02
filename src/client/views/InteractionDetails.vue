@@ -27,8 +27,8 @@
             </div>
         </header>
         <article class="interaction-details-content">
-            <div class="main-container">
-                <header class="flex-space-between">
+            <header class="flex-space-between">
+                <div class="main-container">
                     <interaction-capsules
                         :name="interactionName"
                         :color="interactionColor"
@@ -46,8 +46,8 @@
                     <span class="evidence-level">
 
                     </span>
-                </header>
-            </div>
+                </div>
+            </header>
         </article>
     </section>
 </template>
