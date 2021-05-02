@@ -38,10 +38,39 @@
             color: $white;
             border-radius: 100px;
             padding: rem(10px) rem(22px);
+            transform: translateX(-20%);
         }
         .evidence-level {
             font-size: rem(14px);
             line-height: rem(16px);
+            font-family: roboto-medium, sans-serif;
+            font-weight: 500;
+            
+            &-tooltip-content {
+                color: $clr-txt-dark;
+                font-family: roboto, sans-serif;
+                font-weight: 400;
+                line-height: rem(16px);
+                padding: rem(16px) rem(14px);
+                max-width: 24ch;
+            }
+
+            .information-outline-icon {
+                height: 12px;
+            }
+        }
+        .refs {
+            display: inline-flex;
+            align-items: center;
+            font-family: mulish, sans-serif;
+            font-weight: 300;
+            font-size: rem(11px);
+            line-height: rem(14px);
+            cursor: help;
+
+            &-count {
+                margin-inline-end: 2px;
+            }
         }
         main {
             padding-top: rem(14px);

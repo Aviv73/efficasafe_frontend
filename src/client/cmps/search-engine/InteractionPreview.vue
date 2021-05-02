@@ -259,6 +259,7 @@ export default {
             else return 'router-link';
         },
         getInteractionUrl(interaction) {
+            if (interaction.subject_drug) return `/interaction/drug2drug/${interaction._id}`;
             return interaction.isVirtual ? `/interaction/${interaction._id}/${interaction.side2Material._id}` : `/interaction/${interaction._id}`;
         },
         getInteractionLink(interaction) {
