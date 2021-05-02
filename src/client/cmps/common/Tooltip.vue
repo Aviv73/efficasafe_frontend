@@ -262,7 +262,7 @@ export default {
                 transform: translateY(0);
             }
             &-top {
-                right: 100%;
+                right: 0;
                 bottom: 0;
                 top: auto;
                 transform: translateY(-1.25rem);

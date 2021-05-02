@@ -29,8 +29,9 @@
         <article class="interaction-details-content" v-if="interaction">
             <header>
                 <div class="main-container">
-                    <div class="flex-space-between">
-                            <interaction-capsules
+                    <div class="flex-center p-relative">
+                        <interaction-capsules
+                            class="capsules"
                             :name="interactionName"
                             :color="interactionColor"
                             :vInteractionCount="0"
@@ -62,11 +63,27 @@
                     </div>
                 </div>
             </header>
-            <main>
+            <main class="interaction-details-details">
                 <div class="main-container">
-
+                    <div class="note flex-center" v-if="!isPrimaryMaterial && interaction.note">
+                        <span><span class="font-bold">Note:</span> {{ interaction.note }}</span>
+                    </div>
+                    <h2 class="subheader">Summary</h2>
+                    <p
+                        class="paragraph"
+                        v-html="interaction.summary"
+                    />
+                    <div v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptoms || interaction.monitor.general">
+                        <h2 class="subheader">What to monitor</h2>
+                        <!-- CONTINUE HERE LAB TEST, OTHER TESTS.. -->
+                    </div>
                 </div>
             </main>
+            <div class="interaction-details-refs">
+                <div class="main-container">
+                    
+                </div>
+            </div>
         </article>
     </section>
 </template>
@@ -158,6 +175,10 @@ export default {
                 const idx = this.relevantSide2Pathways.findIndex(side2Pathway => side2Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
                 return idx !== -1;
             });
+        },
+        isPrimaryMaterial() {
+            const { interaction } = this;
+            return interaction.side2Label && interaction.side2Label.primaryMaterialIds.includes(this.side2Material._id);
         }
     },
     methods: {

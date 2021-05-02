@@ -1,6 +1,7 @@
 .interaction-details {
-    background-color: $clr6;
     flex-grow: 1;
+    font-size: rem(14px);
+    line-height: rem(16px);
 
     &-header {
         background-color: $clr6;
@@ -38,13 +39,16 @@
             color: $white;
             border-radius: 100px;
             padding: rem(10px) rem(22px);
-            transform: translateX(-20%);
+        }
+        .capsules {
+           position: absolute;
+           left: 0;
         }
         .evidence-level {
-            font-size: rem(14px);
-            line-height: rem(16px);
             font-family: roboto-medium, sans-serif;
             font-weight: 500;
+            position: absolute;
+            right: 0;
             
             &-tooltip-content {
                 color: $clr-txt-dark;
@@ -72,8 +76,37 @@
                 margin-inline-end: 2px;
             }
         }
-        main {
-            padding-top: rem(14px);
+    }
+    &-details {
+        padding-top: rem(14px);
+        color: $clr-txt-darker;
+        background-color: $clr6;
+        
+        .note {
+            color: $clr1;
+            font-family: roboto-medium, sans-serif;
+            font-weight: 500;
+            margin-block-end: rem(14px);
+
+            & > span {
+                padding: rem(8px) rem(14px);
+                background-color: $clr14;
+                border-radius: 2px;
+                border: 1px solid rgba($clr1, .26);
+                opacity: .75;
+            }
         }
+    }
+    &-refs {
+        
+    }
+    .subheader {
+        text-transform: uppercase;
+        color: $clr1;
+        margin-block-end: rem(20px);
+    }
+    .paragraph {
+        padding-inline-end: 30%;
+        margin-block-end: rem(22px);
     }
 }
