@@ -37,6 +37,7 @@
             </li>
         </ul>
         <p
+            class="active-tab-txt"
             v-if="pathways.length"
             v-html="activeTabTxt"
         />
