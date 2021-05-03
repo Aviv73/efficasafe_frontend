@@ -30,6 +30,7 @@ a,
     &:focus {
         outline: none;
     }
+
     &:focus-visible {
         outline: 1px solid $clr1;
         outline-offset: 2px;
@@ -77,6 +78,7 @@ sub {
 
 .auth0-lock-widget {
     width: 100% !important;
+
 }
 
 .auth0-lock-cred-pane .auth0-lock-quiet {

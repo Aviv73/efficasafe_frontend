@@ -1,5 +1,6 @@
 <template>
     <section class="home">
+        <welcome-modal v-if="welcomeModal" @closeModal="welcomeModal = false" />
         <header class="flex-coloumn">
             <h1 class="flex-coloumn">
                 <a href="/">
@@ -178,7 +179,7 @@ import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import ChevronRightIcon from 'vue-material-design-icons/ChevronRight.vue';
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft.vue';
-import { eventBus, EV_sign_up_modal } from '@/cms/services/eventBus.service';
+import WelcomeModal from '../cmps/common/WelcomeModal.vue';
 
 export default {
     name: 'Home',
@@ -190,7 +191,7 @@ export default {
                 totalArticlesCount: 0,
             },
             searches: [],
-            signUpModal: false,
+            welcomeModal: false,
         };
     },
     computed: {
@@ -206,16 +207,13 @@ export default {
                 this.$router.push(`/search?q=${q1}&q=${q2}`);
             }
         },
-        closeModal() {
-            this.signUpModal = false;
+        openWelcomeModal() {
+            this.welcomeModal = true;
         },
     },
     async created() {
         this.stats = await this.$store.dispatch({ type: 'getStatistics' });
-        eventBus.$on(EV_sign_up_modal, () => {
-            console.log('im changing state');
-            this.signUpModal = true;
-        });
+        if (this.$route.query.congratulations) this.openWelcomeModal();
     },
     components: {
         Swiper,
@@ -223,6 +221,7 @@ export default {
         Autocomplete,
         ChevronRightIcon,
         ChevronLeftIcon,
+        WelcomeModal,
     },
 };
 </script>

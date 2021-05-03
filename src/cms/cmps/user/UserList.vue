@@ -158,6 +158,23 @@ export default {
             ],
         };
     },
+    watch: {
+        options() {
+            if (this.isMounted) {
+                let { itemsPerPage, page } = this.options;
+                const filterBy = {
+                    limit: itemsPerPage < 0 ? 0 : itemsPerPage,
+                    page: --page,
+                };
+                this.$emit(
+                    'options-updated',
+                    JSON.parse(JSON.stringify(filterBy))
+                );
+            } else {
+                this.isMounted = true;
+            }
+        },
+    },
     methods: {
         onSort(sortBy, isDesc) {
             this.$emit('header-clicked', { sortBy, isDesc });

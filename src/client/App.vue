@@ -7,8 +7,8 @@
         </main>
         <main-footer />
         <auth-modal
-            @closeModal="AuthModal = false"
             v-if="AuthModal"
+            @closeModal="AuthModal = false"
             :allowLogin="allowLogin"
         />
     </div>

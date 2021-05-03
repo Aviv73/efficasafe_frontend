@@ -7,20 +7,16 @@
                         class="un-logged user-trial flex-center"
                         v-if="!loggedInUser"
                     >
-                        {{
-                            isScreenNarrow
-                                ? 'Get a Free trial'
-                                : 'Try our onboarding wizard'
-                        }}
+                        {{ isScreenNarrow ? 'Get a Free trial' : '' }}
                         <chevron-right-icon
                             class="flex-center"
                             :size="20"
-                            v-if="!isScreenNarrow"
+                            v-if="!isScreenNarrow && loggedInUser"
                         />
                     </div>
 
                     <div class="logged-in flex-center" v-else>
-                        <div class="hi-user flex-center">
+                        <div class="hi-user flex-center" v-if="!isScreenNarrow">
                             <img
                                 v-if="loggedInUser.picture"
                                 :src="loggedInUser.picture"
@@ -28,7 +24,7 @@
                                 class="nav-user-img"
                             />
                             <p class="user-name">
-                                {{ `Hi ${loggedInUser.name.split(' ')[0]}` }}
+                                {{ `Hi ${loggedInUser.nickname}` }}
                             </p>
                             <p class="seperator">|</p>
                         </div>
@@ -38,17 +34,13 @@
                         >
                             <p v-if="freeTrialTime < 14 && freeTrialTime > 0">
                                 {{
-                                    `Free Trial - you have ${freeTrialTime} days left`
+                                    isScreenNarrow
+                                        ? `Free Trial -  ${freeTrialTime} days left`
+                                        : `Free Trial - you have ${freeTrialTime} days left`
                                 }}
                             </p>
-                            <p class="seperator">|</p>
                         </div>
                         <div class="user-trial flex-center" v-if="loggedInUser">
-                            {{
-                                isScreenNarrow
-                                    ? 'Get a Free trial'
-                                    : 'Try our onboarding wizard'
-                            }}
                             <chevron-right-icon
                                 class="flex-center"
                                 :size="20"
@@ -157,7 +149,13 @@ export default {
             return this.$store.getters.loggedInUser;
         },
         freeTrialTime() {
-            return 13;
+            const loggedInUser = this.$store.getters.loggedInUser;
+            const timeLeft =
+                Date.now() -
+                loggedInUser.resgisteredTime +
+                2 * 1000 * 3600 * 24;
+            const Difference_In_Days = timeLeft / (1000 * 3600 * 24);
+            return Math.floor(Difference_In_Days);
         },
     },
     methods: {
@@ -186,9 +184,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.navbar-msgs {
-    padding-left: 40px;
-}
 .hi-user {
     & .nav-user-img {
         width: 24px;

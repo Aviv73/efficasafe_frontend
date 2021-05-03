@@ -12,6 +12,7 @@
                     :loading="isLoading"
                     :totalItems="totalItems"
                     @header-clicked="setFilter"
+                    @options-updated="setFilter"
                     @delete-many-users="removeMany"
                 />
             </v-card>
@@ -48,6 +49,8 @@ export default {
         async loadUsers() {
             this.isLoading = true;
             const filterBy = this.$route.query;
+            filterBy.limit = filterBy.limit || 15;
+            if (filterBy.q) filterBy.page = 0;
             await this.$store.dispatch({ type: 'loadUsers', filterBy });
             this.isLoading = false;
         },

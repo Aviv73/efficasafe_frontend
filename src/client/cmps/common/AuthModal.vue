@@ -2,9 +2,8 @@
     <div class="sign-up-modal">
         <div class="black-screen" @click.stop="closeModal('black')"></div>
         <div id="effica-modal"></div>
-        <div class="sign-up-modal" v-if="signUpModal">
-            <button class="close-modal" @click="closeModal">X</button>
-            <div class="sign-up-modal center" v-if="signUpModal">
+        <div v-if="signUpModal">
+            <div class="inside-modal center">
                 <img src="../../assets/imgs/flat-logo.png" alt="" />
                 <p class="title">Please confirm your email address</p>
 
@@ -63,7 +62,6 @@ export default {
 
             await this.$store.dispatch({ type: 'getUserInfo' });
             const loggedInUser = this.$store.getters.loggedInUser;
-            console.log('loggedinuser', loggedInUser);
             if (loggedInUser.email_verified) {
                 this.$store.dispatch({ type: 'getUserInfo' });
                 setTimeout(() => {
@@ -83,6 +81,11 @@ export default {
             allowLogin: this.allowLogin,
             allowSignUp: !this.allowLogin,
         });
+        console.log('doing things');
+        // setTimeout(() => {
+        //     document.querySelector('.auth0-lock-alternative').innerHTML =
+        //         '<h2 href="https://localhost:300/api/account/resetPassword>Reset Password</h2>';
+        // }, 2000);
     },
     created() {
         const clientId = 'ECULxkc4xSBK8omj6EXcnPbyKuTvJ3Nr';

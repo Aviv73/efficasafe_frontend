@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import SearchEngine from '../views/SearchEngine';
 import InteractionDetails from '../views/InteractionDetails';
+import ForgotPass from '../views/ForgotPass.vue'
 
 import InteractionList from '@/client/cmps/search-engine/InteractionList';
 
@@ -14,6 +15,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/forgotPass/:token',
+    name: 'ForgotPass',
+    component: ForgotPass
   },
   {
     path: '/search',
@@ -51,6 +57,7 @@ const routes = [
     name: 'VinteractionDetails',
     component: InteractionDetails
   },
+
   {
     path: '/about',
     name: 'About',
