@@ -108,3 +108,18 @@
     font-size: rem(14px);
     color: rgba($clr-txt-darker, .9);
 }
+
+.badge {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 14px;
+    border-radius: 100px;
+    padding: 3px;
+    font-size: rem(10px);
+    line-height: 1;
+    font-family: roboto, sans-serif;
+    font-weight: normal;
+    color: $white;
+    background-color: $clr11;
+}

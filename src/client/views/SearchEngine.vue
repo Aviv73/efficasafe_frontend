@@ -131,7 +131,7 @@
                                     :class="`recomm-${worstSupp2DrugRecomm}`"
                                     v-if="total"
                                 >
-                                    {{'\xa0'}}<span>{{ total }}</span>
+                                    {{'\xa0'}}<span class="badge">{{ total }}</span>
                                 </span>
                             </router-link>
                         </li>
@@ -146,7 +146,7 @@
                                     :class="`recomm-${worstDrug2DrugRecomm}`"
                                     v-if="dBankTotal"
                                 >
-                                    {{'\xa0'}}<span>{{ dBankTotal }}</span>
+                                    {{'\xa0'}}<span class="badge">{{ dBankTotal }}</span>
                                 </span>
                             </router-link>
                         </li>
@@ -156,7 +156,7 @@
                                 :to="{ name: 'Boosters', query: this.$route.query }"
                             >
                                 Positive boosters
-                                {{'\xa0'}}<span class="refs"><span>25</span></span>
+                                {{'\xa0'}}<span class="refs"><span class="badge">25</span></span>
                             </router-link>
                         </li>
                         <li class="search-engine-nav-link">

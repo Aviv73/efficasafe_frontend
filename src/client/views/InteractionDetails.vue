@@ -126,6 +126,12 @@
                         <template #header>
                             <h2 class="subheader flex-align-center">
                                 Pharmacokinetics
+                                <span
+                                    class="badge"
+                                    :class="worstPathwayEffectClassName"
+                                >
+                                    {{ relevantSide1Pathways.length }}
+                                </span>
                                 <span class="de-activator">
                                     <chevron-up-icon class="opened" />
                                     <chevron-down-icon class="closed" />
@@ -281,6 +287,23 @@ export default {
                 const idx = this.relevantSide2Pathways.findIndex(side2Pathway => side2Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
                 return idx !== -1;
             });
+        },
+        worstPathwayEffectClassName() {
+            let red = '', yellow = '', green = '';
+            this.relevantSide1Pathways.forEach(({ influence }) => {
+                let firstLine = influence.split('</p>')[0];
+                if (!firstLine) return;
+                firstLine = firstLine.toLowerCase();
+
+                if (firstLine.includes('may induce') || firstLine.includes('may inhibit') || firstLine.includes('may bind')) {
+                    red = 'red';
+                } else if (firstLine.includes('is unclear')) {
+                    yellow = 'yellow';
+                } else if (firstLine.includes('not likely to affect')) {
+                    green = ''
+                }
+            });
+            return red || yellow || green;
         },
         unRelevantSide2Pathways() {
             return this.relevantSide2Pathways.filter(pathway => {
