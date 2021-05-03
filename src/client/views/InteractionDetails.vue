@@ -176,7 +176,7 @@
             </main>
             <div class="interaction-details-refs">
                 <div class="main-container">
-                    
+                    <h2 class="subheader">References</h2>
                 </div>
             </div>
         </article>

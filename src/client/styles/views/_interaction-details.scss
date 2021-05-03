@@ -82,6 +82,7 @@
         padding-block-end: rem(48px);
         color: rgba($clr-txt-darker, .9);
         background-color: $clr6;
+        border-bottom: 1px solid rgba($gray, .6);
         
         .note {
             color: $clr1;
@@ -111,7 +112,14 @@
         }
     }
     &-refs {
-        
+        padding-block-start: rem(14px);
+        font-size: rem(12px);
+        line-height: rem(14px);
+        color: rgba($clr12, .75);
+
+        .subheader {
+            color: inherit;
+        }
     }
     .subheader {
         text-transform: uppercase;
