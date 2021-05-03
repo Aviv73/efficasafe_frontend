@@ -7,6 +7,7 @@ import store from '../cms/store';
 import 'normalize.css';
 import './styles/app.scss';
 import './directives';
+import '../cms/filters';
 
 
 Vue.config.productionTip = false;

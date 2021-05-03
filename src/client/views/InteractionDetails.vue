@@ -50,8 +50,8 @@
                             <tooltip on="hover" right-top>
                                 <template #content>
                                     <div class="evidence-level-tooltip-content">
-                                        Based On {{ clinicalRefCount }} Clinical Trials,
-                                        {{ preClinicalRefCount }} Pre-clinical Trials And {{ articlesRefCount }} Articles
+                                        Based On {{ clinicalRefCount }} Clinical Trial{{ clinicalRefCount > 1 ? 's' : '' }},
+                                        {{ preClinicalRefCount }} Pre-clinical {{ preClinicalRefCount > 1 ? 'Studies' : 'Study' }} And {{ articlesRefCount }} Article{{ articlesRefCount > 1 ? 's' : '' }}
                                     </div>
                                 </template>
                                 <span class="refs">
@@ -183,6 +183,9 @@
             <div class="interaction-details-refs">
                 <div class="main-container">
                     <h2 class="subheader">References</h2>
+                    <reference-list
+                        :refs="combinedRefs"
+                    />
                 </div>
             </div>
         </article>
@@ -194,6 +197,7 @@ import { interactionService } from '@/cms/services/interaction.service';
 
 import Side2Pathways from '@/client/cmps/interaction-details/Side2Pathways';
 import Side1Pathways from '@/client/cmps/interaction-details/Side1Pathways';
+import ReferenceList from '@/client/cmps/interaction-details/ReferenceList';
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 import Tooltip from '@/client/cmps/common/Tooltip';
 import Collapse from '@/client/cmps/common/Collapse';
@@ -362,7 +366,8 @@ export default {
         ChevronDownIcon,
         ChevronUpIcon,
         Side2Pathways,
-        Side1Pathways
+        Side1Pathways,
+        ReferenceList
     }
 }
 </script>

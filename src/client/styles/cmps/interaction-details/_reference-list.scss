@@ -1,0 +1,22 @@
+.reference-list {
+    border-color: $clr6;
+    border-style: solid;
+    border-width: 1px 0;
+
+    &-item {
+        padding: rem(8px) 0;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid $clr6;
+        }
+    }
+    .num {
+        padding: 0 rem(22px);
+    }
+    .txt {
+        max-width: 100ch;
+    }
+    .ref-link {
+        color: $green;
+    }
+}
