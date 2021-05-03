@@ -36,11 +36,14 @@
                 </span>
             </li>
         </ul>
-        <p
-            class="active-tab-txt"
-            v-if="pathways.length"
-            v-html="activeTabTxt"
-        />
+        <transition name="fade" mode="out-in">
+            <p
+                class="active-tab-txt"
+                :key="activeTab"
+                v-if="pathways.length"
+                v-html="activeTabTxt"
+            />
+        </transition>
     </section>
 </template>
 
