@@ -1,0 +1,47 @@
+.side1-pathways {
+    margin-inline-start: rem(24px);
+    
+    &-nav {
+        border-bottom: 1px solid rgba($clr12, .1);
+        margin-block-end: rem(15px);
+        padding-block-end: rem(10px);
+
+        &-item:not(:last-child) {
+            margin-inline-end: rem(16px);
+        }
+
+        .chip {
+            font-family: roboto-medium, sans-serif;
+            font-weight: 500;
+            font-size: rem(11px);
+            line-height: rem(13px);
+            text-transform: uppercase;
+            border-width: 1px;
+            border-style: solid;
+            border-color: $gray;
+            border-radius: 100px;
+            padding: rem(4px) rem(10px) rem(4px) rem(26px);
+            position: relative;
+
+            &.green { border-color: $green; }
+            &.yellow { border-color: $yellow; }
+            &.red { border-color: $red; }
+            
+            .material-design-icon {
+                position: absolute;
+                top: calc(50% - 8px);
+                left: rem(4px);
+                height: 16px;
+            }
+        }
+        .un-relevant {
+            border: 1px solid rgba($clr12, .75);
+            color: rgba($clr12, .75);
+            border-radius: 100px;
+            padding: rem(2px) rem(12px);
+            font-size: rem(12px);
+            line-height: rem(14px);
+            font-style: italic;
+        }
+    }
+}

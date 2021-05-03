@@ -1,0 +1,18 @@
+.side2-pathways {
+    margin: 0 0 rem(28px) rem(24px);
+
+    &-row {
+        margin: rem(12px) 0;
+    }
+    .pathway {
+        cursor: help;
+
+        &-tooltip {
+            padding: rem(6px) rem(10px);
+
+            & > div:first-child {
+                color: $clr1;
+            }
+        }
+    }
+}

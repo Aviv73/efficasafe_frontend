@@ -18,13 +18,16 @@ export const materialStore = {
             state.materials = materials;
         },
         addMaterial(state, { material }) {
+            if (!state.materials) return;
             state.materials.unshift(material);
         },
         updateMaterial(state, { material }) {
+            if (!state.materials) return;
             const idx = state.materials.findIndex(currMaterial => currMaterial._id === material._id);
             state.materials.splice(idx, 1, material);
         },
         removeMaterial(state, { matId }) {
+            if (!state.materials) return;
             const idx = state.materials.findIndex(currMaterial => currMaterial._id === matId);
             state.materials.splice(idx, 1);
         },

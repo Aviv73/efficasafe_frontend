@@ -28,10 +28,10 @@
         }
     }
     &-content {
-        header {
+        &-header {
             background-color: $white;
             padding: rem(14px) 0;
-            border-color: rgba($clr12, .75);
+            border-color: rgba($clr12, .35);
             border-style: solid;
             border-width: 1px 0;
         }
@@ -78,8 +78,9 @@
         }
     }
     &-details {
-        padding-top: rem(14px);
-        color: $clr-txt-darker;
+        padding-block-start: rem(14px);
+        padding-block-end: rem(48px);
+        color: rgba($clr-txt-darker, .9);
         background-color: $clr6;
         
         .note {
@@ -96,6 +97,18 @@
                 opacity: .75;
             }
         }
+        .monitor {
+            margin-block-end: rem(42px);
+        }
+        .review-of-studies, .pharmacokinetics {
+            .subheader {
+                pointer-events: all;
+            }
+            .de-activator {
+                position: static;
+                transform: none;
+            }
+        }
     }
     &-refs {
         
@@ -103,6 +116,11 @@
     .subheader {
         text-transform: uppercase;
         color: $clr1;
+        margin-block-end: rem(20px);
+    }
+    .subheader2 {
+        color: $clr-txt-dark;
+        pointer-events: all;
         margin-block-end: rem(20px);
     }
     .paragraph {

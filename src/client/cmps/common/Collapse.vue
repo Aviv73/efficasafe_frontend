@@ -26,7 +26,10 @@
                 class="close-btn"
                 @click.prevent="isContentVisible = false"
             >
-                <slot name="de-activator">
+                <slot
+                    name="de-activator"
+                    v-if="!hideDeActivator"
+                >
                     <span>&times;</span>
                 </slot>
             </button>
@@ -40,6 +43,10 @@ export default {
         isSolo: {
             type: Boolean,
             default: true
+        },
+        hideDeActivator: {
+            type: Boolean,
+            default: false
         }
     },
     data() {

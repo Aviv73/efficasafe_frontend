@@ -22,6 +22,7 @@
                 'exceed-x': exceedsX,
                 'right-bottom': rightBottom,
                 'right-top': rightTop,
+                'bottom-left': bottomLeft,
                 bottom,
                 top,
                 left,
@@ -82,6 +83,10 @@ export default {
             default: 0
         },
         bottom: {
+            type: Boolean,
+            default: false
+        },
+        bottomLeft: {
             type: Boolean,
             default: false
         },
@@ -229,6 +234,12 @@ export default {
             top: 100%;
             left: 50%;
             transform: translateX(-50%);
+
+            &-left {
+                top: 100%;
+                left: 0;
+                transform: none;
+            }
         }
         &.top {
             bottom: 100%;

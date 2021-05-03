@@ -27,7 +27,7 @@
             </div>
         </header>
         <article class="interaction-details-content" v-if="interaction">
-            <header>
+            <header class="interaction-details-content-header">
                 <div class="main-container">
                     <div class="flex-center p-relative">
                         <interaction-capsules
@@ -68,15 +68,110 @@
                     <div class="note flex-center" v-if="!isPrimaryMaterial && interaction.note">
                         <span><span class="font-bold">Note:</span> {{ interaction.note }}</span>
                     </div>
-                    <h2 class="subheader">Summary</h2>
+                    <h2
+                        v-if="interaction.summary"
+                        class="subheader"
+                    >
+                        Summary
+                    </h2>
                     <p
                         class="paragraph"
+                        v-if="interaction.summary"
                         v-html="interaction.summary"
                     />
-                    <div v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptoms || interaction.monitor.general">
+                    <div
+                        class="monitor"
+                        v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptoms || interaction.monitor.general"
+                    >
                         <h2 class="subheader">What to monitor</h2>
-                        <!-- CONTINUE HERE LAB TEST, OTHER TESTS.. -->
+                        <div v-if="interaction.monitor.general">
+                            <span class="font-medium">General: </span>
+                            {{ interaction.monitor.general }}
+                        </div>
+                        <div v-if="interaction.monitor.labTests">
+                            <span class="font-medium">Lab tests: </span>
+                            {{ interaction.monitor.labTests }}
+                        </div>
+                        <div v-if="interaction.monitor.otherTests">
+                            <span class="font-medium">Other tests: </span>
+                            {{ interaction.monitor.otherTests }}
+                        </div>
+                        <div v-if="interaction.monitor.symptoms">
+                            <span class="font-medium">Symptoms: </span>
+                            {{ interaction.monitor.symptoms }}
+                        </div>
                     </div>
+                    <collapse
+                        class="review-of-studies"
+                        v-if="interaction.reviewOfStudies"
+                        hide-de-activator
+                    >
+                        <template #header>
+                            <h2 class="subheader flex-align-center">
+                                Review of studies
+                                <span class="de-activator">
+                                    <chevron-up-icon class="opened" />
+                                    <chevron-down-icon class="closed" />
+                                </span>
+                            </h2>
+                        </template>
+                        <template #content>
+                            <p class="paragraph" v-html="interaction.reviewOfStudies" />
+                        </template>
+                    </collapse>
+                    <collapse
+                        class="pharmacokinetics"
+                        hide-de-activator
+                    >
+                        <template #header>
+                            <h2 class="subheader flex-align-center">
+                                Pharmacokinetics
+                                <span class="de-activator">
+                                    <chevron-up-icon class="opened" />
+                                    <chevron-down-icon class="closed" />
+                                </span>
+                            </h2>
+                        </template>
+                        <template #content>
+                            <collapse hide-de-activator>
+                                <template #header>
+                                    <h3 class="subheader2 flex-align-center">
+                                        <span class="de-activator">
+                                            <chevron-up-icon class="opened" />
+                                            <chevron-down-icon class="closed" />
+                                        </span>
+                                        Drug metabolism
+                                    </h3>
+                                </template>
+                                <template #content>
+                                    <side2-pathways
+                                        :side2Pathways="relevantSide2Pathways"
+                                        :combinedRefs="combinedRefs"
+                                        :side2RefsLength="side2Refs.length"
+                                    />
+                                </template>
+                            </collapse>
+                            <collapse hide-de-activator>
+                                <template #header>
+                                    <h3 class="subheader2 flex-align-center">
+                                        <span class="de-activator">
+                                            <chevron-up-icon class="opened" />
+                                            <chevron-down-icon class="closed" />
+                                        </span>
+                                        {{ interaction.side1Material.name }} effect on drug metabolism
+                                    </h3>
+                                </template>
+                                <template #content>
+                                    <side1-pathways
+                                        :pathways="relevantSide1Pathways"
+                                        :summary="effectOnDrugMetabolism"
+                                        :materialName="interaction.side1Material.name"
+                                        :unrelevantPathways="unRelevantSide2Pathways"
+                                    />
+                                </template>
+                            </collapse>
+                        </template>
+                    </collapse>
                 </div>
             </main>
             <div class="interaction-details-refs">
@@ -91,10 +186,15 @@
 <script>
 import { interactionService } from '@/cms/services/interaction.service';
 
+import Side2Pathways from '@/client/cmps/interaction-details/Side2Pathways';
+import Side1Pathways from '@/client/cmps/interaction-details/Side1Pathways';
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 import Tooltip from '@/client/cmps/common/Tooltip';
+import Collapse from '@/client/cmps/common/Collapse';
 
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
+import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
+import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 import PrinterIcon from 'vue-material-design-icons/Printer';
 import ShareIcon from 'vue-material-design-icons/Share';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
@@ -107,7 +207,8 @@ export default {
             side2Material: null,
             side1Pathways: [],
             interactionRefs: [],
-            isLoading: false
+            isLoading: false,
+            effectOnDrugMetabolism: ''
         }
     },
     watch: {
@@ -147,6 +248,11 @@ export default {
         articlesRefCount() {
             return this.combinedRefs.length - this.clinicalRefCount - this.preClinicalRefCount;
         },
+        side2Refs() {
+            return this.side2Material.pathwayRefs.filter((ref, idx, refs) => {
+                return refs.findIndex(currRef => currRef.link === ref.link) === idx;
+            });
+        },
         isVirtual() {
             return !!this.$route.params.matId;
         },
@@ -176,6 +282,12 @@ export default {
                 return idx !== -1;
             });
         },
+        unRelevantSide2Pathways() {
+            return this.relevantSide2Pathways.filter(pathway => {
+                const idx = this.side1Pathways.findIndex(side1Pathway => side1Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
+                return idx === -1;
+            });
+        },
         isPrimaryMaterial() {
             const { interaction } = this;
             return interaction.side2Label && interaction.side2Label.primaryMaterialIds.includes(this.side2Material._id);
@@ -187,7 +299,7 @@ export default {
             const { id, matId } = this.$route.params;
             if (!this.isVirtual) {
                 const interaction = await this.$store.dispatch({ type: 'loadInteraction', id });
-                const [ side2Material, { refs, pathways } ] = await Promise.all([
+                const [ side2Material, { refs, pathways, effectOnDrugMetabolism } ] = await Promise.all([
                     this.$store.dispatch({ type: 'loadMaterial', matId: interaction.side2Material._id}),
                     this.$store.dispatch({ type: 'loadMaterial', matId: interaction.side1Material._id})
                 ]);
@@ -195,13 +307,14 @@ export default {
                 this.side2Material = side2Material;
                 this.side1Pathways = pathways;
                 this.$options.side1Refs = refs;
+                this.effectOnDrugMetabolism = effectOnDrugMetabolism;
                 this.interactionRefs = refs.filter(ref => this.interaction.refs.includes(ref.draftIdx));
             } else {
                 const [ interaction, material ] = await Promise.all([
                     this.$store.dispatch({ type: 'loadInteraction', id }),
                     this.$store.dispatch({ type: 'loadMaterial', matId })
                 ]);
-                const { refs, pathways } = await this.$store.dispatch({
+                const { refs, pathways, effectOnDrugMetabolism } = await this.$store.dispatch({
                     type: 'loadMaterial',
                     matId: interaction.side1Material._id
                 });
@@ -209,6 +322,7 @@ export default {
                 this.side2Material = material;
                 this.side1Pathways = pathways;
                 this.$options.side1Refs = refs;
+                this.effectOnDrugMetabolism = effectOnDrugMetabolism;
                 this.interactionRefs = refs.filter(ref => this.interaction.refs.includes(ref.draftIdx));
             }
             this.isLoading = false;
@@ -220,7 +334,12 @@ export default {
         ShareIcon,
         InteractionCapsules,
         InformationOutlineIcon,
-        Tooltip
+        Tooltip,
+        Collapse,
+        ChevronDownIcon,
+        ChevronUpIcon,
+        Side2Pathways,
+        Side1Pathways
     }
 }
 </script>
