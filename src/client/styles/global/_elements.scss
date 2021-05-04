@@ -1,3 +1,62 @@
+
+sub {
+    position: relative;
+    line-height: unset;
+    color: $clr2;
+    cursor: help;
+
+    @include hover-supported {
+        & > .refs-tooltip {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+}
+
+.refs-tooltip {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    width: 550px;
+    max-height: 350px;
+    overflow-y: auto;
+    padding: 10px;
+    color: $clr-txt-darker;
+    background-color: darken($white, 5%);
+    border: 1px solid rgba($black, .1);
+    box-shadow: 0 3px 8px 0 rgba($black, .1);
+    z-index: 9;
+    transform: scale(0);
+    opacity: 0;
+    transform-origin: top left;
+    transition: transform .3s linear, opacity .3s linear;
+
+    &-item {
+        transition: background-color .3s linear;
+
+        &:not(:first-child) {
+            padding-block-start: rem(4px);
+            border-top: 1px solid $white;
+
+        }
+        &:not(:last-child) {
+            padding-block-end: rem(4px);
+        }
+        @include hover-supported {
+            background-color: $white;
+        }
+    }
+    .ref-link {
+        color: $clr2;
+    }
+    p {
+        display: inline;
+        span {
+            font-weight: 700;
+        }
+    }
+}
+
 .btn {
     background-color: $clr2;
     padding: rem(16px) rem(40px);

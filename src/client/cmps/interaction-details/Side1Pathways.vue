@@ -4,7 +4,7 @@
             <h3 class="font-medium">Summary</h3>
             <p
                 class="paragraph"
-                v-html="formatMaterialRefs(summary)"
+                v-html="formatRefs(summaryWithRefs, true)"
             />
         </div>
         <h3 class="font-medium">Details</h3>
@@ -41,7 +41,7 @@
                 class="active-tab-txt"
                 :key="activeTab"
                 v-if="pathways.length"
-                v-html="activeTabTxt"
+                v-html="formatRefs(activeTabTxt, true)"
             />
         </transition>
     </section>
@@ -68,6 +68,10 @@ export default {
         unrelevantPathways: {
             type: Array,
             default: () => []
+        },
+        formatRefs: {
+            type: Function,
+            required: true
         }
     },
     data() {
@@ -82,6 +86,9 @@ export default {
         activeTabTxt() {
             const pathway = this.pathways.find(p => p.name === this.activeTab);
             return pathway ? pathway.influence : '';
+        },
+        summaryWithRefs() {
+            return this.formatMaterialRefs(this.summary);
         }
     },
     methods: {

@@ -2,6 +2,7 @@ import Vue from 'vue';
 import { VueHammer } from 'vue2-hammer';
 import vueDebounce from 'vue-debounce';
 
+import { interactionService } from '@/cms/services/interaction.service';
 
 
 VueHammer.config.swipe = {
@@ -33,3 +34,77 @@ Vue.directive('set-sticky-class-name', {
         observer.observe(el);
     }
 });
+
+Vue.directive('refs-tooltip', {
+    update(el, binding) {
+        const {
+            interactionRefs, isSide1Pathways, isSide2Pathways, side2Refs, interactionRefCount
+        } = binding.value;
+        const elSubs = el.querySelectorAll('sub');
+        for (let i = 0; i < elSubs.length; i++) {
+            const refIdxs = interactionService.getRefsOrder(elSubs[i].innerText);
+            if (!refIdxs.length) continue;
+
+            elSubs[i].innerText = interactionService.formatRefStrs(elSubs[i].innerText);
+            elSubs[i].addEventListener('mouseenter', setTooltipPos);
+
+            const refs = getRefsFromIdxs(refIdxs, interactionRefs);
+            const elTooltip = document.createElement('aside');
+            elTooltip.classList.add('refs-tooltip');
+
+            let htmlStr = '<ul>';
+            for (let j = 0; j < refs.length; j++) {
+                let draftIdx = interactionRefs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx) + 1;
+                if (isSide1Pathways) {
+                    const sameRefs = interactionRefs.filter(ref => ref && ref.draftIdx === refs[j].draftIdx);
+                    if (sameRefs.length > 1) {
+                        const ref = sameRefs.find(ref => side2Refs.findIndex(currRef => currRef.link === ref.link) === -1);
+                        draftIdx = interactionRefs.indexOf(ref) + 1;
+                    }
+                }
+                if (isSide2Pathways) {
+                    draftIdx = side2Refs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx) + 1 + interactionRefCount;
+                }
+                htmlStr += `
+                    <li class="refs-tooltip-item">
+                        <p><span>${draftIdx}</span>. ${formatedRefTxt(refs[j].txt)}</p>
+                        <a href="${refs[j].link}" class="ref-link" target="_blank">${refs[j].link}</a>
+                    </li>
+                `;
+            }
+            htmlStr += '</ul>';
+            elTooltip.innerHTML = htmlStr;
+            elSubs[i].appendChild(elTooltip);
+        }
+    }
+});
+
+function setTooltipPos(ev) {
+    const elTooltip = ev.target.querySelector('.refs-tooltip');
+    if (ev.clientX + elTooltip.offsetWidth > window.innerWidth) {
+        elTooltip.style.transformOrigin = 'top right';
+        elTooltip.style.left = 'unset';
+        elTooltip.style.right = '0';
+    }
+}
+
+function getRefsFromIdxs(refIdxs, interactionRefs) {
+    const refs = [];
+    refIdxs.forEach((idx) => {
+        refs.push({ ...interactionRefs[idx - 1] });
+    });
+    return refs;
+}
+
+function formatedRefTxt(fullRefTxt) {
+    if (!fullRefTxt) return '';
+    const doiIdx = fullRefTxt.indexOf('doi');
+    if (doiIdx !== -1) {
+        return fullRefTxt.substring(0, doiIdx).trim();
+    }
+    const PmidIdx = fullRefTxt.indexOf('PMID');
+    if (PmidIdx !== -1) {
+        return fullRefTxt.substring(0, PmidIdx).trim();
+    }
+    return fullRefTxt;
+}

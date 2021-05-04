@@ -143,6 +143,19 @@
                 }
             }
         }
+        .narrow-therapuetic-warnning {
+            font-size: rem(12px);
+            line-height: rem(14px);
+            padding: rem(20px) rem(22px) rem(42px);
+            width: rem(250px);
+            border: 1px solid $red;
+            background-color: $clr15;
+            border-radius: 18px;
+            color: $clr-txt-darker;
+            position: absolute;
+            top: 0;
+            right: 50px;
+        }
     }
     &-refs {
         padding-block-start: rem(14px);

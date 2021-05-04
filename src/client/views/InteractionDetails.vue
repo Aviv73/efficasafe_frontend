@@ -64,7 +64,15 @@
                 </div>
             </header>
             <main class="interaction-details-details">
-                <div class="main-container">
+                <div class="main-container p-relative">
+                    <div
+                        class="narrow-therapuetic-warnning"
+                        v-if="side2Material.isNarrowTherapeutic"
+                    >
+                        Attention: {{ side2Material.name }} has a narrow therapeutic range. Differences
+                        in dose or blood concentration may lead to serious therapeutic failures and/or adverse
+                        drug reactions.
+                    </div>
                     <div class="note flex-center" v-if="!isPrimaryMaterial && interaction.note">
                         <span><span class="font-bold">Note:</span> {{ interaction.note }}</span>
                     </div>
@@ -77,7 +85,14 @@
                     <p
                         class="paragraph"
                         v-if="interaction.summary"
-                        v-html="interaction.summary"
+                        v-html="formatRefs(interaction.summary)"
+                        v-refs-tooltip="{
+                            interactionRefs: combinedRefs,
+                            isSide1Pathways: false,
+                            isSide2Pathways: false,
+                            side2Refs,
+                            interactionRefCount: interactionRefs.length
+                        }"
                     />
                     <div
                         class="monitor"
@@ -116,7 +131,7 @@
                             </h2>
                         </template>
                         <template #content>
-                            <p class="paragraph" v-html="interaction.reviewOfStudies" />
+                            <p class="paragraph" v-html="formatRefs(interaction.reviewOfStudies)" />
                         </template>
                     </collapse>
                     <collapse
@@ -173,6 +188,7 @@
                                         :summary="effectOnDrugMetabolism"
                                         :materialName="interaction.side1Material.name"
                                         :unrelevantPathways="unRelevantSide2Pathways"
+                                        :formatRefs="formatRefs"
                                     />
                                 </template>
                             </collapse>
@@ -194,6 +210,7 @@
 
 <script>
 import { interactionService } from '@/cms/services/interaction.service';
+import { utilService } from '@/cms/services/util.service';
 
 import Side2Pathways from '@/client/cmps/interaction-details/Side2Pathways';
 import Side1Pathways from '@/client/cmps/interaction-details/Side1Pathways';
@@ -223,8 +240,9 @@ export default {
     },
     watch: {
         '$route.params': {
-            handler() {
-                this.getInteractionData();
+            async handler() {
+                await this.getInteractionData();
+                this.sortInteractionRefs();
             },
             immediate: true
         }
@@ -247,7 +265,8 @@ export default {
                 });
                 return acc;
             }, []);
-            return this.interactionRefs.concat(side2Refs, this.side2PathwayRefs);
+            
+            return this.interactionRefs.concat(side2Refs, this.side1PathwayRefs);
         },
         clinicalRefCount() {
             return this.combinedRefs.filter(ref => ref.type === 'clinical' || ref.type === 'retrospective').length;
@@ -273,8 +292,8 @@ export default {
             if (this.isVirtual) return `${this.interaction.side1Material.name} & ${this.side2Material.name}`;
             return `${this.interaction.side1Material.name} & ${this.interaction.side2Material.name}`;
         },
-        side2PathwayRefs() {
-            const txt = this.relevantSide1Pathways.reduce((acc, pathway) => {
+        side1PathwayRefs() {
+            const txt = this.effectOnDrugMetabolism + ' ' + this.relevantSide1Pathways.reduce((acc, pathway) => {
                 acc += pathway.influence + ' ';
                 return acc;
             }, '');
@@ -327,8 +346,8 @@ export default {
             if (!this.isVirtual) {
                 const interaction = await this.$store.dispatch({ type: 'loadInteraction', id });
                 const [ side2Material, { refs, pathways, effectOnDrugMetabolism } ] = await Promise.all([
-                    this.$store.dispatch({ type: 'loadMaterial', matId: interaction.side2Material._id}),
-                    this.$store.dispatch({ type: 'loadMaterial', matId: interaction.side1Material._id})
+                    this.$store.dispatch({ type: 'loadMaterial', matId: interaction.side2Material._id }),
+                    this.$store.dispatch({ type: 'loadMaterial', matId: interaction.side1Material._id })
                 ]);
                 this.interaction = interaction;
                 this.side2Material = side2Material;
@@ -353,6 +372,45 @@ export default {
                 this.interactionRefs = refs.filter(ref => this.interaction.refs.includes(ref.draftIdx));
             }
             this.isLoading = false;
+        },
+        sortInteractionRefs() {
+            const txt = `${this.interaction.summary} ${this.interaction.reviewOfStudies}`;
+            const sortedRefs = interactionService.getSortedRefs(
+                txt,
+                this.interactionRefs
+            );
+            this.interactionRefs = sortedRefs;
+        },
+        formatRefs(txt, isPathwaysRefs = false) {
+            if (!this.interactionRefs.length) return;
+            const refsOrder = interactionService.getRefsOrder(txt, false, false).filter(num => txt.indexOf(num) > -1);
+            let lastRefIdx = 0;
+            refsOrder.forEach((refNum) => {
+                let draftIdx = this.combinedRefs.findIndex(ref => ref && ref.draftIdx === refNum) + 1;
+                if (isPathwaysRefs) {
+                    const sameRefs = this.combinedRefs.filter(ref => ref && ref.draftIdx === refNum);
+                    if (sameRefs.length > 1) {
+                        const ref = sameRefs.find(ref => this.side2Refs.findIndex(currRef => currRef.link === ref.link) === -1);
+                        draftIdx = this.combinedRefs.indexOf(ref) + 1;
+                    }
+                }
+                let refIdx = txt.indexOf(refNum, lastRefIdx + draftIdx.toString().length);
+                if (!utilService.checkIfInsideRef(txt, refIdx) || lastRefIdx === refIdx) {
+                    let cnt = 0;
+                    while (txt.charAt(refIdx) === txt.charAt(refIdx + cnt)) {
+                        cnt++;
+                    }
+                    refIdx = txt.indexOf(refNum, refIdx + cnt);
+                }
+                if (lastRefIdx + draftIdx.toString().length > refIdx) lastRefIdx = refIdx + draftIdx.toString().length;
+                else lastRefIdx = refIdx;
+                if (refIdx > -1) {
+                    txt = txt.slice(0, lastRefIdx) +
+                    txt.slice(lastRefIdx, (lastRefIdx + refNum.toString().length)).replace(refNum, draftIdx) +
+                    txt.slice(lastRefIdx + refNum.toString().length);
+                }
+            });
+            return txt;
         }
     },
     components: {
