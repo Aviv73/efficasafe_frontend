@@ -4,7 +4,8 @@ export const interactionStore = ({
     state: {
         interactions: null,
         interactionCount: 0,
-        supplementsRefs: []
+        supplementsRefs: [],
+        seenRefsMap: {}
     },
     getters: {
         interactions(state) {
@@ -49,11 +50,10 @@ export const interactionStore = ({
             state.interactionCount = total;
         },
         updateSupplementsRefs(state, { refs }) {
-            const seenMap = {};
             refs.forEach(ref => {
-                if (!seenMap[ref.link]) {
+                if (!state.seenRefsMap[ref.link]) {
                     state.supplementsRefs.push(ref);
-                    seenMap[ref.link] = true;
+                    state.seenRefsMap[ref.link] = true;
                 }
             });
         },
