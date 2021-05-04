@@ -7,8 +7,7 @@
                 v-html="formatRefs(summaryWithRefs, true)"
                 v-refs-tooltip.pathwaysSecond="{
                     combinedRefs,
-                    side2Refs,
-                    interactionRefCount
+                    side2Refs
                 }"
             />
         </div>
@@ -47,8 +46,7 @@
                 v-html="formatRefs(activeTabTxt, true)"
                 v-refs-tooltip.pathwaysSecond.dynamicTxt="{
                     combinedRefs,
-                    side2Refs,
-                    interactionRefCount
+                    side2Refs
                 }"
             />
     </section>
@@ -86,10 +84,6 @@ export default {
         },
         side2Refs: {
             type: Array,
-            required: true
-        },
-        interactionRefCount: {
-            type: Number,
             required: true
         }
     },

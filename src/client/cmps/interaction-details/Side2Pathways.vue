@@ -12,8 +12,7 @@
                     :key="idx"
                     v-refs-tooltip.pathwaysFirst="{
                         combinedRefs,
-                        side2Refs,
-                        interactionRefCount
+                        side2Refs
                     }"
                 >
                     <span>{{ idx === 0 ? '' : ',' }} </span>
@@ -52,10 +51,6 @@ export default {
         },
         side2Refs: {
             type: Array,
-            required: true
-        },
-        interactionRefCount: {
-            type: Number,
             required: true
         }
     },

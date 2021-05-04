@@ -88,8 +88,7 @@
                         v-html="formatRefs(interaction.summary)"
                         v-refs-tooltip="{
                             combinedRefs,
-                            side2Refs,
-                            interactionRefCount: interactionRefs.length
+                            side2Refs
                         }"
                     />
                     <div
@@ -135,8 +134,7 @@
                                 v-html="formatRefs(interaction.reviewOfStudies)"
                                 v-refs-tooltip="{
                                     combinedRefs,
-                                    side2Refs,
-                                    interactionRefCount: interactionRefs.length
+                                    side2Refs
                                 }"
                             />
                         </template>
@@ -180,7 +178,6 @@
                                         :side2Pathways="relevantSide2Pathways"
                                         :combinedRefs="combinedRefs"
                                         :side2Refs="side2Refs"
-                                        :interactionRefCount="interactionRefs.length"
                                     />
                                 </template>
                             </collapse>
@@ -206,7 +203,6 @@
                                         :formatRefs="formatRefs"
                                         :combinedRefs="combinedRefs"
                                         :side2Refs="side2Refs"
-                                        :interactionRefCount="interactionRefs.length"
                                     />
                                 </template>
                             </collapse>

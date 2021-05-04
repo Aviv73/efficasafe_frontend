@@ -38,7 +38,7 @@ Vue.directive('set-sticky-class-name', {
 Vue.directive('refs-tooltip', {
     update(el, binding, vnode, { isRootInsert }) {
         const { pathwaysFirst, pathwaysSecond, dynamicTxt } = binding.modifiers;
-        const { combinedRefs, side2Refs, interactionRefCount } = binding.value;
+        const { combinedRefs, side2Refs } = binding.value;
         if (isRootInsert && !dynamicTxt) return;
         
         const elSubs = el.querySelectorAll('sub');
@@ -59,13 +59,15 @@ Vue.directive('refs-tooltip', {
                 if (pathwaysFirst) {
                     const sameRefs = combinedRefs.filter(ref => ref && ref.draftIdx === refs[j].draftIdx);
                     if (sameRefs.length > 1) {
-                        const ref = sameRefs.find(ref => side2Refs.findIndex(currRef => currRef.link === ref.link) === -1);
+                        const ref = sameRefs.find(ref => side2Refs.findIndex(currRef => currRef.link === ref.link) !== -1);
                         draftIdx = combinedRefs.indexOf(ref) + 1;
                     }
                 }
                 if (pathwaysSecond) {
-                    const idx = side2Refs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx);
-                    if (idx !== -1) draftIdx = idx + 1 + interactionRefCount;
+                    let idx = side2Refs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx);
+                    if (idx !== -1) {
+                        draftIdx = combinedRefs.findIndex(ref => ref && ref.link === refs[j].link) + 1;
+                    }
                 }
                 htmlStr += `
                     <li class="refs-tooltip-item">
