@@ -87,9 +87,7 @@
                         v-if="interaction.summary"
                         v-html="formatRefs(interaction.summary)"
                         v-refs-tooltip="{
-                            interactionRefs: combinedRefs,
-                            isSide1Pathways: false,
-                            isSide2Pathways: false,
+                            combinedRefs,
                             side2Refs,
                             interactionRefCount: interactionRefs.length
                         }"
@@ -131,7 +129,15 @@
                             </h2>
                         </template>
                         <template #content>
-                            <p class="paragraph" v-html="formatRefs(interaction.reviewOfStudies)" />
+                            <p
+                                class="paragraph"
+                                v-html="formatRefs(interaction.reviewOfStudies)"
+                                v-refs-tooltip="{
+                                    combinedRefs,
+                                    side2Refs,
+                                    interactionRefCount: interactionRefs.length
+                                }"
+                            />
                         </template>
                     </collapse>
                     <collapse
@@ -168,7 +174,8 @@
                                     <side2-pathways
                                         :side2Pathways="relevantSide2Pathways"
                                         :combinedRefs="combinedRefs"
-                                        :side2RefsLength="side2Refs.length"
+                                        :side2Refs="side2Refs"
+                                        :interactionRefCount="interactionRefs.length"
                                     />
                                 </template>
                             </collapse>

@@ -36,10 +36,12 @@ Vue.directive('set-sticky-class-name', {
 });
 
 Vue.directive('refs-tooltip', {
-    update(el, binding) {
+    update(el, binding, vnode, { isRootInsert }) {
+        if (isRootInsert) return;
         const {
-            interactionRefs, isSide1Pathways, isSide2Pathways, side2Refs, interactionRefCount
+            combinedRefs, side2Refs, interactionRefCount
         } = binding.value;
+        const { pathwaysFirst, pathwaysSecond } = binding.modifiers;
         const elSubs = el.querySelectorAll('sub');
         for (let i = 0; i < elSubs.length; i++) {
             const refIdxs = interactionService.getRefsOrder(elSubs[i].innerText);
@@ -48,21 +50,21 @@ Vue.directive('refs-tooltip', {
             elSubs[i].innerText = interactionService.formatRefStrs(elSubs[i].innerText);
             elSubs[i].addEventListener('mouseenter', setTooltipPos);
 
-            const refs = getRefsFromIdxs(refIdxs, interactionRefs);
+            const refs = getRefsFromIdxs(refIdxs, combinedRefs);
             const elTooltip = document.createElement('aside');
             elTooltip.classList.add('refs-tooltip');
 
             let htmlStr = '<ul>';
             for (let j = 0; j < refs.length; j++) {
-                let draftIdx = interactionRefs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx) + 1;
-                if (isSide1Pathways) {
-                    const sameRefs = interactionRefs.filter(ref => ref && ref.draftIdx === refs[j].draftIdx);
+                let draftIdx = combinedRefs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx) + 1;
+                if (pathwaysFirst) {
+                    const sameRefs = combinedRefs.filter(ref => ref && ref.draftIdx === refs[j].draftIdx);
                     if (sameRefs.length > 1) {
                         const ref = sameRefs.find(ref => side2Refs.findIndex(currRef => currRef.link === ref.link) === -1);
-                        draftIdx = interactionRefs.indexOf(ref) + 1;
+                        draftIdx = combinedRefs.indexOf(ref) + 1;
                     }
                 }
-                if (isSide2Pathways) {
+                if (pathwaysSecond) {
                     draftIdx = side2Refs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx) + 1 + interactionRefCount;
                 }
                 htmlStr += `
@@ -88,10 +90,10 @@ function setTooltipPos(ev) {
     }
 }
 
-function getRefsFromIdxs(refIdxs, interactionRefs) {
+function getRefsFromIdxs(refIdxs, combinedRefs) {
     const refs = [];
     refIdxs.forEach((idx) => {
-        refs.push({ ...interactionRefs[idx - 1] });
+        refs.push({ ...combinedRefs[idx - 1] });
     });
     return refs;
 }
