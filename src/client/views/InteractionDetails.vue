@@ -184,7 +184,10 @@
                                     />
                                 </template>
                             </collapse>
-                            <collapse hide-de-activator>
+                            <collapse
+                                hide-de-activator
+                                allow-overflow
+                            >
                                 <template #header>
                                     <h3 class="subheader2 flex-align-center">
                                         <span class="de-activator">
@@ -201,6 +204,9 @@
                                         :materialName="interaction.side1Material.name"
                                         :unrelevantPathways="unRelevantSide2Pathways"
                                         :formatRefs="formatRefs"
+                                        :combinedRefs="combinedRefs"
+                                        :side2Refs="side2Refs"
+                                        :interactionRefCount="interactionRefs.length"
                                     />
                                 </template>
                             </collapse>

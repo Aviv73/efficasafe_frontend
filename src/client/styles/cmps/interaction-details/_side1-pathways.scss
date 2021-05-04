@@ -47,10 +47,4 @@
     .active-tab-txt {
         padding-inline-end: 30%;
     }
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity .4s linear;
-    }
-    .fade-enter, .fade-leave-to {
-        opacity: 0;
-    }
 }

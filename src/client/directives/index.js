@@ -37,23 +37,22 @@ Vue.directive('set-sticky-class-name', {
 
 Vue.directive('refs-tooltip', {
     update(el, binding, vnode, { isRootInsert }) {
-        if (isRootInsert) return;
-        const {
-            combinedRefs, side2Refs, interactionRefCount
-        } = binding.value;
-        const { pathwaysFirst, pathwaysSecond } = binding.modifiers;
+        const { pathwaysFirst, pathwaysSecond, dynamicTxt } = binding.modifiers;
+        const { combinedRefs, side2Refs, interactionRefCount } = binding.value;
+        if (isRootInsert && !dynamicTxt) return;
+        
         const elSubs = el.querySelectorAll('sub');
         for (let i = 0; i < elSubs.length; i++) {
             const refIdxs = interactionService.getRefsOrder(elSubs[i].innerText);
             if (!refIdxs.length) continue;
-
+            
             elSubs[i].innerText = interactionService.formatRefStrs(elSubs[i].innerText);
             elSubs[i].addEventListener('mouseenter', setTooltipPos);
-
+            
             const refs = getRefsFromIdxs(refIdxs, combinedRefs);
             const elTooltip = document.createElement('aside');
             elTooltip.classList.add('refs-tooltip');
-
+            
             let htmlStr = '<ul>';
             for (let j = 0; j < refs.length; j++) {
                 let draftIdx = combinedRefs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx) + 1;
@@ -65,7 +64,8 @@ Vue.directive('refs-tooltip', {
                     }
                 }
                 if (pathwaysSecond) {
-                    draftIdx = side2Refs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx) + 1 + interactionRefCount;
+                    const idx = side2Refs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx);
+                    if (idx !== -1) draftIdx = idx + 1 + interactionRefCount;
                 }
                 htmlStr += `
                     <li class="refs-tooltip-item">

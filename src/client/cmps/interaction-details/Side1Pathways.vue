@@ -5,6 +5,11 @@
             <p
                 class="paragraph"
                 v-html="formatRefs(summaryWithRefs, true)"
+                v-refs-tooltip.pathwaysSecond="{
+                    combinedRefs,
+                    side2Refs,
+                    interactionRefCount
+                }"
             />
         </div>
         <h3 class="font-medium">Details</h3>
@@ -36,14 +41,16 @@
                 </span>
             </li>
         </ul>
-        <transition name="fade" mode="out-in">
             <p
                 class="active-tab-txt"
-                :key="activeTab"
-                v-if="pathways.length"
+                v-show="pathways.length"
                 v-html="formatRefs(activeTabTxt, true)"
+                v-refs-tooltip.pathwaysSecond.dynamicTxt="{
+                    combinedRefs,
+                    side2Refs,
+                    interactionRefCount
+                }"
             />
-        </transition>
     </section>
 </template>
 
@@ -71,6 +78,18 @@ export default {
         },
         formatRefs: {
             type: Function,
+            required: true
+        },
+        combinedRefs: {
+            type: Array,
+            required: true
+        },
+        side2Refs: {
+            type: Array,
+            required: true
+        },
+        interactionRefCount: {
+            type: Number,
             required: true
         }
     },
