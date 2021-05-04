@@ -13,6 +13,7 @@
         <transition name="scale-y">
             <main
                 class="collapse-content"
+                :class="{ 'allow-overflow': allowOverflow }"
                 v-show="isContentVisible"
             >
                 <slot name="content">
@@ -45,6 +46,10 @@ export default {
             default: true
         },
         hideDeActivator: {
+            type: Boolean,
+            default: false
+        },
+        allowOverflow: {
             type: Boolean,
             default: false
         }
@@ -104,6 +109,10 @@ export default {
         }
         &-content {
             overflow: hidden;
+
+            &.allow-overflow {
+                overflow: visible;
+            }
         }
         .close-btn {
             position: absolute;

@@ -6,30 +6,33 @@
             :key="index"
         >
             <span class="font-medium font-capitalize">{{ name }}: </span>
-            <tooltip
-                v-for="(pathway, idx) in pathways"
-                :key="idx"
-                bottom-left
-            >
                 <span
                     class="pathway"
+                    v-for="(pathway, idx) in pathways"
+                    :key="idx"
+                    v-refs-tooltip.pathwaysFirst="{
+                        combinedRefs,
+                        side2Refs,
+                        interactionRefCount
+                    }"
                 >
                     <span>{{ idx === 0 ? '' : ',' }} </span>
-                    <span class="font-uppercase">{{ pathway.name }}</span>
+                    <tooltip bottom-left>
+                        <span class="font-uppercase">{{ pathway.name }}</span>
+                        <template #content>
+                            <div
+                                class="pathway-tooltip"
+                                v-if="pathway.fullName || pathway.actions.length"
+                            >
+                                <div v-if="pathway.fullName">{{ pathway.fullName }}</div>
+                                <span class="font-capitalize" v-if="pathway.actions.length">
+                                    {{ pathway.actions.join(', ') }} 
+                                </span>
+                            </div>
+                        </template>
+                    </tooltip>
                     <sub>{{ getMaterialRefNums(pathway.references) }}</sub>
                 </span>
-                <template #content>
-                    <div
-                        class="pathway-tooltip"
-                        v-if="pathway.fullName || pathway.actions.length"
-                    >
-                        <div v-if="pathway.fullName">{{ pathway.fullName }}</div>
-                        <span class="font-capitalize" v-if="pathway.actions.length">
-                            {{ pathway.actions.join(', ') }} 
-                        </span>
-                    </div>
-                </template>
-            </tooltip>
         </div>
     </section>
 </template>

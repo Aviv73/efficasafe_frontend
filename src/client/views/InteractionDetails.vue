@@ -118,6 +118,7 @@
                         class="review-of-studies"
                         v-if="interaction.reviewOfStudies"
                         hide-de-activator
+                        allow-overflow
                     >
                         <template #header>
                             <h2 class="subheader flex-align-center">
@@ -143,6 +144,7 @@
                     <collapse
                         class="pharmacokinetics"
                         hide-de-activator
+                        allow-overflow
                     >
                         <template #header>
                             <h2 class="subheader flex-align-center">
@@ -160,7 +162,10 @@
                             </h2>
                         </template>
                         <template #content>
-                            <collapse hide-de-activator>
+                            <collapse
+                                hide-de-activator
+                                allow-overflow
+                            >
                                 <template #header>
                                     <h3 class="subheader2 flex-align-center">
                                         <span class="de-activator">
