@@ -454,10 +454,10 @@ export default {
                 }, 0);
                 return acc;
             }, 0);
-            const pathwayRefsCount = this.materials.reduce((acc, { _id, pathways }) => {
+            const pathwayRefsCount = this.materials.reduce((acc, { _id, pathways, effectOnDrugMetabolism }) => {
                 pathways.forEach(pathway => {
                     if (
-                            ((pathway.type === 'enzyme' || pathway.type === 'transporter') &&
+                        ((pathway.type === 'enzyme' || pathway.type === 'transporter') &&
                             (!pathway.actions.includes('substrate') && !pathway.actions.includes('binder')))
                             ||
                             (pathway.type === 'carrier' &&
@@ -471,6 +471,14 @@ export default {
                         }
                     });
                 });
+                const refs = interactionService.getRefsOrder(effectOnDrugMetabolism);
+                refs.forEach(ref => {
+                    if (!seenRefsMap[_id][ref + '']) {
+                        acc++;
+                        seenRefsMap[_id][ref + ''] = true;
+                    }
+                });
+
                 return acc;
             }, 0);
             
