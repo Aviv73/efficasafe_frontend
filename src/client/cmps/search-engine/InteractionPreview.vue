@@ -241,6 +241,15 @@ export default {
                 }
                     return acc;
                 }, []);
+                const refs = interactionService.getRefsOrder(side1Material.effectOnDrugMetabolism);
+                refs.forEach(ref => {
+                    if (!seenRefsMap[ref]) {
+                        if (!interaction.refs.includes(ref)) {
+                            side1PathwayRefs.push(ref);
+                        }
+                        seenRefsMap[ref] = true;
+                    }
+                });
             }
             this.$store.commit({ type: 'updateSupplementsRefs', refs: side1PathwayRefs });
             this.pathwayRefCount = side1PathwayRefs.length + side2Refs.length;
