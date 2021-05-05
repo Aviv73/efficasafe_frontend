@@ -108,7 +108,11 @@
                     <p
                         class="paragraph"
                         v-if="interaction.extended_description"
-                        v-html="interaction.extended_description"
+                        v-html="getRefsToDisplay(interaction.extended_description)"
+                        v-refs-tooltip.dBank="{
+                            interactionRefs,
+
+                        }"
                     />
                     <h2
                         v-if="interaction.management"
@@ -119,7 +123,7 @@
                     <p
                         class="paragraph"
                         v-if="interaction.management"
-                        v-html="interaction.management"
+                        v-html="getRefsToDisplay(interaction.management)"
                     />
                 </div>
             </main>
@@ -197,6 +201,43 @@ export default {
             const { id } = this.$route.params;
             this.interaction = await drugBankService.getInteraction(id);
             this.isLoading = false;
+        },
+        getRefsToDisplay(txt) {
+            const regex = /\[(.*?)\]/g;
+            const matches = txt.match(regex);
+            if (!matches) return txt;
+            matches.forEach(match => {
+                let formatedMatch = this.replaceWrongRefs(match);
+                this.interactionRefs.forEach(({ ref_id, draftIdx }) => {
+                    if (formatedMatch.includes(ref_id)) {
+                        formatedMatch = formatedMatch.replace(ref_id, draftIdx);
+                    } else {
+                        const refId = ref_id.replace(/\D/g,'');
+                        formatedMatch = formatedMatch.replace(refId, draftIdx);
+                    }
+                });
+                formatedMatch = formatedMatch.replace('[', '(');
+                formatedMatch = formatedMatch.replace(']', ')');
+                formatedMatch = `<sub>${interactionService.formatRefStrs(formatedMatch)}</sub>`;
+                
+                const beforeIdx = txt.indexOf(match) - 1;
+                if (txt.charAt(beforeIdx) === '.') {
+                    txt = txt.substring(0, beforeIdx) + txt.substring(beforeIdx + 1);
+                    formatedMatch = ` ${formatedMatch}.`;
+                }
+                
+                txt = txt.replace(match, formatedMatch);
+            });
+            return txt;
+        },
+        replaceWrongRefs(refStr) {
+            const { wrongRefsMap } = this.$options;
+            Object.keys(wrongRefsMap).forEach(wrongRef => {
+                if (refStr.includes(wrongRef)) {
+                    refStr = refStr.replaceAll(wrongRef, wrongRefsMap[wrongRef]);
+                }
+            });
+            return refStr;
         }
     },
     components: {
