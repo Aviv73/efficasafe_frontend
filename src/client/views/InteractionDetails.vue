@@ -244,7 +244,7 @@
 </template>
 
 <script>
-import { interactionService } from '@/cms/services/interaction.service';
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import { utilService } from '@/cms/services/util.service';
 
 import Side2Pathways from '@/client/cmps/interaction-details/Side2Pathways';
@@ -321,7 +321,7 @@ export default {
             return !!this.$route.params.matId;
         },
         interactionColor() {
-            return interactionService.getInteractionColor(this.interaction.recommendation);
+            return interactionUIService.getInteractionColor(this.interaction.recommendation);
         },
         interactionName() {
             if (this.isVirtual) return `${this.interaction.side1Material.name} & ${this.side2Material.name}`;
@@ -332,7 +332,7 @@ export default {
                 acc += pathway.influence + ' ';
                 return acc;
             }, '');
-            const sortedRefs = interactionService.getSortedRefs(txt, this.$options.side1Refs);
+            const sortedRefs = interactionUIService.getSortedRefs(txt, this.$options.side1Refs);
             return sortedRefs.filter(ref => this.interactionRefs.findIndex(currRef => currRef.link === ref.link) === -1);
         },
         relevantSide2Pathways() {
@@ -410,7 +410,7 @@ export default {
         },
         sortInteractionRefs() {
             const txt = `${this.interaction.summary} ${this.interaction.reviewOfStudies}`;
-            const sortedRefs = interactionService.getSortedRefs(
+            const sortedRefs = interactionUIService.getSortedRefs(
                 txt,
                 this.interactionRefs
             );
@@ -418,7 +418,7 @@ export default {
         },
         formatRefs(txt, isPathwaysRefs = false) {
             if (!this.interactionRefs.length) return;
-            const refsOrder = interactionService.getRefsOrder(txt, false, false).filter(num => txt.indexOf(num) > -1);
+            const refsOrder = interactionUIService.getRefsOrder(txt, false, false).filter(num => txt.indexOf(num) > -1);
             let lastRefIdx = 0;
             refsOrder.forEach((refNum) => {
                 let draftIdx = this.combinedRefs.findIndex(ref => ref && ref.draftIdx === refNum) + 1;

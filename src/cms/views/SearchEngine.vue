@@ -139,13 +139,13 @@
 </template>
 
 <script>
-import { interactionService } from '@/cms/services/interaction.service';
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import { eventBus, EV_clear_autocomplete } from '@/cms/services/eventBus.service';
 import searchAutocomplete from '@/cms/cmps/search-engine/SearchAutocomplete';
 import iconsMap from '@/cms/cmps/general/IconsMap';
 
 export default {
-    recommendationsOrderMap: interactionService.getRecommendationOrderMap(),
+    recommendationsOrderMap: interactionUIService.getRecommendationOrderMap(),
     data() {
         return {
             materials: [],

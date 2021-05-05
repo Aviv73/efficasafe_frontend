@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { interactionService } from '@/cms/services/interaction.service';
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import AlertCircleOutlineIcon from 'vue-material-design-icons/AlertCircleOutline';
 import InteractionIcon from '@/client/cmps/common/icons/InteractionIcon';
 
@@ -100,7 +100,7 @@ export default {
     },
     methods: {
         getInteractionColor(recommendation) {
-            return interactionService.getInteractionColor(recommendation);
+            return interactionUIService.getInteractionColor(recommendation);
         },
         getInteractionShortName(name) {
             const sideNames = name.split(' & ');

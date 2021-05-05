@@ -148,7 +148,7 @@
 
 <script>
 import { drugBankService } from '@/cms/services/drug-bank.service';
-import { interactionService } from '@/cms/services/interaction.service';
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
 
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 import Tooltip from '@/client/cmps/common/Tooltip';
@@ -180,7 +180,7 @@ export default {
             return `${this.interaction.subject_drug.name} & ${this.interaction.affected_drug.name}`;
         },
         interactionColor() {
-            return interactionService.getInteractionColor(this.interaction.recommendation);
+            return interactionUIService.getInteractionColor(this.interaction.recommendation);
         },
         interactionRefs() {
             let refIdx = 1;
@@ -224,7 +224,7 @@ export default {
                 });
                 formatedMatch = formatedMatch.replace('[', '(');
                 formatedMatch = formatedMatch.replace(']', ')');
-                formatedMatch = `<sub>${interactionService.formatRefStrs(formatedMatch)}</sub>`;
+                formatedMatch = `<sub>${interactionUIService.formatRefStrs(formatedMatch)}</sub>`;
                 
                 const beforeIdx = txt.indexOf(match) - 1;
                 if (txt.charAt(beforeIdx) === '.') {

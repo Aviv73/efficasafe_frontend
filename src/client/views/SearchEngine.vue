@@ -210,7 +210,7 @@
 </template>
 
 <script>
-import { interactionService } from '@/cms/services/interaction.service';
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import Tooltip from '@/client/cmps/common/Tooltip';
 import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
@@ -224,7 +224,7 @@ import ShareIcon from 'vue-material-design-icons/Share';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
 
 export default {
-    recommendationsOrderMap: interactionService.getRecommendationOrderMap(),
+    recommendationsOrderMap: interactionUIService.getRecommendationOrderMap(),
     name: 'SearchEngine',
     data() {
         return {

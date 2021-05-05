@@ -140,7 +140,7 @@
 </template>
 
 <script>
-import { interactionService } from '@/cms/services/interaction.service';
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
 
 import ListPagination from '@/client/cmps/common/ListPagination';
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
@@ -268,7 +268,7 @@ export default {
             return this.materials.filter(material => material.labels.some(label => label._id === labelId));
         },
         getInteractionColor(recommendation) {
-            return interactionService.getInteractionColor(recommendation);
+            return interactionUIService.getInteractionColor(recommendation);
         }
     },
     components: {

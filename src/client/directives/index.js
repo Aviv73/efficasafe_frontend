@@ -2,7 +2,7 @@ import Vue from 'vue';
 import { VueHammer } from 'vue2-hammer';
 import vueDebounce from 'vue-debounce';
 
-import { interactionService } from '@/cms/services/interaction.service';
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
 
 
 VueHammer.config.swipe = {
@@ -43,7 +43,7 @@ Vue.directive('refs-tooltip', {
         
         const elSubs = el.querySelectorAll('sub');
         for (let i = 0; i < elSubs.length; i++) {
-            const refsOrder = interactionService.getRefsOrder(elSubs[i].innerText);
+            const refsOrder = interactionUIService.getRefsOrder(elSubs[i].innerText);
             const refs = getRefsFromIdxs(refsOrder, interactionRefs);
             
             elSubs[i].addEventListener('mouseenter', setTooltipPos);
@@ -75,10 +75,10 @@ Vue.directive('refs-tooltip', {
         
         const elSubs = el.querySelectorAll('sub');
         for (let i = 0; i < elSubs.length; i++) {
-            const refIdxs = interactionService.getRefsOrder(elSubs[i].innerText);
+            const refIdxs = interactionUIService.getRefsOrder(elSubs[i].innerText);
             if (!refIdxs.length) continue;
             
-            elSubs[i].innerText = interactionService.formatRefStrs(elSubs[i].innerText);
+            elSubs[i].innerText = interactionUIService.formatRefStrs(elSubs[i].innerText);
             elSubs[i].addEventListener('mouseenter', setTooltipPos);
             
             const refs = getRefsFromIdxs(refIdxs, combinedRefs);

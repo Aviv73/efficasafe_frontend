@@ -131,7 +131,7 @@
 </template>
 
 <script>
-import { interactionService } from '@/cms/services/interaction.service';
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
 
 import Collapse from '@/client/cmps/common/Collapse';
 import Tooltip from '@/client/cmps/common/Tooltip';
@@ -229,7 +229,7 @@ export default {
                 side1PathwayRefs = side1Material.pathways.reduce((acc, pathway) => {
                 const idx = side2Pathways.findIndex(side2Pathway => side2Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
                 if (idx !== -1) {
-                    const refs = interactionService.getRefsOrder(pathway.influence);
+                    const refs = interactionUIService.getRefsOrder(pathway.influence);
                     refs.forEach(ref => {
                         if (!seenRefsMap[ref]) {
                             if (!interaction.refs.includes(ref)) {
@@ -241,7 +241,7 @@ export default {
                 }
                     return acc;
                 }, []);
-                const refs = interactionService.getRefsOrder(side1Material.effectOnDrugMetabolism);
+                const refs = interactionUIService.getRefsOrder(side1Material.effectOnDrugMetabolism);
                 refs.forEach(ref => {
                     if (!seenRefsMap[ref]) {
                         if (!interaction.refs.includes(ref)) {
@@ -322,7 +322,7 @@ export default {
             }
         },
         getInteractionColor(recommendation) {
-            return interactionService.getInteractionColor(recommendation);
+            return interactionUIService.getInteractionColor(recommendation);
         }
     },
     created() {

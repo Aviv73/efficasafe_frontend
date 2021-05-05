@@ -64,7 +64,7 @@
 
 <script>
 import { drugBankService } from '@/cms/services/drug-bank.service';
-import { interactionService } from '@/cms/services/interaction.service';
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import loader from '@/cms/cmps/general/LoadingCmp';
 import entityNotFound from '@/cms/cmps/general/EntityNotFound';
 import dBankRefsTable from '@/cms/cmps/common/DBankRefsTable';
@@ -132,7 +132,7 @@ export default {
                 });
                 formatedMatch = formatedMatch.replace('[', '(');
                 formatedMatch = formatedMatch.replace(']', ')');
-                formatedMatch = `<sub>${interactionService.formatRefStrs(formatedMatch)}</sub>`;
+                formatedMatch = `<sub>${interactionUIService.formatRefStrs(formatedMatch)}</sub>`;
                 
                 const beforeIdx = txt.indexOf(match) - 1;
                 if (txt.charAt(beforeIdx) === '.') {
@@ -160,7 +160,7 @@ export default {
                 ...management.querySelectorAll('sub') 
             ];
             for (let i = 0; i < elSubs.length; i++) {
-                const refsOrder = interactionService.getRefsOrder(elSubs[i].innerText);
+                const refsOrder = interactionUIService.getRefsOrder(elSubs[i].innerText);
                 const refs = this.getRefsFromIdxs(refsOrder);
 
                 elSubs[i].addEventListener('mouseenter', this.setTooltipPos);

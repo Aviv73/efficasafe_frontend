@@ -266,6 +266,7 @@
 
 <script>
 import { interactionService } from '@/cms/services/interaction.service';
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import { labelService } from '@/cms/services/label.service';
 import { eventBus, EV_addInteraction } from '@/cms/services/eventBus.service';
 import interactionSides from '@/cms/cmps/interaction/edit/InteractionSides';
@@ -295,8 +296,8 @@ export default {
         symptoms: '',
       },
       interaction: {
-        recommendation: Object.keys(interactionService.getRecommendationOrderMap()),
-        evidenceLevel: interactionService.getEvidenceLevelDictionary(),
+        recommendation: Object.keys(interactionUIService.getRecommendationOrderMap()),
+        evidenceLevel: interactionUIService.getEvidenceLevelDictionary(),
       },
       CKEditorConfig: {
         height: 400,
@@ -391,7 +392,7 @@ export default {
       this.sideDetailsActive = false;
     },
     isRefsChanged(property) {
-      const refsOrder = interactionService.getRefsOrder(this.editedInteraction[property]);
+      const refsOrder = interactionUIService.getRefsOrder(this.editedInteraction[property]);
       return !refsOrder.length;
     },
     handleRefsChange() {
@@ -415,7 +416,7 @@ export default {
     },
     setInteractionRefs() {
       const txt = `${this.editedInteraction.summary} ${this.editedInteraction.reviewOfStudies}`;
-      const sortedRefs = interactionService.getSortedRefs(
+      const sortedRefs = interactionUIService.getSortedRefs(
         txt,
         this.side1MaterialRefs
       );
@@ -477,7 +478,7 @@ export default {
     },
     calculateEvidenceLevel() {
       if (this.interactionRefs.length) {
-        this.editedInteraction.evidenceLevel = interactionService.calculateEvidenceLevel(
+        this.editedInteraction.evidenceLevel = interactionUIService.calculateEvidenceLevel(
           this.interactionRefs
         );
       }
