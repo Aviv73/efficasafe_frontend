@@ -8,7 +8,10 @@
     >
         <div
             class="interaction-capsules-side"
-            :class="{ 'dense': dense }"
+            :class="{
+                'dense': dense,
+                'wide': onDetailsPage
+            }"
             v-if="!showDraftName"
         >
             <span :title="side1Name">{{ side1Name }}</span>
@@ -24,8 +27,13 @@
                 />
             </svg>
         </div>
-        <div class="interaction-capsules-side"
-        :class="{ 'dense': dense }">
+        <div
+            class="interaction-capsules-side"
+            :class="{
+                'dense': dense,
+                'wide': onDetailsPage
+            }"
+        >
         <svg
             v-if="showDraftName"
             xmlns="http://www.w3.org/2000/svg"

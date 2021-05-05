@@ -64,7 +64,7 @@
                 </div>
             </header>
             <main class="interaction-details-details">
-                <div class="main-container p-relative">
+                <div class="main-container p-relative mobile-coloumn">
                     <div
                         class="narrow-therapuetic-warnning"
                         v-if="side2Material.isNarrowTherapeutic"
@@ -73,8 +73,28 @@
                         in dose or blood concentration may lead to serious therapeutic failures and/or adverse
                         drug reactions.
                     </div>
-                    <div class="note flex-center" v-if="!isPrimaryMaterial && interaction.note">
-                        <span><span class="font-bold">Note:</span> {{ interaction.note }}</span>
+                    <div
+                        class="note-container flex-center"
+                        v-if="!isPrimaryMaterial && interaction.note"
+                    >
+                        <span class="note">
+                            <span class="font-bold">Note:</span> {{ interaction.note }}
+                        </span>
+                        <span class="evidence-level">
+                            {{ interaction.evidenceLevel }}
+                            <tooltip on="focus" right-top>
+                                <template #content>
+                                    <div class="evidence-level-tooltip-content">
+                                        Based On {{ clinicalRefCount }} Clinical Trial{{ clinicalRefCount > 1 ? 's' : '' }},
+                                        {{ preClinicalRefCount }} Pre-clinical {{ preClinicalRefCount > 1 ? 'Studies' : 'Study' }} And {{ articlesRefCount }} Article{{ articlesRefCount > 1 ? 's' : '' }}
+                                    </div>
+                                </template>
+                                <span class="refs">
+                                    <span class="refs-count">({{ combinedRefs.length }})</span> 
+                                    <information-outline-icon :size="12" />
+                                </span>
+                            </tooltip>
+                        </span>
                     </div>
                     <h2
                         v-if="interaction.summary"

@@ -1,13 +1,26 @@
 .side1-pathways {
     margin-inline-start: rem(24px);
     
+    h3 {
+        margin-block-end: rem(8px);
+    }
     &-nav {
+        display: flex;
+        flex-wrap: wrap;
         border-bottom: 1px solid rgba($clr12, .1);
         margin-block-end: rem(15px);
         padding-block-end: rem(10px);
 
+        li {
+            max-width: 100%;
+        }
+
         &-item:not(:last-child) {
-            margin-inline-end: rem(16px);
+            margin: rem(12px) rem(8px);
+
+            @include for-narrow-layout {
+                margin: 0 rem(16px) 0 0;
+            }
         }
 
         .chip {
@@ -42,9 +55,12 @@
             font-size: rem(12px);
             line-height: rem(14px);
             font-style: italic;
+            max-width: fit-content;
         }
     }
     .active-tab-txt {
-        padding-inline-end: 30%;
+        @include for-narrow-layout {
+            padding-inline-end: 30%;
+        }
     }
 }

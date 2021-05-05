@@ -15,7 +15,7 @@
                         side2Refs
                     }"
                 >
-                    <span>{{ idx === 0 ? '' : ',' }} </span>
+                    <span>{{ idx === 0 ? '' : ', ' }} </span>
                     <tooltip bottom-left>
                         <span class="font-uppercase">{{ pathway.name }}</span>
                         <template #content>

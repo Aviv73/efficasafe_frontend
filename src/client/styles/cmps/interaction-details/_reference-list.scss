@@ -11,9 +11,14 @@
         }
     }
     .num {
-        padding: 0 rem(22px);
+        padding: 0 rem(8px) 0 0;
+        
+        @include for-narrow-layout {
+            padding: 0 rem(22px);
+        }
     }
     .txt {
+        width: 100%;
         max-width: 100ch;
     }
     .ref-link {
