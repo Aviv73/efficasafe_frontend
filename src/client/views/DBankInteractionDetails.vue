@@ -76,11 +76,61 @@
                 </div>
             </header>
             <main class="interaction-details-details">
-                <div class="main-container p-relative mobile-coloumn">
-                    <pre>{{ interaction }}</pre>
+                <div class="main-container mobile-coloumn">
+                    <h2
+                        v-if="interaction.summary"
+                        class="subheader"
+                    >
+                        Summary
+                    </h2>
+                    <p
+                        class="paragraph"
+                        v-if="interaction.summary"
+                        v-text="interaction.summary"
+                    />
+                    <h2
+                        v-if="interaction.severity"
+                        class="subheader"
+                    >
+                        Severity
+                    </h2>
+                    <p
+                        class="paragraph"
+                        v-if="interaction.severity"
+                        v-text="interaction.severity"
+                    />
+                    <h2
+                        v-if="interaction.extended_description"
+                        class="subheader"
+                    >
+                        Extended description
+                    </h2>
+                    <p
+                        class="paragraph"
+                        v-if="interaction.extended_description"
+                        v-html="interaction.extended_description"
+                    />
+                    <h2
+                        v-if="interaction.management"
+                        class="subheader"
+                    >
+                        Management
+                    </h2>
+                    <p
+                        class="paragraph"
+                        v-if="interaction.management"
+                        v-html="interaction.management"
+                    />
                 </div>
             </main>
             <footer class="interaction-details-refs">
+                <div class="main-container">
+                    <h2 class="subheader">References</h2>
+                    <reference-list
+                        :refs="interactionRefs"
+                        d-bank-refs
+                    />
+                </div>
             </footer>
         </article>
     </section>
@@ -92,6 +142,7 @@ import { interactionService } from '@/cms/services/interaction.service';
 
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 import Tooltip from '@/client/cmps/common/Tooltip';
+import ReferenceList from '@/client/cmps/interaction-details/ReferenceList';
 
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
 import PrinterIcon from 'vue-material-design-icons/Printer';
@@ -154,7 +205,8 @@ export default {
         ShareIcon,
         InteractionCapsules,
         InformationOutlineIcon,
-        Tooltip
+        Tooltip,
+        ReferenceList
     }
 }
 </script>

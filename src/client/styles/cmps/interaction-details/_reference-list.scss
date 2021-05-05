@@ -22,6 +22,7 @@
         max-width: 100ch;
     }
     .ref-link {
+        word-break: break-all;
         color: $green;
     }
 }
