@@ -198,6 +198,7 @@
                                         :side2Pathways="relevantSide2Pathways"
                                         :combinedRefs="combinedRefs"
                                         :side2Refs="side2Refs"
+                                        :materialName="interactionName.split(' & ')[1]"
                                     />
                                 </template>
                             </collapse>

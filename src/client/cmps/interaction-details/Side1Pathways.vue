@@ -31,7 +31,7 @@
                     {{ pathway.name }}
                 </button>
             </li>
-            <li>
+            <li class="d-flex">
                 <span
                     class="un-relevant clip-txt"
                     v-if="unrelevantPathways.length"

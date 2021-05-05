@@ -1,5 +1,8 @@
 <template>
     <section class="side2-pathways">
+        <p class="side2-pathways-header">
+            {{ materialName }} is metabolized by:
+        </p>
         <div
             class="side2-pathways-row"
             v-for="({ name, pathways }, index) in formatedPathways"
@@ -17,7 +20,7 @@
                 >
                     <span>{{ idx === 0 ? '' : ', ' }} </span>
                     <tooltip bottom-left>
-                        <span class="font-uppercase">{{ pathway.name }}</span>
+                        <span class="font-uppercase">{{ pathway.name + '\xa0' }}</span>
                         <template #content>
                             <div
                                 class="pathway-tooltip"
@@ -51,6 +54,10 @@ export default {
         },
         side2Refs: {
             type: Array,
+            required: true
+        },
+        materialName: {
+            type: String,
             required: true
         }
     },

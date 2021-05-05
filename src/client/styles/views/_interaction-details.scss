@@ -182,7 +182,7 @@
             }
         }
         .monitor {
-            margin-block-end: rem(42px);
+            margin-block-end: rem(22px);
 
             & > div {
                 line-height: rem(20px);
@@ -216,7 +216,6 @@
             }
         }
         .narrow-therapuetic-warnning {
-            font-size: rem(12px);
             line-height: rem(14px);
             padding: rem(20px) rem(22px);
             width: 100%;
@@ -232,8 +231,8 @@
                 right: 24px;
                 left: unset;
                 width: rem(250px);
-                padding: rem(20px) rem(22px) rem(42px);
                 border-radius: 18px;
+                padding: rem(16px) rem(20px);
                 margin-block-end: 0;
             }
         }

@@ -1,8 +1,11 @@
 .side2-pathways {
-    margin: 0 0 rem(28px) rem(24px);
+    margin: 0 0 rem(22px) rem(24px);
 
-    &-row {
-        margin: rem(12px) 0;
+    &-header {
+        margin-block-end: rem(6px);
+    }
+    &-row:not(:last-child) {
+        margin-block-end: rem(12px);
     }
     .pathway {
         cursor: help;
