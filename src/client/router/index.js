@@ -63,7 +63,6 @@ const routes = [
     name: 'VinteractionDetails',
     component: InteractionDetails
   },
-
   {
     path: '/about',
     name: 'About',

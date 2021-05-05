@@ -84,7 +84,7 @@
                         <router-link to="/">Articles</router-link>
                     </li>
                     <li class="navbar-nav-item link">
-                        <router-link to="/">About us</router-link>
+                        <router-link to="/about">About us</router-link>
                     </li>
                 </ul>
                 <button class="navbar-toggle" @click="toggleNavActive">
@@ -121,7 +121,7 @@
                         <router-link to="/">Articles</router-link>
                     </li>
                     <li class="navbar-mobile-nav-item">
-                        <router-link to="/">About us</router-link>
+                        <router-link to="/about">About us</router-link>
                     </li>
                     <li class="navbar-mobile-nav-item">
                         <router-link to="/">Contact us</router-link>
