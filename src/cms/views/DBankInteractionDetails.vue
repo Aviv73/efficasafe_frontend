@@ -47,10 +47,10 @@
 
                 <v-divider class="d-bank-interaction-details-content-divider my-2" />
                 <d-bank-refs-table 
-                        class="d-bank-interaction-details-content-table"
-                        :refs="interactionRefs"
-                        :isEdit="false"
-                    />
+                    class="d-bank-interaction-details-content-table"
+                    :refs="interactionRefs"
+                    :isEdit="false"
+                />
             </v-card>
         </main>
         <entity-not-found 

@@ -230,14 +230,14 @@
                     </collapse>
                 </div>
             </main>
-            <div class="interaction-details-refs">
+            <footer class="interaction-details-refs">
                 <div class="main-container">
                     <h2 class="subheader">References</h2>
                     <reference-list
                         :refs="combinedRefs"
                     />
                 </div>
-            </div>
+            </footer>
         </article>
     </section>
 </template>
