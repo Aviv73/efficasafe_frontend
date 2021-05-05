@@ -454,7 +454,7 @@ export default {
                 }, 0);
                 return acc;
             }, 0);
-            const pathwayRefsCount = this.materials.reduce((acc, { _id, pathways, effectOnDrugMetabolism }) => {
+            const pathwayRefsCount = this.materials.reduce((acc, { _id, pathways }) => {
                 pathways.forEach(pathway => {
                     if (
                         ((pathway.type === 'enzyme' || pathway.type === 'transporter') &&
@@ -471,16 +471,10 @@ export default {
                         }
                     });
                 });
-                const refs = interactionService.getRefsOrder(effectOnDrugMetabolism);
-                refs.forEach(ref => {
-                    if (!seenRefsMap[_id][ref + '']) {
-                        acc++;
-                        seenRefsMap[_id][ref + ''] = true;
-                    }
-                });
 
                 return acc;
             }, 0);
+            
             
             return refsCount + dBankRefsCount + pathwayRefsCount + this.$store.getters.supplementsRefs.length;
         },

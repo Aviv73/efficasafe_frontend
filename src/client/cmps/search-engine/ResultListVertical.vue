@@ -229,6 +229,7 @@ export default {
             }
         },
         getPreviewWrapEl({ side2Material, side2Label }) {
+            if (this.$route.name === 'Drug2Drug') return 'router-link';
             if (this.materials.length <= 1) {
                 if (!side2Material) return 'span';
                 return 'router-link';
@@ -240,6 +241,7 @@ export default {
             }
         },
         getInteractionLink({ _id, side2Material, side2Label }) {
+            if (this.$route.name === 'Drug2Drug') return `/interaction/drug2drug/${_id}`;
             if (side2Material) return `/interaction/${_id}`;
             const materials = this.getVirtualSide2(side2Label._id);
             if (materials.length === 1) return `/interaction/${_id}/${materials[0]._id}`;
