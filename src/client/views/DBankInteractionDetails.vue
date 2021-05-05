@@ -76,7 +76,11 @@
                 </div>
             </header>
             <main class="interaction-details-details">
-                <div class="main-container mobile-coloumn">
+                <div class="main-container p-relative mobile-coloumn">
+                    <figure class="drugbank-logo">
+                        <img :src="require(`@/cms/assets/drugbank.png`)" alt="DrugBank logo" />
+                        <figcaption class="caption">powered by</figcaption>
+                    </figure>
                     <h2
                         v-if="interaction.summary"
                         class="subheader"
@@ -110,8 +114,7 @@
                         v-if="interaction.extended_description"
                         v-html="getRefsToDisplay(interaction.extended_description)"
                         v-refs-tooltip.dBank="{
-                            interactionRefs,
-
+                            interactionRefs
                         }"
                     />
                     <h2
@@ -124,6 +127,9 @@
                         class="paragraph"
                         v-if="interaction.management"
                         v-html="getRefsToDisplay(interaction.management)"
+                        v-refs-tooltip.dBank="{
+                            interactionRefs
+                        }"
                     />
                 </div>
             </main>
