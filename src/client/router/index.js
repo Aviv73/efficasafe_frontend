@@ -87,7 +87,12 @@ const routes = [
   {
     path: '/principles-and-processes',
     name: 'PrinciplesAndProcesses',
-    component: () => import('../views/PrinciplesAndProcesses')
+    component: () => import(/* webpackChunkName: 'principles-and-processes' */ '../views/PrinciplesAndProcesses')
+  },
+  {
+    path: '/terms-and-conditions',
+    name: 'TermsAndConditions',
+    component: () => import(/* webpackChunkName: 'terms-and-conditions' */ '../views/TermsAndConditions')
   }
 ];
 

@@ -1,10 +1,6 @@
 <template>
     <section class="principles-and-processes">
-        <header class="principles-and-processes-header flex-center">
-            <router-link to="/">
-              <img :src="require('@/client/assets/imgs/flat-logo.png')" alt="Logo" />
-            </router-link>
-        </header>
+        <page-header />
         <article class="principles-and-processes-container">
             <h1 class="page-header1">Editorial Principles and Processes</h1>
             <section class="principles-and-processes-lists">
@@ -217,3 +213,13 @@
         </article>
     </section>
 </template>
+
+<script>
+import PageHeader from '@/client/cmps/shared/PageHeader';
+
+export default {
+    components: {
+        PageHeader
+    }    
+}
+</script>

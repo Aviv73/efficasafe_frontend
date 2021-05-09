@@ -1,10 +1,6 @@
 <template>
     <section class="about-page">
-        <header class="about-page-header flex-center">
-            <router-link to="/">
-              <img :src="require('@/client/assets/imgs/flat-logo.png')" alt="Logo" />
-            </router-link>
-        </header>
+        <page-header />
         <article class="about-page-container">
             <h1 class="page-header1">About us</h1>
             <p class="about-page-opener about-page-paragraph">
@@ -115,6 +111,7 @@
 </template>
 
 <script>
+import PageHeader from '@/client/cmps/shared/PageHeader';
 import Swiper from '@/client/cmps/common/Swiper';
 
 import ChevronLeftCircleIcon from 'vue-material-design-icons/ChevronLeftCircle';
@@ -124,7 +121,8 @@ export default {
   components: {
     Swiper,
     ChevronLeftCircleIcon,
-    ChevronRightCircleIcon
+    ChevronRightCircleIcon,
+    PageHeader
   }
 }
 </script>

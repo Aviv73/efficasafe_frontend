@@ -8,6 +8,10 @@
     flex-direction: column;
     align-items: center;
 
+    .link {
+        color: rgba($clr1, .85);
+    }
+
     &-logo {
         width: 23px;
         margin-block-end: rem(20px);

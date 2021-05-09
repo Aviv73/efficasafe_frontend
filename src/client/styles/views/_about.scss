@@ -15,14 +15,6 @@
             padding: 0;
         }
     }
-    &-header {
-        height: 300px;
-        background-image: url("../assets/imgs/about-hero2.jpg");
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center;
-        margin-block-end: rem(36px);
-    }
     .marked {
         color: $green;
         font-family: roboto-bold, sans-serif;
