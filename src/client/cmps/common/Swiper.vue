@@ -18,6 +18,7 @@
             </transition>
         </span>
         <i
+            v-if="!hideNavigation"
             @click="doSlide(-1)"
             class="chevron chevron-prev"
         >
@@ -26,6 +27,7 @@
             </slot>
         </i>
         <i
+            v-if="!hideNavigation"
             @click="doSlide(1)"
             class="chevron chevron-next"
         >
@@ -34,7 +36,10 @@
             </slot>
         </i>
         <slot name="pagination">
-            <span class="pagination">
+            <span class="pagination" v-if="$slots.default">
+                <button v-if="paginationPrevNext">
+                    A
+                </button>
                 <label
                     v-for="n in $slots.default.length"
                     :key="n"
@@ -42,6 +47,9 @@
                     <input type="radio" name="pagination-btns" v-model="currSlideIdx" :value="n - 1" hidden />
                     <span class="dot" />
                 </label>
+                <button v-if="paginationPrevNext">
+                    B
+                </button>
             </span>
         </slot>
     </section>
@@ -63,6 +71,14 @@ export default {
         delay: {
             type: Number,
             default: 15
+        },
+        hideNavigation: {
+            type: Boolean,
+            default: false
+        },
+        paginationPrevNext: {
+            type: Boolean,
+            default: false
         }
     },
     data: () => ({
@@ -117,10 +133,39 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .swiper {
+        position: relative;
+    }
     .navigation {
         &-default {
             font-size: 36px;
             font-weight: 700;
+        }
+    }
+    .pagination {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%, 30px);
+
+        label:not(:last-child) {
+            display: inline-block;
+            margin-inline-end: 10px;
+        }
+
+        .dot {
+            cursor: pointer;
+            display: inline-block;
+            height: 10px;
+            width: 10px;
+            background-color: #fff;
+            border-radius: 50%;
+            opacity: .3;
+            transition: opacity .2s linear;
+        }
+
+        [type=radio]:checked+.dot {
+            opacity: 1;
         }
     }
     .grab-cursor {

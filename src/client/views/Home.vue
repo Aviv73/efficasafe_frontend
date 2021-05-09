@@ -58,7 +58,7 @@
                 </ul>
             </div>
             <div class="home-container">
-                <swiper class="home-swiper home-container" :auto-play="true">
+                <swiper class="home-swiper home-container" auto-play>
                     <p class="home-stats-quote">
                         Finally! One site with everything in it. I believe that
                         professionals have been waiting for something like this
@@ -93,10 +93,10 @@
                         at the end of the day, is what we are all aiming for.
                         <span>Margaret Elsindor</span>
                     </p>
-                    <template v-slot:navigation-prev>
+                    <template #navigation-prev>
                         <chevron-left-icon :size="36" />
                     </template>
-                    <template v-slot:navigation-next>
+                    <template #navigation-next>
                         <chevron-right-icon :size="36" />
                     </template>
                 </swiper>
