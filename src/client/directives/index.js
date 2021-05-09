@@ -2,7 +2,7 @@ import Vue from 'vue';
 import { VueHammer } from 'vue2-hammer';
 import vueDebounce from 'vue-debounce';
 
-import { interactionService } from '@/cms/services/interaction.service';
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
 
 
 VueHammer.config.swipe = {
@@ -36,6 +36,38 @@ Vue.directive('set-sticky-class-name', {
 });
 
 Vue.directive('refs-tooltip', {
+    inserted(el, binding) {
+        const { dBank } = binding.modifiers;
+        const { interactionRefs } = binding.value;
+        if (!dBank) return;
+        
+        const elSubs = el.querySelectorAll('sub');
+        for (let i = 0; i < elSubs.length; i++) {
+            const refsOrder = interactionUIService.getRefsOrder(elSubs[i].innerText);
+            const refs = getRefsFromIdxs(refsOrder, interactionRefs);
+            
+            elSubs[i].addEventListener('mouseenter', setTooltipPos);
+            const elTooltip = document.createElement('aside');
+            elTooltip.classList.add('refs-tooltip');
+            let htmlStr = '<ul>';
+            refs.forEach(ref => {
+                htmlStr += `<li class="tooltip-item">
+                    <p style="display: block;"><span>${ref.draftIdx}</span>.${ref.citation || ref.title}</p>
+                    <a
+                        class="ref-link"
+                        target="_blank"
+                        style="word-break: break-all;"
+                        href="${ref.pubmed_id ? `https://pubmed.ncbi.nlm.nih.gov/${ref.pubmed_id}` : ref.url}"
+                    >
+                        ${ref.pubmed_id ? `https://pubmed.ncbi.nlm.nih.gov/${ref.pubmed_id}` : ref.url}
+                    </a>
+                </li>`;
+            });
+            htmlStr += '</ul>';
+            elTooltip.innerHTML = htmlStr;
+            elSubs[i].appendChild(elTooltip);
+        }
+    },
     update(el, binding, vnode, { isRootInsert }) {
         const { pathwaysFirst, pathwaysSecond, dynamicTxt } = binding.modifiers;
         const { combinedRefs, side2Refs } = binding.value;
@@ -43,10 +75,10 @@ Vue.directive('refs-tooltip', {
         
         const elSubs = el.querySelectorAll('sub');
         for (let i = 0; i < elSubs.length; i++) {
-            const refIdxs = interactionService.getRefsOrder(elSubs[i].innerText);
+            const refIdxs = interactionUIService.getRefsOrder(elSubs[i].innerText);
             if (!refIdxs.length) continue;
             
-            elSubs[i].innerText = interactionService.formatRefStrs(elSubs[i].innerText);
+            elSubs[i].innerText = interactionUIService.formatRefStrs(elSubs[i].innerText);
             elSubs[i].addEventListener('mouseenter', setTooltipPos);
             
             const refs = getRefsFromIdxs(refIdxs, combinedRefs);

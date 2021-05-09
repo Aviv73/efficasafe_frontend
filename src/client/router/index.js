@@ -6,6 +6,7 @@ import InteractionDetails from '../views/InteractionDetails';
 import ForgotPass from '../views/auth/ForgotPass.vue'
 import ForgotPasswordEmail from '../views/auth/ForgotPasswordEmail.vue'
 import VerifyEmail from '../views/auth/VerifyEmail.vue'
+import DBankInteractionDetails from '../views/DBankInteractionDetails';
 
 import InteractionList from '@/client/cmps/search-engine/InteractionList';
 
@@ -60,6 +61,11 @@ const routes = [
     ]
   },
   {
+    path: '/interaction/drug2drug/:id',
+    name: 'Drug2DrugInteractionDetails',
+    component: DBankInteractionDetails
+  },
+  {
     path: '/interaction/:id',
     name: 'InteractionDetails',
     component: InteractionDetails
@@ -69,7 +75,6 @@ const routes = [
     name: 'VinteractionDetails',
     component: InteractionDetails
   },
-
   {
     path: '/about',
     name: 'About',

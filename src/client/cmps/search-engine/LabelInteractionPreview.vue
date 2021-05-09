@@ -162,7 +162,7 @@
 </template>
 
 <script>
-import { interactionService } from '@/cms/services/interaction.service';
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
 
 import Collapse from '@/client/cmps/common/Collapse';
 import LongTxt from '@/client/cmps/common/LongTxt';
@@ -322,7 +322,7 @@ export default {
             const side1PathwayRefs = this.material.pathways.reduce((acc, pathway) => {
                 const idx = side2Pathways.findIndex(side2Pathway => side2Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
                 if (idx !== -1) {
-                    const refs = interactionService.getRefsOrder(pathway.influence);
+                    const refs = interactionUIService.getRefsOrder(pathway.influence);
                     refs.forEach(ref => {
                         if (!seenRefsMap[ref]) {
                             if (!this.interaction.refs.includes(ref)) {

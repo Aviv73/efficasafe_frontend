@@ -111,7 +111,7 @@
                         <button class="mobile-menu-btn"></button>
                     </div>
                     <div class="search-engine-results-stats">
-                        Based on over <animated-integer :value="totalRefsCount" />
+                        Based on <animated-integer :value="totalRefsCount" />
                         scientific articles
                     </div>
                 </header>
@@ -210,7 +210,7 @@
 </template>
 
 <script>
-import { interactionService } from '@/cms/services/interaction.service';
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import Tooltip from '@/client/cmps/common/Tooltip';
 import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
@@ -224,7 +224,7 @@ import ShareIcon from 'vue-material-design-icons/Share';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
 
 export default {
-    recommendationsOrderMap: interactionService.getRecommendationOrderMap(),
+    recommendationsOrderMap: interactionUIService.getRecommendationOrderMap(),
     name: 'SearchEngine',
     data() {
         return {
@@ -454,7 +454,7 @@ export default {
                 }, 0);
                 return acc;
             }, 0);
-            const pathwayRefsCount = this.materials.reduce((acc, { _id, pathways, effectOnDrugMetabolism }) => {
+            const pathwayRefsCount = this.materials.reduce((acc, { _id, pathways }) => {
                 pathways.forEach(pathway => {
                     if (
                         ((pathway.type === 'enzyme' || pathway.type === 'transporter') &&
@@ -471,16 +471,10 @@ export default {
                         }
                     });
                 });
-                const refs = interactionService.getRefsOrder(effectOnDrugMetabolism);
-                refs.forEach(ref => {
-                    if (!seenRefsMap[_id][ref + '']) {
-                        acc++;
-                        seenRefsMap[_id][ref + ''] = true;
-                    }
-                });
 
                 return acc;
             }, 0);
+            
             
             return refsCount + dBankRefsCount + pathwayRefsCount + this.$store.getters.supplementsRefs.length;
         },

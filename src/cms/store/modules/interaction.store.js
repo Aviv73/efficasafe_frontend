@@ -51,9 +51,9 @@ export const interactionStore = ({
         },
         updateSupplementsRefs(state, { refs }) {
             refs.forEach(ref => {
-                if (!state.seenRefsMap[ref.link]) {
+                if (!state.seenRefsMap[ref + '']) {
                     state.supplementsRefs.push(ref);
-                    state.seenRefsMap[ref.link] = true;
+                    state.seenRefsMap[ref + ''] = true;
                 }
             });
         },

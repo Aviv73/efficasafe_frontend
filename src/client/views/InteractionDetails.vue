@@ -64,7 +64,7 @@
                 </div>
             </header>
             <main class="interaction-details-details">
-                <div class="main-container p-relative">
+                <div class="main-container p-relative mobile-coloumn">
                     <div
                         class="narrow-therapuetic-warnning"
                         v-if="side2Material.isNarrowTherapeutic"
@@ -73,8 +73,28 @@
                         in dose or blood concentration may lead to serious therapeutic failures and/or adverse
                         drug reactions.
                     </div>
-                    <div class="note flex-center" v-if="!isPrimaryMaterial && interaction.note">
-                        <span><span class="font-bold">Note:</span> {{ interaction.note }}</span>
+                    <div
+                        class="note-container flex-center"
+                        v-if="!isPrimaryMaterial && interaction.note"
+                    >
+                        <span class="note">
+                            <span class="font-bold">Note:</span> {{ interaction.note }}
+                        </span>
+                        <span class="evidence-level">
+                            {{ interaction.evidenceLevel }}
+                            <tooltip on="focus" right-top>
+                                <template #content>
+                                    <div class="evidence-level-tooltip-content">
+                                        Based On {{ clinicalRefCount }} Clinical Trial{{ clinicalRefCount > 1 ? 's' : '' }},
+                                        {{ preClinicalRefCount }} Pre-clinical {{ preClinicalRefCount > 1 ? 'Studies' : 'Study' }} And {{ articlesRefCount }} Article{{ articlesRefCount > 1 ? 's' : '' }}
+                                    </div>
+                                </template>
+                                <span class="refs">
+                                    <span class="refs-count">({{ combinedRefs.length }})</span> 
+                                    <information-outline-icon :size="12" />
+                                </span>
+                            </tooltip>
+                        </span>
                     </div>
                     <h2
                         v-if="interaction.summary"
@@ -178,6 +198,7 @@
                                         :side2Pathways="relevantSide2Pathways"
                                         :combinedRefs="combinedRefs"
                                         :side2Refs="side2Refs"
+                                        :materialName="interactionName.split(' & ')[1]"
                                     />
                                 </template>
                             </collapse>
@@ -210,20 +231,20 @@
                     </collapse>
                 </div>
             </main>
-            <div class="interaction-details-refs">
+            <footer class="interaction-details-refs">
                 <div class="main-container">
                     <h2 class="subheader">References</h2>
                     <reference-list
                         :refs="combinedRefs"
                     />
                 </div>
-            </div>
+            </footer>
         </article>
     </section>
 </template>
 
 <script>
-import { interactionService } from '@/cms/services/interaction.service';
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import { utilService } from '@/cms/services/util.service';
 
 import Side2Pathways from '@/client/cmps/interaction-details/Side2Pathways';
@@ -300,7 +321,7 @@ export default {
             return !!this.$route.params.matId;
         },
         interactionColor() {
-            return interactionService.getInteractionColor(this.interaction.recommendation);
+            return interactionUIService.getInteractionColor(this.interaction.recommendation);
         },
         interactionName() {
             if (this.isVirtual) return `${this.interaction.side1Material.name} & ${this.side2Material.name}`;
@@ -311,7 +332,7 @@ export default {
                 acc += pathway.influence + ' ';
                 return acc;
             }, '');
-            const sortedRefs = interactionService.getSortedRefs(txt, this.$options.side1Refs);
+            const sortedRefs = interactionUIService.getSortedRefs(txt, this.$options.side1Refs);
             return sortedRefs.filter(ref => this.interactionRefs.findIndex(currRef => currRef.link === ref.link) === -1);
         },
         relevantSide2Pathways() {
@@ -389,7 +410,7 @@ export default {
         },
         sortInteractionRefs() {
             const txt = `${this.interaction.summary} ${this.interaction.reviewOfStudies}`;
-            const sortedRefs = interactionService.getSortedRefs(
+            const sortedRefs = interactionUIService.getSortedRefs(
                 txt,
                 this.interactionRefs
             );
@@ -397,7 +418,7 @@ export default {
         },
         formatRefs(txt, isPathwaysRefs = false) {
             if (!this.interactionRefs.length) return;
-            const refsOrder = interactionService.getRefsOrder(txt, false, false).filter(num => txt.indexOf(num) > -1);
+            const refsOrder = interactionUIService.getRefsOrder(txt, false, false).filter(num => txt.indexOf(num) > -1);
             let lastRefIdx = 0;
             refsOrder.forEach((refNum) => {
                 let draftIdx = this.combinedRefs.findIndex(ref => ref && ref.draftIdx === refNum) + 1;

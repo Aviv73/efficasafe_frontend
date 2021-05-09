@@ -183,7 +183,7 @@
 </template>
 
 <script>
-import { interactionService } from '@/cms/services/interaction.service';
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import { utilService } from '@/cms/services/util.service';
 import { eventBus, EV_addInteraction } from '@/cms/services/eventBus.service';
 import confirmDelete from '@/cms/cmps/general/ConfirmDelete';
@@ -256,7 +256,7 @@ export default {
         acc += pathway.influence + ' ';
         return acc;
       }, '');
-      const sortedRefs = interactionService.getSortedRefs(txt, this.$options.side1Refs);
+      const sortedRefs = interactionUIService.getSortedRefs(txt, this.$options.side1Refs);
       return sortedRefs.filter(ref => this.interactionRefs.findIndex(currRef => currRef.link === ref.link) === -1);
     },
     recommendation() {
@@ -294,7 +294,7 @@ export default {
     },
     formatRefs(txt, isPathwaysRefs = false) {
       if (!this.combinedRefs.length) return;
-      const refsOrder = interactionService.getRefsOrder(txt, false, false).filter(num => txt.indexOf(num) > -1);
+      const refsOrder = interactionUIService.getRefsOrder(txt, false, false).filter(num => txt.indexOf(num) > -1);
       let lastRefIdx = 0;
       refsOrder.forEach((refNum) => {
         let draftIdx = this.combinedRefs.findIndex(ref => ref && ref.draftIdx === refNum) + 1;
@@ -325,7 +325,7 @@ export default {
     },
     sortRefs() {
       const txt = `${this.interaction.summary} ${this.interaction.reviewOfStudies}`;
-      const sortedRefs = interactionService.getSortedRefs(
+      const sortedRefs = interactionUIService.getSortedRefs(
         txt,
         this.interactionRefs
       );
@@ -397,10 +397,10 @@ export default {
       const pathway2Subs = pathways2 ? pathways2.querySelectorAll('sub') : [];
       const elSubs = [...summarySubs, ...reviewSubs, ...pathwaySubs, ...pathway2Subs ];
       for (let i = 0; i < elSubs.length; i++) {
-        const refIdxs = interactionService.getRefsOrder(elSubs[i].innerText);
+        const refIdxs = interactionUIService.getRefsOrder(elSubs[i].innerText);
         if (!refIdxs.length) continue;
         
-        elSubs[i].innerText = interactionService.formatRefStrs(elSubs[i].innerText);
+        elSubs[i].innerText = interactionUIService.formatRefStrs(elSubs[i].innerText);
         elSubs[i].addEventListener('mouseenter', this.setTooltipPos);
         
         const elTooltip = document.createElement('aside');

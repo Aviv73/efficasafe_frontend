@@ -495,7 +495,7 @@
 </template>
 
 <script>
-import { interactionService } from '@/cms/services/interaction.service';
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import labelPathList from '@/cms/cmps/material/details/LabelPathList';
 import confirmDelete from '@/cms/cmps/general/ConfirmDelete';
 import referenceTable from '@/cms/cmps/common/ReferenceTable';
@@ -537,7 +537,7 @@ export default {
         setRefsToolTip() {
             const elSubs = Array.from(this.$refs.materialDetails.querySelectorAll('sub'));
             for (let i = 0; i < elSubs.length; i++) {
-                const refsOrder = interactionService.getRefsOrder(elSubs[i].innerText);
+                const refsOrder = interactionUIService.getRefsOrder(elSubs[i].innerText);
                 const refs = this.getRefsFromIdxs(refsOrder);
                 
                 elSubs[i].addEventListener('mouseenter', this.setTooltipPos);

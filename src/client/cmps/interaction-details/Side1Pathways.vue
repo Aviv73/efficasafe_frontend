@@ -31,9 +31,9 @@
                     {{ pathway.name }}
                 </button>
             </li>
-            <li>
+            <li class="d-flex">
                 <span
-                    class="un-relevant"
+                    class="un-relevant clip-txt"
                     v-if="unrelevantPathways.length"
                 >
                     There is no info on {{ `${materialName}'s` }} effect on: {{ unrelevantPathwayNames }}
