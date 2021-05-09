@@ -779,13 +779,20 @@ export default {
         },
         handleUseApprove() {
             storageService.store('approved-use', true);
-            /// if this.loggedInUser, save on him in DB so confirm will be cross device
+            if (this.loggedInUser) {
+                this.$store.commit({ type: 'setUseApproval' });
+                this.$store.dispatch({
+                    type: 'updateUser',
+                    user: { ...this.$store.getters.loggedInUser }
+                });
+            }
             this.isDisclaimerActive = false;
         },
         showDisclaimer() {
             const didApproved = storageService.load('approved-use');
-            /// check approval on this.loggedInUser as he maybe confirmed on ther device 
-            this.isDisclaimerActive = !didApproved;
+            const { approvedUse } = this.$store.getters.loggedInUser;
+            if (approvedUse || didApproved) return;
+            this.isDisclaimerActive = true;
         },
         reset() {
             this.materials = [];
