@@ -206,15 +206,24 @@
             </div>
             <span class="brim-end" />
         </div>
+        <modal-wrap
+            :isActive="isDisclaimerActive"
+            persistent
+        >
+            <disclaimer @approved-use="handleUseApprove" />
+        </modal-wrap>
     </section>
 </template>
 
 <script>
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
+import { storageService } from '@/cms/services/storage.service';
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import Tooltip from '@/client/cmps/common/Tooltip';
+import ModalWrap from '@/client/cmps/common/ModalWrap';
 import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
 import MaterialInteractionsPreview from '@/client/cmps/search-engine/MaterialInteractionsPreview';
+import Disclaimer from '@/client/cmps/search-engine/Disclaimer';
 
 import MobileMenuIcon from '@/client/cmps/common/icons/MobileMenuIcon';
 import MobileShareIcon from '@/client/cmps/common/icons/MobileShareIcon';
@@ -240,7 +249,8 @@ export default {
             isViewVertical: false,
             scrollBarWidth: '0px',
             routerTransitionName: '',
-            sortOptions: null
+            sortOptions: null,
+            isDisclaimerActive: false
         }
     },
     watch: {
@@ -482,7 +492,7 @@ export default {
             return this.total + this.dBankTotal;
         },
         loggedInUser() {
-            return null;
+            return this.$store.getters.loggedInUser;
         },
         isScreenNarrow() {
             return this.$store.getters.isScreenNarrow;
@@ -767,6 +777,16 @@ export default {
         setScrollBarWidth() {
             this.scrollBarWidth = (window.innerWidth - document.body.clientWidth) + 'px';
         },
+        handleUseApprove() {
+            storageService.store('approved-use', true);
+            /// if this.loggedInUser, save on him in DB so confirm will be cross device
+            this.isDisclaimerActive = false;
+        },
+        showDisclaimer() {
+            const didApproved = storageService.load('approved-use');
+            /// check approval on this.loggedInUser as he maybe confirmed on ther device 
+            this.isDisclaimerActive = !didApproved;
+        },
         reset() {
             this.materials = [];
             this.interactions = [];
@@ -782,6 +802,7 @@ export default {
     },
     mounted() {
         this.setScrollBarWidth();
+        this.showDisclaimer();
     },
     components: {
         Autocomplete,
@@ -793,7 +814,9 @@ export default {
         MobileMenuIcon,
         MobileShareIcon,
         AnimatedInteger,
-        InformationOutlineIcon
+        InformationOutlineIcon,
+        ModalWrap,
+        Disclaimer
     }
 };
 </script>

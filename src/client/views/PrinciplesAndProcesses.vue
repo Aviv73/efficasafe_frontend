@@ -45,7 +45,7 @@
                 at universities and medical centers with significant faculty affiliation.
             </p>
             <h3 class="page-header2">Objective and unbiased</h3>
-            <p class="extra-space">
+            <p>
                 Efficasafe uses only objective and unbiased data.
                 By pinpointing, evaluating, and applying systematic
                 scientific information, search results are deemed reliable
