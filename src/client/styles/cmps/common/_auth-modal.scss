@@ -10,6 +10,30 @@
     border: 1px solid #ebebeb;
     border-radius: 6px;
 
+    .send-verification {
+        background-color: #7ED321;
+        font-family: Roboto-bold;
+        font-size: 12px;
+        padding: 0px;
+        border-radius: 6px;
+        color: white;
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 100%;
+
+        @include for-mobile-layout {
+            padding: 5px;
+        }
+
+
+    }
+
+    .red-bgc {
+        background-color: $red;
+    }
+
     @include for-mobile-layout {
         width: 550px;
     }
@@ -121,4 +145,39 @@
 
 .auth0-lock-terms {
     background: none !important;
+}
+
+
+.email-input {
+    height: 43px;
+    border-radius: 6px;
+    background-color: rgb(248, 248, 248);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 17.5px;
+    margin-bottom: 17.5px;
+}
+
+.email-input input {
+    outline: none;
+    border: 0;
+    text-align: center;
+    background-color: transparent;
+    font-size: 14px;
+    width: 100%;
+}
+
+.red {
+    position: relative;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: red;
+    margin-top: 20px;
+
+    @include for-mobile-layout {
+        position: absolute;
+        margin-top: unset
+    }
 }

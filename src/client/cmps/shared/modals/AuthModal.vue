@@ -1,10 +1,10 @@
 <template>
     <div class="sign-up-modal">
-        <div class="black-screen" @click.stop="closeModal('black')"></div>
+        <div class="black-screen" @click.stop="closeModal"></div>
         <div id="effica-modal"></div>
         <div v-if="signUpModal">
             <div class="inside-modal center">
-                <img src="../../assets/imgs/flat-logo.png" alt="" />
+                <img src="../../../assets/imgs/flat-logo.png" alt="" />
                 <p class="title">Please confirm your email address</p>
 
                 <p class="sub-title">
@@ -31,7 +31,7 @@
 
 <script>
 import Auth0Lock from 'auth0-lock';
-
+import config from '@/client/config';
 export default {
     data() {
         return {
@@ -43,8 +43,7 @@ export default {
         allowLogin: Boolean,
     },
     methods: {
-        closeModal(x = 'no') {
-            console.log(x);
+        closeModal() {
             this.$emit('closeModal');
         },
 
@@ -53,7 +52,6 @@ export default {
         },
 
         async onAuthenticated(authResult) {
-            console.log('from login', authResult);
             let { accessToken, tokenType } = authResult;
             this.$store.commit({
                 type: 'setToken',
@@ -61,7 +59,7 @@ export default {
             });
 
             await this.$store.dispatch({ type: 'getUserInfo' });
-            const loggedInUser = this.$store.getters.loggedInUser;
+            const { loggedInUser } = this.$store.getters;
             if (loggedInUser.email_verified) {
                 this.$store.dispatch({ type: 'getUserInfo' });
                 setTimeout(() => {
@@ -81,11 +79,6 @@ export default {
             allowLogin: this.allowLogin,
             allowSignUp: !this.allowLogin,
         });
-        console.log('doing things');
-        // setTimeout(() => {
-        //     document.querySelector('.auth0-lock-alternative').innerHTML =
-        //         '<h2 href="https://localhost:300/api/account/resetPassword>Reset Password</h2>';
-        // }, 2000);
     },
     created() {
         const clientId = 'ECULxkc4xSBK8omj6EXcnPbyKuTvJ3Nr';
@@ -106,17 +99,16 @@ export default {
 
             autoclose: true,
             avatar: null,
+            forgotPasswordLink: `${config.dbURL}/emailPassword`,
         };
         this.lock = new Auth0Lock(clientId, domain, options);
         this.lock.on('authenticated', this.onAuthenticated);
         this.lock.on('signup error', this.handleError);
     },
-    destroyed() {
+    beforeDestroy() {
         this.lock.off('authenticated', this.onAuthenticated);
         this.lock.off('signup error', this.handleError);
     },
 };
 </script>
 
-<style lang="scss" scoped>
-</style>

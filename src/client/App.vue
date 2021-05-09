@@ -17,7 +17,7 @@
 <script>
 import Navbar from '@/client/cmps/Navbar';
 import MainFooter from '@/client/cmps/MainFooter';
-import AuthModal from '@/client/cmps/common/AuthModal';
+import AuthModal from '@/client/cmps/shared/modals/AuthModal';
 
 export default {
     name: 'App',

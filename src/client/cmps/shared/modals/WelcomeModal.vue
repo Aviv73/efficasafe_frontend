@@ -4,7 +4,7 @@
         <div>
             <button class="close-modal" @click="closeModal">X</button>
             <div class="inside-modal center">
-                <img src="../../assets/imgs/flat-logo.png" alt="" />
+                <img src="../../../assets/imgs/flat-logo.png" alt="" />
                 <div class="con-title">
                     <p>Congratulations!</p>
                     <p>You now have 2 weeks of free trial</p>
@@ -33,6 +33,7 @@ export default {
     methods: {
         closeModal() {
             this.$emit('closeModal');
+            this.$router.push('/');
         },
     },
 };
