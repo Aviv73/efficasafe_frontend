@@ -23,20 +23,6 @@
         background-position: center;
         margin-block-end: rem(36px);
     }
-    h1 {
-        color: rgba($clr-txt-dark, .85);
-        font-size: rem(36px);
-        line-height: rem(32px);
-        margin-block-end: rem(20px);
-    }
-    h2 {
-        color: $clr-txt-dark;
-        font-family: roboto-bold, sans-serif;
-        font-weight: 700;
-        font-size: rem(24px);
-        line-height: rem(28px);
-        margin-block-end: rem(20px);
-    }
     .marked {
         color: $green;
         font-family: roboto-bold, sans-serif;
@@ -66,24 +52,6 @@
         & > .marked:last-child {
             display: block;
             margin-block-start: rem(40px);
-        }
-    }
-    &-list {
-        margin: rem(40px) 0;
-
-        &-item {
-            position: relative;
-            padding-inline-start: rem(45px);
-
-            &:not(:last-child) {
-                margin-block-end: rem(30px);
-            }
-            &::before {
-                content: url("../assets/imgs/logo-symbol-sm.png");
-                position: absolute;
-                left: 0;
-                top: 0;
-            }
         }
     }
     &-link {

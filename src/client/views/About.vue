@@ -1,19 +1,19 @@
 <template>
-    <div class="about-page">
+    <section class="about-page">
         <header class="about-page-header flex-center">
             <router-link to="/">
               <img :src="require('@/client/assets/imgs/flat-logo.png')" alt="Logo" />
             </router-link>
         </header>
         <article class="about-page-container">
-            <h1>About us</h1>
+            <h1 class="page-header1">About us</h1>
             <p class="about-page-opener about-page-paragraph">
               Our mission is to provide doctors, pharmacists,
               and healthcare providers access to the most extensive, updated,
               evidence-based interaction data,
               enabling them to optimize the efficacy and safety of integrative medical care.
             </p>
-            <h2>Our story</h2>
+            <h2 class="page-header2">Our story</h2>
             <p class="about-page-paragraph">
               As professional healthcare providers,
               we understand that in order to make informed clinical decisions,
@@ -30,19 +30,19 @@
                 They can utilize the data to <span class="marked">recommend</span> supplements that <span class="marked">support</span> prescribed
                 drugs for <span class="marked">increased efficacy</span>. <span class="marked">That’s revolutionary!</span>
             </div>
-            <h2>Our editorial philosophy</h2>
-            <ul class="about-page-list">
-                <li class="about-page-list-item">
+            <h2 class="page-header2">Our editorial philosophy</h2>
+            <ul class="styled-ul">
+                <li>
                     <span class="marked">Content:</span>
                     all of our content is evidence-based, reviewed and developed from accepted medical
                     sources.
                 </li>
-                <li class="about-page-list-item">
+                <li>
                     <span class="marked">Clarity:</span>
                     all of our information is analyzed and organized to provide clear and concise
                     clinically-relevant data for use at the point of care.
                 </li>
-                <li class="about-page-list-item">
+                <li>
                     <span class="marked">Conflict of interest:</span>
                     we do not accept advertisements or any other kind of commercial support.
                 </li>
@@ -53,7 +53,7 @@
             >
               Read more
             </router-link>
-            <h2 class="txt-center">Testimonials</h2>
+            <h2 class="page-header2 txt-center">Testimonials</h2>
             <swiper
               hide-navigation
               pagination-prev-next
@@ -103,7 +103,7 @@
                     />
                 </template>
             </swiper>
-            <h2 class="txt-center">Powered by</h2>
+            <h2 class="page-header2 txt-center">Powered by</h2>
             <div class="flex-center">
                 <img
                   class="about-page-drugbank-logo"
@@ -112,7 +112,7 @@
                 />
             </div>
         </article>
-    </div>
+    </section>
 </template>
 
 <script>
