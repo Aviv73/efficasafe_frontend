@@ -53,7 +53,7 @@
             >
               Read more
             </router-link>
-            <h2 class="align-center">Testimonials</h2>
+            <h2 class="txt-center">Testimonials</h2>
             <swiper
               hide-navigation
               pagination-prev-next
@@ -90,7 +90,27 @@
                         Proin tempus tellus ac dolor dictum, ac placerat arcu mollis.”
                     </div>
                 </div>
+                <template #pagination-prev>
+                    <chevron-left-circle-icon
+                        :size="32"
+                        fillColor="#56C596"
+                    />
+                </template>
+                <template #pagination-next>
+                    <chevron-right-circle-icon
+                        :size="32"
+                        fillColor="#56C596"
+                    />
+                </template>
             </swiper>
+            <h2 class="txt-center">Powered by</h2>
+            <div class="flex-center">
+                <img
+                  class="about-page-drugbank-logo"
+                  :src="require('@/cms/assets/drugbank.png')"
+                  alt="Drugbank logo"
+                />
+            </div>
         </article>
     </div>
 </template>
@@ -98,14 +118,14 @@
 <script>
 import Swiper from '@/client/cmps/common/Swiper';
 
-// import ChevronLeftCircleIcon from 'vue-material-design-icons/ChevronLeftCircle';
-// import ChevronRightCircleIcon from 'vue-material-design-icons/ChevronRightCircle';
+import ChevronLeftCircleIcon from 'vue-material-design-icons/ChevronLeftCircle';
+import ChevronRightCircleIcon from 'vue-material-design-icons/ChevronRightCircle';
 
 export default {
   components: {
     Swiper,
-    // ChevronLeftCircleIcon,
-    // ChevronRightCircleIcon
+    ChevronLeftCircleIcon,
+    ChevronRightCircleIcon
   }
 }
 </script>

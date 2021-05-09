@@ -3,6 +3,8 @@
     color: rgba($clr10, .85);
     font-size: rem(18px);
     line-height: rem(26px);
+    padding-block-end: rem(70px);
+    border-bottom: 1px solid rgba($black, .16);
 
     &-container {
         max-width: 800px;
@@ -124,5 +126,17 @@
             opacity: 1;
             filter: grayscale(0);
         }
+        .pagination-prev, .pagination-next {
+            transform: translateY(10px);
+        }
+        .pagination-prev {
+            margin-inline-end: rem(30px);
+        }
+        .pagination-next {
+            margin-inline-start: rem(30px);
+        }
+    }
+    &-drugbank-logo {
+        width: 250px;
     }
 }

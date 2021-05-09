@@ -37,8 +37,14 @@
         </i>
         <slot name="pagination">
             <span class="pagination" v-if="$slots.default">
-                <button v-if="paginationPrevNext">
-                    A
+                <button
+                    v-if="paginationPrevNext"
+                    class="pagination-prev"
+                    @click="doSlide(-1)"
+                >
+                    <slot name="pagination-prev">
+                        &lt;
+                    </slot>
                 </button>
                 <label
                     v-for="n in $slots.default.length"
@@ -47,8 +53,14 @@
                     <input type="radio" name="pagination-btns" v-model="currSlideIdx" :value="n - 1" hidden />
                     <span class="dot" />
                 </label>
-                <button v-if="paginationPrevNext">
-                    B
+                <button
+                    v-if="paginationPrevNext"
+                    class="pagination-next"
+                    @click="doSlide(1)"
+                >
+                    <slot name="pagination-next">
+                        &gt;
+                    </slot>
                 </button>
             </span>
         </slot>
