@@ -1,6 +1,10 @@
 <template>
     <section class="home">
         <welcome-modal v-if="welcomeModal" @closeModal="welcomeModal = false" />
+        <pass-change-success
+            v-if="passwordModal"
+            @closeModal="passwordModal = false"
+        />
         <header class="flex-coloumn">
             <h1 class="flex-coloumn">
                 <a href="/">
@@ -179,7 +183,8 @@ import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import ChevronRightIcon from 'vue-material-design-icons/ChevronRight.vue';
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft.vue';
-import WelcomeModal from '../cmps/common/WelcomeModal.vue';
+import WelcomeModal from '../cmps/shared/modals/WelcomeModal.vue';
+import PassChangeSuccess from '../cmps/shared/modals/PassChangeSuccess.vue';
 
 export default {
     name: 'Home',
@@ -192,6 +197,7 @@ export default {
             },
             searches: [],
             welcomeModal: false,
+            passwordModal: false,
         };
     },
     computed: {
@@ -207,13 +213,11 @@ export default {
                 this.$router.push(`/search?q=${q1}&q=${q2}`);
             }
         },
-        openWelcomeModal() {
-            this.welcomeModal = true;
-        },
     },
     async created() {
         this.stats = await this.$store.dispatch({ type: 'getStatistics' });
-        if (this.$route.query.congratulations) this.openWelcomeModal();
+        if (this.$route.query.congratulations) this.welcomeModal = true;
+        if (this.$route.query.passwordreset) this.passwordModal = true;
     },
     components: {
         Swiper,
@@ -222,6 +226,7 @@ export default {
         ChevronRightIcon,
         ChevronLeftIcon,
         WelcomeModal,
+        PassChangeSuccess,
     },
 };
 </script>

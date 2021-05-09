@@ -3,7 +3,9 @@ import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import SearchEngine from '../views/SearchEngine';
 import InteractionDetails from '../views/InteractionDetails';
-import ForgotPass from '../views/ForgotPass.vue'
+import ForgotPass from '../views/auth/ForgotPass.vue'
+import ForgotPasswordEmail from '../views/auth/ForgotPasswordEmail.vue'
+import VerifyEmail from '../views/auth/VerifyEmail.vue'
 
 import InteractionList from '@/client/cmps/search-engine/InteractionList';
 
@@ -15,6 +17,16 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/verifyEmail/:token',
+    name: 'verifyEmail',
+    component: VerifyEmail
+  },
+  {
+    path: '/emailPassword',
+    name: 'emailPassword',
+    component: ForgotPasswordEmail
   },
   {
     path: '/forgotPass/:token',
