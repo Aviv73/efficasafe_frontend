@@ -79,6 +79,7 @@
             background-color: $white;
             box-shadow: 0px 3px 22px rgba($black, .16);
             border-radius: 22px;
+            min-height: rem(278px);
             text-align: center;
 
             &:first-child {

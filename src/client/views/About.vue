@@ -57,6 +57,7 @@
             <swiper
               hide-navigation
               pagination-prev-next
+              auto-play
             >
                 <div class="about-page-slide">
                     <div class="about-page-slide-card">
@@ -76,18 +77,16 @@
                 </div>
                 <div class="about-page-slide">
                     <div class="about-page-slide-card"> 
-                        “Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Suspendisse bibendum massa sed sollicitudin dapibus.
-                        Etiam volutpat laoreet tortor id pharetra.
-                        Interdum et malesuada fames ac ante ipsum primis in faucibus.
-                        Proin tempus tellus ac dolor dictum, ac placerat arcu mollis.”
+                        “I'll admit that I'm not the most tech-savvy person. This
+                        site is so easy to use it has quickly become my go-to
+                        for all medicinal interactions and an integral part of
+                        my everyday practice as a pharmacist.”
                     </div>
                     <div class="about-page-slide-card"> 
-                        “Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Suspendisse bibendum massa sed sollicitudin dapibus.
-                        Etiam volutpat laoreet tortor id pharetra.
-                        Interdum et malesuada fames ac ante ipsum primis in faucibus.
-                        Proin tempus tellus ac dolor dictum, ac placerat arcu mollis.”
+                        “...So much more than just an interaction checker. I can
+                        save my searches and even get recommendations on what to
+                        monitor. Both features enable better patient care, which
+                        at the end of the day, is what we are all aiming for.”
                     </div>
                 </div>
                 <template #pagination-prev>
