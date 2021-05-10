@@ -29,7 +29,6 @@ export default {
     },
     methods: {
         onLogin() {
-            console.log('changing state');
             this.allowLogin = true;
             this.AuthModal = true;
         },
