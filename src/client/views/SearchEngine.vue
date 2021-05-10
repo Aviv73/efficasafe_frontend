@@ -790,7 +790,7 @@ export default {
         },
         showDisclaimer() {
             const didApproved = storageService.load('approved-use');
-            const { approvedUse } = this.$store.getters.loggedInUser;
+            const approvedUse = this.$store.getters.loggedInUser ? this.$store.getters.loggedInUser.approvedUse : false;
             if (approvedUse || didApproved) return;
             this.isDisclaimerActive = true;
         },
