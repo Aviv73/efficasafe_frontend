@@ -101,12 +101,12 @@ export default {
             },
             theme: {
                 labeledSubmitButton: true,
-                logo: 'https://i.ibb.co/ZHXvGqx/logo-symbol.png',
+                logo: `${window.location.origin}/img/logo-symbol.png`,
                 primaryColor: '#4FB891',
             },
             autoclose: true,
             avatar: null,
-            forgotPasswordLink: `${config.frontURL}/emailPassword`,
+            forgotPasswordLink: `${window.location.origin}/emailPassword`,
         };
         this.lock = new Auth0Lock(config.auth0ClientId, config.auth0BaseURL, options);
         this.lock.on('authenticated', this.onAuthenticated);

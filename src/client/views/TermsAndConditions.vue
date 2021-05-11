@@ -3,7 +3,7 @@
         <page-header />
         <article>
             <div class="main-container">
-                <h1 class="page-header1">End user license agreement</h1>
+                <h1 class="heading1">End user license agreement</h1>
                 <p>
                     Welcome to Efficasafe.com, an
                     <span class="font-bold"
@@ -231,6 +231,7 @@
                     and any other associated documentation provided to you.
                 </p>
                 <h2>4. License Restrictions.</h2>
+                
             </div>
         </article>
     </section>

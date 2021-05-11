@@ -1,6 +1,6 @@
 <template>
     <aside class="disclaimer">
-        <h2 class="page-header1">Disclaimer</h2>
+        <h2 class="heading1">Disclaimer</h2>
         <main>
             <p>
                 This website, Efficasafe.com, is not to be used as a substitute for medical advice,
