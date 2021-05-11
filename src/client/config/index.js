@@ -1,12 +1,5 @@
-var config;
-
-// keys.js - figure out what set of credentials to return
-if (process.env.NODE_ENV === 'production') {
-    // we are in production - return the prod set of keys
-    config = require('./prod');
-} else {
-    // we are in development - return the dev keys!!!
-    config = require('./dev');
+module.exports = {
+    "frontURL": process.env.VUE_APP_FRON_URL,
+    "auth0ClientId": process.env.VUE_APP_AUTH0_CLIENT_ID,
+    "auth0BaseURL": process.env.VUE_APP_AUTH0_BASE_URL
 }
-
-module.exports = config

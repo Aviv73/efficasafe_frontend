@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --dest ../backend/public",
+    "build": "vue-cli-service build --mode production",
+    "build-staging": "vue-cli-service build --mode staging",
     "lint": "vue-cli-service lint",
-    "push": "git push && npm run build && cd .. && cd backend"
+    "push": "git push && npm run build"
   },
   "dependencies": {
     "@types/auth0-js": "^9.14.4",
