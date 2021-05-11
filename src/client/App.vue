@@ -43,6 +43,7 @@ export default {
         },
     },
     created() {
+        console.log(process.env);
         if (this.loggedInUser && !this.loggedInUser.email_verified) {
             this.authModal = true;
         }

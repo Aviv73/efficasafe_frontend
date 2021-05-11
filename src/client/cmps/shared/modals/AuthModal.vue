@@ -91,8 +91,6 @@ export default {
         }
     },
     created() {
-        const clientId = 'ECULxkc4xSBK8omj6EXcnPbyKuTvJ3Nr';
-        const domain = 'dev-385wz0kc.us.auth0.com';
         const options = {
             languageDictionary: {
                 title: 'Efficasafe',
@@ -108,9 +106,9 @@ export default {
             },
             autoclose: true,
             avatar: null,
-            forgotPasswordLink: `${config.dbURL}/emailPassword`,
+            forgotPasswordLink: `${config.frontURL}/emailPassword`,
         };
-        this.lock = new Auth0Lock(clientId, domain, options);
+        this.lock = new Auth0Lock(config.auth0ClientId, config.auth0BaseURL, options);
         this.lock.on('authenticated', this.onAuthenticated);
         this.lock.on('signup error', this.handleError);
     },
