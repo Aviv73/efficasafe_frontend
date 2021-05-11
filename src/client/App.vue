@@ -43,7 +43,9 @@ export default {
     },
     async created() {
         await this.$store.dispatch({ type: 'getUserInfo' });
-        if (this.loggedInUser && !this.loggedInUser.email_verified) {
+        const { _id } = this.$store.getters.loggedInUser;
+        const user = await this.$store.dispatch({ type: 'loadUser', userId: _id });
+        if (user && !user.email_verified) {
             this.authModal = true;
         }
     },
