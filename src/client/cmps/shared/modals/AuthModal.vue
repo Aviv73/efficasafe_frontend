@@ -32,6 +32,7 @@
 <script>
 import Auth0Lock from 'auth0-lock';
 import config from '@/client/config';
+
 export default {
     data() {
         return {
@@ -44,6 +45,7 @@ export default {
     },
     methods: {
         closeModal() {
+            if (this.signUpModal) return;
             this.$emit('closeModal');
         },
 
