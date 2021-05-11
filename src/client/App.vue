@@ -7,8 +7,8 @@
         </main>
         <main-footer />
         <auth-modal
-            v-if="AuthModal"
-            @closeModal="AuthModal = false"
+            v-if="authModal"
+            @closeModal="authModal = false"
             :allowLogin="allowLogin"
         />
     </div>
@@ -23,24 +23,34 @@ export default {
     name: 'App',
     data() {
         return {
-            AuthModal: false,
+            authModal: false,
             allowLogin: false,
         };
+    },
+    computed: {
+        loggedInUser() {
+            return this.$store.getters.loggedInUser;
+        }
     },
     methods: {
         onLogin() {
             this.allowLogin = true;
-            this.AuthModal = true;
+            this.authModal = true;
         },
         onSignUp() {
             this.allowLogin = false;
-            this.AuthModal = true;
+            this.authModal = true;
         },
+    },
+    created() {
+        if (this.loggedInUser && !this.loggedInUser.email_verified) {
+            this.authModal = true;
+        }
     },
     components: {
         Navbar,
         MainFooter,
         AuthModal,
-    },
+    }
 };
 </script>

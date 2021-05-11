@@ -35,6 +35,7 @@ export const userStore = {
             state.users = users
         },
         updateUser(state, { user }) {
+            if (!state.users) return;
             const idx = state.users.findIndex(currUser => currUser._id === user._id);
             state.users.splice(idx, 1, user)
         },
@@ -48,9 +49,10 @@ export const userStore = {
     actions: {
         async getUserInfo({ commit }) {
             const user = await userService.getUser();
-            storageService.store('userProfile', user)
-            commit({ type: 'setLoggedInUser', user });
-
+            if (user) {
+                storageService.store('userProfile', user);
+                commit({ type: 'setLoggedInUser', user });
+            }
         },
         async removeUsers(context, { ids }) {
             await userService.removeMany(ids)
