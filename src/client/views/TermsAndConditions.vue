@@ -6,9 +6,8 @@
                 <h1 class="heading1">End user license agreement</h1>
                 <p>
                     Welcome to Efficasafe.com, an
-                    <span class="font-bold"
-                        >Herb-Drug-Supplement Interaction Platform</span
-                    >, that enables doctors, pharmacists, and healthcare
+                    <span class="font-bold">Herb-Drug-Supplement Interaction Platform</span>,
+                    that enables doctors, pharmacists, and healthcare
                     providers access to the most extensive, updated,
                     evidence-based interaction data, helping them to optimize
                     the efficacy and safety of integrative medical care.

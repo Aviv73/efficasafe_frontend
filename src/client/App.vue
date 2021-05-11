@@ -1,7 +1,6 @@
 <template>
     <div id="app">
         <navbar @login="onLogin" @signup="onSignUp" />
-
         <main>
             <router-view />
         </main>
@@ -42,7 +41,8 @@ export default {
             this.authModal = true;
         },
     },
-    created() {
+    async created() {
+        await this.$store.dispatch({ type: 'getUserInfo' });
         if (this.loggedInUser && !this.loggedInUser.email_verified) {
             this.authModal = true;
         }
