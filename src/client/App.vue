@@ -44,6 +44,7 @@ export default {
     },
     created() {
         console.log(process.env);
+        console.log(process.env.VUE_APP_AUTH0_CLIENT_ID);
         if (this.loggedInUser && !this.loggedInUser.email_verified) {
             this.authModal = true;
         }
