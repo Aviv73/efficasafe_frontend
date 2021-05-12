@@ -36,9 +36,9 @@
             padding: rem(4px) rem(10px) rem(4px) rem(26px);
             position: relative;
 
-            &.green { border-color: $green; }
-            &.yellow { border-color: $yellow; }
-            &.red { border-color: $red; }
+            &-green { border-color: $green; }
+            &-yellow { border-color: $yellow; }
+            &-red { border-color: $red; }
             
             .material-design-icon {
                 position: absolute;

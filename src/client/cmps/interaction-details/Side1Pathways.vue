@@ -136,11 +136,11 @@ export default {
             firstLine = firstLine.toLowerCase();
 
             if (firstLine.includes('may induce') || firstLine.includes('may inhibit') || firstLine.includes('may bind')) {
-                return 'red';
+                return 'chip-red';
             } else if (firstLine.includes('is unclear')) {
-                return 'yellow';
+                return 'chip-yellow';
             } else if (firstLine.includes('not likely to affect')) {
-                return 'green';
+                return 'chip-green';
             }
 
             return 'default';

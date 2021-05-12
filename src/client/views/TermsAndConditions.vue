@@ -6,8 +6,9 @@
                 <h1 class="heading1">End user license agreement</h1>
                 <p>
                     Welcome to Efficasafe.com, an
-                    <span class="font-bold">Herb-Drug-Supplement Interaction Platform</span>,
-                    that enables doctors, pharmacists, and healthcare
+                    <span class="font-bold"
+                        >Herb-Drug-Supplement Interaction Platform</span
+                    >, that enables doctors, pharmacists, and healthcare
                     providers access to the most extensive, updated,
                     evidence-based interaction data, helping them to optimize
                     the efficacy and safety of integrative medical care.
@@ -230,8 +231,521 @@
                     and any other associated documentation provided to you.
                 </p>
                 <h2>4. License Restrictions.</h2>
-                
+                <p>You shall not:</p>
+                <ol>
+                    <!-- a -->
+                    <li>
+                        copy the Application, except as expressly permitted by
+                        this license;
+                    </li>
+                    <!-- b -->
+                    <li>
+                        Modify, translate, adapt or otherwise create derivative
+                        works or improvements, whether or not patentable, of the
+                        Application.
+                    </li>
+                    <!-- c -->
+                    <li>
+                        Reverse engineer, disassemble, decompile, decode or
+                        otherwise attempt to derive or gain access to the source
+                        code of the Application or any part thereof.
+                    </li>
+                    <!-- d -->
+                    <li>
+                        Remove, delete, alter or obscure any trademarks or any
+                        copyright, trademark, patent or other intellectual
+                        property or proprietary rights notices from the
+                        Application, including any copy thereof.
+                    </li>
+                    <!-- e -->
+                    <li>
+                        Rent, lease, lend, sell, sublicense, assign, distribute,
+                        publish, transfer or otherwise make available the
+                        Application or any features or functionality of the
+                        Application, to any third party for any reason,
+                        including by making the Application available on a
+                        network where it is capable of being accessed by more
+                        than one device at any time.
+                    </li>
+                    <!-- f -->
+                    <li>
+                        Remove, disable, circumvent or otherwise create or
+                        implement any workaround to any copy protection, rights
+                        management or security features in or protecting the
+                        Application.
+                    </li>
+                </ol>
+                <h2>5. Regulatory Compliance.</h2>
+                <p>
+                    Licensee acknowledges that the Licensed Software does not
+                    have United States Food and Drug Administration (“FDA”) or
+                    equivalent non-U.S. regulatory agency approval (“Approval”).
+                    Accordingly, Licensee acknowledges that the Licensed
+                    Software is intended FOR RESEARCH USE ONLY and NOT FOR USE
+                    IN DIAGNOSTIC PROCEDURES. The Licensed Software should be
+                    used by qualified professionals in strict accordance with
+                    applicable instructions, warnings and other information in
+                    user manuals and other Documentation. Unless otherwise
+                    expressly stated by PacBio in writing, no claim or
+                    representation is made or intended by PacBio (i) as to any
+                    diagnostic or other clinical use of the Licensed Software;
+                    (ii) that any Licensed Software has any Approval for use in
+                    any diagnostic or other clinical procedure, or for any other
+                    use requiring compliance with any law, regulation or
+                    governmental policy concerning medical devices, laboratory
+                    tests or the like (collectively, “Regulatory Laws”); (iii)
+                    that any Licensed Software will satisfy the requirements of
+                    the FDA or any other regulatory agency; or (iv) that any
+                    Licensed Software or its performance is suitable or has been
+                    validated for clinical or diagnostic use, for safety and
+                    effectiveness, for any specific use or application, or for
+                    importation into Licensee’s jurisdiction. Licensee agrees
+                    that if it elects to use the Licensed Software for a purpose
+                    that would subject Licensee, its customers or any Product to
+                    the application of Regulatory Laws or any other law,
+                    regulation or governmental policy, Licensee shall be solely
+                    responsible for obtaining any required Approvals and
+                    otherwise ensuring that the importation of the Products into
+                    Licensee’s jurisdiction and Licensee’s use of Products
+                    complies with all such laws, regulations and policies. The
+                    burden of proof for safe use and handling of the Licensed
+                    Software is entirely the responsibility of Licensee. For
+                    clarity, this Section 2.6 shall not be construed as
+                    granting, by implication, estoppel, reliance or otherwise,
+                    any right, license or authorization to Licensee.
+                </p>
+                <h2>6. Permitted Uses.</h2>
+                <p>
+                    This Application is intended to give access to collected
+                    evidence based information on Drug-Herb-Supplement
+                    interactions. Naturopedia LTD and the Efficasafe website
+                    make no warranties nor express or implied representations
+                    whatsoever regarding the accuracy, completeness, timeliness,
+                    comparative or controversial nature, or usefulness of any
+                    information contained or referenced on this Web site. You
+                    acknowledge and agree that you will only use the Application
+                    as licensed hereunder and for the purpose intended for the
+                    Application. You agree that you will not use the Application
+                    for any prohibited use. Prohibited uses include, but are not
+                    limited to: use of the product for a deceptive purpose,
+                    including for the impersonation of another; permitting
+                    another individual to use your account; use of the
+                    Application to harm or exploit minors; distribution of
+                    “spam”; advertisement or solicitation; use of the
+                    proprietary content, information or materials in any manner
+                    except as permitted under this Agreement; reproduction,
+                    modification, rental, loan, sale, distribution or creation
+                    of any derivative works of the Application; or, use of the
+                    Application to harass, abuse, stalk, threaten, defame or
+                    violate the rights of any other party.
+                </p>
+                <h2>7. Reservation of Rights.</h2>
+                <p>
+                    You acknowledge and agree that the Application is provided
+                    under license, and not sold, to you. You do not acquire any
+                    ownership interest in the Application under this Agreement,
+                    or any other rights thereto other than to use the
+                    Application in accordance with the license granted, and
+                    subject to all terms, conditions and restrictions, under
+                    this Agreement. Naturopedia LTD and/or the Efficasafe.com
+                    website reserve and shall retain its entire right, title and
+                    interest in and to the Application, including all
+                    copyrights, trademarks and other intellectual property
+                    rights therein or relating thereto, except as expressly
+                    granted to you in this Agreement.
+                </p>
+                <h2>8. Collection and Use of Your Personal Information.</h2>
+                <p>
+                    You acknowledge that when you download, install or use the
+                    Application, Naturopedia LTD and/or the Efficasafe.com
+                    website may use automatic means (including, for example,
+                    cookies and web beacons) to collect information about your
+                    Device and about your use of the Application. You also may
+                    be required to provide certain information about yourself as
+                    a condition to downloading, installing or using the
+                    Application or certain of its features or functionality, and
+                    the Application may provide you with opportunities to share
+                    information about yourself with others (collectively, any
+                    personal information processed by the Application on your
+                    behalf shall be referred to as your “Personal Information”).
+                    All Personal Information we collect through or in connection
+                    with this Application is subject to our Privacy Statement.
+                    By consenting to the terms of this Agreement, you are
+                    authorizing Naturopedia LTD and/or the Efficasafe.com
+                    website to collect, use and disclose your Personal
+                    Information in order to provide you with access to and use
+                    of the Application. In addition, Naturopedia LTD and/or the
+                    Efficasafe.com website may use your Personal Information for
+                    the purposes described in our Privacy Statement.
+                </p>
+                <h2>
+                    9. Consent to Disclosure and Use of Personal Information in
+                    De-identified Form.
+                </h2>
+                <p>
+                    create “De-Identified Personal Data”) provided to us through
+                    the Application, and use that De-Identified Personal Data in
+                    aggregate or non-aggregate forms for research studies,
+                    evaluation of the Application services, quality improvement
+                    purposes, or for any other lawful commercial purpose.
+                    Naturopedia LTD and/or the Efficasafe.com website use and
+                    disclosure of any Personal Information and De-Identified
+                    Personal Data in aggregated or non-aggregated forms will be
+                    conducted in compliance with all applicable laws and
+                    regulations. You agree that: (a) you consent to such
+                    disclosures and uses of De-Identified Personal Data; (b)
+                    Naturopedia LTD and/or the Efficasafe.com website are not
+                    obligated to pay any amount to you or otherwise compensate
+                    you or any other person in any way for such disclosures and
+                    uses; (c) Naturopedia LTD and/or the Efficasafe.com website
+                    are not required to furnish you with any other information
+                    of any kind regarding such disclosures and uses; and (d) to
+                    the extent that you have proprietary interest in any such
+                    De- Identified Personal Data, you waive any right to such
+                    interest and you waive any right to seek compensation for
+                    such disclosures or uses.
+                </p>
+                <h2>10. Password Protection.</h2>
+                <p>
+                    You are responsible for keeping your password confidential.
+                    You should notify us immediately if your password is hacked
+                    or stolen. Naturopedia LTD and/or the Efficasafe.com website
+                    are not responsible or liable to you in any way if
+                    information is intercepted by an unauthorized person, either
+                    in transit or at your home, business or other place of
+                    access.
+                </p>
+                <h2>11. Login Info and Access.</h2>
+                <p>
+                    Your access to the Application must be via login credentials
+                    ("Login Credentials"). You agree that you are responsible
+                    for protecting your Login Credentials from unauthorized use,
+                    and you are responsible for all activity that occurs under
+                    those Login Credentials. You agree to notify us immediately
+                    if you believe that any of your Login Credentials have been
+                    or may be used without your permission so that appropriate
+                    action can be taken. You may not (i) create more than one
+                    organization account to access the Application, (ii) share
+                    your Login Credentials with any third party nor (iii)
+                    transfer your account to any third party. Naturopedia LTD
+                    and/or the Efficasafe.com website are not responsible for
+                    any loss or damage caused by you as a result of your failure
+                    to safeguard your Login Credentials. Naturopedia LTD and/or
+                    the Efficasafe.com website may terminate any Login
+                    Credentials in its sole discretion; you may not be permitted
+                    to create a new account to access the Application if your
+                    prior Login Credentials have been terminated by Naturopedia
+                    LTD and/or the Efficasafe.com website. You agree to provide,
+                    maintain and update true, accurate, current and complete
+                    Personal Information on the screens that collect information
+                    from you in connection with the Application, and represent
+                    that you will not misrepresent your identity or your
+                    affiliation with any person or entity.
+                </p>
+                <h2>12. Updates.</h2>
+                <p>
+                    Naturopedia LTD and/or the Efficasafe.com website may from
+                    time to time in its sole discretion develop and provide
+                    Application updates, which may include upgrades, bug fixes,
+                    patches and other error corrections and/or new features
+                    (collectively, including related documentation, “Updates”).
+                    Updates may also modify or delete in their entirety certain
+                    features and functionality. You agree that Naturopedia LTD
+                    and/or the Efficasafe.com website have no obligation to
+                    provide any Updates or to continue to provide or enable any
+                    particular features or functionality. Based on your Device
+                    settings, when your Device is connected to the internet
+                    either:
+                </p>
+                <ol>
+                    <!-- a -->
+                    <li>
+                        The Application will automatically download and install
+                        all available Updates; or
+                    </li>
+                    <!-- b -->
+                    <li>
+                        You may receive notice of or be prompted to download and
+                        install available updates.
+                    </li>
+                </ol>
+                <p>
+                    You shall promptly download and install all Updates and
+                    acknowledge and agree that the Application or portions
+                    thereof may not properly operate should you fail to do so.
+                    You further agree that all Updates will be deemed part of
+                    the Application and be subject to all terms and conditions
+                    of this Agreement.
+                </p>
+                <h2>13. Term and Termination.</h2>
+                <ol>
+                    <!-- a -->
+                    <li>
+                        The term of Agreement commences when you acknowledge
+                        your acceptance of this Agreement and will continue in
+                        effect until terminated by you or Naturopedia LTD and/or
+                        the Efficasafe.com website as set forth in this Section
+                        10.
+                    </li>
+                    <!-- b -->
+                    <li>
+                        Unless otherwise specified in the applicable customer
+                        license agreement, you may terminate this Agreement upon
+                        60 days’ notice to Naturopedia LTD and/or the
+                        Efficasafe.com website by deleting the Application and
+                        all copies thereof from your Device. Unless otherwise
+                        specified in the applicable customer license agreement,
+                        Naturopedia LTD and/or the Efficasafe.com website may
+                        terminate this Agreement without cause upon 10 days
+                        notice to you.
+                    </li>
+                    <!-- c -->
+                    <li>
+                        Naturopedia LTD and/or the Efficasafe.com website may
+                        terminate this Agreement at any time without notice if
+                        it ceases to support the Application, which Naturopedia
+                        LTD and/or the Efficasafe.com website may do in its sole
+                        discretion. In addition, this Agreement will terminate
+                        immediately and automatically without any notice if you
+                        violate any of the terms and conditions of this
+                        Agreement.
+                    </li>
+                    <!-- d -->
+                    <li>
+                        Upon termination:
+                        <ol>
+                            <!-- i -->
+                            <li>
+                                All rights granted to you under this Agreement
+                                will also terminate;
+                            </li>
+                            <!-- ii -->
+                            <li>
+                                You must cease all use of the Application and
+                                delete all copies of the Application from your
+                                Devices and account.
+                            </li>
+                        </ol>
+                    </li>
+                    <!-- e -->
+                    <li>
+                        Termination will not limit any of Naturopedia LTD and/or
+                        the Efficasafe.com website rights or remedies at law or
+                        in equity.
+                    </li>
+                </ol>
+                <h2>14. Disclaimer of Warranties.</h2>
+                <p>
+                    THE APPLICATION IS PROVIDED TO YOU “AS IS” AND WITH ALL
+                    FAULTS AND DEFECTS WITHOUT WARRANTY OF ANY KIND. TO THE
+                    MAXIMUM EXTENT PERMITTED UNDER APPLICABLE LAW, NATUROPEDIA
+                    LTD AND/OR THE FFICASAFE.COM WEBSITE, ON ITS OWN BEHALF AND
+                    ON BEHALF OF ITS AFFILIATES AND ITS AND THEIR RESPECTIVE
+                    LICENSORS AND SERVICE PROVIDERS, EXPRESSLY DISCLAIMS ALL
+                    WARRANTIES, WHETHER EXPRESS, IMPLIED, STATUTORY OR
+                    OTHERWISE, WITH RESPECT TO THE APPLICATION, INCLUDING ALL
+                    IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+                    PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT, AND
+                    WARRANTIES THAT MAY ARISE OUT OF COURSE OF DEALING, COURSE
+                    OF PERFORMANCE, USAGE OR TRADE PRACTICE. WITHOUT LIMITATION
+                    TO THE FOREGOING, NATUROPEDIA LTD AND/OR THE FFICASAFE.COM
+                    WEBSITE PROVIDE NO WARRANTY OR UNDERTAKING, AND MAKES NO
+                    REPRESENTATION OF ANY KIND THAT THE APPLICATION WILL MEET
+                    YOUR REQUIREMENTS, ACHIEVE ANY INTENDED RESULTS, BE
+                    COMPATIBLE OR WORK WITH ANY OTHER SOFTWARE, APPLICATIONS,
+                    SYSTEMS OR SERVICES, OPERATE WITHOUT INTERRUPTION, MEET ANY
+                    PERFORMANCE OR RELIABILITY STANDARDS OR BE ERROR FREE OR
+                    THAT ANY ERRORS OR DEFECTS CAN OR WILL BE CORRECTED. SOME
+                    JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF OR LIMITATIONS
+                    ON IMPLIED WARRANTIES OR THE LIMITATIONS ON THE APPLICABLE
+                    STATUTORY RIGHTS OF A CONSUMER, SO SOME OR ALL OF THE ABOVE
+                    EXCLUSIONS AND LIMITATIONS MAY NOT APPLY TO YOU.
+                </p>
+                <h2>15. Limitation of Liability.</h2>
+                <p>
+                    TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, IN NO
+                    EVENT WILL NATUROPEDIA LTD AND/OR THE FFICASAFE.COM WEBSITE
+                    OR ITS AFFILIATES, OR ANY OF ITS OR THEIR RESPECTIVE
+                    LICENSORS OR SERVICE PROVIDERS, HAVE ANY LIABILITY ARISING
+                    FROM OR RELATED TO YOUR USE OF OR INABILITY TO USE THE
+                    APPLICATION OR THE CONTENT AND SERVICES FOR:
+                </p>
+                <ol>
+                    <!-- a -->
+                    <li>
+                        PERSONAL INJURY, PROPERTY DAMAGE, LOST PROFITS, COST OF
+                        SUBSTITUTE GOODS OR SERVICES, LOSS OF DATA, LOSS OF
+                        GOODWILL, BUSINESS INTERRUPTION, COMPUTER FAILURE OR
+                        MALFUNCTION OR ANY OTHER CONSEQUENTIAL, INCIDENTAL,
+                        INDIRECT, EXEMPLARY, SPECIAL OR PUNITIVE DAMAGES;
+                    </li>
+                    <!-- b -->
+                    <li>
+                        DIRECT DAMAGES IN AMOUNTS THAT IN THE AGGREGATE EXCEED
+                        THE AMOUNT ACTUALLY PAID BY YOU FOR THE APPLICATION.
+                    </li>
+                </ol>
+                <p>
+                    THE FOREGOING LIMITATIONS WILL APPLY WHETHER SUCH DAMAGES
+                    ARISE OUT OF BREACH OF CONTRACT, TORT (INCLUDING NEGLIGENCE)
+                    OR OTHERWISE AND REGARDLESS OF WHETHER SUCH DAMAGES WERE
+                    FORESEEABLE OR NATUROPEDIA LTD AND/OR THE FFICASAFE.COM
+                    WEBSITE WERE ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+                    SOME JURISDICTIONS DO NOT ALLOW CERTAIN LIMITATIONS OF
+                    LIABILITY SO SOME OR ALL OF THE ABOVE LIMITATIONS OF
+                    LIABILITY MAY NOT APPLY TO YOU. BY CONSENTING TO THE TERMS
+                    OF THIS AGREEMENT AND USE OF THE APPLICATION, YOU EXPRESSLY
+                    CONSENT TO THE LIMITATION OF LIABILITY SET FORTH ABOVE IN
+                    THIS PROVISION AND ACKNOWLEDGE AND CONSENT TO THE FOLLOWING:
+                </p>
+                <ol>
+                    <!-- i -->
+                    <li>
+                        Communication via this Application has certain
+                        limitations and may not be as effective as in person
+                        communication or other modes of coordination or
+                        collaboration. Please seek alternative forms of
+                        communication with important clinical communications if
+                        necessary.
+                    </li>
+                    <!-- ii -->
+                    <li>
+                        This Application is not intended to be used, nor should
+                        it be used for emergency purposes. In the event of a
+                        clinical or patient emergency, please contact the health
+                        care providers necessary by more appropriate means.
+                    </li>
+                    <!-- iii -->
+                    <li>
+                        Naturopedia LTD and/or the Efficasafe.com website are
+                        not validating, affirming, providing or issuing medical
+                        advice and any communication received or transmitted by
+                        you through the Application should not be construed as
+                        such. Furthermore, Naturopedia LTD and/or the
+                        Efficasafe.com website are not responsible for your
+                        decision to seek or not seek medical care or choice of
+                        specific treatment based on your use of the Application.
+                    </li>
+                    <!-- iv -->
+                    <li>
+                        Delay, interruption or failure may occur in
+                        communication through use of the Application. You shall
+                        not hold Naturopedia LTD and/or the Efficasafe.com
+                        website liable for any injury resulting from such delay
+                        or failure, for whatever reason, and expressly assume
+                        such risk through your use of the Application.
+                    </li>
+                    <!-- v -->
+                    <li>
+                        Data placed in the Application will be stored in an
+                        encrypted fashion and may be accessible for reference
+                        related to its use in the future. Similarly, data
+                        entered in the Application should be considered
+                        “discoverable” in compliance with applicable law in the
+                        event of a patient inquiry. Naturopedia LTD and/or the
+                        Efficasafe.com website will do whatever reasonably
+                        possible to aid in any requests from legal authorities
+                        while maintaining patient and provider privacy.
+                    </li>
+                    <!-- vi -->
+                    <li>
+                        You assume full responsibility and risk for your use and
+                        reliance on the Application.
+                    </li>
+                </ol>
+                <h2>16. Indemnification.</h2>
+                <p>
+                    You agree to indemnify, defend and hold harmless Naturopedia
+                    LTD and/or the Efficasafe.com website and its officers,
+                    directors, employees, agents, affiliates, successors and
+                    assigns from and against any and all losses, damages,
+                    liabilities, deficiencies, claims, actions, judgments,
+                    settlements, interest, awards, penalties, fines, costs, or
+                    expenses of whatever kind, including reasonable attorneys’
+                    fees, arising from or relating to your use or misuse of the
+                    Application or your breach of this Agreement. Furthermore,
+                    you agree that Naturopedia LTD and/or the Efficasafe.com
+                    website assume no responsibility for the content you submit
+                    or make available through this Application.
+                </p>
+                <h2>17. Severability.</h2>
+                <p>
+                    If any provision of this Agreement is illegal or
+                    unenforceable under applicable law, the remainder of the
+                    provision will be amended to achieve as closely as possible
+                    the effect of the original term and all other provisions of
+                    this Agreement will continue in full force and effect. If a
+                    judicial determination prevents the accomplishment of the
+                    purpose of this Agreement, the invalid term or condition (or
+                    portion of terms or conditions) shall be restated to conform
+                    to applicable law and to reflect as nearly as possible the
+                    original intention of the parties.
+                </p>
+                <h2>18. Force Majeure.</h2>
+                <p>
+                    Neither party shall be liable to the other party for any
+                    failure or delay in the performance of any of its
+                    obligations under this Agreement for the period and to the
+                    extent such failure or delay is caused by civil unrest,
+                    threat of or actual acts of terrorism or war, embargoes,
+                    governmental actions, acts of God, earthquakes, floods,
+                    storms, fires, supplier delay, accidents, explosions,
+                    epidemics, quarantine restrictions, or other such
+                    contingencies beyond the reasonable control of the
+                    applicable party (“Force Majeure”). The party affected shall
+                    notify the other party as soon as practicable of any
+                    anticipated delay due to Force Majeure.
+                </p>
+                <h2>19. Governing Law.</h2>
+                <p>
+                    This Agreement is governed by and construed in accordance
+                    with the laws of the State of Israel without giving effect
+                    to any choice or conflict of law provision or rule. You
+                    hereby expressly consent to the personal jurisdiction of
+                    the, for any lawsuit arising from or relating to this
+                    Agreement. Any legal suit, action or proceeding arising out
+                    of or related to this Agreement or the Application shall be
+                    instituted exclusively in the competent courts of Tel Aviv,
+                    Israel. You waive any and all objections to the exercise of
+                    jurisdiction over you by such courts and to venue in such
+                    courts.
+                </p>
+                <h2>20. Limitation of Time to File Claims.</h2>
+                <p>
+                    ANY CAUSE OF ACTION OR CLAIM YOU MAY HAVE ARISING OUT OF OR
+                    RELATING TO THIS AGREEMENT OR THE APPLICATION MUST BE
+                    COMMENCED WITHIN ONE (1) YEAR AFTER THE CAUSE OF ACTION
+                    ACCRUES, OTHERWISE, SUCH CAUSE OF ACTION OR CLAIM IS
+                    PERMANENTLY BARRED.
+                </p>
+                <h2>21. Entire Agreement.</h2>
+                <p>
+                    This Agreement and our Privacy Statement constitute the
+                    entire agreement between you and Naturopedia LTD and/or the
+                    Efficasafe.com website with respect to the Application and
+                    supersede all prior or contemporaneous understandings and
+                    agreements, whether written or oral, with respect to the
+                    Application. To the extent that the Naturopedia LTD and/or
+                    the Efficasafe.com website have an agreement with your
+                    organization and to the extent that the terms of this
+                    Agreement conflict with any such agreement, the terms of
+                    that agreement will control.
+                </p>
+                <h2>22. Waiver.</h2>
+                <p>
+                    No failure to exercise, and no delay in exercising, on the
+                    part of either party, any right or any power hereunder shall
+                    operate as a waiver thereof, nor shall any single or partial
+                    exercise of any right or power hereunder preclude further
+                    exercise of that or any other right hereunder. In the event
+                    of a conflict between this Agreement and any applicable
+                    purchase or other terms between you and Naturopedia LTD
+                    and/or the Efficasafe.com website, the terms of this
+                    Agreement shall govern unless expressly indicated otherwise
+                    in the other terms.
+                </p>
             </div>
+            <footer>End of End User License Agreement</footer>
         </article>
     </section>
 </template>

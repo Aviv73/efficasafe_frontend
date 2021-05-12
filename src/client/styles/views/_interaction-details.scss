@@ -204,13 +204,13 @@
                 font-family: roboto-medium, sans-serif;
                 font-weight: 500;
 
-                &.red {
+                &-red {
                     background-color: $red;
                 }
-                &.yellow {
+                &-yellow {
                     background-color: $yellow;
                 }
-                &.green {
+                &-green {
                     background-color: $green;
                 }
             }
