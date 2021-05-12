@@ -29,7 +29,7 @@ export default {
     computed: {
         loggedInUser() {
             return this.$store.getters.loggedInUser;
-        }
+        },
     },
     methods: {
         onLogin() {
@@ -43,9 +43,14 @@ export default {
     },
     async created() {
         await this.$store.dispatch({ type: 'getUserInfo' });
-        const _id = this.$store.getters.loggedInUser ? this.$store.getters.loggedInUser._id : false;
+        const _id = this.$store.getters.loggedInUser
+            ? this.$store.getters.loggedInUser._id
+            : false;
         if (!_id) return;
-        const user = await this.$store.dispatch({ type: 'loadUser', userId: _id });
+        const user = await this.$store.dispatch({
+            type: 'loadUser',
+            userId: _id,
+        });
         if (user && !user.email_verified) {
             this.authModal = true;
         }
@@ -54,6 +59,6 @@ export default {
         Navbar,
         MainFooter,
         AuthModal,
-    }
+    },
 };
 </script>
