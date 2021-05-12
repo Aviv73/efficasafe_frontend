@@ -23,7 +23,7 @@ export default {
     name: 'App',
     data() {
         return {
-            AuthModal: false,
+            AuthModal: true,
             allowLogin: false,
         };
     },
