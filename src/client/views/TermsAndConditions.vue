@@ -363,14 +363,14 @@
                     personal information processed by the Application on your
                     behalf shall be referred to as your “Personal Information”).
                     All Personal Information we collect through or in connection
-                    with this Application is subject to our Privacy Statement.
+                    with this Application is subject to our <router-link to="/privacy-statement" class="link">Privacy Statement</router-link>.
                     By consenting to the terms of this Agreement, you are
                     authorizing Naturopedia LTD and/or the Efficasafe.com
                     website to collect, use and disclose your Personal
                     Information in order to provide you with access to and use
                     of the Application. In addition, Naturopedia LTD and/or the
                     Efficasafe.com website may use your Personal Information for
-                    the purposes described in our Privacy Statement.
+                    the purposes described in our <router-link to="/privacy-statement" class="link">Privacy Statement</router-link>.
                 </p>
                 <h2 class="heading2">
                     9. Consent to Disclosure and Use of Personal Information in
@@ -697,7 +697,7 @@
                 </p>
                 <h2 class="heading2">21. Entire Agreement.</h2>
                 <p class="bottom-gap">
-                    This Agreement and our Privacy Statement constitute the
+                    This Agreement and our <router-link to="/privacy-statement" class="link">Privacy Statement</router-link> constitute the
                     entire agreement between you and Naturopedia LTD and/or the
                     Efficasafe.com website with respect to the Application and
                     supersede all prior or contemporaneous understandings and

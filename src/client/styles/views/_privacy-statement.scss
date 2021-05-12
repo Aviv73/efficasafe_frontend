@@ -1,0 +1,14 @@
+.privacy-statement {
+    flex-grow: 1;
+    color: rgba($clr10, .85);
+    font-size: rem(16px);
+    line-height: rem(24px);
+    border-bottom: 1px solid rgba($black, .16);
+
+    .heading2 {
+        text-transform: uppercase;
+    }
+    .heading3 {
+        text-transform: capitalize;
+    }
+}

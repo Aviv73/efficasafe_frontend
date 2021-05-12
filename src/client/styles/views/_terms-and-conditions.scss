@@ -30,4 +30,8 @@
     .bottom-gap {
         margin-block-end: rem(40px);
     }
+    .link {
+        color: rgba($clr1, .85);
+        text-decoration: underline;
+    }
 }
