@@ -42,10 +42,11 @@ export default {
         },
     },
     async created() {
-        await this.$store.dispatch({ type: 'getUserInfo' });
+        console.log(JSON.parse(localStorage.getItem('userInfo')));
+        //await this.$store.dispatch({ type: 'getUserInfo' });
         const _id = this.$store.getters.loggedInUser
             ? this.$store.getters.loggedInUser._id
-            : false;
+            : '';
         if (!_id) return;
         const user = await this.$store.dispatch({
             type: 'loadUser',
@@ -58,7 +59,7 @@ export default {
     components: {
         Navbar,
         MainFooter,
-        AuthModal,
-    },
+        AuthModal
+    }
 };
 </script>

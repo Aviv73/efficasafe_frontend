@@ -19,6 +19,7 @@
     p {
         margin-block-end: rem(40px);
     }
+
     .heading1 {
         margin-block-end: rem(40px);
     }
@@ -48,6 +49,7 @@
         max-width: 800px;
         margin: 0 auto;
         padding: 0 24px;
+        position: relative;
 
         @include for-narrow-layout {
             padding: 0;

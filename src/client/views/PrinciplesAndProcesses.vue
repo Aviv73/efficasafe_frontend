@@ -210,16 +210,19 @@
                 the database also helps users to identify clinical answers to their questions -
                 on demand.
             </p>
+            <side-navigation />
         </article>
     </section>
 </template>
 
 <script>
 import PageHeader from '@/client/cmps/shared/PageHeader';
+import SideNavigation from '@/client/cmps/principles-and-processes/SideNavigation';
 
 export default {
     components: {
-        PageHeader
+        PageHeader,
+        SideNavigation
     }    
 }
 </script>
