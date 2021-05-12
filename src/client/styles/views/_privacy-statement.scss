@@ -1,6 +1,6 @@
 .privacy-statement {
     flex-grow: 1;
-    color: rgba($clr10, .85);
+    color: $clr10;
     font-size: rem(16px);
     line-height: rem(24px);
     border-bottom: 1px solid rgba($black, .16);
@@ -13,6 +13,9 @@
         padding-inline-start: rem(20px);
     }
 
+    .heading1 {
+        text-align: center;
+    }
     .heading2 {
         text-transform: uppercase;
     }
@@ -23,7 +26,7 @@
         margin-block-end: rem(40px);
     }
     .link {
-        color: rgba($clr1, .85);
+        color: $clr1;
         text-decoration: underline;
     }
 }
