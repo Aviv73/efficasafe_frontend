@@ -42,15 +42,10 @@ export default {
         },
     },
     async created() {
-        console.log(JSON.parse(localStorage.getItem('userInfo')));
-        //await this.$store.dispatch({ type: 'getUserInfo' });
-        const _id = this.$store.getters.loggedInUser
-            ? this.$store.getters.loggedInUser._id
-            : '';
-        if (!_id) return;
+        if (!this.$store.getters.loggedInUser) return;
         const user = await this.$store.dispatch({
             type: 'loadUser',
-            userId: _id,
+            userId: this.$store.getters.loggedInUser._id,
         });
         if (user && !user.email_verified) {
             this.authModal = true;
