@@ -4,13 +4,18 @@
         <div>
             <button class="close-modal" @click="closeModal">X</button>
             <div class="inside-modal center">
-                <img src="../../../assets/imgs/flat-logo.png" alt="" />
+                <img src="../../../assets/imgs/flat-logo.png" alt="Logo" />
                 <div class="con-title">
                     <p>Congratulations!</p>
                     <p>You now have 2 weeks of free trial</p>
                 </div>
 
-                <button class="btn">Let`s search Interactions!</button>
+                <button
+                    class="btn"
+                    @click="$router.push('/search')"
+                >
+                    Let`s search Interactions!
+                </button>
 
                 <p class="assistance">
                     Subscribe and search with not time limit

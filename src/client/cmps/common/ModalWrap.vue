@@ -9,8 +9,12 @@ export default {
     props: {
         isActive: {
             type: Boolean,
-            default: false,
+            default: false
         },
+        persistent: {
+            type: Boolean,
+            default: false
+        }
     },
     mounted() {
         document.addEventListener('keydown', this.handleKey);
@@ -20,6 +24,7 @@ export default {
     },
     methods: {
         closeModal() {
+            if (this.persistent) return;
             this.$emit('close-modal');
         },
         handleKey(ev) {

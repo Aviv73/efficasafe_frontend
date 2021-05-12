@@ -170,6 +170,7 @@
                                 <span
                                     class="badge"
                                     :class="worstPathwayEffectClassName"
+                                    v-if="relevantSide1Pathways.length"
                                 >
                                     {{ relevantSide1Pathways.length }}
                                 </span>
@@ -354,11 +355,11 @@ export default {
                 firstLine = firstLine.toLowerCase();
 
                 if (firstLine.includes('may induce') || firstLine.includes('may inhibit') || firstLine.includes('may bind')) {
-                    red = 'red';
+                    red = 'badge-red';
                 } else if (firstLine.includes('is unclear')) {
-                    yellow = 'yellow';
+                    yellow = 'badge-yellow';
                 } else if (firstLine.includes('not likely to affect')) {
-                    green = ''
+                    green = 'badge-green';
                 }
             });
             return red || yellow || green;

@@ -1,0 +1,41 @@
+.disclaimer {
+    background-image: linear-gradient(to top, darken($white, 5%) 0%, darken($white, 5%) 110px, $white 110px, $white  calc(100% - 20px), $clr1 calc(100% - 20px), $clr1 100%);
+    width: 90%;
+    max-width: 800px;
+    padding: rem(70px) rem(24px);
+    border-radius: 6px;
+    box-shadow: 0px 2px 4px rgba($black, .6);
+    border: 1px solid $clr16;
+    color: rgba($clr-txt-darker, .85);
+    font-size: rem(16px);
+    line-height: rem(20px);
+
+    @include for-narrow-layout {
+        padding: rem(70px) rem(100px);
+    }
+
+    & > main {
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+    p {
+        margin-block-end: rem(20px);
+    }
+
+    .link {
+        color: $clr1;
+    }
+
+    &-actions {
+        height: rem(40px);
+        position: relative;
+
+        & > .btn {
+            position: absolute;
+            left: 0;
+            top: rem(20px);
+            background-color: $clr1;
+            padding: rem(10px) rem(36px);
+        }
+    }
+}

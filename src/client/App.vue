@@ -1,14 +1,13 @@
 <template>
     <div id="app">
         <navbar @login="onLogin" @signup="onSignUp" />
-
         <main>
             <router-view />
         </main>
         <main-footer />
         <auth-modal
-            v-if="AuthModal"
-            @closeModal="AuthModal = false"
+            v-if="authModal"
+            @closeModal="authModal = false"
             :allowLogin="allowLogin"
         />
     </div>
@@ -23,20 +22,38 @@ export default {
     name: 'App',
     data() {
         return {
-            AuthModal: true,
+            authModal: false,
             allowLogin: false,
         };
     },
+    computed: {
+        loggedInUser() {
+            return this.$store.getters.loggedInUser;
+        },
+    },
     methods: {
         onLogin() {
-            console.log('changing state');
             this.allowLogin = true;
-            this.AuthModal = true;
+            this.authModal = true;
         },
         onSignUp() {
             this.allowLogin = false;
-            this.AuthModal = true;
+            this.authModal = true;
         },
+    },
+    async created() {
+        await this.$store.dispatch({ type: 'getUserInfo' });
+        const _id = this.$store.getters.loggedInUser
+            ? this.$store.getters.loggedInUser._id
+            : false;
+        if (!_id) return;
+        const user = await this.$store.dispatch({
+            type: 'loadUser',
+            userId: _id,
+        });
+        if (user && !user.email_verified) {
+            this.authModal = true;
+        }
     },
     components: {
         Navbar,

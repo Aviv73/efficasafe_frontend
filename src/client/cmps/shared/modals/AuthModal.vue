@@ -32,25 +32,33 @@
 <script>
 import Auth0Lock from 'auth0-lock';
 import config from '@/client/config';
+
 export default {
+    props: {
+        allowLogin: {
+            type: Boolean,
+            required: true
+        }
+    },
     data() {
         return {
             lock: null,
             signUpModal: false,
         };
     },
-    props: {
-        allowLogin: Boolean,
+    computed: {
+        loggedInUser() {
+            return this.$store.getters.loggedInUser;
+        }
     },
     methods: {
         closeModal() {
+            if (this.signUpModal) return;
             this.$emit('closeModal');
         },
-
         handleError(err) {
             console.log(err);
         },
-
         async onAuthenticated(authResult) {
             let { accessToken, tokenType } = authResult;
             this.$store.commit({
@@ -59,8 +67,8 @@ export default {
             });
 
             await this.$store.dispatch({ type: 'getUserInfo' });
-            const { loggedInUser } = this.$store.getters;
-            if (loggedInUser.email_verified) {
+            const { loggedInUser } = this;
+            if (loggedInUser && loggedInUser.email_verified) {
                 this.$store.dispatch({ type: 'getUserInfo' });
                 setTimeout(() => {
                     this.lock.hide();
@@ -73,16 +81,16 @@ export default {
             }
         },
     },
-
     mounted() {
-        this.lock.show({
-            allowLogin: this.allowLogin,
-            allowSignUp: !this.allowLogin,
-        });
+        if (this.loggedInUser && !this.loggedInUser.email_verified) this.signUpModal = true;
+        else {
+            this.lock.show({
+                allowLogin: this.allowLogin,
+                allowSignUp: !this.allowLogin,
+            });
+        }
     },
     created() {
-        const clientId = 'ECULxkc4xSBK8omj6EXcnPbyKuTvJ3Nr';
-        const domain = 'dev-385wz0kc.us.auth0.com';
         const options = {
             languageDictionary: {
                 title: 'Efficasafe',
@@ -93,15 +101,14 @@ export default {
             },
             theme: {
                 labeledSubmitButton: true,
-                logo: 'https://i.ibb.co/ZHXvGqx/logo-symbol.png',
+                logo: `${window.location.origin}/img/logo-symbol.png`,
                 primaryColor: '#4FB891',
             },
-
             autoclose: true,
             avatar: null,
-            forgotPasswordLink: `${config.dbURL}/emailPassword`,
+            forgotPasswordLink: `${window.location.origin}/emailPassword`,
         };
-        this.lock = new Auth0Lock(clientId, domain, options);
+        this.lock = new Auth0Lock(config.auth0ClientId, config.auth0BaseURL, options);
         this.lock.on('authenticated', this.onAuthenticated);
         this.lock.on('signup error', this.handleError);
     },

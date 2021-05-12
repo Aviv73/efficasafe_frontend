@@ -16,9 +16,11 @@
 @import './cmps/shared/autocomplete';
 @import './cmps/common/auth-modal';
 @import './cmps/shared/interaction-capsules';
+@import './cmps/shared/page-header';
 @import './cmps/search-engine/material-interactions-preview';
 @import './cmps/search-engine/horizontal-list';
 @import './cmps/search-engine/vertical-list';
+@import './cmps/search-engine/disclaimer';
 @import './cmps/search-engine/interaction-preview';
 @import './cmps/search-engine/label-interaction-preview';
 @import './cmps/interaction-details/side2-pathways';
@@ -30,3 +32,5 @@
 @import './views/search-engine';
 @import './views/interaction-details';
 @import './views/about';
+@import './views/principles-and-processes';
+@import './views/terms-and-conditions';

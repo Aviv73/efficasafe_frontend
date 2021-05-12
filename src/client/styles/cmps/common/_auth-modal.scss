@@ -3,20 +3,21 @@
     z-index: 999;
     top: 9%;
     left: 50%;
-    width: 350px;
+    width: rem(350px);
     transform: translateX(-50%);
-    background-color: white;
-    box-shadow: 0px 2px 4px #00000010;
-    border: 1px solid #ebebeb;
+    background-color: $white;
+    box-shadow: 0px 2px 4px rgba($black, .6);
+    border: 1px solid $clr6;
     border-radius: 6px;
 
     .send-verification {
-        background-color: #7ED321;
-        font-family: Roboto-bold;
-        font-size: 12px;
+        background-color: $green;
+        font-family: roboto-bold, sans-serif;
+        font-weight: 700;
+        font-size: rem(12px);
         padding: 0px;
         border-radius: 6px;
-        color: white;
+        color: $white;
         position: absolute;
         left: 50%;
         bottom: 0;
@@ -24,7 +25,7 @@
         width: 100%;
 
         @include for-mobile-layout {
-            padding: 5px;
+            padding: rem(5px);
         }
 
 
@@ -35,7 +36,7 @@
     }
 
     @include for-mobile-layout {
-        width: 550px;
+        width: rem(550px);
     }
 }
 
@@ -43,22 +44,16 @@
     position: absolute;
     z-index: 999;
     top: 9%;
-    background-color: white;
-    box-shadow: 0px 2px 4px #00000010;
-    border: 1px solid #ebebeb;
+    background-color: $white;
+    box-shadow: 0px 2px 4px rgba($black, .6);
+    border: 1px solid $clr6;
     border-radius: 6px;
 
-
-
-
     .auth0-lock-widget-container {
-        height: 500px;
+        height: rem(500px);
 
         @include for-mobile-layout {
             height: unset;
-
-
-
         }
     }
 
@@ -67,59 +62,59 @@
         position: fixed;
         left: 50%;
         transform: translateX(-50%);
-        width: 500px;
-
+        width: rem(500px);
     }
 
     .close-modal {
         position: absolute;
         top: 39px;
         right: 35px;
-        color: #c1c1c1;
-        font-size: 14px;
+        color: $gray;
+        font-size: rem(14px);
     }
 
     .title {
-        color: #205072;
-        font-family: Roboto-medium;
-        font-size: 21px;
-        margin-top: 72px;
-        margin-bottom: 50px;
+        color: $clr1;
+        font-family: roboto-medium, sans-serif;
+        font-weight: 500;
+        font-size: rem(21px);
+        margin-top: rem(72px);
+        margin-bottom: rem(50px);
     }
 
     .con-title {
-        font-family: Roboto-medium;
-        font-weight: bold;
+        font-family: roboto-medium, sans-serif;
+        font-weight: 500;
         letter-spacing: 0px;
-        color: #205072;
+        color: $clr1;
         margin: 30px 0;
     }
 
     .sub-title {
-        color: #484848;
-        font-size: 16px;
-        font-weight: bold;
+        color: $clr-txt-darker;
+        font-family: roboto-bold, sans-serif;
+        font-size: rem(16px);
+        font-weight: 700;
     }
 
     .desc {
-        margin-top: 32px;
-        font-size: 14px;
-        color: #484848;
+        margin-top: rem(32px);
+        font-size: rem(14px);
+        color: $clr-txt-darker;
     }
 
     .assistance {
-        color: #205072;
-        font-size: 14px;
-        margin-top: 55px;
+        color: $clr1;
+        font-size: rem(14px);
+        margin-top: rem(55px);
     }
 
 
 }
 
 .black-screen {
-
     position: fixed;
-    background-color: rgba(61, 61, 61, 0.5);
+    background-color: rgba($black, .6);
     height: 100vh;
     width: 100vw;
     left: 0;
@@ -130,11 +125,11 @@
 
 
 .center {
-    padding: 30px;
+    padding: rem(30px);
     text-align: center;
 
     @include for-mobile-layout {
-        padding: 70px 90px;
+        padding: rem(70px) rem(90px);
 
     }
 }
@@ -149,14 +144,14 @@
 
 
 .email-input {
-    height: 43px;
+    height: rem(43px);
     border-radius: 6px;
-    background-color: rgb(248, 248, 248);
+    background-color: $clr3;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 17.5px;
-    margin-bottom: 17.5px;
+    margin-top: rem(17.5px);
+    margin-bottom: rem(17.5px);
 }
 
 .email-input input {
@@ -164,7 +159,7 @@
     border: 0;
     text-align: center;
     background-color: transparent;
-    font-size: 14px;
+    font-size: rem(14px);
     width: 100%;
 }
 
@@ -173,7 +168,7 @@
     bottom: 12px;
     left: 50%;
     transform: translateX(-50%);
-    color: red;
+    color: $red;
     margin-top: 20px;
 
     @include for-mobile-layout {

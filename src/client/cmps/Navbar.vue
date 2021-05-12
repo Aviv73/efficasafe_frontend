@@ -78,10 +78,7 @@
                         </button>
                     </li>
                     <li class="navbar-nav-item link">
-                        <router-link to="/">News</router-link>
-                    </li>
-                    <li class="navbar-nav-item link">
-                        <router-link to="/">Articles</router-link>
+                        <router-link to="/search">Search</router-link>
                     </li>
                     <li class="navbar-nav-item link">
                         <router-link to="/about">About us</router-link>
@@ -115,10 +112,7 @@
                     </li>
 
                     <li class="navbar-mobile-nav-item">
-                        <router-link to="/">News</router-link>
-                    </li>
-                    <li class="navbar-mobile-nav-item">
-                        <router-link to="/">Articles</router-link>
+                        <router-link to="/search">Search</router-link>
                     </li>
                     <li class="navbar-mobile-nav-item">
                         <router-link to="/about">About us</router-link>
