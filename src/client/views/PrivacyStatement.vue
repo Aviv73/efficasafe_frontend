@@ -143,7 +143,7 @@
                     Naturopedia LTD and/or the Efficasafe.com website, or
                     through some other business reorganization.
                 </p>
-                <h2 class="heading2">de-identified information</h2>
+                <h2 class="heading2">De-Identified information</h2>
                 <p>
                     In addition to the Personal Information categories, uses and
                     disclosures discussed above, we may remove the identifiable
@@ -152,6 +152,89 @@
                     Information may be combined with other data into aggregated
                     datasets. We use De-identified Information in the following
                     ways, to the extent permitted by applicable laws:
+                </p>
+                <ol class="bottom-gap">
+                    <li>
+                        Disclosure for Business Purposes: We may license, sell
+                        or otherwise share De-identified Information with other
+                        clients, partners, investors and contractors for any
+                        purposes related to our business practices.
+                    </li>
+                    <li>
+                        Product Improvement and Analytics: We may use
+                        De-identified Information for product improvement
+                        purposes or to understand our customer base and better
+                        serve our market.
+                    </li>
+                    <li>
+                        Research: We may use De-identified Information for
+                        research whether scientific, marketing, or business in
+                        nature. This research may be made public through
+                        publications such as within a scientific journal.
+                    </li>
+                </ol>
+                <h2 class="heading2">Security</h2>
+                <p>
+                    Naturopedia LTD and/or the Efficasafe.com website has a
+                    legal duty to protect your Personal Information. We have put
+                    in place reasonable physical, technical, and administrative
+                    controls to safeguard and help prevent unauthorized access
+                    to your Personal Information. All Personal Information
+                    collected through the Application is encrypted in transit
+                    and at rest in compliant databases. While we endeavor to
+                    protect the privacy of the Personal Information we maintain
+                    in our Application, we cannot guarantee complete security.
+                    Unauthorized entry or use, hardware or software failure, and
+                    other factors, may compromise the security of your Personal
+                    Information at any time.
+                </p>
+                <p class="bottom-gap">
+                    Some of these security measures rely upon you. Our Users are
+                    required to abide by industry-accepted security practices,
+                    including but not limited to, keeping your login credentials
+                    secret, avoiding public WiFi networks, and password
+                    protecting your mobile device. If you ever suspect a
+                    security issue with your account, contact immediately.
+                </p>
+                <h2 class="heading2">Storage and retention</h2>
+                <p class="bottom-gap">
+                    Naturopedia LTD and/or the Efficasafe.com website itself
+                    stores and processes all Personal Information provided to it
+                    through the Application. We retain your data for as long as
+                    reasonably necessary to provide you with services related to
+                    the Application or to comply with applicable law.
+                </p>
+                <h2 class="heading2">Rights to personal information</h2>
+                <p class="bottom-gap">
+                    You may request access, changes, or deletions to your
+                    Personal Information and request information about our
+                    collection, use and disclosure of such information by
+                    contacting us. We use best efforts to keep our records as
+                    accurate and complete as possible. You can help us maintain
+                    the accuracy of your information by notifying us of any
+                    changes to your Personal Information as soon as possible.
+                    Your rights to access, change, or delete your Personal
+                    Information are not absolute. For example, we may deny you
+                    such rights when required by law.
+                </p>
+                <h2 class="heading2">Changes to this privacy policy</h2>
+                <p class="bottom-gap">
+                    We may update this Privacy Policy from time to time by
+                    posting a new version within our Application. You should
+                    check this page periodically to review any changes as well
+                    as within the settings section of our Application. If we
+                    make any material changes affecting you, as determined by
+                    Naturopedia LTD and/or the Efficasafe.com website, we will
+                    notify current Users by providing notice through the
+                    Application. We may request you to agree to the new terms;
+                    otherwise your continued use of the Application, and/or
+                    continued provision of Personal Information to us, will be
+                    subject to the terms of the then-current Privacy Policy.
+                </p>
+                <h2 class="heading2">Contact information</h2>
+                <p class="bottom-gap">
+                    If you have any questions or suggestions about this Privacy
+                    Policy, please contact us at <a href="mailto:support@efficasafe.com" class="link">support@efficasafe.com</a>.
                 </p>
             </div>
         </article>

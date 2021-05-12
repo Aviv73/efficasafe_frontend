@@ -5,10 +5,25 @@
     line-height: rem(24px);
     border-bottom: 1px solid rgba($black, .16);
 
+    p {
+        margin-block-end: rem(10px);
+    }
+    ol {
+        list-style-type: lower-latin;
+        padding-inline-start: rem(20px);
+    }
+
     .heading2 {
         text-transform: uppercase;
     }
     .heading3 {
         text-transform: capitalize;
+    }
+    .bottom-gap {
+        margin-block-end: rem(40px);
+    }
+    .link {
+        color: rgba($clr1, .85);
+        text-decoration: underline;
     }
 }
