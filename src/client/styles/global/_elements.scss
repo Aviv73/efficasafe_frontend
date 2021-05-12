@@ -6,13 +6,19 @@
     margin-block-end: rem(20px);
 }
 
-.heading2 {
+.heading2, .heading3 {
     color: $clr-txt-dark;
     font-family: roboto-bold, sans-serif;
     font-weight: 700;
     font-size: rem(24px);
     line-height: rem(28px);
     margin-block-end: rem(20px);
+}
+
+.heading3 {
+    font-size: rem(18px);
+    line-height: rem(22px);
+    margin-block-end: rem(10px);
 }
 
 .styled-ul {
