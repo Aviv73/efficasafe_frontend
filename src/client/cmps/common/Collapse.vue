@@ -25,6 +25,7 @@
             <button
                 v-if="isContentVisible"
                 class="close-btn"
+                :tabindex="hideDeActivator ? '-1' : '1'"
                 @click.prevent="isContentVisible = false"
             >
                 <slot

@@ -2,7 +2,7 @@
     <aside class="side-navigation">
         <ul class="side-navigation-nav" ref="list">
             <li class="side-navigation-nav-item">
-                <collapse hide-de-activator>
+                <collapse hide-de-activator allow-overflow>
                 <template #header>
                     <a href="#practice" class="primary-header" :class="{ 'active': $route.hash === '#practice' }">
                         <span class="de-activator inline-start">
@@ -59,7 +59,7 @@
                 </collapse>
             </li>
             <li class="side-navigation-nav-item">
-                <collapse hide-de-activator>
+                <collapse hide-de-activator allow-overflow>
                     <template #header>
                         <a
                             href="#process"
@@ -92,7 +92,7 @@
                 </collapse>
             </li>
             <li class="side-navigation-nav-item">
-                <collapse hide-de-activator>
+                <collapse hide-de-activator allow-overflow>
                     <template #header>
                         <a
                             href="#literature"
@@ -139,7 +139,7 @@
                 </collapse>
             </li>
             <li class="side-navigation-nav-item">
-                <collapse hide-de-activator>
+                <collapse hide-de-activator allow-overflow>
                     <template #header>
                         <a
                             href="#currentContent"
