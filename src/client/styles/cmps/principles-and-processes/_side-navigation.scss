@@ -18,11 +18,13 @@
         display: block;
 
         &:not(.primary-header) {
-            padding-inline-start: rem(12px);
             max-width: rem(200px);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+        &.active {
+            color: $green;
         }
     }
     .primary-header {
