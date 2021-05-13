@@ -47,6 +47,7 @@ export default {
             type: 'loadUser',
             userId: this.$store.getters.loggedInUser._id,
         });
+
         if (user && !user.email_verified) {
             this.authModal = true;
         }
@@ -54,7 +55,7 @@ export default {
     components: {
         Navbar,
         MainFooter,
-        AuthModal
-    }
+        AuthModal,
+    },
 };
 </script>

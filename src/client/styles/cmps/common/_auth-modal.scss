@@ -10,6 +10,13 @@
     border: 1px solid $clr6;
     border-radius: 6px;
 
+
+    .resend-email {
+        margin-top: 20px;
+        cursor: pointer;
+    }
+
+
     .send-verification {
         background-color: $green;
         font-family: roboto-bold, sans-serif;
