@@ -94,6 +94,12 @@ export default {
                 right: 0;
                 transform: translateY(-50%);
                 
+                &.inline-start {
+                    right: unset;
+                    left: 0;
+                    top: 24px;
+                    transform: translate(-100%, -40%);
+                }
                 .opened {
                     display: none;
                 }
