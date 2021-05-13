@@ -1,6 +1,6 @@
 <template>
     <section class="principles-and-processes">
-        <page-header />
+        <page-header ref="header" />
         <article class="principles-and-processes-container">
             <h1 class="heading1">Editorial Principles and Processes</h1>
             <section class="principles-and-processes-lists">
@@ -22,8 +22,8 @@
                     </ul>
                 </div>
             </section>
-            <h2 id="practice">Practice</h2>
-            <h3 class="heading2" id="EvidenceBasedFoundation">Evidence-Based Foundation</h3>
+            <h2 id="practice" ref="anchor1">Practice</h2>
+            <h3 class="heading2" id="EvidenceBasedFoundation" ref="anchor2">Evidence-Based Foundation</h3>
             <p>
                 Efficasafe data is built purely on scientific evidence.
                 Many medicinal product data is influenced by beliefs and traditions passed
@@ -32,7 +32,7 @@
                 of natural medicines can unfortunately be based largely on marketing claims,
                 inaccurate extrapolations and even, in vitro studies.
             </p>
-            <h3 class="heading2" id="ReliableContributors">Reliable contributors</h3>
+            <h3 class="heading2" id="ReliableContributors" ref="anchor3">Reliable contributors</h3>
             <p>
                 All Efficasafe contributors are certified,
                 licensed health professionals with authority to practice in their area of specialty.
@@ -40,7 +40,7 @@
                 Many of our contributors are active members or previous faculty members
                 at universities and medical centers with significant faculty affiliation.
             </p>
-            <h3 class="heading2" id="ObjectiveAndUnbiased">Objective and unbiased</h3>
+            <h3 class="heading2" id="ObjectiveAndUnbiased" ref="anchor4">Objective and unbiased</h3>
             <p>
                 Efficasafe uses only objective and unbiased data.
                 By pinpointing, evaluating, and applying systematic
@@ -52,13 +52,13 @@
                 contributors are strictly forbidden to hold stock in the nutraceutical,
                 pharmaceutical or food industries.
             </p>
-            <h3 class="heading2" id="ClinicallyPractical">Clinically practical</h3>
+            <h3 class="heading2" id="ClinicallyPractical" ref="anchor5">Clinically practical</h3>
             <p>
                 Going beyond just providing reliable scientific data,
                 Efficasafe provides clinically practical information
                 designed to support clinical decision-making by health professionals.
             </p>
-            <h3 class="heading2" id="SafetyBasedOnScience">Safety based on science</h3>
+            <h3 class="heading2" id="SafetyBasedOnScience" ref="anchor6">Safety based on science</h3>
             <p>
                 Each product monograph in the database and its Safety,
                 Effectiveness and Interaction ratings are supported only
@@ -67,7 +67,7 @@
                 and then applied via the same benchmark of high standards
                 used to evaluate evidence for other therapies.
             </p>
-            <h3 class="heading2" id="StandardsRemainStandards">Standards remain standards</h3>
+            <h3 class="heading2" id="StandardsRemainStandards" ref="anchor7">Standards remain standards</h3>
             <p>
                 Efficasafe believes that conventional therapies
                 and alternative therapies should carry the exact
@@ -75,8 +75,8 @@
                 tradition are valuable, they do not serve Efficasafe’s
                 purpose and therefore, are not considered as a reliable source of evidence.
             </p>
-            <h2 id="process">Process</h2>
-            <h3 class="heading2" id="QualityAndQuantity">Quality and quantity</h3>
+            <h2 id="process" ref="anchor8">Process</h2>
+            <h3 class="heading2" id="QualityAndQuantity" ref="anchor9">Quality and quantity</h3>
             <p>
                 The number of studies reviewed by Efficasafe greatly
                 exceeds those of competing search engines.
@@ -84,7 +84,7 @@
                 The data process is continuous, with the latest updated
                 information continually identified, evaluated, and appended to the database.
             </p>
-            <h3 class="heading2" id="ContinuousSearch">Continuous Search</h3>
+            <h3 class="heading2" id="ContinuousSearch" ref="anchor10">Continuous Search</h3>
             <p>
                 Efficasafe continues to seek out the latest data via a myriad of mechanisms daily.
                 All new data is assessed at the most granular detail and,
@@ -92,8 +92,8 @@
                 This approach empowers users to gain access to the most current, reliable,
                 and relevant information on the efficacy of natural medicines.
             </p>
-            <h2 id="literature">Literature</h2>
-            <h3 class="heading2" id="aSystematicApproach">A systematic approach</h3>
+            <h2 id="literature" ref="anchor11">Literature</h2>
+            <h3 class="heading2" id="aSystematicApproach" ref="anchor12">A systematic approach</h3>
             <p>
                 Identifying data related to natural medicines is carried out via a systematic approach.
                 Thorough literature searches are conducted through a variety of bibliographic
@@ -107,7 +107,7 @@
                     and/or alternating practice information and lab test interference.
                 </span>
             </p>
-            <h3 class="heading2" id="criticalAppraisal">Critical appraisal</h3>
+            <h3 class="heading2" id="criticalAppraisal" ref="anchor13">Critical appraisal</h3>
             <div class="parent-paragraph">
                 <p>
                     The critical evaluation of all initially identified literature
@@ -164,11 +164,11 @@
                     </table>
                 </p>
             </div>
-            <h3 class="heading2" id="consistency">Consistency</h3>
+            <h3 class="heading2" id="consistency" ref="anchor14">Consistency</h3>
             <p>
                 The assessment of all new literature is contextually based on previous findings and utilized to determine data consistency. A higher level of confidence can be achieved by maintaining a higher level of consistency. This is directly related to the reliability of the body of information in its entirety.
             </p>
-            <h3 class="heading2" id="peerReview">Peer review</h3>
+            <h3 class="heading2" id="peerReview" ref="anchor15">Peer review</h3>
             <p>
                 Through its peer review approach, Efficasafe addresses
                 all multidisciplinary and multi-pronged database content.
@@ -179,20 +179,20 @@
                 and accuracy of the content, but also to make it more practical and
                 relevant for practitioners on a day-to-day basis.
             </p>
-            <h2 id="currentContent">Current content</h2>
+            <h2 id="currentContent" ref="anchor16">Current content</h2>
             <p>
                 The aspiration to stay current Is filled by reviewing content
                 continuously from global sources. The continuous review of literature
                 is conducted using more than 100 global journals.
             </p>
-            <h3 class="heading2" id="contentPrioritization">Content prioritization</h3>
+            <h3 class="heading2" id="contentPrioritization" ref="anchor17">Content prioritization</h3>
             <p>
                 Prioritization is given to literature based on its potential impact.
                 Patient safety is paramount when concerns for safety are prioritized.
                 High priority is given to content and added to the database immediately
                 as fresh clinical trials are found to be synergistic or negative.
             </p>
-            <h3 class="heading2" id="continuousUpdates">
+            <h3 class="heading2" id="continuousUpdates" ref="anchor18">
                 Continuous updates, innovation, and improvement
             </h3>
             <p>
@@ -200,7 +200,7 @@
                 We are doing this by making improvements to the accessibility of the information
                 while both enhancing and expanding the tools that are included in the database.
             </p>
-            <h2 id="conclusion">Conclusion</h2>
+            <h2 id="conclusion" ref="anchor19">Conclusion</h2>
             <p>
                 The area of natural medicine research is exploding.
                 The information that health professionals have access to,
@@ -212,7 +212,7 @@
                 the database also helps users to identify clinical answers to their questions -
                 on demand.
             </p>
-            <side-navigation />
+            <side-navigation :sticky="isNavFixed" />
         </article>
     </section>
 </template>
@@ -222,6 +222,23 @@ import PageHeader from '@/client/cmps/shared/PageHeader';
 import SideNavigation from '@/client/cmps/principles-and-processes/SideNavigation';
 
 export default {
+    data() {
+        return {
+            isNavFixed: false
+        }
+    },
+    methods: {
+        handleScroll() {
+            const { header } = this.$refs;
+            this.isNavFixed = window.scrollY >= header.$el.offsetHeight;
+        }
+    },
+    mounted() {
+        window.addEventListener('scroll', this.handleScroll);
+    },
+    beforeDestroy() {
+        window.removeEventListener('scroll', this.handleScroll);
+    },
     components: {
         PageHeader,
         SideNavigation

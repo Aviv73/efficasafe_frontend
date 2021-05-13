@@ -1,6 +1,6 @@
 <template>
     <aside class="side-navigation">
-        <ul class="side-navigation-nav" ref="list">
+        <ul class="side-navigation-nav" :class="{ 'sticky': sticky }">
             <li class="side-navigation-nav-item">
                 <collapse hide-de-activator allow-overflow>
                 <template #header>
@@ -191,6 +191,12 @@ import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 
 export default {
+    props: {
+        sticky: {
+            type: Boolean,
+            default: false
+        }
+    },
     components: {
         Collapse,
         ChevronUpIcon,

@@ -130,6 +130,14 @@ export default {
             autoclose: true,
             avatar: null,
             forgotPasswordLink: `${window.location.origin}/emailPassword`,
+            additionalSignUpFields: [
+                {
+                    name: 'full_name',
+                    placeholder: 'Your username',
+                    icon: 's',
+                },
+            ],
+
         };
         this.lock = new Auth0Lock(
             config.auth0ClientId,

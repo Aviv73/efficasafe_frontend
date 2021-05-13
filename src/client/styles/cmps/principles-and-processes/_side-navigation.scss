@@ -6,7 +6,7 @@
     font-family: roboto-bold, sans-serif;
     font-weight: 700;
     font-size: rem(16px);
-    line-height: rem(48px);
+    line-height: rem(40px);
     display: none;
 
     @include for-middle-layout {
@@ -18,17 +18,30 @@
     
     &-nav {
         position: fixed;
+        top: rem(280px);
         transform: translateX(-110%);
+        transition: top .6s linear;
+
+        &.sticky {
+            top: 50px;
+        }
+
+        &-item {
+            display: flex;
+            align-items: center;
+        }
     }
 
     a {
         display: block;
 
         &:not(.primary-header) {
+            padding-inline-start: rem(12px);
             max-width: rem(150px);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            line-height: rem(36px);
         }
         &.active {
             color: $green;
