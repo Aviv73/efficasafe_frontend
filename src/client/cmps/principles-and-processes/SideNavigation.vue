@@ -172,7 +172,13 @@
                 </collapse>
             </li>
             <li class="side-navigation-nav-item">
-                <a href="#conclusion" class="primary-header">Conclusion</a>
+                <a
+                    href="#conclusion"
+                    class="primary-header"
+                    :class="{ 'active': $route.hash === '#conclusion' }"
+                >
+                    Conclusion
+                </a>
             </li>
         </ul>
     </aside>

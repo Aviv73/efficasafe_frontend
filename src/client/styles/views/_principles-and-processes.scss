@@ -26,6 +26,11 @@
     .heading2 {
         margin-block-end: rem(8px);
     }
+    h2, .heading2 {
+        padding-top: 50px;
+        margin-top: -50px;
+        vertical-align: top;
+    }
     .parent-paragraph {
         h4, p:not(:first-child) {
             padding-inline-start: rem(24px);

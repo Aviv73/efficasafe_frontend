@@ -5,9 +5,16 @@
     color: $clr-txt-darker;
     font-family: roboto-bold, sans-serif;
     font-weight: 700;
-    font-size: rem(18px);
+    font-size: rem(16px);
     line-height: rem(48px);
+    display: none;
 
+    @include for-middle-layout {
+        display: initial;
+    }
+    @include for-wide-layout {
+        font-size: rem(18px);
+    }
     
     &-nav {
         position: fixed;
@@ -18,7 +25,7 @@
         display: block;
 
         &:not(.primary-header) {
-            max-width: rem(200px);
+            max-width: rem(150px);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -30,6 +37,6 @@
     .primary-header {
         pointer-events: all;
         text-transform: uppercase;
-        min-width: max-content;
+        width: max-content;
     }
 }
