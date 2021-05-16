@@ -18,14 +18,14 @@ export const userStore = {
     mutations: {
         setToken(state, { token }) {
             state.token = token
-            storageService.store("token", token)
+            storageService.store('token', token)
         },
         // login(state, { user }) {
         //     state.loggedInUser = user
         // },
         logout(state) {
-            storageService.remove("token")
-            storageService.remove("userProfile")
+            storageService.remove('token')
+            storageService.remove('userProfile')
             state.loggedInUser = null
         },
         setLoggedInUser(state, { user }) {

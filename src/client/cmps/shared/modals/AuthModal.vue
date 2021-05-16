@@ -77,7 +77,7 @@ export default {
             }
         },
         handleError(err) {
-            console.log(err);
+            console.log('ERROR:', err);
         },
         async onAuthenticated(authResult) {
             let { accessToken, tokenType } = authResult;
@@ -88,7 +88,11 @@ export default {
 
             await this.$store.dispatch({ type: 'getUserInfo' });
             const { loggedInUser } = this;
-            if (loggedInUser && loggedInUser.email_verified) {
+            const user = await this.$store.dispatch({
+                type: 'loadUser',
+                userId: loggedInUser._id
+            });
+            if ((user && user.email_verified) || (user && !user.sub.startsWith('auth0'))) {
                 this.$store.dispatch({ type: 'getUserInfo' });
                 setTimeout(() => {
                     this.lock.hide();

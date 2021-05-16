@@ -49,7 +49,6 @@ async function getUser() {
     if (token) {
         return await httpService.get(`${USER_END_POINT}/userInfo`)
     }
-
 }
 
 function getLoggedInUser() {
