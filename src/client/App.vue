@@ -47,8 +47,8 @@ export default {
             type: 'loadUser',
             userId: this.$store.getters.loggedInUser._id,
         });
-        console.log('USER:', user);
-        if (user && !user.email_verified) {
+        console.log('USER.SUB:', user.sub);
+        if (user && !user.sub.startsWith('google') && !user.email_verified) {
             this.authModal = true;
         }
     },
