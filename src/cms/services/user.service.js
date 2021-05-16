@@ -2,15 +2,13 @@
 import { httpService } from './http.service';
 import { storageService } from './storage.service';
 
-const USER_END_POINT = 'auth';
+const AUTH_END_POINT = 'auth';
 const ACCOUNT_END_POINT = 'account';
-const KEY = 'loggedInUser';
 
 export const userService = {
-    login,
     logout,
     getLoggedInUser,
-    getUser,
+    getUserInfo,
     loadUsers,
     getById,
     getEmptyUser,
@@ -23,7 +21,7 @@ export const userService = {
 
 
 async function resnedVerifcationMail(user) {
-    return httpService.post(`${ACCOUNT_END_POINT}/resendMail`, { user: user })
+    return httpService.post(`${ACCOUNT_END_POINT}/resendMail`, { user: user });
 }
 
 async function removeMany(ids) {
@@ -36,7 +34,7 @@ async function save(user) {
 
 }
 async function loadUsers(filterBy) {
-    return await httpService.get(`${ACCOUNT_END_POINT}/`, filterBy)
+    return await httpService.get(`${ACCOUNT_END_POINT}/`, filterBy);
 }
 
 async function getById(id) {
@@ -44,28 +42,19 @@ async function getById(id) {
 
 }
 
-async function getUser() {
-    const token = storageService.load('token')
+async function getUserInfo() {
+    const token = storageService.load('token');
     if (token) {
-        return await httpService.get(`${USER_END_POINT}/userInfo`)
+        return await httpService.get(`${AUTH_END_POINT}/userInfo`);
     }
 }
 
 function getLoggedInUser() {
-    return storageService.load('userProfile')
-}
-
-
-async function login(credentials) {
-    const res = await httpService.post(`${USER_END_POINT}/login`, credentials);
-    if (res.account) {
-        storageService.store(KEY, res.account);
-    }
-    return res.account || null;
+    return storageService.load('userProfile');
 }
 
 async function logout() {
-    await httpService.post(`${USER_END_POINT}/logout`);
+    await httpService.post(`${AUTH_END_POINT}/logout`);
 }
 
 async function getEmptyUser() {
@@ -79,18 +68,16 @@ async function getEmptyUser() {
 
 
 async function sendResetPass(email) {
-    const res = await httpService.get(`${ACCOUNT_END_POINT}/passwordEmail?email=${email}`)
-    return res
+    return await httpService.get(`${ACCOUNT_END_POINT}/passwordEmail?email=${email}`);
 }
 
 async function resetPassword(pass, token) {
     try {
-        await httpService.put(`${ACCOUNT_END_POINT}/forgotPass`, { pass, token })
-        return 'done'
+        await httpService.put(`${ACCOUNT_END_POINT}/forgotPass`, { pass, token });
+        return 'done';
     } catch (err) {
-        console.log('cannot change pass ', err)
+        console.log('cannot change pass ', err);
     }
-
 }
 
 

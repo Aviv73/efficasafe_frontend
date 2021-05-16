@@ -85,7 +85,6 @@ export default {
                 type: 'setToken',
                 token: `${tokenType} ${accessToken}`,
             });
-
             await this.$store.dispatch({ type: 'getUserInfo' });
             const { loggedInUser } = this;
             const user = await this.$store.dispatch({

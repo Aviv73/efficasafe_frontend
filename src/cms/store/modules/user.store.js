@@ -17,30 +17,27 @@ export const userStore = {
     },
     mutations: {
         setToken(state, { token }) {
-            state.token = token
-            storageService.store('token', token)
+            state.token = token;
+            storageService.store('token', token);
         },
-        // login(state, { user }) {
-        //     state.loggedInUser = user
-        // },
         logout(state) {
-            storageService.remove('token')
-            storageService.remove('userProfile')
-            state.loggedInUser = null
+            storageService.remove('token');
+            storageService.remove('userProfile');
+            state.loggedInUser = null;
         },
         setLoggedInUser(state, { user }) {
-            state.loggedInUser = user
+            state.loggedInUser = user;
         },
         setUsers(state, { users }) {
-            state.users = users
+            state.users = users;
         },
         updateUser(state, { user }) {
             if (!state.users) return;
             const idx = state.users.findIndex(currUser => currUser._id === user._id);
-            state.users.splice(idx, 1, user)
+            state.users.splice(idx, 1, user);
         },
         removeUsers(state, { ids }) {
-            state.users = state.users.filter(user => !ids.includes(user._id))
+            state.users = state.users.filter(user => !ids.includes(user._id));
         },
         setUseApproval(state) {
             state.loggedInUser.approvedUse = true;
@@ -48,7 +45,7 @@ export const userStore = {
     },
     actions: {
         async getUserInfo({ commit }) {
-            const user = await userService.getUser();
+            const user = await userService.getUserInfo();
             if (user) {
                 storageService.store('userProfile', user);
                 commit({ type: 'setLoggedInUser', user });
