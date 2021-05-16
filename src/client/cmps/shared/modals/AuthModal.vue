@@ -137,7 +137,7 @@ export default {
                 {
                     name: 'full_name',
                     placeholder: 'Your username',
-                    icon: 's',
+                    icon: `${window.location.origin}/img/icons/account-outline.svg`,
                 },
             ],
 
