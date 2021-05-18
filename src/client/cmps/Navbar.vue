@@ -118,7 +118,7 @@
                         <router-link to="/about">About us</router-link>
                     </li>
                     <li class="navbar-mobile-nav-item">
-                        <router-link to="/">Contact us</router-link>
+                        <router-link to="/contact">Contact us</router-link>
                     </li>
                 </ul>
             </div>

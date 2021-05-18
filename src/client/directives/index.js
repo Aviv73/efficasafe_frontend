@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import { VueHammer } from 'vue2-hammer';
 import vueDebounce from 'vue-debounce';
+import PortalVue from 'portal-vue';
 
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 
@@ -9,6 +10,7 @@ VueHammer.config.swipe = {
     threshold: 200
 };
 Vue.use(VueHammer);
+Vue.use(PortalVue);
 
 Vue.use(vueDebounce, {
     listenTo: 'input',

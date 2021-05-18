@@ -98,6 +98,11 @@ const routes = [
     path: '/privacy-statement',
     name: 'PrivacyStatement',
     component: () => import(/* webpackChunkName: 'privacy-statement' */ '../views/PrivacyStatement')
+  },
+  {
+    path: '/contact',
+    name: 'ContactUs',
+    component: () => import(/* webpackChunkName: 'contact-us' */ '../views/ContactUs')
   }
 ];
 

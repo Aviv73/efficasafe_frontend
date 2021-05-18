@@ -1,0 +1,48 @@
+.contact-us {
+    flex-grow: 1;
+    display: flex;
+    color: rgba($clr10, .85);
+    font-size: rem(18px);
+    line-height: rem(26px);
+
+    &-container {
+        flex-grow: 1;
+        max-width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: min-content auto;
+        
+        @include for-narrow-layout {
+            grid-template-columns: 40% 60%;
+            grid-template-rows: auto;
+        }
+        @include for-wide-layout {
+            grid-template-columns: auto 500px 920px auto;
+        }
+    }
+
+    header {
+        background-color: $clr3;
+        padding: rem(95px) 0 0 rem(65px);
+
+        p {
+            max-width: 28ch;
+        }
+        .d-block {
+            margin-block-end: rem(35px);
+        }
+    }
+
+    .brim-start, .brim-end {
+        display: none;
+        @include for-wide-layout {
+            display: initial;
+        }
+    }
+    .brim-start {
+        background-color: $clr3;
+    }
+    .heading1 {
+        margin: rem(65px) 0 rem(35px);
+    }
+}
