@@ -27,7 +27,6 @@
                 <ul class="search-engine-search-materials">
                     <transition name="fade">
                         <popup-bubble-msg
-                            v-once
                             v-if="showMaterialTooltipPopup"
                             :offsetY="-100"
                         >
@@ -129,6 +128,19 @@
                         scientific articles
                     </div>
                 </header>
+                
+                <transition name="fade">
+                    <popup-bubble-msg
+                        v-if="showDisplayTogglePopup"
+                        class="w-max"
+                        :offsetX="750"
+                        :offsetY="100"
+                    >
+                        <p>
+                            Compact vertical view here
+                        </p>
+                    </popup-bubble-msg>
+                </transition>
                 <nav
                     class="search-engine-nav"
                     v-set-sticky-class-name:[`pinned`]
@@ -270,7 +282,9 @@ export default {
             evidenceLevelPopupActive: false,
             showMaterialTooltipPopup: false,
             isFirstSearch: true,
-            isMaterialTooltipShown: false
+            isMaterialTooltipShown: false,
+            showDisplayTogglePopup: false,
+            displayToggleMsgShown: false
         }
     },
     watch: {
@@ -303,6 +317,13 @@ export default {
                         this.showMaterialTooltipPopup = false;
                     }, 2500);
                     this.isMaterialTooltipShown = true;
+                }
+                if (this.total + this.dBankTotal >= 5 && !this.displayToggleMsgShown) {
+                    this.showDisplayTogglePopup = true;
+                    setTimeout(() => {
+                        this.showDisplayTogglePopup = false;
+                    }, 2500);
+                    this.displayToggleMsgShown = true;
                 }
             },
             deep: true,
