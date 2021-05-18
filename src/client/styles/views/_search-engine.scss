@@ -290,6 +290,7 @@
         ul {
             display: flex;
         }
+
         &-link {
             flex-grow: 1;
             position: relative;
@@ -409,6 +410,10 @@
             height: 100%;
         }
     }
+
+    .material-tooltip-popup-msg {
+        width: 25ch;
+    }
     
     .slide-left-leave-active,
     .slide-left-enter-active,
@@ -434,6 +439,14 @@
 
     .slide-right-leave-to {
         transform: translate(100%, 0);
+        opacity: 0;
+    }
+    
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: opacity .6s linear;
+    }
+    .fade-enter, .fade-leave-to {
         opacity: 0;
     }
 }

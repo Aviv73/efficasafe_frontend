@@ -25,6 +25,17 @@
                     @item-selected="addMaterials"
                 />
                 <ul class="search-engine-search-materials">
+                    <transition name="fade">
+                        <popup-bubble-msg
+                            v-once
+                            v-if="showMaterialTooltipPopup"
+                            :offsetY="-100"
+                        >
+                            <p class="material-tooltip-popup-msg">
+                                More info for each material can be seen when pressed
+                            </p>
+                        </popup-bubble-msg>
+                    </transition>
                     <tooltip
                         v-for="(result, idx) in formatedMaterials"
                         :key="idx"
@@ -62,7 +73,10 @@
                                     class="info-icon hover-activator"
                                     :size="16"
                                 />
-                                <button @click.stop="removeMaterials(result.txt)">
+                                <button
+                                    @click.stop="removeMaterials(result.txt)"
+                                    :data-close-btn="true"
+                                >
                                     <close-icon :size="16" />
                                 </button>
                             </span>
@@ -225,6 +239,7 @@ import ModalWrap from '@/client/cmps/common/ModalWrap';
 import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
 import MaterialInteractionsPreview from '@/client/cmps/search-engine/MaterialInteractionsPreview';
 import Disclaimer from '@/client/cmps/search-engine/Disclaimer';
+import PopupBubbleMsg from '@/client/cmps/shared/explainer-bubbles/PopupBubbleMsg';
 
 import MobileMenuIcon from '@/client/cmps/common/icons/MobileMenuIcon';
 import MobileShareIcon from '@/client/cmps/common/icons/MobileShareIcon';
@@ -253,7 +268,9 @@ export default {
             sortOptions: null,
             isDisclaimerActive: false,
             evidenceLevelPopupActive: false,
-            isFirstSearch: true
+            showMaterialTooltipPopup: false,
+            isFirstSearch: true,
+            isMaterialTooltipShown: false
         }
     },
     watch: {
@@ -270,14 +287,22 @@ export default {
                 await this.getResults();
                 if (
                     ((this.$route.name === 'Drug2Drug' && this.dBankTotal) ||
-                    (this.$route.name === 'Supp2Drug' && this.total)) &&
-                    this.isFirstSearch
+                    (this.$route.name === 'Supp2Drug' && this.total))
                 ) {
-                    this.evidenceLevelPopupActive = true;
+                    if (this.isFirstSearch) {
+                        this.evidenceLevelPopupActive = true;
+                        setTimeout(() => {
+                            this.evidenceLevelPopupActive = false;
+                        }, 2500);
+                        this.isFirstSearch = false;
+                    }
+                }
+                if (this.total + this.dBankTotal >= 3 && !this.isMaterialTooltipShown) {
+                    this.showMaterialTooltipPopup = true;
                     setTimeout(() => {
-                        this.evidenceLevelPopupActive = false;
+                        this.showMaterialTooltipPopup = false;
                     }, 2500);
-                    this.isFirstSearch = false;
+                    this.isMaterialTooltipShown = true;
                 }
             },
             deep: true,
@@ -838,7 +863,8 @@ export default {
         AnimatedInteger,
         InformationOutlineIcon,
         ModalWrap,
-        Disclaimer
+        Disclaimer,
+        PopupBubbleMsg
     }
 };
 </script>
