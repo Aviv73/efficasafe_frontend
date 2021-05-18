@@ -199,6 +199,7 @@
                         :isVertical="isViewVertical"
                         :materials="materials"
                         :isLoading="isLoading"
+                        :evidenceLevelPopupActive="evidenceLevelPopupActive"
                         @page-changed="handlePaging"
                         @list-sorted="handleSort"
                     />
@@ -250,12 +251,14 @@ export default {
             scrollBarWidth: '0px',
             routerTransitionName: '',
             sortOptions: null,
-            isDisclaimerActive: false
+            isDisclaimerActive: false,
+            evidenceLevelPopupActive: false,
+            isFirstSearch: true
         }
     },
     watch: {
         '$route.query': {
-            handler() {
+            async handler() {
                 const { q } = this.$route.query;
                 if (!q || !q.length) {
                     this.reset();
@@ -264,7 +267,18 @@ export default {
                 if (!Array.isArray(q) && q) {
                     this.$route.query.q = [ q ];
                 }
-                this.getResults();
+                await this.getResults();
+                if (
+                    ((this.$route.name === 'Drug2Drug' && this.dBankTotal) ||
+                    (this.$route.name === 'Supp2Drug' && this.total)) &&
+                    this.isFirstSearch
+                ) {
+                    this.evidenceLevelPopupActive = true;
+                    setTimeout(() => {
+                        this.evidenceLevelPopupActive = false;
+                    }, 2500);
+                    this.isFirstSearch = false;
+                }
             },
             deep: true,
             immediate: true

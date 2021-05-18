@@ -21,9 +21,13 @@
                 <p class="assistance">
                     If you need assistance, please contact us.
                 </p>
-                <div ref="resend" class="resend-email" @click="onResendEmail">
+                <button
+                    class="resend-email"
+                    :disabled="isLoading"
+                    @click="onResendEmail"
+                >
                     Resend email verification
-                </div>
+                </button>
             </div>
         </div>
     </div>
@@ -48,6 +52,7 @@ export default {
         return {
             lock: null,
             signUpModal: false,
+            isLoading: false
         };
     },
     computed: {
@@ -60,18 +65,11 @@ export default {
             if (this.signUpModal) return;
             this.$emit('closeModal');
         },
-
         async onResendEmail() {
-            if (this.loggedInUser) {
-                const { resend } = this.$refs;
-                resend.style.opacity = 0.5;
-                resend.style.pointerEvents = 'none';
-                await userService.resnedVerifcationMail(this.loggedInUser);
-                setTimeout(() => {
-                    resend.style.opacity = 1;
-                    resend.style.pointerEvents = 'unset';
-                }, 10000);
-            }
+            if (!this.loggedInUser) return;
+            this.isLoading = true;
+            await userService.resnedVerifcationMail(this.loggedInUser);
+            this.isLoading = false;
         },
         handleError(err) {
             console.log('ERROR:', err);
