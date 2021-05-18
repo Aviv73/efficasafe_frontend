@@ -17,9 +17,14 @@ export const userService = {
     save,
     removeMany,
     sendResetPass,
-    resetPassword
+    resetPassword,
+    resnedVerifcationMail
 }
 
+
+async function resnedVerifcationMail(user) {
+    return httpService.post(`${ACCOUNT_END_POINT}/resendMail`, { user: user })
+}
 
 async function removeMany(ids) {
     return httpService.delete(`${ACCOUNT_END_POINT}`, ids);

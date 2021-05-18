@@ -21,6 +21,9 @@
                 <p class="assistance">
                     If you need assistance, please contact us.
                 </p>
+                <div ref="resend" class="resend-email" @click="onResendEmail">
+                    Resend email verification
+                </div>
             </div>
         </div>
     </div>
@@ -32,13 +35,14 @@
 <script>
 import Auth0Lock from 'auth0-lock';
 import config from '@/client/config';
+import { userService } from '../../../../cms/services/user.service';
 
 export default {
     props: {
         allowLogin: {
             type: Boolean,
-            required: true
-        }
+            required: true,
+        },
     },
     data() {
         return {
@@ -49,12 +53,21 @@ export default {
     computed: {
         loggedInUser() {
             return this.$store.getters.loggedInUser;
-        }
+        },
     },
     methods: {
         closeModal() {
             if (this.signUpModal) return;
             this.$emit('closeModal');
+        },
+
+        async onResendEmail() {
+            if (this.loggedInUser) {
+                const { resend } = this.$refs;
+                resend.style.opacity = 0.5;
+                resend.style.pointerEvents = 'none';
+                await userService.resnedVerifcationMail(this.loggedInUser);
+            }
         },
         handleError(err) {
             console.log(err);
@@ -82,7 +95,8 @@ export default {
         },
     },
     mounted() {
-        if (this.loggedInUser && !this.loggedInUser.email_verified) this.signUpModal = true;
+        if (this.loggedInUser && !this.loggedInUser.email_verified)
+            this.signUpModal = true;
         else {
             this.lock.show({
                 allowLogin: this.allowLogin,
@@ -108,7 +122,11 @@ export default {
             avatar: null,
             forgotPasswordLink: `${window.location.origin}/emailPassword`,
         };
-        this.lock = new Auth0Lock(config.auth0ClientId, config.auth0BaseURL, options);
+        this.lock = new Auth0Lock(
+            config.auth0ClientId,
+            config.auth0BaseURL,
+            options
+        );
         this.lock.on('authenticated', this.onAuthenticated);
         this.lock.on('signup error', this.handleError);
     },
