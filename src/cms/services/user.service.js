@@ -21,7 +21,7 @@ export const userService = {
 
 
 async function resnedVerifcationMail(user) {
-    return httpService.post(`${ACCOUNT_END_POINT}/resendMail`, { user: user });
+    return httpService.post(`${ACCOUNT_END_POINT}/resendMail`, { user: user })
 }
 
 async function removeMany(ids) {

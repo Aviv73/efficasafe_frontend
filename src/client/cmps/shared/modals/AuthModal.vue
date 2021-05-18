@@ -21,11 +21,7 @@
                 <p class="assistance">
                     If you need assistance, please contact us.
                 </p>
-                <div
-                    ref="resend"
-                    class="resend-email btn"
-                    @click="onResendEmail"
-                >
+                <div ref="resend" class="resend-email" @click="onResendEmail">
                     Resend email verification
                 </div>
             </div>
@@ -64,6 +60,7 @@ export default {
             if (this.signUpModal) return;
             this.$emit('closeModal');
         },
+
         async onResendEmail() {
             if (this.loggedInUser) {
                 const { resend } = this.$refs;
@@ -89,9 +86,12 @@ export default {
             const { loggedInUser } = this;
             const user = await this.$store.dispatch({
                 type: 'loadUser',
-                userId: loggedInUser._id
+                userId: loggedInUser._id,
             });
-            if ((user && user.email_verified) || (user && !user.sub.startsWith('auth0'))) {
+            if (
+                (user && user.email_verified) ||
+                (user && !user.sub.startsWith('auth0'))
+            ) {
                 this.$store.dispatch({ type: 'getUserInfo' });
                 setTimeout(() => {
                     this.lock.hide();
@@ -140,7 +140,6 @@ export default {
                     icon: `${window.location.origin}/img/icons/account-outline.svg`,
                 },
             ],
-
         };
         this.lock = new Auth0Lock(
             config.auth0ClientId,

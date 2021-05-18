@@ -10,12 +10,16 @@
     border: 1px solid $clr6;
     border-radius: 6px;
 
-
     .resend-email {
-        margin-top: 20px;
         cursor: pointer;
+        text-decoration: underline;
+        position: absolute;
+        outline: $clr4;
+        color: $clr4;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
     }
-
 
     .send-verification {
         background-color: $green;
