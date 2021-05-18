@@ -12,6 +12,12 @@
     }
 }
 
+@mixin for-middle-layout {
+    @media (min-width: $break-middle) {
+        @content;
+    }
+}
+
 @mixin for-wide-layout {
     @media (min-width: $break-wide) {
         @content;

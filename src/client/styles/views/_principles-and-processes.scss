@@ -1,6 +1,6 @@
 .principles-and-processes {
     flex-grow: 1;
-    color: rgba($clr10, .85);
+    color: $clr10;
     font-size: rem(18px);
     line-height: rem(26px);
     padding-block-end: rem(70px);
@@ -20,8 +20,16 @@
         margin-block-end: rem(40px);
     }
 
+    .heading1 {
+        margin-block-end: rem(40px);
+    }
     .heading2 {
         margin-block-end: rem(8px);
+    }
+    h2, .heading2 {
+        padding-top: 50px;
+        margin-top: -50px;
+        vertical-align: top;
     }
     .parent-paragraph {
         h4, p:not(:first-child) {
@@ -46,6 +54,7 @@
         max-width: 800px;
         margin: 0 auto;
         padding: 0 24px;
+        position: relative;
 
         @include for-narrow-layout {
             padding: 0;

@@ -464,6 +464,7 @@ export default {
                 }, 0);
                 return acc;
             }, 0);
+            if (!this.total) return dBankRefsCount;
             const pathwayRefsCount = this.materials.reduce((acc, { _id, pathways }) => {
                 pathways.forEach(pathway => {
                     if (

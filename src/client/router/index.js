@@ -93,6 +93,11 @@ const routes = [
     path: '/terms-and-conditions',
     name: 'TermsAndConditions',
     component: () => import(/* webpackChunkName: 'terms-and-conditions' */ '../views/TermsAndConditions')
+  },
+  {
+    path: '/privacy-statement',
+    name: 'PrivacyStatement',
+    component: () => import(/* webpackChunkName: 'privacy-statement' */ '../views/PrivacyStatement')
   }
 ];
 
@@ -101,6 +106,11 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   linkExactActiveClass: 'exact-active',
   routes
+});
+
+router.beforeEach((to, from, next) => {
+  window.scrollTo(0, 0);
+  next();
 });
 
 export default router;

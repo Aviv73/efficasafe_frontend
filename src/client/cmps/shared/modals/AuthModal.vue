@@ -67,10 +67,14 @@ export default {
                 resend.style.opacity = 0.5;
                 resend.style.pointerEvents = 'none';
                 await userService.resnedVerifcationMail(this.loggedInUser);
+                setTimeout(() => {
+                    resend.style.opacity = 1;
+                    resend.style.pointerEvents = 'unset';
+                }, 10000);
             }
         },
         handleError(err) {
-            console.log(err);
+            console.log('ERROR:', err);
         },
         async onAuthenticated(authResult) {
             let { accessToken, tokenType } = authResult;
@@ -78,10 +82,16 @@ export default {
                 type: 'setToken',
                 token: `${tokenType} ${accessToken}`,
             });
-
             await this.$store.dispatch({ type: 'getUserInfo' });
             const { loggedInUser } = this;
-            if (loggedInUser && loggedInUser.email_verified) {
+            const user = await this.$store.dispatch({
+                type: 'loadUser',
+                userId: loggedInUser._id,
+            });
+            if (
+                (user && user.email_verified) ||
+                (user && !user.sub.startsWith('auth0'))
+            ) {
                 this.$store.dispatch({ type: 'getUserInfo' });
                 setTimeout(() => {
                     this.lock.hide();
@@ -98,9 +108,11 @@ export default {
         if (this.loggedInUser && !this.loggedInUser.email_verified)
             this.signUpModal = true;
         else {
-            this.lock.show({
-                allowLogin: this.allowLogin,
-                allowSignUp: !this.allowLogin,
+            this.$nextTick(() => {
+                this.lock.show({
+                    allowLogin: this.allowLogin,
+                    allowSignUp: !this.allowLogin,
+                });
             });
         }
     },
@@ -121,6 +133,13 @@ export default {
             autoclose: true,
             avatar: null,
             forgotPasswordLink: `${window.location.origin}/emailPassword`,
+            additionalSignUpFields: [
+                {
+                    name: 'full_name',
+                    placeholder: 'Your username',
+                    icon: `${window.location.origin}/img/icons/account-outline.svg`,
+                },
+            ],
         };
         this.lock = new Auth0Lock(
             config.auth0ClientId,

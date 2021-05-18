@@ -42,19 +42,12 @@ export default {
         },
     },
     async created() {
-        await this.$store.dispatch({ type: 'getUserInfo' });
-        const _id = this.$store.getters.loggedInUser
-            ? this.$store.getters.loggedInUser._id
-            : false;
-        console.log(!!_id);
-        if (!_id) return;
+        if (!this.$store.getters.loggedInUser) return;
         const user = await this.$store.dispatch({
             type: 'loadUser',
-            userId: _id,
+            userId: this.$store.getters.loggedInUser._id,
         });
-        console.log(user);
-        console.log(!user.email_verified);
-        if (user && !user.email_verified) {
+        if (user && user.sub.startsWith('auth0') && !user.email_verified) {
             this.authModal = true;
         }
     },

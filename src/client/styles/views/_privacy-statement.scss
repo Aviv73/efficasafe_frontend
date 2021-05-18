@@ -1,34 +1,26 @@
-.terms-and-conditions {
+.privacy-statement {
     flex-grow: 1;
     color: $clr10;
     font-size: rem(16px);
     line-height: rem(24px);
     border-bottom: 1px solid rgba($black, .16);
 
-    h1 {
-        text-transform: capitalize;
-    }
     p {
         margin-block-end: rem(10px);
     }
     ol {
         list-style-type: lower-latin;
         padding-inline-start: rem(20px);
-
-        &.roman-letters {
-            list-style-type: lower-roman;
-        }
-    }
-    footer {
-        text-align: center;
-        margin-block-end: rem(10px);
     }
 
     .heading1 {
         text-align: center;
     }
-    .heading3, .heading3 + p {
-        padding-inline-start: rem(24px);
+    .heading2 {
+        text-transform: uppercase;
+    }
+    .heading3 {
+        text-transform: capitalize;
     }
     .bottom-gap {
         margin-block-end: rem(40px);
