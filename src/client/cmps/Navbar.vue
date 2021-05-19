@@ -143,13 +143,15 @@ export default {
             return this.$store.getters.loggedInUser;
         },
         freeTrialTime() {
-            const loggedInUser = this.$store.getters.loggedInUser;
-            const timeLeft =
-                Date.now() -
-                loggedInUser.resgisteredTime +
-                2 * 1000 * 3600 * 24;
+            const {
+                loggedInUser: { resgisteredTime, trialTime },
+            } = this.$store.getters;
+
+            const timeLeft = trialTime - resgisteredTime;
             const Difference_In_Days = timeLeft / (1000 * 3600 * 24);
-            return Math.floor(Difference_In_Days);
+            return Difference_In_Days > 1
+                ? Math.floor(Difference_In_Days)
+                : Math.ceil(Difference_In_Days);
         },
     },
     methods: {

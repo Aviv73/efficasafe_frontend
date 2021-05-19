@@ -2,7 +2,7 @@
     <div class="container">
         <v-card class="user-edit" v-if="editedUser">
             <v-form v-model="valid" @submit.prevent="saveUser">
-                <div class="user-edit-inputs">
+                <div class="user-edit-inputs p-50">
                     <v-text-field
                         type="text"
                         v-model="editedUser.name"
@@ -12,11 +12,41 @@
                     />
                     <v-text-field
                         type="text"
-                        v-model="editedUser.email"
+                        v-model="date"
                         label="Email*"
                         required
                     />
                     <v-select :items="items" label="Role" dense></v-select>
+
+                    <v-menu
+                        ref="menu"
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        :return-value.sync="date"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                    >
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                                v-model="date"
+                                label="End trial user"
+                                prepend-icon="mdi-calendar"
+                                readonly
+                                v-bind="attrs"
+                                v-on="on"
+                            ></v-text-field>
+                        </template>
+                        <v-date-picker v-model="date" no-title scrollable>
+                            <v-spacer></v-spacer>
+                            <v-btn text color="primary" @click="menu = false">
+                                Cancel
+                            </v-btn>
+                            <v-btn text color="primary" @click="saveDate">
+                                OK
+                            </v-btn>
+                        </v-date-picker>
+                    </v-menu>
                 </div>
 
                 <div class="d-flex align-center justify-center mt-4">
@@ -58,16 +88,27 @@ export default {
             editedUser: null,
             valid: true,
             items: ['admin', 'user', 'editor'],
+            date: new Date().toISOString().substr(0, 10),
+            menu: false,
+            modal: false,
+            menu2: false,
         };
     },
     methods: {
+        saveDate() {
+            this.$refs.menu.save(this.date);
+            const dateFormat = new Date(this.date).getTime();
+            this.editedUser.trialTime = dateFormat;
+        },
         async loadUser() {
             const userId = this.$route.params.id;
             let user = null;
             if (userId)
                 user = await this.$store.dispatch({ type: 'loadUser', userId });
             else user = userService.getEmptyUser();
+            console.log(user);
             this.editedUser = JSON.parse(JSON.stringify(user));
+            this.date = new Date(user.trialTime).toISOString().substr(0, 10);
         },
         async saveUser() {
             if (!this.editedUser.name) return;
@@ -79,6 +120,11 @@ export default {
     },
     created() {
         this.loadUser();
+    },
+    watch: {
+        editedUser(val) {
+            console.log(val.trialTime);
+        },
     },
 };
 </script>

@@ -38,6 +38,12 @@
                                 }}</span>
                             </router-link>
                         </td>
+                        <td class="centered text-center">
+                            {{ item.resgisteredTime | moment('L') }}
+                        </td>
+                        <td class="centered text-center">
+                            {{ item.trialTime | moment('L') }}
+                        </td>
 
                         <td class="centered text-center">
                             {{ item.email }}
@@ -135,6 +141,16 @@ export default {
                 {
                     text: 'Name',
                     value: 'name',
+                },
+                {
+                    text: 'Registered',
+                    value: 'Registered',
+                    align: 'center',
+                },
+                {
+                    text: 'End Trial',
+                    value: 'endTrial',
+                    align: 'center',
                 },
                 {
                     text: 'Email',

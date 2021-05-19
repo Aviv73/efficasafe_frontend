@@ -46,6 +46,7 @@ export const userStore = {
     actions: {
         async getUserInfo({ commit }) {
             const user = await userService.getUserInfo();
+            console.log('user', user)
             if (user) {
                 storageService.store('userProfile', user);
                 commit({ type: 'setLoggedInUser', user });
