@@ -49,7 +49,7 @@
                             />
                         </template>
                         <li
-                            class="search-engine-search-materials-chip clip-txt activator"
+                            class="search-engine-search-materials-chip clip-txt activator v-tour-step-1"
                             :class="{
                                 'disabled': result.isIncluded,
                                 'not-active': !isTooltipActive(result)
@@ -170,7 +170,7 @@
                                 What to monitor
                             </router-link>
                         </li>
-                        <li class="search-engine-nav-link">
+                        <li class="search-engine-nav-link v-tour-step-2">
                             <label class="display-toggle">
                                 <input
                                     type="radio"
@@ -202,7 +202,6 @@
                         :isVertical="isViewVertical"
                         :materials="materials"
                         :isLoading="isLoading"
-                        :evidenceLevelPopupActive="evidenceLevelPopupActive"
                         @page-changed="handlePaging"
                         @list-sorted="handleSort"
                     />
@@ -216,6 +215,10 @@
         >
             <disclaimer @approved-use="handleUseApprove" />
         </modal-wrap>
+        <v-tour
+            name="onboarding-tour"
+            :steps="computedOnboardingSteps"
+        />
     </section>
 </template>
 
@@ -254,7 +257,37 @@ export default {
             scrollBarWidth: '0px',
             routerTransitionName: '',
             sortOptions: null,
-            isDisclaimerActive: false
+            isDisclaimerActive: false,
+            onboardingSteps: [
+                {
+                    target: '.v-tour-step-0',
+                    content: 'Hover here to view evidence level calculation details',
+                    params: {
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour-step-1',
+                    content: 'Click on each material to view additional info',
+                    params: {
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour-step-2',
+                    content: 'Compact vertical view available here',
+                    params: {
+                        placement: 'left',
+                        enableScrolling: false
+                    },
+                    before: () => new Promise((resolve) => {
+                        const elNav = document.querySelector('.search-engine-nav');
+                        const maxScroll = elNav.scrollWidth - elNav.clientWidth;
+                        elNav.scrollLeft += maxScroll;
+                        resolve();
+                    })
+                }
+            ]
         }
     },
     watch: {
@@ -269,6 +302,7 @@ export default {
                     this.$route.query.q = [ q ];
                 }
                 await this.getResults();
+                this.$tours['onboarding-tour'].start();
             },
             deep: true,
             immediate: true
@@ -284,6 +318,36 @@ export default {
         }
     },
     computed: {
+        computedOnboardingSteps() {
+            const res = [];
+
+            if (this.isScreenNarrow) {
+                if (this.total + this.dBankTotal >= 3) {
+                    const seenTooltipMsg = storageService.load('seen-tooltip-msg');
+                    if (!seenTooltipMsg) res.push(this.onboardingSteps[1]);
+                    // storageService.store('seen-tooltip-msg', true);
+                }
+                return res;
+            }
+
+            if (this.$route.name === 'Supp2Drug' && this.total || this.$route.name === 'Drug2Drug' && this.dBankTotal) {
+                const didSearch = storageService.load('did-search');
+                if (!didSearch) res.push(this.onboardingSteps[0]);
+                // storageService.store('did-search', true);
+            }
+            if (this.total + this.dBankTotal >= 3) {
+                const seenTooltipMsg = storageService.load('seen-tooltip-msg');
+                if (!seenTooltipMsg) res.push(this.onboardingSteps[1]);
+                // storageService.store('seen-tooltip-msg', true);
+            }
+            if (this.total + this.dBankTotal >= 5) {
+                const seenViewToggleMsg = storageService.load('seen-view-toggle-msg');
+                if (!seenViewToggleMsg) res.push(this.onboardingSteps[2]);
+                // storageService.store('seen-view-toggle-msg', true);
+            }
+            console.log('save changes?', res);
+            return res;
+        },
         routableListData() {
             switch (this.$route.name) {
                 case 'Supp2Drug':
