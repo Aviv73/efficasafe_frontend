@@ -25,16 +25,6 @@
                     @item-selected="addMaterials"
                 />
                 <ul class="search-engine-search-materials">
-                    <transition name="fade">
-                        <popup-bubble-msg
-                            v-if="showMaterialTooltipPopup"
-                            :offsetY="-100"
-                        >
-                            <p class="material-tooltip-popup-msg">
-                                More info for each material can be seen when pressed
-                            </p>
-                        </popup-bubble-msg>
-                    </transition>
                     <tooltip
                         v-for="(result, idx) in formatedMaterials"
                         :key="idx"
@@ -59,7 +49,7 @@
                             />
                         </template>
                         <li
-                            class="search-engine-search-materials-chip clip-txt activator"
+                            class="search-engine-search-materials-chip clip-txt activator v-tour-step-1"
                             :class="{
                                 'disabled': result.isIncluded,
                                 'not-active': !isTooltipActive(result)
@@ -128,19 +118,6 @@
                         scientific articles
                     </div>
                 </header>
-                
-                <transition name="fade">
-                    <popup-bubble-msg
-                        v-if="showDisplayTogglePopup"
-                        class="w-max"
-                        :offsetX="750"
-                        :offsetY="100"
-                    >
-                        <p>
-                            Compact vertical view here
-                        </p>
-                    </popup-bubble-msg>
-                </transition>
                 <nav
                     class="search-engine-nav"
                     v-set-sticky-class-name:[`pinned`]
@@ -193,7 +170,7 @@
                                 What to monitor
                             </router-link>
                         </li>
-                        <li class="search-engine-nav-link">
+                        <li class="search-engine-nav-link v-tour-step-2">
                             <label class="display-toggle">
                                 <input
                                     type="radio"
@@ -225,7 +202,6 @@
                         :isVertical="isViewVertical"
                         :materials="materials"
                         :isLoading="isLoading"
-                        :evidenceLevelPopupActive="evidenceLevelPopupActive"
                         @page-changed="handlePaging"
                         @list-sorted="handleSort"
                     />
@@ -239,6 +215,11 @@
         >
             <disclaimer @approved-use="handleUseApprove" />
         </modal-wrap>
+        <v-tour
+            name="onboarding-tour"
+            :steps="computedOnboardingSteps"
+            :callbacks="tourCallbacks"
+        />
     </section>
 </template>
 
@@ -251,7 +232,6 @@ import ModalWrap from '@/client/cmps/common/ModalWrap';
 import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
 import MaterialInteractionsPreview from '@/client/cmps/search-engine/MaterialInteractionsPreview';
 import Disclaimer from '@/client/cmps/search-engine/Disclaimer';
-import PopupBubbleMsg from '@/client/cmps/shared/explainer-bubbles/PopupBubbleMsg';
 
 import MobileMenuIcon from '@/client/cmps/common/icons/MobileMenuIcon';
 import MobileShareIcon from '@/client/cmps/common/icons/MobileShareIcon';
@@ -279,12 +259,56 @@ export default {
             routerTransitionName: '',
             sortOptions: null,
             isDisclaimerActive: false,
-            evidenceLevelPopupActive: false,
-            showMaterialTooltipPopup: false,
-            isFirstSearch: true,
-            isMaterialTooltipShown: false,
-            showDisplayTogglePopup: false,
-            displayToggleMsgShown: false
+            onboardingSteps: [
+                {
+                    target: '.v-tour-step-0',
+                    content: 'Hover here to view evidence level calculation details',
+                    params: {
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour-step-1',
+                    content: 'Click on each material to view additional info',
+                    params: {
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour-step-2',
+                    content: 'Compact vertical view available here',
+                    params: {
+                        placement: 'left',
+                        enableScrolling: false
+                    },
+                    before: () => new Promise((resolve) => {
+                        const elNav = document.querySelector('.search-engine-nav');
+                        const maxScroll = elNav.scrollWidth - elNav.clientWidth;
+                        elNav.scrollLeft += maxScroll;
+                        resolve();
+                    })
+                }
+            ],
+            tourCallbacks: {
+                onNextStep: (step) => {
+                    switch (step) {
+                        case 0:
+                            storageService.store('did-search', true);
+                            break;
+                        case 1:
+                            storageService.store('seen-tooltip-msg', true);
+                            break;
+                        case 2:
+                            storageService.store('seen-view-toggle-msg', true);
+                            break;
+                    }
+                },
+                onStop: () => {
+                    storageService.store('did-search', true);
+                    storageService.store('seen-tooltip-msg', true);
+                    storageService.store('seen-view-toggle-msg', true);
+                }
+            }
         }
     },
     watch: {
@@ -299,31 +323,8 @@ export default {
                     this.$route.query.q = [ q ];
                 }
                 await this.getResults();
-                if (
-                    ((this.$route.name === 'Drug2Drug' && this.dBankTotal) ||
-                    (this.$route.name === 'Supp2Drug' && this.total))
-                ) {
-                    if (this.isFirstSearch) {
-                        this.evidenceLevelPopupActive = true;
-                        setTimeout(() => {
-                            this.evidenceLevelPopupActive = false;
-                        }, 2500);
-                        this.isFirstSearch = false;
-                    }
-                }
-                if (this.total + this.dBankTotal >= 3 && !this.isMaterialTooltipShown) {
-                    this.showMaterialTooltipPopup = true;
-                    setTimeout(() => {
-                        this.showMaterialTooltipPopup = false;
-                    }, 2500);
-                    this.isMaterialTooltipShown = true;
-                }
-                if (this.total + this.dBankTotal >= 5 && !this.displayToggleMsgShown) {
-                    this.showDisplayTogglePopup = true;
-                    setTimeout(() => {
-                        this.showDisplayTogglePopup = false;
-                    }, 2500);
-                    this.displayToggleMsgShown = true;
+                if (this.computedOnboardingSteps.length) {
+                    this.$tours['onboarding-tour'].start();
                 }
             },
             deep: true,
@@ -340,6 +341,32 @@ export default {
         }
     },
     computed: {
+        computedOnboardingSteps() {
+            const res = [];
+
+            if (this.isScreenNarrow) {
+                if (this.total + this.dBankTotal >= 3) {
+                    const seenTooltipMsg = storageService.load('seen-tooltip-msg');
+                    if (!seenTooltipMsg) res.push(this.onboardingSteps[1]);
+                }
+                return res;
+            }
+
+            if (this.$route.name === 'Supp2Drug' && this.total || this.$route.name === 'Drug2Drug' && this.dBankTotal) {
+                const didSearch = storageService.load('did-search');
+                if (!didSearch) res.push(this.onboardingSteps[0]);
+            }
+            if (this.total + this.dBankTotal >= 3) {
+                const seenTooltipMsg = storageService.load('seen-tooltip-msg');
+                if (!seenTooltipMsg) res.push(this.onboardingSteps[1]);
+            }
+            if (this.total + this.dBankTotal >= 5) {
+                const seenViewToggleMsg = storageService.load('seen-view-toggle-msg');
+                if (!seenViewToggleMsg) res.push(this.onboardingSteps[2]);
+            }
+            
+            return res;
+        },
         routableListData() {
             switch (this.$route.name) {
                 case 'Supp2Drug':
@@ -884,8 +911,7 @@ export default {
         AnimatedInteger,
         InformationOutlineIcon,
         ModalWrap,
-        Disclaimer,
-        PopupBubbleMsg
+        Disclaimer
     }
 };
 </script>

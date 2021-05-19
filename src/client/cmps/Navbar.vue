@@ -4,7 +4,7 @@
             <div class="flex-space-between">
                 <div class="navbar-msgs flex-center">
                     <div
-                        class="un-logged user-trial flex-center"
+                        class="flex-center"
                         v-if="!loggedInUser"
                     >
                         {{ isScreenNarrow ? 'Get a Free trial' : '' }}
@@ -15,21 +15,21 @@
                         />
                     </div>
 
-                    <div class="logged-in flex-center" v-else>
-                        <div class="hi-user flex-center" v-if="!isScreenNarrow">
+                    <div class="flex-center" v-else>
+                        <div class="flex-center" v-if="!isScreenNarrow">
                             <img
+                                class="nav-user-img"
                                 v-if="loggedInUser.picture"
                                 :src="loggedInUser.picture"
-                                alt=""
-                                class="nav-user-img"
+                                alt="User's picture"
                             />
-                            <p class="user-name">
+                            <p>
                                 {{ `Hi ${loggedInUser.nickname}` }}
                             </p>
                             <p class="seperator">|</p>
                         </div>
                         <div
-                            class="free-trial flex-center"
+                            class="flex-center"
                             v-if="!loggedInUser.isSubscribe"
                         >
                             <p v-if="freeTrialTime < 14 && freeTrialTime > 0">
@@ -40,7 +40,7 @@
                                 }}
                             </p>
                         </div>
-                        <div class="user-trial flex-center" v-if="loggedInUser">
+                        <div class="flex-center" v-if="loggedInUser">
                             <chevron-right-icon
                                 class="flex-center"
                                 :size="20"
@@ -88,39 +88,45 @@
                     <dots-horizontal-icon v-if="isScreenNarrow" />
                     <span v-else>More...</span>
                 </button>
-                <ul
-                    class="navbar-mobile-nav"
+                <div
+                    class="navbar-overlay"
                     :class="{ active: isNavActive }"
-                    v-hammer:swipe.right="toggleNavActive"
+                    @click.self="toggleNavActive"
                 >
-                    <button
-                        class="navbar-mobile-nav-close-btn"
-                        @click="toggleNavActive"
+                    <ul
+                        class="navbar-side-nav"
+                        :class="{ active: isNavActive }"
+                        v-hammer:swipe.right="toggleNavActive"
                     >
-                        <close-icon />
-                    </button>
-                    <img
-                        src="@/client/assets/imgs/logo-white.png"
-                        alt="Efficasafe"
-                        class="navbar-mobile-nav-logo"
-                    />
-                    <li class="navbar-mobile-nav-item">
-                        <button class="subscribe-btn">Subscribe</button>
-                    </li>
-                    <li class="navbar-mobile-nav-item">
-                        <button>Login</button>
-                    </li>
+                        <button
+                            class="navbar-side-nav-close-btn"
+                            @click="toggleNavActive"
+                        >
+                            <close-icon />
+                        </button>
+                        <img
+                            src="@/client/assets/imgs/logo-white.png"
+                            alt="Efficasafe"
+                            class="navbar-side-nav-logo"
+                        />
+                        <li class="navbar-side-nav-item">
+                            <button class="subscribe-btn">Subscribe</button>
+                        </li>
+                        <li class="navbar-side-nav-item">
+                            <button>Login</button>
+                        </li>
 
-                    <li class="navbar-mobile-nav-item">
-                        <router-link to="/search">Search</router-link>
-                    </li>
-                    <li class="navbar-mobile-nav-item">
-                        <router-link to="/about">About us</router-link>
-                    </li>
-                    <li class="navbar-mobile-nav-item">
-                        <router-link to="/contact">Contact us</router-link>
-                    </li>
-                </ul>
+                        <li class="navbar-side-nav-item">
+                            <router-link to="/search">Search</router-link>
+                        </li>
+                        <li class="navbar-side-nav-item">
+                            <router-link to="/about">About us</router-link>
+                        </li>
+                        <li class="navbar-side-nav-item">
+                            <router-link to="/contact">Contact us</router-link>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>
@@ -178,17 +184,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss" scoped>
-.hi-user {
-    & .nav-user-img {
-        width: 24px;
-        border-radius: 50%;
-        margin-right: 10px;
-        margin-left: 40px;
-    }
-}
-.seperator {
-    margin: 0 14px 0 14px;
-}
-</style>

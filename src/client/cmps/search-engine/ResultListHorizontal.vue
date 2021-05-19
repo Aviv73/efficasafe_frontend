@@ -13,6 +13,7 @@
                 </label>
                 <button
                     @click="changeSortBySide"
+                    class="swap-side-btn"
                 >
                     <sort-vertical-icon
                         class="swap-side-icon"
@@ -39,18 +40,7 @@
                 >
                     <input type="checkbox" hidden @change="emitSort('evidenceLevel', $event.target.checked)" />
                     <sort-vertical-icon class="sort-icon" />
-                    <transition name="fade">
-                        <popup-bubble-msg
-                            v-if="evidenceLevelPopupActive"
-                            :offsetY="-70"
-                            :offsetX="-25"
-                        >
-                            <p class="evidence-level-popup-msg">
-                                Hover here to view evidence level calculation details.
-                            </p>
-                        </popup-bubble-msg>
-                    </transition>
-                    <span>Level of Evidence</span>
+                    <span class="v-tour-step-0">Level of Evidence</span>
                 </label>
                 <tooltip on="hover" right right-bottom>
                     <template #content>
@@ -102,7 +92,6 @@ import Tooltip from '@/client/cmps/common/Tooltip';
 
 import SortVerticalIcon from '@/client/cmps/common/icons/SortVerticalIcon';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
-import PopupBubbleMsg from '@/client/cmps/shared/explainer-bubbles/PopupBubbleMsg';
 
 export default {
     props: {
@@ -156,8 +145,7 @@ export default {
         InteractionPreview,
         SortVerticalIcon,
         InformationOutlineIcon,
-        Tooltip,
-        PopupBubbleMsg
+        Tooltip
     }
 };
 </script>

@@ -261,7 +261,7 @@
         position: sticky;
         top: rem(43px);
         left: 0;
-        z-index: 4;
+        z-index: 3;
         background-color: rgba($white, .75);
         padding: 0 rem(16px);
         font-size: rem(14px);
@@ -269,6 +269,7 @@
         text-transform: capitalize;
         color: rgba($clr-txt-dark, .8);
         overflow-x: auto;
+        scroll-behavior: smooth;
         width: 100%;
         transition: box-shadow .2s linear, background-color .2s linear;
 
@@ -332,7 +333,7 @@
                 fill: transparent;
             }
             line {
-                stroke: $clr6;
+                stroke: $gray;
             }
             &:first-child {
                 transform: rotateZ(270deg);
@@ -413,6 +414,16 @@
 
     .material-tooltip-popup-msg {
         width: 25ch;
+    }
+    .v-tour .v-step {
+        background-color: $clr1;
+        border-radius: 15px;
+        box-shadow: 0px 3px 8px rgba($black, .15);
+        padding: rem(16px) rem(24px);
+        font-family: roboto-medium, sans-serif;
+        font-weight: 500;
+        font-size: rem(15px);
+        line-height: rem(17px);
     }
     
     .slide-left-leave-active,
