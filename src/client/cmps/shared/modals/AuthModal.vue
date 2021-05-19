@@ -84,6 +84,8 @@ export default {
             });
             await this.$store.dispatch({ type: 'getUserInfo' });
             const { loggedInUser } = this;
+            console.log('loggedInUser', loggedInUser);
+
             const user = await this.$store.dispatch({
                 type: 'loadUser',
                 userId: loggedInUser._id,
