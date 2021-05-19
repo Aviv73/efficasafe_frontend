@@ -43,8 +43,16 @@
             flex-grow: 1;
             border-radius: inherit;
             border: 1px solid $clr2;
-            padding: rem(10px) rem(14px);
+            padding: rem(10px) rem(30px) rem(10px) rem(14px);
             z-index: 94;
+            position: relative;
+        }
+        &-close-btn {
+            position: absolute;
+            top: 50%;
+            right: 8px;
+            z-index: 95;
+            transform: translateY(-50%);
         }
     }
 }

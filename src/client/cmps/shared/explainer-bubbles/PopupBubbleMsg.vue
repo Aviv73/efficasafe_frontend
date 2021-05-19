@@ -6,6 +6,7 @@
                 top: offsetY + 'px',
                 left: finalOffsetX + 'px'
             }"
+            @close-bubble="$emit('close-bubble')"
         >
             <slot />
         </bubble>
