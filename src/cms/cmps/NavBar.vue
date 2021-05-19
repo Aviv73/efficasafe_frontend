@@ -58,17 +58,17 @@ export default {
       return this.$store.getters.loggedInUser;
     },
     isAdmin() {
-      return this.loggedInUser ? this.loggedInUser.role === "admin" : false;
+      return this.loggedInUser ? this.loggedInUser.role === 'admin' : false;
     },
   },
   methods: {
     logout() {
       try {
-        console.log("try logout");
-        this.$store.commit({ type: "logout" });
-        this.$router.push("/");
+        console.log('try logout');
+        this.$store.commit({ type: 'logout' });
+        this.$router.push('/');
       } catch {
-        console.log("Try again");
+        console.log('Try again');
       }
     },
   },
