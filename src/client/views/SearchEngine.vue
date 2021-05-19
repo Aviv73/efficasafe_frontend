@@ -25,6 +25,16 @@
                     @item-selected="addMaterials"
                 />
                 <ul class="search-engine-search-materials">
+                    <transition name="fade">
+                        <popup-bubble-msg
+                            v-if="showMaterialTooltipPopup"
+                            :offsetY="-100"
+                        >
+                            <p class="material-tooltip-popup-msg">
+                                More info for each material can be seen when pressed
+                            </p>
+                        </popup-bubble-msg>
+                    </transition>
                     <tooltip
                         v-for="(result, idx) in formatedMaterials"
                         :key="idx"
@@ -62,7 +72,10 @@
                                     class="info-icon hover-activator"
                                     :size="16"
                                 />
-                                <button @click.stop="removeMaterials(result.txt)">
+                                <button
+                                    @click.stop="removeMaterials(result.txt)"
+                                    :data-close-btn="true"
+                                >
                                     <close-icon :size="16" />
                                 </button>
                             </span>
@@ -115,6 +128,19 @@
                         scientific articles
                     </div>
                 </header>
+                
+                <transition name="fade">
+                    <popup-bubble-msg
+                        v-if="showDisplayTogglePopup"
+                        class="w-max"
+                        :offsetX="750"
+                        :offsetY="100"
+                    >
+                        <p>
+                            Compact vertical view here
+                        </p>
+                    </popup-bubble-msg>
+                </transition>
                 <nav
                     class="search-engine-nav"
                     v-set-sticky-class-name:[`pinned`]
@@ -199,6 +225,7 @@
                         :isVertical="isViewVertical"
                         :materials="materials"
                         :isLoading="isLoading"
+                        :evidenceLevelPopupActive="evidenceLevelPopupActive"
                         @page-changed="handlePaging"
                         @list-sorted="handleSort"
                     />
@@ -224,6 +251,7 @@ import ModalWrap from '@/client/cmps/common/ModalWrap';
 import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
 import MaterialInteractionsPreview from '@/client/cmps/search-engine/MaterialInteractionsPreview';
 import Disclaimer from '@/client/cmps/search-engine/Disclaimer';
+import PopupBubbleMsg from '@/client/cmps/shared/explainer-bubbles/PopupBubbleMsg';
 
 import MobileMenuIcon from '@/client/cmps/common/icons/MobileMenuIcon';
 import MobileShareIcon from '@/client/cmps/common/icons/MobileShareIcon';
@@ -250,12 +278,18 @@ export default {
             scrollBarWidth: '0px',
             routerTransitionName: '',
             sortOptions: null,
-            isDisclaimerActive: false
+            isDisclaimerActive: false,
+            evidenceLevelPopupActive: false,
+            showMaterialTooltipPopup: false,
+            isFirstSearch: true,
+            isMaterialTooltipShown: false,
+            showDisplayTogglePopup: false,
+            displayToggleMsgShown: false
         }
     },
     watch: {
         '$route.query': {
-            handler() {
+            async handler() {
                 const { q } = this.$route.query;
                 if (!q || !q.length) {
                     this.reset();
@@ -264,7 +298,33 @@ export default {
                 if (!Array.isArray(q) && q) {
                     this.$route.query.q = [ q ];
                 }
-                this.getResults();
+                await this.getResults();
+                if (
+                    ((this.$route.name === 'Drug2Drug' && this.dBankTotal) ||
+                    (this.$route.name === 'Supp2Drug' && this.total))
+                ) {
+                    if (this.isFirstSearch) {
+                        this.evidenceLevelPopupActive = true;
+                        setTimeout(() => {
+                            this.evidenceLevelPopupActive = false;
+                        }, 2500);
+                        this.isFirstSearch = false;
+                    }
+                }
+                if (this.total + this.dBankTotal >= 3 && !this.isMaterialTooltipShown) {
+                    this.showMaterialTooltipPopup = true;
+                    setTimeout(() => {
+                        this.showMaterialTooltipPopup = false;
+                    }, 2500);
+                    this.isMaterialTooltipShown = true;
+                }
+                if (this.total + this.dBankTotal >= 5 && !this.displayToggleMsgShown) {
+                    this.showDisplayTogglePopup = true;
+                    setTimeout(() => {
+                        this.showDisplayTogglePopup = false;
+                    }, 2500);
+                    this.displayToggleMsgShown = true;
+                }
             },
             deep: true,
             immediate: true
@@ -824,7 +884,8 @@ export default {
         AnimatedInteger,
         InformationOutlineIcon,
         ModalWrap,
-        Disclaimer
+        Disclaimer,
+        PopupBubbleMsg
     }
 };
 </script>

@@ -16,6 +16,7 @@
             :pageCount="listData.pageCount"
             :total="listData.total"
             :isLoading="isLoading"
+            :evidenceLevelPopupActive="evidenceLevelPopupActive"
             @list-sorted="$emit('list-sorted', $event)"
         />
         <result-list-vertical
@@ -70,6 +71,10 @@ export default {
         isLoading: {
             type: Boolean,
             required: true
+        },
+        evidenceLevelPopupActive: {
+            type: Boolean,
+            default: false
         }
     },
     data() {

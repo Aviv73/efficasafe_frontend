@@ -64,6 +64,9 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.w-max {
+    width: max-content !important;
+}
 
 
 // Aspect-Ratio Helpers
