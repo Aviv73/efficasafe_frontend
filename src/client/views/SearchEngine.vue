@@ -218,6 +218,7 @@
         <v-tour
             name="onboarding-tour"
             :steps="computedOnboardingSteps"
+            :callbacks="tourCallbacks"
         />
     </section>
 </template>
@@ -287,7 +288,27 @@ export default {
                         resolve();
                     })
                 }
-            ]
+            ],
+            tourCallbacks: {
+                onNextStep: (step) => {
+                    switch (step) {
+                        case 0:
+                            storageService.store('did-search', true);
+                            break;
+                        case 1:
+                            storageService.store('seen-tooltip-msg', true);
+                            break;
+                        case 2:
+                            storageService.store('seen-view-toggle-msg', true);
+                            break;
+                    }
+                },
+                onStop: () => {
+                    storageService.store('did-search', true);
+                    storageService.store('seen-tooltip-msg', true);
+                    storageService.store('seen-view-toggle-msg', true);
+                }
+            }
         }
     },
     watch: {
@@ -302,7 +323,9 @@ export default {
                     this.$route.query.q = [ q ];
                 }
                 await this.getResults();
-                this.$tours['onboarding-tour'].start();
+                if (this.computedOnboardingSteps.length) {
+                    this.$tours['onboarding-tour'].start();
+                }
             },
             deep: true,
             immediate: true
@@ -325,7 +348,6 @@ export default {
                 if (this.total + this.dBankTotal >= 3) {
                     const seenTooltipMsg = storageService.load('seen-tooltip-msg');
                     if (!seenTooltipMsg) res.push(this.onboardingSteps[1]);
-                    // storageService.store('seen-tooltip-msg', true);
                 }
                 return res;
             }
@@ -333,19 +355,16 @@ export default {
             if (this.$route.name === 'Supp2Drug' && this.total || this.$route.name === 'Drug2Drug' && this.dBankTotal) {
                 const didSearch = storageService.load('did-search');
                 if (!didSearch) res.push(this.onboardingSteps[0]);
-                // storageService.store('did-search', true);
             }
             if (this.total + this.dBankTotal >= 3) {
                 const seenTooltipMsg = storageService.load('seen-tooltip-msg');
                 if (!seenTooltipMsg) res.push(this.onboardingSteps[1]);
-                // storageService.store('seen-tooltip-msg', true);
             }
             if (this.total + this.dBankTotal >= 5) {
                 const seenViewToggleMsg = storageService.load('seen-view-toggle-msg');
                 if (!seenViewToggleMsg) res.push(this.onboardingSteps[2]);
-                // storageService.store('seen-view-toggle-msg', true);
             }
-            console.log('save changes?', res);
+            
             return res;
         },
         routableListData() {
