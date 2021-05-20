@@ -159,7 +159,12 @@
                                 :to="{ name: 'Boosters', query: this.$route.query }"
                             >
                                 Positive boosters
-                                {{'\xa0'}}<span class="refs"><span class="badge">25</span></span>
+                                <span
+                                    class="refs recomm-3"
+                                    v-if="positivesTotal"
+                                >
+                                    {{'\xa0'}}<span class="badge">{{ positivesTotal }}</span>
+                                </span>
                             </router-link>
                         </li>
                         <li class="search-engine-nav-link">
@@ -254,6 +259,7 @@ export default {
             dBankPageCount: 0,
             dBankTotal: 0,
             positiveInteractions: [],
+            positivesTotal: 0,
             msg: '',
             isViewVertical: false,
             scrollBarWidth: '0px',
@@ -649,6 +655,10 @@ export default {
             };
             const interactions = await this.$store.dispatch({ type: 'getInteractions', filterBy });
             this.positiveInteractions = interactions;
+            this.positivesTotal = interactions.reduce((acc, { total }) => {
+                acc += total;
+                return acc;
+            }, 0);
         },
         async getInteractions(page = 1) {
             const ids = this.materials.reduce((acc, { _id, labels }) => {
