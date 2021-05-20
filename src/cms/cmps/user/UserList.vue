@@ -38,14 +38,17 @@
                                 }}</span>
                             </router-link>
                         </td>
-                        <td class="centered text-center">
+                        <td
+                            v-if="item.resgisteredTime"
+                            class="centered text-center"
+                        >
                             {{
                                 new Date(item.resgisteredTime)
                                     .toISOString()
                                     .substr(0, 10)
                             }}
                         </td>
-                        <td class="centered text-center">
+                        <td v-if="item.trialTime" class="centered text-center">
                             {{
                                 new Date(item.trialTime)
                                     .toISOString()
