@@ -404,7 +404,19 @@ export default {
                 group.evidenceLevel = this.getMoreSeverEvidenceLevel(...group.vInteractions.map(i => i.evidenceLevel));
                 group.name = this.materials.find(m => m._id === group.materialId || m.labels.some(l => l._id === group.materialId)).name;
                 group.isMaterialGroup = true;
-                //// fix vInteractions to be only vs material (?)
+                group.vInteractions.forEach(vInteraction => {
+                    if (vInteraction.side2Label) {
+                        const { _id, name, type } = this.materials.find(m => m.labels.some(l => l._id === vInteraction.side2Label._id));
+                        vInteraction.side2Material = {
+                            _id,
+                            name,
+                            type
+                        };
+                        vInteraction.side2Label = null;
+                    }
+                    vInteraction.isVirtual = true;
+                    vInteraction.name = `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}`;
+                });
             });
             return this.positiveInteractions;
         },

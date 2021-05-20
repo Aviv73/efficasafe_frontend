@@ -224,34 +224,38 @@ export default {
                 });
                 return acc;
             }, []);
-            const side1Material = this.materials.find(material => material._id === interaction.side1Material._id);
+            let side1Material = this.materials.find(material => material._id === interaction.side1Material._id);
             let side1PathwayRefs = [];
-            if (side1Material) {
-                side1PathwayRefs = side1Material.pathways.reduce((acc, pathway) => {
-                const idx = side2Pathways.findIndex(side2Pathway => side2Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
-                if (idx !== -1) {
-                    const refs = interactionUIService.getRefsOrder(pathway.influence);
-                    refs.forEach(ref => {
-                        if (!seenRefsMap[ref]) {
-                            if (!interaction.refs.includes(ref)) {
-                                acc.push(ref);
-                            }
-                            seenRefsMap[ref] = true;
-                        }
-                    });
-                }
-                    return acc;
-                }, []);
-                const refs = interactionUIService.getRefsOrder(side1Material.effectOnDrugMetabolism);
+            if (!side1Material) {
+                side1Material = await this.$store.dispatch({
+                    type: 'loadMaterial',
+                    matId: interaction.side1Material._id
+                });
+            }
+            side1PathwayRefs = side1Material.pathways.reduce((acc, pathway) => {
+            const idx = side2Pathways.findIndex(side2Pathway => side2Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
+            if (idx !== -1) {
+                const refs = interactionUIService.getRefsOrder(pathway.influence);
                 refs.forEach(ref => {
                     if (!seenRefsMap[ref]) {
                         if (!interaction.refs.includes(ref)) {
-                            side1PathwayRefs.push(ref);
+                            acc.push(ref);
                         }
                         seenRefsMap[ref] = true;
                     }
                 });
             }
+                return acc;
+            }, []);
+            const refs = interactionUIService.getRefsOrder(side1Material.effectOnDrugMetabolism);
+            refs.forEach(ref => {
+                if (!seenRefsMap[ref]) {
+                    if (!interaction.refs.includes(ref)) {
+                        side1PathwayRefs.push(ref);
+                    }
+                    seenRefsMap[ref] = true;
+                }
+            });
             
             this.$store.commit({ type: 'updateSupplementsRefs', refs: side1PathwayRefs });
             this.pathwayRefCount = side1PathwayRefs.length + side2Refs.length;
