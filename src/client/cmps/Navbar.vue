@@ -154,10 +154,8 @@ export default {
             } = this.$store.getters;
 
             const timeLeft = trialTime - resgisteredTime;
-            const Difference_In_Days = timeLeft / (1000 * 3600 * 24);
-            return Difference_In_Days > 1
-                ? Math.floor(Difference_In_Days)
-                : Math.ceil(Difference_In_Days);
+            const daysLeft = timeLeft / (1000 * 3600 * 24);
+            return daysLeft > 1 ? Math.floor(daysLeft) : Math.ceil(daysLeft);
         },
     },
     methods: {

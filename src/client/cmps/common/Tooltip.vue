@@ -10,46 +10,51 @@
         @focus="onToggle(true)"
         @blur="onToggle(false)"
         @mousedown="toggleIsActive"
+        @mouseenter="hoverToggle"
+        @mouseleave="hoverToggle"
     >
-        <aside
-            v-if="!hidden"
-            class="tooltip"
-            ref="tooltip"
-            :class="{
-                'fade': fade,
-                'exceed-right': exceedsRight,
-                'exceed-left': exceedsLeft,
-                'exceed-x': exceedsX,
-                'right-bottom': rightBottom,
-                'right-top': rightTop,
-                'bottom-left': bottomLeft,
-                bottom,
-                top,
-                left,
-                right
-            }"
-            :style="{
-                'transition-duration': duration + 's',
-                'margin-top': offsetY + 'px',
-                'margin-left': offsetX + 'px'
-            }"
-            @click.stop=""
-        >   
-            <button
-                class="tooltip-close-btn"
-                v-if="closable"
-                @click="isActive = false"
-            >
-                <slot name="close-icon">&#10006;</slot>
-            </button>
-            <slot name="content" />
-            <span
-                class="txt"
-                v-if="!$slots.content"
-            >
-                {{ txt }}
-            </span>
-        </aside>
+        <transition name="fade">
+            <aside
+                v-if="!hidden"
+                v-show="isActive"
+                class="tooltip"
+                ref="tooltip"
+                :class="{
+                    'fade': fade,
+                    'exceed-right': exceedsRight,
+                    'exceed-left': exceedsLeft,
+                    'exceed-x': exceedsX,
+                    'right-bottom': rightBottom,
+                    'right-top': rightTop,
+                    'bottom-left': bottomLeft,
+                    bottom,
+                    top,
+                    left,
+                    right
+                }"
+                :style="{
+                    'transition-duration': duration + 's',
+                    'margin-top': offsetY + 'px',
+                    'margin-left': offsetX + 'px'
+                }"
+                @click.stop=""
+            >   
+                <button
+                    class="tooltip-close-btn"
+                    v-if="closable"
+                    @click="isActive = false"
+                >
+                    <slot name="close-icon">&#10006;</slot>
+                </button>
+                <slot name="content" />
+                <span
+                    class="txt"
+                    v-if="!$slots.content"
+                >
+                    {{ txt }}
+                </span>
+            </aside>
+        </transition>
         <slot />
     </div>
 </template>
@@ -132,6 +137,10 @@ export default {
         }
     },
     methods: {
+        hoverToggle() {
+            if (this.on !== 'hover') return;
+            this.isActive = !this.isActive;
+        },
         toggleIsActive(ev) {
             if (this.hidden || this.on !== 'focus') return;
             const isClosing = ev.path.some(el => el.dataset && el.dataset.closeBtn);
@@ -204,17 +213,7 @@ export default {
                 background-color: darken(white, 5%);
             }
         }
-        &.tooltip-active .tooltip {
-            visibility: visible;
-            opacity: 1;
-        }
         @media not all and (pointer: coarse) {
-            &.hoverable:hover {
-                .tooltip {
-                    visibility: visible;
-                    opacity: 1;
-                }
-            }
             .activator:hover {
                 background-color: darken(white, 5%);
             }
@@ -223,9 +222,7 @@ export default {
     .tooltip { 
         position: absolute;
         width: max-content;
-        visibility: hidden;
         z-index: 1;
-        opacity: 0;
         
         
         &.fade {
@@ -300,5 +297,12 @@ export default {
             z-index: 2;
             cursor: pointer;
         }
+    }
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: opacity .3s linear;
+    }
+    .fade-enter, .fade-leave-to {
+        opacity: 0;
     }
 </style>
