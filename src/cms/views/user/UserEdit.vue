@@ -1,83 +1,105 @@
 <template>
-    <div class="container">
-        <v-card class="user-edit" v-if="editedUser">
-            <v-form v-model="valid" @submit.prevent="saveUser">
-                <div class="user-edit-inputs p-50">
-                    <v-text-field
-                        type="text"
-                        v-model="editedUser.name"
-                        label="Name*"
-                        required
-                        :rules="[(v) => !!v || 'Label Name is required']"
-                    />
-                    <v-text-field
-                        type="text"
-                        v-model="date"
-                        label="Email*"
-                        required
-                    />
-                    <v-select :items="items" label="Role" dense></v-select>
+    <section v-if="editedUser">
+        <div class="container">
+            <v-card class="user-edit">
+                <v-form v-model="valid" @submit.prevent="saveUser">
+                    <div class="user-edit-inputs pa-5">
+                        <v-text-field
+                            type="text"
+                            v-model="editedUser.name"
+                            label="Name*"
+                            required
+                            :rules="[(v) => !!v || 'Label Name is required']"
+                        />
+                        <v-text-field
+                            type="text"
+                            v-model="editedUser.nickname"
+                            label="username*"
+                            required
+                        />
+                        <v-text-field
+                            type="text"
+                            v-model="editedUser.email"
+                            label="Email*"
+                            required
+                        />
+                        <v-select
+                            :items="items"
+                            label="Role"
+                            dense
+                            v-model="editedUser.role"
+                        ></v-select>
 
-                    <v-menu
-                        ref="menu"
-                        v-model="menu"
-                        :close-on-content-click="false"
-                        :return-value.sync="date"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="auto"
+                        <v-menu
+                            ref="menu"
+                            v-model="menu"
+                            :close-on-content-click="false"
+                            :return-value.sync="date"
+                            transition="scale-transition"
+                            offset-y
+                            min-width="auto"
+                        >
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-text-field
+                                    v-model="date"
+                                    label="End of subscription"
+                                    prepend-icon="mdi-calendar"
+                                    readonly
+                                    v-bind="attrs"
+                                    v-on="on"
+                                ></v-text-field>
+                            </template>
+                            <v-date-picker v-model="date" no-title scrollable>
+                                <v-spacer></v-spacer>
+                                <v-btn
+                                    text
+                                    color="primary"
+                                    @click="menu = false"
+                                >
+                                    Cancel
+                                </v-btn>
+                                <v-btn text color="primary" @click="saveDate">
+                                    OK
+                                </v-btn>
+                            </v-date-picker>
+                        </v-menu>
+                    </div>
+
+                    <div class="d-flex align-center justify-center mt-4">
+                        <h3 class="mr-6">email verified?</h3>
+                        <v-switch
+                            v-model="editedUser.email_verified"
+                            inset
+                            :label="`${editedUser.email_verified}`"
+                        ></v-switch>
+                    </div>
+
+                    <v-divider class="mt-4" />
+                    <div
+                        class="form-actions d-flex"
+                        style="justify-content: space-between"
                     >
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-text-field
-                                v-model="date"
-                                label="End trial user"
-                                prepend-icon="mdi-calendar"
-                                readonly
-                                v-bind="attrs"
-                                v-on="on"
-                            ></v-text-field>
-                        </template>
-                        <v-date-picker v-model="date" no-title scrollable>
-                            <v-spacer></v-spacer>
-                            <v-btn text color="primary" @click="menu = false">
-                                Cancel
-                            </v-btn>
-                            <v-btn text color="primary" @click="saveDate">
-                                OK
-                            </v-btn>
-                        </v-date-picker>
-                    </v-menu>
-                </div>
+                        <v-btn class="cancel-btn" to="/user/" color="normal"
+                            >cancel</v-btn
+                        >
 
-                <div class="d-flex align-center justify-center mt-4">
-                    <h3 class="mr-6">email verified?</h3>
-                    <v-switch
-                        v-model="editedUser.email_verified"
-                        inset
-                        :label="`${editedUser.email_verified}`"
-                    ></v-switch>
-                </div>
-
-                <v-divider class="mt-4" />
-                <div
-                    class="form-actions d-flex"
-                    style="justify-content: space-between"
-                >
-                    <v-btn class="cancel-btn" to="/user/" color="normal"
-                        >cancel</v-btn
-                    >
-
-                    <v-btn
-                        class="submit-btn"
-                        @click="saveUser"
-                        color="success"
-                        :disabled="!valid"
-                        >Save User</v-btn
-                    >
-                </div>
-            </v-form>
-        </v-card>
-    </div>
+                        <v-btn
+                            class="submit-btn"
+                            @click="saveUser"
+                            color="success"
+                            :disabled="!valid"
+                            >Save User</v-btn
+                        >
+                    </div>
+                </v-form>
+            </v-card>
+        </div>
+        <div class="container">
+            <v-card class="pa-5 text-center">
+                <p>user purchase history</p>
+            </v-card>
+        </div>
+    </section>
 </template>
 
 <script>
