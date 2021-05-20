@@ -264,6 +264,7 @@ export default {
                     target: '.v-tour-step-0',
                     content: 'Hover here to view evidence level calculation details',
                     params: {
+                        placement: 'top',
                         enableScrolling: false
                     }
                 },
@@ -604,9 +605,21 @@ export default {
             await this.getMaterials();
             await Promise.all([
                 this.getInteractions(),
-                this.getDBankInteractions()
+                this.getDBankInteractions(),
+                this.getPositives()
             ]);
             this.isLoading = false;
+        },
+        async getPositives() {
+            const ids = this.materials.reduce((acc, { type, _id, labels }) => {
+                console.log(type);
+                if (!acc.includes(_id)) acc.push(_id);
+                labels.forEach(label => {
+                    if (!acc.includes(label._id)) acc.push(label._id);
+                });
+                return acc;
+            }, []);
+            console.log(ids);
         },
         async getInteractions(page = 1) {
             const ids = this.materials.reduce((acc, { _id, labels }) => {
