@@ -32,11 +32,19 @@
                 <tbody>
                     <tr class="tr-label" v-for="item in items" :key="item._id">
                         <td class="td-name-img">
-                            <router-link :to="`/user/${item._id}`">
+                            <router-link :to="`user/edit/${item._id}`">
                                 <span class="text-capitalize">{{
                                     item.name
                                 }}</span>
                             </router-link>
+                        </td>
+
+                        <td class="centered text-center">
+                            {{ item.role }}
+                        </td>
+
+                        <td class="centered text-center">
+                            {{ item.email }}
                         </td>
                         <td class="centered text-center">
                             {{
@@ -46,6 +54,10 @@
                                           .substr(0, 10)
                                     : '---'
                             }}
+                        </td>
+
+                        <td class="centered text-center">
+                            {{ item.subType ? item.subType : 'T' }}
                         </td>
                         <td class="centered text-center">
                             {{
@@ -57,15 +69,7 @@
                             }}
                         </td>
 
-                        <td class="centered text-center">
-                            {{ item.email }}
-                        </td>
-
-                        <td class="centered text-center">
-                            {{ item.role }}
-                        </td>
-
-                        <td
+                        <!-- <td
                             class="td-actions d-flex align-center justify-center"
                             align="center"
                         >
@@ -81,12 +85,12 @@
                             >
                                 <v-icon small>mdi-pencil</v-icon>
                             </v-btn>
-                        </td>
+                        </td> -->
                     </tr>
                 </tbody>
             </template>
         </v-data-table>
-        <v-fab-transition>
+        <!-- <v-fab-transition>
             <v-btn
                 v-if="selected.length"
                 :title="`Delete ${selected.length} labels`"
@@ -122,7 +126,7 @@
                     <v-btn color="primary" @click="confirmDelete">Ok</v-btn>
                 </v-card-actions>
             </v-card>
-        </v-dialog>
+        </v-dialog> -->
     </section>
 </template>
 
@@ -155,14 +159,10 @@ export default {
                     value: 'name',
                 },
                 {
-                    text: 'Registered',
-                    value: 'Registered',
+                    text: 'Role',
+                    value: 'role',
                     align: 'center',
-                },
-                {
-                    text: 'End Trial',
-                    value: 'endTrial',
-                    align: 'center',
+                    sortable: false,
                 },
                 {
                     text: 'Email',
@@ -171,16 +171,18 @@ export default {
                     sortable: false,
                 },
                 {
-                    text: 'Role',
-                    value: 'role',
+                    text: 'Registered',
+                    value: 'Registered',
                     align: 'center',
-                    sortable: false,
                 },
                 {
-                    text: 'Actions',
-                    name: 'Action',
-                    value: 'action',
-                    sortable: false,
+                    text: 'Type',
+                    value: 'subType',
+                    align: 'center',
+                },
+                {
+                    text: 'End Trial',
+                    value: 'endTrial',
                     align: 'center',
                 },
             ],
