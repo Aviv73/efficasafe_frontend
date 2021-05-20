@@ -253,6 +253,7 @@ export default {
             dBankInteractions: [],
             dBankPageCount: 0,
             dBankTotal: 0,
+            positiveInteractions: [],
             msg: '',
             isViewVertical: false,
             scrollBarWidth: '0px',
@@ -397,6 +398,17 @@ export default {
             }
             return []
         },
+        // formatedPositiveInteractions() {
+        //     this.positiveInteractions.forEach(group => {
+        //         group.recommendation = this.getMoreSeverRecomm(...group.vInteractions.map(i => i.recommendation));
+        //         group.evidenceLevel = this.getMoreSeverEvidenceLevel(...group.vInteractions.map(i => i.evidenceLevel));
+        //         const groupName = this.materials.find(m => m._id === group.materialId || m.labels.some(l => l._id === group.materialId)).name;
+        //         group.name = groupName;
+                
+        //         //// fix preview for single capsule group name & inside?
+        //     });
+        //     return this.positiveInteractions;
+        // },
         formatedInteractions() {
             if ((this.$route.query.q && this.$route.query.q.length) === 1 && this.materials.length > 1) {
                 this.setMsg('Compound as a single result isn\'t supported, Please provide more material/s');
@@ -610,7 +622,7 @@ export default {
             ]);
             this.isLoading = false;
         },
-        async getPositives(page = 1) {
+        async getPositives() {
             const ids = this.materials.reduce((acc, { type, _id, labels }) => {
                 if (type !== 'drug') return acc;
                 if (!acc.includes(_id)) acc.push(_id);
@@ -622,10 +634,10 @@ export default {
             const filterBy = {
                 isSearchResults: true,
                 isPositives: true,
-                page: --page,
                 id: ids
             };
-            console.log('Get Positive Boosters:', filterBy);
+            const interactions = await this.$store.dispatch({ type: 'getInteractions', filterBy });
+            this.positiveInteractions = interactions;
         },
         async getInteractions(page = 1) {
             const ids = this.materials.reduce((acc, { _id, labels }) => {
