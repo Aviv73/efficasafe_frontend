@@ -5,6 +5,20 @@
                 label="Search User By name or email"
                 v-model="filterBy.q"
             />
+            <section class="d-flex">
+                <v-text-field
+                    class="small-search mr-9"
+                    label="Search By Invoice number"
+                    v-model="filterBy.invoiceNum"
+                    type="number"
+                />
+                <v-select
+                    class="small-search"
+                    :items="items"
+                    label="Search By Type"
+                    v-model="filterBy.planType"
+                ></v-select>
+            </section>
         </div>
     </section>
 </template>
@@ -15,7 +29,10 @@ export default {
         return {
             filterBy: {
                 q: '',
+                invoiceNum: null,
+                planType: '',
             },
+            items: ['Subscribed', 'Trial'],
         };
     },
     watch: {
@@ -44,9 +61,9 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .filter-input {
-    width: 40%;
     margin: 0 auto;
+    width: 50%;
 }
 </style>

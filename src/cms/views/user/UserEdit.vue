@@ -2,6 +2,7 @@
     <section v-if="editedUser">
         <div class="container">
             <v-card class="user-edit">
+                <img :src="editedUser.picture" alt="" />
                 <v-form v-model="valid" @submit.prevent="saveUser">
                     <div class="user-edit-inputs pa-5">
                         <v-text-field
@@ -128,7 +129,6 @@ export default {
             if (userId)
                 user = await this.$store.dispatch({ type: 'loadUser', userId });
             else user = userService.getEmptyUser();
-            console.log(user);
             this.editedUser = JSON.parse(JSON.stringify(user));
             this.date = new Date(user.trialTime).toISOString().substr(0, 10);
         },
@@ -143,11 +143,6 @@ export default {
     created() {
         this.loadUser();
     },
-    watch: {
-        editedUser(val) {
-            console.log(val.trialTime);
-        },
-    },
 };
 </script>
 
@@ -155,5 +150,12 @@ export default {
 .user-edit-inputs {
     width: 50%;
     margin: 0 auto;
+}
+
+img {
+    border-radius: 50%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
 }
 </style>
