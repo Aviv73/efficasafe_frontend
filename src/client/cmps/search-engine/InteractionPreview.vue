@@ -29,6 +29,7 @@
                                 :showDraftName="isDuplicate"
                                 :draftName="interaction.side2DraftName"
                                 :isLabel="!!interaction.side2Label"
+                                :isMaterialGroup="!!interaction.isMaterialGroup"
                             />
                         </span>
                         <span class="table-col">

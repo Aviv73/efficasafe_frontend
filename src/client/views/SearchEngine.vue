@@ -385,7 +385,7 @@ export default {
                     };
                     case 'Boosters':
                     return {
-                        interactions: [],
+                        interactions: this.formatedPositiveInteractions,
                         pageCount: 0,
                         total: 0
                     };
@@ -398,17 +398,16 @@ export default {
             }
             return []
         },
-        // formatedPositiveInteractions() {
-        //     this.positiveInteractions.forEach(group => {
-        //         group.recommendation = this.getMoreSeverRecomm(...group.vInteractions.map(i => i.recommendation));
-        //         group.evidenceLevel = this.getMoreSeverEvidenceLevel(...group.vInteractions.map(i => i.evidenceLevel));
-        //         const groupName = this.materials.find(m => m._id === group.materialId || m.labels.some(l => l._id === group.materialId)).name;
-        //         group.name = groupName;
-                
-        //         //// fix preview for single capsule group name & inside?
-        //     });
-        //     return this.positiveInteractions;
-        // },
+        formatedPositiveInteractions() {
+            this.positiveInteractions.forEach(group => {
+                group.recommendation = this.getMoreSeverRecomm(...group.vInteractions.map(i => i.recommendation));
+                group.evidenceLevel = this.getMoreSeverEvidenceLevel(...group.vInteractions.map(i => i.evidenceLevel));
+                group.name = this.materials.find(m => m._id === group.materialId || m.labels.some(l => l._id === group.materialId)).name;
+                group.isMaterialGroup = true;
+                //// fix vInteractions to be only vs material (?)
+            });
+            return this.positiveInteractions;
+        },
         formatedInteractions() {
             if ((this.$route.query.q && this.$route.query.q.length) === 1 && this.materials.length > 1) {
                 this.setMsg('Compound as a single result isn\'t supported, Please provide more material/s');

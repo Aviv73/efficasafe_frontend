@@ -12,7 +12,7 @@
                 'dense': dense,
                 'wide': onDetailsPage
             }"
-            v-if="!showDraftName"
+            v-if="!showDraftName && !isMaterialGroup"
         >
             <span :title="side1Name">{{ side1Name }}</span>
             <svg
@@ -35,7 +35,7 @@
             }"
         >
         <svg
-            v-if="showDraftName"
+            v-if="showDraftName || isMaterialGroup"
             xmlns="http://www.w3.org/2000/svg"
             class="cap cap-left"
             viewBox="0 0 24.192 48.001"
@@ -112,6 +112,10 @@ export default {
         onDetailsPage: {
             type: Boolean,
             default: false
+        },
+        isMaterialGroup: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {
@@ -119,7 +123,7 @@ export default {
             return this.vInteractionCount > 0;
         },
         side1Name() {
-            if (!this.name) return '';
+            if (!this.name || this.isMaterialGroup) return '';
             const side1Name = this.name.split('&')[0].trim();
             if (this.onDetailsPage) return side1Name;
             if (this.$store.getters.materialNamesMap[side1Name]) {
@@ -129,6 +133,7 @@ export default {
         },
         side2Name() {
             if (!this.name) return '';
+            if (this.isMaterialGroup) return this.name;
             const side2Name = this.name.split('&')[1].trim();
             if (!this.localize) return side2Name;
             if (this.$store.getters.materialNamesMap[side2Name]) {
