@@ -610,16 +610,22 @@ export default {
             ]);
             this.isLoading = false;
         },
-        async getPositives() {
+        async getPositives(page = 1) {
             const ids = this.materials.reduce((acc, { type, _id, labels }) => {
-                console.log(type);
+                if (type !== 'drug') return acc;
                 if (!acc.includes(_id)) acc.push(_id);
                 labels.forEach(label => {
                     if (!acc.includes(label._id)) acc.push(label._id);
                 });
                 return acc;
             }, []);
-            console.log(ids);
+            const filterBy = {
+                isSearchResults: true,
+                isPositives: true,
+                page: --page,
+                id: ids
+            };
+            console.log('Get Positive Boosters:', filterBy);
         },
         async getInteractions(page = 1) {
             const ids = this.materials.reduce((acc, { _id, labels }) => {
