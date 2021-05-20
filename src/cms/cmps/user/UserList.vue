@@ -39,10 +39,18 @@
                             </router-link>
                         </td>
                         <td class="centered text-center">
-                            {{ item.resgisteredTime | moment('L') }}
+                            {{
+                                new Date(item.resgisteredTime)
+                                    .toISOString()
+                                    .substr(0, 10)
+                            }}
                         </td>
                         <td class="centered text-center">
-                            {{ item.trialTime | moment('L') }}
+                            {{
+                                new Date(item.trialTime)
+                                    .toISOString()
+                                    .substr(0, 10)
+                            }}
                         </td>
 
                         <td class="centered text-center">
