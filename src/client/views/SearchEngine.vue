@@ -419,7 +419,7 @@ export default {
                     vInteraction.name = `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}`;
                 });
             });
-            const { recommendationsOrderMap: map } = this.$options;
+            const map = interactionUIService.getPositiveBoostersRecommMap();
             return this.positiveInteractions.reduce((acc, interaction) => {
                 const existing = acc.find(i => i.name === interaction.name);
                 if (!existing) {
@@ -673,6 +673,10 @@ export default {
             };
             const interactions = await this.$store.dispatch({ type: 'getInteractions', filterBy });
             this.positiveInteractions = interactions;
+            // console.log(interactions.reduce((acc, { total }) => {
+            //     acc += total;
+            //     return acc;
+            // }, 0))
         },
         async getInteractions(page = 1) {
             const ids = this.materials.reduce((acc, { _id, labels }) => {
