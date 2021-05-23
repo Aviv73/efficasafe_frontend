@@ -334,8 +334,15 @@ export default {
                 }
                 return acc;
             }, []);
-            
-            return side2Refs.length + side1PathwayRefs.length;
+            const refs = interactionUIService.getRefsOrder(this.material.effectOnDrugMetabolism);
+            const moreRefs = refs.reduce((acc, ref) => {
+                if (!seenRefsMap[ref]) {
+                    acc.push(ref);
+                    seenRefsMap[ref] = true;
+                }
+                return acc;
+            }, []);
+            return side2Refs.length + side1PathwayRefs.length + moreRefs.length;
         }
     },
     created() {

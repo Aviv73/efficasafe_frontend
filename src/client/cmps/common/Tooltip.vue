@@ -182,6 +182,7 @@ export default {
             this.onToggle(true);
         });
         el.addEventListener('mouseleave', () => {
+            if (this.$refs.activator === document.activeElement) return;
             this.onToggle(false);
         });
     },
@@ -192,6 +193,7 @@ export default {
             this.onToggle(true);
         });
         el.removeEventListener('mouseleave', () => {
+            if (this.$refs.activator === document.activeElement) return;
             this.onToggle(false);
         });
     }

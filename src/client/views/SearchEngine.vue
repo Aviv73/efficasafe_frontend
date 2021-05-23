@@ -159,7 +159,6 @@
                                 :to="{ name: 'Boosters', query: this.$route.query }"
                             >
                                 Positive boosters
-                                {{'\xa0'}}<span class="refs"><span class="badge">25</span></span>
                             </router-link>
                         </li>
                         <li class="search-engine-nav-link">
@@ -385,7 +384,7 @@ export default {
                     };
                     case 'Boosters':
                     return {
-                        interactions: [],
+                        interactions: this.formatedPositiveInteractions,
                         pageCount: 0,
                         total: 0
                     };
@@ -398,17 +397,49 @@ export default {
             }
             return []
         },
-        // formatedPositiveInteractions() {
-        //     this.positiveInteractions.forEach(group => {
-        //         group.recommendation = this.getMoreSeverRecomm(...group.vInteractions.map(i => i.recommendation));
-        //         group.evidenceLevel = this.getMoreSeverEvidenceLevel(...group.vInteractions.map(i => i.evidenceLevel));
-        //         const groupName = this.materials.find(m => m._id === group.materialId || m.labels.some(l => l._id === group.materialId)).name;
-        //         group.name = groupName;
-                
-        //         //// fix preview for single capsule group name & inside?
-        //     });
-        //     return this.positiveInteractions;
-        // },
+        formatedPositiveInteractions() {
+            this.positiveInteractions.forEach(group => {
+                group.recommendation = this.getMoreSeverRecomm(true, ...group.vInteractions.map(i => i.recommendation));
+                group.evidenceLevel = this.getMoreSeverEvidenceLevel(...group.vInteractions.map(i => i.evidenceLevel));
+                group.name = this.materials.find(m => m._id === group.materialId || m.labels.some(l => l._id === group.materialId)).name;
+                group.isMaterialGroup = true;
+                group.vInteractions.forEach(vInteraction => {
+                    if (vInteraction.side2Label) {
+                        const { _id, name, type } = this.materials.find(m => m.labels.some(l => l._id === vInteraction.side2Label._id));
+                        vInteraction.side2Material = {
+                            _id,
+                            name,
+                            type
+                        };
+                        vInteraction.side2Label = null;
+                    }
+                    vInteraction.isVirtual = true;
+                    vInteraction.name = `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}`;
+                });
+            });
+            const { recommendationsOrderMap: map } = this.$options;
+            return this.positiveInteractions.reduce((acc, interaction) => {
+                const existing = acc.find(i => i.name === interaction.name);
+                if (!existing) {
+                    acc.push(interaction);
+                } else {
+                    existing.evidenceLevel = this.getMoreSeverEvidenceLevel(existing.evidenceLevel, interaction.evidenceLevel);
+                    existing.recommendation = this.getMoreSeverRecomm(true, existing.recommendation, interaction.recommendation);
+                    existing.total += interaction.total;
+                    existing.vInteractions = existing.vInteractions.concat(interaction.vInteractions);
+                    existing.vInteractions.sort((a, b) => {
+                        return (map[b.recommendation] - map[a.recommendation]) * -1 ||
+                        (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
+                        (a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+                    });
+                }
+                return acc;
+            }, []).sort((a, b) => {
+                return (map[b.recommendation] - map[a.recommendation]) * -1 ||
+                (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
+                (a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+            });
+        },
         formatedInteractions() {
             if ((this.$route.query.q && this.$route.query.q.length) === 1 && this.materials.length > 1) {
                 this.setMsg('Compound as a single result isn\'t supported, Please provide more material/s');
@@ -489,7 +520,7 @@ export default {
                             const compoundGroup = {
                                 _id: `${queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i._id).join('-')}-${interaction._id}`,
                                 name: `${side1Name} & ${userQuery}`,
-                                recommendation: this.getMoreSeverRecomm(...queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i.recommendation), interaction.recommendation),
+                                recommendation: this.getMoreSeverRecomm(false, ...queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i.recommendation), interaction.recommendation),
                                 evidenceLevel: this.getMoreSeverEvidenceLevel(...queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i.evidenceLevel), interaction.evidenceLevel),
                                 vInteractions: [
                                     ...queryApearanceMap[`${side1Name}-${userQuery}`],
@@ -513,7 +544,7 @@ export default {
                             if (acc[groupIdx].vInteractions.findIndex(i => i._id === interaction._id ) === -1) {
                                 if (!interaction.vInteractions || interaction.vInteractions.length > 1) {
                                     acc[groupIdx].vInteractions.push(interaction);
-                                    acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, interaction.recommendation);
+                                    acc[groupIdx].recommendation = this.getMoreSeverRecomm(false, acc[groupIdx].recommendation, interaction.recommendation);
                                     acc[groupIdx].evidenceLevel = this.getMoreSeverEvidenceLevel(acc[groupIdx].evidenceLevel, interaction.evidenceLevel);
                                 } else if (interaction.vInteractions.length === 1) {
                                     const vInteraction = JSON.parse(JSON.stringify(interaction.vInteractions[0]));
@@ -610,16 +641,17 @@ export default {
             this.isLoading = true;
             if (this.$route.name === 'Drug2Drug') await this.getDBankInteractions(page);
             else await this.getInteractions(page);
+            // else if name === 'Boosters'...
             this.isLoading = false;
         },
         async getResults() {
             this.isLoading = true;
             await this.getMaterials();
-            await Promise.all([
+            const prms = (this.$route.name === 'Boosters') ? [ this.getPositives() ] : [
                 this.getInteractions(),
-                this.getDBankInteractions(),
-                this.getPositives()
-            ]);
+                this.getDBankInteractions()
+            ];
+            await Promise.all(prms);
             this.isLoading = false;
         },
         async getPositives() {
@@ -782,7 +814,7 @@ export default {
                 const vInteractionGroup = {
                     _id: `${interaction.side1Material._id}-${interaction.side2Material._id}`,
                     name: `${interaction.side1Material.name} & ${interaction.side2Material.name}`,
-                    recommendation: this.getMoreSeverRecomm(acc[idx].recommendation, interaction.recommendation),
+                    recommendation: this.getMoreSeverRecomm(false, acc[idx].recommendation, interaction.recommendation),
                     evidenceLevel: this.getMoreSeverEvidenceLevel(acc[idx].evidenceLevel, interaction.evidenceLevel),
                     vInteractions: (acc[idx]._id === interaction._id) ? [ acc[idx] ] : [
                         acc[idx],
@@ -794,7 +826,7 @@ export default {
             } else {
                 if (acc[groupIdx].vInteractions.findIndex(i => i._id === interaction._id) === -1) {
                     acc[groupIdx].vInteractions.push(interaction);
-                    acc[groupIdx].recommendation = this.getMoreSeverRecomm(acc[groupIdx].recommendation, interaction.recommendation);
+                    acc[groupIdx].recommendation = this.getMoreSeverRecomm(false, acc[groupIdx].recommendation, interaction.recommendation);
                     acc[groupIdx].evidenceLevel = this.getMoreSeverEvidenceLevel(acc[groupIdx].evidenceLevel, interaction.evidenceLevel);
                 }
             } 
@@ -802,12 +834,12 @@ export default {
         isTooltipActive(result) {
             return result.isIncluded || (result.materials.length > 1 || result.txt !== result.materials[0].name) || this.getMaterialInteractions(result).length || (result.materials.length === 1 && this.materials.length !== 1);
         },
-        getMoreSeverRecomm(...recommendations) {
+        getMoreSeverRecomm(isDesc, ...recommendations) {
             const { recommendationsOrderMap } = this.$options;
             recommendations.sort((a, b) => {
                 return (recommendationsOrderMap[a.toLowerCase()] > recommendationsOrderMap[b.toLowerCase()]) ? -1 : (recommendationsOrderMap[a.toLowerCase()] < recommendationsOrderMap[b.toLowerCase()]) ? 1 : 0;
             });
-            return recommendations[0];
+            return isDesc ? recommendations[recommendations.length - 1] : recommendations[0];
         },
         getMoreSeverEvidenceLevel(...evidenceLevels) {
             return evidenceLevels.sort()[0];
@@ -917,6 +949,7 @@ export default {
             this.materials = [];
             this.interactions = [];
             this.dBankInteractions = [];
+            this.positiveInteractions = [];
             this.pageCount = 0;
             this.dBankPageCount = 0;
             this.total = 0;
