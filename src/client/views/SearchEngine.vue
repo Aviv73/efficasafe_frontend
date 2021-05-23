@@ -401,7 +401,9 @@ export default {
             this.positiveInteractions.forEach(group => {
                 group.recommendation = this.getMoreSeverRecomm(true, ...group.vInteractions.map(i => i.recommendation));
                 group.evidenceLevel = this.getMoreSeverEvidenceLevel(...group.vInteractions.map(i => i.evidenceLevel));
-                group.name = this.materials.find(m => m._id === group.materialId || m.labels.some(l => l._id === group.materialId)).name;
+                const materialName = this.materials.find(m => m._id === group.materialId || m.labels.some(l => l._id === group.materialId)).name;
+                const userQuery = this.$store.getters.materialNamesMap[materialName];
+                group.name = userQuery ? userQuery.join(', ') : materialName;
                 group.isMaterialGroup = true;
                 group.vInteractions.forEach(vInteraction => {
                     if (vInteraction.side2Label) {
