@@ -401,7 +401,7 @@ export default {
             this.positiveInteractions.forEach(group => {
                 group.recommendation = this.getMoreSeverRecomm(true, ...group.vInteractions.map(i => i.recommendation));
                 group.evidenceLevel = this.getMoreSeverEvidenceLevel(...group.vInteractions.map(i => i.evidenceLevel));
-                const materialName = this.materials.find(m => m._id === group.materialId || m.labels.some(l => l._id === group.materialId)).name;
+                const materialName = this.materials.find(m => m._id === group.side2Id || m.labels.some(l => l._id === group.side2Id)).name;
                 const userQuery = this.$store.getters.materialNamesMap[materialName];
                 group.name = userQuery ? userQuery.join(', ') : materialName;
                 group.isMaterialGroup = true;
@@ -656,7 +656,7 @@ export default {
             await Promise.all(prms);
             this.isLoading = false;
         },
-        async getPositives() {
+        async getPositives(page = 1) {
             const ids = this.materials.reduce((acc, { type, _id, labels }) => {
                 if (type !== 'drug') return acc;
                 if (!acc.includes(_id)) acc.push(_id);
@@ -668,7 +668,8 @@ export default {
             const filterBy = {
                 isSearchResults: true,
                 isPositives: true,
-                id: ids
+                id: ids,
+                page: --page
             };
             const interactions = await this.$store.dispatch({ type: 'getInteractions', filterBy });
             this.positiveInteractions = interactions;
