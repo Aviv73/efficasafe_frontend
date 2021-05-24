@@ -158,7 +158,7 @@
                         </li>
                         <li class="search-engine-nav-link">
                             <router-link
-                                class="link boosters"
+                                class="link boosters v-tour-step-3"
                                 :to="{ name: 'Boosters', query: this.$route.query }"
                             >
                                 Positive boosters
@@ -291,26 +291,24 @@ export default {
                         elNav.scrollLeft += maxScroll;
                         resolve();
                     })
+                },
+                {
+                    target: '.v-tour-step-3',
+                    content: 'Here we display positive interactions',
+                    params: {
+                        enableScrolling: false
+                    },
+                    before: () => new Promise((resolve) => {
+                        const elNav = document.querySelector('.search-engine-nav');
+                        const maxScroll = elNav.scrollWidth - elNav.clientWidth;
+                        elNav.scrollLeft += maxScroll;
+                        resolve();
+                    })
                 }
             ],
             tourCallbacks: {
-                onNextStep: (step) => {
-                    switch (step) {
-                        case 0:
-                            storageService.store('did-search', true);
-                            break;
-                        case 1:
-                            storageService.store('seen-tooltip-msg', true);
-                            break;
-                        case 2:
-                            storageService.store('seen-view-toggle-msg', true);
-                            break;
-                    }
-                },
                 onStop: () => {
-                    storageService.store('did-search', true);
-                    storageService.store('seen-tooltip-msg', true);
-                    storageService.store('seen-view-toggle-msg', true);
+                    storageService.store('did-tour', true);
                 }
             }
         }
@@ -327,7 +325,7 @@ export default {
                     this.$route.query.q = [ q ];
                 }
                 await this.getResults();
-                if (this.computedOnboardingSteps.length) {
+                if (this.materials.length >= 4 && !storageService.load('did-tour')) {
                     this.$tours['onboarding-tour'].start();
                 }
             },
@@ -346,30 +344,10 @@ export default {
     },
     computed: {
         computedOnboardingSteps() {
-            const res = [];
-
             if (this.isScreenNarrow) {
-                if (this.total + this.dBankTotal >= 3) {
-                    const seenTooltipMsg = storageService.load('seen-tooltip-msg');
-                    if (!seenTooltipMsg) res.push(this.onboardingSteps[1]);
-                }
-                return res;
+                return [ this.onboardingSteps[1], this.onboardingSteps[3] ];
             }
-
-            if (this.$route.name === 'Supp2Drug' && this.total || this.$route.name === 'Drug2Drug' && this.dBankTotal) {
-                const didSearch = storageService.load('did-search');
-                if (!didSearch) res.push(this.onboardingSteps[0]);
-            }
-            if (this.total + this.dBankTotal >= 3) {
-                const seenTooltipMsg = storageService.load('seen-tooltip-msg');
-                if (!seenTooltipMsg) res.push(this.onboardingSteps[1]);
-            }
-            if (this.total + this.dBankTotal >= 5) {
-                const seenViewToggleMsg = storageService.load('seen-view-toggle-msg');
-                if (!seenViewToggleMsg) res.push(this.onboardingSteps[2]);
-            }
-            
-            return res;
+            return this.onboardingSteps;
         },
         routableListData() {
             switch (this.$route.name) {
