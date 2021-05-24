@@ -162,7 +162,7 @@ export default {
             editedUser: null,
             valid: true,
             roles: ['admin', 'user', 'editor'],
-            types: ['trial', 'subscribe'],
+            types: ['trial', 'subscribed', 'registered'],
             date: new Date().toISOString().substr(0, 10),
             menu: false,
             modal: false,

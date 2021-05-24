@@ -10,15 +10,12 @@
                     <p>You now have 2 weeks of free trial</p>
                 </div>
 
-                <button
-                    class="btn"
-                    @click="$router.push('/search')"
-                >
+                <button class="btn" @click="$router.push('/search')">
                     Let`s search Interactions!
                 </button>
 
                 <p class="assistance">
-                    Subscribe and search with not time limit
+                    Subscribe and search with no time limit
                 </p>
                 <p class="desc">
                     Join the elite physicians, pharmacists, and caregivers who

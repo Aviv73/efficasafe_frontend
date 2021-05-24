@@ -64,7 +64,9 @@ export const userStore = {
             return savedUser;
         },
         async loadUser(context, { userId }) {
-            return await userService.getById(userId);
+            let user = await userService.getById(userId);
+            if (user.type === 'trial') user = await userService.checkTrial(user)
+            return user
         },
         async logout(context) {
             await userService.logout();
