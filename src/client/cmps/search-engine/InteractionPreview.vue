@@ -322,8 +322,9 @@ export default {
                     return fullRec;
                 case 'caution should be taken':
                 case 'coadministration is not contraindicated but caution should be taken':
-                case 'coadministration is possible but caution should be taken':
                     return 'Caution should be taken';
+                case 'coadministration is possible but caution should be taken':
+                    return 'Possible with caution';
                 case 'coadministration is not contraindicated':
                 case 'coadministration is not contraindicated and may even be advised':
                     return 'Not contraindicated';

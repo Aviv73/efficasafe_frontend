@@ -12,7 +12,10 @@
 </template>
 
 <script>
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
+
 export default {
+    recommendationMap: interactionUIService.getPositiveBoostersRecommMap(),
     name: 'PositiveInteractionInnerList',
     props: {
         side1Id: {
@@ -55,6 +58,7 @@ export default {
             this.interactions = this.formatInteractions(interactions);
         },
         formatInteractions(interactions) {
+            const { recommendationMap: map } = this.$options;
             interactions.forEach(interaction => {
                 if (interaction.side2Label) {
                     const { _id, name, type } = this.materials.find(m => m.labels.some(l => l._id === interaction.side2Label._id));
@@ -65,9 +69,14 @@ export default {
                     };
                     interaction.side2Label = null;
                     interaction.isVirtual = true;
+                    interaction.name = `${interaction.side1Material.name} & ${interaction.side2Material.name}`;
                 }
             });
-            return interactions;
+            return interactions.sort((a, b) => {
+                return (map[b.recommendation] - map[a.recommendation]) * -1 ||
+                (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
+                (a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+            });
         }
     },
     created() {
