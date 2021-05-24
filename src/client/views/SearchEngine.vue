@@ -642,8 +642,8 @@ export default {
         async handlePaging(page) {
             this.isLoading = true;
             if (this.$route.name === 'Drug2Drug') await this.getDBankInteractions(page);
+            else if (this.$route.name === 'Boosters') await this.getPositives(page);
             else await this.getInteractions(page);
-            // else if name === 'Boosters'...
             this.isLoading = false;
         },
         async getResults() {
@@ -656,7 +656,7 @@ export default {
             await Promise.all(prms);
             this.isLoading = false;
         },
-        async getPositives(page = 1) {
+        async getPositives() {
             const ids = this.materials.reduce((acc, { type, _id, labels }) => {
                 if (type !== 'drug') return acc;
                 if (!acc.includes(_id)) acc.push(_id);
@@ -668,15 +668,10 @@ export default {
             const filterBy = {
                 isSearchResults: true,
                 isPositives: true,
-                id: ids,
-                page: --page
+                id: ids
             };
             const interactions = await this.$store.dispatch({ type: 'getInteractions', filterBy });
             this.positiveInteractions = interactions;
-            // console.log(interactions.reduce((acc, { total }) => {
-            //     acc += total;
-            //     return acc;
-            // }, 0))
         },
         async getInteractions(page = 1) {
             const ids = this.materials.reduce((acc, { _id, labels }) => {

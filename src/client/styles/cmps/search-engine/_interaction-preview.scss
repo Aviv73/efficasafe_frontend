@@ -5,6 +5,11 @@
     line-height: rem(17px);
     color: $clr-txt-darker;
     
+    &.positive-booster {
+        box-shadow: $slight-border-top;
+        margin-block-start: 1px;
+    }
+
     &-header {
         pointer-events: all;
         margin: rem(16px) 0;

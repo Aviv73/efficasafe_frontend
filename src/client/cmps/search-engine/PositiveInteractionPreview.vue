@@ -1,11 +1,11 @@
 <template>
-    <section class="positive-interaction-preview">
+    <section class="interaction-preview positive-booster">
         <collapse
             v-for="group in interaction.vInteractions"
             :key="group._id"
         >
             <template #header>
-                <div class="positive-interaction-preview-header table-row child">
+                <div class="interaction-preview-header table-row child">
                     <span class="table-col">
                         <minus-icon
                             class="minus-icon"
@@ -28,7 +28,7 @@
                             right
                         >
                             <span class="evidence-level">
-                                {{ interaction.evidenceLevel }}
+                                {{ group.evidenceLevel }}
                             </span>
                         </tooltip>
                         <span class="de-activator">
@@ -39,7 +39,18 @@
                 </div>
             </template>
             <template #content>
-            
+                <div class="interaction-preview-content">
+                    <positive-interaction-inner-list
+                        :side1Id="group.side1Material._id"
+                        :materials="materials"
+                    />
+                </div>
+            </template>
+            <template #de-activator>
+                <img    
+                    src="@/client/assets/icons/collapse-toggle.svg"
+                    alt="Chevron up circle icon"
+                />
             </template>
         </collapse>
     </section>
@@ -51,6 +62,7 @@ import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import Collapse from '@/client/cmps/common/Collapse';
 import Tooltip from '@/client/cmps/common/Tooltip';
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
+import PositiveInteractionInnerList from '@/client/cmps/search-engine/PositiveInteractionInnerList';
 
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
@@ -60,6 +72,10 @@ export default {
     props: {
         interaction: {
             type: Object,
+            required: true
+        },
+        materials: {
+            type: Array,
             required: true
         }
     },
@@ -118,7 +134,8 @@ export default {
         InteractionCapsules,
         Tooltip,
         ChevronUpIcon,
-        ChevronDownIcon
+        ChevronDownIcon,
+        PositiveInteractionInnerList
     }
 }
 </script>
