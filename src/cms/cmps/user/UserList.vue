@@ -57,7 +57,7 @@
                         </td>
 
                         <td class="centered text-center">
-                            {{ item.subType ? item.subType : 'T' }}
+                            {{ item.type ? item.type : 'T' }}
                         </td>
                         <td class="centered text-center">
                             {{

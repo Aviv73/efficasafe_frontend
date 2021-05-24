@@ -32,7 +32,7 @@ export default {
                 invoiceNum: null,
                 planType: '',
             },
-            items: ['Subscribed', 'Trial'],
+            items: ['all', 'subscribed', 'trial', 'registered'],
         };
     },
     watch: {
