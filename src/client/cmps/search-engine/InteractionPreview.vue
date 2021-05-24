@@ -95,6 +95,7 @@
                 <div v-else-if="!!interaction.isMaterialGroup">
                     <positive-interaction-preview
                         :interaction="interaction"
+                        :materials="materials"
                     />
                 </div>
                 <div 
