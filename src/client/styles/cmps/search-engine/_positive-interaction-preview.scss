@@ -1,0 +1,42 @@
+.positive-interaction-preview {
+    font-family: roboto-medium, sans-serif;
+    font-weight: 500;
+    font-size: rem(14px);
+    line-height: rem(17px);
+    color: $clr-txt-darker;
+
+    &-header {
+        pointer-events: all;
+        margin: rem(16px) 0;
+
+        &.child {
+            box-shadow: none;
+            margin: rem(5px) 0;
+
+            &:not(.dups-list) {
+                & > span:first-child {
+                    @include for-narrow-layout {
+                        transform: translateX(10px);
+                    }
+                    
+                    @include for-wide-layout {
+                        transform: translateX(40px);
+                    }
+                }
+            }
+        }
+        .minus-icon {
+            position: absolute;
+            top: rem(15px);
+            left: 0;
+
+            @include for-narrow-layout {
+                display: none;
+            }
+        }
+        .evidence-level {
+            display: inline-block;
+            margin-inline-end: 3px;
+        }
+    }
+}

@@ -1,6 +1,7 @@
 export const interactionUIService = {
     getInteractionColor,
     getRecommendationOrderMap,
+    getPositiveBoostersRecommMap,
     getEvidenceLevelDictionary,
     calculateEvidenceLevel,
     getRefsOrder,
@@ -136,6 +137,16 @@ function getRecommendationOrderMap() {
         'Coadministration is possible': 1,
         'Coadministration is possible and may even be advised': 1,
         'Coadministration is advised': 1
+    }
+}
+
+function getPositiveBoostersRecommMap() {
+    return {
+        'Coadministration is advised': 1,
+        'Coadministration is possible and may even be advised': 2,
+        'Coadministration is possible': 3,
+        'Coadministration is possible but caution should be taken': 4,
+        'Coadministration is not contraindicated and may even be advised': 5
     }
 }
 
