@@ -42,7 +42,7 @@ export default {
             return this.$store.getters.users;
         },
         totalItems() {
-            return this.$store.getters.labelsCount;
+            return this.$store.getters.usersCount;
         },
     },
     methods: {

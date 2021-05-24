@@ -13,6 +13,9 @@ export const userStore = {
         },
         users(state) {
             return state.users
+        },
+        usersCount(state) {
+            return state.users.length
         }
     },
     mutations: {
