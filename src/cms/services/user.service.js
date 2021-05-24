@@ -40,7 +40,6 @@ async function loadUsers(filterBy) {
 
 async function getById(id) {
     return httpService.get(`${ACCOUNT_END_POINT}/${id}`);
-
 }
 
 async function checkTrial(user) {
