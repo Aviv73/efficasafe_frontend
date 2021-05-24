@@ -45,4 +45,11 @@
             }
         }
     }
+    &-msg {
+        font-size: rem(18px);
+        line-height: rem(24px);
+        color: rgba($clr-txt-dark, .85);
+        text-align: center;
+        margin-block-start: rem(60px);
+    }
 }

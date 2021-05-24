@@ -94,7 +94,7 @@
                     <div class="flex-space-between">
                         <span class="search-engine-results-amount font-medium">
                             <animated-integer :value="totalInteractionCount" />
-                            Interactions
+                            {{ ($route.name === 'Boosters') ? 'Materials' : 'Interactions' }}
                         </span>
                         <span class="search-engine-results-actions">
                             <button
@@ -113,7 +113,10 @@
                         </span>
                         <button class="mobile-menu-btn"></button>
                     </div>
-                    <div class="search-engine-results-stats">
+                    <div
+                        class="search-engine-results-stats"
+                        :class="{ 'u-hide': $route.name === 'Boosters' }"
+                    >
                         Based on <animated-integer :value="totalRefsCount" />
                         scientific articles
                     </div>
@@ -623,6 +626,12 @@ export default {
             return refsCount + dBankRefsCount + pathwayRefsCount + this.$store.getters.supplementsRefs.length;
         },
         totalInteractionCount() {
+            if (this.$route.name === 'Boosters') {
+                return this.formatedPositiveInteractions.reduce((acc, { total }) => {
+                    acc += total;
+                    return acc;
+                }, 0);
+            }
             return this.total + this.dBankTotal;
         },
         loggedInUser() {
