@@ -92,6 +92,11 @@
                         :link="link"
                     />
                 </div>
+                <div v-else-if="!!interaction.isMaterialGroup">
+                    <positive-interaction-preview
+                        :interaction="interaction"
+                    />
+                </div>
                 <div 
                     v-else
                     class="interaction-preview-content"
@@ -139,6 +144,7 @@ import Tooltip from '@/client/cmps/common/Tooltip';
 import LongTxt from '@/client/cmps/common/LongTxt';
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 import LabelInteractionPreview from '@/client/cmps/search-engine/LabelInteractionPreview';
+import PositiveInteractionPreview from '@/client/cmps/search-engine/PositiveInteractionPreview';
 
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
@@ -341,7 +347,8 @@ export default {
         LabelInteractionPreview,
         Tooltip,
         ChevronDownIcon,
-        MinusIcon
+        MinusIcon,
+        PositiveInteractionPreview
     }
 }
 </script>
