@@ -41,6 +41,7 @@
                         />
                         <span
                             class="recommendation-capsule"
+                            :class="{ 'txt-dark': interactionColor === '#F6D55C' }"
                             :style="{ 'background-color': interactionColor }"
                         >
                             {{ interaction.recommendation }}
