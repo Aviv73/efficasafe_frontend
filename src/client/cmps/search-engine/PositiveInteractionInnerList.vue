@@ -1,11 +1,19 @@
 <template>
     <section class="positive-interaction-inner-list">
-        <pre>{{ interactions.map(i => `${i.side1Material.name} & ${i.side2Material.name}`) }}</pre>
+        <interaction-preview
+            v-for="interaction in interactions"
+            :key="interaction._id"
+            :interaction="interaction"
+            :materials="materials"
+            is-child
+            link
+        />
     </section>
 </template>
 
 <script>
 export default {
+    name: 'PositiveInteractionInnerList',
     props: {
         side1Id: {
             type: String,
@@ -56,6 +64,7 @@ export default {
                         type
                     };
                     interaction.side2Label = null;
+                    interaction.isVirtual = true;
                 }
             });
             return interactions;
@@ -63,6 +72,9 @@ export default {
     },
     created() {
         this.getInteractions();
+    },
+    components: {
+        InteractionPreview: () => import('./InteractionPreview')
     }
 }
 </script>
