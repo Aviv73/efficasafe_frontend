@@ -16,7 +16,8 @@ export const userService = {
     removeMany,
     sendResetPass,
     resetPassword,
-    resnedVerifcationMail
+    resnedVerifcationMail,
+    checkTrial
 }
 
 
@@ -40,6 +41,20 @@ async function loadUsers(filterBy) {
 async function getById(id) {
     return httpService.get(`${ACCOUNT_END_POINT}/${id}`);
 
+}
+
+async function checkTrial(user) {
+    const now = Date.now()
+    if (now - user.start_trial < 0) {
+        try {
+            await httpService.put(`${ACCOUNT_END_POINT}/endTrial`, { user })
+        } catch (err) {
+            console.log('problem with updated user', err)
+        } finally {
+            user.type = 'registered'
+        }
+    }
+    return user
 }
 
 async function getUserInfo() {
