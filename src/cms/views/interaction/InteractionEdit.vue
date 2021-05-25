@@ -479,7 +479,7 @@ export default {
     calculateEvidenceLevel() {
       if (this.interactionRefs.length) {
         this.editedInteraction.evidenceLevel = interactionUIService.calculateEvidenceLevel(
-          this.interactionRefs
+          this.interactionRefs.filter(ref => ref)
         );
       }
     },

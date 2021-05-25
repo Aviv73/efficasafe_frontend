@@ -142,7 +142,8 @@ export default {
     { text: 'Duplicate references (single material)', value: 'material-ref-dups' },
     { text: 'Bad reference (interaction)', value: 'ref-broken' },
     { text: 'Duplicate v-interaction (single side1 material)', value: 'v-interaction-dups' },
-    { text: 'Bad text field (interactions)', value: 'bad-txt-field' }
+    { text: 'Bad text field (interactions)', value: 'bad-txt-field' },
+    { text: 'Unformated refs - outside <sub>(...)</sub> (interactions)', value: 'unformated-refs' }
   ],
   data() {
     return {
