@@ -138,7 +138,7 @@
         </div>
         <div v-else-if="$route.name === 'Boosters'">
             <p class="vertical-list-msg">
-                Positive boosters only available in default view.
+                Positive boosters are only available in default view.
             </p>
         </div>
     </section>

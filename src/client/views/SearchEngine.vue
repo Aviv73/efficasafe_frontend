@@ -94,7 +94,7 @@
                     <div class="flex-space-between">
                         <span class="search-engine-results-amount font-medium">
                             <animated-integer :value="totalInteractionCount" />
-                            {{ ($route.name === 'Boosters') ? 'Materials' : 'Interactions' }}
+                            {{ ($route.name === 'Boosters') ? 'Boosters' : 'Interactions' }}
                         </span>
                         <span class="search-engine-results-actions">
                             <button

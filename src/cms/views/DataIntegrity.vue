@@ -143,7 +143,8 @@ export default {
     { text: 'Bad reference (interaction)', value: 'ref-broken' },
     { text: 'Duplicate v-interaction (single side1 material)', value: 'v-interaction-dups' },
     { text: 'Bad text field (interactions)', value: 'bad-txt-field' },
-    { text: 'Unformated refs - outside <sub>(...)</sub> (interactions)', value: 'unformated-refs' }
+    { text: 'Unformated refs - outside <sub>(...)</sub> (interactions)', value: 'unformated-refs' },
+    { text: 'Broken \'monitor.general\' (interactions)', value: 'broken-monitor' }
   ],
   data() {
     return {
