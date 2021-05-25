@@ -187,7 +187,7 @@ export default {
         async getInteractions(filterBy) {
             this.isLoading = true;
             const lists = await this.$store.dispatch({ type: 'getInteractions', filterBy });
-            this.lists = lists;
+            this.lists = this.removeDupVinteractions(lists);
             const maxTotal = Math.max(lists.reds.total, lists.yellows.total, lists.greens.total);
             const maxPageCount = Math.max(lists.reds.pageCount, lists.yellows.pageCount, lists.greens.pageCount);
             this.maxTotal = maxTotal;
@@ -233,6 +233,48 @@ export default {
                 }
                 break;
             }
+        },
+        removeDupVinteractions(lists) {
+            const seenVinteractionsMap = {};
+            Object.values(lists).forEach(({ interactions }) => {
+                interactions.forEach(interaction => {
+                    const side1Queries = this.$store.getters.materialNamesMap[interaction.side1Material.name];
+                    const side1Name = side1Queries ? side1Queries.join(', ') : interaction.side1Material.name;
+                    if (interaction.side2Material) {
+                        const userQuery = this.$store.getters.materialNamesMap[interaction.side2Material.name];
+                        const interactionName = `${side1Name} & ${userQuery ? userQuery.join(', ') : interaction.side2Material.name}`;
+                        
+                        if (!seenVinteractionsMap[interactionName]) seenVinteractionsMap[interactionName] = [ interaction ];
+                        else seenVinteractionsMap[interactionName].push(interaction);
+                    } else {
+                        const matchingMaterial = this.materials.find(m => m.labels.some(l => l._id === interaction.side2Label._id));
+                        const userQueries = this.$store.getters.materialNamesMap[matchingMaterial.name];
+                        const side2Name = userQueries ? userQueries.join(', ') : matchingMaterial.name;
+                        const interactionName = `${side1Name} & ${side2Name}`;
+                        
+                        if (!seenVinteractionsMap[interactionName]) seenVinteractionsMap[interactionName] = [ interaction ];
+                        else seenVinteractionsMap[interactionName].push(interaction);
+                    }
+                });
+            });
+            Object.values(seenVinteractionsMap).forEach(interactions => {
+                if (interactions.length <= 1) return;
+                const leadInteraction = this.getMoreSeverInteraction(interactions);
+                interactions = interactions.filter(i => i._id !== leadInteraction._id);
+                interactions.forEach(({ _id }) => {
+                    Object.values(lists).forEach(list => {
+                        list.interactions = list.interactions.filter(i => i._id !== _id);
+                    });
+                });
+            });
+            return lists;
+        },
+        getMoreSeverInteraction(interactions) {
+            const map = interactionUIService.getRecommendationOrderMap();
+            interactions.slice().sort((a, b) => {
+                return (map[a.recommendation.toLowerCase()] > map[b.recommendation.toLowerCase()]) ? -1 : (map[a.recommendation.toLowerCase()] < map[b.recommendation.toLowerCase()]) ? 1 : 0;
+            });
+            return interactions[0];
         },
         getPreviewWrapEl({ side2Material, side2Label }) {
             if (this.$route.name === 'Drug2Drug') return 'router-link';
