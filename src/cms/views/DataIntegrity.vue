@@ -141,7 +141,8 @@ export default {
     { text: 'Duplicate references (all materials)', value: 'ref-dups' },
     { text: 'Duplicate references (single material)', value: 'material-ref-dups' },
     { text: 'Bad reference (interaction)', value: 'ref-broken' },
-    { text: 'Duplicate v-interaction (single side1 material)', value: 'v-interaction-dups' }
+    { text: 'Duplicate v-interaction (single side1 material)', value: 'v-interaction-dups' },
+    { text: 'Bad text field (interactions)', value: 'bad-txt-field' }
   ],
   data() {
     return {
@@ -165,7 +166,8 @@ export default {
     entityName(entity) {
       if (entity.name) return entity.name;
       if (entity.side2Label) return entity.side2Label.name;
-      return `${entity.side1Material.name} & ${entity.side2Material.name}`;
+      if (entity.side2Material) return `${entity.side1Material.name} & ${entity.side2Material.name}`;
+      return `${entity.side1Material.name} & ${entity.side2DraftName}`;
     },
     entityType(entity) {
       return entity.name ? 'material' : 'interaction';
