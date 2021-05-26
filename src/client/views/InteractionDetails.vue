@@ -384,9 +384,22 @@ export default {
             return interaction.side2Label && interaction.side2Label.primaryMaterialIds.includes(this.side2Material._id);
         },
         // recommendationIconName() {
-        //     //// reds - Cancel | yellows - AlertCircleOutline | greens - Check
-        //     //// get recommendation color and return right icon name
-        //     return 'Cancel'
+        //     let res = 'vue-material-design-icons/'
+        //     switch (this.interactionColor) {
+        //         case '#E63946':
+        //             res += 'Cancel'
+        //             break;
+        //         case '#F6D55C':
+        //             res += 'AlertCircleOutline';
+        //             break;
+        //         case '#56C596':
+        //             res += 'Check';
+        //             break;
+        //         default:
+        //             res += 'CircleOutline';
+        //             break;
+        //     }
+        //     return res;
         // }
     },
     methods: {
@@ -476,7 +489,7 @@ export default {
         Side2Pathways,
         Side1Pathways,
         ReferenceList,
-        // RecommendationIcon: () => import(`vue-material-design-icons/${recommendationIconName}`)
+        // RecommendationIcon: () => import(this.recommendationIconName)
     }
 }
 </script>
