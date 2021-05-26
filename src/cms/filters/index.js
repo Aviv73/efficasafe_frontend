@@ -18,3 +18,9 @@ Vue.filter('ref-txt', (val) => {
 Vue.filter('capitalize', (val) => {
     return val.charAt(0).toUpperCase() + val.slice(1);
 });
+
+Vue.filter('remove-ending-dot', (val) => {
+    const lastChar = val.charAt(val.length - 1);
+    if (lastChar !== '.') return val;
+    return val.substring(0, val.length - 1);
+});
