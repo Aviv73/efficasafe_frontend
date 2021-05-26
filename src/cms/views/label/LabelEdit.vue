@@ -39,6 +39,14 @@
             color="primary"
             outlined
             rounded
+            @click="isSuperLabelDialogActive = true"
+          >
+            All related to (side1)    
+          </v-btn>
+          <v-btn
+            color="primary"
+            outlined
+            rounded
             @click="isCategoriesDialogActive = true"
           >
             Browse categories
@@ -75,6 +83,12 @@
         @import-materials="addMaterials"
       />
     </v-dialog>
+    <v-dialog v-model="isSuperLabelDialogActive" max-width="1200">
+      <super-label-maker
+        @close-super-label-dialog="isSuperLabelDialogActive = false"
+        @materials-peaked="addMaterials"
+      />
+    </v-dialog>
   </div>
 </template>
 
@@ -83,6 +97,7 @@ import { labelService } from '@/cms/services/label.service';
 import { eventBus, EV_addLabel } from '@/cms/services/eventBus.service';
 import sidePicker from '@/cms/cmps/interaction/edit/SidePicker';
 import labelSearch from '@/cms/cmps/label/LabelSearch';
+import SuperLabelMaker from '@/cms/cmps/label/SuperLabelMaker';
 
 export default {
   name: 'label-edit',
@@ -92,6 +107,7 @@ export default {
       valid: true,
       isDialogActive: false,
       isCategoriesDialogActive: false,
+      isSuperLabelDialogActive: false,
       relatedMaterials: []
     };
   },
@@ -173,7 +189,8 @@ export default {
   },
   components: {
     sidePicker,
-    labelSearch
+    labelSearch,
+    SuperLabelMaker
   }
 };
 </script>

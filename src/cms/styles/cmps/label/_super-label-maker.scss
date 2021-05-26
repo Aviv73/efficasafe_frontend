@@ -1,0 +1,18 @@
+.super-label-maker {
+    h3 {
+        text-align: center;
+        padding: 4px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        
+        &.not-empty {
+            border-bottom: 1px solid rgba(#000, .2);
+        }
+    }
+
+    &-list {
+        max-height: 560px;
+        overflow-y: auto;
+    }
+}

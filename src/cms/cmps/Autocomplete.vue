@@ -64,6 +64,10 @@ export default {
     isSuperLabelImport: {
       type: Boolean,
       default: false
+    },
+    isSupplementsOnly: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -106,7 +110,10 @@ export default {
       if (this.isSuperLabelImport) {
         criteria.isSuper = true;
         criteria.limit = 0;
+      } else if (this.isSupplementsOnly) {
+        criteria.type = 'supplement';
       }
+
       const entities = await this.$store.dispatch({
         type: (this.isLabel) ? 'getLabels' : 'getMaterials',
         criteria,
