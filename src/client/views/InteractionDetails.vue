@@ -66,6 +66,14 @@
             </header>
             <main class="interaction-details-details">
                 <div class="main-container p-relative mobile-coloumn">
+                    <span
+                        class="recommendation-capsule mobile"
+                        :class="{ 'txt-dark': interactionColor === '#F6D55C' }"
+                        :style="{ 'background-color': interactionColor }"
+                    >
+                        <!-- <recommendation-icon /> -->
+                        {{ interaction.recommendation }}
+                    </span>
                     <div
                         class="narrow-therapuetic-warnning"
                         v-if="side2Material.isNarrowTherapeutic"
@@ -374,7 +382,12 @@ export default {
         isPrimaryMaterial() {
             const { interaction } = this;
             return interaction.side2Label && interaction.side2Label.primaryMaterialIds.includes(this.side2Material._id);
-        }
+        },
+        // recommendationIconName() {
+        //     //// reds - Cancel | yellows - AlertCircleOutline | greens - Check
+        //     //// get recommendation color and return right icon name
+        //     return 'Cancel'
+        // }
     },
     methods: {
         async getInteractionData() {
@@ -462,7 +475,8 @@ export default {
         ChevronUpIcon,
         Side2Pathways,
         Side1Pathways,
-        ReferenceList
+        ReferenceList,
+        // RecommendationIcon: () => import(`vue-material-design-icons/${recommendationIconName}`)
     }
 }
 </script>

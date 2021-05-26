@@ -78,6 +78,13 @@
             </header>
             <main class="interaction-details-details">
                 <div class="main-container p-relative mobile-coloumn">
+                    <span
+                        class="recommendation-capsule mobile drugbank"
+                        :class="{ 'txt-dark': interactionColor === '#F6D55C' }"
+                        :style="{ 'background-color': interactionColor }"
+                    >
+                        {{ interaction.recommendation }}
+                    </span>
                     <figure class="drugbank-logo">
                         <img :src="require(`@/cms/assets/drugbank.png`)" alt="DrugBank logo" />
                         <figcaption class="caption">powered by</figcaption>

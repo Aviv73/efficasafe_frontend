@@ -113,7 +113,18 @@
                             <button class="subscribe-btn">Subscribe</button>
                         </li>
                         <li class="navbar-side-nav-item">
-                            <button>Login</button>
+                            <button
+                                v-if="!loggedInUser"
+                                @click="onLogin"
+                            >
+                                Login
+                            </button>
+                            <button
+                                v-else
+                                @click="onLogout"
+                            >
+                                Logout
+                            </button>
                         </li>
 
                         <li class="navbar-side-nav-item">

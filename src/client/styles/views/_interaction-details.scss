@@ -76,10 +76,26 @@
             color: $white;
             border-radius: 100px;
             padding: rem(10px) rem(22px);
-            display: none;
 
-            @include for-narrow-layout {
-                display: inline;
+            &:not(.mobile) {
+                display: none;
+                @include for-narrow-layout {
+                    display: inline;
+                }
+            }
+            &.mobile {
+                order: -2;
+                align-self: center;
+                text-align: center;
+                margin-block-end: rem(24px);
+                max-width: fit-content;
+
+                @include for-narrow-layout {
+                    display: none;
+                }
+            }
+            &.drugbank {
+                margin-block-end: rem(72px);
             }
 
             &.txt-dark {
@@ -242,9 +258,15 @@
         }
         .drugbank-logo {
             position: absolute;
-            right: 24px;
-            top: 0;
-
+            right: 50%;
+            top: rem(48px);
+            transform: translateX(50%);
+            
+            @include for-narrow-layout {
+                top: 0;
+                right: 24px;
+                transform: none;
+            }
             @include for-wide-layout {
                 right: 0;
             }
