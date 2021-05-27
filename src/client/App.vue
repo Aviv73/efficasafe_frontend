@@ -41,16 +41,6 @@ export default {
             this.authModal = true;
         },
     },
-    async created() {
-        if (!this.$store.getters.loggedInUser) return;
-        const user = await this.$store.dispatch({
-            type: 'loadUser',
-            userId: this.$store.getters.loggedInUser._id,
-        });
-        if (user && user.sub.startsWith('auth0') && !user.email_verified) {
-            this.authModal = true;
-        }
-    },
     components: {
         Navbar,
         MainFooter,

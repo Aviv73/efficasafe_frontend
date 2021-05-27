@@ -62,7 +62,6 @@ export default {
     },
     methods: {
         closeModal() {
-            if (this.signUpModal) return;
             this.$emit('closeModal');
         },
         async onResendEmail() {
@@ -104,16 +103,12 @@ export default {
         },
     },
     mounted() {
-        if (this.loggedInUser && !this.loggedInUser.email_verified)
-            this.signUpModal = true;
-        else {
-            this.$nextTick(() => {
-                this.lock.show({
-                    allowLogin: this.allowLogin,
-                    allowSignUp: !this.allowLogin,
-                });
+        this.$nextTick(() => {
+            this.lock.show({
+                allowLogin: this.allowLogin,
+                allowSignUp: !this.allowLogin,
             });
-        }
+        });
     },
     created() {
         const options = {
