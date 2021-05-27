@@ -1,5 +1,7 @@
 {
-    "name": "App",
+    "name": "Efficasafe",
+    "short_name":"Efficasafe",
+    "theme_color":"#55C595",
     "icons": [
         {
             "src": "\/android-icon-36x36.png",
@@ -37,5 +39,8 @@
             "type": "image\/png",
             "density": "4.0"
         }
-    ]
+    ],
+    "start_url":".",
+    "display":"standalone",
+    "background_color":"#55C595"
 }
