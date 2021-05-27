@@ -2,14 +2,12 @@
 
 
 import Auth0Lock from 'auth0-lock';
-import store from '../store'
+import store from '../store';
+import { auth0ClientId, auth0BaseURL } from '../config';
 import { eventBus, EV_sign_up_modal } from './eventBus.service';
 
 
-const clientId = "ECULxkc4xSBK8omj6EXcnPbyKuTvJ3Nr";
-const domain = "dev-385wz0kc.us.auth0.com";
-
-var options = {
+const options = {
     languageDictionary: {
         title: 'Efficasafe'
     },
@@ -65,7 +63,7 @@ function onSignedup(authResult) {
 
 }
 
-const lock = new Auth0Lock(clientId, domain, options);
+const lock = new Auth0Lock(auth0ClientId, auth0BaseURL, options);
 
 lock.on("authorization_error", function (error) {
     console.log('authorization_error', error);
