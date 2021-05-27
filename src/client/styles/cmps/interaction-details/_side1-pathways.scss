@@ -47,17 +47,17 @@
                 height: 16px;
             }
         }
-        .un-relevant {
-            border: 1px solid $clr12;
-            color: $clr12;
-            border-radius: 100px;
-            padding: rem(2px) rem(12px);
-            margin: 2px 0;
-            font-size: rem(12px);
-            line-height: rem(14px);
-            font-style: italic;
-            max-width: fit-content;
-        }
+    }
+    .un-relevant {
+        border: 1px solid $clr12;
+        color: $clr12;
+        border-radius: 100px;
+        padding: rem(2px) rem(12px);
+        margin: 2px 0;
+        font-size: rem(12px);
+        line-height: rem(14px);
+        font-style: italic;
+        max-width: fit-content;
     }
     .active-tab-txt {
         @include for-narrow-layout {

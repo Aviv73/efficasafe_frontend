@@ -40,15 +40,23 @@
                 </span>
             </li>
         </ul>
-            <p
-                class="active-tab-txt"
-                v-show="pathways.length"
-                v-html="formatRefs(activeTabTxt, true)"
-                v-refs-tooltip.pathwaysSecond.dynamicTxt="{
-                    combinedRefs,
-                    side2Refs
-                }"
-            />
+        <span class="d-flex">
+            <span
+                class="un-relevant clip-txt"
+                v-if="!pathways.length && unrelevantPathways.length"
+            >
+                There is no info on {{ `${materialName}'s` }} effect on: {{ unrelevantPathwayNames }}
+            </span>
+        </span>
+        <p
+            class="active-tab-txt"
+            v-show="pathways.length"
+            v-html="formatRefs(activeTabTxt, true)"
+            v-refs-tooltip.pathwaysSecond.dynamicTxt="{
+                combinedRefs,
+                side2Refs
+            }"
+        />
     </section>
 </template>
 
