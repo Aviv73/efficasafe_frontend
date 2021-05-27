@@ -76,11 +76,13 @@
             color: $white;
             border-radius: 100px;
             padding: rem(10px) rem(22px);
+            display: flex;
+            align-items: center;
 
             &:not(.mobile) {
                 display: none;
                 @include for-narrow-layout {
-                    display: inline;
+                    display: flex;
                 }
             }
             &.mobile {
@@ -97,9 +99,12 @@
             &.drugbank {
                 margin-block-end: rem(72px);
             }
-
             &.txt-dark {
                 color: $clr1;
+            }
+            .material-design-icon {
+                height: 16px;
+                margin-inline-end: 4px;
             }
         }
         .capsules {

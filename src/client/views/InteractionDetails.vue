@@ -44,6 +44,7 @@
                             :class="{ 'txt-dark': interactionColor === '#F6D55C' }"
                             :style="{ 'background-color': interactionColor }"
                         >
+                            <component :is="recommendationIconName" :size="14" />
                             {{ interaction.recommendation }}
                         </span>
                         <span class="evidence-level">
@@ -71,7 +72,7 @@
                         :class="{ 'txt-dark': interactionColor === '#F6D55C' }"
                         :style="{ 'background-color': interactionColor }"
                     >
-                        <!-- <recommendation-icon /> -->
+                        <component :is="recommendationIconName" :size="14" />
                         {{ interaction.recommendation }}
                     </span>
                     <div
@@ -383,24 +384,18 @@ export default {
             const { interaction } = this;
             return interaction.side2Label && interaction.side2Label.primaryMaterialIds.includes(this.side2Material._id);
         },
-        // recommendationIconName() {
-        //     let res = 'vue-material-design-icons/'
-        //     switch (this.interactionColor) {
-        //         case '#E63946':
-        //             res += 'Cancel'
-        //             break;
-        //         case '#F6D55C':
-        //             res += 'AlertCircleOutline';
-        //             break;
-        //         case '#56C596':
-        //             res += 'Check';
-        //             break;
-        //         default:
-        //             res += 'CircleOutline';
-        //             break;
-        //     }
-        //     return res;
-        // }
+        recommendationIconName() {
+            switch (this.interactionColor) {
+                case '#E63946':
+                    return 'cancel-icon';
+                case '#F6D55C':
+                    return 'alert-circle-outline-icon';
+                case '#56C596':
+                    return 'check-icon';
+                default:
+                    return 'circle-outline';
+            }
+        }
     },
     methods: {
         async getInteractionData() {
@@ -489,7 +484,10 @@ export default {
         Side2Pathways,
         Side1Pathways,
         ReferenceList,
-        // RecommendationIcon: () => import(this.recommendationIconName)
+        CancelIcon: () => import('vue-material-design-icons/Cancel'),
+        AlertCircleOutlineIcon: () => import('vue-material-design-icons/AlertCircleOutline'),
+        CheckIcon: () => import('vue-material-design-icons/Check'),
+        CircleOutlineIcon: () => import('vue-material-design-icons/CircleOutline')
     }
 }
 </script>

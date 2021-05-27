@@ -44,6 +44,7 @@
                             :class="{ 'txt-dark': interactionColor === '#F6D55C' }"
                             :style="{ 'background-color': interactionColor }"
                         >
+                            <component :is="recommendationIconName" :size="14" />
                             {{ interaction.recommendation }}
                         </span>
                         <span class="evidence-level">
@@ -83,6 +84,7 @@
                         :class="{ 'txt-dark': interactionColor === '#F6D55C' }"
                         :style="{ 'background-color': interactionColor }"
                     >
+                        <component :is="recommendationIconName" :size="14" />
                         {{ interaction.recommendation }}
                     </span>
                     <figure class="drugbank-logo">
@@ -207,6 +209,18 @@ export default {
                 acc = acc.concat(moreRefs);
                 return acc;
             }, []);
+        },
+        recommendationIconName() {
+            switch (this.interactionColor) {
+                case '#E63946':
+                    return 'cancel-icon';
+                case '#F6D55C':
+                    return 'alert-circle-outline-icon';
+                case '#56C596':
+                    return 'check-icon';
+                default:
+                    return 'circle-outline';
+            }
         }
     },
     methods: {
@@ -261,7 +275,11 @@ export default {
         InteractionCapsules,
         InformationOutlineIcon,
         Tooltip,
-        ReferenceList
+        ReferenceList,
+        CancelIcon: () => import('vue-material-design-icons/Cancel'),
+        AlertCircleOutlineIcon: () => import('vue-material-design-icons/AlertCircleOutline'),
+        CheckIcon: () => import('vue-material-design-icons/Check'),
+        CircleOutlineIcon: () => import('vue-material-design-icons/CircleOutline')
     }
 }
 </script>
