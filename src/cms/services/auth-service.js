@@ -3,7 +3,7 @@
 
 import Auth0Lock from 'auth0-lock';
 import store from '../store';
-import { auth0ClientId, auth0BaseURL } from '../config';
+import config from '../config';
 import { eventBus, EV_sign_up_modal } from './eventBus.service';
 
 
@@ -26,13 +26,10 @@ const options = {
     avatar: null,
     hooks: {
         loggingIn: function (context, cb) {
-            console.log('Hello from the login hook!');
             lock.on("authenticated", onLoggedin)
-
             cb();
         },
         signingUp: function (context, cb) {
-            console.log('Hello from the sign-up hook!');
             lock.on("authenticated", onSignedup)
             cb();
         }
@@ -42,7 +39,6 @@ const options = {
 }
 
 function onLoggedin(authResult) {
-    console.log('from login', authResult)
     let { accessToken, tokenType } = authResult;
     store.commit({
         type: 'setToken',
@@ -58,12 +54,9 @@ function onSignedup(authResult) {
         type: 'setToken',
         token: `${tokenType} ${accessToken}`,
     });
-    eventBus.$emit(EV_sign_up_modal)
-
-
+    eventBus.$emit(EV_sign_up_modal);
 }
-
-const lock = new Auth0Lock(auth0ClientId, auth0BaseURL, options);
+const lock = new Auth0Lock(config.auth0ClientId, config.auth0BaseURL, options);
 
 lock.on("authorization_error", function (error) {
     console.log('authorization_error', error);
