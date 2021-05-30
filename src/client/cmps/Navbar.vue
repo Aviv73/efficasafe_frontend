@@ -128,13 +128,19 @@
                         </li>
 
                         <li class="navbar-side-nav-item">
-                            <router-link to="/search">Search</router-link>
+                            <router-link to="/search" @click.native="toggleNavActive">
+                                Search
+                            </router-link>
                         </li>
                         <li class="navbar-side-nav-item">
-                            <router-link to="/about">About us</router-link>
+                            <router-link to="/about" @click.native="toggleNavActive">
+                                About us
+                            </router-link>
                         </li>
                         <li class="navbar-side-nav-item">
-                            <router-link to="/contact">Contact us</router-link>
+                            <router-link to="/contact" @click.native="toggleNavActive">
+                                Contact us
+                            </router-link>
                         </li>
                     </ul>
                 </div>
