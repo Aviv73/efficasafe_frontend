@@ -73,7 +73,7 @@
         <ul class="horizontal-list-list">
             <li
                 class="horizontal-list-list-item"
-                v-if="$route.name === 'Monitor'"
+                v-if="$route.name === 'Monitor' && total"
             >
                 <monitor-summary :interactions="interactions" />
             </li>
