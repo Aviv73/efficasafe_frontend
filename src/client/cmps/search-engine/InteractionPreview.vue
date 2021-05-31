@@ -68,16 +68,47 @@
                     v-if="!interaction.side2Label && interaction.side2Material"
                 >
                     <div v-if="!link">
-                        <h3 class="font-bold">Summary</h3>
-                        <long-txt
-                            :txt="interaction.summary"
-                            :maxChars="250"
-                            :expandable="false"
-                            :overflowSymb="getInteractionLink(interaction)"
-                            isHTML
-                        />
+                        <div v-if="$route.name === 'Monitor'">
+                           <ul
+                                class="monitor-list"
+                                v-if="interaction.monitor.general || interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptoms"
+                            >
+                               <li v-if="interaction.monitor.general">
+                                   <span class="monitor-list-header font-bold">General:</span>
+                                   {{ interaction.monitor.general }}
+                               </li>
+                               <li v-if="interaction.monitor.labTests">
+                                   <span class="monitor-list-header font-bold">Lab tests:</span>
+                                   {{ interaction.monitor.labTests }}
+                               </li>
+                               <li v-if="interaction.monitor.otherTests">
+                                   <span class="monitor-list-header font-bold">Other tests:</span>
+                                   {{ interaction.monitor.otherTests }}
+                               </li>
+                               <li v-if="interaction.monitor.symptoms">
+                                   <span class="monitor-list-header font-bold">Symptoms:</span>
+                                   {{ interaction.monitor.symptoms }}
+                               </li>
+                           </ul>
+                           <p v-else>There is nothing to monitor for this interaction.</p>
+                        </div>
+                        <div v-else>
+                            <h3 class="font-bold">Summary</h3>
+                            <long-txt
+                                :txt="interaction.summary"
+                                :maxChars="250"
+                                :expandable="false"
+                                :overflowSymb="getInteractionLink(interaction)"
+                                isHTML
+                            />
+                        </div>
                     </div>
-                    <chevron-up-icon class="chevron-icon" />
+                    <chevron-up-icon
+                        class="chevron-icon"
+                        :class="{
+                            'u-hide': $route.name === 'Monitor'
+                        }"
+                    />
                 </div>
                 <div
                     class="interaction-preview-content"

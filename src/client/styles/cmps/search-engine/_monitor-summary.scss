@@ -1,0 +1,28 @@
+.monitor-summary {
+    font-size: rem(16px);
+    line-height: rem(20px);
+    font-family: roboto-medium, sans-serif;
+    font-weight: 500;
+    color: $clr-txt-darker;
+
+    &-list {
+        color: rgba($clr1, .8);
+        line-height: rem(20px);
+        font-family: roboto, sans-serif;
+        font-weight: normal;
+        letter-spacing: rem(.07px);
+        margin: rem(8px) 0;
+        
+        @include for-narrow-layout {
+            padding-inline-end: 14%;
+        }
+
+        &-header {
+            color: rgba($clr-txt-dark, .8);
+        }
+
+        li:not(:last-child) {
+            margin-block-end: rem(4px);
+        }
+    }
+}

@@ -73,13 +73,19 @@
         <ul class="horizontal-list-list">
             <li
                 class="horizontal-list-list-item"
+                v-if="$route.name === 'Monitor'"
+            >
+                <monitor-summary :interactions="interactions" />
+            </li>
+            <li
+                class="horizontal-list-list-item"
                 v-for="(interaction, idx) in interactions"
                 :key="idx"
             >
                 <interaction-preview
                     :interaction="interaction"
                     :materials="materials"
-                    link
+                    :link="$route.name !== 'Monitor'"
                 />
             </li>
         </ul>
@@ -89,6 +95,7 @@
 <script>
 import InteractionPreview from '@/client/cmps/search-engine/InteractionPreview';
 import Tooltip from '@/client/cmps/common/Tooltip';
+import MonitorSummary from '@/client/cmps/search-engine/MonitorSummary';
 
 import SortVerticalIcon from '@/client/cmps/common/icons/SortVerticalIcon';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
@@ -145,7 +152,8 @@ export default {
         InteractionPreview,
         SortVerticalIcon,
         InformationOutlineIcon,
-        Tooltip
+        Tooltip,
+        MonitorSummary
     }
 };
 </script>
