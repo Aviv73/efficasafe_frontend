@@ -5,6 +5,29 @@
     font-weight: 500;
     color: $clr-txt-darker;
 
+    &-header {
+        .capsule {
+            display: inline-block;
+            background-color: $white;
+            box-shadow: 0px 2px 2px rgba($gray, .3);
+            border-radius: 100px;
+            padding: rem(10px) rem(16px);
+            position: relative;
+
+            .cap {
+                position: absolute;
+                top: 0;
+                height: 100%;
+    
+                &-left {
+                    right: 0;
+                }
+                &-right {
+                    left: 0;
+                }
+            }
+        }
+    }
     &-list {
         color: rgba($clr1, .8);
         line-height: rem(20px);
@@ -12,6 +35,7 @@
         font-weight: normal;
         letter-spacing: rem(.07px);
         margin: rem(8px) 0;
+        padding-inline-start: rem(16px);
         
         @include for-narrow-layout {
             padding-inline-end: 14%;

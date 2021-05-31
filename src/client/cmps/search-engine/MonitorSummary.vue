@@ -3,8 +3,31 @@
         <collapse>
             <template #header>
                 <div class="interaction-preview-header table-row">
-                    <span class="table-col">
-                        What to monitor for all interactions
+                    <span class="monitor-summary-header table-col">
+                        <span class="capsule">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="cap cap-left"
+                            viewBox="0 0 24.192 48.001"
+                        >
+                            <path 
+                                fill="#b1b1b1"
+                                d="M24.192,48h-.221A23.973,23.973,0,0,1,0,24,23.96,23.96,0,0,1,23.972,0h.221V4.132a21.046,21.046,0,0,0-6.841,1.532A20.58,20.58,0,0,0,10.8,9.929a19.82,19.82,0,0,0-4.414,6.326,19.338,19.338,0,0,0,0,15.492A19.81,19.81,0,0,0,10.8,38.071a20.585,20.585,0,0,0,6.548,4.265,21.043,21.043,0,0,0,6.841,1.532V48Z"
+                                transform="translate(24.192 48.001) rotate(180)"
+                            />
+                        </svg>
+                            What to monitor for all interactions
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="cap cap-right"
+                            viewBox="0 0 24.192 48.001"
+                        >
+                            <path
+                                fill="#b1b1b1"
+                                d="M24.192,0h-.221A23.973,23.973,0,0,0,0,24,23.96,23.96,0,0,0,23.971,48h.221V43.869a21.046,21.046,0,0,1-6.841-1.532A20.58,20.58,0,0,1,10.8,38.072a19.82,19.82,0,0,1-4.414-6.326,19.338,19.338,0,0,1,0-15.492A19.81,19.81,0,0,1,10.8,9.93a20.585,20.585,0,0,1,6.548-4.265,21.042,21.042,0,0,1,6.841-1.532V0Z"
+                            />
+                        </svg>
+                        </span>
                     </span>
                     <span class="table-col" />
                     <span class="table-col">
@@ -90,12 +113,24 @@ export default {
             });
         },
         getMonitorTxt(propName) {
-            return this.flatInteractions.map(i => {
-                const secChar = i.monitor[propName].charAt(1);
-                const val = (secChar !== secChar.toUpperCase()) ? i.monitor[propName].charAt(0).toLowerCase() + i.monitor[propName].slice(1) : i.monitor[propName];
-                const lastChar = val.charAt(val.length - 1);
-                return (lastChar === '.') ? val.substring(0, val.length - 1) : val;
-            }).filter(str => str).join(', ');
+            const seenMap = {};
+            return this.flatInteractions.reduce((acc, { monitor }) => {
+                let words = monitor[propName].split(',').filter(str => str).map(str =>str.trim());
+                words = words.reduce((acc, word) => {
+                    if (!seenMap[word]) {
+                        const copy = word;
+                        const secChar = word.charAt(1);
+                        word = (secChar !== secChar.toUpperCase()) ? word.charAt(0).toLowerCase() + word.slice(1) : word;
+                        const lastChar = word.charAt(word.length - 1);
+                        word = (lastChar === '.') ? word.substring(0, word.length - 1) : word;
+                        acc.push(word);
+                        seenMap[copy] = true;
+                    }
+                    return acc;
+                }, []);
+                acc += (acc && words.join(', ')) ? ', ' + words.join(', ') : words.join(', ');
+                return acc;
+            }, '');
         }
     },
     created() {

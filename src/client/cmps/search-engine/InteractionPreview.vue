@@ -90,7 +90,7 @@
                                    {{ interaction.monitor.symptoms }}
                                </li>
                            </ul>
-                           <p v-else>There is nothing to monitor for this interaction.</p>
+                           <p class="monitor-list" v-else>There is nothing to monitor for this interaction.</p>
                         </div>
                         <div v-else>
                             <h3 class="font-bold">Summary</h3>

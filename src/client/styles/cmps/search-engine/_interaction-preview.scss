@@ -139,6 +139,8 @@
         color: $clr-txt-darker;
     }
     .monitor-list {
+        padding-inline-start: rem(24px);
+
         &-header {
             color: rgba($clr-txt-dark, .8);
         }
