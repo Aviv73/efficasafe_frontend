@@ -9,7 +9,7 @@ import { eventBus, EV_sign_up_modal } from './eventBus.service';
 const clientId = "ECULxkc4xSBK8omj6EXcnPbyKuTvJ3Nr";
 const domain = "dev-385wz0kc.us.auth0.com";
 
-var options = {
+const options = {
     languageDictionary: {
         title: 'Efficasafe'
     },
@@ -44,7 +44,6 @@ var options = {
 }
 
 function onLoggedin(authResult) {
-    console.log('from login', authResult)
     let { accessToken, tokenType } = authResult;
     store.commit({
         type: 'setToken',
@@ -60,9 +59,7 @@ function onSignedup(authResult) {
         type: 'setToken',
         token: `${tokenType} ${accessToken}`,
     });
-    eventBus.$emit(EV_sign_up_modal)
-
-
+    eventBus.$emit(EV_sign_up_modal);
 }
 
 const lock = new Auth0Lock(clientId, domain, options);
@@ -77,13 +74,4 @@ lock.on("unrecoverable_error", function (error) {
 
 
 
-export default lock
-
-
-// authroized route
-// lock.on("authenticated", function (res) {
-//     axios.post('http://localhost:3000/check', res)
-//         .then(res => {
-//             location.reload()
-//         })
-// })
+export default lock;

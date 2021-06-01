@@ -33,9 +33,6 @@
     </div>
 </template>
 
-
-
-
 <script>
 import Auth0Lock from 'auth0-lock';
 import config from '@/client/config';
