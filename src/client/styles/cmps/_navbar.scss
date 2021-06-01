@@ -9,6 +9,11 @@
     background-image: linear-gradient(90deg, $gradient-clr1, $gradient-clr2);
     padding: rem(10px) 0;
 
+    &.light {
+        background-image: none;
+        background-color: $white;
+        color: $clr1;
+    }
     &-msgs {
         display: flex;
         align-items: center;
@@ -44,7 +49,8 @@
                         padding: rem(4px) rem(14px);
                     }
                     &.highlight {
-                        background-color: $clr4;
+                        background-image: linear-gradient(90deg, $gradient-clr1, $gradient-clr2);
+                        color: $white;
                     }
                     &.login-btn {
                         font-family: roboto-bold, sans-serif;
@@ -92,6 +98,7 @@
         z-index: 9;
         font-size: rem(20px);
         font-family: segoe-ui, sans-serif;
+        color: $white;
         overflow-y: auto;
         line-height: rem(50px);
         transform: translateX(100%);

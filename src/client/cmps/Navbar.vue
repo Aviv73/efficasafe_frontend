@@ -1,5 +1,9 @@
 <template>
-    <nav class="navbar">
+    <nav
+        class="navbar"
+        :class="{ 'light': isNavIntersecting }"
+        ref="navbar"
+    >
         <div class="main-container">
             <div class="flex-space-between">
                 <div class="navbar-msgs flex-center">
@@ -31,7 +35,7 @@
                 </div>
                 <ul class="navbar-nav">
                     <li class="navbar-nav-item">
-                        <button :class="{ highlight: !loggedInUser }">
+                        <button :class="{ highlight: !loggedInUser || isNavIntersecting }">
                             Subscribe
                         </button>
                     </li>
@@ -136,6 +140,7 @@ export default {
     name: 'Navbar',
     data: () => ({
         isNavActive: false,
+        isNavIntersecting: false
     }),
     computed: {
         isScreenNarrow() {
@@ -170,6 +175,21 @@ export default {
                 this.$router.push('/');
             }
         },
+        setNavClassName() {
+            if (this.$route.name !== 'Home') {
+                this.isNavIntersecting = false;
+                return;
+            }
+            const intersectingEl = document.querySelector('section.home-content');
+            const elNav = this.$refs.navbar;
+            this.isNavIntersecting = window.scrollY >= (intersectingEl.offsetTop - elNav.offsetHeight);
+        }
+    },
+    mounted() {
+        document.addEventListener('scroll', this.setNavClassName);
+    },
+    beforeDestroy() {
+        document.removeEventListener('scroll', this.setNavClassName);
     },
     components: {
         CloseIcon,
