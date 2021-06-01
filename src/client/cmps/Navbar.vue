@@ -14,7 +14,6 @@
                             <p>
                                 {{ `Hi ${loggedInUser.nickname}` }}
                             </p>
-                            <p class="seperator">|</p>
                         </div>
                         <div
                             class="flex-center"
@@ -27,13 +26,6 @@
                                         : `Free Trial - you have ${freeTrialTime} days left`
                                 }}
                             </p>
-                        </div>
-                        <div class="flex-center" v-if="loggedInUser">
-                            <chevron-right-icon
-                                class="flex-center"
-                                :size="20"
-                                v-if="!isScreenNarrow"
-                            />
                         </div>
                     </div>
                 </div>
@@ -73,8 +65,7 @@
                     </li>
                 </ul>
                 <button class="navbar-toggle" @click="toggleNavActive">
-                    <dots-horizontal-icon v-if="isScreenNarrow" />
-                    <span v-else>More...</span>
+                    <menu-icon />
                 </button>
                 <div
                     class="navbar-overlay"
@@ -138,9 +129,9 @@
 </template>
 
 <script>
-import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 import CloseIcon from 'vue-material-design-icons/Close';
-import DotsHorizontalIcon from 'vue-material-design-icons/DotsHorizontal';
+import MenuIcon from 'vue-material-design-icons/Menu';
+
 export default {
     name: 'Navbar',
     data: () => ({
@@ -181,9 +172,8 @@ export default {
         },
     },
     components: {
-        ChevronRightIcon,
         CloseIcon,
-        DotsHorizontalIcon,
+        MenuIcon,
     },
 };
 </script>
