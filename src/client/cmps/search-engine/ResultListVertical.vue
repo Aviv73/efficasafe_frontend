@@ -136,9 +136,9 @@
                 </template>
             </list-pagination>
         </div>
-        <div v-else-if="$route.name === 'Boosters'">
+        <div v-else-if="$route.name === 'Boosters' || $route.name === 'Monitor'">
             <p class="vertical-list-msg">
-                Positive boosters are only available in default view.
+                {{ $route.name === 'Boosters' ? 'Positive boosters are' : 'Monitor is' }} only available in default view.
             </p>
         </div>
     </section>
@@ -213,6 +213,7 @@ export default {
                     this.getDBankInteractions(criteria);
                 }
                 break;
+                case 'Monitor':
                 case 'Boosters':  break;
                 default: {
                     const ids = this.materials.reduce((acc, { _id, labels }) => {

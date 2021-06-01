@@ -371,9 +371,9 @@ export default {
                     };
                     case 'Monitor':
                     return {
-                        interactions: [],
-                        pageCount: 0,
-                        total: 0
+                        interactions: this.formatedInteractions,
+                        pageCount: this.pageCount,
+                        total: this.total
                     };
             }
             return []
@@ -452,7 +452,8 @@ export default {
                             isVirtual: true,
                             side2DraftName: interaction.side2DraftName,
                             summary: interaction.summary,
-                            refs: interaction.refs
+                            refs: interaction.refs,
+                            monitor: interaction.monitor
                         };
                         this.insertInteraction(acc, vInteraction);
                     });

@@ -3,19 +3,7 @@
         <div class="main-container">
             <div class="flex-space-between">
                 <div class="navbar-msgs flex-center">
-                    <div
-                        class="flex-center"
-                        v-if="!loggedInUser"
-                    >
-                        {{ isScreenNarrow ? 'Get a Free trial' : '' }}
-                        <chevron-right-icon
-                            class="flex-center"
-                            :size="20"
-                            v-if="!isScreenNarrow && loggedInUser"
-                        />
-                    </div>
-
-                    <div class="flex-center" v-else>
+                    <div class="flex-center" v-if="loggedInUser">
                         <div class="flex-center" v-if="!isScreenNarrow">
                             <img
                                 class="nav-user-img"
