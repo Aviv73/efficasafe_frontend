@@ -6,25 +6,18 @@
     color: $clr-txt-darker;
 
     &-header {
+        padding: rem(10px) 0;
+        margin-inline-start: rem(30px);
+        
         .capsule {
             display: inline-block;
-            background-color: $white;
-            box-shadow: 0px 2px 2px rgba($gray, .3);
-            border-radius: 100px;
-            padding: rem(10px) rem(16px);
             position: relative;
+            font-size: rem(18px);
+            color: $clr1;
 
-            .cap {
-                position: absolute;
-                top: 0;
-                height: 100%;
-    
-                &-left {
-                    right: 0;
-                }
-                &-right {
-                    left: 0;
-                }
+            .de-activator {
+                right: -24px;
+                top: calc(50% + 2px);
             }
         }
     }
@@ -35,7 +28,7 @@
         font-weight: normal;
         letter-spacing: rem(.07px);
         margin: rem(8px) 0;
-        padding-inline-start: rem(16px);
+        padding-inline-start: rem(30px);
         
         @include for-narrow-layout {
             padding-inline-end: 14%;
