@@ -166,7 +166,7 @@
                         </li>
                         <li class="search-engine-nav-link">
                             <router-link
-                                class="link"
+                                class="link v-tour-step-4"
                                 :to="{ name: 'Monitor', query: this.$route.query }"
                             >
                                 What to monitor
@@ -218,9 +218,14 @@
             <disclaimer @approved-use="handleUseApprove" />
         </modal-wrap>
         <v-tour
+            name="teaser-tour"
+            :steps="teaserSteps"
+            :callbacks="teaserCallbacks"
+        />
+        <v-tour
             name="onboarding-tour"
             :steps="computedOnboardingSteps"
-            :callbacks="tourCallbacks"
+            :callbacks="onboardingCallbacks"
         />
     </section>
 </template>
@@ -262,6 +267,20 @@ export default {
             routerTransitionName: '',
             sortOptions: null,
             isDisclaimerActive: false,
+            teaserSteps: [
+                {
+                    target: '.search-engine-search-bar',
+                    content: 'Insert and reach four materials to see onboarding tour',
+                    params: {
+                        enableScrolling: false
+                    }
+                }
+            ],
+            teaserCallbacks: {
+                onStop: () => {
+                    storageService.store('seen-teaser', true);
+                }
+            },
             onboardingSteps: [
                 {
                     target: '.v-tour-step-0',
@@ -304,11 +323,24 @@ export default {
                         elNav.scrollLeft += maxScroll;
                         resolve();
                     })
+                },
+                {
+                    target: '.v-tour-step-4',
+                    content: 'More info available here',
+                    params: {
+                        enableScrolling: false
+                    },
+                    before: () => new Promise((resolve) => {
+                        const elNav = document.querySelector('.search-engine-nav');
+                        const maxScroll = elNav.scrollWidth - elNav.clientWidth;
+                        elNav.scrollLeft += maxScroll;
+                        resolve();
+                    })
                 }
             ],
-            tourCallbacks: {
+            onboardingCallbacks: {
                 onStop: () => {
-                    storageService.store('did-tour', true);
+                    storageService.store('did-onboarding', true);
                 }
             }
         }
@@ -316,6 +348,11 @@ export default {
     watch: {
         '$route.query': {
             async handler() {
+                if (!storageService.load('seen-teaser')) {
+                    this.$nextTick(() => {
+                        this.$tours['teaser-tour'].start();
+                    });
+                }
                 const { q } = this.$route.query;
                 if (!q || !q.length) {
                     this.reset();
@@ -325,7 +362,7 @@ export default {
                     this.$route.query.q = [ q ];
                 }
                 await this.getResults();
-                if (this.materials.length >= 4 && !storageService.load('did-tour')) {
+                if (this.materials.length >= 4 && !storageService.load('did-onboarding')) {
                     this.$tours['onboarding-tour'].start();
                 }
             },
@@ -345,7 +382,7 @@ export default {
     computed: {
         computedOnboardingSteps() {
             if (this.isScreenNarrow) {
-                return [ this.onboardingSteps[1], this.onboardingSteps[3] ];
+                return [ this.onboardingSteps[1], this.onboardingSteps[3], this.onboardingSteps[4] ];
             }
             return this.onboardingSteps;
         },
