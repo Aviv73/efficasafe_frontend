@@ -360,9 +360,10 @@ export default {
                 case 'coadministration is not contraindicated and may even be advised':
                     return 'Not contraindicated';
                 case 'coadministration is possible':
+                    case 'coadministration is advised':
+                        return 'Coadministration is possible';
                 case 'coadministration is possible and may even be advised':
-                case 'coadministration is advised':
-                    return 'Coadministration is possible';
+                    return 'Coadministration may be advised';
             }
         },
         getInteractionColor(recommendation) {

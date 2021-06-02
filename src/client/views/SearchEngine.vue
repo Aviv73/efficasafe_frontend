@@ -350,7 +350,7 @@ export default {
             async handler() {
                 if (!storageService.load('seen-teaser')) {
                     this.$nextTick(() => {
-                        this.$tours['teaser-tour'].start();
+                        // this.$tours['teaser-tour'].start();
                     });
                 }
                 const { q } = this.$route.query;
@@ -363,7 +363,7 @@ export default {
                 }
                 await this.getResults();
                 if (this.materials.length >= 4 && !storageService.load('did-onboarding')) {
-                    this.$tours['onboarding-tour'].start();
+                    // this.$tours['onboarding-tour'].start();
                 }
             },
             deep: true,
@@ -420,8 +420,10 @@ export default {
                 group.recommendation = this.getMoreSeverRecomm(true, ...group.vInteractions.map(i => i.recommendation));
                 group.evidenceLevel = this.getMoreSeverEvidenceLevel(...group.vInteractions.map(i => i.evidenceLevel));
                 const materialName = this.materials.find(m => m._id === group.side2Id || m.labels.some(l => l._id === group.side2Id)).name;
+                const materialId = this.materials.find(m => m._id === group.side2Id || m.labels.some(l => l._id === group.side2Id))._id;
                 const userQuery = this.$store.getters.materialNamesMap[materialName];
                 group.name = userQuery ? userQuery.join(', ') : materialName;
+                group.mainMaterialId = materialId;
                 group.isMaterialGroup = true;
                 group.vInteractions.forEach(vInteraction => {
                     if (vInteraction.side2Label) {
