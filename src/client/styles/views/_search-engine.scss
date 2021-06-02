@@ -427,11 +427,14 @@
         max-width: 700px;
 
         .boosters-img {
-            margin: rem(8px) 0;
+            margin: rem(12px) 0;
             width: 100%;
         }
         .boosters-txt {
+            width: 80%;
+            margin: 0 auto;
             font-size: rem(18px);
+            line-height: rem(24px);
         }
     }
     

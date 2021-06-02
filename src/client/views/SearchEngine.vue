@@ -49,7 +49,7 @@
                             />
                         </template>
                         <li
-                            class="search-engine-search-materials-chip clip-txt activator v-tour-step-1"
+                            class="search-engine-search-materials-chip clip-txt activator v-tour-step-0"
                             :class="{
                                 'disabled': result.isIncluded,
                                 'not-active': !isTooltipActive(result)
@@ -277,6 +277,7 @@ export default {
                     target: '.search-engine-search-bar',
                     content: 'Insert and reach four materials to see onboarding tour',
                     params: {
+                        placement: 'right',
                         enableScrolling: false
                     }
                 }
@@ -289,16 +290,16 @@ export default {
             onboardingTourSteps: [
                 {
                     target: '.v-tour-step-0',
-                    content: 'Hover here to view evidence level calculation details',
+                    content: 'Click on each material to view additional info',
                     params: {
-                        placement: 'top',
                         enableScrolling: false
                     }
                 },
                 {
                     target: '.v-tour-step-1',
-                    content: 'Click on each material to view additional info',
+                    content: 'Hover here to view evidence level calculation details',
                     params: {
+                        placement: 'top',
                         enableScrolling: false
                     }
                 },
