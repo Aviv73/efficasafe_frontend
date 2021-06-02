@@ -219,13 +219,18 @@
         </modal-wrap>
         <v-tour
             name="teaser-tour"
-            :steps="teaserSteps"
-            :callbacks="teaserCallbacks"
+            :steps="teaserTourSteps"
+            :callbacks="teaserTourCallbacks"
         />
         <v-tour
             name="onboarding-tour"
-            :steps="computedOnboardingSteps"
-            :callbacks="onboardingCallbacks"
+            :steps="computedOnboardingTourSteps"
+            :callbacks="onboardingTourCallbacks"
+        />
+        <v-tour
+            name="boosters-tour"
+            :steps="boostersTourSteps"
+            :callbacks="boostersTourCallbacks"
         />
     </section>
 </template>
@@ -267,7 +272,7 @@ export default {
             routerTransitionName: '',
             sortOptions: null,
             isDisclaimerActive: false,
-            teaserSteps: [
+            teaserTourSteps: [
                 {
                     target: '.search-engine-search-bar',
                     content: 'Insert and reach four materials to see onboarding tour',
@@ -276,12 +281,12 @@ export default {
                     }
                 }
             ],
-            teaserCallbacks: {
+            teaserTourCallbacks: {
                 onStop: () => {
-                    storageService.store('seen-teaser', true);
+                    storageService.store('did-teaser-tour', true);
                 }
             },
-            onboardingSteps: [
+            onboardingTourSteps: [
                 {
                     target: '.v-tour-step-0',
                     content: 'Hover here to view evidence level calculation details',
@@ -338,9 +343,72 @@ export default {
                     })
                 }
             ],
-            onboardingCallbacks: {
+            onboardingTourCallbacks: {
                 onStop: () => {
                     storageService.store('did-onboarding', true);
+                }
+            },
+            boostersTourSteps: [
+                {
+                    target: '.v-tour-step-3',
+                    content: `
+                        <p class="boosters-txt">
+                            This tab will show you positive combinations
+                            with the drugs that are in your search
+                        </p>
+                        <img
+                            class="boosters-img"
+                            src="${require('@/client/assets/imgs/boosters-tour-1.jpeg')}"
+                            alt="Usage example"
+                        />
+                        <p class="boosters-txt">The order of the drugs shown is set by the recommendations</p>
+                    `,
+                    params: {
+                        placement: 'left-start',
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour-step-3',
+                    content: `
+                        <p class="boosters-txt">
+                            A click on each drug will show you all the herbs and/or
+                            supplements that could be coadministered with the drug
+                        </p>
+                        <img
+                            class="boosters-img"
+                            src="${require('@/client/assets/imgs/boosters-tour-2.jpeg')}"
+                            alt="Usage example"
+                        />
+                    `,
+                    params: {
+                        placement: 'left-start',
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour-step-3',
+                    content: `
+                        <p class="boosters-txt">
+                            A click on each herb/supplement will show you the interaction
+                            with the chosen drug followed by the interactions of this
+                            herb/supplement with the other drugs in your search
+                        </p>
+                        <img
+                            class="boosters-img"
+                            src="${require('@/client/assets/imgs/boosters-tour-3.jpeg')}"
+                            alt="Usage example"
+                        />
+                    `,
+                    params: {
+                        placement: 'left-start',
+                        enableScrolling: false
+                    }
+                }
+            ],
+            boostersTourCallbacks: {
+                onStop: () => {
+                    storageService.store('did-boosters-tour', true);
                 }
             }
         }
@@ -348,9 +416,14 @@ export default {
     watch: {
         '$route.query': {
             async handler() {
-                if (!storageService.load('seen-teaser')) {
+                if (!storageService.load('did-teaser-tour')) {
                     this.$nextTick(() => {
-                        // this.$tours['teaser-tour'].start();
+                        this.$tours['teaser-tour'].start();
+                    });
+                }
+                if (this.$route.name === 'Boosters' && !this.isScreenNarrow && !storageService.load('did-boosters-tour')) {
+                    this.$nextTick(() => {
+                        this.$tours['boosters-tour'].start();
                     });
                 }
                 const { q } = this.$route.query;
@@ -363,7 +436,7 @@ export default {
                 }
                 await this.getResults();
                 if (this.materials.length >= 4 && !storageService.load('did-onboarding')) {
-                    // this.$tours['onboarding-tour'].start();
+                    this.$tours['onboarding-tour'].start();
                 }
             },
             deep: true,
@@ -380,11 +453,11 @@ export default {
         }
     },
     computed: {
-        computedOnboardingSteps() {
+        computedOnboardingTourSteps() {
             if (this.isScreenNarrow) {
-                return [ this.onboardingSteps[1], this.onboardingSteps[3], this.onboardingSteps[4] ];
+                return [ this.onboardingTourSteps[1], this.onboardingTourSteps[3], this.onboardingTourSteps[4] ];
             }
-            return this.onboardingSteps;
+            return this.onboardingTourSteps;
         },
         routableListData() {
             switch (this.$route.name) {
