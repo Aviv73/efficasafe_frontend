@@ -17,8 +17,8 @@ const options = {
     },
     theme: {
         labeledSubmitButton: true,
-        logo: "https://i.ibb.co/ZHXvGqx/logo-symbol.png",
-        primaryColor: "#4FB891",
+        logo: `${window.location.origin}/img/logo-symbol.png`,
+        primaryColor: '#55C595',
 
     },
 
@@ -26,11 +26,11 @@ const options = {
     avatar: null,
     hooks: {
         loggingIn: function (context, cb) {
-            lock.on("authenticated", onLoggedin)
+            lock.on('authenticated', onLoggedin)
             cb();
         },
         signingUp: function (context, cb) {
-            lock.on("authenticated", onSignedup)
+            lock.on('authenticated', onSignedup)
             cb();
         }
     }
@@ -58,11 +58,11 @@ function onSignedup(authResult) {
 }
 const lock = new Auth0Lock(config.auth0ClientId, config.auth0BaseURL, options);
 
-lock.on("authorization_error", function (error) {
+lock.on('authorization_error', function (error) {
     console.log('authorization_error', error);
 })
 
-lock.on("unrecoverable_error", function (error) {
+lock.on('unrecoverable_error', function (error) {
     console.log('unrecoverable_error', error);
 })
 
