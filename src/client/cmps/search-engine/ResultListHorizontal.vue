@@ -40,7 +40,7 @@
                 >
                     <input type="checkbox" hidden @change="emitSort('evidenceLevel', $event.target.checked)" />
                     <sort-vertical-icon class="sort-icon" />
-                    <span class="v-tour-step-0">Level of Evidence</span>
+                    <span class="v-tour-step-1">Level of Evidence</span>
                 </label>
                 <tooltip on="hover" right right-bottom>
                     <template #content>

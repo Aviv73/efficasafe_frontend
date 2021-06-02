@@ -1,5 +1,9 @@
 <template>
-    <nav class="navbar">
+    <nav
+        class="navbar"
+        :class="{ 'light': isNavIntersecting }"
+        ref="navbar"
+    >
         <div class="main-container">
             <div class="flex-space-between">
                 <div class="navbar-msgs flex-center">
@@ -14,7 +18,6 @@
                             <p>
                                 {{ `Hi ${loggedInUser.nickname}` }}
                             </p>
-                            <p class="seperator">|</p>
                         </div>
                         <div
                             class="flex-center"
@@ -28,18 +31,11 @@
                                 }}
                             </p>
                         </div>
-                        <div class="flex-center" v-if="loggedInUser">
-                            <chevron-right-icon
-                                class="flex-center"
-                                :size="20"
-                                v-if="!isScreenNarrow"
-                            />
-                        </div>
                     </div>
                 </div>
                 <ul class="navbar-nav">
                     <li class="navbar-nav-item">
-                        <button :class="{ highlight: !loggedInUser }">
+                        <button :class="{ highlight: !loggedInUser || isNavIntersecting }">
                             Subscribe
                         </button>
                     </li>
@@ -73,8 +69,7 @@
                     </li>
                 </ul>
                 <button class="navbar-toggle" @click="toggleNavActive">
-                    <dots-horizontal-icon v-if="isScreenNarrow" />
-                    <span v-else>More...</span>
+                    <menu-icon />
                 </button>
                 <div
                     class="navbar-overlay"
@@ -138,13 +133,14 @@
 </template>
 
 <script>
-import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 import CloseIcon from 'vue-material-design-icons/Close';
-import DotsHorizontalIcon from 'vue-material-design-icons/DotsHorizontal';
+import MenuIcon from 'vue-material-design-icons/Menu';
+
 export default {
     name: 'Navbar',
     data: () => ({
         isNavActive: false,
+        isNavIntersecting: false
     }),
     computed: {
         isScreenNarrow() {
@@ -179,11 +175,25 @@ export default {
                 this.$router.push('/');
             }
         },
+        setNavClassName() {
+            if (this.$route.name !== 'Home') {
+                this.isNavIntersecting = false;
+                return;
+            }
+            const intersectingEl = document.querySelector('section.home-content');
+            const elNav = this.$refs.navbar;
+            this.isNavIntersecting = window.scrollY >= (intersectingEl.offsetTop - elNav.offsetHeight);
+        }
+    },
+    mounted() {
+        document.addEventListener('scroll', this.setNavClassName);
+    },
+    beforeDestroy() {
+        document.removeEventListener('scroll', this.setNavClassName);
     },
     components: {
-        ChevronRightIcon,
         CloseIcon,
-        DotsHorizontalIcon,
+        MenuIcon,
     },
 };
 </script>

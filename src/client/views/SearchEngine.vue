@@ -49,7 +49,7 @@
                             />
                         </template>
                         <li
-                            class="search-engine-search-materials-chip clip-txt activator v-tour-step-1"
+                            class="search-engine-search-materials-chip clip-txt activator v-tour-step-0"
                             :class="{
                                 'disabled': result.isIncluded,
                                 'not-active': !isTooltipActive(result)
@@ -166,7 +166,7 @@
                         </li>
                         <li class="search-engine-nav-link">
                             <router-link
-                                class="link"
+                                class="link v-tour-step-4"
                                 :to="{ name: 'Monitor', query: this.$route.query }"
                             >
                                 What to monitor
@@ -218,9 +218,19 @@
             <disclaimer @approved-use="handleUseApprove" />
         </modal-wrap>
         <v-tour
+            name="teaser-tour"
+            :steps="teaserTourSteps"
+            :callbacks="teaserTourCallbacks"
+        />
+        <v-tour
             name="onboarding-tour"
-            :steps="computedOnboardingSteps"
-            :callbacks="tourCallbacks"
+            :steps="computedOnboardingTourSteps"
+            :callbacks="onboardingTourCallbacks"
+        />
+        <v-tour
+            name="boosters-tour"
+            :steps="boostersTourSteps"
+            :callbacks="boostersTourCallbacks"
         />
     </section>
 </template>
@@ -262,19 +272,34 @@ export default {
             routerTransitionName: '',
             sortOptions: null,
             isDisclaimerActive: false,
-            onboardingSteps: [
+            teaserTourSteps: [
+                {
+                    target: '.search-engine-search-bar',
+                    content: 'Insert and reach four materials to see onboarding tour',
+                    params: {
+                        placement: 'right',
+                        enableScrolling: false
+                    }
+                }
+            ],
+            teaserTourCallbacks: {
+                onStop: () => {
+                    storageService.store('did-teaser-tour', true);
+                }
+            },
+            onboardingTourSteps: [
                 {
                     target: '.v-tour-step-0',
-                    content: 'Hover here to view evidence level calculation details',
+                    content: 'Click on each material to view additional info',
                     params: {
-                        placement: 'top',
                         enableScrolling: false
                     }
                 },
                 {
                     target: '.v-tour-step-1',
-                    content: 'Click on each material to view additional info',
+                    content: 'Hover here to view evidence level calculation details',
                     params: {
+                        placement: 'top',
                         enableScrolling: false
                     }
                 },
@@ -304,11 +329,87 @@ export default {
                         elNav.scrollLeft += maxScroll;
                         resolve();
                     })
+                },
+                {
+                    target: '.v-tour-step-4',
+                    content: 'More info available here',
+                    params: {
+                        enableScrolling: false
+                    },
+                    before: () => new Promise((resolve) => {
+                        const elNav = document.querySelector('.search-engine-nav');
+                        const maxScroll = elNav.scrollWidth - elNav.clientWidth;
+                        elNav.scrollLeft += maxScroll;
+                        resolve();
+                    })
                 }
             ],
-            tourCallbacks: {
+            onboardingTourCallbacks: {
                 onStop: () => {
-                    storageService.store('did-tour', true);
+                    storageService.store('did-onboarding', true);
+                }
+            },
+            boostersTourSteps: [
+                {
+                    target: '.v-tour-step-3',
+                    content: `
+                        <p class="boosters-txt">
+                            This tab will show you positive combinations
+                            with the drugs that are in your search
+                        </p>
+                        <img
+                            class="boosters-img"
+                            src="${require('@/client/assets/imgs/boosters-tour-1.jpeg')}"
+                            alt="Usage example"
+                        />
+                        <p class="boosters-txt">The order of the drugs shown is set by the recommendations</p>
+                    `,
+                    params: {
+                        placement: 'left-start',
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour-step-3',
+                    content: `
+                        <p class="boosters-txt">
+                            A click on each drug will show you all the herbs and/or
+                            supplements that could be coadministered with the drug
+                        </p>
+                        <img
+                            class="boosters-img"
+                            src="${require('@/client/assets/imgs/boosters-tour-2.jpeg')}"
+                            alt="Usage example"
+                        />
+                    `,
+                    params: {
+                        placement: 'left-start',
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour-step-3',
+                    content: `
+                        <p class="boosters-txt">
+                            A click on each herb/supplement will show you the interaction
+                            with the chosen drug followed by the interactions of this
+                            herb/supplement with the other drugs in your search
+                        </p>
+                        <img
+                            class="boosters-img"
+                            src="${require('@/client/assets/imgs/boosters-tour-3.jpeg')}"
+                            alt="Usage example"
+                        />
+                    `,
+                    params: {
+                        placement: 'left-start',
+                        enableScrolling: false
+                    }
+                }
+            ],
+            boostersTourCallbacks: {
+                onStop: () => {
+                    storageService.store('did-boosters-tour', true);
                 }
             }
         }
@@ -316,6 +417,16 @@ export default {
     watch: {
         '$route.query': {
             async handler() {
+                if (!storageService.load('did-teaser-tour')) {
+                    this.$nextTick(() => {
+                        this.$tours['teaser-tour'].start();
+                    });
+                }
+                if (this.$route.name === 'Boosters' && !this.isScreenNarrow && !storageService.load('did-boosters-tour')) {
+                    this.$nextTick(() => {
+                        this.$tours['boosters-tour'].start();
+                    });
+                }
                 const { q } = this.$route.query;
                 if (!q || !q.length) {
                     this.reset();
@@ -325,7 +436,7 @@ export default {
                     this.$route.query.q = [ q ];
                 }
                 await this.getResults();
-                if (this.materials.length >= 4 && !storageService.load('did-tour')) {
+                if (this.materials.length >= 4 && !storageService.load('did-onboarding')) {
                     this.$tours['onboarding-tour'].start();
                 }
             },
@@ -343,11 +454,11 @@ export default {
         }
     },
     computed: {
-        computedOnboardingSteps() {
+        computedOnboardingTourSteps() {
             if (this.isScreenNarrow) {
-                return [ this.onboardingSteps[1], this.onboardingSteps[3] ];
+                return [ this.onboardingTourSteps[1], this.onboardingTourSteps[3], this.onboardingTourSteps[4] ];
             }
-            return this.onboardingSteps;
+            return this.onboardingTourSteps;
         },
         routableListData() {
             switch (this.$route.name) {
@@ -383,8 +494,10 @@ export default {
                 group.recommendation = this.getMoreSeverRecomm(true, ...group.vInteractions.map(i => i.recommendation));
                 group.evidenceLevel = this.getMoreSeverEvidenceLevel(...group.vInteractions.map(i => i.evidenceLevel));
                 const materialName = this.materials.find(m => m._id === group.side2Id || m.labels.some(l => l._id === group.side2Id)).name;
+                const materialId = this.materials.find(m => m._id === group.side2Id || m.labels.some(l => l._id === group.side2Id))._id;
                 const userQuery = this.$store.getters.materialNamesMap[materialName];
                 group.name = userQuery ? userQuery.join(', ') : materialName;
+                group.mainMaterialId = materialId;
                 group.isMaterialGroup = true;
                 group.vInteractions.forEach(vInteraction => {
                     if (vInteraction.side2Label) {

@@ -423,6 +423,19 @@
         font-weight: 500;
         font-size: rem(15px);
         line-height: rem(17px);
+        z-index: 3;
+        max-width: 700px;
+
+        .boosters-img {
+            margin: rem(12px) 0;
+            width: 100%;
+        }
+        .boosters-txt {
+            width: 80%;
+            margin: 0 auto;
+            font-size: rem(18px);
+            line-height: rem(24px);
+        }
     }
     
     .slide-left-leave-active,

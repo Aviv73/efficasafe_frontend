@@ -22,6 +22,10 @@ export default {
             type: String,
             required: true
         },
+        mainSide2MaterialId: {
+            type: String,
+            required: true
+        },
         materials: {
             type: Array,
             required: true
@@ -72,11 +76,18 @@ export default {
                     interaction.name = `${interaction.side1Material.name} & ${interaction.side2Material.name}`;
                 }
             });
-            return interactions.sort((a, b) => {
+            interactions.sort((a, b) => {
                 return (map[b.recommendation] - map[a.recommendation]) * -1 ||
                 (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
                 (a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
             });
+            const mainInteractionIdx = interactions.findIndex(i => i.side2Material._id === this.mainSide2MaterialId);
+            if (mainInteractionIdx > 0) {
+                const [ mainInteraction ] = interactions.splice(mainInteractionIdx, 1);
+                interactions.unshift(mainInteraction);
+            }
+
+            return interactions;
         }
     },
     created() {

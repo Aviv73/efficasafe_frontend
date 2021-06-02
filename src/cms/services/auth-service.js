@@ -68,13 +68,4 @@ lock.on("unrecoverable_error", function (error) {
 
 
 
-export default lock
-
-
-// authroized route
-// lock.on("authenticated", function (res) {
-//     axios.post('http://localhost:3000/check', res)
-//         .then(res => {
-//             location.reload()
-//         })
-// })
+export default lock;
