@@ -45,7 +45,6 @@ Vue.directive('refs-tooltip', {
         for (let i = 0; i < elSubs.length; i++) {
             const refsOrder = interactionUIService.getRefsOrder(elSubs[i].innerText);
             const refs = getRefsFromIdxs(refsOrder, interactionRefs);
-            
             elSubs[i].addEventListener('mouseenter', setTooltipPos);
             const elTooltip = document.createElement('aside');
             elTooltip.classList.add('refs-tooltip');
@@ -81,6 +80,7 @@ Vue.directive('refs-tooltip', {
             elSubs[i].innerText = interactionUIService.formatRefStrs(elSubs[i].innerText);
             elSubs[i].addEventListener('mouseenter', setTooltipPos);
             
+            //// TODO: next fn call throws error - maybe don't run update on DBank interaction
             const refs = getRefsFromIdxs(refIdxs, combinedRefs);
             const elTooltip = document.createElement('aside');
             elTooltip.classList.add('refs-tooltip');

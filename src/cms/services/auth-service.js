@@ -21,7 +21,6 @@ const options = {
         primaryColor: '#55C595',
 
     },
-
     autoclose: true,
     avatar: null,
     hooks: {
@@ -34,8 +33,6 @@ const options = {
             cb();
         }
     }
-
-
 }
 
 function onLoggedin(authResult) {

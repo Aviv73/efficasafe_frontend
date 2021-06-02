@@ -9,6 +9,9 @@
                             Back to search
                         </button>
                     </span>
+                    <router-link to="/" class="interaction-details-header-logo">
+                        <img :src="require('@/client/assets/imgs/flat-logo.png')" alt="Logo" />
+                    </router-link>
                     <span class="interaction-details-header-actions">
                         <button
                             class="print-btn"

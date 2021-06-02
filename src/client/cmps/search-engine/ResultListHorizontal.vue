@@ -31,6 +31,22 @@
                     <sort-vertical-icon class="sort-icon" />
                     <span>Recommendation</span>
                 </label>
+                <tooltip on="hover" right right-bottom>
+                    <template #content>
+                        <div class="tooltip-content">
+                            <p class="recommendation-tooltip">
+                                Coadministration is possible means that the combination
+                                has been examined in clinical trials and was found to be safe.
+                                Coadministration is not contraindicated means that the
+                                combination has been only examined in preclinical studies.
+                            </p>
+                        </div>
+                    </template>
+                    <information-outline-icon
+                        class="tooltip-trigger"
+                        :size="12"
+                    />
+                </tooltip>
             </span>
             <span class="horizontal-list-header-item">
                 <label

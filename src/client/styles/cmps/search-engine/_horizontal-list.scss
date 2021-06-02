@@ -76,6 +76,9 @@
                     margin-block-end: rem(12px);
                 }
             }
+            .recommendation-tooltip {
+                max-width: 200px;
+            }
         }
     }
     &-list-item {
