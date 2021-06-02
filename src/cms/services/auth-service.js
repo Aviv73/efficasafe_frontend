@@ -2,12 +2,10 @@
 
 
 import Auth0Lock from 'auth0-lock';
-import store from '../store'
+import store from '../store';
+import config from '../config';
 import { eventBus, EV_sign_up_modal } from './eventBus.service';
 
-
-const clientId = "ECULxkc4xSBK8omj6EXcnPbyKuTvJ3Nr";
-const domain = "dev-385wz0kc.us.auth0.com";
 
 const options = {
     languageDictionary: {
@@ -28,13 +26,10 @@ const options = {
     avatar: null,
     hooks: {
         loggingIn: function (context, cb) {
-            console.log('Hello from the login hook!');
             lock.on("authenticated", onLoggedin)
-
             cb();
         },
         signingUp: function (context, cb) {
-            console.log('Hello from the sign-up hook!');
             lock.on("authenticated", onSignedup)
             cb();
         }
@@ -61,8 +56,7 @@ function onSignedup(authResult) {
     });
     eventBus.$emit(EV_sign_up_modal);
 }
-
-const lock = new Auth0Lock(clientId, domain, options);
+const lock = new Auth0Lock(config.auth0ClientId, config.auth0BaseURL, options);
 
 lock.on("authorization_error", function (error) {
     console.log('authorization_error', error);
