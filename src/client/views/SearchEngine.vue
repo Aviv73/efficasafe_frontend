@@ -290,7 +290,7 @@ export default {
                     target: '.search-engine-search-bar',
                     content: 'Insert and reach four materials to see onboarding tour',
                     params: {
-                        placement: 'right',
+                        placement: this.teaserStepPlacement,
                         enableScrolling: false
                     }
                 }
@@ -750,6 +750,9 @@ export default {
         },
         worstDrug2DrugRecomm() {
             return this.dBankInteractions.map(i => i.recommendationOrder)[0];
+        },
+        teaserStepPlacement() {
+            return this.isScreenNarrow ? 'bottom' : 'right';
         }
     },
     methods: {

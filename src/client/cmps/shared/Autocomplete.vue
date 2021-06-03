@@ -133,7 +133,9 @@ export default {
             else if (itemIdx === length) itemIdx = 0;
             const elItem = this.$refs['result' + itemIdx];
             if (!elItem) return;
-            elItem[0].focus();
+            this.$nextTick(() => {
+                elItem[0].focus();
+            });
         },
         onFocusChange(ev) {
             this.isSecondaryFocused = ev.target === this.$refs.searchInput2;
