@@ -26,8 +26,8 @@
                     :class="setPathwayClassName(pathway.influence)"
                     @click="activeTab = pathway.name"
                 >
-                    <chevron-down-icon v-if="activeTab !== pathway.name" :size="16" />
-                    <chevron-up-icon v-else :size="16" />
+                    <chevron-down-icon v-if="activeTab !== pathway.name" :size="16" title="" />
+                    <chevron-up-icon v-else :size="16" title="" />
                     {{ pathway.name }}
                 </button>
             </li>

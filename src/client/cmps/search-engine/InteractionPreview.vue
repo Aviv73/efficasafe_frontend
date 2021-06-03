@@ -20,6 +20,7 @@
                             <minus-icon
                                 class="minus-icon"
                                 v-if="isChild"
+                                title=""
                             />
                             <interaction-capsules
                                 :name="interaction.name"
@@ -54,8 +55,8 @@
                                 v-if="(!interaction.refs && !interaction.severity) || interaction.side2Label"
                                 class="de-activator"
                             >
-                                <chevron-up-icon class="opened" />
-                                <chevron-down-icon class="closed" />
+                                <chevron-up-icon class="opened" title="" />
+                                <chevron-down-icon class="closed" title="" />
                             </span>
                         </span>
                     </div>
@@ -108,6 +109,7 @@
                         :class="{
                             'u-hide': $route.name === 'Monitor'
                         }"
+                        title=""
                     />
                 </div>
                 <div

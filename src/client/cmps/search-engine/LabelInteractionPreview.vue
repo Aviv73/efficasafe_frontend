@@ -11,6 +11,7 @@
                         <span class="table-col">
                             <minus-icon
                                 class="minus-icon"
+                                title=""
                             />
                             <interaction-capsules
                                 :name="getGroupName(atcGroup.name)"
@@ -26,8 +27,8 @@
                             <span
                                 class="de-activator"
                             >
-                                <chevron-up-icon class="opened" />
-                                <chevron-down-icon class="closed" />
+                                <chevron-up-icon class="opened" title="" />
+                                <chevron-down-icon class="closed" title="" />
                             </span>
                         </span>
                     </div>
@@ -45,6 +46,7 @@
                                     <span class="table-col">
                                         <minus-icon
                                             class="minus-icon"
+                                            title=""
                                         />
                                         <interaction-capsules
                                             :name="`${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}`"
@@ -111,6 +113,7 @@
                             <span class="table-col">
                                 <minus-icon
                                     class="minus-icon"
+                                    title=""
                                 />
                                 <interaction-capsules
                                     :name="`${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}`"

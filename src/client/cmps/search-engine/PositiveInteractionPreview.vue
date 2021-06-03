@@ -9,6 +9,7 @@
                     <span class="table-col">
                         <minus-icon
                             class="minus-icon"
+                            title=""
                         />
                         <interaction-capsules
                             :name="getInnerGroupName(group.name)"
@@ -32,8 +33,8 @@
                             </span>
                         </tooltip>
                         <span class="de-activator">
-                            <chevron-up-icon class="opened" />
-                            <chevron-down-icon class="closed" />
+                            <chevron-up-icon class="opened" title="" />
+                            <chevron-down-icon class="closed" title="" />
                         </span>
                     </span>
                 </div>

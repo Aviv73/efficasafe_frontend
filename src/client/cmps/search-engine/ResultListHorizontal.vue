@@ -8,7 +8,7 @@
                     tabindex="0"
                 >
                     <input type="checkbox" hidden @change="emitSort('name', $event.target.checked)" />
-                    <sort-vertical-icon class="sort-icon" />
+                    <sort-vertical-icon class="sort-icon" title="" />
                     <span>{{ side1Name }} vs {{ side2Name }}</span>
                 </label>
                 <button
@@ -18,6 +18,7 @@
                     <sort-vertical-icon
                         class="swap-side-icon"
                         color="#329D9C"
+                        title=""
                     />
                 </button>
             </span>
@@ -28,16 +29,19 @@
                     tabindex="0"
                 >
                     <input type="checkbox" hidden @change="emitSort('recommendation', $event.target.checked)" />
-                    <sort-vertical-icon class="sort-icon" />
+                    <sort-vertical-icon class="sort-icon" title="" />
                     <span>Recommendation</span>
                 </label>
                 <tooltip on="hover" right right-bottom>
                     <template #content>
                         <div class="tooltip-content">
                             <p class="recommendation-tooltip">
-                                Coadministration is possible means that the combination
-                                has been examined in clinical trials and was found to be safe.
-                                Coadministration is not contraindicated means that the
+                                <span class="d-block">
+                                    <span class="highlight">Coadministration is possible</span> means that the combination
+                                    has been examined in clinical trials and was found to be safe.
+                                </span>
+                                <span class="highlight">Coadministration is not contraindicated</span>
+                                means that the
                                 combination has been only examined in preclinical studies.
                             </p>
                         </div>
@@ -45,6 +49,7 @@
                     <information-outline-icon
                         class="tooltip-trigger"
                         :size="12"
+                        title=""
                     />
                 </tooltip>
             </span>
@@ -55,7 +60,7 @@
                     tabindex="0"
                 >
                     <input type="checkbox" hidden @change="emitSort('evidenceLevel', $event.target.checked)" />
-                    <sort-vertical-icon class="sort-icon" />
+                    <sort-vertical-icon class="sort-icon" title="" />
                     <span class="v-tour-step-1">Level of Evidence</span>
                 </label>
                 <tooltip on="hover" right right-bottom>
@@ -82,6 +87,7 @@
                     <information-outline-icon
                         class="tooltip-trigger"
                         :size="12"
+                        title=""
                     />
                 </tooltip>
             </span>
