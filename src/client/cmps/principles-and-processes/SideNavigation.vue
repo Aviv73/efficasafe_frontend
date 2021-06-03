@@ -6,8 +6,8 @@
                 <template #header>
                     <a href="#practice" class="primary-header" :class="{ 'active': $route.hash === '#practice' }">
                         <span class="de-activator inline-start">
-                            <chevron-up-icon class="opened" />
-                            <chevron-down-icon class="closed" />
+                            <chevron-up-icon class="opened" title="" />
+                            <chevron-down-icon class="closed" title="" />
                         </span>
                         Practice
                     </a>
@@ -67,8 +67,8 @@
                             :class="{ 'active': $route.hash === '#process' }"
                         >
                             <span class="de-activator inline-start">
-                                <chevron-up-icon class="opened" />
-                                <chevron-down-icon class="closed" />
+                                <chevron-up-icon class="opened" title="" />
+                                <chevron-down-icon class="closed" title="" />
                             </span>
                             Process
                         </a>
@@ -100,8 +100,8 @@
                             :class="{ 'active': $route.hash === '#literature' }"
                         >
                             <span class="de-activator inline-start">
-                                <chevron-up-icon class="opened" />
-                                <chevron-down-icon class="closed" />
+                                <chevron-up-icon class="opened" title="" />
+                                <chevron-down-icon class="closed" title="" />
                             </span>
                             Literature
                         </a>
@@ -147,8 +147,8 @@
                             :class="{ 'active': $route.hash === '#currentContent' }"
                         >
                             <span class="de-activator inline-start">
-                                <chevron-up-icon class="opened" />
-                                <chevron-down-icon class="closed" />
+                                <chevron-up-icon class="opened" title="" />
+                                <chevron-down-icon class="closed" title="" />
                             </span>
                             Current content
                         </a>

@@ -45,7 +45,6 @@ Vue.directive('refs-tooltip', {
         for (let i = 0; i < elSubs.length; i++) {
             const refsOrder = interactionUIService.getRefsOrder(elSubs[i].innerText);
             const refs = getRefsFromIdxs(refsOrder, interactionRefs);
-            
             elSubs[i].addEventListener('mouseenter', setTooltipPos);
             const elTooltip = document.createElement('aside');
             elTooltip.classList.add('refs-tooltip');
@@ -69,9 +68,9 @@ Vue.directive('refs-tooltip', {
         }
     },
     update(el, binding, vnode, { isRootInsert }) {
-        const { pathwaysFirst, pathwaysSecond, dynamicTxt } = binding.modifiers;
+        const { pathwaysFirst, pathwaysSecond, dynamicTxt, dBank } = binding.modifiers;
         const { combinedRefs, side2Refs } = binding.value;
-        if (isRootInsert && !dynamicTxt) return;
+        if ((isRootInsert && !dynamicTxt) || dBank) return;
         
         const elSubs = el.querySelectorAll('sub');
         for (let i = 0; i < elSubs.length; i++) {

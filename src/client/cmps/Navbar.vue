@@ -69,7 +69,7 @@
                     </li>
                 </ul>
                 <button class="navbar-toggle" @click="toggleNavActive">
-                    <menu-icon />
+                    <menu-icon title="" />
                 </button>
                 <div
                     class="navbar-overlay"
@@ -85,7 +85,7 @@
                             class="navbar-side-nav-close-btn"
                             @click="toggleNavActive"
                         >
-                            <close-icon />
+                            <close-icon title="" />
                         </button>
                         <img
                             src="@/client/assets/imgs/logo-white.png"

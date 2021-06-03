@@ -23,6 +23,7 @@
     &-header {
         background-color: $clr6;
         padding: rem(12px) 0;
+        position: relative;
 
         @include for-narrow-layout {
             padding: rem(48px) 0;
@@ -46,6 +47,24 @@
 
             .chevron-left-icon {
                 height: rem(24px);
+            }
+        }
+        &-logo {
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            transform: translate(calc(-100% - 24px), -50%);
+            
+            @include for-narrow-layout {
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            img {
+                width: 120px;
+                @include for-narrow-layout {
+                    width: unset;
+                }
             }
         }
         &-actions {

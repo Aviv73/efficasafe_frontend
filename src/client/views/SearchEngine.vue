@@ -37,6 +37,7 @@
                             <close-icon
                                 v-if="isTooltipActive(result)"
                                 :size="16"
+                                title=""
                             />
                         </template>
                         <template #content>
@@ -61,12 +62,13 @@
                                 <information-outline-icon
                                     class="info-icon hover-activator"
                                     :size="16"
+                                    title=""
                                 />
                                 <button
                                     @click.stop="removeMaterials(result.txt)"
                                     :data-close-btn="true"
                                 >
-                                    <close-icon :size="16" />
+                                    <close-icon :size="16" title="" />
                                 </button>
                             </span>
                         </li>
@@ -101,14 +103,14 @@
                                 class="print-btn"
                                 title="Print"
                             >
-                                <printer-icon />
+                                <printer-icon title="" />
                             </button>
                             <button
                                 class="share-btn"
                                 title="Share"
                             >
-                                <mobile-share-icon v-if="isScreenNarrow" />
-                                <share-icon v-else />
+                                <mobile-share-icon v-if="isScreenNarrow" title="" />
+                                <share-icon v-else title="" />
                             </button>
                         </span>
                         <button class="mobile-menu-btn"></button>
@@ -181,7 +183,7 @@
                                     :value="false"
                                     hidden
                                 />
-                                <mobile-menu-icon />
+                                <mobile-menu-icon title="" />
                             </label>
                             <label class="display-toggle">
                                 <input
@@ -191,7 +193,7 @@
                                     :value="true"
                                     hidden
                                 />
-                                <mobile-menu-icon />
+                                <mobile-menu-icon title="" />
                             </label>
                         </li>
                     </ul>
@@ -374,7 +376,7 @@ export default {
                     content: `
                         <p class="boosters-txt">
                             A click on each drug will show you all the herbs and/or
-                            supplements that could be coadministered with the drug
+                            supplements that can be coadministered with the drug
                         </p>
                         <img
                             class="boosters-img"

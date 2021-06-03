@@ -7,7 +7,7 @@
             v-if="disabled"
             class="interactions-preview-warnning flex-coloumn"
         >
-            <alert-circle-outline-icon />
+            <alert-circle-outline-icon title="" />
             There is no additional results for {{ userQuery }}
             as it is part of {{ getCompoundName(materials[0].name, userQuery) }}
             <hr v-if="interactions.length || (materials.length === 1 && !isOneMaterial)" />

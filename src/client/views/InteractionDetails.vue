@@ -5,22 +5,25 @@
                 <div class="flex-space-between">
                     <span class="interaction-details-header-link">
                         <button class="flex-align-center" @click="$router.go(-1)">
-                            <chevron-left-icon />
+                            <chevron-left-icon title="" />
                             Back to search
                         </button>
                     </span>
+                    <router-link to="/" class="interaction-details-header-logo">
+                        <img :src="require('@/client/assets/imgs/flat-logo.png')" alt="Logo" />
+                    </router-link>
                     <span class="interaction-details-header-actions">
                         <button
                             class="print-btn"
                             title="Print"
                         >
-                            <printer-icon />
+                            <printer-icon title="" />
                         </button>
                         <button
                             class="share-btn"
                             title="Share"
                         >
-                            <share-icon />
+                            <share-icon title="" />
                         </button>
                     </span>
                 </div>
@@ -58,7 +61,7 @@
                                 </template>
                                 <span class="refs">
                                     <span class="refs-count">({{ combinedRefs.length }})</span> 
-                                    <information-outline-icon :size="12" />
+                                    <information-outline-icon :size="12" title="" />
                                 </span>
                             </tooltip>
                         </span>
@@ -101,7 +104,7 @@
                                 </template>
                                 <span class="refs">
                                     <span class="refs-count">({{ combinedRefs.length }})</span> 
-                                    <information-outline-icon :size="12" />
+                                    <information-outline-icon :size="12" title="" />
                                 </span>
                             </tooltip>
                         </span>
@@ -153,8 +156,8 @@
                             <h2 class="subheader flex-align-center">
                                 Review of studies
                                 <span class="de-activator">
-                                    <chevron-up-icon class="opened" />
-                                    <chevron-down-icon class="closed" />
+                                    <chevron-up-icon class="opened" title="" />
+                                    <chevron-down-icon class="closed" title="" />
                                 </span>
                             </h2>
                         </template>
@@ -185,8 +188,8 @@
                                     {{ relevantSide1Pathways.length }}
                                 </span>
                                 <span class="de-activator">
-                                    <chevron-up-icon class="opened" />
-                                    <chevron-down-icon class="closed" />
+                                    <chevron-up-icon class="opened" title="" />
+                                    <chevron-down-icon class="closed" title="" />
                                 </span>
                             </h2>
                         </template>
@@ -198,8 +201,8 @@
                                 <template #header>
                                     <h3 class="subheader2 flex-align-center">
                                         <span class="de-activator">
-                                            <chevron-up-icon class="opened" />
-                                            <chevron-down-icon class="closed" />
+                                            <chevron-up-icon class="opened" title="" />
+                                            <chevron-down-icon class="closed" title="" />
                                         </span>
                                         Drug metabolism
                                     </h3>
@@ -220,8 +223,8 @@
                                 <template #header>
                                     <h3 class="subheader2 flex-align-center">
                                         <span class="de-activator">
-                                            <chevron-up-icon class="opened" />
-                                            <chevron-down-icon class="closed" />
+                                            <chevron-up-icon class="opened" title="" />
+                                            <chevron-down-icon class="closed" title="" />
                                         </span>
                                         {{ interaction.side1Material.name }} effect on drug metabolism
                                     </h3>

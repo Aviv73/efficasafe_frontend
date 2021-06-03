@@ -76,6 +76,16 @@
                     margin-block-end: rem(12px);
                 }
             }
+            .recommendation-tooltip {
+                max-width: 200px;
+
+                .d-block {
+                    margin-block-end: rem(8px);
+                }
+                .highlight {
+                    color: $clr11;
+                }
+            }
         }
     }
     &-list-item {

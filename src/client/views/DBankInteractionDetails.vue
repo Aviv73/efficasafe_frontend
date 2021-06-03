@@ -5,22 +5,25 @@
                 <div class="flex-space-between">
                     <span class="interaction-details-header-link">
                         <button class="flex-align-center" @click="$router.go(-1)">
-                            <chevron-left-icon />
+                            <chevron-left-icon title="" />
                             Back to search
                         </button>
                     </span>
+                    <router-link to="/" class="interaction-details-header-logo">
+                        <img :src="require('@/client/assets/imgs/flat-logo.png')" alt="Logo" />
+                    </router-link>
                     <span class="interaction-details-header-actions">
                         <button
                             class="print-btn"
                             title="Print"
                         >
-                            <printer-icon />
+                            <printer-icon title="" />
                         </button>
                         <button
                             class="share-btn"
                             title="Share"
                         >
-                            <share-icon />
+                            <share-icon title="" />
                         </button>
                     </span>
                 </div>
@@ -70,7 +73,7 @@
                                 </template>
                                 <span class="refs">
                                     <span class="refs-count">({{ interactionRefs.length }})</span> 
-                                    <information-outline-icon :size="12" />
+                                    <information-outline-icon :size="12" title="" />
                                 </span>
                             </tooltip>
                         </span>

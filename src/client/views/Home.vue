@@ -98,10 +98,10 @@
                         <span>Margaret Elsindor</span>
                     </p>
                     <template #navigation-prev>
-                        <chevron-left-icon :size="36" />
+                        <chevron-left-icon :size="36" title="" />
                     </template>
                     <template #navigation-next>
-                        <chevron-right-icon :size="36" />
+                        <chevron-right-icon :size="36" title="" />
                     </template>
                 </swiper>
             </div>
