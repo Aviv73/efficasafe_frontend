@@ -31,6 +31,7 @@
                 <button
                     class="share-modal-content-btn share-btn"
                     v-else
+                    @click="onShare"
                 >
                     Share
                 </button>
