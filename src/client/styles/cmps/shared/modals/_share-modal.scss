@@ -1,0 +1,76 @@
+.share-modal {
+    border-radius: 6px;
+    background-color: $white;
+    
+    @include for-narrow-layout {
+        min-width: rem(450px);
+    }
+
+    &-header {
+        padding: rem(18px) rem(24px) rem(18px) rem(16px);
+        border: 1px solid $clr6;
+        border-radius: 6px 6px 1px 1px;
+        font-size: rem(18px);
+        line-height: rem(22px);
+        color: $clr1;
+
+        .share-variant-icon {
+            height: 18px;
+            margin-inline-end: rem(8px);
+        }
+    }
+    &-content {
+        font-size: rem(14px);
+        line-height: rem(36px);
+        padding: rem(24px) rem(24px) rem(24px) rem(16px);
+        border-radius: 1px 1px 6px 6px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        @include for-narrow-layout {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        &-btn {
+            border-radius: 4px;
+            text-transform: uppercase;
+            padding: rem(12px) rem(22px);
+
+            &:not(:last-child) {
+                margin-block-end: rem(12px);
+
+                @include for-narrow-layout {
+                    margin-block-end: 0;
+                }
+            }
+        }
+
+        .flex-align-center {
+            flex-direction: column;
+
+            @include for-narrow-layout {
+                flex-direction: row;
+            }
+        }
+        .copy-btn {
+            display: inline-flex;
+            align-items: center;
+            background-color: $clr6;
+            margin-block-end: rem(36px);
+
+            @include for-narrow-layout {
+                margin-block-end: 0;
+            }
+        }
+        .share-btn {
+            background-color: $clr1;
+            color: $white;
+        }
+        .link-variant-icon {
+            height: 14px;
+            margin-inline-end: rem(4px);
+        }
+    }
+}

@@ -101,13 +101,16 @@
                         <span class="search-engine-results-actions">
                             <button
                                 class="print-btn"
-                                title="Print"
+                                :title="loggedInUser ? 'Print' : 'Subscribed users can print their search results'"
+                                :disabled="!loggedInUser"
                             >
                                 <printer-icon title="" />
                             </button>
                             <button
                                 class="share-btn"
-                                title="Share"
+                                :disabled="!loggedInUser"
+                                :title="loggedInUser ? 'Share' : 'Subscribed users can share their search results'"
+                                @click="isShareModalActive = true"
                             >
                                 <mobile-share-icon v-if="isScreenNarrow" title="" />
                                 <share-icon v-else title="" />
@@ -219,6 +222,12 @@
         >
             <disclaimer @approved-use="handleUseApprove" />
         </modal-wrap>
+        <modal-wrap
+            :isActive="isShareModalActive"
+            @close-modal="isShareModalActive = false"
+        >
+            <share-modal @close-modal="isShareModalActive = false" />
+        </modal-wrap>
         <v-tour
             name="teaser-tour"
             :steps="teaserTourSteps"
@@ -241,6 +250,7 @@
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import { storageService } from '@/cms/services/storage.service';
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
+import ShareModal from '@/client/cmps/shared/modals/ShareModal';
 import Tooltip from '@/client/cmps/common/Tooltip';
 import ModalWrap from '@/client/cmps/common/ModalWrap';
 import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
@@ -274,12 +284,13 @@ export default {
             routerTransitionName: '',
             sortOptions: null,
             isDisclaimerActive: false,
+            isShareModalActive: false,
             teaserTourSteps: [
                 {
                     target: '.search-engine-search-bar',
                     content: 'Insert and reach four materials to see onboarding tour',
                     params: {
-                        placement: 'right',
+                        placement: this.teaserStepPlacement,
                         enableScrolling: false
                     }
                 }
@@ -739,6 +750,9 @@ export default {
         },
         worstDrug2DrugRecomm() {
             return this.dBankInteractions.map(i => i.recommendationOrder)[0];
+        },
+        teaserStepPlacement() {
+            return this.isScreenNarrow ? 'bottom' : 'right';
         }
     },
     methods: {
@@ -1080,7 +1094,8 @@ export default {
         AnimatedInteger,
         InformationOutlineIcon,
         ModalWrap,
-        Disclaimer
+        Disclaimer,
+        ShareModal
     }
 };
 </script>

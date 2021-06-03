@@ -239,6 +239,12 @@
                 @include hover-supported {
                     transform: scale(1.2);
                 }
+
+                &:disabled {
+                    opacity: .5;
+                    transform: none;
+                    cursor: not-allowed;
+                }
             }
             .print-btn {
                 display: none;
@@ -432,6 +438,18 @@
         font-weight: 500;
         font-size: rem(15px);
         line-height: rem(17px);
+        max-width: 700px;
+
+        .boosters-txt {
+            width: 80%;
+            margin: 0 auto;
+            font-size: rem(18px);
+            line-height: rem(24px);
+        }
+        .boosters-img  {
+            width: 100%;
+            margin: rem(12px) 0;
+        }
     }
     
     .slide-left-leave-active,
