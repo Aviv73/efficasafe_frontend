@@ -68,9 +68,9 @@ Vue.directive('refs-tooltip', {
         }
     },
     update(el, binding, vnode, { isRootInsert }) {
-        const { pathwaysFirst, pathwaysSecond, dynamicTxt } = binding.modifiers;
+        const { pathwaysFirst, pathwaysSecond, dynamicTxt, dBank } = binding.modifiers;
         const { combinedRefs, side2Refs } = binding.value;
-        if (isRootInsert && !dynamicTxt) return;
+        if ((isRootInsert && !dynamicTxt) || dBank) return;
         
         const elSubs = el.querySelectorAll('sub');
         for (let i = 0; i < elSubs.length; i++) {
@@ -80,7 +80,6 @@ Vue.directive('refs-tooltip', {
             elSubs[i].innerText = interactionUIService.formatRefStrs(elSubs[i].innerText);
             elSubs[i].addEventListener('mouseenter', setTooltipPos);
             
-            //// TODO: next fn call throws error - maybe don't run update on DBank interaction
             const refs = getRefsFromIdxs(refIdxs, combinedRefs);
             const elTooltip = document.createElement('aside');
             elTooltip.classList.add('refs-tooltip');
