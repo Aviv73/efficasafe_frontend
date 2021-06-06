@@ -90,17 +90,10 @@ export default {
                 navigator.share(shareData);
             } else {
                 if (this.mailWith === 'gmail') {
-                    const url = `
-                        https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=&su=I want to share something important with you&body=I found this at efficasafe.com, %0D%0A the herb-drug interaction platform
-                        %0D%0A %0D%0A ${this.shareURL} %0D%0A
-                    `;
+                    const url = `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=&su=I want to share something important with you&body=I found this at efficasafe.com, %0D%0A the herb-drug interaction platform %0D%0A %0D%0A ${this.shareURL} %0D%0A`;
                     window.open(url, '_blank').focus();
                 } else {
-                    window.open(`
-                        mailto:?to=&subject=I want to share something important with
-                        you&body=I found this at efficasafe.com, %0D%0A the herb-drug interaction platform
-                        %0D%0A %0D%0A ${this.shareURL} %0D%0A
-                    `);
+                    window.open(`mailto:?to=&subject=I want to share something important with you&body=I found this at efficasafe.com, %0D%0A the herb-drug interaction platform %0D%0A %0D%0A ${this.shareURL} %0D%0A`);
                 }
             }
         },

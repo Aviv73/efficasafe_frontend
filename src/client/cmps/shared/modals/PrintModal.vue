@@ -2,7 +2,7 @@
     <aside class="print-modal">
         <header class="print-modal-header flex-space-between">
             <printer-icon :size="18" />
-            <h5>Select the interactions you would like to print</h5>
+            <h5>Select the results you would like to print</h5>
             <button
                 class="close-btn"
                 @click="$emit('close-modal')"
@@ -84,7 +84,7 @@ export default {
         return {
             flatInteractions: [],
             printSelection: [],
-            isAllSelected: true
+            isAllSelected: false
         }
     },
     watch: {
@@ -123,9 +123,9 @@ export default {
         },
         reset(interactions) {
             this.flatInteractions = [];
+            this.printSelection = [];
+            this.isAllSelected = false;
             this.flatten(interactions);
-            this.printSelection = [ ...this.flatInteractions ];
-            this.isAllSelected = true;
         },
         flatten(interactions) {
             interactions.forEach(interaction => {
