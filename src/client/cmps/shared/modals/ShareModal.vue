@@ -21,13 +21,28 @@
                 >
                     Cancel
                 </button>
-                <button
-                    class="share-modal-content-btn share-btn"
-                    v-if="!hasShareSupport"
-                    @click="onShare"
-                >
-                    Share by mail
-                </button>
+                <span v-if="!hasShareSupport" class="flex-coloumn">
+                    <span class="radios">
+                        <radio
+                            v-model="mailWith"
+                            name="mailWith"
+                            value="gmail"
+                            label="Gmail"
+                        />
+                        <radio
+                            v-model="mailWith"
+                            name="mailWith"
+                            value="default"
+                            label="default"
+                        />
+                    </span>
+                        <button
+                        class="share-modal-content-btn share-btn"
+                        @click="onShare"
+                    >
+                        Share by mail
+                    </button>
+                </span>
                 <button
                     class="share-modal-content-btn share-btn"
                     v-else
@@ -41,21 +56,27 @@
 </template>
 
 <script>
+import Radio from '@/client/cmps/common/Radio';
+
 import ShareVariantIcon from 'vue-material-design-icons/ShareVariant';
 import LinkVariantIcon from 'vue-material-design-icons/LinkVariant';
 
 export default {
     data() {
         return {
-            shareURL: `${window.location.origin}/${this.$route.fullPath}`
+            mailWith: 'default',
+            shareURL: `${window.location.origin}${this.$route.fullPath}`
         }
     },
     computed: {
         loggedInUser() {
             return this.$store.getters.loggedInUser;
         },
+        isScreenNarrow() {
+            return this.$store.getters.isScreenNarrow;
+        },
         hasShareSupport() {
-            return 'share' in navigator;
+            return this.isScreenNarrow && 'share' in navigator;
         }
     },
     methods: {
@@ -68,7 +89,19 @@ export default {
                 };
                 navigator.share(shareData);
             } else {
-                window.open(`mailto:${this.loggedInUser.email}?subject=Efficasafe interactions&body=${this.shareURL}`);
+                if (this.mailWith === 'gmail') {
+                    const url = `
+                        https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=&su=I want to share something important with you&body=I found this at efficasafe.com, %0D%0A the herb-drug interaction platform
+                        %0D%0A %0D%0A ${this.shareURL} %0D%0A
+                    `;
+                    window.open(url, '_blank').focus();
+                } else {
+                    window.open(`
+                        mailto:?to=&subject=I want to share something important with
+                        you&body=I found this at efficasafe.com, %0D%0A the herb-drug interaction platform
+                        %0D%0A %0D%0A ${this.shareURL} %0D%0A
+                    `);
+                }
             }
         },
         onCopy(ev) {
@@ -82,7 +115,8 @@ export default {
     },
     components: {
         ShareVariantIcon,
-        LinkVariantIcon
+        LinkVariantIcon,
+        Radio
     }
 }
 </script>

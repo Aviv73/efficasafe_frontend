@@ -103,6 +103,7 @@
                                 class="print-btn"
                                 :title="loggedInUser ? 'Print' : 'Subscribed users can print their search results'"
                                 :disabled="!loggedInUser"
+                                @click="isPrintModalActive = true"
                             >
                                 <printer-icon title="" />
                             </button>
@@ -228,6 +229,15 @@
         >
             <share-modal @close-modal="isShareModalActive = false" />
         </modal-wrap>
+        <modal-wrap
+            :isActive="isPrintModalActive"
+            @close-modal="isPrintModalActive = false"
+        >
+            <print-modal
+                :interactions="routableListData.interactions"
+                @close-modal="isPrintModalActive = false"
+            />
+        </modal-wrap>
         <v-tour
             name="teaser-tour"
             :steps="teaserTourSteps"
@@ -251,6 +261,7 @@ import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import { storageService } from '@/cms/services/storage.service';
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import ShareModal from '@/client/cmps/shared/modals/ShareModal';
+import PrintModal from '@/client/cmps/shared/modals/PrintModal';
 import Tooltip from '@/client/cmps/common/Tooltip';
 import ModalWrap from '@/client/cmps/common/ModalWrap';
 import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
@@ -285,6 +296,7 @@ export default {
             sortOptions: null,
             isDisclaimerActive: false,
             isShareModalActive: false,
+            isPrintModalActive: false,
             teaserTourSteps: [
                 {
                     target: '.search-engine-search-bar',
@@ -1095,7 +1107,8 @@ export default {
         InformationOutlineIcon,
         ModalWrap,
         Disclaimer,
-        ShareModal
+        ShareModal,
+        PrintModal
     }
 };
 </script>

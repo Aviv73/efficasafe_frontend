@@ -349,24 +349,7 @@ export default {
             }
         },
         getShortRecommendation(fullRec) {
-            switch (fullRec.toLowerCase()) {
-                case 'avoid coadministration':
-                case 'coadministration is not advised':
-                    return fullRec;
-                case 'caution should be taken':
-                case 'coadministration is not contraindicated but caution should be taken':
-                    return 'Caution should be taken';
-                case 'coadministration is possible but caution should be taken':
-                    return 'Possible with caution';
-                case 'coadministration is not contraindicated':
-                case 'coadministration is not contraindicated and may even be advised':
-                    return 'Not contraindicated';
-                case 'coadministration is possible':
-                    case 'coadministration is advised':
-                        return 'Coadministration is possible';
-                case 'coadministration is possible and may even be advised':
-                    return 'Coadministration may be advised';
-            }
+            return interactionUIService.getShortRecommendation(fullRec);
         },
         getInteractionColor(recommendation) {
             return interactionUIService.getInteractionColor(recommendation);

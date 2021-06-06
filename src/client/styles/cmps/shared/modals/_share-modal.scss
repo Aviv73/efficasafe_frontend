@@ -1,6 +1,7 @@
 .share-modal {
     border-radius: 6px;
     background-color: $white;
+    color: $clr-txt-darker;
     
     @include for-narrow-layout {
         min-width: rem(450px);
@@ -12,9 +13,9 @@
         border-radius: 6px 6px 1px 1px;
         font-size: rem(18px);
         line-height: rem(22px);
-        color: $clr1;
 
         .share-variant-icon {
+            color: $clr1;
             height: 18px;
             margin-inline-end: rem(8px);
         }
@@ -47,6 +48,12 @@
             }
         }
 
+        .radios {
+            align-self: stretch;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
         .flex-align-center {
             flex-direction: column;
 
@@ -58,10 +65,17 @@
             display: inline-flex;
             align-items: center;
             background-color: $clr6;
+            color: $clr1;
             margin-block-end: rem(36px);
-
+            
             @include for-narrow-layout {
+                align-self: flex-end;
                 margin-block-end: 0;
+            }
+        }
+        .cancel-btn {
+            @include for-narrow-layout {
+                align-self: flex-end;
             }
         }
         .share-btn {
