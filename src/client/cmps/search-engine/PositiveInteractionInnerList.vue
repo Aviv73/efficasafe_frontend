@@ -15,7 +15,7 @@
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 
 export default {
-    recommendationMap: interactionUIService.getPositiveBoostersRecommMap(),
+    recommendationMap: interactionUIService.getRecommendationOrderMap(),
     name: 'PositiveInteractionInnerList',
     props: {
         side1Id: {

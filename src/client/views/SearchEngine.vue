@@ -259,6 +259,7 @@
 <script>
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import { storageService } from '@/cms/services/storage.service';
+
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import ShareModal from '@/client/cmps/shared/modals/ShareModal';
 import PrintModal from '@/client/cmps/shared/modals/PrintModal';
@@ -538,7 +539,7 @@ export default {
                     vInteraction.name = `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}`;
                 });
             });
-            const map = interactionUIService.getPositiveBoostersRecommMap();
+            const map = this.$options.recommendationsOrderMap;
             return this.positiveInteractions.reduce((acc, interaction) => {
                 const existing = acc.find(i => i.name === interaction.name);
                 if (!existing) {
@@ -968,7 +969,7 @@ export default {
         getMoreSeverRecomm(isDesc, ...recommendations) {
             const { recommendationsOrderMap } = this.$options;
             recommendations.sort((a, b) => {
-                return (recommendationsOrderMap[a.toLowerCase()] > recommendationsOrderMap[b.toLowerCase()]) ? -1 : (recommendationsOrderMap[a.toLowerCase()] < recommendationsOrderMap[b.toLowerCase()]) ? 1 : 0;
+                return (recommendationsOrderMap[a] > recommendationsOrderMap[b]) ? -1 : (recommendationsOrderMap[a] < recommendationsOrderMap[b]) ? 1 : 0;
             });
             return isDesc ? recommendations[recommendations.length - 1] : recommendations[0];
         },
