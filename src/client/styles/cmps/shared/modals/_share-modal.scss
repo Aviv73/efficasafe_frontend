@@ -19,6 +19,12 @@
             height: 18px;
             margin-inline-end: rem(8px);
         }
+        .close-btn {
+            color: $gray;
+        }
+        h5 {
+            flex-grow: 1;
+        }
     }
     &-content {
         font-size: rem(14px);
@@ -67,10 +73,20 @@
             background-color: $clr6;
             color: $clr1;
             margin-block-end: rem(36px);
+            transition: background-color .3s linear, color .3s linear;
             
             @include for-narrow-layout {
                 align-self: flex-end;
                 margin-block-end: 0;
+            }
+
+            &.copy-success {
+                background-color: $green;
+                color: $clr-txt-dark;
+            }
+            &.copy-fail {
+                background-color: $yellow;
+                color: $clr1;
             }
         }
         .cancel-btn {

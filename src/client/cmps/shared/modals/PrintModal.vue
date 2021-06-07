@@ -21,8 +21,8 @@
                 </li>
                 <li
                     class="print-modal-content-list-item flex-align-center"
-                    v-for="interaction in flatInteractions"
-                    :key="interaction._id"
+                    v-for="(interaction, idx) in flatInteractions"
+                    :key="interaction._id + idx"
                 >
                     <checkbox
                         class="checkbox"

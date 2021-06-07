@@ -1,8 +1,8 @@
 <template>
     <section class="interaction-preview positive-booster">
         <collapse
-            v-for="group in interaction.vInteractions"
-            :key="group._id"
+            v-for="(group, idx) in interaction.vInteractions"
+            :key="group._id + idx"
         >
             <template #header>
                 <div class="interaction-preview-header table-row child">
