@@ -13,17 +13,44 @@
                         alt="Efficasafe"
                     />
                 </router-link>
-                <p class="search-engine-search-msg">
-                    <span class="font-medium">6</span>
-                    Free searches left
-                </p>
-                <button class="btn">Register for free trial</button>
                 <autocomplete
                     class="search-engine-search-bar"
                     :isOnSearchPage="true"
                     :placeholder1="isScreenNarrow ? 'Add another' : '+   Add another'"
                     @item-selected="addMaterials"
                 />
+                <div class="search-engine-search-actions flex-space-between">
+                    <button
+                        title="Undo"
+                        :disabled="!$route.query.q || !$route.query.q.length"
+                        @click="navigateQueries(-1)"
+                    >
+                        <undo-icon />    
+                    </button> |
+                    <button
+                        title="Redo"
+                        :disabled="!undoneQueries.length"
+                        @click="navigateQueries(1)"
+                    >
+                        <redo-icon />
+                    </button> |
+                    <button
+                        :disabled="!$route.query.q || !$route.query.q.length"
+                        @click="clearSearch"
+                    >
+                        Clear search
+                    </button> |
+                    <tooltip bottom>
+                        <template #content>
+                            <span class="msg">
+                                Subscribed users can save their search results
+                            </span>
+                        </template>
+                        <button :disabled="!loggedInUser ||!loggedInUser.isSubscribed">
+                            Save search
+                        </button>
+                    </tooltip>
+                </div>
                 <ul class="search-engine-search-materials">
                     <tooltip
                         v-for="(result, idx) in formatedMaterials"
@@ -74,18 +101,12 @@
                         </li>
                     </tooltip>
                 </ul>
-                <div class="search-engine-search-actions">
-                    <router-link :to="{ name: $route.name }">Clear search</router-link> |
-                    <tooltip bottom>
-                        <template #content>
-                            <span class="msg">
-                                Subscribed users can save their search results
-                            </span>
-                        </template>
-                        <button :disabled="!loggedInUser">
-                            Save search
-                        </button>
-                    </tooltip>
+                <div class="search-engine-search-cta">
+                    <span class="search-engine-search-msg">
+                        <span class="font-medium">6</span>
+                        Free searches left
+                    </span>
+                    <button class="btn">Register for free trial</button>
                 </div>
             </div>
             <div
@@ -269,6 +290,8 @@ import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
 import MaterialInteractionsPreview from '@/client/cmps/search-engine/MaterialInteractionsPreview';
 import Disclaimer from '@/client/cmps/search-engine/Disclaimer';
 
+import UndoIcon from '@/client/cmps/common/icons/UndoIcon';
+import RedoIcon from '@/client/cmps/common/icons/RedoIcon';
 import MobileMenuIcon from '@/client/cmps/common/icons/MobileMenuIcon';
 import MobileShareIcon from '@/client/cmps/common/icons/MobileShareIcon';
 import CloseIcon from 'vue-material-design-icons/Close';
@@ -298,6 +321,7 @@ export default {
             isDisclaimerActive: false,
             isShareModalActive: false,
             isPrintModalActive: false,
+            undoneQueries: [],
             teaserTourSteps: [
                 {
                     target: '.search-engine-search-bar',
@@ -963,6 +987,17 @@ export default {
                 }
             } 
         },
+        navigateQueries(diff) {
+            const { q } = this.$route.query;
+            if (diff < 0) {
+                const lastQ = q[q.length - 1];
+                this.$router.push({ query: { q: q.slice(0, -1) } });
+                this.undoneQueries.push(lastQ);
+            } else {
+                const lastQ = this.undoneQueries.pop();
+                this.$router.push({ query: { q: [ ...q, lastQ ] } });
+            }
+        },
         isTooltipActive(result) {
             return result.isIncluded || (result.materials.length > 1 || result.txt !== result.materials[0].name) || this.getMaterialInteractions(result).length || (result.materials.length === 1 && this.materials.length !== 1);
         },
@@ -1027,6 +1062,10 @@ export default {
         },
         isQueryExists(query) {
             return this.$route.query.q.indexOf(query) !== -1;
+        },
+        clearSearch() {
+            this.$router.push({ name: this.$route.name });
+            this.undoneQueries = [];
         },
         getResultIcon(result) {
             let fileName = '';
@@ -1109,7 +1148,9 @@ export default {
         ModalWrap,
         Disclaimer,
         ShareModal,
-        PrintModal
+        PrintModal,
+        UndoIcon,
+        RedoIcon
     }
 };
 </script>
