@@ -1057,6 +1057,7 @@ export default {
         },
         removeMaterials(query) {
             const queries = this.$route.query.q.filter(q => q !== query);
+            this.undoneQueries.push(query);
             this.$router.replace({ query: { q: queries } });
         },
         sortMaterials(materials) {
