@@ -51,7 +51,10 @@
                         </button>
                     </tooltip>
                 </div>
-                <ul class="search-engine-search-materials">
+                <ul
+                    class="search-engine-search-materials"
+                    :class="{ 'empty': !materials.length }"
+                >
                     <tooltip
                         v-for="(result, idx) in formatedMaterials"
                         :key="idx"
