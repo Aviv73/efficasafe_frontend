@@ -67,9 +67,9 @@
         }
         [alt=Efficasafe] {
             height: 27px;
+            
             @include for-narrow-layout {
                 height: 37px;
-                margin-block-end: 50px;
             }
         }
         &-msg {
@@ -79,7 +79,7 @@
             letter-spacing: rem(.07px);
             font-family: roboto-medium, sans-serif;
             font-weight: 500;
-            margin-block-end: 12px;
+            margin-inline-end: rem(12px);
 
             span {
                 color: $gradient-clr1;
@@ -89,15 +89,19 @@
             }
         }
         .btn {
-            margin-block-end: rem(70px);
             display: none;
             @include for-narrow-layout {
                 display: initial;
+                padding: rem(10px) rem(12px);
             }
         }
         &-bar {
             width: 100%;
-            margin-block-end: rem(40px);
+            margin: rem(20px) 0 rem(12px);
+            
+            @include for-narrow-layout {
+                margin: rem(90px) 0 rem(12px);
+            }
 
             input {
                 border: 2px solid $clr6;
@@ -117,13 +121,51 @@
                 }
             }
         }
+        &-actions {
+            line-height: rem(36px);
+            letter-spacing: rem(.6px);
+            opacity: .8;
+            color: $clr7;
+            margin-block-end: rem(24px);
+            width: 90%;
+            margin: 0 auto;
+            max-width: 316px;
+            
+            @include for-narrow-layout {
+                margin-block-end: rem(66px);
+            }
+
+            a, button {
+                color: $clr1;
+                transition: color .3s ease;
+                
+                &:disabled {
+                    color: $clr7;
+                    cursor: default;
+                }
+            }
+            .msg {
+                box-shadow: 0px 2px 4px rgba($black, .1);
+                border: 1px solid $clr6;
+                display: inline-block;
+                text-align: center;
+                line-height: rem(19px);
+                padding: rem(12px) rem(18px);
+                max-width: rem(206px);
+                background-color: #fff;
+            }
+        }
         &-materials {
             align-self: stretch;
-            margin: rem(10px) 0 rem(40px);
             font-family: roboto-medium, sans-serif;
             font-weight: 500;
             font-size: rem(14px);
             line-height: rem(17px);
+            margin-block-end: rem(46px);
+
+            &.empty {
+                margin-block-end: 0;
+            }
 
             .tooltip-box {
                 width: 50%;
@@ -140,6 +182,7 @@
                 background-position: rem(15px) center;
                 background-size: 14px 16px;
                 cursor: pointer;
+                animation: fade-in .4s ease;
 
                 &.disabled {
                     opacity: .5;
@@ -162,31 +205,6 @@
                         margin-inline-end: 5px;
                     }
                 }
-            }
-        }
-        &-actions {
-            line-height: rem(36px);
-            letter-spacing: rem(.6px);
-            opacity: .8;
-            color: $clr7;
-            
-            a, button {
-                color: $clr1;
-                transition: color .3s ease;
-                
-                &:disabled {
-                    color: $clr7;
-                    cursor: default;
-                }
-            }
-            .msg {
-                box-shadow: 0px 2px 4px rgba($black, .1);
-                border: 1px solid $clr6;
-                display: inline-block;
-                text-align: center;
-                line-height: rem(19px);
-                padding: rem(12px) rem(18px);
-                max-width: rem(206px);
             }
         }
     }

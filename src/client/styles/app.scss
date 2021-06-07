@@ -6,6 +6,7 @@
 /// Global SCSS
 @import './global/reset';
 @import './global/typography';
+@import './global/animations';
 @import './global/base';
 @import './global/helpers';
 @import './global/elements';
@@ -18,6 +19,7 @@
 @import './cmps/shared/interaction-capsules';
 @import './cmps/shared/page-header';
 @import './cmps/shared/modals/share-modal';
+@import './cmps/shared/modals/print-modal';
 @import './cmps/search-engine/material-interactions-preview';
 @import './cmps/search-engine/horizontal-list';
 @import './cmps/search-engine/vertical-list';

@@ -1,8 +1,8 @@
 <template>
     <section class="interaction-preview positive-booster">
         <collapse
-            v-for="group in interaction.vInteractions"
-            :key="group._id"
+            v-for="(group, idx) in interaction.vInteractions"
+            :key="group._id + idx"
         >
             <template #header>
                 <div class="interaction-preview-header table-row child">
@@ -89,24 +89,7 @@ export default {
             return name.split('&')[0].trim();
         },
         getShortRecommendation(fullRec) {
-            switch (fullRec.toLowerCase()) {
-                case 'avoid coadministration':
-                case 'coadministration is not advised':
-                    return fullRec;
-                case 'caution should be taken':
-                case 'coadministration is not contraindicated but caution should be taken':
-                    return 'Caution should be taken';
-                case 'coadministration is possible but caution should be taken':
-                    return 'Possible with caution';
-                case 'coadministration is not contraindicated':
-                case 'coadministration is not contraindicated and may even be advised':
-                    return 'Not contraindicated';
-                case 'coadministration is possible':
-                    case 'coadministration is advised':
-                        return 'Coadministration is possible';
-                case 'coadministration is possible and may even be advised':
-                    return 'Coadministration may be advised';
-            }
+            return interactionUIService.getShortRecommendation(fullRec);
         },
         getLongEvidenceLevel(evidenceLevel) {
             if (!evidenceLevel) return '';

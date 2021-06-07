@@ -1,0 +1,98 @@
+.print-modal {
+    border-radius: 6px;
+    color: $clr-txt-darker;
+    font-size: rem(18px);
+    line-height: rem(22px);
+    width: 90%;
+    max-width: 800px;
+
+    &-header {
+        padding: rem(18px) rem(24px) rem(18px) rem(16px);
+        background-color: $white; 
+        border: 1px solid $clr6;
+        border-radius: 6px 6px 1px 1px;
+        font-size: rem(18px);
+        line-height: rem(22px);
+
+        .printer-icon {
+            color: $clr1;
+            height: 18px;
+            margin-inline-end: rem(8px);
+        }
+        .close-btn {
+            color: $gray;
+        }
+        h5 {
+            flex-grow: 1;
+        }
+    }
+    &-content {
+        background-color: $clr3;
+        max-height: 600px;
+        overflow-y: auto;
+
+        &-list {
+            padding: 0 rem(24px);
+
+            &-item {
+                box-shadow: $slight-border-top;
+                padding: rem(12px) 0;
+
+                &:first-child {
+                    padding: rem(32px) 0;
+                    text-transform: capitalize;
+                }
+                & > *:not(:last-child) {
+                    margin-inline-end: rem(24px);
+                }
+                .evidence-level {
+                    flex-grow: 1;
+                    display: inline-flex;
+                    justify-content: flex-end;
+                }
+                .capsules {
+                    margin-inline-end: rem(48px);
+                }
+                .checkbox {
+                    &-label {
+                        margin-inline-start: rem(24px);
+                    }
+                }
+            }
+        }
+    }
+    &-footer {
+        border-radius: 1px 1px 6px 6px;
+        padding: rem(18px) rem(24px);
+        background-color: $white;
+        border: 1px solid $clr6;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        font-family: roboto-medium, sans-serif;
+        font-weight: 500;
+
+        &-btn {
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-size: rem(13px);
+            line-height: rem(36px);
+            padding: 0 rem(22px);
+            letter-spacing: .07px;
+
+            &:not(:last-child) {
+                margin-inline-end: rem(12px);
+            }
+
+            &.print-btn {
+                background-color: $clr6;
+                color: $clr1;
+
+                &:disabled {
+                    opacity: .5;
+                    cursor: default;
+                }
+            }
+        }
+    }
+}

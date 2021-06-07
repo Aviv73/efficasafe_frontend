@@ -13,18 +13,48 @@
                         alt="Efficasafe"
                     />
                 </router-link>
-                <p class="search-engine-search-msg">
-                    <span class="font-medium">6</span>
-                    Free searches left
-                </p>
-                <button class="btn">Register for free trial</button>
                 <autocomplete
                     class="search-engine-search-bar"
                     :isOnSearchPage="true"
                     :placeholder1="isScreenNarrow ? 'Add another' : '+   Add another'"
                     @item-selected="addMaterials"
                 />
-                <ul class="search-engine-search-materials">
+                <div class="search-engine-search-actions flex-space-between">
+                    <button
+                        title="Undo"
+                        :disabled="!$route.query.q || !$route.query.q.length"
+                        @click="navigateQueries(-1)"
+                    >
+                        <undo-icon />    
+                    </button> |
+                    <button
+                        title="Redo"
+                        :disabled="!undoneQueries.length"
+                        @click="navigateQueries(1)"
+                    >
+                        <redo-icon />
+                    </button> |
+                    <button
+                        :disabled="!$route.query.q || !$route.query.q.length"
+                        @click="clearSearch"
+                    >
+                        Clear search
+                    </button> |
+                    <tooltip bottom>
+                        <template #content>
+                            <span class="msg">
+                                Subscribed users can save their search results
+                            </span>
+                        </template>
+                        <button :disabled="!loggedInUser ||!loggedInUser.isSubscribed">
+                            Save search
+                        </button>
+                    </tooltip>
+                </div>
+                <ul
+                    class="search-engine-search-materials"
+                    :class="{ 'empty': !materials.length }"
+                >
                     <tooltip
                         v-for="(result, idx) in formatedMaterials"
                         :key="idx"
@@ -74,18 +104,12 @@
                         </li>
                     </tooltip>
                 </ul>
-                <div class="search-engine-search-actions">
-                    <router-link :to="{ name: $route.name }">Clear search</router-link> |
-                    <tooltip bottom>
-                        <template #content>
-                            <span class="msg">
-                                Subscribed users can save their search results
-                            </span>
-                        </template>
-                        <button :disabled="!loggedInUser">
-                            Save search
-                        </button>
-                    </tooltip>
+                <div class="search-engine-search-cta">
+                    <span class="search-engine-search-msg">
+                        <span class="font-medium">6</span>
+                        Free searches left
+                    </span>
+                    <button class="btn">Register for free trial</button>
                 </div>
             </div>
             <div
@@ -103,6 +127,7 @@
                                 class="print-btn"
                                 :title="loggedInUser ? 'Print' : 'Subscribed users can print their search results'"
                                 :disabled="!loggedInUser"
+                                @click="isPrintModalActive = true"
                             >
                                 <printer-icon title="" />
                             </button>
@@ -228,6 +253,15 @@
         >
             <share-modal @close-modal="isShareModalActive = false" />
         </modal-wrap>
+        <modal-wrap
+            :isActive="isPrintModalActive"
+            @close-modal="isPrintModalActive = false"
+        >
+            <print-modal
+                :interactions="routableListData.interactions"
+                @close-modal="isPrintModalActive = false"
+            />
+        </modal-wrap>
         <v-tour
             name="teaser-tour"
             :steps="teaserTourSteps"
@@ -249,14 +283,18 @@
 <script>
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import { storageService } from '@/cms/services/storage.service';
+
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import ShareModal from '@/client/cmps/shared/modals/ShareModal';
+import PrintModal from '@/client/cmps/shared/modals/PrintModal';
 import Tooltip from '@/client/cmps/common/Tooltip';
 import ModalWrap from '@/client/cmps/common/ModalWrap';
 import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
 import MaterialInteractionsPreview from '@/client/cmps/search-engine/MaterialInteractionsPreview';
 import Disclaimer from '@/client/cmps/search-engine/Disclaimer';
 
+import UndoIcon from '@/client/cmps/common/icons/UndoIcon';
+import RedoIcon from '@/client/cmps/common/icons/RedoIcon';
 import MobileMenuIcon from '@/client/cmps/common/icons/MobileMenuIcon';
 import MobileShareIcon from '@/client/cmps/common/icons/MobileShareIcon';
 import CloseIcon from 'vue-material-design-icons/Close';
@@ -285,6 +323,8 @@ export default {
             sortOptions: null,
             isDisclaimerActive: false,
             isShareModalActive: false,
+            isPrintModalActive: false,
+            undoneQueries: [],
             teaserTourSteps: [
                 {
                     target: '.search-engine-search-bar',
@@ -506,8 +546,9 @@ export default {
             this.positiveInteractions.forEach(group => {
                 group.recommendation = this.getMoreSeverRecomm(true, ...group.vInteractions.map(i => i.recommendation));
                 group.evidenceLevel = this.getMoreSeverEvidenceLevel(...group.vInteractions.map(i => i.evidenceLevel));
-                const materialName = this.materials.find(m => m._id === group.side2Id || m.labels.some(l => l._id === group.side2Id)).name;
-                const materialId = this.materials.find(m => m._id === group.side2Id || m.labels.some(l => l._id === group.side2Id))._id;
+                const matchingMaterial = this.materials.find(m => m._id === group.side2Id || m.labels.some(l => l._id === group.side2Id));
+                const materialName = matchingMaterial ? matchingMaterial.name : '';
+                const materialId = matchingMaterial ? matchingMaterial._id : '';
                 const userQuery = this.$store.getters.materialNamesMap[materialName];
                 group.name = userQuery ? userQuery.join(', ') : materialName;
                 group.mainMaterialId = materialId;
@@ -526,7 +567,7 @@ export default {
                     vInteraction.name = `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}`;
                 });
             });
-            const map = interactionUIService.getPositiveBoostersRecommMap();
+            const map = this.$options.recommendationsOrderMap;
             return this.positiveInteractions.reduce((acc, interaction) => {
                 const existing = acc.find(i => i.name === interaction.name);
                 if (!existing) {
@@ -950,13 +991,24 @@ export default {
                 }
             } 
         },
+        navigateQueries(diff) {
+            const { q } = this.$route.query;
+            if (diff < 0) {
+                const lastQ = q[q.length - 1];
+                this.$router.push({ query: { q: q.slice(0, -1) } });
+                this.undoneQueries.push(lastQ);
+            } else {
+                const lastQ = this.undoneQueries.pop();
+                this.$router.push({ query: { q: [ ...q, lastQ ] } });
+            }
+        },
         isTooltipActive(result) {
             return result.isIncluded || (result.materials.length > 1 || result.txt !== result.materials[0].name) || this.getMaterialInteractions(result).length || (result.materials.length === 1 && this.materials.length !== 1);
         },
         getMoreSeverRecomm(isDesc, ...recommendations) {
             const { recommendationsOrderMap } = this.$options;
             recommendations.sort((a, b) => {
-                return (recommendationsOrderMap[a.toLowerCase()] > recommendationsOrderMap[b.toLowerCase()]) ? -1 : (recommendationsOrderMap[a.toLowerCase()] < recommendationsOrderMap[b.toLowerCase()]) ? 1 : 0;
+                return (recommendationsOrderMap[a] > recommendationsOrderMap[b]) ? -1 : (recommendationsOrderMap[a] < recommendationsOrderMap[b]) ? 1 : 0;
             });
             return isDesc ? recommendations[recommendations.length - 1] : recommendations[0];
         },
@@ -1006,6 +1058,7 @@ export default {
         },
         removeMaterials(query) {
             const queries = this.$route.query.q.filter(q => q !== query);
+            this.undoneQueries.push(query);
             this.$router.replace({ query: { q: queries } });
         },
         sortMaterials(materials) {
@@ -1014,6 +1067,10 @@ export default {
         },
         isQueryExists(query) {
             return this.$route.query.q.indexOf(query) !== -1;
+        },
+        clearSearch() {
+            this.$router.push({ name: this.$route.name });
+            this.undoneQueries = [];
         },
         getResultIcon(result) {
             let fileName = '';
@@ -1095,7 +1152,10 @@ export default {
         InformationOutlineIcon,
         ModalWrap,
         Disclaimer,
-        ShareModal
+        ShareModal,
+        PrintModal,
+        UndoIcon,
+        RedoIcon
     }
 };
 </script>

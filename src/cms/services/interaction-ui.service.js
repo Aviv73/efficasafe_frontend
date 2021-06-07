@@ -1,12 +1,12 @@
 export const interactionUIService = {
     getInteractionColor,
     getRecommendationOrderMap,
-    getPositiveBoostersRecommMap,
     getEvidenceLevelDictionary,
     calculateEvidenceLevel,
     getRefsOrder,
     getSortedRefs,
-    formatRefStrs
+    formatRefStrs,
+    getShortRecommendation
 }
 
 
@@ -124,29 +124,40 @@ function getInteractionColor(recommendation) {
     }
 }
 
-
-function getRecommendationOrderMap() {
-    return {
-        'Avoid coadministration': 3,
-        'Coadministration is not advised': 3,
-        'Caution should be taken': 2,
-        'Coadministration is not contraindicated but caution should be taken': 2,
-        'Coadministration is possible but caution should be taken': 2,
-        'Coadministration is not contraindicated': 1,
-        'Coadministration is not contraindicated and may even be advised': 1,
-        'Coadministration is possible': 1,
-        'Coadministration is possible and may even be advised': 1,
-        'Coadministration is advised': 1
+function getShortRecommendation(fullRec) {
+    switch (fullRec.toLowerCase()) {
+        case 'avoid coadministration':
+        case 'coadministration is not advised':
+            return fullRec;
+        case 'caution should be taken':
+        case 'coadministration is not contraindicated but caution should be taken':
+            return 'Caution should be taken';
+        case 'coadministration is possible but caution should be taken':
+            return 'Possible with caution';
+        case 'coadministration is not contraindicated':
+        case 'coadministration is not contraindicated and may even be advised':
+            return 'Not contraindicated';
+        case 'coadministration is possible':
+            return 'Coadministration is possible';
+        case 'coadministration is possible and may even be advised':
+                return 'Coadministration may be advised';
+        case 'coadministration is advised':
+            return 'Coadministration is advised';
     }
 }
 
-function getPositiveBoostersRecommMap() {
+function getRecommendationOrderMap() {
     return {
-        'Coadministration is advised': 1,
-        'Coadministration is possible and may even be advised': 2,
+        'Avoid coadministration': 10,
+        'Coadministration is not advised': 9,
+        'Caution should be taken': 8,
+        'Coadministration is not contraindicated but caution should be taken': 7,
+        'Coadministration is possible but caution should be taken': 6,
+        'Coadministration is not contraindicated': 5,
+        'Coadministration is not contraindicated and may even be advised': 4,
         'Coadministration is possible': 3,
-        'Coadministration is possible but caution should be taken': 4,
-        'Coadministration is not contraindicated and may even be advised': 5
+        'Coadministration is possible and may even be advised': 2,
+        'Coadministration is advised': 1
     }
 }
 
