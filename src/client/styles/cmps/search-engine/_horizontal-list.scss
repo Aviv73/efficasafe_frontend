@@ -23,6 +23,7 @@
         align-items: center;
         box-shadow: $slight-border-bottom;
         color: $clr12;
+        user-select: none;
         
         @include for-narrow-layout {
             display: flex;
@@ -66,6 +67,7 @@
         .tooltip-content {
             padding: rem(16px) rem(14px);
             color: $clr-txt-darker;
+            user-select: text;
             
             ol {
                 max-width: 28ch;

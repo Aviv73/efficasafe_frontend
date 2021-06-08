@@ -316,6 +316,7 @@ export default {
             scrollBarWidth: '0px',
             routerTransitionName: '',
             sortOptions: null,
+            boosterSortOptions: null,
             isDisclaimerActive: false,
             isShareModalActive: false,
             isPrintModalActive: false,
@@ -588,15 +589,20 @@ export default {
                 });
             });
             const map = this.$options.recommendationsOrderMap;
-            return this.positiveInteractions.reduce((acc, interaction) => {
+            const formatedPositiveInteractions = this.positiveInteractions.reduce((acc, interaction) => {
                 const existing = acc.find(i => i.name === interaction.name);
                 if (!existing) {
                     acc.push(interaction);
                 } else {
                     existing.evidenceLevel = this.getMoreSeverEvidenceLevel(existing.evidenceLevel, interaction.evidenceLevel);
                     existing.recommendation = this.getMoreSeverRecomm(true, existing.recommendation, interaction.recommendation);
-                    existing.total += interaction.total;
-                    existing.vInteractions = existing.vInteractions.concat(interaction.vInteractions);
+                    interaction.vInteractions.forEach(vInteraction => {
+                        const isIncluded = existing.vInteractions.some(v => v._id === vInteraction._id);
+                        if (!isIncluded) {
+                            existing.vInteractions.push(vInteraction);
+                            existing.total++;
+                        }
+                    });
                     existing.vInteractions.sort((a, b) => {
                         return (map[b.recommendation] - map[a.recommendation]) * -1 ||
                         (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
@@ -604,7 +610,21 @@ export default {
                     });
                 }
                 return acc;
-            }, []).sort((a, b) => {
+            }, []);
+            if (this.boosterSortOptions) {
+                const { recommendationsOrderMap: map } = this.$options;
+                const { sortBy, side, isDesc } = this.boosterSortOptions;
+                const sortOrder = isDesc ? -1 : 1;
+                switch (sortBy) {
+                        case 'name':
+                            return formatedPositiveInteractions.sort((a, b) => (a.name.split(' & ')[side - 1].toLowerCase().localeCompare(b.name.split(' & ')[side - 1].toLowerCase())) * sortOrder);
+                        case 'recommendation':
+                            return formatedPositiveInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
+                        case 'evidenceLevel':
+                            return formatedPositiveInteractions.sort((a, b) => (a.evidenceLevel - b.evidenceLevel) * sortOrder);
+                }
+            }
+            return formatedPositiveInteractions.sort((a, b) => {
                 return (map[b.recommendation] - map[a.recommendation]) * -1 ||
                 (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
                 (a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
@@ -942,11 +962,11 @@ export default {
             return this.sortInteractions(interactions);
         },
         handleSort({ sortBy, side, isDesc }) {
+            const { recommendationsOrderMap: map } = this.$options;
+            const sortOrder = isDesc ? -1 : 1;
             switch (this.$route.name) {
                 case 'Drug2Drug': {
-                    const { recommendationsOrderMap: map } = this.$options;
                     const sideName = (side === 1) ? 'subject_drug' : 'affected_drug';
-                    const sortOrder = isDesc ? -1 : 1;
                     switch (sortBy) {
                         case 'name':
                             this.dBankInteractions.sort((a, b) => a[sideName].name.toLowerCase().localeCompare(b[sideName].name.toLowerCase()) * sortOrder);
@@ -961,7 +981,8 @@ export default {
                 }
                 return;
                 case 'Boosters':
-                    console.log(this.positiveInteractions);
+                    this.boosterSortOptions = { sortBy, side, isDesc };
+                    this.positiveInteractions.splice(0, 0);
                 return;
                 default:
                     this.sortOptions = { sortBy, side, isDesc };
