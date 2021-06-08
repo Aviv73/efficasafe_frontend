@@ -42,10 +42,10 @@
         
         @include for-narrow-layout {
             overflow: initial;
-            padding: rem(90px) rem(24px) 0;
+            padding: rem(48px) rem(24px) 0;
         }
         @include for-wide-layout {
-            padding: rem(90px) rem(24px) 0 0;
+            padding: rem(48px) rem(24px) 0 0;
         }
         .logo {
             display: flex;
@@ -458,7 +458,11 @@
         line-height: rem(17px);
         max-width: 700px;
 
-        .boosters-txt {
+        &-container {
+            width: rem(250px);
+        }
+
+        &-txt {
             width: 80%;
             margin: 0 auto;
             font-size: rem(18px);
@@ -466,6 +470,9 @@
         }
         .boosters-img  {
             width: 100%;
+            margin: rem(12px) 0;
+        }
+        .onboarding-img {
             margin: rem(12px) 0;
         }
     }

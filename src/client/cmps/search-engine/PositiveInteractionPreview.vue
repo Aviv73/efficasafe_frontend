@@ -20,7 +20,7 @@
                             :localize="true"
                         />
                     </span>
-                    <span class="table-col">
+                    <span class="table-col" :title="group.recommendation">
                         {{ getShortRecommendation(group.recommendation) }}
                     </span>
                     <span class="table-col">

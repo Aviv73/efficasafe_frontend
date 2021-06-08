@@ -14,7 +14,7 @@
                     />
                 </router-link>
                 <autocomplete
-                    class="search-engine-search-bar"
+                    class="search-engine-search-bar v-tour-step-0"
                     :isOnSearchPage="true"
                     :placeholder1="isScreenNarrow ? 'Add another' : '+   Add another'"
                     @item-selected="addMaterials"
@@ -80,7 +80,7 @@
                             />
                         </template>
                         <li
-                            class="search-engine-search-materials-chip clip-txt activator v-tour-step-0"
+                            class="search-engine-search-materials-chip clip-txt activator v-tour-step-1"
                             :class="{
                                 'disabled': result.isIncluded,
                                 'not-active': !isTooltipActive(result)
@@ -188,21 +188,21 @@
                         </li>
                         <li class="search-engine-nav-link">
                             <router-link
-                                class="link boosters v-tour-step-3"
+                                class="link boosters pb-tour-step-0 v-tour-step-7"
                                 :to="{ name: 'Boosters', query: this.$route.query }"
                             >
                                 Positive boosters
                             </router-link>
                         </li>
-                        <li class="search-engine-nav-link">
+                        <li class="search-engine-nav-link v-tour-step-6">
                             <router-link
-                                class="link v-tour-step-4"
+                                class="link"
                                 :to="{ name: 'Monitor', query: this.$route.query }"
                             >
                                 What to monitor
                             </router-link>
                         </li>
-                        <li class="search-engine-nav-link v-tour-step-2">
+                        <li class="search-engine-nav-link v-tour-step-5">
                             <label class="display-toggle">
                                 <input
                                     type="radio"
@@ -263,13 +263,8 @@
             />
         </modal-wrap>
         <v-tour
-            name="teaser-tour"
-            :steps="teaserTourSteps"
-            :callbacks="teaserTourCallbacks"
-        />
-        <v-tour
             name="onboarding-tour"
-            :steps="computedOnboardingTourSteps"
+            :steps="onboardingTourSteps"
             :callbacks="onboardingTourCallbacks"
         />
         <v-tour
@@ -321,44 +316,79 @@ export default {
             scrollBarWidth: '0px',
             routerTransitionName: '',
             sortOptions: null,
+            boosterSortOptions: null,
             isDisclaimerActive: false,
             isShareModalActive: false,
             isPrintModalActive: false,
             undoneQueries: [],
-            teaserTourSteps: [
-                {
-                    target: '.search-engine-search-bar',
-                    content: 'Insert and reach four materials to see onboarding tour',
-                    params: {
-                        placement: this.teaserStepPlacement,
-                        enableScrolling: false
-                    }
-                }
-            ],
-            teaserTourCallbacks: {
-                onStop: () => {
-                    storageService.store('did-teaser-tour', true);
-                }
-            },
             onboardingTourSteps: [
                 {
                     target: '.v-tour-step-0',
-                    content: 'Click on each material to view additional info',
+                    content: '<p class="v-step-txt">Let us show you around. Take a short tour with us</p>',
                     params: {
                         enableScrolling: false
                     }
                 },
                 {
                     target: '.v-tour-step-1',
-                    content: 'Hover here to view evidence level calculation details',
+                    content: `
+                        <div class="v-step-container">
+                            <p class="v-step-txt">
+                                Click on any material to see more info on the material and its interactions within the search plus a link to all of its interactions
+                            </p>
+                            <img
+                                class="onboarding-img"
+                                src="${require('@/client/assets/imgs/onboarding1.jpg')}"
+                                alt="Explanatory usage image"
+                            />
+                        </div>
+                    `,
+                    params: {
+                        placement: 'right',
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour-step-2',
+                    content: `
+                        <p class="v-step-txt">
+                            You can sort results by name, recommendation or level of evidence
+                        </p>
+                        <img
+                            class="onboarding-img"
+                            src="${require('@/client/assets/imgs/onboarding2.jpg')}"
+                            alt="Explanatory usage image"
+                        />
+                    `,
                     params: {
                         placement: 'top',
                         enableScrolling: false
                     }
                 },
                 {
-                    target: '.v-tour-step-2',
-                    content: 'Compact vertical view available here',
+                    target: '.v-tour-step-3',
+                    content: '<p class="v-step-txt">Hover to view recommendation reasoning</p>',
+                    params: {
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour-step-4',
+                    content: '<p class="v-step-txt">Hover to view evidence level index</p>',
+                    params: {
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour-step-5',
+                    content: `
+                        <p class="v-step-txt">Change to vertical view</p>
+                        <img
+                            class="boosters-img"
+                            src="${require('@/client/assets/imgs/onboarding3.jpg')}"
+                            alt="Explanatory usage image"
+                        />
+                    `,
                     params: {
                         placement: 'left',
                         enableScrolling: false
@@ -371,9 +401,10 @@ export default {
                     })
                 },
                 {
-                    target: '.v-tour-step-3',
-                    content: 'Here we display positive interactions',
+                    target: '.v-tour-step-6',
+                    content: '<p class="v-step-txt">Gain valuable insights on clinical and laboratory parameters to monitor</p>',
                     params: {
+                        placement: 'top',
                         enableScrolling: false
                     },
                     before: () => new Promise((resolve) => {
@@ -384,9 +415,10 @@ export default {
                     })
                 },
                 {
-                    target: '.v-tour-step-4',
-                    content: 'More info available here',
+                    target: '.v-tour-step-7',
+                    content: '<p class="v-step-txt">Optimize treatment with synergistics</p>',
                     params: {
+                        placement: 'top',
                         enableScrolling: false
                     },
                     before: () => new Promise((resolve) => {
@@ -399,23 +431,23 @@ export default {
             ],
             onboardingTourCallbacks: {
                 onStop: () => {
-                    storageService.store('did-onboarding', true);
+                    storageService.store('did-onboarding-tour', true);
                 }
             },
             boostersTourSteps: [
                 {
-                    target: '.v-tour-step-3',
+                    target: '.pb-tour-step-0',
                     content: `
-                        <p class="boosters-txt">
+                        <p class="v-step-txt">
                             This tab will show you positive combinations
                             with the drugs that are in your search
                         </p>
                         <img
                             class="boosters-img"
-                            src="${require('@/client/assets/imgs/boosters-tour-1.jpeg')}"
+                            src="${require('@/client/assets/imgs/pb1.jpg')}"
                             alt="Usage example"
                         />
-                        <p class="boosters-txt">The order of the drugs shown is set by the recommendations</p>
+                        <p class="v-step-txt">The order of the drugs shown is set by the recommendations</p>
                     `,
                     params: {
                         placement: 'left-start',
@@ -423,15 +455,15 @@ export default {
                     }
                 },
                 {
-                    target: '.v-tour-step-3',
+                    target: '.pb-tour-step-0',
                     content: `
-                        <p class="boosters-txt">
+                        <p class="v-step-txt">
                             A click on each drug will show you all the herbs and/or
                             supplements that can be coadministered with the drug
                         </p>
                         <img
                             class="boosters-img"
-                            src="${require('@/client/assets/imgs/boosters-tour-2.jpeg')}"
+                            src="${require('@/client/assets/imgs/pb2.jpg')}"
                             alt="Usage example"
                         />
                     `,
@@ -441,16 +473,16 @@ export default {
                     }
                 },
                 {
-                    target: '.v-tour-step-3',
+                    target: '.pb-tour-step-0',
                     content: `
-                        <p class="boosters-txt">
+                        <p class="v-step-txt">
                             A click on each herb/supplement will show you the interaction
                             with the chosen drug followed by the interactions of this
                             herb/supplement with the other drugs in your search
                         </p>
                         <img
                             class="boosters-img"
-                            src="${require('@/client/assets/imgs/boosters-tour-3.jpeg')}"
+                            src="${require('@/client/assets/imgs/pb3.jpg')}"
                             alt="Usage example"
                         />
                     `,
@@ -462,7 +494,7 @@ export default {
             ],
             boostersTourCallbacks: {
                 onStop: () => {
-                    storageService.store('did-boosters-tour', true);
+                    storageService.store('did-p-boosters-tour', true);
                 }
             }
         }
@@ -470,12 +502,7 @@ export default {
     watch: {
         '$route.query': {
             async handler() {
-                if (!storageService.load('did-teaser-tour')) {
-                    this.$nextTick(() => {
-                        this.$tours['teaser-tour'].start();
-                    });
-                }
-                if (this.$route.name === 'Boosters' && !this.isScreenNarrow && !storageService.load('did-boosters-tour')) {
+                if (this.$route.name === 'Boosters' && !this.isScreenNarrow && !storageService.load('did-p-boosters-tour')) {
                     this.$nextTick(() => {
                         this.$tours['boosters-tour'].start();
                     });
@@ -489,7 +516,7 @@ export default {
                     this.$route.query.q = [ q ];
                 }
                 await this.getResults();
-                if (this.materials.length >= 4 && !storageService.load('did-onboarding')) {
+                if (this.materials.length >= 2 && !storageService.load('did-onboarding-tour') && !this.isScreenNarrow) {
                     this.$tours['onboarding-tour'].start();
                 }
             },
@@ -507,12 +534,6 @@ export default {
         }
     },
     computed: {
-        computedOnboardingTourSteps() {
-            if (this.isScreenNarrow) {
-                return [ this.onboardingTourSteps[1], this.onboardingTourSteps[3], this.onboardingTourSteps[4] ];
-            }
-            return this.onboardingTourSteps;
-        },
         routableListData() {
             switch (this.$route.name) {
                 case 'Supp2Drug':
@@ -568,15 +589,20 @@ export default {
                 });
             });
             const map = this.$options.recommendationsOrderMap;
-            return this.positiveInteractions.reduce((acc, interaction) => {
+            const formatedPositiveInteractions = this.positiveInteractions.reduce((acc, interaction) => {
                 const existing = acc.find(i => i.name === interaction.name);
                 if (!existing) {
                     acc.push(interaction);
                 } else {
                     existing.evidenceLevel = this.getMoreSeverEvidenceLevel(existing.evidenceLevel, interaction.evidenceLevel);
                     existing.recommendation = this.getMoreSeverRecomm(true, existing.recommendation, interaction.recommendation);
-                    existing.total += interaction.total;
-                    existing.vInteractions = existing.vInteractions.concat(interaction.vInteractions);
+                    interaction.vInteractions.forEach(vInteraction => {
+                        const isIncluded = existing.vInteractions.some(v => v._id === vInteraction._id);
+                        if (!isIncluded) {
+                            existing.vInteractions.push(vInteraction);
+                            existing.total++;
+                        }
+                    });
                     existing.vInteractions.sort((a, b) => {
                         return (map[b.recommendation] - map[a.recommendation]) * -1 ||
                         (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
@@ -584,7 +610,21 @@ export default {
                     });
                 }
                 return acc;
-            }, []).sort((a, b) => {
+            }, []);
+            if (this.boosterSortOptions) {
+                const { recommendationsOrderMap: map } = this.$options;
+                const { sortBy, isDesc } = this.boosterSortOptions;
+                const sortOrder = isDesc ? -1 : 1;
+                switch (sortBy) {
+                        case 'name':
+                            return formatedPositiveInteractions.sort((a, b) => (a.name.split(' & ')[0].toLowerCase().localeCompare(b.name.split(' & ')[0].toLowerCase())) * sortOrder);
+                        case 'recommendation':
+                            return formatedPositiveInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
+                        case 'evidenceLevel':
+                            return formatedPositiveInteractions.sort((a, b) => (a.evidenceLevel - b.evidenceLevel) * sortOrder);
+                }
+            }
+            return formatedPositiveInteractions.sort((a, b) => {
                 return (map[b.recommendation] - map[a.recommendation]) * -1 ||
                 (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
                 (a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
@@ -922,25 +962,32 @@ export default {
             return this.sortInteractions(interactions);
         },
         handleSort({ sortBy, side, isDesc }) {
-            const isDBank = this.$route.name === 'Drug2Drug';
-            if (!isDBank) {
-                this.sortOptions = { sortBy, side, isDesc };
-                this.interactions.splice(0, 0);
-                return;
-            }
             const { recommendationsOrderMap: map } = this.$options;
-            const sideName = (side === 1) ? 'subject_drug' : 'affected_drug';
             const sortOrder = isDesc ? -1 : 1;
-            switch (sortBy) {
-                case 'name':
-                    this.dBankInteractions.sort((a, b) => a[sideName].name.toLowerCase().localeCompare(b[sideName].name.toLowerCase()) * sortOrder);
-                break;
-                case 'recommendation':
-                    this.dBankInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
-                break;
-                case 'evidenceLevel':
-                    this.dBankInteractions.sort((a, b) => (a.evidence_level - b.evidence_level) * sortOrder);
-                break;
+            switch (this.$route.name) {
+                case 'Drug2Drug': {
+                    const sideName = (side === 1) ? 'subject_drug' : 'affected_drug';
+                    switch (sortBy) {
+                        case 'name':
+                            this.dBankInteractions.sort((a, b) => a[sideName].name.toLowerCase().localeCompare(b[sideName].name.toLowerCase()) * sortOrder);
+                        break;
+                        case 'recommendation':
+                            this.dBankInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
+                        break;
+                        case 'evidenceLevel':
+                            this.dBankInteractions.sort((a, b) => (a.evidence_level - b.evidence_level) * sortOrder);
+                        break;
+                    }
+                }
+                return;
+                case 'Boosters':
+                    this.boosterSortOptions = { sortBy, side, isDesc };
+                    this.positiveInteractions.splice(0, 0);
+                return;
+                default:
+                    this.sortOptions = { sortBy, side, isDesc };
+                    this.interactions.splice(0, 0);
+                return;
             }
         },
         sortInteractions(interactions) {
