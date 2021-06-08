@@ -368,7 +368,6 @@ export default {
                     target: '.v-tour-step-3',
                     content: '<p class="v-step-txt">Hover to view recommendation reasoning</p>',
                     params: {
-                        placement: 'left',
                         enableScrolling: false
                     }
                 },
@@ -404,7 +403,7 @@ export default {
                     target: '.v-tour-step-6',
                     content: '<p class="v-step-txt">Gain valuable insights on clinical and laboratory parameters to monitor</p>',
                     params: {
-                        placement: 'left',
+                        placement: 'top',
                         enableScrolling: false
                     },
                     before: () => new Promise((resolve) => {
@@ -418,7 +417,7 @@ export default {
                     target: '.v-tour-step-7',
                     content: '<p class="v-step-txt">Optimize treatment with synergistics</p>',
                     params: {
-                        placement: 'left',
+                        placement: 'top',
                         enableScrolling: false
                     },
                     before: () => new Promise((resolve) => {
@@ -943,25 +942,31 @@ export default {
             return this.sortInteractions(interactions);
         },
         handleSort({ sortBy, side, isDesc }) {
-            const isDBank = this.$route.name === 'Drug2Drug';
-            if (!isDBank) {
-                this.sortOptions = { sortBy, side, isDesc };
-                this.interactions.splice(0, 0);
+            switch (this.$route.name) {
+                case 'Drug2Drug': {
+                    const { recommendationsOrderMap: map } = this.$options;
+                    const sideName = (side === 1) ? 'subject_drug' : 'affected_drug';
+                    const sortOrder = isDesc ? -1 : 1;
+                    switch (sortBy) {
+                        case 'name':
+                            this.dBankInteractions.sort((a, b) => a[sideName].name.toLowerCase().localeCompare(b[sideName].name.toLowerCase()) * sortOrder);
+                        break;
+                        case 'recommendation':
+                            this.dBankInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
+                        break;
+                        case 'evidenceLevel':
+                            this.dBankInteractions.sort((a, b) => (a.evidence_level - b.evidence_level) * sortOrder);
+                        break;
+                    }
+                }
                 return;
-            }
-            const { recommendationsOrderMap: map } = this.$options;
-            const sideName = (side === 1) ? 'subject_drug' : 'affected_drug';
-            const sortOrder = isDesc ? -1 : 1;
-            switch (sortBy) {
-                case 'name':
-                    this.dBankInteractions.sort((a, b) => a[sideName].name.toLowerCase().localeCompare(b[sideName].name.toLowerCase()) * sortOrder);
-                break;
-                case 'recommendation':
-                    this.dBankInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
-                break;
-                case 'evidenceLevel':
-                    this.dBankInteractions.sort((a, b) => (a.evidence_level - b.evidence_level) * sortOrder);
-                break;
+                case 'Boosters':
+                    console.log(this.positiveInteractions);
+                return;
+                default:
+                    this.sortOptions = { sortBy, side, isDesc };
+                    this.interactions.splice(0, 0);
+                return;
             }
         },
         sortInteractions(interactions) {
