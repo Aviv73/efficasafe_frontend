@@ -21,7 +21,9 @@
                                 :color="color"
                             />
                         </span>
-                        <span class="table-col">{{ shortRecommendation }}</span>
+                        <span class="table-col" :title="interaction.recommendation">
+                            {{ shortRecommendation }}
+                        </span>
                         <span class="table-col">
                             {{ interaction.evidenceLevel }}
                             <span
@@ -56,7 +58,9 @@
                                             :color="color"
                                         />
                                     </span>
-                                    <span class="table-col">{{ shortRecommendation }}</span>
+                                    <span class="table-col" :title="interaction.recommendation">
+                                        {{ shortRecommendation }}
+                                    </span>
                                     <span class="table-col">
                                         {{ interaction.evidenceLevel }}
                                         <span
@@ -123,7 +127,9 @@
                                     :color="color"
                                 />
                             </span>
-                            <span class="table-col">{{ shortRecommendation }}</span>
+                            <span class="table-col" :title="interaction.recommendation">
+                                {{ shortRecommendation }}
+                            </span>
                             <span class="table-col">
                                 {{ interaction.evidenceLevel }}
                                 <span

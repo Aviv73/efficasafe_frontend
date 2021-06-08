@@ -33,7 +33,7 @@
                                 :isMaterialGroup="!!interaction.isMaterialGroup"
                             />
                         </span>
-                        <span class="table-col">
+                        <span class="table-col" :title="interaction.recommendation">
                             {{ getShortRecommendation(interaction.recommendation) }}
                         </span>
                         <span class="table-col">
