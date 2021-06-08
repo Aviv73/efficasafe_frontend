@@ -613,11 +613,11 @@ export default {
             }, []);
             if (this.boosterSortOptions) {
                 const { recommendationsOrderMap: map } = this.$options;
-                const { sortBy, side, isDesc } = this.boosterSortOptions;
+                const { sortBy, isDesc } = this.boosterSortOptions;
                 const sortOrder = isDesc ? -1 : 1;
                 switch (sortBy) {
                         case 'name':
-                            return formatedPositiveInteractions.sort((a, b) => (a.name.split(' & ')[side - 1].toLowerCase().localeCompare(b.name.split(' & ')[side - 1].toLowerCase())) * sortOrder);
+                            return formatedPositiveInteractions.sort((a, b) => (a.name.split(' & ')[0].toLowerCase().localeCompare(b.name.split(' & ')[0].toLowerCase())) * sortOrder);
                         case 'recommendation':
                             return formatedPositiveInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
                         case 'evidenceLevel':
