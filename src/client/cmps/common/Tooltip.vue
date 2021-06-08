@@ -1,5 +1,6 @@
 <template>
-    <div
+    <component
+        :is="wrapEl"
         class="tooltip-box"
         :tabindex="(on === 'focus') ? '0' : '-1'"
         :class="{
@@ -56,7 +57,7 @@
             </aside>
         </transition>
         <slot />
-    </div>
+    </component>
 </template>
 
 <script>
@@ -115,10 +116,6 @@ export default {
             type: Boolean,
             default: false
         },
-        isSolo: {
-            type: Boolean,
-            default: false
-        },
         closable: {
             type: Boolean,
             default: false
@@ -126,6 +123,10 @@ export default {
         hidden: {
             type: Boolean,
             default: false
+        },
+        wrapEl: {
+            type: String,
+            default: 'div'
         }
     },
     data() {
