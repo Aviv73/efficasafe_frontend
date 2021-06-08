@@ -42,10 +42,10 @@
         
         @include for-narrow-layout {
             overflow: initial;
-            padding: rem(90px) rem(24px) 0;
+            padding: rem(48px) rem(24px) 0;
         }
         @include for-wide-layout {
-            padding: rem(90px) rem(24px) 0 0;
+            padding: rem(48px) rem(24px) 0 0;
         }
         .logo {
             display: flex;
