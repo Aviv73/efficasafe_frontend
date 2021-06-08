@@ -8,7 +8,7 @@
                     tabindex="0"
                 >
                     <input type="checkbox" hidden @change="emitSort('name', $event.target.checked)" />
-                    <sort-vertical-icon class="sort-icon" title="" />
+                    <sort-vertical-icon class="sort-icon v-tour-step-2" title="" />
                     <span>{{ side1Name }} vs {{ side2Name }}</span>
                 </label>
                 <button
@@ -47,7 +47,7 @@
                         </div>
                     </template>
                     <information-outline-icon
-                        class="tooltip-trigger"
+                        class="tooltip-trigger v-tour-step-3"
                         :size="12"
                         title=""
                     />
@@ -61,7 +61,7 @@
                 >
                     <input type="checkbox" hidden @change="emitSort('evidenceLevel', $event.target.checked)" />
                     <sort-vertical-icon class="sort-icon" title="" />
-                    <span class="v-tour-step-1">Level of Evidence</span>
+                    <span>Level of Evidence</span>
                 </label>
                 <tooltip on="hover" right right-bottom>
                     <template #content>
@@ -85,7 +85,7 @@
                         </div>
                     </template>
                     <information-outline-icon
-                        class="tooltip-trigger"
+                        class="tooltip-trigger v-tour-step-4"
                         :size="12"
                         title=""
                     />
