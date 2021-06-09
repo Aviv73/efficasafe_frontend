@@ -43,6 +43,7 @@
                         <button
                             v-if="!loggedInUser"
                             class="login-btn"
+                            id="loginBtn"
                             @click="onLogin"
                         >
                             Login
@@ -56,6 +57,7 @@
                         <button
                             v-if="!loggedInUser"
                             class="login-btn"
+                            id="signupBtn"
                             @click="onSignUp"
                         >
                             SignUp

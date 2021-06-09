@@ -26,7 +26,7 @@
                     {{ errorMsg }}
                 </p>
 
-                <button @click="onResetPass" class="btn">
+                <button @click="onResetPass" class="btn" id="changePassBtn">
                     Change Password
                 </button>
             </div>
