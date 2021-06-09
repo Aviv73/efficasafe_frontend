@@ -15,4 +15,5 @@ export const EV_clear_autocomplete = 'clear-autocomplete';
 export const EV_edit_interaction_failed = 'edit-interaction-failed';
 export const EV_set_tree_view_selection = 'set_tree_view_selection';
 export const EV_sign_up_modal = 'open_sign_up_modal';
+export const EV_sortby_side_swaped = 'sortby_side_swaped';
 
