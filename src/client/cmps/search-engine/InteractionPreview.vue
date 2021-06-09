@@ -23,7 +23,7 @@
                                 title=""
                             />
                             <interaction-capsules
-                                :name="interaction.name"
+                                :name="interactionName"
                                 :color="getInteractionColor(interaction.recommendation)"
                                 :vInteractionCount="getVinteractionsCount(interaction)"
                                 :localize="!isCompoundPart"
@@ -171,6 +171,7 @@
 </template>
 
 <script>
+import { eventBus, EV_sortby_side_swaped } from '@/cms/services/eventBus.service';
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 
 import Collapse from '@/client/cmps/common/Collapse';
@@ -214,7 +215,16 @@ export default {
     },
     data() {
         return {
-            pathwayRefCount: 0
+            pathwayRefCount: 0,
+            primarySideInView: 1
+        }
+    },
+    computed: {
+        interactionName() {
+            if (this.primarySideInView === 1) {
+                return this.interaction.name;
+            }
+            return this.interaction.name.split(' & ').reverse().join(' & ');
         }
     },
     methods: {
@@ -353,10 +363,17 @@ export default {
         },
         getInteractionColor(recommendation) {
             return interactionUIService.getInteractionColor(recommendation);
+        },
+        swapSideNames(side) {
+            this.primarySideInView = side;
         }
     },
     created() {
         this.getPathwayRefsCount();
+        eventBus.$on(EV_sortby_side_swaped, this.swapSideNames);
+    },
+    beforeDestroy() {
+        eventBus.$off(EV_sortby_side_swaped, this.swapSideNames);
     },
     components: {
         Collapse,

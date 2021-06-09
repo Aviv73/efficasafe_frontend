@@ -115,6 +115,8 @@
 </template>
 
 <script>
+import { eventBus, EV_sortby_side_swaped } from '@/cms/services/eventBus.service';
+
 import InteractionPreview from '@/client/cmps/search-engine/InteractionPreview';
 import Tooltip from '@/client/cmps/common/Tooltip';
 import MonitorSummary from '@/client/cmps/search-engine/MonitorSummary';
@@ -166,8 +168,10 @@ export default {
             return (interaction.side2Material) ? `${interaction._id}-${interaction.side2Material._id}` : interaction._id;
         },
         changeSortBySide() {
-          if (this.sortBySide === 1) this.sortBySide = 2;
-          else this.sortBySide = 1;
+            if (this.sortBySide === 1) this.sortBySide = 2;
+            else this.sortBySide = 1;
+
+            eventBus.$emit(EV_sortby_side_swaped, this.sortBySide);
         }
     },
     components: {
