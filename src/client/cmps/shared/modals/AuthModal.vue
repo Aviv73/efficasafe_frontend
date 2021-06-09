@@ -97,6 +97,9 @@ export default {
                 this.lock.hide();
                 this.signUpModal = true;
             }
+            if (user) {
+                window.dataLayer.push({ authenticatedSuccessfully: user.sub.split('|') });
+            }
         },
     },
     mounted() {
