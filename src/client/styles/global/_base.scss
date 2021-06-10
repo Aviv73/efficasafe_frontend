@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
+*::selection {
+    background: $clr2;
+    color: $white;
+}
+
 html {
     scroll-behavior: smooth;
 }
