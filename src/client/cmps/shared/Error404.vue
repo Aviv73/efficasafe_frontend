@@ -1,6 +1,6 @@
 <template>
     <section
-        class="error-404"
+        class="error-404 main-container"
     >
         <svg
             width="723"
