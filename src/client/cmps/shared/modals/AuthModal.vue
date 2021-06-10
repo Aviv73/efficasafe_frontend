@@ -98,7 +98,7 @@ export default {
                 this.signUpModal = true;
             }
             if (user) {
-                window.dataLayer.push({ authenticatedSuccessfully: user.sub.split('|') });
+                window.dataLayer.push({ authenticatedSuccessfully: user.sub.split('|')[0] });
             }
         },
     },
