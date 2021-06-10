@@ -307,7 +307,7 @@ export default {
             dBankTotal: 0,
             positiveInteractions: [],
             msg: '',
-            isViewVertical: storageService.load('view', true) === 'vertical',
+            isViewVertical: storageService.load('view', true) === 'vertical' && (this.$route.name !== 'Boosters' && this.$route.name !== 'Monitor'),
             scrollBarWidth: '0px',
             routerTransitionName: '',
             sortOptions: null,
@@ -349,8 +349,10 @@ export default {
                 'Boosters': 3,
                 'Monitor': 4
             };
-            if (to.name === 'Boosters') {
+            if (to.name === 'Boosters' || to.name === 'Monitor') {
                 this.isViewVertical = false;
+            } else {
+                this.isViewVertical = storageService.load('view', true) === 'vertical';
             }
             this.routerTransitionName = (routesOrder[to.name] < routesOrder[from.name]) ? 'slide-right' : 'slide-left';
         }
