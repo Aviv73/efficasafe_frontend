@@ -324,4 +324,8 @@
         display: flex;
         flex-direction: column;
     }
+    [alt=Loader] {
+        display: block;
+        margin: 20vh auto;
+    }
 }

@@ -347,6 +347,9 @@ export default {
                 'Boosters': 3,
                 'Monitor': 4
             };
+            if (to.name === 'Boosters') {
+                this.isViewVertical = false;
+            }
             this.routerTransitionName = (routesOrder[to.name] < routesOrder[from.name]) ? 'slide-right' : 'slide-left';
         }
     },
