@@ -10,6 +10,7 @@
             @closeModal="authModal = false"
             :allowLogin="allowLogin"
         />
+        <user-msg />
     </div>
 </template>
 
@@ -17,6 +18,7 @@
 import Navbar from '@/client/cmps/Navbar';
 import MainFooter from '@/client/cmps/MainFooter';
 import AuthModal from '@/client/cmps/shared/modals/AuthModal';
+import UserMsg from '@/client/cmps/UserMsg.vue';
 
 export default {
     name: 'App',
@@ -45,6 +47,7 @@ export default {
         Navbar,
         MainFooter,
         AuthModal,
+        UserMsg
     },
 };
 </script>
