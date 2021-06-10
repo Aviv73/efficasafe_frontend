@@ -503,12 +503,4 @@
         transform: translate(100%, 0);
         opacity: 0;
     }
-    
-    .fade-enter-active,
-    .fade-leave-active {
-        transition: opacity .6s linear;
-    }
-    .fade-enter, .fade-leave-to {
-        opacity: 0;
-    }
 }
