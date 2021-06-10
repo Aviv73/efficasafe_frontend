@@ -211,6 +211,7 @@
                                     v-model="isViewVertical"
                                     :value="false"
                                     hidden
+                                    @input="savePrefs('view', 'horizontal')"
                                 />
                                 <mobile-menu-icon title="" />
                             </label>
@@ -221,6 +222,7 @@
                                     v-model="isViewVertical"
                                     :value="true"
                                     hidden
+                                    @input="savePrefs('view', 'vertical')"
                                 />
                                 <mobile-menu-icon title="" />
                             </label>
@@ -305,7 +307,7 @@ export default {
             dBankTotal: 0,
             positiveInteractions: [],
             msg: '',
-            isViewVertical: false,
+            isViewVertical: storageService.load('view', true) === 'vertical',
             scrollBarWidth: '0px',
             routerTransitionName: '',
             sortOptions: null,
@@ -987,6 +989,9 @@ export default {
             const approvedUse = this.$store.getters.loggedInUser ? this.$store.getters.loggedInUser.approvedUse : false;
             if (approvedUse || didApproved) return;
             this.isDisclaimerActive = true;
+        },
+        savePrefs(key, val) {
+            storageService.store(key, val, true);
         },
         reset() {
             this.materials = [];
