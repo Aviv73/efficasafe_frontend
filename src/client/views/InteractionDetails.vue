@@ -29,7 +29,7 @@
                 </div>
             </div>
         </header>
-        <article class="interaction-details-content" v-if="interaction">
+        <article class="interaction-details-content" v-if="!isLoading && ((!isVirtual && interaction) || (isVirtual && interaction && side2Material))">
             <header class="interaction-details-content-header">
                 <div class="main-container">
                     <div class="flex-center p-relative">
@@ -254,6 +254,12 @@
                 </div>
             </footer>
         </article>
+        <error-404 v-else-if="!isLoading && ((!isVirtual && !interaction) || (isVirtual && (!interaction || !side2Material)))" />
+        <img
+            v-else-if="isLoading"
+            :src="require('@/client/assets/icons/loader.gif')"
+            alt="Loader"
+        />
     </section>
 </template>
 
@@ -267,6 +273,7 @@ import ReferenceList from '@/client/cmps/interaction-details/ReferenceList';
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 import Tooltip from '@/client/cmps/common/Tooltip';
 import Collapse from '@/client/cmps/common/Collapse';
+import Error404 from '@/client/cmps/shared/Error404';
 
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
@@ -406,6 +413,10 @@ export default {
             const { id, matId } = this.$route.params;
             if (!this.isVirtual) {
                 const interaction = await this.$store.dispatch({ type: 'loadInteraction', id });
+                if (!interaction) {
+                    this.isLoading = false;
+                    return;
+                }
                 const [ side2Material, { refs, pathways, effectOnDrugMetabolism } ] = await Promise.all([
                     this.$store.dispatch({ type: 'loadMaterial', matId: interaction.side2Material._id }),
                     this.$store.dispatch({ type: 'loadMaterial', matId: interaction.side1Material._id })
@@ -421,6 +432,10 @@ export default {
                     this.$store.dispatch({ type: 'loadInteraction', id }),
                     this.$store.dispatch({ type: 'loadMaterial', matId })
                 ]);
+                if (!interaction || !material) {
+                    this.isLoading = false;
+                    return;
+                }
                 const { refs, pathways, effectOnDrugMetabolism } = await this.$store.dispatch({
                     type: 'loadMaterial',
                     matId: interaction.side1Material._id
@@ -435,6 +450,7 @@ export default {
             this.isLoading = false;
         },
         sortInteractionRefs() {
+            if (!this.interaction) return;
             const txt = `${this.interaction.summary} ${this.interaction.reviewOfStudies}`;
             const sortedRefs = interactionUIService.getSortedRefs(
                 txt,
@@ -487,6 +503,7 @@ export default {
         Side2Pathways,
         Side1Pathways,
         ReferenceList,
+        Error404,
         CancelIcon: () => import('vue-material-design-icons/Cancel'),
         AlertCircleOutlineIcon: () => import('vue-material-design-icons/AlertCircleOutline'),
         CheckIcon: () => import('vue-material-design-icons/Check'),

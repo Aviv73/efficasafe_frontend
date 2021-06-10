@@ -29,7 +29,7 @@
                 </div>
             </div>
         </header>
-        <article class="interaction-details-content" v-if="interaction">
+        <article class="interaction-details-content" v-if="!isLoading && interaction">
             <header class="interaction-details-content-header">
                 <div class="main-container">
                     <div class="flex-center p-relative">
@@ -156,6 +156,12 @@
                 </div>
             </footer>
         </article>
+        <error-404 v-else-if="!isLoading && !interaction" />
+        <img
+            v-else-if="isLoading"
+            :src="require('@/client/assets/icons/loader.gif')"
+            alt="Loader"
+        />
     </section>
 </template>
 
@@ -166,6 +172,7 @@ import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 import Tooltip from '@/client/cmps/common/Tooltip';
 import ReferenceList from '@/client/cmps/interaction-details/ReferenceList';
+import Error404 from '@/client/cmps/shared/Error404';
 
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
 import PrinterIcon from 'vue-material-design-icons/Printer';
@@ -279,6 +286,7 @@ export default {
         InformationOutlineIcon,
         Tooltip,
         ReferenceList,
+        Error404,
         CancelIcon: () => import('vue-material-design-icons/Cancel'),
         AlertCircleOutlineIcon: () => import('vue-material-design-icons/AlertCircleOutline'),
         CheckIcon: () => import('vue-material-design-icons/Check'),
