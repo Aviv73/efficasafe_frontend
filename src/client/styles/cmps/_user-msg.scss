@@ -27,6 +27,7 @@
         }
 
         &-title {
+            display: block;
             font-family: roboto-medium, sans-serif;
             font-weight: 500;
             position: relative;
@@ -35,21 +36,27 @@
             @include for-narrow-layout {
                 margin-block-end: 0;
             }
-        }
-        &-seperator {
-            display: none;
-            @include for-narrow-layout {
-                display: initial;
+            @include for-middle-layout {
+                display: inline;
             }
         }
         &-txt {
             margin-block-end: rem(12px);
+            
             @include for-narrow-layout {
+                padding-inline-end: rem(12px);
                 margin-block-end: 0;
             }
         }
         &-link {
             text-decoration: underline;
+            display: block;
+            margin-block-start: rem(6px);
+            
+            @include for-middle-layout {
+                margin-block-start: 0;
+                display: inline;
+            }
         }
         &-btn {
             min-width: max-content;

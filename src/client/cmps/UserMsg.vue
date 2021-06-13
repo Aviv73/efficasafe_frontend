@@ -6,9 +6,11 @@
                     v-if="isCookieNotice"
                     class="user-msg-cookie-notice"
                 >
-                    <h6 class="user-msg-cookie-notice-title">This site uses cookies</h6>
-                    <span class="user-msg-cookie-notice-seperator">|</span>
+                    <span />
                     <p class="user-msg-cookie-notice-txt">
+                        <span class="user-msg-cookie-notice-title">
+                            This site uses cookies.
+                        </span>
                         Some of them are essential while others are used
                         to ensure you get the best browsing experience.
                         <router-link
