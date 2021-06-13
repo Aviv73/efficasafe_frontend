@@ -1,0 +1,89 @@
+.user-msg {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 5;
+    background-color: $yellow;
+    color: $clr-txt-darker;
+    font-size: rem(18px);
+    line-height: rem(22px);
+    text-align: center;
+    box-shadow: 0px -3px 6px rgba($black, .2);
+    padding: rem(34px) 0;
+
+    @include for-narrow-layout {
+        padding: rem(24px) rem(18px);
+    }
+
+    &-cookie-notice {
+        display: flex;
+        flex-direction: column;
+
+        @include for-narrow-layout {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        &-title {
+            display: block;
+            font-family: roboto-medium, sans-serif;
+            font-weight: 500;
+            position: relative;
+            margin-block-end: rem(12px);
+
+            @include for-narrow-layout {
+                margin-block-end: 0;
+            }
+            @include for-middle-layout {
+                display: inline;
+            }
+        }
+        &-txt {
+            margin-block-end: rem(12px);
+            
+            @include for-narrow-layout {
+                padding-inline-end: rem(12px);
+                margin-block-end: 0;
+            }
+        }
+        &-link {
+            text-decoration: underline;
+            display: block;
+            margin-block-start: rem(6px);
+            
+            @include for-middle-layout {
+                margin-block-start: 0;
+                display: inline;
+            }
+        }
+        &-btn {
+            min-width: max-content;
+            padding: rem(4px) rem(8px);
+            border: 1px solid $clr-txt-darker;
+            border-radius: 3px;
+            text-transform: uppercase;
+            transition: background-color .3s linear, color .3s linear;
+
+            @include hover-supported {
+                color: $yellow;
+                background-color: $clr-txt-darker;
+            }
+        }
+    }
+
+    &-close-btn {
+        position: absolute;
+        right: 0;
+        top: -24px;
+
+        @include for-narrow-layout {
+            top: calc(50% - 9px);
+        }
+
+        .close-icon {
+            height: 18px;
+        }
+    }
+}

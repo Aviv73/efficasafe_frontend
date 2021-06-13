@@ -272,6 +272,7 @@
 <script>
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import { storageService } from '@/cms/services/storage.service';
+import { eventBus, EV_show_user_msg } from '@/cms/services/eventBus.service';
 
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import ShareModal from '@/client/cmps/shared/modals/ShareModal';
@@ -306,7 +307,6 @@ export default {
             dBankPageCount: 0,
             dBankTotal: 0,
             positiveInteractions: [],
-            msg: '',
             isViewVertical: storageService.load('view', true) === 'vertical' && (this.$route.name !== 'Boosters' && this.$route.name !== 'Monitor'),
             scrollBarWidth: '0px',
             routerTransitionName: '',
@@ -455,10 +455,6 @@ export default {
             });
         },
         formatedInteractions() {
-            if ((this.$route.query.q && this.$route.query.q.length) === 1 && this.materials.length > 1) {
-                this.setMsg('Compound as a single result isn\'t supported, Please provide more material/s');
-                return [];
-            }
             let formatedInteractions = this.interactions.reduce((acc, interaction) => {
                 if (this.materials.length === 1 && this.materials[0]._id === interaction.side1Material._id) acc.push(interaction);
                 else if (!interaction.side2Label) {
@@ -671,6 +667,12 @@ export default {
         async getResults() {
             this.isLoading = true;
             await this.getMaterials();
+            if (this.$route.query.q && this.$route.query.q.length === 1 && this.materials.length > 1) {
+                eventBus.$emit(EV_show_user_msg, 'Compound as a single result isn\'t supported, Please insert more material/s', 15000);
+                this.reset(false);
+                this.isLoading = false;
+                return;
+            }
             const prms = (this.$route.name === 'Boosters') ? [ this.getPositives() ] : [
                 this.getInteractions(),
                 this.getDBankInteractions()
@@ -747,7 +749,7 @@ export default {
                 isSearchResults: true,
                 q: this.$route.query.q,
             };
-            const materials = (await this.$store.dispatch({ type: 'getMaterials', criteria }));
+            const materials = await this.$store.dispatch({ type: 'getMaterials', criteria });
             this.materials = this.sortMaterials(materials);
             this.$store.commit({ type: 'makeMaterialNamesMap', materials });
             this.checkForIncludedMaterials();
@@ -969,9 +971,6 @@ export default {
             }
             return require(`@/client/assets/icons/types/${fileName}.svg`);
         },
-        setMsg(msg) {
-            this.msg = msg;
-        },
         setScrollBarWidth() {
             this.scrollBarWidth = (window.innerWidth - document.body.clientWidth) + 'px';
         },
@@ -995,8 +994,10 @@ export default {
         savePrefs(key, val) {
             storageService.store(key, val, true);
         },
-        reset() {
-            this.materials = [];
+        reset(resetMaterials = true) {
+            if (resetMaterials) {
+                this.materials = [];
+            }
             this.interactions = [];
             this.dBankInteractions = [];
             this.positiveInteractions = [];

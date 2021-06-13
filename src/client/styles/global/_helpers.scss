@@ -1,4 +1,3 @@
-
 // Layout Helpers
 .main-container {
     max-width: 1440px;
@@ -41,7 +40,6 @@
     visibility: hidden;
 }
 
-
 // Typography helpers
 .font-bold {
     font-family: roboto-bold, sans-serif;
@@ -63,14 +61,13 @@
 .clip-txt {
     display: inline-block;
     width: 100%;
-    overflow: hidden; 
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 .w-max {
     width: max-content !important;
 }
-
 
 // Aspect-Ratio Helpers
 .ratio-16-9 {
@@ -84,4 +81,14 @@
 }
 .ratio-poster {
     @include aspect-ratio(100, 150);
+}
+
+// Vue.js Transitions
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.6s linear;
+}
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
 }

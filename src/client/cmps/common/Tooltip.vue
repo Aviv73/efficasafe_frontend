@@ -6,6 +6,7 @@
         :class="{
             'hoverable': on === 'hover',
             'tooltip-active': isActive,
+            'stand-alone': standAlone
         }"
         ref="activator"
         @focus="onToggle(true)"
@@ -127,6 +128,10 @@ export default {
         wrapEl: {
             type: String,
             default: 'div'
+        },
+        standAlone: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -211,11 +216,16 @@ export default {
         &:focus {
             outline: none;
         }
+
         &.tooltip-active {
             .activator {
                 background-color: darken(white, 5%);
             }
         }
+        &.stand-alone {
+            display: block;
+        }
+
         @media not all and (pointer: coarse) {
             .activator:hover {
                 background-color: darken(white, 5%);
