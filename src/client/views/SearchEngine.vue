@@ -911,12 +911,14 @@ export default {
             }, []);
             dups.forEach(material => {
                 const queries = this.$store.getters.materialNamesMap[material.name];
-                queries.forEach((query, idx) => {
+                for (let i = queries.length - 1; i >= 0; i--) {
+                    const query = queries[i];
                     if (this.$store.getters.queryApearanceCount(query) < 2) {
                         const includedMaterial = this.materials.find(m => m._id === material._id && m.userQuery === query);
-                        includedMaterial.isIncluded = idx !== 0;
+                        includedMaterial.isIncluded = true;
+                        break;
                     }
-                });
+                }
             });
         },
         addMaterials(query) {
