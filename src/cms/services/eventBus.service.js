@@ -17,4 +17,5 @@ export const EV_set_tree_view_selection = 'set_tree_view_selection';
 export const EV_sign_up_modal = 'open_sign_up_modal';
 export const EV_sortby_side_swaped = 'sortby_side_swaped';
 export const EV_show_user_msg = 'show-user-msg';
+export const EV_show_cookie_notice = 'show-cookie-notice';
 

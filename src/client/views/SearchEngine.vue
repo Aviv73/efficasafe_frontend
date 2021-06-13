@@ -668,7 +668,7 @@ export default {
             this.isLoading = true;
             await this.getMaterials();
             if (this.$route.query.q && this.$route.query.q.length === 1 && this.materials.length > 1) {
-                eventBus.$emit(EV_show_user_msg, 'Compound as a single result isn\'t supported, Please insert more material/s', 5000);
+                eventBus.$emit(EV_show_user_msg, 'Compound as a single result isn\'t supported, Please insert more material/s', 15000);
                 this.reset(false);
                 this.isLoading = false;
                 return;

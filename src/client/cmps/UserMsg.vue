@@ -2,7 +2,35 @@
     <transition name="fade">
         <aside class="user-msg" v-if="isActive">
             <div class="main-container">
-                <div class="flex-center p-relative">
+                <div
+                    v-if="isCookieNotice"
+                    class="user-msg-cookie-notice"
+                >
+                    <h6 class="user-msg-cookie-notice-title">This site uses cookies</h6>
+                    <span class="user-msg-cookie-notice-seperator">|</span>
+                    <p class="user-msg-cookie-notice-txt">
+                        Some of them are essential while others are used
+                        to ensure you get the best browsing experience.
+                        <router-link
+                            class="user-msg-cookie-notice-link"
+                            to="/privacy-statement"
+                        >
+                            Learn more
+                        </router-link>
+                    </p>
+                    <div>
+                        <button
+                            class="user-msg-cookie-notice-btn"
+                            @click="dismissMsg"
+                        >
+                            Got it
+                        </button>
+                    </div>
+                </div>
+                <div
+                    v-else
+                    class="flex-center p-relative"
+                >
                     <p>
                         {{ msg }}
                     </p> 
@@ -16,7 +44,7 @@
 </template>
 
 <script>
-import { eventBus, EV_show_user_msg } from '@/cms/services/eventBus.service';
+import { eventBus, EV_show_user_msg, EV_show_cookie_notice } from '@/cms/services/eventBus.service';
 
 import CloseIcon from 'vue-material-design-icons/Close';
 
@@ -24,6 +52,7 @@ export default {
     timeoutId: null,
     data() {
         return {
+            isCookieNotice: false,
             isActive: false,
             msg: ''
         }
@@ -36,23 +65,32 @@ export default {
             this.msg = msg;
             this.isActive = true;
 
-            clearTimeout(this.$options.timeoutId);
-            this.$options.timeoutId = setTimeout(() => {
-                this.isActive = false;
-                this.msg = '';
-            }, timeout);
+            if (timeout) {
+                clearTimeout(this.$options.timeoutId);
+                this.$options.timeoutId = setTimeout(() => {
+                    this.isActive = false;
+                    this.msg = '';
+                }, timeout);
+            }
+        },
+        showCookieNotice() {
+            this.isActive = true;
+            this.isCookieNotice = true;
         },
         dismissMsg() {
             clearTimeout(this.$options.timeoutId);
             this.isActive = false;
+            this.isCookieNotice = false;
             this.msg = '';
         }
     },
     created() {
         eventBus.$on(EV_show_user_msg, this.showMsg);
+        eventBus.$on(EV_show_cookie_notice, this.showCookieNotice);
     },
     beforeDestroy() {
         eventBus.$off(EV_show_user_msg, this.showMsg);
+        eventBus.$off(EV_show_cookie_notice, this.showCookieNotice);
     }
 }
 </script>
