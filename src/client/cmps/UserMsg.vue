@@ -21,7 +21,7 @@
                     <div>
                         <button
                             class="user-msg-cookie-notice-btn"
-                            @click="dismissMsg"
+                            @click="acceptCookies"
                         >
                             Got it
                         </button>
@@ -45,6 +45,7 @@
 
 <script>
 import { eventBus, EV_show_user_msg, EV_show_cookie_notice } from '@/cms/services/eventBus.service';
+import { storageService } from '@/cms/services/storage.service';
 
 import CloseIcon from 'vue-material-design-icons/Close';
 
@@ -72,6 +73,11 @@ export default {
                     this.msg = '';
                 }, timeout);
             }
+        },
+        acceptCookies() {
+            this.isActive = false;
+            this.isCookieNotice = false;
+            storageService.store('cookie-consent', true);
         },
         showCookieNotice() {
             this.isActive = true;
