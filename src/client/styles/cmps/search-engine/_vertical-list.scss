@@ -43,6 +43,25 @@
                 transform: translateY(-100%);
                 box-shadow: $slight-border-bottom;
             }
+
+            &-notf {
+                color: $red;
+                position: absolute;
+                z-index: 1;
+                transform: translateX(90px);
+                cursor: help;
+                
+                @include for-middle-layout {
+                    transform: translateX(110px);
+                }
+            }
+            &-notf-msg {
+                max-width: rem(220px);
+                padding: rem(4px) rem(6px);
+                font-size: rem(16px);
+                line-height: rem(22px);
+                color: $red;
+            }
         }
     }
     &-msg {

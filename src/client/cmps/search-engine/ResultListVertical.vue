@@ -52,29 +52,68 @@
                         v-for="interaction in lists.reds[interactions]"
                         :key="interaction._id"
                     >   
-                    <component
-                        :is="getPreviewWrapEl(interaction)"
-                        :to="getInteractionLink(interaction)"
+                    <tooltip
+                        v-if="interaction.isLead"
+                        bottom
+                        stand-alone
+                        :offsetY="16"
+                        :offsetX="2"
                     >
-                        <interaction-capsules
-                            :title="interaction.evidenceLevel || interaction.evidence_level"
-                            :name="getInteractionName(interaction)"
-                            :color="getInteractionColor('avoid coadministration')"
-                            :vInteractionCount="0"
-                            :showDraftName="false"
-                            localize
-                            dense
-                        />
-                    </component>
+                        <template #content>
+                            <p class="vertical-list-lists-row-notf-msg">
+                                There are multiple interactions for these materials but they are visible only in the default view
+                            </p>
+                        </template>
+                        <span
+                            class="vertical-list-lists-row-notf"
+                        >
+                            <bell-ring-icon :size="18" title="" />
+                        </span>
+                    </tooltip>
+                        <component
+                            :is="getPreviewWrapEl(interaction)"
+                            :to="getInteractionLink(interaction)"
+                        >
+                            <interaction-capsules
+                                :title="interaction.evidenceLevel || interaction.evidence_level"
+                                :name="getInteractionName(interaction)"
+                                :color="getInteractionColor('avoid coadministration')"
+                                :vInteractionCount="0"
+                                :showDraftName="false"
+                                localize
+                                dense
+                            />
+                        </component>
                     </li>
                 </ul>
                 <ul>
                     <li
-                        class="vertical-list-lists-row"
-                        :class="{ 'longest': isLongestList(lists.yellows) }"
                         v-for="interaction in lists.yellows[interactions]"
                         :key="interaction._id"
+                        class="vertical-list-lists-row"
+                        :class="{
+                            'longest': isLongestList(lists.yellows)
+                        }"
                     >
+                        <tooltip
+                            v-if="interaction.isLead"
+                            bottom
+                            stand-alone
+                            :offsetY="16"
+                            :offsetX="2"
+                        >
+                            <template #content>
+                                <p class="vertical-list-lists-row-notf-msg">
+                                    There are multiple interactions for these materials but they are visible only in the default view
+                                </p>
+                            </template>
+                            <span
+                                v-if="interaction.isLead"
+                                class="vertical-list-lists-row-notf"
+                            >
+                                <bell-ring-icon :size="18" title="" />
+                            </span>
+                        </tooltip>
                         <component
                             :is="getPreviewWrapEl(interaction)"
                             :to="getInteractionLink(interaction)"
@@ -98,20 +137,39 @@
                         v-for="interaction in lists.greens[interactions]"
                         :key="interaction._id"
                     >
-                    <component
-                        :is="getPreviewWrapEl(interaction)"
-                        :to="getInteractionLink(interaction)"
-                    >
-                        <interaction-capsules
-                            :title="interaction.evidenceLevel || interaction.evidence_level"
-                            :name="getInteractionName(interaction)"
-                            :color="getInteractionColor('coadministration is possible')"
-                            :vInteractionCount="0"
-                            :showDraftName="false"
-                            localize
-                            dense
-                        />
-                    </component>
+                        <tooltip
+                            v-if="interaction.isLead"
+                            bottom
+                            stand-alone
+                            :offsetY="16"
+                            :offsetX="2"
+                        >
+                            <template #content>
+                                <p class="vertical-list-lists-row-notf-msg">
+                                    There are multiple interactions for these materials but they are visible only in the default view
+                                </p>
+                            </template>
+                            <span
+                                v-if="interaction.isLead"
+                                class="vertical-list-lists-row-notf"
+                            >
+                                <bell-ring-icon :size="18" title="" />
+                            </span>
+                        </tooltip>
+                        <component
+                            :is="getPreviewWrapEl(interaction)"
+                            :to="getInteractionLink(interaction)"
+                        >
+                            <interaction-capsules
+                                :title="interaction.evidenceLevel || interaction.evidence_level"
+                                :name="getInteractionName(interaction)"
+                                :color="getInteractionColor('coadministration is possible')"
+                                :vInteractionCount="0"
+                                :showDraftName="false"
+                                localize
+                                dense
+                            />
+                        </component>
                     </li>
                 </ul>
             </main>
@@ -148,8 +206,10 @@
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 
 import ListPagination from '@/client/cmps/common/ListPagination';
+import Tooltip from '@/client/cmps/common/Tooltip';
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 
+import BellRingIcon from 'vue-material-design-icons/BellRing';
 import InteractionIcon from '@/client/cmps/common/icons/InteractionIcon';
 import PageFirstIcon from 'vue-material-design-icons/PageFirst';
 import PageLastIcon from 'vue-material-design-icons/PageLast';
@@ -261,6 +321,7 @@ export default {
             Object.values(seenVinteractionsMap).forEach(interactions => {
                 if (interactions.length <= 1) return;
                 const leadInteraction = this.getMoreSeverInteraction(interactions);
+                leadInteraction.isLead = true;
                 interactions = interactions.filter(i => i._id !== leadInteraction._id);
                 interactions.forEach(({ _id }) => {
                     Object.values(lists).forEach(list => {
@@ -325,7 +386,9 @@ export default {
         InteractionCapsules,
         ListPagination,
         PageFirstIcon,
-        PageLastIcon
+        PageLastIcon,
+        BellRingIcon,
+        Tooltip
     }
 }
 </script>
