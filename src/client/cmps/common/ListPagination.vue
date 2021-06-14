@@ -77,7 +77,7 @@ export default {
             if (this.page - (this.itemPerSide + 1) < 0) {
                 from = 0;
                 const diff = Math.abs(this.page - (this.itemPerSide + 1));
-                return range.slice(-diff).concat(range.slice(from, this.page + this.itemPerSide));
+                return [ ...new Set([ ...range.slice(-diff), ...range.slice(from, this.page + this.itemPerSide) ]) ];
             } else if (this.page + this.itemPerSide > this.pageCount) {
                 const diff = this.page + this.itemPerSide - this.pageCount;
                 return range.slice(from, this.page + this.itemPerSide).concat(range.slice(0, diff));
