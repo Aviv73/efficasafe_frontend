@@ -1,11 +1,13 @@
 <template>
-    <section class="user-filter">
-        <div class="filter-input">
+    <section class="user-filter px-4">
+        <div class="d-flex align-center justify-space-between">
             <v-text-field
+                style="max-width: 50%"
+                class="mr-8"
                 label="Search User By name or email"
                 v-model="filterBy.q"
             />
-            <section class="d-flex">
+            <section class="d-flex align-center">
                 <v-text-field
                     class="small-search mr-9"
                     label="Search By Invoice number"
@@ -24,6 +26,7 @@
 </template>
 
 <script>
+
 export default {
     data() {
         return {
@@ -60,10 +63,3 @@ export default {
     },
 };
 </script>
-
-<style scoped lang="scss">
-.filter-input {
-    margin: 0 auto;
-    width: 50%;
-}
-</style>
