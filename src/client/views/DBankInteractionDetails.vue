@@ -157,10 +157,9 @@
             </footer>
         </article>
         <error-404 v-else-if="!isLoading && !interaction" />
-        <img
+        <loader
+            class="loader"
             v-else-if="isLoading"
-            :src="require('@/client/assets/icons/loader.gif')"
-            alt="Loader"
         />
     </section>
 </template>
@@ -174,6 +173,7 @@ import Tooltip from '@/client/cmps/common/Tooltip';
 import ReferenceList from '@/client/cmps/interaction-details/ReferenceList';
 import Error404 from '@/client/cmps/shared/Error404';
 
+import Loader from '@/client/cmps/common/icons/Loader';
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
 import PrinterIcon from 'vue-material-design-icons/Printer';
 import ShareIcon from 'vue-material-design-icons/Share';
@@ -287,6 +287,7 @@ export default {
         Tooltip,
         ReferenceList,
         Error404,
+        Loader,
         CancelIcon: () => import('vue-material-design-icons/Cancel'),
         AlertCircleOutlineIcon: () => import('vue-material-design-icons/AlertCircleOutline'),
         CheckIcon: () => import('vue-material-design-icons/Check'),
