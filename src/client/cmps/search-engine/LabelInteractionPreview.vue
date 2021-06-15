@@ -85,19 +85,13 @@
                                 </div>
                             </template>
                             <template #de-activator>
-                                <img    
-                                    src="@/client/assets/icons/collapse-toggle.svg"
-                                    alt="Chevron up circle icon"
-                                />
+                                <collapse-toggle-icon />
                             </template>
                         </collapse>
                     </component>
                 </template>
                 <template #de-activator>
-                    <img    
-                        src="@/client/assets/icons/collapse-toggle.svg"
-                        alt="Chevron up circle icon"
-                    />
+                    <collapse-toggle-icon />
                 </template>
             </collapse>
         </div>
@@ -154,19 +148,12 @@
                         </div>
                     </template>
                     <template #de-activator>
-                        <img    
-                            src="@/client/assets/icons/collapse-toggle.svg"
-                            alt="Chevron up circle icon"
-                        />
+                        <collapse-toggle-icon />
                     </template>
                 </collapse>
             </component>
         </div>
-        <img
-            v-if="isLoading"
-            :src="require('@/client/assets/icons/loader.gif')"
-            alt="Loader"
-        />
+        <loader v-if="isLoading" class="loader" />
     </section>
 </template>
 
@@ -177,6 +164,8 @@ import Collapse from '@/client/cmps/common/Collapse';
 import LongTxt from '@/client/cmps/common/LongTxt';
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 
+import Loader from '@/client/cmps/common/icons/Loader';
+import CollapseToggleIcon from '@/client/cmps/common/icons/CollapseToggleIcon';
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
 import MinusIcon from 'vue-material-design-icons/Minus';
@@ -363,7 +352,9 @@ export default {
         ChevronUpIcon,
         LongTxt,
         ChevronDownIcon,
-        MinusIcon
+        MinusIcon,
+        CollapseToggleIcon,
+        Loader
     }
 }
 </script>

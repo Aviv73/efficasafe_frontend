@@ -161,10 +161,7 @@
                 </div>
             </template>
             <template #de-activator>
-                <img    
-                    src="@/client/assets/icons/collapse-toggle.svg"
-                    alt="Chevron up circle icon"
-                />
+                <collapse-toggle-icon />
             </template>
         </collapse>
     </section>
@@ -181,6 +178,7 @@ import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 import LabelInteractionPreview from '@/client/cmps/search-engine/LabelInteractionPreview';
 import PositiveInteractionPreview from '@/client/cmps/search-engine/PositiveInteractionPreview';
 
+import CollapseToggleIcon from '@/client/cmps/common/icons/CollapseToggleIcon';
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
 import MinusIcon from 'vue-material-design-icons/Minus';
@@ -384,7 +382,8 @@ export default {
         Tooltip,
         ChevronDownIcon,
         MinusIcon,
-        PositiveInteractionPreview
+        PositiveInteractionPreview,
+        CollapseToggleIcon
     }
 }
 </script>

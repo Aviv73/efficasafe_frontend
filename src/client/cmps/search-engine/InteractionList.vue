@@ -4,10 +4,7 @@
             v-if="isLoading"
             class="flex-center"
         >
-            <img
-                :src="require('@/client/assets/icons/loader.gif')"
-                alt="Loader"
-            />
+            <loader />
         </div>
         <result-list-horizontal
             v-else-if="!isLoading && !isVertical"
@@ -51,6 +48,7 @@ import ResultListHorizontal from '@/client/cmps/search-engine/ResultListHorizont
 import ResultListVertical from '@/client/cmps/search-engine/ResultListVertical';
 import ListPagination from '@/client/cmps/common/ListPagination';
 
+import Loader from '@/client/cmps/common/icons/Loader';
 import PageFirstIcon from 'vue-material-design-icons/PageFirst';
 import PageLastIcon from 'vue-material-design-icons/PageLast';
 
@@ -92,7 +90,8 @@ export default {
         ResultListVertical,
         ListPagination,
         PageFirstIcon,
-        PageLastIcon
+        PageLastIcon,
+        Loader
     },
 };
 </script>

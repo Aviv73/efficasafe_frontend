@@ -41,10 +41,7 @@
                 </div>
             </template>
             <template #de-activator>
-                <img    
-                    src="@/client/assets/icons/collapse-toggle.svg"
-                    alt="Chevron up circle icon"
-                />
+                <collapse-toggle-icon />
             </template>
         </collapse>
     </section>
@@ -53,6 +50,7 @@
 <script>
 import Collapse from '@/client/cmps/common/Collapse';
 
+import CollapseToggleIcon from '@/client/cmps/common/icons/CollapseToggleIcon';
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
 
@@ -117,7 +115,8 @@ export default {
     components: {
         Collapse,
         ChevronUpIcon,
-        ChevronDownIcon
+        ChevronDownIcon,
+        CollapseToggleIcon
     }
 }
 </script>

@@ -255,10 +255,9 @@
             </footer>
         </article>
         <error-404 v-else-if="!isLoading && ((!isVirtual && !interaction) || (isVirtual && (!interaction || !side2Material)))" />
-        <img
+        <loader
+            class="loader"
             v-else-if="isLoading"
-            :src="require('@/client/assets/icons/loader.gif')"
-            alt="Loader"
         />
     </section>
 </template>
@@ -275,6 +274,7 @@ import Tooltip from '@/client/cmps/common/Tooltip';
 import Collapse from '@/client/cmps/common/Collapse';
 import Error404 from '@/client/cmps/shared/Error404';
 
+import Loader from '@/client/cmps/common/icons/Loader';
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
@@ -504,6 +504,7 @@ export default {
         Side1Pathways,
         ReferenceList,
         Error404,
+        Loader,
         CancelIcon: () => import('vue-material-design-icons/Cancel'),
         AlertCircleOutlineIcon: () => import('vue-material-design-icons/AlertCircleOutline'),
         CheckIcon: () => import('vue-material-design-icons/Check'),
