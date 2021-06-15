@@ -129,9 +129,14 @@ export default {
             forgotPasswordLink: `${window.location.origin}/emailPassword`,
             additionalSignUpFields: [
                 {
-                    name: 'full_name',
+                    name: 'nickname',
                     placeholder: 'Your username',
                     icon: `${window.location.origin}/img/icons/account-outline.svg`,
+                    storage: 'root',
+                    validator: (val) => ({
+                        valid: val.length > 0,
+                        hint: 'Username can\'t be blank'
+                    })
                 },
             ],
         };
