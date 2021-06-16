@@ -78,6 +78,7 @@
         left: 50%;
         transform: translateX(-50%);
         width: rem(500px);
+        max-width: 96%;
     }
 
     .close-modal {
@@ -223,6 +224,10 @@
             order: 3;
         }
     }
+}
+
+.auth0-lock.auth0-lock .auth0-lock-cred-pane {
+    height: 110% !important;
 }
 
 .auth0-loading {

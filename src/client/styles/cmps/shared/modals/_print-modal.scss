@@ -55,6 +55,7 @@
                 }
                 .checkbox {
                     &-label {
+                        cursor: pointer;
                         margin-inline-start: rem(24px);
                     }
                 }

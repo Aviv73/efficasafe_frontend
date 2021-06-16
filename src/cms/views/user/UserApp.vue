@@ -21,8 +21,9 @@
 </template>
 
 <script>
-import UserList from '../../cmps/user/UserList';
-import UserFilter from '../../cmps/user/UserFilter.vue';
+import UserList from '@/cms/cmps/user/UserList';
+import UserFilter from '@/cms/cmps/user/UserFilter';
+
 export default {
     data() {
         return {

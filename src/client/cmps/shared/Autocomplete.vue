@@ -104,7 +104,7 @@ export default {
     },
     methods: {
         async getResults(q) {
-            if (!q || q.length < 3) {
+            if (!q) {
                 this.results = [];
                 return;
             }
