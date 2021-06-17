@@ -52,7 +52,7 @@
             @include for-narrow-layout {
                 width: rem(140px);
             }
-            @media (min-width: 1024px) {
+            @include for-middle-layout {
                 width: rem(180px);
             }
         }

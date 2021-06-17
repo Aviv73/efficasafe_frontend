@@ -31,23 +31,7 @@
                     {{ pathway.name }}
                 </button>
             </li>
-            <li class="d-flex">
-                <span
-                    class="un-relevant clip-txt"
-                    v-if="unrelevantPathways.length"
-                >
-                    There is no info on {{ `${materialName}'s` }} effect on: {{ unrelevantPathwayNames }}
-                </span>
-            </li>
         </ul>
-        <span class="d-flex">
-            <span
-                class="un-relevant clip-txt"
-                v-if="!pathways.length && unrelevantPathways.length"
-            >
-                There is no info on {{ `${materialName}'s` }} effect on: {{ unrelevantPathwayNames }}
-            </span>
-        </span>
         <p
             class="active-tab-txt"
             v-show="pathways.length"
@@ -57,6 +41,14 @@
                 side2Refs
             }"
         />
+        <span class="d-flex un-relevant-container">
+            <span
+                class="un-relevant"
+                v-if="unrelevantPathways.length"
+            >
+                There is no info on {{ `${materialName}'s` }} effect on: {{ unrelevantPathwayNames }}
+            </span>
+        </span>
     </section>
 </template>
 

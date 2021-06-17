@@ -1,7 +1,8 @@
 <template>
     <section class="interaction-details">
         <header class="interaction-details-header">
-            <div class="main-container">
+            <div class="interaction-details-header-container">
+                <span class="brim-start" />
                 <div class="flex-space-between">
                     <span class="interaction-details-header-link">
                         <button class="flex-align-center" @click="$router.go(-1)">
@@ -27,10 +28,11 @@
                             :disabled="!loggedInUser"
                             @click="isShareModalActive = true"
                         >
-                            <share-icon title="" />
+                            <share-variant-icon title="" />
                         </button>
                     </span>
                 </div>
+                <span />
             </div>
         </header>
         <article class="interaction-details-content" v-if="!isLoading && interaction">
@@ -52,7 +54,7 @@
                             :style="{ 'background-color': interactionColor }"
                         >
                             <component :is="recommendationIconName" :size="14" />
-                            {{ interaction.recommendation }}
+                            <span class="clip-txt">{{ interaction.recommendation }}</span>
                         </span>
                         <span class="evidence-level">
                             {{ interaction.evidence_level }}
@@ -197,7 +199,7 @@ import ShareModal from '@/client/cmps/shared/modals/ShareModal';
 import Loader from '@/client/cmps/common/icons/Loader';
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
 import PrinterIcon from 'vue-material-design-icons/Printer';
-import ShareIcon from 'vue-material-design-icons/Share';
+import ShareVariantIcon from 'vue-material-design-icons/ShareVariant';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
 
 export default {
@@ -307,7 +309,7 @@ export default {
     components: {
         ChevronLeftIcon,
         PrinterIcon,
-        ShareIcon,
+        ShareVariantIcon,
         InteractionCapsules,
         InformationOutlineIcon,
         Tooltip,
