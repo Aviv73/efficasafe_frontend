@@ -250,20 +250,7 @@
             @include for-narrow-layout {
                 order: 0;
             }
-
-            .print-btn, .share-btn {
-                transition: transform .3s linear;
-
-                @include hover-supported {
-                    transform: scale(1.2);
-                }
-
-                &:disabled {
-                    opacity: .5;
-                    transform: none;
-                    cursor: not-allowed;
-                }
-            }
+            
             .print-btn {
                 display: none;
                 margin-inline-end: rem(24px);

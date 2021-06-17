@@ -16,12 +16,16 @@
                         <button
                             class="print-btn"
                             title="Print"
+                            :disabled="!loggedInUser"
+                            @click="isPrintModalActive = true"
                         >
                             <printer-icon title="" />
                         </button>
                         <button
                             class="share-btn"
                             title="Share"
+                            :disabled="!loggedInUser"
+                            @click="isShareModalActive = true"
                         >
                             <share-icon title="" />
                         </button>
@@ -161,6 +165,21 @@
             class="loader"
             v-else-if="isLoading"
         />
+        <modal-wrap
+            :isActive="isShareModalActive"
+            @close-modal="isShareModalActive = false"
+        >
+            <share-modal @close-modal="isShareModalActive = false" />
+        </modal-wrap>
+        <modal-wrap
+            :isActive="isPrintModalActive"
+            @close-modal="isPrintModalActive = false"
+        >
+            <img
+                src="https://www.habitants.org/var/ezwebin_site/storage/images/la_via_urbana/alojar_mil_millones_de_personas2/work_in_progress/2390822-1-ita-IT/work_in_progress.jpg"
+                alt="Work in progress"
+            />
+        </modal-wrap>
     </section>
 </template>
 
@@ -172,6 +191,8 @@ import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 import Tooltip from '@/client/cmps/common/Tooltip';
 import ReferenceList from '@/client/cmps/interaction-details/ReferenceList';
 import Error404 from '@/client/cmps/shared/Error404';
+import ModalWrap from '@/client/cmps/common/ModalWrap';
+import ShareModal from '@/client/cmps/shared/modals/ShareModal';
 
 import Loader from '@/client/cmps/common/icons/Loader';
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
@@ -184,7 +205,9 @@ export default {
     data() {
         return {
             interaction: null,
-            isLoading: false
+            isLoading: false,
+            isShareModalActive: false,
+            isPrintModalActive: false
         }
     },
     watch: {
@@ -231,6 +254,9 @@ export default {
                 default:
                     return 'circle-outline';
             }
+        },
+        loggedInUser() {
+            return this.$store.getters.loggedInUser;
         }
     },
     methods: {
@@ -288,6 +314,8 @@ export default {
         ReferenceList,
         Error404,
         Loader,
+        ModalWrap,
+        ShareModal,
         CancelIcon: () => import('vue-material-design-icons/Cancel'),
         AlertCircleOutlineIcon: () => import('vue-material-design-icons/AlertCircleOutline'),
         CheckIcon: () => import('vue-material-design-icons/Check'),
