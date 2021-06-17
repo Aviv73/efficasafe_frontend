@@ -262,6 +262,7 @@
         >
             <print-modal
                 :interactions="routableListData.interactions"
+                :materials="materials"
                 @close-modal="isPrintModalActive = false"
             />
         </modal-wrap>

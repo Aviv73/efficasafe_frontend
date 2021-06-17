@@ -20,29 +20,15 @@
                     </checkbox>
                 </li>
                 <li
-                    class="print-modal-content-list-item flex-align-center"
-                    v-for="(interaction, idx) in flatInteractions"
-                    :key="interaction._id + idx"
+                    class="print-modal-content-list-item"
+                    v-for="(interaction, idx) in interactions"
+                    :key="interaction._id + `${idx}`"
                 >
-                    <checkbox
-                        class="checkbox"
-                        :isChecked="isSelected(interaction._id)"
-                        @change="toggleInteraction(interaction)"
+                    <interaction-print-preview
+                        :interaction="interaction"
+                        :selection="printSelection"
+                        @interaction-toggled="toggleInteraction"
                     />
-                    <interaction-capsules
-                        class="capsules"
-                        :name="interaction.name"
-                        :color="getInteractionColor(interaction.recommendation)"
-                        :vInteractionCount="0"
-                        :showDraftName="false"
-                        localize
-                    />
-                    <span>
-                        {{ getShortRecommendation(interaction.recommendation) }}
-                    </span>
-                    <span class="evidence-level">
-                        {{ interaction.evidenceLevel || interaction.evidence_level }}
-                    </span>
                 </li>
             </ul>
         </main>
@@ -65,10 +51,8 @@
 </template>
 
 <script>
-import { interactionUIService } from '@/cms/services/interaction-ui.service';
-
 import Checkbox from '@/client/cmps/common/Checkbox';
-import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
+import InteractionPrintPreview from '@/client/cmps/shared/InteractionPrintPreview';
 
 import PrinterIcon from 'vue-material-design-icons/Printer';
 import CloseIcon from 'vue-material-design-icons/Close';
@@ -78,60 +62,58 @@ export default {
         interactions: {
             type: Array,
             required: true
+        },
+        materials: {
+            type: Array,
+            required: true
         }
     },
     data() {
         return {
-            flatInteractions: [],
             printSelection: [],
             isAllSelected: false
         }
     },
     watch: {
         interactions: {
-            handler(val) {
-                this.reset(val);
+            handler() {
+                this.reset();
             },
             immediate: true
         },
         isAllSelected(val) {
-            this.printSelection = val ? [ ...this.flatInteractions ] : []; 
+            if (val) {
+                this.fillSelection(this.interactions);
+            } else {
+                this.printSelection = [];
+            }
+        },
+        'printSelection.length'(val) {
+            if (!val) this.isAllSelected = false;
         }
     },
     methods: {
         onPrint() {
-            console.log('printing...');
-            console.log(this.printSelection);
+            console.log('will print! 💪', this.printSelection);
+            alert('Feature still in progress and will be available soon :)');
         },
         toggleInteraction(interaction) {
             const idx = this.printSelection.findIndex(i => i._id === interaction._id);
             if (idx === -1) {
-                const prevIdx = this.flatInteractions.findIndex(i => i._id === interaction._id);
-                this.printSelection.splice(prevIdx, 0, interaction);
+                this.printSelection.push(interaction);
             } else {
                 this.printSelection.splice(idx, 1);
             }
         },
-        isSelected(interactionId) {
-            return this.printSelection.findIndex(i => i._id === interactionId) !== -1;
-        },
-        getInteractionColor(recommendation) {
-            return interactionUIService.getInteractionColor(recommendation);
-        },
-        getShortRecommendation(fullRec) {
-            return interactionUIService.getShortRecommendation(fullRec);
-        },
-        reset(interactions) {
-            this.flatInteractions = [];
+        reset() {
             this.printSelection = [];
             this.isAllSelected = false;
-            this.flatten(interactions);
         },
-        flatten(interactions) {
+        fillSelection(interactions) {
             interactions.forEach(interaction => {
                 if (interaction.vInteractions) {
-                    this.flatten(interaction.vInteractions);
-                } else this.flatInteractions.push(interaction);
+                    this.fillSelection(interaction.vInteractions);
+                } else this.printSelection.push(interaction);
             });
         }
     },
@@ -139,7 +121,7 @@ export default {
         PrinterIcon,
         CloseIcon,
         Checkbox,
-        InteractionCapsules
+        InteractionPrintPreview
     }
 }
 </script>
