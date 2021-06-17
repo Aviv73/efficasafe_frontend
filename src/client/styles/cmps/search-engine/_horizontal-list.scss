@@ -92,5 +92,17 @@
     }
     &-list-item {
         box-shadow: $slight-border-bottom;
+
+        &.boosters-opener {
+            font-size: rem(14px);
+
+            .tour-btn {
+                color: $clr1;
+            }
+            .close-icon {
+                display: inline-block;
+                height: 14px;
+            }
+        }
     }
 }

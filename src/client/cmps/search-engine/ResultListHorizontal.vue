@@ -100,6 +100,20 @@
                 <monitor-summary :interactions="interactions" />
             </li>
             <li
+                class="horizontal-list-list-item boosters-opener flex-space-between"
+                v-else-if="$route.name === 'Boosters'"
+            >
+                <span>
+                    <button
+                        class="tour-btn font-medium"
+                        @click="$tours['boosters-tour'].start()"
+                    >
+                        Click here
+                    </button>
+                    to see explanation tour about this tab
+                </span>
+            </li>
+            <li
                 class="horizontal-list-list-item"
                 v-for="(interaction, idx) in interactions"
                 :key="idx"

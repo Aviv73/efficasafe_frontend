@@ -4,7 +4,7 @@
     font-size: rem(18px);
     line-height: rem(22px);
     width: 90%;
-    max-width: 800px;
+    max-width: 900px;
 
     &-header {
         padding: rem(18px) rem(24px) rem(18px) rem(16px);
@@ -42,22 +42,30 @@
                     padding: rem(32px) 0;
                     text-transform: capitalize;
                 }
-                & > *:not(:last-child) {
-                    margin-inline-end: rem(24px);
-                }
                 .evidence-level {
                     flex-grow: 1;
                     display: inline-flex;
                     justify-content: flex-end;
                 }
                 .capsules {
+                    cursor: pointer;
                     margin-inline-end: rem(48px);
+                    transform: none;
                 }
                 .checkbox {
+                    margin-inline-end: rem(24px);
                     &-label {
                         cursor: pointer;
                         margin-inline-start: rem(24px);
                     }
+                }
+                .inner-list {
+                    flex-basis: 100%;
+                    padding-block-start: rem(12px);
+                    margin-block-start: rem(12px);
+                    padding-inline-start: rem(48px);
+                    box-shadow: $slight-border-top;
+                    overflow-x: hidden;
                 }
             }
         }
