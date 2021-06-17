@@ -139,7 +139,7 @@
                                 @click="isShareModalActive = true"
                             >
                                 <mobile-share-icon v-if="isScreenNarrow" title="" />
-                                <share-icon v-else title="" />
+                                <share-variant-icon v-else title="" />
                             </button>
                         </span>
                         <button class="mobile-menu-btn"></button>
@@ -291,7 +291,7 @@ import MobileMenuIcon from '@/client/cmps/common/icons/MobileMenuIcon';
 import MobileShareIcon from '@/client/cmps/common/icons/MobileShareIcon';
 import CloseIcon from 'vue-material-design-icons/Close';
 import PrinterIcon from 'vue-material-design-icons/Printer';
-import ShareIcon from 'vue-material-design-icons/Share';
+import ShareVariantIcon from 'vue-material-design-icons/ShareVariant';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
 
 export default {
@@ -1023,7 +1023,7 @@ export default {
         MaterialInteractionsPreview,
         CloseIcon,
         PrinterIcon,
-        ShareIcon,
+        ShareVariantIcon,
         MobileMenuIcon,
         MobileShareIcon,
         AnimatedInteger,

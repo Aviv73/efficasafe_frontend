@@ -9,13 +9,13 @@
         flex-wrap: wrap;
         border-bottom: 1px solid rgba($clr12, .1);
         margin-block-end: rem(15px);
-        padding-block-end: rem(10px);
+        padding-block-end: rem(10px);       
 
         li {
             max-width: 100%;
         }
 
-        &-item:not(:last-child) {
+        &-item {
             margin: rem(12px) rem(8px);
 
             @include for-narrow-layout {
@@ -49,15 +49,17 @@
         }
     }
     .un-relevant {
-        border: 1px solid $clr12;
         color: $clr12;
-        border-radius: 100px;
-        padding: rem(4px) rem(12px);
-        margin: 2px 0;
         font-size: rem(12px);
         line-height: rem(14px);
         font-style: italic;
         max-width: fit-content;
+
+        &-container {
+            margin-block-start: rem(24px);
+            padding-block-start: rem(12px);
+            border-top: 1px solid rgba($clr12, .1);
+        }
     }
     .active-tab-txt {
         @include for-narrow-layout {

@@ -29,20 +29,57 @@
             padding: rem(48px) 0;
         }
 
+        &-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-columns: auto minmax(0, 1440px) auto;
+            padding: 0 24px;
+
+            @include for-wide-layout {
+                padding: 0;
+            }
+
+            .brim-start {
+                background-color: $clr1;
+            }
+        }
+
         &-link {
             color: $clr1;
             font-size: rem(12px);
             line-height: rem(14px);
             font-family: roboto-medium, sans-serif;
             font-weight: 500;
+            position: relative;
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                right: 100%;
+                height: 100%;
+                width: 24px;
+                background-color: $clr1;
+                display: none;
+
+                @include for-narrow-layout {
+                    display: initial;
+                }
+                @include for-wide-layout {
+                    display: none;
+                }
+            }
 
             @include for-narrow-layout {
                 background-color: $clr1;
                 color: $white;
                 border-radius: 0 100px 100px 0;
-                padding: rem(12px) rem(42px) rem(12px) rem(32px);
+                padding: rem(12px) rem(42px) rem(12px) 0;
                 font-size: rem(21px);
                 line-height: rem(24px);
+            }
+            @include for-wide-layout {
+                padding: rem(12px) rem(42px) rem(12px) 0;
             }
 
             .chevron-left-icon {
@@ -97,6 +134,18 @@
             padding: rem(10px) rem(22px);
             display: flex;
             align-items: center;
+            width: fit-content;
+            max-width: unset;
+            
+            @include for-narrow-layout {
+                max-width: 280px;
+            }
+            @media (min-width: 1024px) {
+                max-width: 360px;
+            }
+            @include for-middle-layout {
+                max-width: unset;
+            }
 
             &:not(.mobile) {
                 display: none;
@@ -109,7 +158,6 @@
                 align-self: center;
                 text-align: center;
                 margin-block-end: rem(24px);
-                max-width: fit-content;
 
                 @include for-narrow-layout {
                     display: none;
