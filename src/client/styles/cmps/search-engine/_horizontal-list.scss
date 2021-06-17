@@ -95,9 +95,20 @@
 
         &.boosters-opener {
             font-size: rem(14px);
+            padding: rem(6px) 0;
 
             .tour-btn {
-                color: $clr1;
+                border: 1px solid $clr-txt-dark;
+                border-radius: 2px;
+                padding: rem(2px) rem(4px);
+                text-transform: capitalize;
+                transition: background-color .3s linear;
+                line-height: 1;
+
+                @include hover-supported {
+                    background-color: $clr-txt-dark;
+                    color: $clr3;
+                }
             }
             .close-icon {
                 display: inline-block;

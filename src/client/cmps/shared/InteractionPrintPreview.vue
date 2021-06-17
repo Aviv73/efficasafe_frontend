@@ -1,5 +1,5 @@
 <template>
-    <div class="flex-align-center flex-wrap">
+    <div class="interaction-print-preview flex-align-center flex-wrap">
         <checkbox
             v-if="!interaction.vInteractions"
             class="checkbox"
@@ -31,6 +31,7 @@
                 :key="vInteraction._id"
             >
                 <interaction-print-preview
+                    :class="{ 'inner': doPaddStart(vInteraction._id) }"
                     :interaction="vInteraction"
                     :selection="selection"
                     :isSingleCapsule="!vInteraction.vInteractions && $route.name !== 'Boosters' && !interaction.isCompoundGroup"
@@ -77,6 +78,12 @@ export default {
         },
         isSelected(interactionId) {
             return this.selection.findIndex(i => i._id === interactionId) !== -1;
+        },
+        doPaddStart(interactionId) {
+            if (!this.interaction.isCompoundGroup) return false;
+            const vInteraction = this.interaction.vInteractions.find(i => i._id === interactionId);
+            const restOfVinteractions = this.interaction.vInteractions.filter(i => i._id !== interactionId);
+            return !vInteraction.vInteractions && restOfVinteractions.some(v => !!v.vInteractions);
         }
     },
     components: {
