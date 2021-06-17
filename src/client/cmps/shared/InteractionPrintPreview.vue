@@ -33,7 +33,7 @@
                 <interaction-print-preview
                     :interaction="vInteraction"
                     :selection="selection"
-                    :isSingleCapsule="!vInteraction.vInteractions && $route.name !== 'Boosters'"
+                    :isSingleCapsule="!vInteraction.vInteractions && $route.name !== 'Boosters' && !interaction.isCompoundGroup"
                     :localize="false"
                     @interaction-toggled="$emit('interaction-toggled', $event)"
                 />
