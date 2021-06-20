@@ -3,10 +3,11 @@ import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import SearchEngine from '../views/SearchEngine';
 import InteractionDetails from '../views/InteractionDetails';
-import ForgotPass from '../views/auth/ForgotPass.vue'
-import ForgotPasswordEmail from '../views/auth/ForgotPasswordEmail.vue'
-import VerifyEmail from '../views/auth/VerifyEmail.vue'
+import ForgotPass from '../views/auth/ForgotPass.vue';
+import ForgotPasswordEmail from '../views/auth/ForgotPasswordEmail.vue';
+import VerifyEmail from '../views/auth/VerifyEmail.vue';
 import DBankInteractionDetails from '../views/DBankInteractionDetails';
+import UserAccount from '@/client/views/UserAccount';
 
 import InteractionList from '@/client/cmps/search-engine/InteractionList';
 
@@ -74,6 +75,11 @@ const routes = [
     path: '/interaction/:id/:matId',
     name: 'VinteractionDetails',
     component: InteractionDetails
+  },
+  {
+    path: '/account',
+    name: 'UserAccount',
+    component: UserAccount
   },
   {
     path: '/about',

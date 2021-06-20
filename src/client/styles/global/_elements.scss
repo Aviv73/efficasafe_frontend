@@ -225,7 +225,7 @@ sub {
     background-color: $clr11;
 }
 
-.print-btn, .share-btn {
+.print-btn-icon, .share-btn-icon {
     transition: transform .3s linear;
 
     @include hover-supported {

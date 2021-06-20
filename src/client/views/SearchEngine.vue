@@ -1,6 +1,6 @@
 <template>
     <section class="search-engine">
-        <div class="search-engine-container">
+        <div class="search-engine-container side-by-side-container">
             <span class="brim-start" />
             <div class="search-engine-search flex-coloumn">
                 <router-link to="/" class="logo">
@@ -125,7 +125,7 @@
                         </span>
                         <span class="search-engine-results-actions">
                             <button
-                                class="print-btn"
+                                class="print-btn print-btn-icon"
                                 :title="loggedInUser ? 'Print' : 'Subscribed users can print their search results'"
                                 :disabled="!loggedInUser"
                                 @click="isPrintModalActive = true"
@@ -133,7 +133,7 @@
                                 <printer-icon title="" />
                             </button>
                             <button
-                                class="share-btn"
+                                class="share-btn share-btn-icon"
                                 :disabled="!loggedInUser"
                                 :title="loggedInUser ? 'Share' : 'Subscribed users can share their search results'"
                                 @click="isShareModalActive = true"

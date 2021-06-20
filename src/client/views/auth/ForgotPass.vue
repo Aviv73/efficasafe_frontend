@@ -35,7 +35,8 @@
 </template>
 
 <script>
-import { userService } from '../../../cms/services/user.service';
+import { userService } from '@/cms/services/user.service';
+
 export default {
     data() {
         return {
