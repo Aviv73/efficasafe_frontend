@@ -72,12 +72,14 @@ export default {
     data() {
         return {
             mailWith: storageService.load('prefferd-mail-service') || 'default',
-            shareURL: `${window.location.origin}${this.$route.fullPath}`,
             linkCopySuccess: false,
             linkCopyFail: false
         }
     },
     computed: {
+        shareURL() {
+            return `${window.location.origin}${this.$route.fullPath}`;
+        },
         loggedInUser() {
             return this.$store.getters.loggedInUser;
         },
