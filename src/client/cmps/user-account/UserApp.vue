@@ -39,11 +39,14 @@
                 </span>
             </div>
         </div>
-        <div class="user-app-content"></div>
+        <div class="user-app-content">
+            <user-data-table />
+        </div>
     </section>
 </template>
 
 <script>
+import UserDataTable from '@/client/cmps/user-account/UserDataTable';
 import CustomSelect from '@/client/cmps/common/CustomSelect';
 
 import PrinterIcon from 'vue-material-design-icons/Printer';
@@ -70,7 +73,8 @@ export default {
     components: {
         CustomSelect,
         PrinterIcon,
-        ShareVariantIcon
+        ShareVariantIcon,
+        UserDataTable
     }
 }
 </script>
