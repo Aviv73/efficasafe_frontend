@@ -3,32 +3,32 @@
         <div class="user-account-container side-by-side-container">
             <span class="brim-start" />
             <div class="user-account-navigation">
-                <router-link to="/">
-                    <img :src="require('@/client/assets/imgs/flat-logo.png')" alt="Logo" />
+                <router-link to="/" class="user-account-navigation-logo">
+                    <img :src="require('@/client/assets/imgs/logo.png')" alt="Logo" />
                 </router-link>
-                <nav>
+                <nav class="user-account-navigation-nav font-medium">
                     <ul>
                         <li>
-                            <router-link to="/account/searches">
+                            <router-link to="/account" class="nav-link">
                                 Saved searches
                             </router-link>
                         </li>
                         <li>
-                            <router-link to="/account/details">
+                            <router-link to="/account/edit" class="nav-link">
                                 Personal details
                             </router-link>
                         </li>
                         <li>
-                            <router-link to="/account/history">
+                            <router-link to="/account/purchases" class="nav-link">
                                 Purchase history
                             </router-link>
                         </li>
                     </ul>
                 </nav>
             </div>
-            <main>
-
-            </main>
+            <router-view
+                class="user-account-content"
+            />
             <span class="brim-end" />
         </div>
     </section>

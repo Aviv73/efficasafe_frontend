@@ -10,6 +10,8 @@ import DBankInteractionDetails from '../views/DBankInteractionDetails';
 import UserAccount from '@/client/views/UserAccount';
 
 import InteractionList from '@/client/cmps/search-engine/InteractionList';
+import UserApp from '@/client/cmps/user-account/UserApp';
+import UserEdit from '@/client/cmps/user-account/UserEdit';
 
 
 Vue.use(VueRouter);
@@ -78,8 +80,24 @@ const routes = [
   },
   {
     path: '/account',
-    name: 'UserAccount',
-    component: UserAccount
+    component: UserAccount,
+    children: [
+      {
+        path: '',
+        name: 'Searches',
+        component: UserApp
+      },
+      {
+        path: 'purchases',
+        name: 'Purchases',
+        component: UserApp
+      },
+      {
+        path: 'edit',
+        name: 'UserEdit',
+        component: UserEdit
+      }
+    ]
   },
   {
     path: '/about',
