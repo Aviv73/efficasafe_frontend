@@ -8,6 +8,28 @@
         padding: 0;
     }
 }
+.side-by-side-container {
+    display: grid;
+    max-width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: min-content auto;
+    
+    @include for-narrow-layout {
+        grid-template-columns: 40% 60%;
+        grid-template-rows: auto;
+    }
+    @include for-wide-layout {
+        grid-template-columns: auto 500px 920px auto;
+    }
+
+    .brim-start, .brim-end {
+        display: none;
+        
+        @include for-wide-layout {
+            display: initial;
+        }
+    }
+}
 .flex-center {
     display: flex;
     align-items: center;
@@ -67,9 +89,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
-.w-max {
-    width: max-content !important;
 }
 
 // Aspect-Ratio Helpers

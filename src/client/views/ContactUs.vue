@@ -1,6 +1,6 @@
 <template>
     <section class="contact-us">
-        <div class="contact-us-container">
+        <div class="contact-us-container side-by-side-container">
             <span class="brim-start" />
             <header>
                 <router-link to="/">

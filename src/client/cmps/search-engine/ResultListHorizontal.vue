@@ -104,7 +104,7 @@
                 v-else-if="$route.name === 'Boosters'"
             >
                 <span>
-                    To see explanation tour about this tab
+                    To see an explanation tour about this tab
                     <button
                         class="tour-btn font-medium"
                         @click="$tours['boosters-tour'].start()"

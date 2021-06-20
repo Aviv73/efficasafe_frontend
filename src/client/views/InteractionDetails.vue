@@ -15,7 +15,7 @@
                     </router-link>
                     <span class="interaction-details-header-actions">
                         <button
-                            class="print-btn"
+                            class="print-btn print-btn-icon"
                             title="Print"
                             :disabled="!loggedInUser"
                             @click="isPrintModalActive = true"
@@ -23,7 +23,7 @@
                             <printer-icon title="" />
                         </button>
                         <button
-                            class="share-btn"
+                            class="share-btn share-btn-icon"
                             title="Share"
                             :disabled="!loggedInUser"
                             @click="isShareModalActive = true"
