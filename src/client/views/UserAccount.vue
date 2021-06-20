@@ -2,7 +2,7 @@
     <section class="user-account">
         <div class="user-account-container side-by-side-container">
             <span class="brim-start" />
-            <div class="user-account-navigation">
+            <div class="user-account-navigation flex-coloumn">
                 <router-link to="/" class="user-account-navigation-logo">
                     <img :src="require('@/client/assets/imgs/logo.png')" alt="Logo" />
                 </router-link>
@@ -26,9 +26,7 @@
                     </ul>
                 </nav>
             </div>
-            <router-view
-                class="user-account-content"
-            />
+            <router-view />
             <span class="brim-end" />
         </div>
     </section>
