@@ -27,7 +27,8 @@
         </div>
         <div class="user-app-content">
             <user-data-table
-                
+                :headers="tableHeaders"
+                :items="tableItems"
             />
         </div>
     </section>
@@ -48,6 +49,42 @@ export default {
                     'Show 10', 'Show 50', 'Show 200', 'Show all'
                 ]
             }
+        }
+    },
+    computed: {
+        tableHeaders() {
+            if (this.$route.name === 'Searches') {
+                return [
+                    {
+                        title: 'Client name',
+                        field: 'title',
+                        sortable: true
+                    },
+                    {
+                        title: 'Created',
+                        field: 'at',
+                        sortable: true
+                    },
+                    {
+                        title: 'Updates',
+                        field: '',
+                        sortable: true
+                    },
+                    {
+                        title: '',
+                        field: ''
+                    }
+                ];
+            }
+            /// purchases table headers
+            return [];
+        },
+        tableItems() {
+            if (this.$route.name === 'Searches') {
+                return this.$store.getters.loggedInUser.searches;
+            }
+            // replace with purchases when there are any
+            return this.$store.getters.loggedInUser.searches;
         }
     },
     methods: {
