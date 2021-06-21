@@ -39,6 +39,9 @@ export const userStore = {
             const idx = state.users.findIndex(currUser => currUser._id === user._id);
             state.users.splice(idx, 1, user);
         },
+        updateLoggedInUser(state, { user }) {
+            state.loggedInUser = user;
+        },
         removeUsers(state, { ids }) {
             state.users = state.users.filter(user => !ids.includes(user._id));
         },
@@ -62,6 +65,14 @@ export const userStore = {
             const savedUser = await userService.save(user);
             context.commit({
                 type: 'updateUser',
+                user: savedUser
+            });
+            return savedUser;
+        },
+        async updateLoggedInUser(context, { user }) {
+            const savedUser = await userService.save(user);
+            context.commit({
+                type: 'updateLoggedInUser',
                 user: savedUser
             });
             return savedUser;

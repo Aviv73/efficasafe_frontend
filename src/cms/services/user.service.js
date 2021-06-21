@@ -17,7 +17,8 @@ export const userService = {
     sendResetPass,
     resetPassword,
     resnedVerifcationMail,
-    checkTrial
+    checkTrial,
+    getEmptySearch
 }
 
 
@@ -80,6 +81,13 @@ async function getEmptyUser() {
     }
 }
 
+function getEmptySearch() {
+    return {
+        at: null,
+        url: '',
+        title: ''
+    }
+}
 
 async function sendResetPass(email) {
     return await httpService.get(`${ACCOUNT_END_POINT}/passwordEmail?email=${email}`);

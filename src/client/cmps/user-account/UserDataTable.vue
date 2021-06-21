@@ -3,10 +3,10 @@
         <thead>
             <tr>
                 <th
-                    v-for="column in columns"
-                    :key="column.field"
+                    v-for="header in headers"
+                    :key="header.field"
                 >
-                    {{ column.title }}
+                    {{ header.title }}
                 </th>
             </tr>
         </thead>
@@ -16,7 +16,7 @@
 <script>
 export default {
     props: {
-        columns: {
+        headers: {
             type: Array,
             default: () => []
         }

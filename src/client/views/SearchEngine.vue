@@ -40,13 +40,19 @@
                     >
                         Clear search
                     </button> |
-                    <tooltip bottom>
+                    <tooltip
+                        :hidden="!!loggedInUser"
+                        bottom
+                    >
                         <template #content>
                             <span class="msg">
                                 Subscribed users can save their search results
                             </span>
                         </template>
-                        <button :disabled="!loggedInUser ||!loggedInUser.isSubscribed">
+                        <button
+                            :disabled="!loggedInUser"
+                            @click="isSaveSearchModalActive = true"
+                        >
                             Save search
                         </button>
                     </tooltip>
@@ -266,6 +272,14 @@
                 @close-modal="isPrintModalActive = false"
             />
         </modal-wrap>
+        <modal-wrap
+            :isActive="isSaveSearchModalActive"
+            @close-modal="isSaveSearchModalActive = false"
+        >
+            <save-search-modal
+                @close-modal="isSaveSearchModalActive = false"
+            />
+        </modal-wrap>
         <onboarding-tour />
     </section>
 </template>
@@ -278,6 +292,7 @@ import { eventBus, EV_show_user_msg } from '@/cms/services/eventBus.service';
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import ShareModal from '@/client/cmps/shared/modals/ShareModal';
 import PrintModal from '@/client/cmps/shared/modals/PrintModal';
+import SaveSearchModal from '@/client/cmps/shared/modals/SaveSearchModal';
 import Tooltip from '@/client/cmps/common/Tooltip';
 import ModalWrap from '@/client/cmps/common/ModalWrap';
 import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
@@ -316,6 +331,7 @@ export default {
             isDisclaimerActive: false,
             isShareModalActive: false,
             isPrintModalActive: false,
+            isSaveSearchModalActive: false,
             undoneQueries: []
         }
     },
@@ -1034,7 +1050,8 @@ export default {
         PrintModal,
         UndoIcon,
         RedoIcon,
-        OnboardingTour
+        OnboardingTour,
+        SaveSearchModal
     }
 };
 </script>

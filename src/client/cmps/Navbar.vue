@@ -21,10 +21,16 @@
                                 <template #content>
                                     <div class="navbar-user-dropdown">
                                         <div class="navbar-user-dropdown-links">
-                                            <router-link to="account" class="navbar-user-dropdown-item">
+                                            <router-link
+                                                to="account"
+                                                class="navbar-user-dropdown-item"
+                                            >
                                                 Account
                                             </router-link>
-                                            <router-link to="contact" class="navbar-user-dropdown-item">
+                                            <router-link
+                                                to="contact"
+                                                class="navbar-user-dropdown-item"
+                                            >
                                                 Contact
                                             </router-link>
                                         </div>
@@ -138,7 +144,7 @@
                         </li>
                         <li class="navbar-side-nav-item" v-if="loggedInUser">
                             <router-link to="/account" @click.native="toggleNavActive">
-                                Account page
+                                Account
                             </router-link>
                         </li>
                         <li class="navbar-side-nav-item">
