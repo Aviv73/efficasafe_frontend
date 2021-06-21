@@ -85,7 +85,7 @@ export default {
     &-trigger {
         display: inline-block;
         width: 9.675rem;
-        padding: 0.75rem 2.5rem 0.75rem 1rem;
+        padding: 0.5rem 2.5rem 0.5rem 1rem;
         background-color: #fff;
         position: relative;
         cursor: pointer;
@@ -129,14 +129,6 @@ export default {
             }
         }
     }
-}
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity .3s linear;
-}
-.fade-enter,
-.fade-leave-to {
-    opacity: 0;
 }
 .scale-enter-active,
 .scale-leave-active {

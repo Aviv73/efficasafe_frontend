@@ -25,6 +25,44 @@
             margin-inline-end: rem(10px);
         }
     }
+    &-user-dropdown {
+        display: flex;
+        flex-direction: column;
+        background-color: $white;
+        box-shadow: 0px 0px 10px rgba($black, 0.25);
+        border-radius: 6px;
+        font-size: rem(14px);
+        line-height: rem(16px);
+        color: $gradient-clr1;
+        padding: rem(8px) 0;
+
+        &-links {
+            position: relative;
+
+            &::after {
+                content: "";
+                height: 1px;
+                width: 80%;
+                position: absolute;
+                left: 10%;
+                bottom: 0;
+                background-color: rgba($gradient-clr1, .7);
+            }
+            // border-bottom: 1px solid rgba($gradient-clr1, .7);
+        }
+        &-item {
+            display: inline-block;
+            padding: rem(12px) rem(96px) rem(12px) rem(20px);
+
+            @include hover-supported {
+                background-color: $clr13;
+            }
+            &:focus {
+                outline: none;
+                background-color: $clr13;
+            }       
+        }
+    }
     &-nav {
         flex-grow: 1;
         padding-inline-end: rem(10px);

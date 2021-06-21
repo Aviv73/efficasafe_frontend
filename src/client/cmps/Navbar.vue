@@ -9,12 +9,31 @@
                 <div class="navbar-msgs flex-center">
                     <div class="flex-center" v-if="loggedInUser">
                         <div class="flex-center" v-if="!isScreenNarrow">
-                            <img
-                                class="nav-user-img"
-                                v-if="loggedInUser.picture"
-                                :src="loggedInUser.picture"
-                                alt="User's picture"
-                            />
+                            <dropdown>
+                                <template #activator>
+                                    <img
+                                        class="nav-user-img"
+                                        v-if="loggedInUser.picture"
+                                        :src="loggedInUser.picture"
+                                        alt="User's picture"
+                                    />
+                                </template>
+                                <template #content>
+                                    <div class="navbar-user-dropdown">
+                                        <div class="navbar-user-dropdown-links">
+                                            <router-link to="account" class="navbar-user-dropdown-item">
+                                                Account
+                                            </router-link>
+                                            <router-link to="contact" class="navbar-user-dropdown-item">
+                                                Contact
+                                            </router-link>
+                                        </div>
+                                        <button class="navbar-user-dropdown-item" @click="onLogout">
+                                            Logout
+                                        </button>
+                                    </div>
+                                </template>
+                            </dropdown>
                             <p>
                                 {{ `Hi ${loggedInUser.nickname}` }}
                             </p>
@@ -117,6 +136,11 @@
                                 Search
                             </router-link>
                         </li>
+                        <li class="navbar-side-nav-item" v-if="loggedInUser">
+                            <router-link to="/account" @click.native="toggleNavActive">
+                                Account page
+                            </router-link>
+                        </li>
                         <li class="navbar-side-nav-item">
                             <router-link to="/about" @click.native="toggleNavActive">
                                 About us
@@ -135,6 +159,8 @@
 </template>
 
 <script>
+import Dropdown from '@/client/cmps/common/Dropdown';
+
 import CloseIcon from 'vue-material-design-icons/Close';
 import MenuIcon from 'vue-material-design-icons/Menu';
 
@@ -196,6 +222,7 @@ export default {
     components: {
         CloseIcon,
         MenuIcon,
+        Dropdown
     },
 };
 </script>
