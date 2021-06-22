@@ -100,6 +100,9 @@ const routes = [
     ]
   },
   {
+    path: ''
+  },
+  {
     path: '/about',
     name: 'About',
     // route level code-splitting
@@ -127,6 +130,14 @@ const routes = [
     path: '/contact',
     name: 'ContactUs',
     component: () => import(/* webpackChunkName: 'contact-us' */ '../views/ContactUs')
+  },
+  {
+    path: "/:catchAll(.*)",
+    name: "NotFound",
+    component: () => import(/* webpackChunkName: 'contact-us' */ '../views/PageNotFound'),
+    meta: {
+      requiresAuth: false
+    }
   }
 ];
 

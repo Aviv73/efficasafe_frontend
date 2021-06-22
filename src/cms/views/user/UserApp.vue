@@ -43,7 +43,7 @@ export default {
             return this.$store.getters.users;
         },
         totalItems() {
-            return this.$store.getters.usersCount;
+            return this.$store.getters.usersTotal;
         },
     },
     methods: {

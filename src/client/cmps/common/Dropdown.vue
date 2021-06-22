@@ -1,5 +1,8 @@
 <template>
-    <div class="dropdown">
+    <div
+        class="dropdown"
+        :class="{ 'active': isActive }"
+    >
         <button @click="isActive = !isActive">
             <slot name="activator">
                 Click me!
@@ -40,6 +43,13 @@ export default {
         position: absolute;
         top: calc(100% + 6px);
         left: 0;
+    }
+
+    &--animate {
+        transition: transform .3s ease;
+    }
+    &.active &--animate {
+        transform: rotateZ(180deg) translateY(2px);
     }
 }
 .scale-enter-active,

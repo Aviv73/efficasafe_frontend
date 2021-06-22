@@ -24,6 +24,7 @@
                 border-color: transparent;
                 border-radius: 0 100px 100px 0;
                 transition: border-color .3s ease;
+                background-color: $white;
 
                 &:focus {
                     outline: none;
