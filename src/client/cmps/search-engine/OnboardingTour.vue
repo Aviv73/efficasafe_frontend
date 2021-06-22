@@ -202,8 +202,8 @@ export default {
             for (let i = 1; i <= 3; i++) {
                 const img1 = new Image();
                 const img2 = new Image();
-                img1.src = `../../assets/imgs/onboarding${i}.jpg`;
-                img2.src = `../../assets/imgs/pb${i}.jpg`;
+                img1.src = require(`@/client/assets/imgs/onboarding${i}.jpg`);
+                img2.src = require(`@/client/assets/imgs/pb${i}.jpg`);
             }
         }
     },

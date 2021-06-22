@@ -42,6 +42,7 @@
                                 View
                             </router-link>
                             <button
+                                class="delete-btn"
                                 title="Delete search"
                             >
                                 <delete-icon title="" />

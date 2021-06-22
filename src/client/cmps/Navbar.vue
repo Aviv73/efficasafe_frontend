@@ -22,13 +22,13 @@
                                     <div class="navbar-user-dropdown">
                                         <div class="navbar-user-dropdown-links">
                                             <router-link
-                                                to="account"
+                                                to="/account"
                                                 class="navbar-user-dropdown-item"
                                             >
                                                 Account
                                             </router-link>
                                             <router-link
-                                                to="contact"
+                                                to="/contact"
                                                 class="navbar-user-dropdown-item"
                                             >
                                                 Contact
