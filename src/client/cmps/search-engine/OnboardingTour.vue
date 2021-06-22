@@ -15,6 +15,12 @@
 
 <script>
 import { storageService } from '@/cms/services/storage.service';
+import BoostersImg1 from '@/client/assets/imgs/pb1.jpg';
+import BoostersImg2 from '@/client/assets/imgs/pb2.jpg';
+import BoostersImg3 from '@/client/assets/imgs/pb3.jpg';
+import OnboardingImg1 from '@/client/assets/imgs/onboarding1.jpg';
+import OnboardingImg2 from '@/client/assets/imgs/onboarding2.jpg';
+import OnboardingImg3 from '@/client/assets/imgs/onboarding3.jpg';
 
 export default {
     data() {
@@ -36,7 +42,7 @@ export default {
                             </p>
                             <img
                                 class="onboarding-img"
-                                src="${require('@/client/assets/imgs/onboarding1.jpg')}"
+                                src="${OnboardingImg1}"
                                 alt="Explanatory usage image"
                             />
                         </div>
@@ -54,7 +60,7 @@ export default {
                         </p>
                         <img
                             class="onboarding-img"
-                            src="${require('@/client/assets/imgs/onboarding2.jpg')}"
+                            src="${OnboardingImg2}"
                             alt="Explanatory usage image"
                         />
                     `,
@@ -83,7 +89,7 @@ export default {
                         <p class="v-step-txt">Change to vertical view</p>
                         <img
                             class="boosters-img"
-                            src="${require('@/client/assets/imgs/onboarding3.jpg')}"
+                            src="${OnboardingImg3}"
                             alt="Explanatory usage image"
                         />
                     `,
@@ -142,7 +148,7 @@ export default {
                         </p>
                         <img
                             class="boosters-img"
-                            src="${require('@/client/assets/imgs/pb1.jpg')}"
+                            src="${BoostersImg1}"
                             alt="Usage example"
                         />
                         <p class="v-step-txt">The order of the drugs shown is set by the recommendations</p>
@@ -161,7 +167,7 @@ export default {
                         </p>
                         <img
                             class="boosters-img"
-                            src="${require('@/client/assets/imgs/pb2.jpg')}"
+                            src="${BoostersImg2}"
                             alt="Usage example"
                         />
                     `,
@@ -180,7 +186,7 @@ export default {
                         </p>
                         <img
                             class="boosters-img"
-                            src="${require('@/client/assets/imgs/pb3.jpg')}"
+                            src="${BoostersImg3}"
                             alt="Usage example"
                         />
                     `,
@@ -196,19 +202,6 @@ export default {
                 }
             }
         }
-    },
-    methods: {
-        preLoadImgs() {
-            for (let i = 1; i <= 3; i++) {
-                const img1 = new Image();
-                const img2 = new Image();
-                img1.src = require(`@/client/assets/imgs/onboarding${i}.jpg`);
-                img2.src = require(`@/client/assets/imgs/pb${i}.jpg`);
-            }
-        }
-    },
-    created() {
-        this.preLoadImgs();
     }
 }
 </script>

@@ -17,12 +17,12 @@
                     </th>
                 </tr>
                 <tr
-                    v-for="(item, idx) in items"
-                    :key="idx"
+                    v-for="(item, rowIdx) in items"
+                    :key="rowIdx"
                 >
                     <td
-                        v-for="(header, idx) in headers"
-                        :key="idx"
+                        v-for="(header, colIdx) in headers"
+                        :key="colIdx"
                     >   
                         <span v-if="header.field === 'title'" class="font-medium">
                             {{ item[header.field] }}
@@ -44,6 +44,7 @@
                             <button
                                 class="delete-btn"
                                 title="Delete search"
+                                @click="onRemove(rowIdx, item.title)"
                             >
                                 <delete-icon title="" />
                             </button>
@@ -52,10 +53,22 @@
                 </tr>
             </thead>
         </table>
+        <modal-wrap
+            :isActive="isModalActive"
+            @close-modal="closeModal"
+        >
+            <aside class="confirm-delete">
+                <!-- TODO: make ShareModal style global and use in this modal  -->
+                <!-- TODO: make him his own cmp  -->
+                AHA!
+            </aside>
+        </modal-wrap>
     </section>
 </template>
 
 <script>
+import ModalWrap from '@/client/cmps/common/ModalWrap';
+
 import SortVerticalIcon from '@/client/cmps/common/icons/SortVerticalIcon';
 import DeleteIcon from 'vue-material-design-icons/Delete';
 
@@ -70,7 +83,21 @@ export default {
             default: () => []
         }
     },
+    data() {
+        return {
+            isModalActive: false,
+            itemToDelete: null
+        }
+    },
     methods: {
+        onRemove(idx, name) {
+            this.itemToDelete = { idx, name };
+            this.isModalActive = true;
+        },
+        closeModal() {
+            this.itemToDelete = null;
+            this.isModalActive = false;
+        },
         getSearchLink(fullUrl) {
             if (fullUrl.startsWith(window.location.origin)) {
                 return fullUrl.substring(window.location.origin.length);
@@ -80,7 +107,8 @@ export default {
     },
     components: {
         SortVerticalIcon,
-        DeleteIcon
+        DeleteIcon,
+        ModalWrap
     }
 }
 </script>

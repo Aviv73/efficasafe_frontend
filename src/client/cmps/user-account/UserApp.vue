@@ -6,6 +6,7 @@
                     <input
                         type="text"
                         placeholder="Search..."
+                        v-model="filterBy.name"
                     />
                 </div>
             </div>
@@ -39,8 +40,17 @@ import UserDataTable from '@/client/cmps/user-account/UserDataTable';
 import CustomSelect from '@/client/cmps/common/CustomSelect';
 
 export default {
+    // TODO: updates!
     data() {
         return {
+            filterBy: {
+                name: '',
+                /// TODO:
+                /// ADD v-model ability to custom select & v model striaght here
+                /// table paging & page size
+                /// filter by name (regex) && createdAt > (Date.now() - hodesh)
+                /// sort by
+            },
             filterOptions: {
                 createdAt: [
                     'All', 'Last 3 days', 'Last 2 weeks', 'Last month', 'Last year'
@@ -76,11 +86,12 @@ export default {
                     }
                 ];
             }
-            /// purchases table headers
+            /// return purchases table headers in their route
             return [];
         },
         tableItems() {
             if (this.$route.name === 'Searches') {
+                // TODO: return searches for display by filterby
                 return this.$store.getters.loggedInUser.searches;
             }
             // replace with purchases when there are any
