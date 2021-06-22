@@ -1,5 +1,4 @@
 <template>
-    <!--:loading="loading" -->
     <section class="user-list">
         <v-data-table
             :headers="headers"
@@ -10,7 +9,7 @@
             disable-sort
             :items-per-page="15"
             :footer-props="{
-                'items-per-page-options': [15, 50, -1],
+                'items-per-page-options': [ 15, 50, -1 ],
             }"
         >
             <template v-slot:[`header.name`]="{ header }">

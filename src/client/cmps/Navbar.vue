@@ -8,42 +8,43 @@
             <div class="flex-space-between">
                 <div class="navbar-msgs flex-center">
                     <div class="flex-center" v-if="loggedInUser">
-                        <div class="flex-center" v-if="!isScreenNarrow">
-                            <dropdown>
-                                <template #activator>
+                        <dropdown v-if="!isScreenNarrow">
+                            <template #activator>
+                                <div class="flex-align-center">
                                     <img
                                         class="nav-user-img"
                                         v-if="loggedInUser.picture"
                                         :src="loggedInUser.picture"
                                         alt="User's picture"
                                     />
-                                </template>
-                                <template #content>
-                                    <div class="navbar-user-dropdown">
-                                        <div class="navbar-user-dropdown-links">
-                                            <router-link
-                                                to="/account"
-                                                class="navbar-user-dropdown-item"
-                                            >
-                                                Account
-                                            </router-link>
-                                            <router-link
-                                                to="/contact"
-                                                class="navbar-user-dropdown-item"
-                                            >
-                                                Contact
-                                            </router-link>
-                                        </div>
-                                        <button class="navbar-user-dropdown-item" @click="onLogout">
-                                            Logout
-                                        </button>
+                                    <p>
+                                        {{ `Hi ${loggedInUser.nickname}` }}
+                                    </p>
+                                    <menu-down-icon title="" class="dropdown--animate" />
+                                </div>
+                            </template>
+                            <template #content>
+                                <div class="navbar-user-dropdown">
+                                    <div class="navbar-user-dropdown-links">
+                                        <router-link
+                                            to="/account"
+                                            class="navbar-user-dropdown-item"
+                                        >
+                                            Account
+                                        </router-link>
+                                        <router-link
+                                            to="/contact"
+                                            class="navbar-user-dropdown-item"
+                                        >
+                                            Contact
+                                        </router-link>
                                     </div>
-                                </template>
-                            </dropdown>
-                            <p>
-                                {{ `Hi ${loggedInUser.nickname}` }}
-                            </p>
-                        </div>
+                                    <button class="navbar-user-dropdown-item" @click="onLogout">
+                                        Logout
+                                    </button>
+                                </div>
+                            </template>
+                        </dropdown>
                         <div
                             class="flex-center"
                             v-if="!loggedInUser.isSubscribe"
@@ -169,6 +170,7 @@ import Dropdown from '@/client/cmps/common/Dropdown';
 
 import CloseIcon from 'vue-material-design-icons/Close';
 import MenuIcon from 'vue-material-design-icons/Menu';
+import MenuDownIcon from 'vue-material-design-icons/MenuDown';
 
 export default {
     name: 'Navbar',
@@ -228,7 +230,8 @@ export default {
     components: {
         CloseIcon,
         MenuIcon,
-        Dropdown
+        Dropdown,
+        MenuDownIcon
     },
 };
 </script>

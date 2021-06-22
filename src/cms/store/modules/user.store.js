@@ -5,7 +5,8 @@ export const userStore = {
     state: {
         loggedInUser: userService.getLoggedInUser(),
         token: null,
-        users: null
+        users: null,
+        total: 0
     },
     getters: {
         loggedInUser(state) {
@@ -14,8 +15,8 @@ export const userStore = {
         users(state) {
             return state.users
         },
-        usersCount(state) {
-            return state.users.length
+        usersTotal(state) {
+            return state.total;
         }
     },
     mutations: {
@@ -31,8 +32,9 @@ export const userStore = {
         setLoggedInUser(state, { user }) {
             state.loggedInUser = user;
         },
-        setUsers(state, { users }) {
+        setUsers(state, { users, total }) {
             state.users = users;
+            state.total = total;
         },
         updateUser(state, { user }) {
             if (!state.users) return;
@@ -86,9 +88,8 @@ export const userStore = {
             context.commit({ type: 'logout' });
         },
         async loadUsers({ commit }, { filterBy }) {
-            const users = await userService.loadUsers(filterBy)
-            commit({ type: 'setUsers', users })
-
+            const { users, total } = await userService.loadUsers(filterBy);
+            commit({ type: 'setUsers', users, total });
         }
     }
 }

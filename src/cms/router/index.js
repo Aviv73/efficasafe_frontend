@@ -2,7 +2,6 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from '@/cms/store';
 import Home from '../views/Home';
-import LoginPage from '../views/LoginPage';
 import materialApp from '../views/material/MaterialApp';
 import materialEdit from '../views/material/MaterialEdit';
 import materialDetails from '../views/material/MaterialDetails';
@@ -32,11 +31,6 @@ const routes = [
     name: 'Home',
     component: Home,
     meta: { requiresAuth: true }
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: LoginPage,
   },
   {
     path: '/material',
@@ -78,13 +72,13 @@ const routes = [
     path: '/user',
     name: 'Users',
     component: UserApp,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true, requiresAdmin: true }
   },
   {
     path: '/user/edit/:id',
     name: 'UserEdit',
     component: UserEdit,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true, requiresAdmin: true }
   },
   {
     path: '/interaction',
@@ -166,12 +160,14 @@ const routes = [
       {
         path: '',
         name: 'Results',
-        component: resultList
+        component: resultList,
+        meta: { requiresAuth: true }
       },
       {
         path: 'drug-bank',
         name: 'DBankResults',
-        component: dBankResultList
+        component: dBankResultList,
+        meta: { requiresAuth: true }
       }
     ]
   },
@@ -189,24 +185,21 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAdmin) {
-    if (store.state.userStore.loggedInUser.role !== 'admin') {
-      next({ name: 'Home' });
+  const { loggedInUser } = store.state.userStore;
+
+  if (loggedInUser && (loggedInUser.role === 'admin' || loggedInUser.role === 'editor')) {
+    if (to.meta.requiresAdmin) {
+      if (loggedInUser.role !== 'admin') {
+        next({ name: from.name });
+      } else {
+        next();
+      }
     } else {
       next();
     }
-  }
-  if (to.meta.requiresAuth) {
-    if (!store.state.userStore.loggedInUser) {
-      next({
-        name: 'Login'
-      })
-    } else {
-      next()
-    }
   } else {
-    next()
+    window.location.replace(`${window.location.origin}/404`);
   }
-})
+});
 
-export default router
+export default router;
