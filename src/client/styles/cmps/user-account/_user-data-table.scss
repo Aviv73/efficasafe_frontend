@@ -1,0 +1,46 @@
+.user-data-table {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    height: 0px;
+    font-size: rem(14px);
+    line-height: rem(16px);
+    
+    table {
+        width: 100%;
+    }
+    tr {
+        box-shadow: $slight-border-bottom;
+    }
+    th {
+        font-family: roboto-medium, sans-serif;
+        font-weight: 500;
+        padding: rem(8px) rem(24px);
+        min-width: 100px;
+        text-align: left;
+        text-transform: capitalize;
+
+        button {
+            text-transform: inherit;
+        }
+
+        .sort-icon {
+            height: rem(14px);
+            width: rem(14px);
+            margin-block-end: -2px;
+        }
+    }
+    td {
+        padding: rem(12px) rem(24px);
+    }
+
+    .td-actions {
+        column-count: $clr1;
+
+        .search-link {
+            border-radius: 2px;
+            background-color: $clr1;
+            padding: rem(4px) rem(24px);
+            color: $white;
+        }
+    }
+}

@@ -5,4 +5,38 @@
     &-container {
         flex-grow: 1;
     }
+    &-navigation {
+        padding: rem(85px) 0 0 0;
+
+        &-logo {
+            margin-block-end: rem(85px);
+
+            img {
+                width: 220px;
+            }
+        }
+
+        &-nav {
+            line-height: 180%;
+            color: $clr1;
+
+            li:not(:last-child) {
+                margin-block-end: rem(36px);
+            }
+        }
+        
+        .nav-link {
+            padding: rem(12px) rem(48px);
+            border-radius: 6px;
+            transition: color .4s ease, background-color .4s ease;
+            
+            &.exact-active {
+                background-color: $clr2;
+                color: $white;
+            }
+        }
+    }
+    .brim-end {
+        background-image: linear-gradient(to bottom, $clr6 0px, $clr6 rem(189px), rgba($white, .75) rem(189px), $clr3 rem(189px), $clr3 100%);
+    }
 }

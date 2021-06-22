@@ -129,7 +129,7 @@ export default {
             forgotPasswordLink: `${window.location.origin}/emailPassword`,
             additionalSignUpFields: [
                 {
-                    name: 'nickname',
+                    name: 'name',
                     placeholder: 'Your username',
                     icon: `${window.location.origin}/img/icons/account-outline.svg`,
                     storage: 'root',

@@ -22,6 +22,7 @@
 @import './cmps/shared/error-404';
 @import './cmps/shared/modals/share-modal';
 @import './cmps/shared/modals/print-modal';
+@import './cmps/shared/modals/save-search-modal';
 @import './cmps/search-engine/material-interactions-preview';
 @import './cmps/search-engine/horizontal-list';
 @import './cmps/search-engine/vertical-list';
@@ -33,6 +34,8 @@
 @import './cmps/interaction-details/side1-pathways';
 @import './cmps/interaction-details/reference-list';
 @import './cmps/principles-and-processes/side-navigation';
+@import './cmps/user-account/user-app';
+@import './cmps/user-account/user-data-table';
 
 /// VIEWS
 @import './views/home';

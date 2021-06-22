@@ -1,0 +1,66 @@
+.user-app {
+    display: flex;
+    flex-direction: column;
+
+    &-header {
+        background-color: $clr6;
+        padding: rem(48px) rem(24px) rem(16px) 0;
+
+        &-search {
+            width: rem(300px);
+            font-size: rem(15px);
+            line-height: rem(18px);
+            border-color: rgba($clr18, .24);
+            border-style: solid;
+            border-width: 8px 8px 8px 0;
+            border-radius: 0 100px 100px 0;
+            
+            & > input {
+                height: 100%;
+                width: 100%;
+                padding: rem(14px) 0 rem(14px) rem(24px);
+                border-width: 1px 1px 1px 0;
+                border-style: solid;
+                border-color: transparent;
+                border-radius: 0 100px 100px 0;
+                transition: border-color .3s ease;
+
+                &:focus {
+                    outline: none;
+                    border-color: rgba($clr-txt-darker, .4);
+                }
+            }
+        }
+        &-filter {
+            font-size: rem(14px);
+            line-height: rem(21px);
+
+            .select {
+                .select-trigger {
+                    vertical-align: bottom;
+                }
+
+                &:first-child {
+                    margin-inline-end: rem(16px);
+                }
+            }
+        }
+        &-notice {
+            align-self: flex-end;
+            margin-inline-start: rem(24px);
+            font-size: rem(14px);
+            line-height: 100%;
+            color: $clr1;
+        }
+
+        & > div:first-child {
+            margin-block-end: rem(24px);
+        }
+    }
+    &-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        background-color: $clr3;
+    }
+}

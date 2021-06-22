@@ -1,0 +1,83 @@
+.save-search-modal {
+    background-color: $white;
+    border-radius: 6px;
+    color: $clr-txt-dark;
+    font-size: rem(18px);
+    line-height: rem(22px);
+
+    &-header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: rem(12px) rem(24px);
+        border: 1px solid $clr6;
+        border-radius: 6px 6px 1px 1px;
+
+        .close-btn {
+            color: $gray;
+        }
+    }
+    &-content {
+        display: flex;
+        flex-direction: column;
+        padding: rem(12px) rem(24px);
+
+        &-txt {
+            text-align: center;
+            margin-block-end: rem(24px);
+        }
+        &-input {
+            font-size: rem(16px);
+            line-height: 1;
+            height: rem(44px);
+            background-color: $clr6;
+            border-radius: 6px;
+            position: relative;
+            
+            input {
+                border: none;
+                height: 100%;
+                width: 100%;
+                background-color: transparent;
+                padding-inline-start: rem(12px);
+                
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+    }
+    &-footer {
+        border-radius: 1px 1px 6px 6px;
+        padding: rem(12px) rem(24px);
+        border: 1px solid $clr6;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        font-family: roboto-medium, sans-serif;
+        font-weight: 500;
+
+        &-btn {
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-size: rem(13px);
+            line-height: rem(36px);
+            padding: 0 rem(22px);
+            letter-spacing: .07px;
+
+            &:not(:last-child) {
+                margin-inline-end: rem(12px);
+            }
+
+            &.save-btn {
+                background-color: $clr6;
+                color: $clr1;
+
+                &:disabled {
+                    opacity: .5;
+                    cursor: default;
+                }
+            }
+        }
+    }
+}
