@@ -102,6 +102,7 @@
                                     title=""
                                 />
                                 <button
+                                    class="close-btn"
                                     @click.stop="removeMaterials(result.txt)"
                                     :data-close-btn="true"
                                 >

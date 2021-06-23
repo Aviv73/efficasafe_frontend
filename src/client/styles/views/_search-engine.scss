@@ -184,8 +184,11 @@
                     color: $clr9;
 
                     .info-icon {
-                        height: 19px;
+                        height: 16px;
                         margin-inline-end: 5px;
+                    }
+                    .close-btn {
+                        height: 16px;
                     }
                 }
             }
