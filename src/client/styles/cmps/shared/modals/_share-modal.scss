@@ -96,6 +96,9 @@
             margin-block-end: rem(36px);
             transition: background-color .3s linear, color .3s linear;
             
+            @include hover-supported {
+                background-color: darken($clr6, 5%);
+            }
             @include for-narrow-layout {
                 align-self: flex-end;
                 margin-block-end: 0;
@@ -118,10 +121,20 @@
         .share-btn {
             background-color: $clr1;
             color: $white;
+            transition: background-color .3s linear;
+
+            @include hover-supported {
+                background-color: lighten($clr1, 5%);
+            }
         }
         .delete-btn {
             background-color: $red;
             color: $white;
+            transition: background-color .3s linear;
+
+            @include hover-supported {
+                background-color: lighten($red, 5%);
+            }
         }
         .link-variant-icon {
             height: 14px;

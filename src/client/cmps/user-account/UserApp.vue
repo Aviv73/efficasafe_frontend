@@ -12,7 +12,7 @@
             </div>
             <div class="flex-space-between">
                 <span class="user-app-header-notice">
-                    Showing 10/100 searches
+                    Showing {{ `${tableItems.length}/${totalItems}` }} searches
                 </span>
                 <span class="user-app-header-filter">
                     <custom-select
@@ -68,36 +68,25 @@ export default {
         return {
             filterBy: {
                 name: '',
-                page: 1, // USE ME!
-                itemsPerPage: 5,
+                page: 1,
+                itemsPerPage: 20,
                 createdAt: 0
-                /// TODO:
-                /// filter by name (regex) && createdAt > (Date.now() - hodesh)
-                /// sort by
+                /// TODO: sort by (make checkbox hack in table headers)
             },
             filterOptions: {
                 createdAt: [
                     { title: 'All', value: 0 },
-                    { title: 'Last 3 days', value: this.getDaysAgo(3) },//(Date.now() - 3 days)
+                    { title: 'Last 3 days', value: this.getDaysAgo(3) },
                     { title: 'Last 2 weeks', value: this.getDaysAgo(14) },
                     { title: 'Last month', value: this.getDaysAgo(30) },
                     { title: 'Last year', value: this.getDaysAgo(365) }
                 ],
                 limit: [
-                    { title: 'Show 5', value: 5 },/// DELETE ME!!!
                     { title: 'Show 20', value: 20 },
                     { title: 'Show 50', value: 50 },
-                    { title: 'Show 100', value: 100 },
+                    { title: 'Show 100', value: 100 }
                 ]
             }
-        }
-    },
-    watch: {
-        filterBy: {
-            handler(){
-                console.log(this.filterBy);
-            },
-            deep: true
         }
     },
     computed: {
@@ -132,22 +121,33 @@ export default {
             return [];
         },
         tableItems() {
+            const { filterBy } = this;
             if (this.$route.name === 'Searches') {
-                // TODO: return searches for display by filterby
-                return this.loggedInUser.searches;
+                const from = (filterBy.page - 1) * filterBy.itemsPerPage;
+                return this.loggedInUser.searches.filter(({ title, at }) => {
+                    return title.toLowerCase().includes(filterBy.name.toLowerCase())
+                    && at > filterBy.createdAt;
+                }).slice(from, from + filterBy.itemsPerPage);
             }
-            return this.loggedInUser.searches;// purchases
+            /// return purchases table headers in their route
+            return [];
         },
         pageCount() {
-            const { loggedInUser, filterBy } = this;
-            if (!loggedInUser) return 0;
-            // later on add another param (or by $route.name) from which array to delete...
-            return Math.ceil(loggedInUser.searches.length / filterBy.itemsPerPage);
+            const { totalItems, filterBy } = this;
+            return Math.ceil(totalItems / filterBy.itemsPerPage);
+        },
+        totalItems() {
+            const { loggedInUser } = this;
+            if (!loggedInUser || this.$route.name !== 'Searches') return 0;
+            // const items = (this.$route.name === 'Searches') ? 'searches' : 'purchases';
+            const items = 'searches';
+            return loggedInUser[items].length;
         }
     },
     methods: {
         removeItem(itemIdx) {
-            // later on add another param (or by $route.name) from which array to delete...
+            if (this.$route.name !== 'Searches') return;
+            // const items = (this.$route.name === 'Searches') ? 'searches' : 'purchases';
             const user = JSON.parse(JSON.stringify(this.loggedInUser));
             user.searches.splice(itemIdx, 1);
             this.$store.dispatch({ type: 'updateLoggedInUser', user });

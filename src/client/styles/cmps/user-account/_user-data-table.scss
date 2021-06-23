@@ -41,6 +41,18 @@
             background-color: $clr1;
             padding: rem(4px) rem(24px);
             color: $white;
+            transition: background-color .3s ease-in-out, color .3s ease-in-out;
+    
+            @include hover-supported {
+                background-color: lighten($clr1, 5%);
+                color: lighten($white, 5%);
+            }
+        }
+        .delete-btn {
+            transition: color .3s ease-in-out;
+            @include hover-supported {
+                color: lighten($clr1, 5%);
+            }
         }
     }
 }

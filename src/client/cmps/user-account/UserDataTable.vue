@@ -7,7 +7,10 @@
                         v-for="(header, idx) in headers"
                         :key="idx"
                     >
-                        <button v-if="header.sortable">
+                        <button
+                            v-if="header.sortable"
+                            @click="emitSort(header)"
+                        >
                             <sort-vertical-icon
                                 class="sort-icon"
                             />
@@ -98,6 +101,9 @@ export default {
         }
     },
     methods: {
+        emitSort(sortBy) {
+            console.log(sortBy);
+        },
         emitDeleteItem() {
             this.$emit('item-deleted', this.itemToDelete.idx);
             this.closeModal();
