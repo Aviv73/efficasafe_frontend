@@ -50,7 +50,7 @@
                             </span>
                         </template>
                         <button
-                            :disabled="!loggedInUser"
+                            :disabled="!loggedInUser || (!$route.query.q || !$route.query.q.length)"
                             @click="isSaveSearchModalActive = true"
                         >
                             Save search
