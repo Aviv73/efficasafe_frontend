@@ -58,9 +58,11 @@
             @close-modal="closeModal"
         >
             <aside class="confirm-delete">
-                <!-- TODO: make ShareModal style global and use in this modal  -->
-                <!-- TODO: make him his own cmp  -->
-                AHA!
+                <confirm-delete
+                    @close-modal="closeModal"
+                    :name="itemNameToDelete"
+                    @delete-confirmed="emitDeleteItem"
+                />
             </aside>
         </modal-wrap>
     </section>
@@ -68,6 +70,7 @@
 
 <script>
 import ModalWrap from '@/client/cmps/common/ModalWrap';
+import ConfirmDelete from '@/client/cmps/shared/modals/ConfirmDelete';
 
 import SortVerticalIcon from '@/client/cmps/common/icons/SortVerticalIcon';
 import DeleteIcon from 'vue-material-design-icons/Delete';
@@ -89,7 +92,16 @@ export default {
             itemToDelete: null
         }
     },
+    computed: {
+        itemNameToDelete() {
+            return this.itemToDelete ? this.itemToDelete.name : '';
+        }
+    },
     methods: {
+        emitDeleteItem() {
+            this.$emit('item-deleted', this.itemToDelete.idx);
+            this.closeModal();
+        },
         onRemove(idx, name) {
             this.itemToDelete = { idx, name };
             this.isModalActive = true;
@@ -108,7 +120,8 @@ export default {
     components: {
         SortVerticalIcon,
         DeleteIcon,
-        ModalWrap
+        ModalWrap,
+        ConfirmDelete
     }
 }
 </script>

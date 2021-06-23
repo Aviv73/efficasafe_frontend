@@ -19,6 +19,11 @@
             height: 18px;
             margin-inline-end: rem(8px);
         }
+        .alert-circle-icon {
+            color: $red;
+            height: 18px;
+            margin-inline-end: rem(8px);
+        }
         .close-btn {
             color: $gray;
         }
@@ -51,6 +56,22 @@
                 @include for-narrow-layout {
                     margin-block-end: 0;
                 }
+            }
+        }
+        &-confirm-delete {
+            flex-grow: 1;
+
+            &-actions {
+                align-self: flex-end;
+
+                button {
+                    border-radius: 4px;
+                    text-transform: uppercase;
+                    padding: rem(12px) rem(22px);
+                }
+            }
+            p {
+                margin-block-end: rem(16px);
             }
         }
 
@@ -98,9 +119,16 @@
             background-color: $clr1;
             color: $white;
         }
+        .delete-btn {
+            background-color: $red;
+            color: $white;
+        }
         .link-variant-icon {
             height: 14px;
             margin-inline-end: rem(4px);
+        }
+        .highlight {
+            color: $clr1;
         }
     }
 }

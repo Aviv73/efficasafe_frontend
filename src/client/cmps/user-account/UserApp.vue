@@ -30,6 +30,7 @@
             <user-data-table
                 :headers="tableHeaders"
                 :items="tableItems"
+                @item-deleted="removeItem"
             />
         </div>
     </section>
@@ -40,7 +41,6 @@ import UserDataTable from '@/client/cmps/user-account/UserDataTable';
 import CustomSelect from '@/client/cmps/common/CustomSelect';
 
 export default {
-    // TODO: updates!
     data() {
         return {
             filterBy: {
@@ -56,12 +56,15 @@ export default {
                     'All', 'Last 3 days', 'Last 2 weeks', 'Last month', 'Last year'
                 ],
                 limit: [
-                    'Show 10', 'Show 50', 'Show 200', 'Show all'
+                    'Show 20', 'Show 50', 'Show 100'
                 ]
             }
         }
     },
     computed: {
+        loggedInUser() {
+            return this.$store.getters.loggedInUser;
+        },
         tableHeaders() {
             if (this.$route.name === 'Searches') {
                 return [
@@ -92,15 +95,21 @@ export default {
         tableItems() {
             if (this.$route.name === 'Searches') {
                 // TODO: return searches for display by filterby
-                return this.$store.getters.loggedInUser.searches;
+                return this.loggedInUser.searches;
             }
             // replace with purchases when there are any
-            return this.$store.getters.loggedInUser.searches;
+            return this.loggedInUser.searches;
         }
     },
     methods: {
         onFilter(filterBy) {
             console.log(filterBy);
+        },
+        removeItem(itemIdx) {
+            // later on add another param (or by $route.name) from which array to delete...
+            const user = JSON.parse(JSON.stringify(this.loggedInUser));
+            user.searches.splice(itemIdx, 1);
+            this.$store.dispatch({ type: 'updateLoggedInUser', user });
         }
     },
     components: {
