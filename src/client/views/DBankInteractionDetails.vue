@@ -11,7 +11,7 @@
                         </button>
                     </span>
                     <router-link to="/" class="interaction-details-header-logo">
-                        <img :src="require('@/client/assets/imgs/flat-logo.png')" alt="Logo" />
+                        <img :src="require('@/client/assets/imgs/logo-vector.svg')" alt="Logo" />
                     </router-link>
                     <span class="interaction-details-header-actions">
                         <button

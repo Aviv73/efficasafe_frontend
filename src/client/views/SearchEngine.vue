@@ -116,7 +116,13 @@
                         <span class="font-medium">6</span>
                         Free searches left
                     </span>
-                    <button class="btn">Register for free trial</button>
+                    <button
+                        class="btn"
+                        id="searchPageSignup"
+                        @click="$emit('signup')"
+                    >
+                        Register for free trial
+                    </button>
                 </div>
             </div>
             <div

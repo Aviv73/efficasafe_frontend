@@ -2,7 +2,7 @@
     <div id="app">
         <navbar @login="onLogin" @signup="onSignUp" />
         <main>
-            <router-view />
+            <router-view @signup="onSignUp" />
         </main>
         <main-footer />
         <auth-modal
