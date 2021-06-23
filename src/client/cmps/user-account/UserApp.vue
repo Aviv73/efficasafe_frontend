@@ -6,6 +6,7 @@
                     <input
                         type="text"
                         placeholder="Search..."
+                        v-model="filterBy.name"
                     />
                 </div>
             </div>
@@ -29,6 +30,7 @@
             <user-data-table
                 :headers="tableHeaders"
                 :items="tableItems"
+                @item-deleted="removeItem"
             />
         </div>
     </section>
@@ -41,17 +43,28 @@ import CustomSelect from '@/client/cmps/common/CustomSelect';
 export default {
     data() {
         return {
+            filterBy: {
+                name: '',
+                /// TODO:
+                /// ADD v-model ability to custom select & v model striaght here
+                /// table paging & page size
+                /// filter by name (regex) && createdAt > (Date.now() - hodesh)
+                /// sort by
+            },
             filterOptions: {
                 createdAt: [
                     'All', 'Last 3 days', 'Last 2 weeks', 'Last month', 'Last year'
                 ],
                 limit: [
-                    'Show 10', 'Show 50', 'Show 200', 'Show all'
+                    'Show 20', 'Show 50', 'Show 100'
                 ]
             }
         }
     },
     computed: {
+        loggedInUser() {
+            return this.$store.getters.loggedInUser;
+        },
         tableHeaders() {
             if (this.$route.name === 'Searches') {
                 return [
@@ -76,20 +89,27 @@ export default {
                     }
                 ];
             }
-            /// purchases table headers
+            /// return purchases table headers in their route
             return [];
         },
         tableItems() {
             if (this.$route.name === 'Searches') {
-                return this.$store.getters.loggedInUser.searches;
+                // TODO: return searches for display by filterby
+                return this.loggedInUser.searches;
             }
             // replace with purchases when there are any
-            return this.$store.getters.loggedInUser.searches;
+            return this.loggedInUser.searches;
         }
     },
     methods: {
         onFilter(filterBy) {
             console.log(filterBy);
+        },
+        removeItem(itemIdx) {
+            // later on add another param (or by $route.name) from which array to delete...
+            const user = JSON.parse(JSON.stringify(this.loggedInUser));
+            user.searches.splice(itemIdx, 1);
+            this.$store.dispatch({ type: 'updateLoggedInUser', user });
         }
     },
     components: {

@@ -91,6 +91,7 @@
             top: 50%;
             left: 100%;
             transform: translate(calc(-100% - 24px), -50%);
+            user-select: none;
             
             @include for-narrow-layout {
                 left: 50%;
@@ -100,7 +101,7 @@
             img {
                 width: 120px;
                 @include for-narrow-layout {
-                    width: unset;
+                    width: 221px;
                 }
             }
         }
