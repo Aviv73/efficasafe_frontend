@@ -16,7 +16,7 @@
 @import './cmps/main-footer';
 @import './cmps/user-msg';
 @import './cmps/shared/autocomplete';
-@import './cmps/common/auth-modal';
+@import './cmps/shared/modals/auth-modal';
 @import './cmps/shared/interaction-capsules';
 @import './cmps/shared/page-header';
 @import './cmps/shared/error-404';
@@ -36,6 +36,7 @@
 @import './cmps/principles-and-processes/side-navigation';
 @import './cmps/user-account/user-app';
 @import './cmps/user-account/user-data-table';
+@import './cmps/user-account/user-edit';
 
 /// VIEWS
 @import './views/home';
