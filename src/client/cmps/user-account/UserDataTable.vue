@@ -7,12 +7,19 @@
                         v-for="(header, idx) in headers"
                         :key="idx"
                     >
-                        <button v-if="header.sortable">
+                        <label
+                            v-if="header.sortable"
+                        >
+                            <input
+                                type="checkbox"
+                                hidden
+                                @change="emitSort(header, $event.target.checked)"
+                            />
                             <sort-vertical-icon
                                 class="sort-icon"
                             />
                         {{ header.title }}
-                        </button>
+                        </label>
                         <span v-else>{{ header.title }}</span>
                     </th>
                 </tr>
@@ -98,6 +105,9 @@ export default {
         }
     },
     methods: {
+        emitSort(sortBy, isDesc) {
+            this.$emit('header-clicked', sortBy, isDesc);
+        },
         emitDeleteItem() {
             this.$emit('item-deleted', this.itemToDelete.idx);
             this.closeModal();

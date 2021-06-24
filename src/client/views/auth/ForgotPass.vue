@@ -42,7 +42,6 @@ export default {
         return {
             newPass: '',
             checkPass: '',
-            token: '',
             errorMsg: '',
         };
     },
@@ -60,18 +59,15 @@ export default {
             }
             const res = await userService.resetPassword(
                 this.newPass,
-                this.token
+                this.$route.params.token
             );
             if (res) this.$router.push('/?passwordreset=1');
         },
         checkPassword(str) {
-            const re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-            return re.test(str);
-        },
-    },
-    created() {
-        this.token = this.$route.params.token;
-    },
+            const reg = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+            return reg.test(str);
+        }
+    }
 };
 </script>
 

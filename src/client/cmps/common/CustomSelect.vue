@@ -36,7 +36,7 @@
                     @keydown.stop.prevent.up="shiftFocus(idx - 1)"
                     @keydown.stop.prevent.down="shiftFocus(idx + 1)"
                 >
-                    {{ option }}
+                    {{ option.title }}
                 </li>
             </ul>
         </transition>
@@ -45,16 +45,24 @@
 
 <script>
 export default {
+    model: {
+        prop: 'value',
+        event: 'input'
+    },
     props: {
+        value: {
+            type: [ String, Number ],
+            required: true
+        },
         options: {
             type: Array,
             default: () => [],
-        },
+        }
     },
     data() {
         return {
             isOpen: false,
-            activeOption: this.options.length ? this.options[0] : '',
+            activeOption: this.options.length ? this.options[0].title : '',
         };
     },
     methods: {
@@ -67,10 +75,10 @@ export default {
             const [ elItem ] = this.$refs[`option-${itemIdx}`];
             elItem.focus();
         },
-        pickOption(val) {
-            this.activeOption = val;
+        pickOption({ title, value }) {
+            this.activeOption = title;
             this.isOpen = false;
-            this.$emit('option-picked', val);
+            this.$emit('input', value);
         }
     }
 };
