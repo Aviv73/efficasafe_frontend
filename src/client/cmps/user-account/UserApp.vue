@@ -31,6 +31,7 @@
                 :headers="tableHeaders"
                 :items="tableItems"
                 @item-deleted="removeItem"
+                @header-clicked="onSort"
             />
             <list-pagination
                 class="list-pagination flex-center"
@@ -71,7 +72,10 @@ export default {
                 page: 1,
                 itemsPerPage: 20,
                 createdAt: 0
-                /// TODO: sort by (make checkbox hack in table headers)
+            },
+            sortBy: {
+                field: '',
+                isDesc: false
             },
             filterOptions: {
                 createdAt: [
@@ -124,10 +128,17 @@ export default {
             const { filterBy } = this;
             if (this.$route.name === 'Searches') {
                 const from = (filterBy.page - 1) * filterBy.itemsPerPage;
-                return this.loggedInUser.searches.filter(({ title, at }) => {
+                return this.loggedInUser.searches
+                .filter(({ title, at }) => {
                     return title.toLowerCase().includes(filterBy.name.toLowerCase())
                     && at > filterBy.createdAt;
-                }).slice(from, from + filterBy.itemsPerPage);
+                })
+                .sort((a, b) => {
+                    const { field, isDesc } = this.sortBy;
+                    const sortOrder = isDesc ? 1 : -1;
+                    return (a[field] > b[field] ? 1 : a[field] < b[field] ? -1 : 0) * sortOrder;
+                })
+                .slice(from, from + filterBy.itemsPerPage);
             }
             /// return purchases table headers in their route
             return [];
@@ -145,6 +156,10 @@ export default {
         }
     },
     methods: {
+        onSort(sortBy, isDesc) {
+            this.sortBy.field = sortBy.field || sortBy.title;
+            this.sortBy.isDesc = isDesc;
+        },
         removeItem(itemIdx) {
             if (this.$route.name !== 'Searches') return;
             // const items = (this.$route.name === 'Searches') ? 'searches' : 'purchases';
