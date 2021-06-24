@@ -1,4 +1,16 @@
 .user-edit {
     background-color: $clr6;
-    padding: rem(55px) rem(65px);
+    padding: rem(54px) rem(64px);
+
+    &-card {
+        background-color: $white;
+        border: 1px solid $clr19;
+        padding: rem(44px) rem(54px) rem(74px);
+
+        h3 {
+            font-size: rem(24px);
+            line-height: rem(28px); 
+            margin-block-end: rem(14px);
+        }
+    }
 }
