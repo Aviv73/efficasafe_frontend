@@ -46,7 +46,7 @@
                 transform="translate(24.192 48.001) rotate(180)"
             />
         </svg>
-        <span :title="draftNameContent">
+        <span :title="draftNameFullContent">
             {{ draftNameContent }}
         </span>
             <svg
@@ -120,6 +120,10 @@ export default {
     computed: {
         isGroup() {
             return this.vInteractionCount > 0;
+        },
+        draftNameFullContent() {
+            const nameToDisplay = (this.showDraftName && this.draftName) ? this.draftName : this.side2Name;
+            return (this.vInteractionCount) ? `${nameToDisplay} (${this.vInteractionCount})` : nameToDisplay;
         },
         draftNameContent() {
             const nameToDisplay = (this.showDraftName && this.draftName) ? this.draftName : this.side2Name;
