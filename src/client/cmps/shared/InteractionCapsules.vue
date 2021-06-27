@@ -46,9 +46,8 @@
                 transform="translate(24.192 48.001) rotate(180)"
             />
         </svg>
-        <span :title="(showDraftName && draftName) ? draftName : side2Name">
-            {{ (showDraftName && draftName) ? draftName : side2Name }}
-            {{ vInteractionCount ? ` (${vInteractionCount})` : '' }}
+        <span :title="draftNameContent">
+            {{ draftNameContent }}
         </span>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -121,6 +120,14 @@ export default {
     computed: {
         isGroup() {
             return this.vInteractionCount > 0;
+        },
+        draftNameContent() {
+            const nameToDisplay = (this.showDraftName && this.draftName) ? this.draftName : this.side2Name;
+            const words = nameToDisplay.split(' ');
+            if (words.length > 3 && this.isGroup) {
+                return `${words[0]}...(${this.vInteractionCount})`;
+            }
+            return (this.vInteractionCount) ? `${nameToDisplay} (${this.vInteractionCount})` : nameToDisplay;
         },
         side1Name() {
             if (!this.name || this.isMaterialGroup) return '';
