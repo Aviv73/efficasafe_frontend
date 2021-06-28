@@ -472,11 +472,25 @@ export default {
                         return formatedPositiveInteractions.sort((a, b) => (a.evidenceLevel - b.evidenceLevel) * sortOrder);
                 }
             }
-            return formatedPositiveInteractions.sort((a, b) => {
+            formatedPositiveInteractions.sort((a, b) => {
                 return (map[b.recommendation] - map[a.recommendation]) * -1 ||
                 (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
                 (a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
             });
+            this.materials.forEach(material => {
+                if (formatedPositiveInteractions.some(g => g.name === material.userQuery)) return;
+                const emptyGroup = {
+                    name: material.userQuery,
+                    recommendation: '',
+                    evidenceLevel: '',
+                    mainMaterialId: material._id,
+                    isMaterialGroup: true,
+                    isEmpty: true,
+                    vInteractions: []
+                };
+                formatedPositiveInteractions.push(emptyGroup);
+            });
+            return formatedPositiveInteractions;
         },
         formatedInteractions() {
             let formatedInteractions = this.interactions.reduce((acc, interaction) => {

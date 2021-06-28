@@ -11,6 +11,7 @@
                         :class="{
                             'child': isChild,
                             'dups-list': isDuplicate,
+                            'empty-group': interaction.isEmpty
                         }"
                     >
                         <span
@@ -52,7 +53,7 @@
                                 {{ getRefsCount(interaction) }}
                             </span>
                             <span
-                                v-if="(!interaction.refs && !interaction.severity) || interaction.side2Label"
+                                v-if="((!interaction.refs && !interaction.severity) || interaction.side2Label) && !interaction.isEmpty"
                                 class="de-activator"
                             >
                                 <chevron-up-icon class="opened" title="" />

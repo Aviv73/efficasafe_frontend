@@ -55,8 +55,7 @@ export default {
                 id: [ this.side1Id, ...this.materialIds ],
                 page: 0,
                 limit: Number.MAX_SAFE_INTEGER,
-                materialCount: this.materialIds.length + 1,
-                recommendation: 'positives'
+                materialCount: this.materialIds.length + 1
             };
             const { interactions } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
             this.interactions = this.formatInteractions(interactions);
