@@ -480,7 +480,7 @@ export default {
             this.materials.forEach(material => {
                 if (formatedPositiveInteractions.some(g => g.name === material.userQuery)) return;
                 const emptyGroup = {
-                    name: material.userQuery,
+                    name: material.userQuery + ' (0)',
                     recommendation: '',
                     evidenceLevel: '',
                     mainMaterialId: material._id,
