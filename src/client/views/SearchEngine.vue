@@ -360,7 +360,7 @@ export default {
                 if (!Array.isArray(q) && q) {
                     this.$route.query.q = [ q ];
                 }
-                const isSameSearch = from && to.q.length && from.q.length && to.q.every((val, idx) => val === from.q[idx]);
+                const isSameSearch = from && from.q && to.q.length === from.q.length && to.q.every((val, idx) => val === from.q[idx]);
                 if (!isSameSearch) {
                     await this.getResults();
                 }
@@ -730,12 +730,6 @@ export default {
                 await this.getPositives();
                 this.isPBLoading = false;
             }
-            // const prms = (this.$route.name === 'Boosters') ? [ this.getPositives() ] : [
-            //     this.getInteractions(),
-            //     this.getDBankInteractions()
-            // ];
-            // await Promise.all(prms);
-            // this.isLoading = false;
         },
         async getPositives() {
             const ids = this.materials.reduce((acc, { type, _id, labels }) => {
