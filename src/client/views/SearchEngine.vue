@@ -721,6 +721,7 @@ export default {
             if (this.$route.name === 'Boosters') {
                 await this.getPositives();
                 this.isLoading = false;
+                this.isPBLoading = false;
                 const prms = [ this.getInteractions(), this.getDBankInteractions() ];
                 await Promise.all(prms);
             } else {
