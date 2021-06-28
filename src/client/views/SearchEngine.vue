@@ -486,7 +486,8 @@ export default {
                     mainMaterialId: material._id,
                     isMaterialGroup: true,
                     isEmpty: true,
-                    vInteractions: []
+                    vInteractions: [],
+                    total: 0
                 };
                 formatedPositiveInteractions.push(emptyGroup);
             });
