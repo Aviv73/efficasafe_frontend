@@ -484,8 +484,9 @@ export default {
             });
             this.materials.forEach(material => {
                 if (material.type !== 'drug' || formatedPositiveInteractions.some(g => g.name === material.userQuery)) return;
+                const name = (material.userQuery.length >= 14) ? material.userQuery.substring(0, 14) + '...(0)' : material.userQuery + ' (0)';
                 const emptyGroup = {
-                    name: material.userQuery + ' (0)',
+                    name,
                     recommendation: '',
                     evidenceLevel: '',
                     mainMaterialId: material._id,
