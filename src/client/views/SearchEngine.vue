@@ -250,6 +250,7 @@
                         :isVertical="isViewVertical"
                         :materials="materials"
                         :isLoading="isLoading"
+                        :isPBLoading="isPBLoading"
                         @page-changed="handlePaging"
                         @list-sorted="handleSort"
                     />
@@ -322,6 +323,7 @@ export default {
     data() {
         return {
             isLoading: false,
+            isPBLoading: false,
             materials: [],
             interactions: [],
             pageCount: 0,
@@ -344,7 +346,7 @@ export default {
     },
     watch: {
         '$route.query': {
-            async handler() {
+            async handler(to, from) {
                 if (this.$route.name === 'Boosters' && !this.isScreenNarrow && !storageService.load('did-p-boosters-tour')) {
                     this.$nextTick(() => {
                         this.$tours['boosters-tour'].start();
@@ -358,7 +360,10 @@ export default {
                 if (!Array.isArray(q) && q) {
                     this.$route.query.q = [ q ];
                 }
-                await this.getResults();
+                const isSameSearch = from && to.q.length && from.q.length && to.q.every((val, idx) => val === from.q[idx]);
+                if (!isSameSearch) {
+                    await this.getResults();
+                }
                 if (this.materials.length >= 2 && !storageService.load('did-onboarding-tour') && !this.isScreenNarrow) {
                     this.$tours['onboarding-tour'].start();
                 }
@@ -478,7 +483,7 @@ export default {
                 (a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
             });
             this.materials.forEach(material => {
-                if (formatedPositiveInteractions.some(g => g.name === material.userQuery)) return;
+                if (material.type !== 'drug' || formatedPositiveInteractions.some(g => g.name === material.userQuery)) return;
                 const emptyGroup = {
                     name: material.userQuery + ' (0)',
                     recommendation: '',
@@ -705,6 +710,7 @@ export default {
         },
         async getResults() {
             this.isLoading = true;
+            this.isPBLoading = true;
             await this.getMaterials();
             if (this.$route.query.q && this.$route.query.q.length === 1 && this.materials.length > 1) {
                 eventBus.$emit(EV_show_user_msg, 'Compound as a single result isn\'t supported, Please insert more material/s', 15000);
@@ -712,12 +718,24 @@ export default {
                 this.isLoading = false;
                 return;
             }
-            const prms = (this.$route.name === 'Boosters') ? [ this.getPositives() ] : [
-                this.getInteractions(),
-                this.getDBankInteractions()
-            ];
-            await Promise.all(prms);
-            this.isLoading = false;
+            if (this.$route.name === 'Boosters') {
+                await this.getPositives();
+                this.isLoading = false;
+                const prms = [ this.getInteractions(), this.getDBankInteractions() ];
+                await Promise.all(prms);
+            } else {
+                const prms = [ this.getInteractions(), this.getDBankInteractions() ];
+                await Promise.all(prms);
+                this.isLoading = false;
+                await this.getPositives();
+                this.isPBLoading = false;
+            }
+            // const prms = (this.$route.name === 'Boosters') ? [ this.getPositives() ] : [
+            //     this.getInteractions(),
+            //     this.getDBankInteractions()
+            // ];
+            // await Promise.all(prms);
+            // this.isLoading = false;
         },
         async getPositives() {
             const ids = this.materials.reduce((acc, { type, _id, labels }) => {

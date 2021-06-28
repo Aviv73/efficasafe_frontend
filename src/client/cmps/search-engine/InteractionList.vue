@@ -1,7 +1,7 @@
 <template>
     <section>
         <div
-            v-if="isLoading"
+            v-if="isLoading || ($route.name === 'Boosters' && isPBLoading)"
             class="flex-center"
         >
             <loader />
@@ -67,6 +67,10 @@ export default {
             required: true
         },
         isLoading: {
+            type: Boolean,
+            required: true
+        },
+        isPBLoading: {
             type: Boolean,
             required: true
         },
