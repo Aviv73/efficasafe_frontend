@@ -3,17 +3,22 @@
         <div class="black-screen" @click.stop="$router.push('/')"></div>
         <div>
             <div class="inside-modal center">
-                <img src="../../assets/imgs/flat-logo.png" alt="" />
+                <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
                 <div class="con-title">
                     <p>Enter your Email</p>
                 </div>
 
                 <div class="email-input">
-                    <input
-                        v-model="email"
-                        type="email"
-                        placeholder="yours@example.com"
-                    />
+                    <validation-provider name="email" rules="required|email">
+                        <div slot-scope="{ errors }">
+                        <input
+                            v-model="email"
+                            type="email"
+                            placeholder="yours@example.com"
+                        />
+                        <p class="error">{{ errors[0] }}</p>
+                        </div>
+                    </validation-provider>
                 </div>
 
                 <button @click="sendEmail" class="btn">Send Email</button>
@@ -30,6 +35,18 @@
 
 <script>
 import { userService } from '@/cms/services/user.service';
+import { ValidationProvider } from 'vee-validate';
+import { extend } from 'vee-validate';
+import { required, email } from 'vee-validate/dist/rules';
+
+extend('required', {
+    ...required,
+    message: 'Email is required'
+});
+extend('email', {
+    ...email,
+    message: 'Email is not valid'
+});
 
 export default {
     data() {
@@ -57,6 +74,9 @@ export default {
             }
         },
     },
+    components: {
+        ValidationProvider
+    }
 };
 </script>
 

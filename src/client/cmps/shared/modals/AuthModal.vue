@@ -36,7 +36,7 @@
 <script>
 import Auth0Lock from 'auth0-lock';
 import config from '@/client/config';
-import { userService } from '../../../../cms/services/user.service';
+import { userService } from '@/cms/services/user.service';
 
 export default {
     props: {

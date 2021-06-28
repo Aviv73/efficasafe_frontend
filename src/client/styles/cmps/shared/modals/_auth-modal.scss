@@ -158,25 +158,37 @@
     background: none !important;
 }
 
-
 .email-input {
-    height: rem(43px);
-    border-radius: 6px;
-    background-color: $clr3;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: rem(17.5px);
-    margin-bottom: rem(17.5px);
-}
-
-.email-input input {
-    outline: none;
-    border: 0;
-    text-align: center;
-    background-color: transparent;
+    position: relative;
+    margin-block-end: rem(48px);
     font-size: rem(14px);
-    width: 100%;
+
+    input {
+        height: rem(43px);
+        width: 100%;
+        background-color: $clr3;
+        border: 1px solid $clr3;
+        border-radius: 6px;
+        padding: 0 rem(24px);
+        transition: border-color .3s ease-in-out;
+        
+        &:focus {
+            outline: none;
+            border-color: $clr6;
+        }
+        &::placeholder {
+            text-align: center;
+        }
+    }
+    .error {
+        color: $red;
+        position: absolute;
+        top: calc(100% + 12px);
+        left: 0;
+        width: 100%;
+        text-align: center;
+        margin-block-end: rem(32px);
+    }
 }
 
 .red {
