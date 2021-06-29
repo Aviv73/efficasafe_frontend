@@ -4,6 +4,7 @@
 
 <script>
 import Axios from 'axios';
+
 export default {
     data() {
         return {
@@ -29,6 +30,3 @@ export default {
     },
 };
 </script>
-
-<style>
-</style>
