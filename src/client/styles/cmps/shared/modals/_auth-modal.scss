@@ -25,37 +25,12 @@
         }
     }
 
-    .send-verification {
-        background-color: $green;
-        font-family: roboto-bold, sans-serif;
-        font-weight: 700;
-        font-size: rem(12px);
-        padding: 0px;
-        border-radius: 6px;
-        color: $white;
-        position: absolute;
-        left: 50%;
-        bottom: 0;
-        transform: translateX(-50%);
-        width: 100%;
-
-        @include for-mobile-layout {
-            padding: rem(5px);
-        }
-
-
-    }
-
-    .red-bgc {
-        background-color: $red;
-    }
-
     @include for-mobile-layout {
         width: rem(550px);
     }
 }
 
-.sign-up-modal {
+.auth-modal {
     position: absolute;
     z-index: 999;
     top: 9%;
@@ -72,6 +47,86 @@
         }
     }
 
+    &-cover {
+        position: fixed;
+        background-color: rgba($black, .6);
+        height: 100vh;
+        width: 100vw;
+        left: 0;
+        top: 0;
+    }
+
+    &-title {
+        color: $clr1;
+        font-size: rem(22px);
+        margin-top: rem(72px);
+        margin-bottom: rem(48px);
+    }
+
+    &-small-title {
+        color: $clr1;
+        margin: rem(32px) 0 rem(16px);
+    }
+
+    &-sub-title {
+        color: $clr-txt-darker;
+        font-size: rem(16px);
+    }
+
+    &-field {
+        position: relative;
+        margin-block-end: rem(24px);
+        font-size: rem(14px);
+        
+        &-pass-toggle {
+            position: absolute;
+            top: 50%;
+            right: 6px;
+            transform: translateY(-50%);
+            color: $gray;
+        }
+
+        input {
+            height: rem(43px);
+            width: 100%;
+            background-color: $clr3;
+            border: 1px solid $clr3;
+            border-radius: 6px;
+            padding: 0 rem(24px);
+            transition: border-color .3s ease-in-out;
+            
+            &.is-invalid {
+                border-color: $red;
+            }
+            &:focus {
+                outline: none;
+                border-color: $clr6;
+            }
+            &::placeholder {
+                text-align: center;
+            }
+        }
+    }
+
+    &-user-msg {
+        background-color: $green;
+        color: $white;
+        font-size: rem(12px);
+        padding: 0px;
+        border-radius: 0 0 6px 6px;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        
+        @include for-mobile-layout {
+            padding: rem(5px);
+        }
+
+        &.is-error {
+            background-color: $red;
+        }
+    }
 
     #effica-modal {
         position: fixed;
@@ -89,30 +144,6 @@
         font-size: rem(14px);
     }
 
-    .title {
-        color: $clr1;
-        font-family: roboto-medium, sans-serif;
-        font-weight: 500;
-        font-size: rem(21px);
-        margin-top: rem(72px);
-        margin-bottom: rem(50px);
-    }
-
-    .con-title {
-        font-family: roboto-medium, sans-serif;
-        font-weight: 500;
-        letter-spacing: 0px;
-        color: $clr1;
-        margin: 30px 0;
-    }
-
-    .sub-title {
-        color: $clr-txt-darker;
-        font-family: roboto-bold, sans-serif;
-        font-size: rem(16px);
-        font-weight: 700;
-    }
-
     .desc {
         margin-top: rem(32px);
         font-size: rem(14px);
@@ -127,18 +158,6 @@
 
 
 }
-
-.black-screen {
-    position: fixed;
-    background-color: rgba($black, .6);
-    height: 100vh;
-    width: 100vw;
-    left: 0;
-    top: 0;
-
-}
-
-
 
 .center {
     padding: rem(30px);
@@ -156,39 +175,6 @@
 
 .auth0-lock-terms {
     background: none !important;
-}
-
-.email-input {
-    position: relative;
-    margin-block-end: rem(48px);
-    font-size: rem(14px);
-
-    input {
-        height: rem(43px);
-        width: 100%;
-        background-color: $clr3;
-        border: 1px solid $clr3;
-        border-radius: 6px;
-        padding: 0 rem(24px);
-        transition: border-color .3s ease-in-out;
-        
-        &:focus {
-            outline: none;
-            border-color: $clr6;
-        }
-        &::placeholder {
-            text-align: center;
-        }
-    }
-    .error {
-        color: $red;
-        position: absolute;
-        top: calc(100% + 12px);
-        left: 0;
-        width: 100%;
-        text-align: center;
-        margin-block-end: rem(32px);
-    }
 }
 
 .red {

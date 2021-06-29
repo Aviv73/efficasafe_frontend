@@ -1,13 +1,13 @@
 <template>
-    <div class="sign-up-modal">
-        <div class="black-screen" @click.stop="closeModal"></div>
+    <div class="auth-modal">
+        <div class="auth-modal-cover" @click.stop="closeModal"></div>
         <div id="effica-modal"></div>
         <div v-if="signUpModal">
             <div class="inside-modal center">
                 <img src="../../../assets/imgs/flat-logo.png" alt="" />
-                <p class="title">Please confirm your email address</p>
+                <p class="auth-modal-title font-medium">Please confirm your email address</p>
 
-                <p class="sub-title">
+                <p class="auth-modal-sub-title font-bold">
                     In order to complete registration process, please go to your
                     mail and click the confirmation link.
                 </p>
@@ -126,7 +126,7 @@ export default {
             },
             autoclose: true,
             avatar: null,
-            forgotPasswordLink: `${window.location.origin}/emailPassword`,
+            forgotPasswordLink: `${window.location.origin}/email-pass`,
             additionalSignUpFields: [
                 {
                     name: 'name',

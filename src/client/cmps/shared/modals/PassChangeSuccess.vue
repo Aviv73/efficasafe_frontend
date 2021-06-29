@@ -1,10 +1,10 @@
 <template>
-    <div class="sign-up-modal">
-        <div class="black-screen" @click.stop="closeModal()"></div>
+    <div class="auth-modal">
+        <div class="auth-modal-cover" @click.stop="closeModal()"></div>
         <div>
             <div class="inside-modal center">
-                <img src="../../../assets/imgs/flat-logo.png" alt="" />
-                <div class="con-title">
+                <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
+                <div class="auth-modal-small-title font-medium">
                     <p>Congratulations!</p>
                     <p>Your password has been changed!</p>
                 </div>
@@ -20,7 +20,6 @@
 
 <script>
 export default {
-    // refactor this
     methods: {
         closeModal() {
             this.$emit('closeModal');

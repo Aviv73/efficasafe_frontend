@@ -9,6 +9,7 @@ import 'normalize.css';
 import './styles/app.scss';
 import './directives';
 import '../cms/filters';
+import './validation';
 
 require('vue-tour/dist/vue-tour.css');
 Vue.use(VueTour);
