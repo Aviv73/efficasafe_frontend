@@ -18,11 +18,11 @@
                                 Personal details
                             </router-link>
                         </li>
-                        <li>
+                        <!-- <li>
                             <router-link to="/account/purchases" class="nav-link">
                                 Purchase history
                             </router-link>
-                        </li>
+                        </li> -->
                     </ul>
                 </nav>
             </div>

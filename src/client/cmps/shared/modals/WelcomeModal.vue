@@ -1,13 +1,13 @@
 <template>
-    <div class="sign-up-modal">
-        <div class="black-screen" @click.stop="closeModal()"></div>
+    <div class="auth-modal">
+        <div class="auth-modal-cover" @click.stop="closeModal()"></div>
         <div>
-            <button class="close-modal" @click="closeModal">X</button>
-            <div class="inside-modal center">
-                <img src="../../../assets/imgs/flat-logo.png" alt="Logo" />
-                <div class="con-title">
-                    <p>Congratulations!</p>
-                    <p>You now have 2 weeks of free trial</p>
+            <button class="auth-modal-close-btn" @click="closeModal">X</button>
+            <div class="auth-modal-content txt-center">
+                <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
+                <div class="auth-modal-small-title font-medium gap-lg">
+                    Congratulations!
+                    <span class="d-block">You now have 2 weeks of free trial</span>
                 </div>
 
                 <button class="btn" @click="$router.push('/search')">

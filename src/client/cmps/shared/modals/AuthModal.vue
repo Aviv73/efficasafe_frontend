@@ -1,13 +1,13 @@
 <template>
-    <div class="sign-up-modal">
-        <div class="black-screen" @click.stop="closeModal"></div>
+    <div class="auth-modal">
+        <div class="auth-modal-cover" @click.stop="closeModal"></div>
         <div id="effica-modal"></div>
         <div v-if="signUpModal">
-            <div class="inside-modal center">
-                <img src="../../../assets/imgs/flat-logo.png" alt="" />
-                <p class="title">Please confirm your email address</p>
+            <div class="auth-modal-content txt-center">
+                <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
+                <p class="auth-modal-title font-medium">Please confirm your email address</p>
 
-                <p class="sub-title">
+                <p class="auth-modal-sub-title font-bold">
                     In order to complete registration process, please go to your
                     mail and click the confirmation link.
                 </p>
@@ -22,7 +22,7 @@
                     If you need assistance, please contact us.
                 </p>
                 <button
-                    class="resend-email"
+                    class="resend-email-btn"
                     :disabled="isLoading"
                     @click="onResendEmail"
                 >
@@ -36,7 +36,7 @@
 <script>
 import Auth0Lock from 'auth0-lock';
 import config from '@/client/config';
-import { userService } from '../../../../cms/services/user.service';
+import { userService } from '@/cms/services/user.service';
 
 export default {
     props: {
@@ -126,7 +126,7 @@ export default {
             },
             autoclose: true,
             avatar: null,
-            forgotPasswordLink: `${window.location.origin}/emailPassword`,
+            forgotPasswordLink: `${window.location.origin}/email-pass`,
             additionalSignUpFields: [
                 {
                     name: 'name',

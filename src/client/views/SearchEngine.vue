@@ -250,6 +250,7 @@
                         :isVertical="isViewVertical"
                         :materials="materials"
                         :isLoading="isLoading"
+                        :isPBLoading="isPBLoading"
                         @page-changed="handlePaging"
                         @list-sorted="handleSort"
                     />
@@ -322,6 +323,7 @@ export default {
     data() {
         return {
             isLoading: false,
+            isPBLoading: false,
             materials: [],
             interactions: [],
             pageCount: 0,
@@ -344,7 +346,7 @@ export default {
     },
     watch: {
         '$route.query': {
-            async handler() {
+            async handler(to, from) {
                 if (this.$route.name === 'Boosters' && !this.isScreenNarrow && !storageService.load('did-p-boosters-tour')) {
                     this.$nextTick(() => {
                         this.$tours['boosters-tour'].start();
@@ -358,7 +360,10 @@ export default {
                 if (!Array.isArray(q) && q) {
                     this.$route.query.q = [ q ];
                 }
-                await this.getResults();
+                const isSameSearch = from && from.q && to.q.length === from.q.length && to.q.every((val, idx) => val === from.q[idx]);
+                if (!isSameSearch) {
+                    await this.getResults();
+                }
                 if (this.materials.length >= 2 && !storageService.load('did-onboarding-tour') && !this.isScreenNarrow) {
                     this.$tours['onboarding-tour'].start();
                 }
@@ -464,19 +469,35 @@ export default {
                 const { sortBy, isDesc } = this.boosterSortOptions;
                 const sortOrder = isDesc ? -1 : 1;
                 switch (sortBy) {
-                        case 'name':
-                            return formatedPositiveInteractions.sort((a, b) => (a.name.split(' & ')[0].toLowerCase().localeCompare(b.name.split(' & ')[0].toLowerCase())) * sortOrder);
-                        case 'recommendation':
-                            return formatedPositiveInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
-                        case 'evidenceLevel':
-                            return formatedPositiveInteractions.sort((a, b) => (a.evidenceLevel - b.evidenceLevel) * sortOrder);
+                    case 'name':
+                        return formatedPositiveInteractions.sort((a, b) => (a.name.split(' & ')[0].toLowerCase().localeCompare(b.name.split(' & ')[0].toLowerCase())) * sortOrder);
+                    case 'recommendation':
+                        return formatedPositiveInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
+                    case 'evidenceLevel':
+                        return formatedPositiveInteractions.sort((a, b) => (a.evidenceLevel - b.evidenceLevel) * sortOrder);
                 }
             }
-            return formatedPositiveInteractions.sort((a, b) => {
+            formatedPositiveInteractions.sort((a, b) => {
                 return (map[b.recommendation] - map[a.recommendation]) * -1 ||
                 (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
                 (a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
             });
+            this.materials.forEach(material => {
+                if (material.type !== 'drug' || formatedPositiveInteractions.some(g => g.name === material.userQuery)) return;
+                const name = (material.userQuery.length >= 14) ? material.userQuery.substring(0, 14) + '...(0)' : material.userQuery + ' (0)';
+                const emptyGroup = {
+                    name,
+                    recommendation: '',
+                    evidenceLevel: '',
+                    mainMaterialId: material._id,
+                    isMaterialGroup: true,
+                    isEmpty: true,
+                    vInteractions: [],
+                    total: 0
+                };
+                formatedPositiveInteractions.push(emptyGroup);
+            });
+            return formatedPositiveInteractions;
         },
         formatedInteractions() {
             let formatedInteractions = this.interactions.reduce((acc, interaction) => {
@@ -690,6 +711,7 @@ export default {
         },
         async getResults() {
             this.isLoading = true;
+            this.isPBLoading = true;
             await this.getMaterials();
             if (this.$route.query.q && this.$route.query.q.length === 1 && this.materials.length > 1) {
                 eventBus.$emit(EV_show_user_msg, 'Compound as a single result isn\'t supported, Please insert more material/s', 15000);
@@ -697,12 +719,19 @@ export default {
                 this.isLoading = false;
                 return;
             }
-            const prms = (this.$route.name === 'Boosters') ? [ this.getPositives() ] : [
-                this.getInteractions(),
-                this.getDBankInteractions()
-            ];
-            await Promise.all(prms);
-            this.isLoading = false;
+            if (this.$route.name === 'Boosters') {
+                await this.getPositives();
+                this.isLoading = false;
+                this.isPBLoading = false;
+                const prms = [ this.getInteractions(), this.getDBankInteractions() ];
+                await Promise.all(prms);
+            } else {
+                const prms = [ this.getInteractions(), this.getDBankInteractions() ];
+                await Promise.all(prms);
+                this.isLoading = false;
+                await this.getPositives();
+                this.isPBLoading = false;
+            }
         },
         async getPositives() {
             const ids = this.materials.reduce((acc, { type, _id, labels }) => {
@@ -718,8 +747,8 @@ export default {
                 isPositives: true,
                 id: ids
             };
-            const interactions = await this.$store.dispatch({ type: 'getInteractions', filterBy });
-            this.positiveInteractions = interactions;
+            let interactions = await this.$store.dispatch({ type: 'getInteractions', filterBy });
+            this.positiveInteractions = await this.removeDupNonPositives(interactions);
         },
         async getInteractions(page = 1) {
             const ids = this.materials.reduce((acc, { _id, labels }) => {
@@ -777,6 +806,31 @@ export default {
             this.materials = this.sortMaterials(materials);
             this.$store.commit({ type: 'makeMaterialNamesMap', materials });
             this.checkForIncludedMaterials();
+        },
+        async removeDupNonPositives(interactions) {
+            const res = [];
+            for (let i = 0; i < interactions.length; i++) {
+                const group = interactions[i];
+                const matchingMaterial = this.materials.find(m => m._id === group.side2Id || m.labels.some(l => l._id === group.side2Id));
+                const side2Ids = [ matchingMaterial._id, ...matchingMaterial.labels.map(l => l._id) ];
+                for (let j = 0; j < group.vInteractions.length; j++) {
+                    const vInteraction = group.vInteractions[j];
+                    const ids = [ vInteraction.side1Material._id, ...side2Ids ];
+                    const filterBy = {
+                        isSearchResults: true,
+                        id: ids,
+                        page: 0,
+                        limit: Number.MAX_SAFE_INTEGER,
+                        materialCount: ids.length + 1,
+                        recommendation: 'non-positives'
+                    };
+                    const { total } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
+                    if (!total) {
+                        res.push(group);
+                    }
+                }
+            }
+            return res;
         },
         getMaterialInteractions(result) {
             if (this.materials.length <= 1 || result.isIncluded) return [];

@@ -1,61 +1,4 @@
-.inside-modal {
-    position: fixed;
-    z-index: 999;
-    top: 9%;
-    left: 50%;
-    width: rem(350px);
-    transform: translateX(-50%);
-    background-color: $white;
-    box-shadow: 0px 2px 4px rgba($black, .6);
-    border: 1px solid $clr6;
-    border-radius: 6px;
-
-    .resend-email {
-        cursor: pointer;
-        text-decoration: underline;
-        position: absolute;
-        outline: $clr4;
-        color: $clr4;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-
-        &:disabled {
-            opacity: .5;
-        }
-    }
-
-    .send-verification {
-        background-color: $green;
-        font-family: roboto-bold, sans-serif;
-        font-weight: 700;
-        font-size: rem(12px);
-        padding: 0px;
-        border-radius: 6px;
-        color: $white;
-        position: absolute;
-        left: 50%;
-        bottom: 0;
-        transform: translateX(-50%);
-        width: 100%;
-
-        @include for-mobile-layout {
-            padding: rem(5px);
-        }
-
-
-    }
-
-    .red-bgc {
-        background-color: $red;
-    }
-
-    @include for-mobile-layout {
-        width: rem(550px);
-    }
-}
-
-.sign-up-modal {
+.auth-modal {
     position: absolute;
     z-index: 999;
     top: 9%;
@@ -72,6 +15,135 @@
         }
     }
 
+    &-cover {
+        position: fixed;
+        background-color: rgba($black, .6);
+        height: 100vh;
+        width: 100vw;
+        left: 0;
+        top: 0;
+    }
+
+    &-content {
+        position: fixed;
+        z-index: 999;
+        top: 9%;
+        left: 50%;
+        width: rem(350px);
+        transform: translateX(-50%);
+        background-color: $white;
+        box-shadow: 0px 2px 4px rgba($black, .6);
+        border: 1px solid $clr6;
+        border-radius: 6px;
+        padding: rem(30px);
+    
+        @include for-mobile-layout {
+            padding: rem(70px) rem(90px);
+        }
+    
+        .resend-email-btn {
+            cursor: pointer;
+            text-decoration: underline;
+            position: absolute;
+            outline: $clr4;
+            color: $clr4;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+    
+            &:disabled {
+                opacity: .5;
+            }
+        }
+    
+        @include for-mobile-layout {
+            width: rem(550px);
+        }
+    }
+
+    &-title {
+        color: $clr1;
+        font-size: rem(22px);
+        margin-block-start: rem(72px);
+        margin-block-end: rem(48px);
+    }
+
+    &-small-title {
+        color: $clr1;
+        margin: rem(32px) 0 rem(16px);
+
+        &.gap-lg {
+            margin: rem(32px) 0;
+        }
+    }
+
+    &-sub-title {
+        color: $clr-txt-darker;
+        font-size: rem(16px);
+    }
+
+    &-field {
+        position: relative;
+        margin-block-end: rem(24px);
+        font-size: rem(14px);
+        
+        &-pass-toggle {
+            position: absolute;
+            top: 50%;
+            right: 6px;
+            transform: translateY(-50%);
+            color: $gray;
+        }
+
+        input {
+            height: rem(43px);
+            width: 100%;
+            background-color: $clr3;
+            border: 1px solid $clr3;
+            border-radius: 6px;
+            padding: 0 rem(24px);
+            transition: border-color .3s ease-in-out;
+            
+            &.is-invalid {
+                border-color: $red;
+            }
+            &:focus {
+                outline: none;
+                border-color: $clr6;
+            }
+            &::placeholder {
+                text-align: center;
+            }
+        }
+    }
+
+    &-user-msg {
+        background-color: $green;
+        color: $white;
+        font-size: rem(12px);
+        padding: 0px;
+        border-radius: 0 0 6px 6px;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        
+        @include for-mobile-layout {
+            padding: rem(5px);
+        }
+
+        &.is-error {
+            background-color: $red;
+        }
+    }
+
+    &-close-btn {
+        position: absolute;
+        top: 39px;
+        right: 35px;
+        color: $gray;
+        font-size: rem(14px);
+    }
 
     #effica-modal {
         position: fixed;
@@ -80,39 +152,6 @@
         width: rem(500px);
         max-width: 96%;
     }
-
-    .close-modal {
-        position: absolute;
-        top: 39px;
-        right: 35px;
-        color: $gray;
-        font-size: rem(14px);
-    }
-
-    .title {
-        color: $clr1;
-        font-family: roboto-medium, sans-serif;
-        font-weight: 500;
-        font-size: rem(21px);
-        margin-top: rem(72px);
-        margin-bottom: rem(50px);
-    }
-
-    .con-title {
-        font-family: roboto-medium, sans-serif;
-        font-weight: 500;
-        letter-spacing: 0px;
-        color: $clr1;
-        margin: 30px 0;
-    }
-
-    .sub-title {
-        color: $clr-txt-darker;
-        font-family: roboto-bold, sans-serif;
-        font-size: rem(16px);
-        font-weight: 700;
-    }
-
     .desc {
         margin-top: rem(32px);
         font-size: rem(14px);
@@ -127,70 +166,12 @@
 
 
 }
-
-.black-screen {
-    position: fixed;
-    background-color: rgba($black, .6);
-    height: 100vh;
-    width: 100vw;
-    left: 0;
-    top: 0;
-
-}
-
-
-
-.center {
-    padding: rem(30px);
-    text-align: center;
-
-    @include for-mobile-layout {
-        padding: rem(70px) rem(90px);
-
-    }
-}
-
 .auth0-lock.auth0-lock .auth0-lock-center {
     padding: 0px !important;
 }
 
 .auth0-lock-terms {
     background: none !important;
-}
-
-
-.email-input {
-    height: rem(43px);
-    border-radius: 6px;
-    background-color: $clr3;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: rem(17.5px);
-    margin-bottom: rem(17.5px);
-}
-
-.email-input input {
-    outline: none;
-    border: 0;
-    text-align: center;
-    background-color: transparent;
-    font-size: rem(14px);
-    width: 100%;
-}
-
-.red {
-    position: relative;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: $red;
-    margin-top: 20px;
-
-    @include for-mobile-layout {
-        position: absolute;
-        margin-top: unset
-    }
 }
 
 .auth0-lock.auth0-lock .auth0-lock-form {

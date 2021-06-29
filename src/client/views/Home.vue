@@ -1,10 +1,5 @@
 <template>
     <section class="home">
-        <welcome-modal v-if="welcomeModal" @closeModal="welcomeModal = false" />
-        <pass-change-success
-            v-if="passwordModal"
-            @closeModal="passwordModal = false"
-        />
         <header class="flex-coloumn">
             <h1 class="flex-coloumn">
                 <a href="/">
@@ -174,6 +169,11 @@
                 </li>
             </ul>
         </section>
+        <welcome-modal v-if="welcomeModal" @closeModal="welcomeModal = false" />
+        <pass-change-success
+            v-if="passwordModal"
+            @closeModal="passwordModal = false"
+        />
     </section>
 </template>
 

@@ -90,16 +90,11 @@ function getEmptySearch() {
 }
 
 async function sendResetPass(email) {
-    return await httpService.get(`${ACCOUNT_END_POINT}/passwordEmail?email=${email}`);
+    return await httpService.get(`${ACCOUNT_END_POINT}/replace-pass?email=${email}`);
 }
 
 async function resetPassword(pass, token) {
-    try {
-        await httpService.put(`${ACCOUNT_END_POINT}/forgotPass`, { pass, token });
-        return 'done';
-    } catch (err) {
-        console.log('cannot change pass ', err);
-    }
+    return await httpService.put(`${ACCOUNT_END_POINT}/reset-pass`, { pass, token });
 }
 
 

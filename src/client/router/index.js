@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
-import SearchEngine from '../views/SearchEngine';
-import InteractionDetails from '../views/InteractionDetails';
-import ForgotPass from '../views/auth/ForgotPass.vue';
-import ForgotPasswordEmail from '../views/auth/ForgotPasswordEmail.vue';
-import VerifyEmail from '../views/auth/VerifyEmail.vue';
-import DBankInteractionDetails from '../views/DBankInteractionDetails';
+import Home from '@/client/views/Home.vue';
+import SearchEngine from '@/client/views/SearchEngine';
+import InteractionDetails from '@/client/views/InteractionDetails';
+import ResetPassForm from '@/client/views/auth/ResetPassForm.vue';
+import SendPassResetForm from '@/client/views/auth/SendPassResetForm.vue';
+import VerifyEmail from '@/client/views/auth/VerifyEmail.vue';
+import DBankInteractionDetails from '@/client/views/DBankInteractionDetails';
 import UserAccount from '@/client/views/UserAccount';
 
 import InteractionList from '@/client/cmps/search-engine/InteractionList';
@@ -28,14 +28,14 @@ const routes = [
     component: VerifyEmail
   },
   {
-    path: '/emailPassword',
-    name: 'emailPassword',
-    component: ForgotPasswordEmail
+    path: '/email-pass',
+    name: 'email-pass',
+    component: SendPassResetForm
   },
   {
-    path: '/forgotPass/:token',
-    name: 'ForgotPass',
-    component: ForgotPass
+    path: '/reset-pass/:token',
+    name: 'ResetPassForm',
+    component: ResetPassForm
   },
   {
     path: '/search',
