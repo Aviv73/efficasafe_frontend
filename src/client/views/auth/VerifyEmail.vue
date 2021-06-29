@@ -1,5 +1,5 @@
 <template>
-    <h1>Verifing email...</h1>
+    <p>Verifing email...</p>
 </template>
 
 <script>
