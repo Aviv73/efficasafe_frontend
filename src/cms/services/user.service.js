@@ -94,12 +94,7 @@ async function sendResetPass(email) {
 }
 
 async function resetPassword(pass, token) {
-    try {
-        await httpService.put(`${ACCOUNT_END_POINT}/reset-pass`, { pass, token });
-        return 'done';
-    } catch (err) {
-        console.log('cannot change pass ', err);
-    }
+    return await httpService.put(`${ACCOUNT_END_POINT}/reset-pass`, { pass, token });
 }
 
 

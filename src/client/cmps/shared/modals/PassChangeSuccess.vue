@@ -2,11 +2,11 @@
     <div class="auth-modal">
         <div class="auth-modal-cover" @click.stop="closeModal()"></div>
         <div>
-            <div class="inside-modal center">
+            <div class="auth-modal-content txt-center">
                 <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
-                <div class="auth-modal-small-title font-medium">
-                    <p>Congratulations!</p>
-                    <p>Your password has been changed!</p>
+                <div class="auth-modal-small-title font-medium gap-lg">
+                    Congratulations!
+                    <span class="d-block">Your password has been changed!</span>
                 </div>
 
                 <button class="btn" @click="closeModal">Close</button>

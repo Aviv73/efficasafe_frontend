@@ -3,8 +3,8 @@
         <div class="auth-modal-cover" @click.stop="closeModal"></div>
         <div id="effica-modal"></div>
         <div v-if="signUpModal">
-            <div class="inside-modal center">
-                <img src="../../../assets/imgs/flat-logo.png" alt="" />
+            <div class="auth-modal-content txt-center">
+                <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
                 <p class="auth-modal-title font-medium">Please confirm your email address</p>
 
                 <p class="auth-modal-sub-title font-bold">
@@ -22,7 +22,7 @@
                     If you need assistance, please contact us.
                 </p>
                 <button
-                    class="resend-email"
+                    class="resend-email-btn"
                     :disabled="isLoading"
                     @click="onResendEmail"
                 >

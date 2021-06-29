@@ -2,7 +2,7 @@
     <div class="auth-modal">
         <div class="auth-modal-cover"></div>
         <div>
-            <div class="inside-modal center">
+            <div class="auth-modal-content txt-center">
                 <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
                 <div class="auth-modal-small-title font-medium">
                     <p>Enter a new password</p>
@@ -27,6 +27,7 @@
                                 />
                                 <button
                                     type="button"
+                                    tabindex="-1"
                                     class="auth-modal-field-pass-toggle"
                                     @click="toggleInputType()"
                                 >
@@ -96,7 +97,11 @@ export default {
                     this.newPass,
                     this.$route.params.token
                 );
-                if (res) this.$router.push('/?passwordreset=1');
+                if (res.err) {
+                    this.failMsg = 'Something went wrong. Try again';
+                    return;
+                }
+                this.$router.push('/?passwordreset=1');
             } catch (err) {
                 this.failMsg = 'Something went wrong. Try again';
             }

@@ -122,7 +122,7 @@
                     <v-icon dark left>mdi-delete</v-icon>
                     Confirm delete
                 </v-card-title>
-                <v-card-text class="py-4" style="text-align: center">
+                <v-card-text class="text-center py-4">
                     Are you sure you want to delete
                     {{ selected.length }} labels?
                 </v-card-text>

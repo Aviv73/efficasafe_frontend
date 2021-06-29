@@ -1,35 +1,3 @@
-.inside-modal {
-    position: fixed;
-    z-index: 999;
-    top: 9%;
-    left: 50%;
-    width: rem(350px);
-    transform: translateX(-50%);
-    background-color: $white;
-    box-shadow: 0px 2px 4px rgba($black, .6);
-    border: 1px solid $clr6;
-    border-radius: 6px;
-
-    .resend-email {
-        cursor: pointer;
-        text-decoration: underline;
-        position: absolute;
-        outline: $clr4;
-        color: $clr4;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-
-        &:disabled {
-            opacity: .5;
-        }
-    }
-
-    @include for-mobile-layout {
-        width: rem(550px);
-    }
-}
-
 .auth-modal {
     position: absolute;
     z-index: 999;
@@ -56,16 +24,57 @@
         top: 0;
     }
 
+    &-content {
+        position: fixed;
+        z-index: 999;
+        top: 9%;
+        left: 50%;
+        width: rem(350px);
+        transform: translateX(-50%);
+        background-color: $white;
+        box-shadow: 0px 2px 4px rgba($black, .6);
+        border: 1px solid $clr6;
+        border-radius: 6px;
+        padding: rem(30px);
+    
+        @include for-mobile-layout {
+            padding: rem(70px) rem(90px);
+        }
+    
+        .resend-email-btn {
+            cursor: pointer;
+            text-decoration: underline;
+            position: absolute;
+            outline: $clr4;
+            color: $clr4;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+    
+            &:disabled {
+                opacity: .5;
+            }
+        }
+    
+        @include for-mobile-layout {
+            width: rem(550px);
+        }
+    }
+
     &-title {
         color: $clr1;
         font-size: rem(22px);
-        margin-top: rem(72px);
-        margin-bottom: rem(48px);
+        margin-block-start: rem(72px);
+        margin-block-end: rem(48px);
     }
 
     &-small-title {
         color: $clr1;
         margin: rem(32px) 0 rem(16px);
+
+        &.gap-lg {
+            margin: rem(32px) 0;
+        }
     }
 
     &-sub-title {
@@ -128,15 +137,7 @@
         }
     }
 
-    #effica-modal {
-        position: fixed;
-        left: 50%;
-        transform: translateX(-50%);
-        width: rem(500px);
-        max-width: 96%;
-    }
-
-    .close-modal {
+    &-close-btn {
         position: absolute;
         top: 39px;
         right: 35px;
@@ -144,6 +145,13 @@
         font-size: rem(14px);
     }
 
+    #effica-modal {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        width: rem(500px);
+        max-width: 96%;
+    }
     .desc {
         margin-top: rem(32px);
         font-size: rem(14px);
@@ -158,37 +166,12 @@
 
 
 }
-
-.center {
-    padding: rem(30px);
-    text-align: center;
-
-    @include for-mobile-layout {
-        padding: rem(70px) rem(90px);
-
-    }
-}
-
 .auth0-lock.auth0-lock .auth0-lock-center {
     padding: 0px !important;
 }
 
 .auth0-lock-terms {
     background: none !important;
-}
-
-.red {
-    position: relative;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: $red;
-    margin-top: 20px;
-
-    @include for-mobile-layout {
-        position: absolute;
-        margin-top: unset
-    }
 }
 
 .auth0-lock.auth0-lock .auth0-lock-form {
