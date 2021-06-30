@@ -1,16 +1,88 @@
 .user-edit {
     background-color: $clr6;
-    padding: rem(54px) rem(64px);
+    padding: rem(26px) rem(32px);
+
+    
+    @include for-mobile-layout {
+        padding: rem(54px) rem(64px);
+    }
 
     &-card {
+        display: flex;
+        flex-direction: column;
         background-color: $white;
+        border-radius: 6px;
         border: 1px solid $clr19;
-        padding: rem(44px) rem(54px) rem(74px);
+        padding: rem(22px) rem(26px) rem(32px);
+        position: relative;
+        
+        @include for-mobile-layout {
+            padding: rem(44px) rem(54px) rem(74px);
+        }
+
+        &:first-child {
+            margin-block-end: rem(24px);
+        }
 
         h3 {
-            font-size: rem(24px);
-            line-height: rem(28px); 
-            margin-block-end: rem(14px);
+            text-align: center;
+            text-transform: capitalize;
+            font-size: rem(20px);
+            line-height: rem(24px); 
+            margin-block-end: rem(24px);
+
+            @include for-mobile-layout {
+                text-align: initial;
+                font-size: rem(24px);
+                line-height: rem(28px); 
+            }
         }
+
+        &-btn {
+            align-self: flex-start;
+            line-height: rem(28px);
+            transition: text-shadow .3s ease-in-out, text-decoration .3s ease-in-out;
+
+            @include hover-supported {
+                text-decoration: underline;
+                text-shadow: $bold;
+
+                .chevron-right-icon {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+
+            .chevron-right-icon {
+                height: 22px;
+                transform: translateX(-100%);
+                opacity: 0;
+                transition: transform .3s ease-in-out, opacity .3s ease-in-out;
+            }
+        }
+    }
+    &-submit-btn {
+        padding: rem(8px) rem(16px);
+        align-self: center;
+
+        &:disabled {
+            opacity: .5;
+        }
+        @include for-mobile-layout {
+            align-self: flex-end;
+        }
+    }
+    &-error-msg {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        color: $white;
+        font-size: rem(12px);
+        line-height: rem(24px);
+        padding: 0px;
+        border-radius: 0 0 6px 6px;
+        background-color: $red;
+        text-align: center;
     }
 }

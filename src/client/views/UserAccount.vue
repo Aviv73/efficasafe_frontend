@@ -29,7 +29,7 @@
             <transition name="fade" mode="out-in">
                 <router-view :key="$route.name" />
             </transition>
-            <span class="brim-end" />
+            <span class="brim-end" :class="{ 'on-edit': $route.name === 'UserEdit' }" />
         </div>
     </section>
 </template>

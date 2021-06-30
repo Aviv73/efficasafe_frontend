@@ -15,3 +15,8 @@ extend('confirmPassword', (passConfirm, [ pass ]) => {
 {
     paramNames: ['pass']
 });
+
+extend('phone', val => {
+    const reg = /\+?([\d|(][h|(\d{3})|. |\-|\d]{4,}\d)/;
+    return reg.test(val);
+});

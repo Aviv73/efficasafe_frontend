@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Axios from 'axios';
+import { userService } from '@/cms/services/user.service';
 
 export default {
     data() {
@@ -13,15 +13,8 @@ export default {
     },
     methods: {
         async VerifyEmail() {
-            const BASE_URL =
-                process.env.NODE_ENV === 'development'
-                    ? '//localhost:3000/api'
-                    : '/api';
-
             const { token } = this.$route.params;
-            const res = await Axios.get(
-                `${BASE_URL}/account/verifyEmail?token=${token}`
-            );
+            const res = await userService.verifyEmail(token);
             if (res.status === 200) this.$router.push('/?congratulations=yes');
         },
     },

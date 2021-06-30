@@ -18,15 +18,19 @@ export const userService = {
     resetPassword,
     resnedVerifcationMail,
     checkTrial,
-    getEmptySearch
+    getEmptySearch,
+    verifyEmail
 }
 
+function verifyEmail(token) {
+    return httpService.get(`${ACCOUNT_END_POINT}/verifyEmail?token=${token}`);
+}
 
-async function resnedVerifcationMail(user) {
+function resnedVerifcationMail(user) {
     return httpService.post(`${ACCOUNT_END_POINT}/resendMail`, { user: user })
 }
 
-async function removeMany(ids) {
+function removeMany(ids) {
     return httpService.delete(`${ACCOUNT_END_POINT}`, ids);
 }
 
@@ -35,11 +39,11 @@ async function save(user) {
     return httpService.put(`${ACCOUNT_END_POINT}/${user._id}`, user);
 
 }
-async function loadUsers(filterBy) {
-    return await httpService.get(`${ACCOUNT_END_POINT}/`, filterBy);
+function loadUsers(filterBy) {
+    return httpService.get(`${ACCOUNT_END_POINT}/`, filterBy);
 }
 
-async function getById(id) {
+function getById(id) {
     return httpService.get(`${ACCOUNT_END_POINT}/${id}`);
 }
 
@@ -68,11 +72,11 @@ function getLoggedInUser() {
     return storageService.load('userProfile');
 }
 
-async function logout() {
-    await httpService.post(`${AUTH_END_POINT}/logout`);
+function logout() {
+    httpService.post(`${AUTH_END_POINT}/logout`);
 }
 
-async function getEmptyUser() {
+function getEmptyUser() {
     return {
         name: '',
         email: '',

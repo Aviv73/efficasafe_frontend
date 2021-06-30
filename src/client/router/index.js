@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import store from '@/cms/store';
 import Home from '@/client/views/Home.vue';
 import SearchEngine from '@/client/views/SearchEngine';
 import InteractionDetails from '@/client/views/InteractionDetails';
@@ -85,17 +86,26 @@ const routes = [
       {
         path: '',
         name: 'Searches',
-        component: UserApp
+        component: UserApp,
+        meta: {
+          requiresAuth: true
+        }
       },
       {
         path: 'purchases',
         name: 'Purchases',
-        component: UserApp
+        component: UserApp,
+        meta: {
+          requiresAuth: true
+        }
       },
       {
         path: 'edit',
         name: 'UserEdit',
-        component: UserEdit
+        component: UserEdit,
+        meta: {
+          requiresAuth: true
+        }
       }
     ]
   },
@@ -149,6 +159,10 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    if (store.getters.loggedInUser) next();
+    else next({ name: 'Home' });
+  }
   window.scrollTo(0, 0);
   next();
 });
