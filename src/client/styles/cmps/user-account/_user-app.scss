@@ -4,7 +4,12 @@
 
     &-header {
         background-color: $clr6;
-        padding: rem(48px) rem(24px) rem(16px) 0;
+        padding: rem(48px) rem(24px) rem(32px) 0;
+        position: relative;
+
+        @include for-mobile-layout {
+            padding: rem(48px) rem(24px) rem(16px) 0;
+        }
 
         &-search {
             width: rem(300px);
@@ -35,10 +40,26 @@
         &-filter {
             font-size: rem(14px);
             line-height: rem(21px);
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-inline-start: 24px;
+            
+            @include for-mobile-layout {
+                display: initial;
+                flex-grow: 0;
+                padding-inline-start: 0;
+            }
 
             .select {
                 .select-trigger {
                     vertical-align: bottom;
+                    width: 8rem;
+
+                    @include for-mobile-layout {
+                        width: 9.675rem;
+                    }
                 }
 
                 &:first-child {
@@ -48,12 +69,19 @@
         }
         &-notice {
             align-self: flex-end;
-            margin-inline-start: rem(24px);
             font-size: rem(14px);
             line-height: 100%;
             color: $clr1;
+            position: absolute;
+            left: 24px;
+            bottom: 6px;
+            
+            @include for-mobile-layout {
+                position: static;
+                margin-inline-start: rem(24px);
+            }
         }
-
+        
         & > div:first-child {
             margin-block-end: rem(24px);
         }
@@ -63,6 +91,7 @@
         display: flex;
         flex-direction: column;
         background-color: $clr3;
+        max-width: 100vmin;
 
         .list-pagination {
             align-items: stretch;

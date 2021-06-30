@@ -251,6 +251,7 @@ sub {
     }
 
     input {
+        width: 100%;
         background-color: transparent;
         border: none;
         padding-inline-start: rem(8px);
@@ -258,6 +259,9 @@ sub {
 
         &:focus {
             outline: none;
+        }
+        &:read-only {
+            color: $gray;
         }
         &::placeholder {
             color: transparent;

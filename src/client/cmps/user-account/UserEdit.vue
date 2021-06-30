@@ -9,6 +9,17 @@
                     novalidate
                 >
                     <h3>Fill in your personal details</h3>
+                    <div class="form-input">
+                        <label>
+                            <input
+                                type="email"
+                                placeholder="Your Email"
+                                v-model="loggedInUser.email"
+                                readonly
+                            />
+                            <span class="label">Your Email</span>
+                        </label>
+                    </div>
                     <validation-provider name="firstName">
                         <div class="form-input">
                             <label>
@@ -64,19 +75,19 @@
             </validation-observer>
         </div>
         <div class="user-edit-card" v-if="isEmailPasswordAuth">
-            <h3>Change password or email</h3>
-            <button
-                class="user-edit-card-btn flex-align-center"
-                @click="$router.push('/email-pass')"
-            >
-                Password
-                <chevron-right-icon title="" :size="16" />
-            </button>
+            <h3>Update password or email</h3>
             <button
                 class="user-edit-card-btn flex-align-center"
                 @click="updateEmail"
             >
-                Email
+                Update Email
+                <chevron-right-icon title="" :size="16" />
+            </button>
+            <button
+                class="user-edit-card-btn flex-align-center"
+                @click="$router.push('/email-pass')"
+            >
+                Update Password
                 <chevron-right-icon title="" :size="16" />
             </button>
         </div>

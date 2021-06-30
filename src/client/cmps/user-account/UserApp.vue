@@ -101,7 +101,7 @@ export default {
             if (this.$route.name === 'Searches') {
                 return [
                     {
-                        title: 'Client name',
+                        title: this.isScreenNarrow ? 'Name' : 'Client name',
                         field: 'title',
                         sortable: true
                     },
@@ -153,6 +153,9 @@ export default {
             // const items = (this.$route.name === 'Searches') ? 'searches' : 'purchases';
             const items = 'searches';
             return loggedInUser[items].length;
+        },
+        isScreenNarrow() {
+            return this.$store.getters.isScreenNarrow;
         }
     },
     methods: {
