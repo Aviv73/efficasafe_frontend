@@ -1,6 +1,6 @@
 <template>
     <div class="auth-modal">
-        <div class="auth-modal-cover" @click.stop="$router.push('/')"></div>
+        <div class="auth-modal-cover" @click.stop="$router.go(-1)"></div>
         <div>
             <div class="auth-modal-content txt-center">
                 <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />

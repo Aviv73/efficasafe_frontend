@@ -2,7 +2,12 @@
     <section class="user-edit">
         <div class="user-edit-card">
             <validation-observer v-slot="{ handleSubmit, reset, invalid }">
-                <form @submit.prevent="handleSubmit(updateDetails)" @reset="reset" novalidate>
+                <form
+                    class="user-edit-form"
+                    @submit.prevent="handleSubmit(updateDetails)"
+                    @reset="reset"
+                    novalidate
+                >
                     <h3>Fill in your personal details</h3>
                     <validation-provider name="firstName">
                         <div class="form-input">
@@ -62,6 +67,7 @@
             <h3>Change password or email</h3>
             <button
                 class="user-edit-card-btn flex-align-center"
+                @click="$router.push('/email-pass')"
             >
                 Password
                 <chevron-right-icon title="" :size="16" />
