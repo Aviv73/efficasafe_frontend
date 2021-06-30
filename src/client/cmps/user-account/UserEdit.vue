@@ -74,6 +74,7 @@
             </button>
             <button
                 class="user-edit-card-btn flex-align-center"
+                @click="updateEmail"
             >
                 Email
                 <chevron-right-icon title="" :size="16" />
@@ -121,6 +122,9 @@ export default {
             });
             await this.$store.dispatch({ type: 'updateLoggedInUser', user });
             eventBus.$emit(EV_show_user_msg, 'Your account has been updated successfully.', 3000);
+        },
+        updateEmail() {
+            alert('Feature in progress..');
         }
     },
     components: {
