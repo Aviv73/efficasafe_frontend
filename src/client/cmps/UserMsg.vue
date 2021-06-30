@@ -1,6 +1,13 @@
 <template>
     <transition name="fade">
-        <aside class="user-msg" v-if="isActive">
+        <aside
+            class="user-msg"
+            v-if="isActive"
+            :class="{
+                'success': status === 'success',
+                'error': status === 'error'
+            }"
+        >
             <div class="main-container">
                 <div
                     v-if="isCookieNotice"
@@ -57,14 +64,16 @@ export default {
         return {
             isCookieNotice: false,
             isActive: false,
-            msg: ''
+            msg: '',
+            status: ''
         }
     },
     components: {
         CloseIcon
     },
     methods: {
-        showMsg(msg, timeout = 3000) {
+        showMsg(msg, timeout = 3000, status = '') {
+            this.status = status;
             this.msg = msg;
             this.isActive = true;
 
@@ -73,6 +82,7 @@ export default {
                 this.$options.timeoutId = setTimeout(() => {
                     this.isActive = false;
                     this.msg = '';
+                    this.status = '';
                 }, timeout);
             }
         },
@@ -90,6 +100,7 @@ export default {
             this.isActive = false;
             this.isCookieNotice = false;
             this.msg = '';
+            this.status = '';
         }
     },
     created() {

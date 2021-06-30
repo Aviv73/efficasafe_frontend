@@ -1,19 +1,22 @@
 <template>
     <section class="user-edit">
         <div class="user-edit-card">
-            <validation-observer v-slot="{ handleSubmit, reset }">
+            <validation-observer v-slot="{ handleSubmit, reset, invalid }">
                 <form @submit.prevent="handleSubmit(updateDetails)" @reset="reset" novalidate>
                     <h3>Fill in your personal details</h3>
-                    <div class="form-input">
-                        <label>
-                            <input
-                                type="text"
-                                placeholder="Enter your first name"
-                                v-model="editedDetails.given_name"
-                            />
-                            <span class="label">Enter your first name</span>
-                        </label>
-                    </div>
+                    <validation-provider name="firstName">
+                        <div class="form-input">
+                            <label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter your first name"
+                                    v-model="editedDetails.given_name"
+                                />
+                                <span class="label">Enter your first name</span>
+                            </label>
+                        </div>
+                    </validation-provider>
+                    <validation-provider name="lastName">
                     <div class="form-input">
                         <label>
                             <input
@@ -24,6 +27,7 @@
                             <span class="label">Enter your last name</span>
                         </label>
                     </div>
+                    </validation-provider>
                     <validation-provider
                         name="firstName"
                         rules="phone"
@@ -35,7 +39,7 @@
                                 <input
                                     type="tel"
                                     placeholder="Enter your mobile No."
-                                    v-model="editedDetails.mobile_num"
+                                    v-model="editedDetails.phone"
                                 />
                                 <span class="label">Enter your mobile No.</span>
                             </label>
@@ -43,14 +47,14 @@
                         <div class="user-edit-error-msg font-bold" v-if="errors.length">
                             {{ errors[0] }}
                         </div>
-                        <button
-                            type="submit"
-                            class="user-edit-submit-btn btn"
-                            :disabled="!!errors.length"
-                        >
-                            Save
-                        </button>
                     </validation-provider>
+                    <button
+                        type="submit"
+                        class="user-edit-submit-btn btn"
+                        :disabled="invalid || isFormPristine"
+                    >
+                        Save
+                    </button>
                 </form>
             </validation-observer>
         </div>
@@ -73,17 +77,19 @@
 </template>
 
 <script>
+import { eventBus, EV_show_user_msg } from '@/cms/services/eventBus.service';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 
 import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 
 export default {
     data() {
+        const { given_name, family_name, phone } = this.$store.getters.loggedInUser;
         return {
             editedDetails: {
-                given_name: '',
-                family_name: '',
-                mobile_num: ''
+                given_name: given_name || '',
+                family_name: family_name || '',
+                phone: phone || ''
             },
             validationMessages: {
                 phone: 'Number is not valid',
@@ -96,11 +102,19 @@ export default {
         },
         isEmailPasswordAuth() {
             return !!this.loggedInUser.sub.match(/.*auth0.*/);
+        },
+        isFormPristine() {
+            return Object.values(this.editedDetails).every(val => !val);
         }
     },
     methods: {
-        updateDetails() {
-            console.log('submit..', JSON.parse(JSON.stringify(this.editedDetails)));
+        async updateDetails() {
+            const user = JSON.parse(JSON.stringify(this.loggedInUser));
+            Object.entries(this.editedDetails).forEach(([ key, val ]) => {
+                user[key] = val || user[key] || '';
+            });
+            await this.$store.dispatch({ type: 'updateLoggedInUser', user });
+            eventBus.$emit(EV_show_user_msg, 'Your account has been updated successfully.', 3000);
         }
     },
     components: {

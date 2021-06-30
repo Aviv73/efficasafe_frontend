@@ -8,8 +8,6 @@
     }
 
     &-card {
-        display: flex;
-        flex-direction: column;
         background-color: $white;
         border-radius: 6px;
         border: 1px solid $clr19;
@@ -67,6 +65,9 @@
 
         &:disabled {
             opacity: .5;
+            background-color: $gray;
+            pointer-events: none;
+            user-select: none;
         }
         @include for-mobile-layout {
             align-self: flex-end;
