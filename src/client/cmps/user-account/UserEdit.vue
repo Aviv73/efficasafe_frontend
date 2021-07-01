@@ -132,6 +132,7 @@ export default {
     },
     methods: {
         async updateDetails() {
+            this.checkPhoneIntlValid();
             const user = JSON.parse(JSON.stringify(this.loggedInUser));
             Object.entries(this.editedDetails).forEach(([ key, val ]) => {
                 user[key] = val || user[key] || '';
@@ -144,6 +145,11 @@ export default {
         },
         setPhoneDialCode() {
             this.editedDetails.phone = this.$refs.phoneInput.value;
+        },
+        checkPhoneIntlValid() {
+            if (this.editedDetails.phone && !this.editedDetails.phone.startsWith('+')) {
+                this.editedDetails.phone = `+1 ${this.editedDetails.phone}`;
+            }
         }
     },
     mounted() {
