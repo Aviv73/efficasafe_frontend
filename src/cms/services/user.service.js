@@ -12,11 +12,12 @@ export const userService = {
     loadUsers,
     getById,
     getEmptyUser,
-    save,
+    update,
     removeMany,
     sendResetPass,
     resetPassword,
     resnedVerifcationMail,
+    updateAutoPilotContact,
     checkTrial,
     getEmptySearch,
     verifyEmail
@@ -35,10 +36,14 @@ function removeMany(ids) {
 }
 
 
-async function save(user) {
+function update(user) {
     return httpService.put(`${ACCOUNT_END_POINT}/${user._id}`, user);
-
 }
+
+function updateAutoPilotContact(user) {
+    return httpService.post(`${ACCOUNT_END_POINT}/autopilot-contact`, user);
+}
+
 function loadUsers(filterBy) {
     return httpService.get(`${ACCOUNT_END_POINT}/`, filterBy);
 }

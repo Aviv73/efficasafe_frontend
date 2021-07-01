@@ -62,7 +62,7 @@ export const userStore = {
             context.commit({ type: 'removeUsers', ids })
         },
         async updateUser(context, { user }) {
-            const savedUser = await userService.save(user);
+            const savedUser = await userService.update(user);
             context.commit({
                 type: 'updateUser',
                 user: savedUser
@@ -70,13 +70,16 @@ export const userStore = {
             return savedUser;
         },
         async updateLoggedInUser(context, { user }) {
-            const savedUser = await userService.save(user);
+            const savedUser = await userService.update(user);
             context.commit({
                 type: 'setLoggedInUser',
                 user: savedUser
             });
             storageService.store('userProfile', savedUser);
             return savedUser;
+        },
+        async updateAutoPilotContact(context, { user }) {
+            return await userService.updateAutoPilotContact(user);
         },
         async loadUser(context, { userId }) {
             let user = await userService.getById(userId);

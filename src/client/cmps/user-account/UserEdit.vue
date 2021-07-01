@@ -20,6 +20,26 @@
                             <span class="label">Your Email</span>
                         </label>
                     </div>
+                    <validation-provider
+                        name="username"
+                        rules="required"
+                        v-slot="{ errors }"
+                        :custom-messages="validationMessages"
+                    >
+                        <div class="form-input" :class="{ 'is-invalid': !!errors.length }">
+                            <label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter your username"
+                                    v-model="editedDetails.name"
+                                />
+                                <span class="label">Enter your username</span>
+                            </label>
+                        </div>
+                        <div class="user-edit-error-msg font-bold" v-if="errors.length">
+                            {{ errors[0] }}
+                        </div>
+                    </validation-provider>
                     <validation-provider name="firstName">
                         <div class="form-input">
                             <label>
@@ -106,15 +126,17 @@ import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 
 export default {
     data() {
-        const { given_name, family_name, phone } = this.$store.getters.loggedInUser;
+        const { given_name, family_name, phone, name } = this.$store.getters.loggedInUser;
         return {
             editedDetails: {
                 given_name: given_name || '',
                 family_name: family_name || '',
+                name: name || '',
                 phone: phone || ''
             },
             validationMessages: {
                 phone: 'Number is not valid',
+                required: 'Username is required'
             },
             iti: null
         }
@@ -137,7 +159,10 @@ export default {
             Object.entries(this.editedDetails).forEach(([ key, val ]) => {
                 user[key] = val || user[key] || '';
             });
-            await this.$store.dispatch({ type: 'updateLoggedInUser', user });
+            await Promise.all([
+                this.$store.dispatch({ type: 'updateLoggedInUser', user }),
+                this.$store.dispatch({ type: 'updateAutoPilotContact', user })
+            ]);
             eventBus.$emit(EV_show_user_msg, 'Your account has been updated successfully.', 3000);
         },
         updateEmail() {
