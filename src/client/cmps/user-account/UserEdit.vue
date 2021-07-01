@@ -54,8 +54,10 @@
                             <label>
                                 <input
                                     type="tel"
+                                    ref="phoneInput"
                                     placeholder="Enter your mobile No."
                                     v-model="editedDetails.phone"
+                                    @countrychange="setPhoneDialCode"
                                 />
                                 <span class="label">Enter your mobile No.</span>
                             </label>
@@ -97,6 +99,8 @@
 <script>
 import { eventBus, EV_show_user_msg } from '@/cms/services/eventBus.service';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
+import intlTelInput from 'intl-tel-input';
+import 'intl-tel-input/build/css/intlTelInput.css';
 
 import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 
@@ -111,7 +115,8 @@ export default {
             },
             validationMessages: {
                 phone: 'Number is not valid',
-            }
+            },
+            iti: null
         }
     },
     computed: {
@@ -136,7 +141,15 @@ export default {
         },
         updateEmail() {
             alert('Feature in progress..');
+        },
+        setPhoneDialCode() {
+            this.editedDetails.phone = this.$refs.phoneInput.value;
         }
+    },
+    mounted() {
+        this.iti = intlTelInput(this.$refs.phoneInput, {
+            nationalMode: false
+        });
     },
     components: {
         ValidationObserver,
