@@ -63,6 +63,11 @@ export default {
             }
         };
     },
+    computed: {
+        loggedInUser() {
+            return this.$store.getters.loggedInUser;
+        }
+    },
     methods: {
         async sendEmail() {
             try {
@@ -80,6 +85,11 @@ export default {
                 this.failMsg = 'Something went wrong. Try again';
             }
         },
+    },
+    created() {
+        if (this.loggedInUser) {
+            this.email = this.loggedInUser.email;
+        }
     },
     components: {
         ValidationProvider,

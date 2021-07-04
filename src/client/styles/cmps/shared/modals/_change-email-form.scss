@@ -1,0 +1,49 @@
+.change-email-form {
+    width: 90%;
+    max-width: rem(432px);
+    padding: rem(32px) rem(62px) rem(64px);
+    background-color: $white;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    [alt=Logo] {
+        width: 222px;
+        margin-block-end: rem(48px);
+        align-self: center;
+    }
+
+    &-close-btn {
+        color: $gray;
+        position: absolute;
+        top: rem(24px);
+        right: rem(24px);
+    }
+    &-header {
+        font-size: rem(24px);
+        line-height: rem(28px);
+        margin-block-end: rem(14px);
+    }
+    &-submit-btn {
+        text-transform: capitalize;
+        width: 100%;
+        background-color: $clr1;
+        color: $white;
+        padding: rem(12px) 0;
+        border-radius: 6px;
+        margin-block-start: rem(84px);
+    }
+    &-user-msg {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        font-size: rem(12px);
+        line-height: rem(24px);
+        border-radius: 0 0 6px 6px;
+        background-color: $red;
+        color: $white;
+    }
+}

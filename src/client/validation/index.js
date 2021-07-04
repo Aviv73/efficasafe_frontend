@@ -9,11 +9,11 @@ extend('password', val => {
     return reg.test(val);
 });
 
-extend('confirmPassword', (passConfirm, [ pass ]) => {
-    return passConfirm === pass;
+extend('confirm', (val, [ originalVal ]) => {
+    return val === originalVal;
 },
 {
-    paramNames: ['pass']
+    paramNames: ['originalVal']
 });
 
 extend('phone', val => {

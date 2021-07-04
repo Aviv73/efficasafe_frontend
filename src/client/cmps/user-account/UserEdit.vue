@@ -100,7 +100,7 @@
             <h3>Update password or email</h3>
             <button
                 class="user-edit-card-btn flex-align-center"
-                @click="updateEmail"
+                @click="emailModalActive = true"
             >
                 Update Email
                 <chevron-right-icon title="" :size="16" />
@@ -113,6 +113,9 @@
                 <chevron-right-icon title="" :size="16" />
             </button>
         </div>
+        <modal-wrap :isActive="emailModalActive" @close-modal="emailModalActive = false" persistent>
+            <change-email-form @close-modal="emailModalActive = false" />
+        </modal-wrap>
     </section>
 </template>
 
@@ -121,6 +124,8 @@ import { eventBus, EV_show_user_msg } from '@/cms/services/eventBus.service';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import intlTelInput from 'intl-tel-input';
 import 'intl-tel-input/build/css/intlTelInput.css';
+import ModalWrap from '@/client/cmps/common/ModalWrap';
+import ChangeEmailForm from '@/client/cmps/shared/modals/ChangeEmailForm';
 
 import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 
@@ -138,7 +143,8 @@ export default {
                 phone: 'Number is not valid',
                 required: 'Username is required'
             },
-            iti: null
+            iti: null,
+            emailModalActive: false
         }
     },
     computed: {
@@ -165,9 +171,6 @@ export default {
             ]);
             eventBus.$emit(EV_show_user_msg, 'Your account has been updated successfully.', 3000);
         },
-        updateEmail() {
-            alert('Feature in progress..');
-        },
         setPhoneDialCode() {
             this.editedDetails.phone = this.$refs.phoneInput.value;
         },
@@ -185,7 +188,9 @@ export default {
     components: {
         ValidationObserver,
         ValidationProvider,
-        ChevronRightIcon
+        ChevronRightIcon,
+        ModalWrap,
+        ChangeEmailForm
     }
 }
 </script>
