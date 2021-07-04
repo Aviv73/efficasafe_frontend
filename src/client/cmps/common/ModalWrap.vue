@@ -1,5 +1,10 @@
 <template>
-    <div class="cover" :class="{ active: isActive }" @click.self="closeModal">
+    <div
+        class="cover"
+        ref="cover"
+        :class="{ active: isActive }"
+        @click.self="closeModal"
+    >
         <slot />
     </div>
 </template>
@@ -24,7 +29,14 @@ export default {
     },
     methods: {
         closeModal() {
-            if (this.persistent) return;
+            if (this.persistent) {
+                const content = this.$refs.cover.querySelector('.cover>*');
+                content.classList.add('anim-shake');
+                setTimeout(() => {
+                    content.classList.remove('anim-shake');
+                }, 820);
+                return;
+            }
             this.$emit('close-modal');
         },
         handleKey(ev) {
@@ -63,6 +75,28 @@ export default {
         opacity: 0;
         transform: translateY(-300px);
         transition: opacity 0.4s linear, transform 0.4s ease-in-out;
+
+        &.anim-shake {
+            animation: shake .82s cubic-bezier(.36, .07, .19, .97) both;
+        }
     }
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }
 </style>
