@@ -18,6 +18,7 @@ export const userService = {
     resetPassword,
     resnedVerifcationMail,
     updateAutoPilotContact,
+    updateAuth0Account,
     checkTrial,
     getEmptySearch,
     verifyEmail
@@ -35,9 +36,12 @@ function removeMany(ids) {
     return httpService.delete(`${ACCOUNT_END_POINT}`, ids);
 }
 
-
 function update(user) {
     return httpService.put(`${ACCOUNT_END_POINT}/${user._id}`, user);
+}
+
+function updateAuth0Account(user) {
+    return httpService.post(`${ACCOUNT_END_POINT}/auth0-account`, user);
 }
 
 function updateAutoPilotContact(user) {

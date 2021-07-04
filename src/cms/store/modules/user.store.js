@@ -81,6 +81,9 @@ export const userStore = {
         async updateAutoPilotContact(context, { user }) {
             return await userService.updateAutoPilotContact(user);
         },
+        async updateAuth0Account(context, { user }) {
+            return await userService.updateAuth0Account(user);
+        },
         async loadUser(context, { userId }) {
             let user = await userService.getById(userId);
             if (user.type === 'trial') user = await userService.checkTrial(user)

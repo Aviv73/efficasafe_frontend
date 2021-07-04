@@ -1,6 +1,6 @@
 <template>
     <aside class="change-email-form">
-        <button class="change-email-form-close-btn" @click="closeModal">
+        <button class="change-email-form-close-btn" @click="reset">
             <close-icon title="" :size="14" />
         </button>
         <img :src="require('@/client/assets/imgs/logo-vector.svg')" alt="Logo" />
@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import { eventBus, EV_show_user_msg } from '@/cms/services/eventBus.service';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 
 import CloseIcon from 'vue-material-design-icons/Close';
@@ -75,12 +76,20 @@ export default {
         }
     },
     methods: {
-        onSubmit() {
-            // update loggedInUser.email in AutoPilot & Auth0 API's -> update in DB
-            console.log(this.email === this.emailConfirm);
-            console.log(this.emailConfirm);
+        async onSubmit() {
+            const user = JSON.parse(JSON.stringify(this.$store.getters.loggedInUser));
+            user.newEmail = this.email;
+            await Promise.all([
+                this.$store.dispatch({ type: 'updateAutoPilotContact', user }),
+                this.$store.dispatch({ type: 'updateAuth0Account', user })
+            ]);
+            user.email = user.newEmail;
+            delete user.newEmail;
+            await this.$store.dispatch({ type: 'updateLoggedInUser', user });
+            this.reset();
+            eventBus.$emit(EV_show_user_msg, 'Your Email has been updated successfully.', 3000);
         },
-        closeModal() {
+        reset() {
             this.email = '';
             this.emailConfirm = '';
             this.$refs.observer.reset();
