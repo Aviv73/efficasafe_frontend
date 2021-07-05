@@ -79,7 +79,7 @@
                     class="print-modal-preview-interaction-content"
                 >
                     <div class="print-modal-preview-interaction-content-subheader">Summary</div>
-                    <p class="paragraph" v-html="interaction.summary" />
+                    <p class="paragraph" v-html="removeRefs(interaction.summary)" />
                     <div
                         class="print-modal-preview-interaction-content-subheader"
                         v-if="showMonitor"
@@ -127,14 +127,21 @@
                     </div>
                     <div class="font-bold small-header">{{ interaction.side1Material.name }} effect on drug metabolism Summary</div>
                     <p
-                        v-html="interactionData.side1PathwaysTxt"
+                        v-html="removeRefs(interactionData.side1PathwaysTxt)"
                     />
                 </div>
                 <div
                     v-else
                     class="print-modal-preview-interaction-content"
                 >
-                    <!--~~ DBANK INTERACTION PRINT CONTENT ~~-->
+                   <div class="print-modal-preview-interaction-content-subheader">Summary</div>
+                   <p class="paragraph">{{ interaction.summary }}</p>
+                   <div class="print-modal-preview-interaction-content-subheader">Severity</div>
+                   <p class="paragraph">{{ interaction.severity }}</p>
+                   <div class="print-modal-preview-interaction-content-subheader">Extended description</div>
+                   <p class="paragraph">{{ removeRefs(interaction.extended_description, true) }}</p>
+                   <div class="print-modal-preview-interaction-content-subheader">Management</div>
+                   <p class="paragraph">{{ removeRefs(interaction.management, true) }}</p>
                 </div>
             </section>
         </main>
@@ -147,7 +154,7 @@
             </button>
             <button
                 class="print-modal-footer-btn print-btn"
-                :disabled="!printSelection.length"
+                :disabled="!printSelection.length && !interactionData"
                 @click="onPrint"
             >
                 Print
@@ -264,7 +271,8 @@ export default {
     },
     methods: {
         onPrint() {
-            console.log('will print! 💪', this.printSelection);
+            const printContent = (this.interactionData) ? this.interaction : this.printSelection;
+            console.log('will print! 💪', printContent);
             alert('Feature still in progress and will be available soon :)');
         },
         toggleInteraction(interaction) {
@@ -285,6 +293,10 @@ export default {
                     this.fillSelection(interaction.vInteractions);
                 } else this.printSelection.push(interaction);
             });
+        },
+        removeRefs(txt, isDBank = false) {
+            const rgx = isDBank ? /\[(.*?)\]/g : /\(([\d- ,\d]+)\)|<sub>\(([\d- ,\d]+)\)<\/sub>/g;
+            return txt.replace(rgx, '');
         }
     },
     components: {
