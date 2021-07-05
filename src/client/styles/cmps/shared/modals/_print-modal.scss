@@ -1,7 +1,7 @@
 .print-modal {
     border-radius: 6px;
     color: $clr-txt-darker;
-    font-size: rem(18px);
+    font-size: rem(16px);
     line-height: rem(22px);
     width: 90%;
     max-width: 900px;
@@ -26,7 +26,7 @@
             flex-grow: 1;
         }
     }
-    &-content {
+    &-preview {
         background-color: $clr3;
         max-height: 600px;
         overflow-y: auto;
@@ -73,6 +73,122 @@
                     &.inner {
                         padding-inline-start: rem(48px);
                     }
+                }
+            }
+        }
+        &-interaction {
+            padding: 0 24px;
+            background-color: $white;
+
+            &-header {
+                font-family: tw-cen, sans-serif;
+                font-size: rem(18px);
+                line-height: rem(20px);
+                margin-block-end: rem(18px);
+                padding: rem(12px) 0 rem(18px);
+                text-align: center;
+                position: relative;
+
+                [alt=Logo] {
+                    position: absolute;
+                    top: 12px;
+                    left: 0;
+                    width: 140px;
+                }
+                &::before {
+                    content: "";
+                    width: 100%;
+                    height: 6px;
+                    position: absolute;
+                    left: 0;
+                    bottom: 6px;
+                    background-image: linear-gradient(90deg, $gradient-clr1, $gradient-clr2);
+                }
+                &::after {
+                    content: "";
+                    width: 100%;
+                    height: 1px;
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    background-image: linear-gradient(90deg, $gradient-clr1, $gradient-clr2);
+                }
+            }
+            &-summary {
+                padding-block-end: rem(22px);
+                font-size: rem(16px);
+                line-height: rem(20px);
+                position: relative;
+                display: flex;
+                gap: rem(18px);
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    width: 100%;
+                    height: 1px;
+                    background-image: linear-gradient(90deg, $gradient-clr1, $gradient-clr2);
+                }
+
+                &>* {
+                    flex-basis: 50%;
+                }
+                .flex-coloumn {
+                    align-items: stretch;
+
+                    &>*:not(:last-child) {
+                        margin-block-end: rem(12px);
+                    }
+                }
+                .capsule {
+                    border-radius: 100px;
+                    border: 1px solid $clr19;
+                    padding: rem(6px) rem(16px);
+                }
+                .interaction-capsules-side {
+                    width: 50%;
+                    border: 1px solid $clr19;
+                    box-shadow: none;
+                    padding: rem(6px) rem(16px);
+                }
+                .recommendation-capsule {
+                    color: $white;
+                    display: flex;
+                    align-items: center;
+                    text-align: center;
+                }
+                .note,
+                .level-of-evidence {
+                    color: $clr1;
+                }
+                .narrow-therapuetic-warnning {
+                    height: 100%;
+                    padding: rem(20px) rem(22px);
+                    width: 100%;
+                    border: 1px solid $red;
+                    border-radius: 3px;
+                }
+            }
+            &-content {
+                padding: rem(8px) 0 rem(16px);
+
+                &-subheader {
+                    color: $clr1;
+                    text-transform: uppercase;
+                    margin-block-end: rem(6px);
+                }
+                sub {
+                    color: inherit;
+                    cursor: default;
+                }
+                .paragraph {
+                    margin-block-end: rem(18px);
+                }
+                .small-header {
+                    color: $clr-txt-dark;
+                    margin-block-end: rem(6px);
                 }
             }
         }

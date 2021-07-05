@@ -9,32 +9,32 @@
             :key="index"
         >
             <span class="font-medium font-capitalize">{{ name }}: </span>
-                <span
-                    class="pathway"
-                    v-for="(pathway, idx) in pathways"
-                    :key="idx"
-                    v-refs-tooltip.pathwaysFirst="{
-                        combinedRefs,
-                        side2Refs
-                    }"
-                >
-                    <span>{{ idx === 0 ? '' : ', ' }} </span>
-                    <tooltip bottom-left>
-                        <span class="font-uppercase">{{ pathway.name + '\xa0' }}</span>
-                        <template #content>
-                            <div
-                                class="pathway-tooltip"
-                                v-if="pathway.fullName || pathway.actions.length"
-                            >
-                                <div v-if="pathway.fullName">{{ pathway.fullName }}</div>
-                                <span class="font-capitalize" v-if="pathway.actions.length">
-                                    {{ pathway.actions.join(', ') }} 
-                                </span>
-                            </div>
-                        </template>
-                    </tooltip>
-                    <sub>{{ getMaterialRefNums(pathway.references) }}</sub>
-                </span>
+            <span
+                class="pathway"
+                v-for="(pathway, idx) in pathways"
+                :key="idx"
+                v-refs-tooltip.pathwaysFirst="{
+                    combinedRefs,
+                    side2Refs
+                }"
+            >
+                <span>{{ idx === 0 ? '' : ', ' }} </span>
+                <tooltip bottom-left>
+                    <span class="font-uppercase">{{ pathway.name + '\xa0' }}</span>
+                    <template #content>
+                        <div
+                            class="pathway-tooltip"
+                            v-if="pathway.fullName || pathway.actions.length"
+                        >
+                            <div v-if="pathway.fullName">{{ pathway.fullName }}</div>
+                            <span class="font-capitalize" v-if="pathway.actions.length">
+                                {{ pathway.actions.join(', ') }} 
+                            </span>
+                        </div>
+                    </template>
+                </tooltip>
+                <sub>{{ getMaterialRefNums(pathway.references) }}</sub>
+            </span>
         </div>
     </section>
 </template>

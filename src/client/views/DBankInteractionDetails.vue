@@ -177,9 +177,20 @@
             :isActive="isPrintModalActive"
             @close-modal="isPrintModalActive = false"
         >
-            <img
-                src="https://www.habitants.org/var/ezwebin_site/storage/images/la_via_urbana/alojar_mil_millones_de_personas2/work_in_progress/2390822-1-ita-IT/work_in_progress.jpg"
-                alt="Work in progress"
+            <print-modal
+                v-if="interaction"
+                :interaction="interaction"
+                @close-modal="isPrintModalActive = false"
+                :interaction-data="{
+                    name: interactionName,
+                    color: interactionColor,
+                    icon: recommendationIconName,
+                    evidenceLevel: interaction.evidence_level,
+                    showNote: false,
+                    showWarning: false,
+                    refCount: interactionRefs.length,
+                    isDBank: true
+                }"
             />
         </modal-wrap>
     </section>
@@ -195,6 +206,7 @@ import ReferenceList from '@/client/cmps/interaction-details/ReferenceList';
 import Error404 from '@/client/cmps/shared/Error404';
 import ModalWrap from '@/client/cmps/common/ModalWrap';
 import ShareModal from '@/client/cmps/shared/modals/ShareModal';
+import PrintModal from '@/client/cmps/shared/modals/PrintModal';
 
 import Loader from '@/client/cmps/common/icons/Loader';
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
@@ -318,6 +330,7 @@ export default {
         Loader,
         ModalWrap,
         ShareModal,
+        PrintModal,
         CancelIcon: () => import('vue-material-design-icons/Cancel'),
         AlertCircleOutlineIcon: () => import('vue-material-design-icons/AlertCircleOutline'),
         CheckIcon: () => import('vue-material-design-icons/Check'),
