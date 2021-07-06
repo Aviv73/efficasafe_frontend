@@ -14,9 +14,13 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     materialNamesMap: null,
-    isScreenNarrow: null
+    isScreenNarrow: null,
+    hasFailedTasks: false
   },
   getters: {
+    hasFailedTasks(state) {
+      return state.hasFailedTasks;
+    },
     isScreenNarrow(state) {
       return state.isScreenNarrow;
     },
@@ -45,6 +49,9 @@ export default new Vuex.Store({
     },
     setIsScreenNarrow(state) {
       state.isScreenNarrow = window.innerWidth < 900;
+    },
+    setHasFailedTasks(state, { hasTasks }) {
+      state.hasFailedTasks = hasTasks;
     }
   },
   plugins: [

@@ -50,7 +50,7 @@
             <tbody>
               <tr v-for="(alert, idx) in alerts" :key="idx">
                 <td>
-                  {{ entityName(alert.entity) }}
+                  {{ entityName(alert.entity) | display-snake-case }}
                 </td>
                 <td>
                   <v-expansion-panels class="data-integrity-expand-panel p-0">
@@ -84,6 +84,18 @@
                 </td>
                 <td>
                   <v-btn
+                    class="mr-2"
+                    v-if="isTasks"
+                    elevation="0"
+                    small
+                    outlined
+                    color="success"
+                    title="Set as fixed"
+                    @click="setTaskAsDone(alert.entity)"
+                  >
+                    <v-icon small>mdi-check</v-icon>
+                  </v-btn>
+                  <v-btn
                     :to="editEntityLink(alert.entity)"
                     elevation="0"
                     small
@@ -112,11 +124,14 @@
         >
           <p class="subtitle-1 mb-0">Available check types:</p>
           <v-list>
-            <v-list-item v-for="(type, idx) in $options.checkTypes" :key="idx">
+            <v-list-item
+              v-for="(type, idx) in $options.checkTypes"
+              :key="idx"
+            >
               <v-list-item-icon>
                 <v-icon x-small class="mr-2">mdi-scan-helper</v-icon>
                 <v-list-item-content>
-                  <v-list-item-title v-text="type.text"></v-list-item-title>
+                  <v-list-item-title :class="{ 'red--text': hasFailedTasks && !idx }" v-text="type.text" />
                 </v-list-item-content>
               </v-list-item-icon>
             </v-list-item>
@@ -162,6 +177,9 @@ export default {
     },
     isTasks() {
       return this.checkType === 'get-failed-tasks';
+    },
+    hasFailedTasks() {
+      return this.$store.getters.hasFailedTasks;
     }
   },
   methods: {
@@ -174,6 +192,15 @@ export default {
       if (entity.side2Label) return entity.side2Label.name;
       if (entity.side2Material) return `${entity.side1Material.name} & ${entity.side2Material.name}`;
       return `${entity.side1Material.name} & ${entity.side2DraftName}`;
+    },
+    async setTaskAsDone(task) {
+      task.errors = [];
+      await dataIntegrityService.updateTask(task);
+      await this.getResults();
+      if (!this.alerts.length) this.$store.commit({
+          type: 'setHasFailedTasks',
+          hasTasks: false
+      });
     },
     editEntityLink(entity) {
       let entityName = '';
@@ -208,6 +235,9 @@ export default {
       this.isLoading = false;
       if (this.isInitial) this.isInitial = false;
     },
+    getFailedTasks() {
+        this.hasFailedTasks = true;
+    }
   },
   components: {
     LoadingCmp,
