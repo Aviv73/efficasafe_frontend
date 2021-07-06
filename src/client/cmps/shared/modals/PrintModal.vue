@@ -59,13 +59,13 @@
                         <span class="level-of-evidence capsule">
                             Level of evidence:
                             <span class="font-medium">{{ interactionData.evidenceLevel }}</span>
-                            - <span class="sub-txt">{{ evidenceLevelTxt }}</span>
+                            = <span class="sub-txt">{{ evidenceLevelTxt }}</span>
                         </span>
                         <span class="note capsule" v-if="interactionData.showNote && interaction.note">
                             <span class="font-bold">Note:</span> {{ interaction.note }}
                         </span>
                         <span
-                            class="ref-details"
+                            class="sub-txt"
                             v-if="interactionData.refsDetailsTxt"
                         >
                             {{ interactionData.refsDetailsTxt }}

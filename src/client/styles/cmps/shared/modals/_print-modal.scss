@@ -158,15 +158,14 @@
                     display: flex;
                     align-items: center;
                     text-align: center;
+
+                    .material-design-icon {
+                        height: 16px;
+                    }
                 }
                 .note,
                 .level-of-evidence {
                     color: $clr1;
-                }
-                .sub-txt,
-                .ref-details {
-                    font-size: .875em;
-                    font-style: italic;
                 }
                 .narrow-therapuetic-warnning {
                     height: 100%;

@@ -171,7 +171,7 @@
                 color: $clr1;
             }
             .material-design-icon {
-                height: 16px;
+                height: 14px;
                 margin-inline-end: 4px;
             }
         }
@@ -195,6 +195,17 @@
 
             @include for-narrow-layout {
                 display: inline;
+            }
+
+            &-mobile {
+                line-height: rem(20px);
+                text-align: center;
+                margin-block-end: rem(24px);
+                order: -2;
+
+                @include for-narrow-layout {
+                    display: none;
+                }
             }
             
             &-tooltip-content {
@@ -236,8 +247,6 @@
             font-family: roboto-medium, sans-serif;
             font-weight: 500;
             margin-block-end: rem(14px);
-            justify-content: flex-start;
-            align-items: stretch;
             order: -1;
 
             @include for-narrow-layout {
@@ -247,30 +256,17 @@
             }
 
             & > .note {
+                width: 100%;
                 padding: rem(8px) rem(14px);
                 background-color: $clr14;
                 border-radius: 2px;
                 border: 1px solid rgba($clr1, .26);
                 opacity: .75;
-                flex-basis: 70%;
                 text-align: center;
 
                 @include for-narrow-layout {
-                    flex-basis: unset;
                     text-align: unset;
-                }
-            }
-            & > .evidence-level {
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                position: static;
-                flex-basis: 30%;
-                background-color: $clr16;
-                border-radius: 2px;
-
-                @include for-narrow-layout {
-                    display: none;
+                    width: unset;
                 }
             }
         }
@@ -348,6 +344,11 @@
                 width: 200px;
                 filter: grayscale(100%);
                 opacity: .6;
+                transition: filter .3s ease-in-out;
+
+                @include hover-supported {
+                    filter: grayscale(0);
+                }
             }
             figcaption {
                 opacity: .8;

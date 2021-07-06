@@ -98,20 +98,10 @@
                         <span class="note">
                             <span class="font-bold">Note:</span> {{ interaction.note }}
                         </span>
-                        <span class="evidence-level">
-                            {{ interaction.evidenceLevel }}
-                            <tooltip on="focus" right-top>
-                                <template #content>
-                                    <div class="evidence-level-tooltip-content">
-                                        {{ refsDetailsTxt }}
-                                    </div>
-                                </template>
-                                <span class="refs">
-                                    <span class="refs-count">({{ combinedRefs.length }})</span> 
-                                    <information-outline-icon :size="12" title="" />
-                                </span>
-                            </tooltip>
-                        </span>
+                    </div>
+                    <div class="evidence-level-mobile">
+                        <span class="font-bold">Level of evidence:</span> {{ interaction.evidenceLevel }}
+                        <div class="sub-txt">{{ refsDetailsTxt }}</div>
                     </div>
                     <h2
                         v-if="interaction.summary"

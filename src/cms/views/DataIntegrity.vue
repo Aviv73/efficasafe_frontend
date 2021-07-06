@@ -42,7 +42,7 @@
           <template v-slot:default>
             <thead>
               <tr>
-                <th>Entity</th>
+                <th>{{ isTasks ? 'Type' : 'Entity' }}</th>
                 <th>Alerts</th>
                 <th>Actions</th>
               </tr>
@@ -84,9 +84,7 @@
                 </td>
                 <td>
                   <v-btn
-                    :to="`/${entityType(alert.entity)}/edit/${
-                      alert.entity._id
-                    }`"
+                    :to="editEntityLink(alert.entity)"
                     elevation="0"
                     small
                     outlined
@@ -138,6 +136,7 @@ import { dataIntegrityService } from '@/cms/services/data-integrity.service';
 
 export default {
   checkTypes: [
+    { text: 'Failed worker tasks', value: 'get-failed-tasks' },
     { text: 'Duplicate references (all materials)', value: 'ref-dups' },
     { text: 'Duplicate references (single material)', value: 'material-ref-dups' },
     { text: 'Bad reference (interaction)', value: 'ref-broken' },
@@ -145,7 +144,7 @@ export default {
     { text: 'Bad text field (interactions)', value: 'bad-txt-field' },
     { text: 'Unformated refs - outside <sub>(...)</sub> (interactions)', value: 'unformated-refs' },
     { text: 'Broken \'monitor.general\' (interactions)', value: 'broken-monitor' },
-    { text: 'Trailing/leading spaces in pathway names', value: 'bad-pathway-names' },
+    { text: 'Trailing/leading spaces in pathway names', value: 'bad-pathway-names' }
   ],
   data() {
     return {
@@ -160,6 +159,9 @@ export default {
     selectedMaterialId() {
       if (this.checkType !== 'material-ref-dups' && this.checkType !== 'v-interaction-dups') return '';
       return this.materialId;
+    },
+    isTasks() {
+      return this.checkType === 'get-failed-tasks';
     }
   },
   methods: {
@@ -168,12 +170,22 @@ export default {
     },
     entityName(entity) {
       if (entity.name) return entity.name;
+      if (entity.errors) return `${entity.type} (${entity.data.name})`;
       if (entity.side2Label) return entity.side2Label.name;
       if (entity.side2Material) return `${entity.side1Material.name} & ${entity.side2Material.name}`;
       return `${entity.side1Material.name} & ${entity.side2DraftName}`;
     },
-    entityType(entity) {
-      return entity.name ? 'material' : 'interaction';
+    editEntityLink(entity) {
+      let entityName = '';
+      let entityId = entity._id;
+
+      if (entity.name) entityName = 'material';
+      else if (entity.errors) {
+        entityName = 'user';
+        entityId = entity.data._id;
+      } else entityName = 'interaction';
+
+      return `/${entityName}/edit/${entityId}`;
     },
     async getResults() {
       this.isLoading = true;
