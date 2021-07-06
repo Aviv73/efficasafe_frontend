@@ -180,7 +180,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  base: `${process.env.BASE_URL}cms/`,
+  base: `${process.env.BASE_URL}cms#/`,
   routes
 })
 
