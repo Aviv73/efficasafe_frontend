@@ -163,6 +163,11 @@
                 .level-of-evidence {
                     color: $clr1;
                 }
+                .sub-txt,
+                .ref-details {
+                    font-size: .875em;
+                    font-style: italic;
+                }
                 .narrow-therapuetic-warnning {
                     height: 100%;
                     padding: rem(20px) rem(22px);

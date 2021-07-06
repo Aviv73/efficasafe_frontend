@@ -61,8 +61,7 @@
                             <tooltip on="hover" right-top>
                                 <template #content>
                                     <div class="evidence-level-tooltip-content">
-                                        Based On {{ clinicalRefCount }} Clinical Trial{{ clinicalRefCount > 1 ? 's' : '' }},
-                                        {{ preClinicalRefCount }} Pre-clinical {{ preClinicalRefCount > 1 ? 'Studies' : 'Study' }} And {{ articlesRefCount }} Article{{ articlesRefCount > 1 ? 's' : '' }}
+                                        {{ refsDetailsTxt }}
                                     </div>
                                 </template>
                                 <span class="refs">
@@ -104,8 +103,7 @@
                             <tooltip on="focus" right-top>
                                 <template #content>
                                     <div class="evidence-level-tooltip-content">
-                                        Based On {{ clinicalRefCount }} Clinical Trial{{ clinicalRefCount > 1 ? 's' : '' }},
-                                        {{ preClinicalRefCount }} Pre-clinical {{ preClinicalRefCount > 1 ? 'Studies' : 'Study' }} And {{ articlesRefCount }} Article{{ articlesRefCount > 1 ? 's' : '' }}
+                                        {{ refsDetailsTxt }}
                                     </div>
                                 </template>
                                 <span class="refs">
@@ -287,9 +285,9 @@
                     showNote: !isPrimaryMaterial,
                     showWarning: side2Material.isNarrowTherapeutic,
                     side2Name: side2Material.name,
-                    refCount: combinedRefs.length,
                     side2Pathways: relevantSide2Pathways,
                     side1PathwaysTxt: effectOnDrugMetabolism,
+                    refsDetailsTxt: refsDetailsTxt,
                     isDBank: false
                 }"
             />
@@ -363,6 +361,10 @@ export default {
             }, []);
             
             return this.interactionRefs.concat(side2Refs, this.side1PathwayRefs);
+        },
+        refsDetailsTxt() {
+            return `Based On ${this.clinicalRefCount} Clinical Trial${this.clinicalRefCount > 1 ? 's' : ''},
+            ${this.preClinicalRefCount} Pre-clinical ${this.preClinicalRefCount > 1 ? 'Studies' : 'Study'} And ${this.articlesRefCount} Article${this.articlesRefCount > 1 ? 's' : ''}`;
         },
         clinicalRefCount() {
             return this.combinedRefs.filter(ref => ref.type === 'clinical' || ref.type === 'retrospective').length;

@@ -188,7 +188,6 @@
                     evidenceLevel: interaction.evidence_level,
                     showNote: false,
                     showWarning: false,
-                    refCount: interactionRefs.length,
                     isDBank: true
                 }"
             />

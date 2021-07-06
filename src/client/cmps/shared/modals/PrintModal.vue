@@ -57,11 +57,18 @@
                             <span class="clip-txt">{{ interaction.recommendation }}</span>
                         </span>
                         <span class="level-of-evidence capsule">
+                            Level of evidence:
                             <span class="font-medium">{{ interactionData.evidenceLevel }}</span>
-                            {{ `(${interactionData.refCount}) - ${evidenceLevelTxt}` }}
+                            - <span class="sub-txt">{{ evidenceLevelTxt }}</span>
                         </span>
                         <span class="note capsule" v-if="interactionData.showNote && interaction.note">
                             <span class="font-bold">Note:</span> {{ interaction.note }}
+                        </span>
+                        <span
+                            class="ref-details"
+                            v-if="interactionData.refsDetailsTxt"
+                        >
+                            {{ interactionData.refsDetailsTxt }}
                         </span>
                     </div>
                     <div v-if="interactionData.showWarning">
