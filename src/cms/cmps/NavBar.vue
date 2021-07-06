@@ -80,7 +80,7 @@ export default {
     methods: {
         logout() {
             this.$store.commit({ type: 'logout' });
-            this.$router.push('/');
+            window.location.replace(window.location.origin);
         },
         setNotf() {
             this.$store.commit({
