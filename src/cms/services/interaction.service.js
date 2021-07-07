@@ -13,6 +13,7 @@ export const interactionService = {
 }
 
 function list(filterBy) {
+    // console.log('I', filterBy);
     return httpService.get(END_POINT, filterBy);
 }
 
