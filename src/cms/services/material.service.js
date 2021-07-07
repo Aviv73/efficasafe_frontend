@@ -2,7 +2,7 @@ import { httpService } from './http.service.js';
 
 const END_POINT = 'material';
 
-// const chache = {};
+const chache = {};
 
 export const materialService = {
     list,
@@ -18,14 +18,14 @@ export const materialService = {
 }
 
 async function list(filterBy = {}) {
-    // let key = '';
-    // if (filterBy.q) {
-    //     key = filterBy.q.toString();
-    //     if (chache[key]) return chache[key];
-    // }
+    let key = '';
+    if (filterBy.q) {
+        key = filterBy.q.toString();
+        if (chache[key]) return chache[key];
+    }
 
     const res = await httpService.get(END_POINT, filterBy);
-    // if (filterBy.q) chache[key] = res;
+    if (filterBy.q) chache[key] = res;
     return res;
 }
 

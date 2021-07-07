@@ -2,7 +2,7 @@ import { httpService } from './http.service.js';
 
 const END_POINT = 'd-bank-interaction';
 
-// const chache = {};
+const chache = {};
 
 export const drugBankService = {
     getInteractions,
@@ -12,11 +12,11 @@ export const drugBankService = {
 }
 
 async function getInteractions(filterBy) {
-    // const key = filterBy.drugBankId.toString();
-    // if (chache[key]) return chache[key];
+    const key = filterBy.drugBankId.toString();
+    if (chache[key]) return chache[key];
     
     const res = await httpService.get(END_POINT, filterBy);
-    // chache[key] = res;
+    chache[key] = res;
     return res;
 }
 
