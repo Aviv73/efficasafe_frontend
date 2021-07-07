@@ -194,7 +194,7 @@ export default {
       return `${entity.side1Material.name} & ${entity.side2DraftName}`;
     },
     async setTaskAsDone(task) {
-      task.errors = [];
+      task.succeeded = true;
       await dataIntegrityService.updateTask(task);
       await this.getResults();
       if (!this.alerts.length) this.$store.commit({
