@@ -176,12 +176,14 @@
                                 :to="{ name: 'Supp2Drug', query: this.$route.query }"
                             >
                                 Supplement - Drug
-                                <span
-                                    class="refs"
-                                    :class="`recomm-${worstSupp2DrugRecomm}`"
-                                    v-if="total"
-                                >
-                                    {{'\xa0'}}<span class="badge">{{ total }}</span>
+                                <span  v-if="total">
+                                    {{'\xa0'}}
+                                    <span
+                                        class="badge"
+                                        :style="{ 'background-color': worstSupp2DrugColor }"
+                                    >
+                                        {{ total }}
+                                    </span>
                                 </span>
                             </router-link>
                         </li>
@@ -191,12 +193,14 @@
                                 :to="{ name: 'Drug2Drug', query: this.$route.query }"
                             >
                                 Drug - Drug
-                                <span
-                                    class="refs"
-                                    :class="`recomm-${worstDrug2DrugRecomm}`"
-                                    v-if="dBankTotal"
-                                >
-                                    {{'\xa0'}}<span class="badge">{{ dBankTotal }}</span>
+                                <span v-if="dBankTotal">
+                                    {{'\xa0'}}
+                                    <span
+                                        class="badge"
+                                        :style="{ 'background-color': worstDrug2DrugColor }"
+                                    >
+                                        {{ dBankTotal }}
+                                    </span>
                                 </span>
                             </router-link>
                         </li>
@@ -691,14 +695,13 @@ export default {
         isScreenNarrow() {
             return this.$store.getters.isScreenNarrow;
         },
-        worstSupp2DrugRecomm() {
-            return this.interactions.map(i => i.order)[0];
+        worstSupp2DrugColor() {
+            const worstRecomm = this.getMoreSeverRecomm(false, ...this.interactions.map(i => i.recommendation));
+            return interactionUIService.getInteractionColor(worstRecomm);
         },
-        worstDrug2DrugRecomm() {
-            return this.dBankInteractions.map(i => i.recommendationOrder)[0];
-        },
-        teaserStepPlacement() {
-            return this.isScreenNarrow ? 'bottom' : 'right';
+        worstDrug2DrugColor() {
+            const worstRecomm = this.getMoreSeverRecomm(false, ...this.dBankInteractions.map(i => i.recommendation));
+            return interactionUIService.getInteractionColor(worstRecomm);
         }
     },
     methods: {
