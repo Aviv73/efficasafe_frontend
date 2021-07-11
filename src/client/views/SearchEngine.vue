@@ -210,6 +210,15 @@
                                 :to="{ name: 'Boosters', query: this.$route.query }"
                             >
                                 Positive boosters
+                                <span v-if="totalPositiveBoosters">
+                                    {{'\xa0'}}
+                                    <span
+                                        class="badge"
+                                        style="background-color: #56C596"
+                                    >
+                                        {{ totalPositiveBoosters }}
+                                    </span>
+                                </span>
                             </router-link>
                         </li>
                         <li class="search-engine-nav-link v-tour-step-6">
@@ -474,18 +483,22 @@ export default {
                 const sortOrder = isDesc ? -1 : 1;
                 switch (sortBy) {
                     case 'name':
-                        return formatedPositiveInteractions.sort((a, b) => (a.name.split(' & ')[0].toLowerCase().localeCompare(b.name.split(' & ')[0].toLowerCase())) * sortOrder);
+                        formatedPositiveInteractions.sort((a, b) => (a.name.split(' & ')[0].toLowerCase().localeCompare(b.name.split(' & ')[0].toLowerCase())) * sortOrder);
+                    break;
                     case 'recommendation':
-                        return formatedPositiveInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
+                        formatedPositiveInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
+                    break;
                     case 'evidenceLevel':
-                        return formatedPositiveInteractions.sort((a, b) => (a.evidenceLevel - b.evidenceLevel) * sortOrder);
+                        formatedPositiveInteractions.sort((a, b) => (a.evidenceLevel - b.evidenceLevel) * sortOrder);
+                    break;
                 }
+            } else {
+                formatedPositiveInteractions.sort((a, b) => {
+                    return (map[b.recommendation] - map[a.recommendation]) * -1 ||
+                    (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
+                    (a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+                });
             }
-            formatedPositiveInteractions.sort((a, b) => {
-                return (map[b.recommendation] - map[a.recommendation]) * -1 ||
-                (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
-                (a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
-            });
             this.materials.forEach(material => {
                 if (material.type !== 'drug' || formatedPositiveInteractions.some(g => g.name === material.userQuery)) return;
                 const name = (material.userQuery.length >= 14) ? material.userQuery.substring(0, 14) + '...(0)' : material.userQuery + ' (0)';
@@ -688,6 +701,12 @@ export default {
                 }, 0);
             }
             return this.total + this.dBankTotal;
+        },
+        totalPositiveBoosters() {
+            return this.formatedPositiveInteractions.reduce((acc, { total }) => {
+                acc += total;
+                return acc;
+            }, 0);
         },
         loggedInUser() {
             return this.$store.getters.loggedInUser;
