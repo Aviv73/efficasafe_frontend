@@ -827,7 +827,7 @@ export default {
                         materialCount: ids.length + 1,
                         recommendation: 'non-positives'
                     };
-                    const { total } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
+                    const { total } = await this.$store.dispatch({ type: 'getInteractions', filterBy, doChache: true });
                     if (!total) {
                         res.push(group);
                     }
