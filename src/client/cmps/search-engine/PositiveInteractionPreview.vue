@@ -5,7 +5,7 @@
             :key="group._id + idx"
         >
             <template #header>
-                <div class="interaction-preview-header table-row child">
+                <div class="interaction-preview-header table-row child" @click="onCollapseOpen(idx)">
                     <span class="table-col">
                         <minus-icon
                             class="minus-icon"
@@ -77,9 +77,16 @@ export default {
         materials: {
             type: Array,
             required: true
+        },
+        parentIdx: {
+            type: Number,
+            required: false
         }
     },
     methods: {
+        onCollapseOpen(idx) {
+            console.log(this.parentIdx, idx);
+        },
         getInteractionColor(recommendation) {
             return interactionUIService.getInteractionColor(recommendation);
         },

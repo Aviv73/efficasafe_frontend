@@ -7,7 +7,7 @@
         >
             <collapse>
                 <template #header>
-                    <div class="label-interaction-preview-group-header table-row">
+                    <div class="label-interaction-preview-group-header table-row" @click="onCollapseOpen(idx)">
                         <span class="table-col">
                             <minus-icon
                                 class="minus-icon"
@@ -191,6 +191,10 @@ export default {
         link: {
             type: Boolean,
             default: false
+        },
+        parentIdx: {
+            type: Number,
+            required: false
         }
     },
     data() {
@@ -280,6 +284,9 @@ export default {
                 }
             );
             this.isLoading = false;
+        },
+        onCollapseOpen(idx) {
+            console.log(this.parentIdx, idx);
         },
         getInteractionLink(interaction) {
             const url = `/interaction/${interaction._id}/${interaction.side2Material._id}`;

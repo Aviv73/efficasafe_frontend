@@ -214,7 +214,7 @@
                                     {{'\xa0'}}
                                     <span
                                         class="badge"
-                                        style="background-color: #56C596"
+                                        :style="{ 'background-color': positivesBadgeColor }"
                                     >
                                         {{ totalPositiveBoosters }}
                                     </span>
@@ -720,6 +720,10 @@ export default {
         },
         worstDrug2DrugColor() {
             const worstRecomm = this.getMoreSeverRecomm(false, ...this.dBankInteractions.map(i => i.recommendation));
+            return interactionUIService.getInteractionColor(worstRecomm);
+        },
+        positivesBadgeColor() {
+            const worstRecomm = this.getMoreSeverRecomm(true, ...this.positiveInteractions.map(i => i.recommendation));
             return interactionUIService.getInteractionColor(worstRecomm);
         }
     },

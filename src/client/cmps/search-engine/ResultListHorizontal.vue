@@ -122,6 +122,7 @@
                     :interaction="interaction"
                     :materials="materials"
                     :link="$route.name !== 'Monitor'"
+                    :idx="idx"
                 />
             </li>
         </ul>

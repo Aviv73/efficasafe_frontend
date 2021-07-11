@@ -5,6 +5,7 @@
                 <component
                     :is="getHeaderCmp(interaction)"
                     :to="getInteractionUrl(interaction)"
+                    @click="onCollapseOpen"
                 >
                     <div
                         class="interaction-preview-header table-row"
@@ -124,12 +125,14 @@
                         :shortRecommendation="getShortRecommendation(interaction.recommendation)"
                         :color="getInteractionColor(interaction.recommendation)"
                         :link="link"
+                        :parent-idx="idx"
                     />
                 </div>
                 <div v-else-if="!!interaction.isMaterialGroup">
                     <positive-interaction-preview
                         :interaction="interaction"
                         :materials="materials"
+                        :parent-idx="idx"
                     />
                 </div>
                 <div 
@@ -147,8 +150,8 @@
                         There are different interactions, dependent on {{ getSide2Name(interaction.name) }} use:
                     </p>
                     <div
-                        v-for="(vInteraction, idx) in interaction.vInteractions"
-                        :key="idx"
+                        v-for="(vInteraction, index) in interaction.vInteractions"
+                        :key="index"
                     >
                         <interaction-preview
                             :interaction="vInteraction"
@@ -156,6 +159,8 @@
                             :isCompoundPart="isCompoundPart || interaction.isCompoundGroup"
                             :isDuplicate="interaction.isCompoundGroup === false"
                             :link="link"
+                            :idx="index"
+                            :parent-idx="idx"
                             is-child
                         />
                     </div>
@@ -210,6 +215,14 @@ export default {
         isDuplicate: {
             type: Boolean,
             default: false
+        },
+        idx: {
+            type: Number,
+            required: true
+        },
+        parentIdx: {
+            type: Number,
+            required: false
         }
     },
     data() {
@@ -227,6 +240,9 @@ export default {
         }
     },
     methods: {
+        onCollapseOpen() {
+            console.log(this.parentIdx, this.idx);
+        },
         getSide2Name(name) {
             const side2Name = name.split(' & ')[1].trim();
             if (!this.isCompoundPart && this.$store.getters.materialNamesMap[side2Name]) {
