@@ -1,6 +1,6 @@
 <template>
     <div class="auth-modal">
-        <div class="auth-modal-cover" @click.stop="$router.push('/')"></div>
+        <div class="auth-modal-cover" @click.stop="$router.go(-1)"></div>
         <div>
             <div class="auth-modal-content txt-center">
                 <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
@@ -63,6 +63,11 @@ export default {
             }
         };
     },
+    computed: {
+        loggedInUser() {
+            return this.$store.getters.loggedInUser;
+        }
+    },
     methods: {
         async sendEmail() {
             try {
@@ -80,6 +85,11 @@ export default {
                 this.failMsg = 'Something went wrong. Try again';
             }
         },
+    },
+    created() {
+        if (this.loggedInUser) {
+            this.email = this.loggedInUser.email;
+        }
     },
     components: {
         ValidationProvider,

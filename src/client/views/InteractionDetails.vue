@@ -61,8 +61,7 @@
                             <tooltip on="hover" right-top>
                                 <template #content>
                                     <div class="evidence-level-tooltip-content">
-                                        Based On {{ clinicalRefCount }} Clinical Trial{{ clinicalRefCount > 1 ? 's' : '' }},
-                                        {{ preClinicalRefCount }} Pre-clinical {{ preClinicalRefCount > 1 ? 'Studies' : 'Study' }} And {{ articlesRefCount }} Article{{ articlesRefCount > 1 ? 's' : '' }}
+                                        {{ refsDetailsTxt }}
                                     </div>
                                 </template>
                                 <span class="refs">
@@ -99,21 +98,10 @@
                         <span class="note">
                             <span class="font-bold">Note:</span> {{ interaction.note }}
                         </span>
-                        <span class="evidence-level">
-                            {{ interaction.evidenceLevel }}
-                            <tooltip on="focus" right-top>
-                                <template #content>
-                                    <div class="evidence-level-tooltip-content">
-                                        Based On {{ clinicalRefCount }} Clinical Trial{{ clinicalRefCount > 1 ? 's' : '' }},
-                                        {{ preClinicalRefCount }} Pre-clinical {{ preClinicalRefCount > 1 ? 'Studies' : 'Study' }} And {{ articlesRefCount }} Article{{ articlesRefCount > 1 ? 's' : '' }}
-                                    </div>
-                                </template>
-                                <span class="refs">
-                                    <span class="refs-count">({{ combinedRefs.length }})</span> 
-                                    <information-outline-icon :size="12" title="" />
-                                </span>
-                            </tooltip>
-                        </span>
+                    </div>
+                    <div class="evidence-level-mobile">
+                        <span class="font-bold">Level of evidence:</span> {{ interaction.evidenceLevel }}
+                        <div class="sub-txt">{{ refsDetailsTxt }}</div>
                     </div>
                     <h2
                         v-if="interaction.summary"
@@ -272,12 +260,26 @@
             <share-modal @close-modal="isShareModalActive = false" />
         </modal-wrap>
         <modal-wrap
+            v-if="interaction"
             :isActive="isPrintModalActive"
             @close-modal="isPrintModalActive = false"
         >
-            <img
-                src="https://www.habitants.org/var/ezwebin_site/storage/images/la_via_urbana/alojar_mil_millones_de_personas2/work_in_progress/2390822-1-ita-IT/work_in_progress.jpg"
-                alt="Work in progress"
+            <print-modal
+                :interaction="interaction"
+                @close-modal="isPrintModalActive = false"
+                :interaction-data="{
+                    name: interactionName,
+                    color: interactionColor,
+                    icon: recommendationIconName,
+                    evidenceLevel: interaction.evidenceLevel,
+                    showNote: !isPrimaryMaterial,
+                    showWarning: side2Material.isNarrowTherapeutic,
+                    side2Name: side2Material.name,
+                    side2Pathways: relevantSide2Pathways,
+                    side1PathwaysTxt: effectOnDrugMetabolism,
+                    refsDetailsTxt: refsDetailsTxt,
+                    isDBank: false
+                }"
             />
         </modal-wrap>
     </section>
@@ -295,6 +297,7 @@ import Tooltip from '@/client/cmps/common/Tooltip';
 import Collapse from '@/client/cmps/common/Collapse';
 import ModalWrap from '@/client/cmps/common/ModalWrap';
 import Error404 from '@/client/cmps/shared/Error404';
+import PrintModal from '@/client/cmps/shared/modals/PrintModal';
 import ShareModal from '@/client/cmps/shared/modals/ShareModal';
 
 import Loader from '@/client/cmps/common/icons/Loader';
@@ -348,6 +351,10 @@ export default {
             }, []);
             
             return this.interactionRefs.concat(side2Refs, this.side1PathwayRefs);
+        },
+        refsDetailsTxt() {
+            return `Based On ${this.clinicalRefCount} Clinical Trial${this.clinicalRefCount > 1 ? 's' : ''},
+            ${this.preClinicalRefCount} Pre-clinical ${this.preClinicalRefCount > 1 ? 'Studies' : 'Study'} And ${this.articlesRefCount} Article${this.articlesRefCount > 1 ? 's' : ''}`;
         },
         clinicalRefCount() {
             return this.combinedRefs.filter(ref => ref.type === 'clinical' || ref.type === 'retrospective').length;
@@ -535,6 +542,7 @@ export default {
         Loader,
         ModalWrap,
         ShareModal,
+        PrintModal,
         CancelIcon: () => import('vue-material-design-icons/Cancel'),
         AlertCircleOutlineIcon: () => import('vue-material-design-icons/AlertCircleOutline'),
         CheckIcon: () => import('vue-material-design-icons/Check'),

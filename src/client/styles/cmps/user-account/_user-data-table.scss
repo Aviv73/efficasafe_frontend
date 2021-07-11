@@ -1,7 +1,8 @@
 .user-data-table {
     flex: 1 1 auto;
-    overflow-y: auto;
+    overflow: auto;
     height: 0px;
+    max-width: 100%;
     font-size: rem(14px);
     line-height: rem(16px);
     
@@ -15,18 +16,26 @@
         font-family: roboto-medium, sans-serif;
         font-weight: 500;
         padding: rem(8px) rem(24px);
-        min-width: 100px;
-        text-align: left;
         text-transform: capitalize;
+        text-align: left;
+        
+        @include for-mobile-layout {
+            min-width: 100px;
+        }
 
         label {
             cursor: pointer;
         }
 
         .sort-icon {
-            height: rem(14px);
-            width: rem(14px);
-            margin-block-end: -2px;
+            display: none;
+
+            @include for-mobile-layout {
+                display: initial;
+                height: rem(14px);
+                width: rem(14px);
+                margin-block-end: -2px;
+            }
         }
     }
     td {

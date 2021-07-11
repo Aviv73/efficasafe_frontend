@@ -42,7 +42,7 @@
           <template v-slot:default>
             <thead>
               <tr>
-                <th>Entity</th>
+                <th>{{ isTasks ? 'Type' : 'Entity' }}</th>
                 <th>Alerts</th>
                 <th>Actions</th>
               </tr>
@@ -50,7 +50,7 @@
             <tbody>
               <tr v-for="(alert, idx) in alerts" :key="idx">
                 <td>
-                  {{ entityName(alert.entity) }}
+                  {{ entityName(alert.entity) | display-snake-case }}
                 </td>
                 <td>
                   <v-expansion-panels class="data-integrity-expand-panel p-0">
@@ -84,9 +84,19 @@
                 </td>
                 <td>
                   <v-btn
-                    :to="`/${entityType(alert.entity)}/edit/${
-                      alert.entity._id
-                    }`"
+                    class="mr-2"
+                    v-if="isTasks"
+                    elevation="0"
+                    small
+                    outlined
+                    color="success"
+                    title="Set as fixed"
+                    @click="setTaskAsDone(alert.entity)"
+                  >
+                    <v-icon small>mdi-check</v-icon>
+                  </v-btn>
+                  <v-btn
+                    :to="editEntityLink(alert.entity)"
                     elevation="0"
                     small
                     outlined
@@ -114,11 +124,14 @@
         >
           <p class="subtitle-1 mb-0">Available check types:</p>
           <v-list>
-            <v-list-item v-for="(type, idx) in $options.checkTypes" :key="idx">
+            <v-list-item
+              v-for="(type, idx) in $options.checkTypes"
+              :key="idx"
+            >
               <v-list-item-icon>
                 <v-icon x-small class="mr-2">mdi-scan-helper</v-icon>
                 <v-list-item-content>
-                  <v-list-item-title v-text="type.text"></v-list-item-title>
+                  <v-list-item-title :class="{ 'red--text': hasFailedTasks && !idx }" v-text="type.text" />
                 </v-list-item-content>
               </v-list-item-icon>
             </v-list-item>
@@ -138,6 +151,7 @@ import { dataIntegrityService } from '@/cms/services/data-integrity.service';
 
 export default {
   checkTypes: [
+    { text: 'Failed worker tasks', value: 'get-failed-tasks' },
     { text: 'Duplicate references (all materials)', value: 'ref-dups' },
     { text: 'Duplicate references (single material)', value: 'material-ref-dups' },
     { text: 'Bad reference (interaction)', value: 'ref-broken' },
@@ -145,7 +159,7 @@ export default {
     { text: 'Bad text field (interactions)', value: 'bad-txt-field' },
     { text: 'Unformated refs - outside <sub>(...)</sub> (interactions)', value: 'unformated-refs' },
     { text: 'Broken \'monitor.general\' (interactions)', value: 'broken-monitor' },
-    { text: 'Trailing/leading spaces in pathway names', value: 'bad-pathway-names' },
+    { text: 'Trailing/leading spaces in pathway names', value: 'bad-pathway-names' }
   ],
   data() {
     return {
@@ -160,6 +174,12 @@ export default {
     selectedMaterialId() {
       if (this.checkType !== 'material-ref-dups' && this.checkType !== 'v-interaction-dups') return '';
       return this.materialId;
+    },
+    isTasks() {
+      return this.checkType === 'get-failed-tasks';
+    },
+    hasFailedTasks() {
+      return this.$store.getters.hasFailedTasks;
     }
   },
   methods: {
@@ -168,12 +188,31 @@ export default {
     },
     entityName(entity) {
       if (entity.name) return entity.name;
+      if (entity.errors) return `${entity.type} (${entity.data.name})`;
       if (entity.side2Label) return entity.side2Label.name;
       if (entity.side2Material) return `${entity.side1Material.name} & ${entity.side2Material.name}`;
       return `${entity.side1Material.name} & ${entity.side2DraftName}`;
     },
-    entityType(entity) {
-      return entity.name ? 'material' : 'interaction';
+    async setTaskAsDone(task) {
+      task.succeeded = true;
+      await dataIntegrityService.updateTask(task);
+      await this.getResults();
+      if (!this.alerts.length) this.$store.commit({
+          type: 'setHasFailedTasks',
+          hasTasks: false
+      });
+    },
+    editEntityLink(entity) {
+      let entityName = '';
+      let entityId = entity._id;
+
+      if (entity.name) entityName = 'material';
+      else if (entity.errors) {
+        entityName = 'user';
+        entityId = entity.data._id;
+      } else entityName = 'interaction';
+
+      return `/${entityName}/edit/${entityId}`;
     },
     async getResults() {
       this.isLoading = true;
@@ -196,6 +235,9 @@ export default {
       this.isLoading = false;
       if (this.isInitial) this.isInitial = false;
     },
+    getFailedTasks() {
+        this.hasFailedTasks = true;
+    }
   },
   components: {
     LoadingCmp,

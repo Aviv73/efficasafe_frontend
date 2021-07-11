@@ -12,34 +12,47 @@ export const userService = {
     loadUsers,
     getById,
     getEmptyUser,
-    save,
+    update,
     removeMany,
     sendResetPass,
     resetPassword,
     resnedVerifcationMail,
+    updateAutoPilotContact,
+    updateAuth0Account,
     checkTrial,
-    getEmptySearch
+    getEmptySearch,
+    verifyEmail
 }
 
+function verifyEmail(token) {
+    return httpService.get(`${ACCOUNT_END_POINT}/verifyEmail?token=${token}`);
+}
 
-async function resnedVerifcationMail(user) {
+function resnedVerifcationMail(user) {
     return httpService.post(`${ACCOUNT_END_POINT}/resendMail`, { user: user })
 }
 
-async function removeMany(ids) {
+function removeMany(ids) {
     return httpService.delete(`${ACCOUNT_END_POINT}`, ids);
 }
 
-
-async function save(user) {
+function update(user) {
     return httpService.put(`${ACCOUNT_END_POINT}/${user._id}`, user);
-
-}
-async function loadUsers(filterBy) {
-    return await httpService.get(`${ACCOUNT_END_POINT}/`, filterBy);
 }
 
-async function getById(id) {
+function updateAuth0Account(user) {
+    return httpService.post(`${ACCOUNT_END_POINT}/auth0-account`, user);
+}
+
+function updateAutoPilotContact(user) {
+    return httpService.post(`${ACCOUNT_END_POINT}/autopilot-contact`, user);
+}
+
+function loadUsers(filterBy) {
+    return httpService.get(`${ACCOUNT_END_POINT}/`, filterBy);
+}
+
+function getById(id) {
     return httpService.get(`${ACCOUNT_END_POINT}/${id}`);
 }
 
@@ -68,11 +81,11 @@ function getLoggedInUser() {
     return storageService.load('userProfile');
 }
 
-async function logout() {
-    await httpService.post(`${AUTH_END_POINT}/logout`);
+function logout() {
+    httpService.post(`${AUTH_END_POINT}/logout`);
 }
 
-async function getEmptyUser() {
+function getEmptyUser() {
     return {
         name: '',
         email: '',

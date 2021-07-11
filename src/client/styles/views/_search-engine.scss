@@ -310,17 +310,6 @@
                     padding: rem(20px) 0;
                 }
             }
-            .refs {
-                &.recomm-1 > span {
-                    background-color: $red;
-                }
-                &.recomm-2 > span {
-                    background-color: $yellow;
-                }
-                &.recomm-3 > span {
-                    background-color: $green;
-                }
-            }
         }
         [type=radio]:checked + svg {
             rect {

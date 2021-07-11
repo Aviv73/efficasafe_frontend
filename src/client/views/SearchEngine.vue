@@ -176,12 +176,14 @@
                                 :to="{ name: 'Supp2Drug', query: this.$route.query }"
                             >
                                 Supplement - Drug
-                                <span
-                                    class="refs"
-                                    :class="`recomm-${worstSupp2DrugRecomm}`"
-                                    v-if="total"
-                                >
-                                    {{'\xa0'}}<span class="badge">{{ total }}</span>
+                                <span  v-if="total">
+                                    {{'\xa0'}}
+                                    <span
+                                        class="badge"
+                                        :style="{ 'background-color': worstSupp2DrugColor }"
+                                    >
+                                        {{ total }}
+                                    </span>
                                 </span>
                             </router-link>
                         </li>
@@ -191,12 +193,14 @@
                                 :to="{ name: 'Drug2Drug', query: this.$route.query }"
                             >
                                 Drug - Drug
-                                <span
-                                    class="refs"
-                                    :class="`recomm-${worstDrug2DrugRecomm}`"
-                                    v-if="dBankTotal"
-                                >
-                                    {{'\xa0'}}<span class="badge">{{ dBankTotal }}</span>
+                                <span v-if="dBankTotal">
+                                    {{'\xa0'}}
+                                    <span
+                                        class="badge"
+                                        :style="{ 'background-color': worstDrug2DrugColor }"
+                                    >
+                                        {{ dBankTotal }}
+                                    </span>
                                 </span>
                             </router-link>
                         </li>
@@ -691,14 +695,13 @@ export default {
         isScreenNarrow() {
             return this.$store.getters.isScreenNarrow;
         },
-        worstSupp2DrugRecomm() {
-            return this.interactions.map(i => i.order)[0];
+        worstSupp2DrugColor() {
+            const worstRecomm = this.getMoreSeverRecomm(false, ...this.interactions.map(i => i.recommendation));
+            return interactionUIService.getInteractionColor(worstRecomm);
         },
-        worstDrug2DrugRecomm() {
-            return this.dBankInteractions.map(i => i.recommendationOrder)[0];
-        },
-        teaserStepPlacement() {
-            return this.isScreenNarrow ? 'bottom' : 'right';
+        worstDrug2DrugColor() {
+            const worstRecomm = this.getMoreSeverRecomm(false, ...this.dBankInteractions.map(i => i.recommendation));
+            return interactionUIService.getInteractionColor(worstRecomm);
         }
     },
     methods: {
@@ -747,7 +750,7 @@ export default {
                 isPositives: true,
                 id: ids
             };
-            let interactions = await this.$store.dispatch({ type: 'getInteractions', filterBy });
+            let interactions = await this.$store.dispatch({ type: 'getInteractions', filterBy, doChache: true });
             this.positiveInteractions = await this.removeDupNonPositives(interactions);
         },
         async getInteractions(page = 1) {
@@ -764,7 +767,7 @@ export default {
                 id: ids,
                 materialCount: this.materials.filter(({ isIncluded }) => !isIncluded).length,
             };
-            const { interactions, pageCount, total } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
+            const { interactions, pageCount, total } = await this.$store.dispatch({ type: 'getInteractions', filterBy, doChache: true });
             this.pageCount = pageCount;
             this.interactions = interactions;
             this.total = (this.materials.length === 1) ? total : interactions.reduce((acc, i) => {
@@ -787,7 +790,7 @@ export default {
             const drugBankIds = this.materials.map(mat => mat.drugBankId);
             const drugBankId = (drugBankIds.length === 1) ? drugBankIds[0] : drugBankIds;
             const criteria = { drugBankId, page: --page };
-            const { dBankInteractions, pageCount, total } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria });
+            const { dBankInteractions, pageCount, total } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria, doChache: true });
             this.dBankInteractions = dBankInteractions;
             this.dBankPageCount = pageCount;
             this.dBankTotal = total;
@@ -802,7 +805,7 @@ export default {
                 isSearchResults: true,
                 q: this.$route.query.q,
             };
-            const materials = await this.$store.dispatch({ type: 'getMaterials', criteria });
+            const materials = await this.$store.dispatch({ type: 'getMaterials', criteria, doChache: true });
             this.materials = this.sortMaterials(materials);
             this.$store.commit({ type: 'makeMaterialNamesMap', materials });
             this.checkForIncludedMaterials();

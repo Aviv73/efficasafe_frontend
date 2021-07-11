@@ -11,9 +11,17 @@
     text-align: center;
     box-shadow: 0px -3px 6px rgba($black, .2);
     padding: rem(34px) 0;
-
+    
     @include for-narrow-layout {
         padding: rem(24px) rem(18px);
+    }
+
+    &.success {
+        background-color: $green;
+    }
+    &.error {
+        background-color: $red;
+        color: $white;
     }
 
     &-cookie-notice {

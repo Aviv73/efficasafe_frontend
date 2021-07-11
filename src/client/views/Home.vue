@@ -181,10 +181,10 @@
 import Swiper from '@/client/cmps/common/Swiper';
 import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
-import ChevronRightIcon from 'vue-material-design-icons/ChevronRight.vue';
-import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft.vue';
-import WelcomeModal from '../cmps/shared/modals/WelcomeModal.vue';
-import PassChangeSuccess from '../cmps/shared/modals/PassChangeSuccess.vue';
+import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
+import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
+import WelcomeModal from '../cmps/shared/modals/WelcomeModal';
+import PassChangeSuccess from '../cmps/shared/modals/PassChangeSuccess';
 
 export default {
     name: 'Home',
@@ -226,7 +226,7 @@ export default {
         ChevronRightIcon,
         ChevronLeftIcon,
         WelcomeModal,
-        PassChangeSuccess,
+        PassChangeSuccess
     },
 };
 </script>

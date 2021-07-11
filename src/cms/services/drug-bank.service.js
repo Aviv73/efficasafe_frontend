@@ -1,8 +1,8 @@
 import { httpService } from './http.service.js';
 
-const END_POINTS = {
-    INTERACTION: 'd-bank-interaction'
-};
+const END_POINT = 'd-bank-interaction';
+
+const chache = {};
 
 export const drugBankService = {
     getInteractions,
@@ -11,12 +11,20 @@ export const drugBankService = {
     getEmptyRef
 }
 
-function getInteractions(filterBy) {
-    return httpService.get(END_POINTS.INTERACTION, filterBy);
+async function getInteractions(filterBy, doChache = false) {
+    let key = '';
+    if (doChache) {
+        key = filterBy.drugBankId.toString();
+        if (chache[key]) return chache[key];
+    }
+    
+    const res = await httpService.get(END_POINT, filterBy);
+    if (doChache) chache[key] = res;
+    return res;
 }
 
 function getInteraction(id) {
-    return httpService.get(`${END_POINTS.INTERACTION}/${id}`);
+    return httpService.get(`${END_POINT}/${id}`);
 }
 
 function getEmptyRef() {

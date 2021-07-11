@@ -1,7 +1,6 @@
 <template>
     <v-app>
         <nav-bar />
-
         <v-main class="app-main-container">
             <app-messages />
             <router-view class="app-main-view" />
@@ -30,8 +29,8 @@ export default {
             const filterBy = {};
             this.$store.dispatch({ type: 'loadLabels', filterBy });
         },
+        
     },
-
     created() {
         if (this.loggedInUser) this.loadData();
     },

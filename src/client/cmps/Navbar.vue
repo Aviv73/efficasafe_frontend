@@ -8,7 +8,7 @@
             <div class="flex-space-between">
                 <div class="navbar-msgs flex-center">
                     <div class="flex-center" v-if="loggedInUser">
-                        <dropdown v-if="!isScreenNarrow">
+                        <dropdown>
                             <template #activator>
                                 <div class="flex-align-center">
                                     <img
@@ -17,9 +17,9 @@
                                         :src="loggedInUser.picture"
                                         alt="User's picture"
                                     />
-                                    <p>
+                                    <span v-if="!isScreenNarrow">
                                         {{ `Hi ${loggedInUser.nickname}` }}
-                                    </p>
+                                    </span>
                                     <menu-down-icon title="" class="dropdown--animate" />
                                 </div>
                             </template>

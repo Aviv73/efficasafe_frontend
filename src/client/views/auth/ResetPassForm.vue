@@ -41,7 +41,7 @@
                         <validation-provider
                             mode="eager"
                             name="password"
-                            :rules="`required|confirmPassword:${newPass}`"
+                            :rules="`required|confirm:${newPass}`"
                             v-slot="{ errors }"
                             :custom-messages="validationMessages"
                         >
@@ -86,7 +86,7 @@ export default {
             validationMessages: {
                 required: 'Password is required',
                 password: 'Password must contain at list 1 digit , Uppercase letter , Lowercase letter and minimum 8 characters',
-                confirmPassword: 'The password confirmation does not match.'
+                confirm: 'The password confirmation does not match.'
             }
         };
     },

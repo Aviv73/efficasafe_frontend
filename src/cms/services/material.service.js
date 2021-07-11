@@ -2,6 +2,8 @@ import { httpService } from './http.service.js';
 
 const END_POINT = 'material';
 
+const chache = {};
+
 export const materialService = {
     list,
     getById,
@@ -15,8 +17,16 @@ export const materialService = {
     removeMany
 }
 
-function list(filterBy = {}) {
-    return httpService.get(END_POINT, filterBy);
+async function list(filterBy = {}, doChache = false) {
+    let key = '';
+    if (doChache) {
+        key = filterBy.q.toString();
+        if (chache[key]) return chache[key];
+    }
+
+    const res = await httpService.get(END_POINT, filterBy);
+    if (doChache) chache[key] = res;
+    return res;
 }
 
 function getById(id) {

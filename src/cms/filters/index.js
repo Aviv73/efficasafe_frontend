@@ -24,3 +24,7 @@ Vue.filter('remove-ending-dot', (val) => {
     if (lastChar !== '.') return val;
     return val.substring(0, val.length - 1);
 });
+
+Vue.filter('display-snake-case', (val) => {
+    return val.replace(/_/g, ' ');
+});

@@ -9,9 +9,14 @@ extend('password', val => {
     return reg.test(val);
 });
 
-extend('confirmPassword', (passConfirm, [ pass ]) => {
-    return passConfirm === pass;
+extend('confirm', (val, [ originalVal ]) => {
+    return val === originalVal;
 },
 {
-    paramNames: ['pass']
+    paramNames: ['originalVal']
+});
+
+extend('phone', val => {
+    const reg = /\+?([\d|(][h|(\d{3})|. |\-|\d]{4,}\d)/;
+    return reg.test(val);
 });
