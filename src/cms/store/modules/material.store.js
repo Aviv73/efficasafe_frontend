@@ -60,8 +60,8 @@ export const materialStore = {
             context.commit({ type: 'setMaterialCount', total });
             return materials;
         },
-        async getMaterials(context, { criteria }) {
-            const { materials } = await materialService.list(criteria);
+        async getMaterials(context, { criteria, doChache }) {
+            const { materials } = await materialService.list(criteria, doChache);
             return materials;
         },
         async getStatistics() {

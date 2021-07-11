@@ -2,6 +2,11 @@ import { httpService } from './http.service.js';
 
 const END_POINT = 'interaction';
 
+const chache = {
+    positives: {},
+    default: {}
+};
+
 export const interactionService = {
     list,
     getById,
@@ -12,9 +17,17 @@ export const interactionService = {
     getEmptyInteraction
 }
 
-function list(filterBy) {
-    // console.log('I', filterBy);
-    return httpService.get(END_POINT, filterBy);
+async function list(filterBy, doChache = false) {
+    let type = filterBy.isPositives ? 'positives' : 'default';
+    let key = '';
+    if (doChache) {
+        key = filterBy.id.toString();
+        if (chache[type][key]) return chache[type][key];
+    }
+    const res = await httpService.get(END_POINT, filterBy);
+    if (doChache) chache[type][key] = res;
+
+    return res;
 }
 
 function getById(id) {
