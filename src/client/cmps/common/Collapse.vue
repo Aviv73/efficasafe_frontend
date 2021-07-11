@@ -53,11 +53,15 @@ export default {
         allowOverflow: {
             type: Boolean,
             default: false
+        },
+        initialIsVisible: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
         return {
-            isContentVisible: false
+            isContentVisible: this.initialIsVisible
         }
     },
     computed: {

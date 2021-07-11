@@ -15,7 +15,7 @@
                             />
                             <interaction-capsules
                                 :name="getGroupName(atcGroup.name)"
-                                :vInteractionCount="4"    
+                                :vInteractionCount="atcGroup.vInteractions.length"    
                                 :showDraftName="false"
                                 :localize="true"
                                 :color="color"
