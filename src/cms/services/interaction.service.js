@@ -18,7 +18,7 @@ export const interactionService = {
 }
 
 async function list(filterBy, doChache = false) {
-    let type = filterBy.isPositives ? 'positives' : 'default';
+    let type = filterBy.isPositives ? 'positives' : filterBy.isInnerPositives ? 'inner-positives' : 'default';
     let key = '';
     if (doChache) {
         key = filterBy.id.toString();
