@@ -11,15 +11,12 @@ export const drugBankService = {
     getEmptyRef
 }
 
-async function getInteractions(filterBy, doChache = false) {
-    let key = '';
-    if (doChache) {
-        key = filterBy.drugBankId.toString();
-        if (chache[key]) return chache[key];
+async function getInteractions(filterBy, chacheKey = '') {
+    if (chacheKey && chache[chacheKey]) {
+        return chache[chacheKey];
     }
-    
     const res = await httpService.get(END_POINT, filterBy);
-    if (doChache) chache[key] = res;
+    if (chacheKey) chache[chacheKey] = res;
     return res;
 }
 

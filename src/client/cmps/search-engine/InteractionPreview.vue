@@ -1,11 +1,11 @@
 <template>
     <section class="interaction-preview">
-        <collapse>
+        <collapse @collapse-closed="onCollapseToggle">
             <template #header>
                 <component
                     :is="getHeaderCmp(interaction)"
                     :to="getInteractionUrl(interaction)"
-                    @click="onCollapseOpen"
+                    @click="onCollapseToggle"
                 >
                     <div
                         class="interaction-preview-header table-row"
@@ -122,6 +122,7 @@
                     <label-interaction-preview
                         :interaction="interaction"
                         :material="materials[0]"
+                        :materialIds="materialIds"
                         :shortRecommendation="getShortRecommendation(interaction.recommendation)"
                         :color="getInteractionColor(interaction.recommendation)"
                         :link="link"
@@ -176,6 +177,7 @@
 <script>
 import { eventBus, EV_sortby_side_swaped } from '@/cms/services/eventBus.service';
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
+import { interactionService } from '@/cms/services/interaction.service';
 
 import Collapse from '@/client/cmps/common/Collapse';
 import Tooltip from '@/client/cmps/common/Tooltip';
@@ -237,11 +239,25 @@ export default {
                 return this.interaction.name;
             }
             return this.interaction.name.split(' & ').reverse().join(' & ');
+        },
+        materialIds() {
+            return this.materials.reduce((acc, { _id, labels }) => {
+                if (!acc.includes(_id)) acc.push(_id);
+                labels.forEach(label => {
+                    if (!acc.includes(label._id)) acc.push(label._id);
+                });
+                return acc;
+            }, []);
         }
     },
     methods: {
-        onCollapseOpen() {
-            console.log(this.parentIdx, this.idx);
+        onCollapseToggle() {
+            const chacheData = {
+                key: this.$route.fullPath,
+                idx: this.idx,
+                parentIdx: this.parentIdx
+            };
+            interactionService.chacheSearchState(chacheData);
         },
         getSide2Name(name) {
             const side2Name = name.split(' & ')[1].trim();
