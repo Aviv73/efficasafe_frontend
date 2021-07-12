@@ -176,7 +176,7 @@
                                 :to="{ name: 'Supp2Drug', query: this.$route.query }"
                             >
                                 Supplement - Drug
-                                <span  v-if="total">
+                                <span v-if="total">
                                     {{'\xa0'}}
                                     <span
                                         class="badge"
@@ -775,9 +775,7 @@ export default {
             };
             let { interactions, searchState } = await this.$store.dispatch({ type: 'getInteractions', filterBy, chacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}` });
             this.positiveInteractions = await this.removeDupNonPositives(interactions);
-            if (searchState) {
-                this.restoreState('Boosters', searchState);
-            }
+            this.restoreState('Boosters', searchState);
         },
         async getInteractions(page = 1) {
             const ids = this.materials.reduce((acc, { _id, labels }) => {
@@ -793,7 +791,7 @@ export default {
                 id: ids,
                 materialCount: this.materials.filter(({ isIncluded }) => !isIncluded).length,
             };
-            const { interactions, pageCount, total, searchState } = await this.$store.dispatch({ type: 'getInteractions', filterBy, chacheKey: `/search/?${this.$route.fullPath.split('?')[1]}` });
+            const { interactions, pageCount, total, searchState } = await this.$store.dispatch({ type: 'getInteractions', filterBy, chacheKey: `/search?${this.$route.fullPath.split('?')[1]}` });
             this.pageCount = pageCount;
             this.interactions = interactions;
             this.total = (this.materials.length === 1) ? total : interactions.reduce((acc, i) => {
@@ -805,9 +803,7 @@ export default {
                 }
                 return acc;
             }, 0);
-            if (searchState) {
-                this.restoreState('Supp2Drug', searchState);
-            }
+            this.restoreState('Supp2Drug', searchState);
         },
         async getDBankInteractions(page = 1) {
             const isAllSupplements = this.materials.every(material => material.type !== 'drug');
@@ -819,7 +815,7 @@ export default {
             const drugBankIds = this.materials.map(mat => mat.drugBankId);
             const drugBankId = (drugBankIds.length === 1) ? drugBankIds[0] : drugBankIds;
             const criteria = { drugBankId, page: --page };
-            const { dBankInteractions, pageCount, total } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria, chacheKey: `/search/drug2drug/${this.$route.fullPath.split('?')[1]}` });
+            const { dBankInteractions, pageCount, total } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria, chacheKey: `/search/drug2drug?${this.$route.fullPath.split('?')[1]}` });
             this.dBankInteractions = dBankInteractions;
             this.dBankPageCount = pageCount;
             this.dBankTotal = total;
@@ -864,9 +860,8 @@ export default {
             }
             return res;
         },
-        restoreState(routeName, state) {
-            if (routeName !== this.$route.name) return;
-            console.log(state);
+        restoreState(routeName, state = {}) {
+            this.$store.commit({ type: 'setOpenCollapses', openCollapses: state, routeName });
         },
         getMaterialInteractions(result) {
             if (this.materials.length <= 1 || result.isIncluded) return [];

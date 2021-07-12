@@ -1,6 +1,9 @@
 <template>
     <section class="interaction-preview">
-        <collapse @collapse-closed="onCollapseToggle">
+        <collapse
+            @collapse-closed="onCollapseToggle"
+            :initial-is-visible="initialCollapseIsVisible"
+        >
             <template #header>
                 <component
                     :is="getHeaderCmp(interaction)"
@@ -230,10 +233,14 @@ export default {
     data() {
         return {
             pathwayRefCount: 0,
-            primarySideInView: 1
+            primarySideInView: 1,
+            initialCollapseIsVisible: false
         }
     },
     computed: {
+        collapsesState() {
+            return this.$store.getters.openCollapses;
+        },
         interactionName() {
             if (this.primarySideInView === 1) {
                 return this.interaction.name;
@@ -251,6 +258,20 @@ export default {
         }
     },
     methods: {
+        restoreCollapses() {
+            if (!this.collapsesState[this.$route.name]) return;
+            Object.entries(this.collapsesState[this.$route.name]).forEach(([ key, value ]) => {
+                if (this.parentIdx === undefined && this.idx === +key) {
+                    this.initialCollapseIsVisible = true;
+                }
+                if (this.$route.name !== 'Supp2Drug') return;
+                Object.keys(value).forEach(innerKey => {
+                    if (this.parentIdx === +key && this.idx === +innerKey) {
+                        this.initialCollapseIsVisible = true;
+                    }
+                });
+            });
+        },
         onCollapseToggle() {
             const chacheData = {
                 key: this.$route.fullPath,
@@ -402,6 +423,7 @@ export default {
     created() {
         this.getPathwayRefsCount();
         eventBus.$on(EV_sortby_side_swaped, this.swapSideNames);
+        this.restoreCollapses();
     },
     beforeDestroy() {
         eventBus.$off(EV_sortby_side_swaped, this.swapSideNames);

@@ -2,7 +2,7 @@ import { httpService } from './http.service.js';
 
 const END_POINT = 'interaction';
 
-const chache = {};
+var chache = {};
 
 export const interactionService = {
     list,
