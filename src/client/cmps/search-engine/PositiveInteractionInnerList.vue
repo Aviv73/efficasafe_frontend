@@ -7,6 +7,7 @@
             :materials="materials"
             :idx="idx"
             is-child
+            is-positive
             link
         />
     </section>
