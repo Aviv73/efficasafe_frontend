@@ -43,7 +43,7 @@ const routes = [
     component: SearchEngine,
     children: [
       {
-        path: '',
+        path: '/search',
         name: 'Supp2Drug',
         component: InteractionList
       },

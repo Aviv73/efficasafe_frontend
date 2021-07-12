@@ -1,10 +1,11 @@
 <template>
     <section class="positive-interaction-inner-list">
         <interaction-preview
-            v-for="interaction in interactions"
+            v-for="(interaction, idx) in interactions"
             :key="interaction._id"
             :interaction="interaction"
             :materials="materials"
+            :idx="idx"
             is-child
             link
         />

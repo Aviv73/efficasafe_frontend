@@ -5,9 +5,9 @@
             v-for="(atcGroup, idx) in atcGroupedVinteractions"
             :key="idx"
         >
-            <collapse>
+            <collapse @collapse-closed="onCollapseToggle">
                 <template #header>
-                    <div class="label-interaction-preview-group-header table-row">
+                    <div class="label-interaction-preview-group-header table-row" @click="onCollapseToggle(idx)">
                         <span class="table-col">
                             <minus-icon
                                 class="minus-icon"
@@ -159,6 +159,7 @@
 
 <script>
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
+import { interactionService } from '@/cms/services/interaction.service';
 
 import Collapse from '@/client/cmps/common/Collapse';
 import LongTxt from '@/client/cmps/common/LongTxt';
@@ -188,9 +189,17 @@ export default {
             type: String,
             required: true
         },
+        materialIds: {
+            type: Array,
+            required: true
+        },
         link: {
             type: Boolean,
             default: false
+        },
+        parentIdx: {
+            type: Number,
+            required: false
         }
     },
     data() {
@@ -280,6 +289,14 @@ export default {
                 }
             );
             this.isLoading = false;
+        },
+        onCollapseToggle(idx) {
+            const chacheData = {
+                key: this.$route.fullPath,
+                idx,
+                parentIdx: this.parentIdx
+            };
+            interactionService.chacheSearchState(chacheData);
         },
         getInteractionLink(interaction) {
             const url = `/interaction/${interaction._id}/${interaction.side2Material._id}`;

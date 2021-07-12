@@ -77,6 +77,10 @@ export default {
         materials: {
             type: Array,
             required: true
+        },
+        parentIdx: {
+            type: Number,
+            required: false
         }
     },
     methods: {

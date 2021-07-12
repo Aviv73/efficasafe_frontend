@@ -5,7 +5,11 @@ export const interactionStore = ({
         interactions: null,
         interactionCount: 0,
         supplementsRefs: [],
-        seenRefsMap: {}
+        seenRefsMap: {},
+        openCollapses: {
+            'Supp2Drug': {},
+            'Boosters': {}
+        }
     },
     getters: {
         interactions(state) {
@@ -19,9 +23,15 @@ export const interactionStore = ({
         },
         supplementsRefs(state) {
             return state.supplementsRefs;
+        },
+        openCollapses(state) {
+            return state.openCollapses;
         }
     },
     mutations: {
+        setOpenCollapses(state, { openCollapses, routeName }) {
+            state.openCollapses[routeName] = openCollapses;
+        },
         setInteractions(state, { interactions }) {
             state.interactions = interactions;
         },
@@ -68,8 +78,8 @@ export const interactionStore = ({
             context.commit({ type: 'setInteractionCount', total });
             return interactions;
         },
-        async getInteractions(context, { filterBy, doChache }) {
-            return await interactionService.list(filterBy, doChache);
+        async getInteractions(context, { filterBy, chacheKey }) {
+            return await interactionService.list(filterBy, chacheKey);
         },
         async loadInteraction(context, { id }) {
             return await interactionService.getById(id);

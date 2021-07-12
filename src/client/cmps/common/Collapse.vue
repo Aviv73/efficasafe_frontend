@@ -26,7 +26,7 @@
                 v-if="isContentVisible"
                 class="close-btn"
                 :tabindex="hideDeActivator ? '-1' : '1'"
-                @click.prevent="isContentVisible = false"
+                @click.prevent="closeCollapse"
             >
                 <slot
                     name="de-activator"
@@ -67,6 +67,12 @@ export default {
     computed: {
         rootEl() {
             return this.isSolo ? 'div' : 'li';
+        }
+    },
+    methods: {
+        closeCollapse() {
+            this.$emit('collapse-closed');
+            this.isContentVisible = false;
         }
     }
 }

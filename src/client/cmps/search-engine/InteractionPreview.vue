@@ -1,10 +1,14 @@
 <template>
     <section class="interaction-preview">
-        <collapse>
+        <collapse
+            @collapse-closed="onCollapseToggle"
+            :initial-is-visible="initialCollapseIsVisible"
+        >
             <template #header>
                 <component
                     :is="getHeaderCmp(interaction)"
                     :to="getInteractionUrl(interaction)"
+                    @click="onCollapseToggle"
                 >
                     <div
                         class="interaction-preview-header table-row"
@@ -121,15 +125,18 @@
                     <label-interaction-preview
                         :interaction="interaction"
                         :material="materials[0]"
+                        :materialIds="materialIds"
                         :shortRecommendation="getShortRecommendation(interaction.recommendation)"
                         :color="getInteractionColor(interaction.recommendation)"
                         :link="link"
+                        :parent-idx="idx"
                     />
                 </div>
                 <div v-else-if="!!interaction.isMaterialGroup">
                     <positive-interaction-preview
                         :interaction="interaction"
                         :materials="materials"
+                        :parent-idx="idx"
                     />
                 </div>
                 <div 
@@ -147,8 +154,8 @@
                         There are different interactions, dependent on {{ getSide2Name(interaction.name) }} use:
                     </p>
                     <div
-                        v-for="(vInteraction, idx) in interaction.vInteractions"
-                        :key="idx"
+                        v-for="(vInteraction, index) in interaction.vInteractions"
+                        :key="index"
                     >
                         <interaction-preview
                             :interaction="vInteraction"
@@ -156,6 +163,8 @@
                             :isCompoundPart="isCompoundPart || interaction.isCompoundGroup"
                             :isDuplicate="interaction.isCompoundGroup === false"
                             :link="link"
+                            :idx="index"
+                            :parent-idx="idx"
                             is-child
                         />
                     </div>
@@ -171,6 +180,7 @@
 <script>
 import { eventBus, EV_sortby_side_swaped } from '@/cms/services/eventBus.service';
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
+import { interactionService } from '@/cms/services/interaction.service';
 
 import Collapse from '@/client/cmps/common/Collapse';
 import Tooltip from '@/client/cmps/common/Tooltip';
@@ -210,23 +220,66 @@ export default {
         isDuplicate: {
             type: Boolean,
             default: false
+        },
+        idx: {
+            type: Number,
+            required: true
+        },
+        parentIdx: {
+            type: Number,
+            required: false
         }
     },
     data() {
         return {
             pathwayRefCount: 0,
-            primarySideInView: 1
+            primarySideInView: 1,
+            initialCollapseIsVisible: false
         }
     },
     computed: {
+        collapsesState() {
+            return this.$store.getters.openCollapses;
+        },
         interactionName() {
             if (this.primarySideInView === 1) {
                 return this.interaction.name;
             }
             return this.interaction.name.split(' & ').reverse().join(' & ');
+        },
+        materialIds() {
+            return this.materials.reduce((acc, { _id, labels }) => {
+                if (!acc.includes(_id)) acc.push(_id);
+                labels.forEach(label => {
+                    if (!acc.includes(label._id)) acc.push(label._id);
+                });
+                return acc;
+            }, []);
         }
     },
     methods: {
+        restoreCollapses() {
+            if (!this.collapsesState[this.$route.name]) return;
+            Object.entries(this.collapsesState[this.$route.name]).forEach(([ key, value ]) => {
+                if (this.parentIdx === undefined && this.idx === +key) {
+                    this.initialCollapseIsVisible = true;
+                }
+                if (this.$route.name !== 'Supp2Drug') return;
+                Object.keys(value).forEach(innerKey => {
+                    if (this.parentIdx === +key && this.idx === +innerKey) {
+                        this.initialCollapseIsVisible = true;
+                    }
+                });
+            });
+        },
+        onCollapseToggle() {
+            const chacheData = {
+                key: this.$route.fullPath,
+                idx: this.idx,
+                parentIdx: this.parentIdx
+            };
+            interactionService.chacheSearchState(chacheData);
+        },
         getSide2Name(name) {
             const side2Name = name.split(' & ')[1].trim();
             if (!this.isCompoundPart && this.$store.getters.materialNamesMap[side2Name]) {
@@ -370,6 +423,7 @@ export default {
     created() {
         this.getPathwayRefsCount();
         eventBus.$on(EV_sortby_side_swaped, this.swapSideNames);
+        this.restoreCollapses();
     },
     beforeDestroy() {
         eventBus.$off(EV_sortby_side_swaped, this.swapSideNames);

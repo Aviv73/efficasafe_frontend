@@ -176,7 +176,7 @@
                                 :to="{ name: 'Supp2Drug', query: this.$route.query }"
                             >
                                 Supplement - Drug
-                                <span  v-if="total">
+                                <span v-if="total">
                                     {{'\xa0'}}
                                     <span
                                         class="badge"
@@ -214,7 +214,7 @@
                                     {{'\xa0'}}
                                     <span
                                         class="badge"
-                                        style="background-color: #56C596"
+                                        :style="{ 'background-color': positivesBadgeColor }"
                                     >
                                         {{ totalPositiveBoosters }}
                                     </span>
@@ -721,6 +721,10 @@ export default {
         worstDrug2DrugColor() {
             const worstRecomm = this.getMoreSeverRecomm(false, ...this.dBankInteractions.map(i => i.recommendation));
             return interactionUIService.getInteractionColor(worstRecomm);
+        },
+        positivesBadgeColor() {
+            const worstRecomm = this.getMoreSeverRecomm(true, ...this.positiveInteractions.map(i => i.recommendation));
+            return interactionUIService.getInteractionColor(worstRecomm);
         }
     },
     methods: {
@@ -769,8 +773,9 @@ export default {
                 isPositives: true,
                 id: ids
             };
-            let interactions = await this.$store.dispatch({ type: 'getInteractions', filterBy, doChache: true });
+            let { interactions, searchState } = await this.$store.dispatch({ type: 'getInteractions', filterBy, chacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}` });
             this.positiveInteractions = await this.removeDupNonPositives(interactions);
+            this.restoreState('Boosters', searchState);
         },
         async getInteractions(page = 1) {
             const ids = this.materials.reduce((acc, { _id, labels }) => {
@@ -786,7 +791,7 @@ export default {
                 id: ids,
                 materialCount: this.materials.filter(({ isIncluded }) => !isIncluded).length,
             };
-            const { interactions, pageCount, total } = await this.$store.dispatch({ type: 'getInteractions', filterBy, doChache: true });
+            const { interactions, pageCount, total, searchState } = await this.$store.dispatch({ type: 'getInteractions', filterBy, chacheKey: `/search?${this.$route.fullPath.split('?')[1]}` });
             this.pageCount = pageCount;
             this.interactions = interactions;
             this.total = (this.materials.length === 1) ? total : interactions.reduce((acc, i) => {
@@ -798,6 +803,7 @@ export default {
                 }
                 return acc;
             }, 0);
+            this.restoreState('Supp2Drug', searchState);
         },
         async getDBankInteractions(page = 1) {
             const isAllSupplements = this.materials.every(material => material.type !== 'drug');
@@ -809,7 +815,7 @@ export default {
             const drugBankIds = this.materials.map(mat => mat.drugBankId);
             const drugBankId = (drugBankIds.length === 1) ? drugBankIds[0] : drugBankIds;
             const criteria = { drugBankId, page: --page };
-            const { dBankInteractions, pageCount, total } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria, doChache: true });
+            const { dBankInteractions, pageCount, total } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria, chacheKey: `/search/drug2drug?${this.$route.fullPath.split('?')[1]}` });
             this.dBankInteractions = dBankInteractions;
             this.dBankPageCount = pageCount;
             this.dBankTotal = total;
@@ -846,13 +852,16 @@ export default {
                         materialCount: ids.length + 1,
                         recommendation: 'non-positives'
                     };
-                    const { total } = await this.$store.dispatch({ type: 'getInteractions', filterBy, doChache: true });
+                    const { total } = await this.$store.dispatch({ type: 'getInteractions', filterBy, chacheKey: `/search/positive-boosters/${filterBy.id}` });
                     if (!total) {
                         res.push(group);
                     }
                 }
             }
             return res;
+        },
+        restoreState(routeName, state = {}) {
+            this.$store.commit({ type: 'setOpenCollapses', openCollapses: state, routeName });
         },
         getMaterialInteractions(result) {
             if (this.materials.length <= 1 || result.isIncluded) return [];

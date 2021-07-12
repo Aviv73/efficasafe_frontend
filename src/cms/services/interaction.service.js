@@ -2,10 +2,7 @@ import { httpService } from './http.service.js';
 
 const END_POINT = 'interaction';
 
-const chache = {
-    positives: {},
-    default: {}
-};
+var chache = {};
 
 export const interactionService = {
     list,
@@ -14,18 +11,33 @@ export const interactionService = {
     remove,
     removeMany,
     restore,
-    getEmptyInteraction
+    getEmptyInteraction,
+    chacheSearchState
 }
 
-async function list(filterBy, doChache = false) {
-    let type = filterBy.isPositives ? 'positives' : 'default';
-    let key = '';
-    if (doChache) {
-        key = filterBy.id.toString();
-        if (chache[type][key]) return chache[type][key];
+function chacheSearchState({ key, parentIdx, idx }) {
+    const chached = chache[key];
+    if (chached) {
+        if (!chached.searchState) chached.searchState = {};
+
+        if (!parentIdx) {
+            if (!chached.searchState[idx]) chached.searchState[idx] = {};
+            else delete chached.searchState[idx];
+        } else {
+            if (!chached.searchState[parentIdx]) chached.searchState[parentIdx] = {};
+            
+            if (!chached.searchState[parentIdx][idx]) chached.searchState[parentIdx][idx] = {};
+            else delete chached.searchState[parentIdx][idx];
+        }
+    }
+}
+
+async function list(filterBy, chacheKey = '') {
+    if (chacheKey && chache[chacheKey]) {
+        return chache[chacheKey];
     }
     const res = await httpService.get(END_POINT, filterBy);
-    if (doChache) chache[type][key] = res;
+    if (chacheKey) chache[chacheKey] = res;
 
     return res;
 }
