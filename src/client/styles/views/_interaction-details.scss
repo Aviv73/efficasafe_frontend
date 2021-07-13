@@ -145,6 +145,9 @@
                 max-width: 360px;
             }
             @include for-middle-layout {
+                max-width: 420px;
+            }
+            @media (min-width: 1260px) {
                 max-width: unset;
             }
 
