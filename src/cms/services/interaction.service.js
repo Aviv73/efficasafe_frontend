@@ -20,7 +20,7 @@ function chacheSearchState({ key, parentIdx, idx }) {
     if (chached) {
         if (!chached.searchState) chached.searchState = {};
 
-        if (!parentIdx) {
+        if (parentIdx === undefined) {
             if (!chached.searchState[idx]) chached.searchState[idx] = {};
             else delete chached.searchState[idx];
         } else {
