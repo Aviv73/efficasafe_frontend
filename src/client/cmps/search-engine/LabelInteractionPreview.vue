@@ -5,7 +5,10 @@
             v-for="(atcGroup, idx) in atcGroupedVinteractions"
             :key="idx"
         >
-            <collapse @collapse-closed="onCollapseToggle">
+            <collapse
+                @collapse-closed="onCollapseToggle"
+                :ref="`collapse-${idx}`"
+            >
                 <template #header>
                     <div class="label-interaction-preview-group-header table-row" @click="onCollapseToggle(idx)">
                         <span class="table-col">
@@ -255,6 +258,9 @@ export default {
         },
         vInteractionHeaderEl() {
             return this.link ? 'router-link' : 'span';
+        },
+        openCollapses() {
+            return this.$store.getters.openCollapses.Supp2Drug;
         }
     },
     methods: {
@@ -289,6 +295,18 @@ export default {
                 }
             );
             this.isLoading = false;
+        },
+        restoreCollapses() {
+            Object.entries(this.openCollapses).forEach(([key, value]) => {
+                Object.keys(value).forEach(idx => {
+                    if (this.parentIdx === +key) {
+                        this.$nextTick(() => {
+                            const elCollapse = this.$refs[`collapse-${idx}`][0];
+                            elCollapse.isContentVisible = true;
+                        });
+                    }
+                });
+            });
         },
         onCollapseToggle(idx) {
             const chacheData = {
@@ -360,8 +378,9 @@ export default {
             return side2Refs.length + side1PathwayRefs.length + moreRefs.length;
         }
     },
-    created() {
-        this.getRelatedMaterials();
+    async created() {
+        await this.getRelatedMaterials();
+        this.restoreCollapses();
     },
     components: {
         Collapse,
