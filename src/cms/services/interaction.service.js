@@ -12,7 +12,8 @@ export const interactionService = {
     removeMany,
     restore,
     getEmptyInteraction,
-    chacheSearchState
+    chacheSearchState,
+    getPrintPreview
 }
 
 function chacheSearchState({ key, parentIdx, idx }) {
@@ -61,6 +62,10 @@ function remove(id) {
 
 function removeMany(ids) {
     httpService.delete(END_POINT, ids);
+}
+
+function getPrintPreview(filterBy) {
+    return httpService.post(`${END_POINT}/print`, filterBy);
 }
 
 function getEmptyInteraction() {
