@@ -210,13 +210,11 @@ sub {
 }
 
 .badge {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
+    display: inline-block;
     text-align: center;
-    min-width: 10px;
+    min-width: 20px;
     border-radius: 50%;
-    padding: 4px 6px;
+    padding: 4px;
     font-size: rem(10px);
     line-height: 1;
     font-family: roboto, sans-serif;
