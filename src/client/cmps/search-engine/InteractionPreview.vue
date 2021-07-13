@@ -209,6 +209,10 @@ export default {
             type: Boolean,
             default: false
         },
+        isPositive: {
+            type: Boolean,
+            default: false
+        },
         materials: {
             type: Array,
             required: true
@@ -259,12 +263,11 @@ export default {
     },
     methods: {
         restoreCollapses() {
-            if (!this.collapsesState[this.$route.name]) return;
+            if (!this.collapsesState[this.$route.name] || (this.isChild && this.isPositive)) return;
             Object.entries(this.collapsesState[this.$route.name]).forEach(([ key, value ]) => {
                 if (this.parentIdx === undefined && this.idx === +key) {
                     this.initialCollapseIsVisible = true;
                 }
-                if (this.$route.name !== 'Supp2Drug') return;
                 Object.keys(value).forEach(innerKey => {
                     if (this.parentIdx === +key && this.idx === +innerKey) {
                         this.initialCollapseIsVisible = true;
