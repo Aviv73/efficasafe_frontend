@@ -6,8 +6,8 @@
         >
             <template #header>
                 <component
-                    :is="getHeaderCmp(interaction)"
-                    :to="getInteractionUrl(interaction)"
+                    :is="headerCmp"
+                    :to="interactionURL"
                     @click="onCollapseToggle"
                 >
                     <div
@@ -259,18 +259,29 @@ export default {
                 });
                 return acc;
             }, []);
-        }
+        },
+        isGroup() {
+            return !this.link || !!this.interaction.vInteractions || !!this.interaction.side2Label;
+        },
+        headerCmp() {
+            return this.isGroup ? 'span' : 'router-link';
+        },
+        interactionURL() {
+            const { interaction } = this;
+            if (interaction.subject_drug) return `/interaction/drug2drug/${interaction._id}`;
+            return interaction.isVirtual ? `/interaction/${interaction._id}/${interaction.side2Material._id}` : `/interaction/${interaction._id}`;
+        },
     },
     methods: {
         restoreCollapses() {
-            if (!this.collapsesState[this.$route.name] || (this.isChild && this.isPositive)) return;
+            if (!this.collapsesState[this.$route.name]) return;
             Object.entries(this.collapsesState[this.$route.name]).forEach(([ key, value ]) => {
                 if (this.parentIdx === undefined && this.idx === +key) {
-                    this.initialCollapseIsVisible = true;
+                    this.initialCollapseIsVisible = this.isGroup;
                 }
                 Object.keys(value).forEach(innerKey => {
                     if (this.parentIdx === +key && this.idx === +innerKey) {
-                        this.initialCollapseIsVisible = true;
+                        this.initialCollapseIsVisible = this.isGroup;
                     }
                 });
             });
@@ -373,14 +384,6 @@ export default {
 
                 return acc;
             }, 0);
-        },
-        getHeaderCmp(interaction) {
-            if (!this.link || interaction.vInteractions || interaction.side2Label) return 'span';
-            else return 'router-link';
-        },
-        getInteractionUrl(interaction) {
-            if (interaction.subject_drug) return `/interaction/drug2drug/${interaction._id}`;
-            return interaction.isVirtual ? `/interaction/${interaction._id}/${interaction.side2Material._id}` : `/interaction/${interaction._id}`;
         },
         getInteractionLink(interaction) {
             const url = interaction.isVirtual ? `/interaction/${interaction._id}/${interaction.side2Material._id}` : `/interaction/${interaction._id}`;
