@@ -80,7 +80,7 @@ export default {
         },
         parentIdx: {
             type: Number,
-            required: false
+            required: true
         }
     },
     methods: {

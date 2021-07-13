@@ -6,7 +6,7 @@
             :key="idx"
         >
             <collapse
-                @collapse-closed="onCollapseToggle"
+                @collapse-closed="onCollapseToggle(idx)"
                 :ref="`collapse-${idx}`"
             >
                 <template #header>
