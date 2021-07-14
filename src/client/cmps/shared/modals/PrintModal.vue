@@ -291,8 +291,8 @@ export default {
     },
     methods: {
         async onPrint() {
-            const buff = await interactionService.getPrintPreview(this.printData);
-            const blob = new Blob([buff], {type: 'application/pdf'});
+            const buffer = await interactionService.getPrintPreview(this.printData);
+            const blob = new Blob([buffer], {type: 'application/pdf'});
             const url = URL.createObjectURL(blob);
             window.open(url);
         },
