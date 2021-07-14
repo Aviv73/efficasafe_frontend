@@ -3,9 +3,11 @@
         <collapse
             v-for="(group, idx) in interaction.vInteractions"
             :key="group._id + idx"
+            @collapse-closed="onCollapseToggle(idx, group.chacheKey)"
+            :initial-is-visible="isInitialiOpen(idx)"
         >
             <template #header>
-                <div class="interaction-preview-header table-row child">
+                <div class="interaction-preview-header table-row child" @click="onCollapseToggle(idx, group.chacheKey)">
                     <span class="table-col">
                         <minus-icon
                             class="minus-icon"
@@ -57,6 +59,7 @@
 
 <script>
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
+import { interactionService } from '@/cms/services/interaction.service';
 
 import Collapse from '@/client/cmps/common/Collapse';
 import Tooltip from '@/client/cmps/common/Tooltip';
@@ -83,7 +86,23 @@ export default {
             required: true
         }
     },
+    data() {
+        return {
+            openCollapses: []
+        }
+    },
     methods: {
+        isInitialiOpen(idx) {
+            return this.openCollapses.includes(idx);
+        },
+        onCollapseToggle(idx, key) {
+            const chacheData = {
+                key,
+                idx,
+                parentIdx: this.parentIdx
+            };
+            interactionService.chacheSearchState(chacheData);
+        },
         getInteractionColor(recommendation) {
             return interactionUIService.getInteractionColor(recommendation);
         },
@@ -116,6 +135,17 @@ export default {
                     return '';
             }
         }
+    },
+    created() {
+        this.interaction.vInteractions.forEach(({ chacheKey }) => {
+            const { searchState } = interactionService.getChache(chacheKey);
+            if(!searchState) return;
+            Object.values(searchState).forEach(value => {
+                Object.keys(value).forEach(idx => {
+                    this.openCollapses.push(+idx);
+                });
+            });
+        });
     },
     components: {
         Collapse,

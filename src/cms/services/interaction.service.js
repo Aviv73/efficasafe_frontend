@@ -13,7 +13,12 @@ export const interactionService = {
     restore,
     getEmptyInteraction,
     chacheSearchState,
-    getPrintPreview
+    getPrintPreview,
+    getChache
+}
+
+function getChache(key) {
+    return chache[key];
 }
 
 function chacheSearchState({ key, parentIdx, idx }) {
