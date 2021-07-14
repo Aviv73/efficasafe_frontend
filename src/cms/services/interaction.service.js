@@ -70,7 +70,7 @@ function removeMany(ids) {
 }
 
 function getPrintPreview(filterBy) {
-    return httpService.post(`${END_POINT}/print`, filterBy);
+    return httpService.post(`${END_POINT}/print`, filterBy, 'arraybuffer');
 }
 
 function getEmptyInteraction() {

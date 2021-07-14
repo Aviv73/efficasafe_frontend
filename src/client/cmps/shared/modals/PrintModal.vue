@@ -279,16 +279,22 @@ export default {
         },
         printData() {
             const isList = !this.interactionData;
+            const { id, matId } = this.$route.params;
             return {
                 type: isList ? 'list' : 'single',
-                ids: isList ? this.printSelection.map(({ _id }) => _id) : [ this.interaction._id ]
+                interactions: isList ? this.printSelection : null,
+                materials: isList ? this.materials.map(({ userQuery }) => userQuery) : null,
+                interactionId: isList ? '' : id,
+                side2Id: isList ? '' : matId
             }
         }
     },
     methods: {
         async onPrint() {
-            const preview = await interactionService.getPrintPreview(this.printData);
-            console.log(preview);
+            const buff = await interactionService.getPrintPreview(this.printData);
+            const blob = new Blob([buff], {type: 'application/pdf'});
+            const url = URL.createObjectURL(blob);
+            window.open(url);
         },
         toggleInteraction(interaction) {
             const idx = this.printSelection.findIndex(i => i._id === interaction._id);
