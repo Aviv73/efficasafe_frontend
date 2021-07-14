@@ -852,6 +852,7 @@ export default {
                         materialCount: ids.length + 1,
                         recommendation: 'non-positives'
                     };
+                    vInteraction.chacheKey = `/search/positive-boosters/${filterBy.id}`;
                     const { total } = await this.$store.dispatch({ type: 'getInteractions', filterBy, chacheKey: `/search/positive-boosters/${filterBy.id}` });
                     if (!total) {
                         res.push(group);

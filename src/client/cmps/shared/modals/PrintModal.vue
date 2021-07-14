@@ -171,6 +171,8 @@
 </template>
 
 <script>
+import { interactionService } from '@/cms/services/interaction.service';
+
 import Checkbox from '@/client/cmps/common/Checkbox';
 import InteractionPrintPreview from '@/client/cmps/shared/InteractionPrintPreview';
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
@@ -274,13 +276,19 @@ export default {
                 default:
                     return '';
             }
+        },
+        printData() {
+            const isList = !this.interactionData;
+            return {
+                type: isList ? 'list' : 'single',
+                ids: isList ? this.printSelection.map(({ _id }) => _id) : [ this.interaction._id ]
+            }
         }
     },
     methods: {
-        onPrint() {
-            const printContent = (this.interactionData) ? this.interaction : this.printSelection;
-            console.log('will print! 💪', printContent);
-            alert('Feature still in progress and will be available soon :)');
+        async onPrint() {
+            const preview = await interactionService.getPrintPreview(this.printData);
+            console.log(preview);
         },
         toggleInteraction(interaction) {
             const idx = this.printSelection.findIndex(i => i._id === interaction._id);
