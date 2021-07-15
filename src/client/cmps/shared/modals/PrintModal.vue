@@ -214,7 +214,7 @@ export default {
         },
         isAllSelected(val) {
             if (val) {
-                this.fillSelection(this.interactions);
+                this.fillSelection();
             } else {
                 this.printSelection = [];
             }
@@ -312,12 +312,8 @@ export default {
             this.printSelection = [];
             this.isAllSelected = false;
         },
-        fillSelection(interactions) {
-            interactions.forEach(interaction => {
-                if (interaction.vInteractions) {
-                    this.fillSelection(interaction.vInteractions);
-                } else this.printSelection.push(interaction);
-            });
+        fillSelection() {
+            this.printSelection = [ ...this.interactions ];
         },
         removeRefs(txt, isDBank = false) {
             const rgx = isDBank ? /\[(.*?)\]/g : /\(([\d- ,\d]+)\)|<sub>\(([\d- ,\d]+)\)<\/sub>/g;

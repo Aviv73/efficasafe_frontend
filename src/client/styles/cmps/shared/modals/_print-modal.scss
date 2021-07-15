@@ -58,21 +58,6 @@
                         margin-inline-start: rem(24px);
                     }
                 }
-                .inner-list {
-                    flex-basis: 100%;
-                    padding-block-start: rem(6px);
-                    margin-block-start: rem(6px);
-                    padding-inline-start: rem(48px);
-                    box-shadow: $slight-border-top;
-                    overflow-x: hidden;
-                }
-                .interaction-print-preview {
-                    overflow-x: hidden;
-
-                    &.inner {
-                        padding-inline-start: rem(48px);
-                    }
-                }
             }
         }
         &-interaction {
