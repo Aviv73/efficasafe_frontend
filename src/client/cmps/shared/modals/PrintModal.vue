@@ -277,13 +277,17 @@ export default {
                     return '';
             }
         },
+        materialSelection() {
+            return this.materials.filter(m => !m.isIncluded).map(({ userQuery }) => userQuery);
+        },
         printData() {
             const isList = !this.interactionData;
             const { id, matId } = this.$route.params;
             return {
                 type: isList ? 'list' : 'single',
                 interactions: isList ? this.printSelection : null,
-                materials: isList ? this.materials.map(({ userQuery }) => userQuery) : null,
+                materials: isList ? this.materialSelection : null,
+                isD2D: isList && this.$route.name === 'Drug2Drug',
                 interactionId: isList ? '' : id,
                 side2Id: isList ? '' : matId
             }
@@ -292,7 +296,7 @@ export default {
     methods: {
         async onPrint() {
             const buffer = await interactionService.getPrintPreview(this.printData);
-            const blob = new Blob([buffer], {type: 'application/pdf'});
+            const blob = new Blob([ buffer ], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
             window.open(url);
         },
