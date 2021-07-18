@@ -21,7 +21,7 @@
                 </li>
                 <li
                     class="print-modal-preview-list-item"
-                    v-for="(interaction, idx) in interactions"
+                    v-for="(interaction, idx) in localizedInteraction"
                     :key="interaction._id + `${idx}`"
                 >
                     <interaction-print-preview
@@ -280,6 +280,20 @@ export default {
         materialSelection() {
             return this.materials.filter(m => !m.isIncluded).map(({ userQuery }) => userQuery);
         },
+        localizedInteraction() {
+            return this.interactions.map(interaction => {
+                const { materialNamesMap } = this.$store.getters;
+                let [ side1Name, side2Name ] = interaction.name.split('&').map(str => str.trim());
+                if (materialNamesMap[side1Name]) side1Name = materialNamesMap[side1Name].join(', ');
+                if (materialNamesMap[side2Name]) side2Name = materialNamesMap[side2Name].join(', ');
+
+                return {
+                    ...interaction,
+                    name: `${side1Name} & ${side2Name}`
+
+                }
+            });
+        },
         printData() {
             const isList = !this.interactionData;
             const { id, matId } = this.$route.params;
@@ -313,7 +327,7 @@ export default {
             this.isAllSelected = false;
         },
         fillSelection() {
-            this.printSelection = [ ...this.interactions ];
+            this.printSelection = [ ...this.localizedInteraction ];
         },
         removeRefs(txt, isDBank = false) {
             const rgx = isDBank ? /\[(.*?)\]/g : /\(([\d- ,\d]+)\)|<sub>\(([\d- ,\d]+)\)<\/sub>/g;

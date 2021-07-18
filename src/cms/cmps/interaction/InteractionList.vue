@@ -96,8 +96,9 @@
               </v-icon>
             </td>
 
-            <td class="td-actions d-flex align-center justify-space-around" width="120" align="center">
+            <td class="td-actions d-flex align-center justify-center" align="center">
               <v-checkbox
+                class="mr-4"
                 v-model="selected"
                 :value="item._id"
                 title="Toggle Interaction"
