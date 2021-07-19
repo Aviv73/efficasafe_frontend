@@ -12,7 +12,7 @@
                 </button>
             </div>
             <span class="print-modal-header-sub">
-                * the full print preview will be shown in the next screen
+                * The full print preview will be shown in the next screen
             </span>
         </header>
         <main class="print-modal-preview">
