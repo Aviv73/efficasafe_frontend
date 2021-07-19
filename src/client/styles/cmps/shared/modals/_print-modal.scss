@@ -14,6 +14,15 @@
         font-size: rem(18px);
         line-height: rem(22px);
 
+        &-sub {
+            display: inline-block;
+            font-size: rem(14px);
+            line-height: rem(18px);
+            margin-block-start: rem(12px);
+            font-style: italic;
+            opacity: .8;
+        }
+
         .printer-icon {
             color: $clr1;
             height: 18px;

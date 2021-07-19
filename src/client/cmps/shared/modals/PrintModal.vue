@@ -1,14 +1,19 @@
 <template>
     <aside class="print-modal">
-        <header class="print-modal-header flex-space-between">
-            <printer-icon :size="18" />
-            <h5>Select the results you would like to print</h5>
-            <button
-                class="close-btn"
-                @click="$emit('close-modal')"
-            >
-                <close-icon :size="14" />
-            </button>
+        <header class="print-modal-header">
+            <div class="flex-space-between">
+                <printer-icon :size="18" />
+                <h5>Select the results you would like to print</h5>
+                <button
+                    class="close-btn"
+                    @click="$emit('close-modal')"
+                >
+                    <close-icon :size="14" />
+                </button>
+            </div>
+            <span class="print-modal-header-sub">
+                * the full print preview will be shown in the next screen
+            </span>
         </header>
         <main class="print-modal-preview">
             <ul class="print-modal-preview-list" v-if="!interactionData">
@@ -162,7 +167,14 @@
             <button
                 class="print-modal-footer-btn print-btn"
                 :disabled="!printSelection.length && !interactionData"
-                @click="onPrint"
+                @click="onPrint('save')"
+            >
+                Save
+            </button>
+            <button
+                class="print-modal-footer-btn print-btn"
+                :disabled="!printSelection.length && !interactionData"
+                @click="onPrint('print')"
             >
                 Print
             </button>
@@ -172,6 +184,7 @@
 
 <script>
 import { interactionService } from '@/cms/services/interaction.service';
+import { eventBus, EV_show_user_msg } from '@/cms/services/eventBus.service';
 
 import Checkbox from '@/client/cmps/common/Checkbox';
 import InteractionPrintPreview from '@/client/cmps/shared/InteractionPrintPreview';
@@ -286,11 +299,14 @@ export default {
                 let [ side1Name, side2Name ] = interaction.name.split('&').map(str => str.trim());
                 if (materialNamesMap[side1Name]) side1Name = materialNamesMap[side1Name].join(', ');
                 if (materialNamesMap[side2Name]) side2Name = materialNamesMap[side2Name].join(', ');
+                
+                if (interaction.isMaterialGroup) {
+                    interaction._id = interaction.mainMaterialId;
+                }
 
                 return {
                     ...interaction,
-                    name: `${side1Name} & ${side2Name}`
-
+                    name: interaction.isMaterialGroup ? side1Name.replace(/\(0\)/, '').trim() : `${side1Name} & ${side2Name}`
                 }
             });
         },
@@ -308,11 +324,38 @@ export default {
         }
     },
     methods: {
-        async onPrint() {
-            const buffer = await interactionService.getPrintPreview(this.printData);
-            const blob = new Blob([ buffer ], { type: 'application/pdf' });
-            const url = URL.createObjectURL(blob);
-            window.open(url);
+        async onPrint(action) {
+            try {
+                const buffer = await interactionService.getPrintPreview(this.printData);
+                const blob = new Blob([ buffer ], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                
+                if (action === 'print') {
+                    const iframe = document.createElement('iframe');
+                    iframe.style.visibility = 'hidden';
+                    iframe.style.position = 'absolute';
+                    iframe.src = url;
+                    iframe.onload = function() {
+                        this.contentWindow.__container__ = this;
+                        this.contentWindow.onbeforeunload = function() {
+                            document.body.removeChild(this.__container__);
+                        }
+                        this.contentWindow.onafterprint = function() {
+                            document.body.removeChild(this.__container__);
+                        }
+                        this.contentWindow.focus(); // Required for IE
+                        this.contentWindow.print();
+                    }   
+                    document.body.appendChild(iframe);
+                } else if (action === 'save') {
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'Efficasafe search results.pdf';
+                    link.click();
+                }
+            } catch(err) {
+                eventBus.$emit(EV_show_user_msg, 'Ooops, something went wrong. Please try again later', 5000, 'error');
+            }
         },
         toggleInteraction(interaction) {
             const idx = this.printSelection.findIndex(i => i._id === interaction._id);
