@@ -134,7 +134,7 @@ export default {
             const elItem = this.$refs['result' + itemIdx];
             if (!elItem) return;
             this.$nextTick(() => {
-                elItem[0].focus();
+                if (elItem[0]) elItem[0].focus();
             });
         },
         onFocusChange(ev) {
