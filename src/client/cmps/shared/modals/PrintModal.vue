@@ -12,7 +12,7 @@
                 </button>
             </div>
             <span class="print-modal-header-sub">
-                * The full print preview will be shown in the next screen
+                * the full print preview will be shown in the next screen
             </span>
         </header>
         <main class="print-modal-preview">
@@ -306,19 +306,20 @@ export default {
 
                 return {
                     ...interaction,
-                    name: interaction.isMaterialGroup ? side1Name.replace(/\(0\)/, '').trim() : `${side1Name} & ${side2Name}`
+                    name: interaction.isMaterialGroup ? side1Name.replace(/\(0\)/, '').replace(/\.\.\./, '').trim() : `${side1Name} & ${side2Name}`
                 }
             });
         },
         printData() {
             const isList = !this.interactionData;
+            const { id, matId } = this.$route.params;
             return {
                 type: isList ? 'list' : 'single',
                 interactions: isList ? this.printSelection : null,
                 materials: isList ? this.materialSelection : null,
                 isD2D: isList && this.$route.name === 'Drug2Drug',
-                interaction: isList ? '' : this.interaction,
-                interactionData: isList ? '' : this.interactionData
+                interactionId: isList ? '' : id,
+                side2Id: isList ? '' : matId
             }
         }
     },
