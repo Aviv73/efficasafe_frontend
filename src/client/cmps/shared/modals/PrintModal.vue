@@ -184,7 +184,7 @@
 
 <script>
 import { interactionService } from '@/cms/services/interaction.service';
-import { eventBus, EV_show_user_msg } from '@/cms/services/eventBus.service';
+import { eventBus, EV_show_user_msg, EV_sortby_side_swaped } from '@/cms/services/eventBus.service';
 
 import Checkbox from '@/client/cmps/common/Checkbox';
 import InteractionPrintPreview from '@/client/cmps/shared/InteractionPrintPreview';
@@ -215,7 +215,8 @@ export default {
     data() {
         return {
             printSelection: [],
-            isAllSelected: false
+            isAllSelected: false,
+            isSidesSwapped: false
         }
     },
     watch: {
@@ -303,11 +304,22 @@ export default {
                 if (interaction.isMaterialGroup) {
                     interaction._id = interaction.mainMaterialId;
                 }
-
-                return {
-                    ...interaction,
-                    name: interaction.isMaterialGroup ? side1Name.replace(/\(0\)/, '').replace(/\.\.\./, '').trim() : `${side1Name} & ${side2Name}`
+                let vInteractions = null;
+                if (this.isSidesSwapped && interaction.isCompoundGroup) {
+                    vInteractions = interaction.vInteractions.map(vInteraction => {
+                        let [ side1Name, side2Name ] = vInteraction.name.split('&').map(str => str.trim());
+                        return {
+                            ...vInteraction,
+                            name: `${side2Name} & ${side1Name}`
+                        }
+                    });
                 }
+                const localizedItem = {
+                    ...interaction,
+                    name: interaction.isMaterialGroup ? side1Name.replace(/\(0\)/, '').replace(/\.\.\./, '').trim() : this.isSidesSwapped ? `${side2Name} & ${side1Name}` : `${side1Name} & ${side2Name}`
+                }
+                if (vInteractions) localizedItem.vInteractions = vInteractions;
+                return localizedItem;
             });
         },
         printData() {
@@ -318,6 +330,7 @@ export default {
                 interactions: isList ? this.printSelection : null,
                 materials: isList ? this.materialSelection : null,
                 isD2D: isList && this.$route.name === 'Drug2Drug',
+                isPositives: isList && this.$route.name === 'Boosters',
                 interactionId: isList ? '' : id,
                 side2Id: isList ? '' : matId
             }
@@ -368,6 +381,7 @@ export default {
         reset() {
             this.printSelection = [];
             this.isAllSelected = false;
+            this.isSidesSwapped = false;
         },
         fillSelection() {
             this.printSelection = [ ...this.localizedInteraction ];
@@ -375,7 +389,16 @@ export default {
         removeRefs(txt, isDBank = false) {
             const rgx = isDBank ? /\[(.*?)\]/g : /\(([\d- ,\d]+)\)|<sub>\(([\d- ,\d]+)\)<\/sub>/g;
             return txt.replace(rgx, '');
+        },
+        swapSideNames() {
+            this.isSidesSwapped = !this.isSidesSwapped;
         }
+    },
+    created() {
+        eventBus.$on(EV_sortby_side_swaped, this.swapSideNames);
+    },
+    beforeDestroy() {
+        eventBus.$off(EV_sortby_side_swaped, this.swapSideNames);
     },
     components: {
         PrinterIcon,

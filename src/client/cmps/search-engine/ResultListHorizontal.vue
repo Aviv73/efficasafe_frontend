@@ -169,9 +169,11 @@ export default {
     },
     computed: {
         side1Name() {
+            if (this.$route.name === 'Drug2Drug') return 'Drug';
             return (this.sortBySide === 1) ? 'Supplement' : 'Drug';
         },
         side2Name() {
+            if (this.$route.name === 'Drug2Drug') return 'Drug';
             return (this.sortBySide === 1) ? 'Drug' : 'Supplement';
         }
     },
