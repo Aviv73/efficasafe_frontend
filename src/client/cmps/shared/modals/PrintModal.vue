@@ -332,7 +332,7 @@ export default {
                 isSwapped: isList && this.isSidesSwapped,
                 isPositives: isList && this.$route.name === 'Boosters',
                 interaction: isList ? null : this.interaction,
-                interactionData: isList ? null : this.interactionData
+                interactionData: isList ? null : this.interactionData.isDBank ? this.interactionData : { ...this.interactionData, formatedPathways: this.formatedPathways }
             }
         }
     },
@@ -367,6 +367,7 @@ export default {
                     link.click();
                 }
             } catch(err) {
+                console.log(err);
                 eventBus.$emit(EV_show_user_msg, 'Ooops, something went wrong. Please try again later', 5000, 'error');
             }
         },
