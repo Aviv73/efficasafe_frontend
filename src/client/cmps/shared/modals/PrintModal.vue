@@ -367,7 +367,6 @@ export default {
                     link.click();
                 }
             } catch(err) {
-                console.log(err);
                 eventBus.$emit(EV_show_user_msg, 'Ooops, something went wrong. Please try again later', 5000, 'error');
             }
         },
