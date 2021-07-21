@@ -324,15 +324,15 @@ export default {
         },
         printData() {
             const isList = !this.interactionData;
-            const { id, matId } = this.$route.params;
             return {
                 type: isList ? 'list' : 'single',
                 interactions: isList ? this.printSelection : null,
                 materials: isList ? this.materialSelection : null,
                 isD2D: isList && this.$route.name === 'Drug2Drug',
+                isSwapped: isList && this.isSidesSwapped,
                 isPositives: isList && this.$route.name === 'Boosters',
-                interactionId: isList ? '' : id,
-                side2Id: isList ? '' : matId
+                interaction: isList ? null : this.interaction,
+                interactionData: isList ? null : this.interactionData
             }
         }
     },
