@@ -3,7 +3,7 @@
         <header class="print-modal-header">
             <div class="flex-space-between">
                 <printer-icon :size="18" />
-                <h5>Select the results you would like to print</h5>
+                <h5>{{ !interactionData ? 'Select the results you would like to print' : 'Interaction details print' }}</h5>
                 <button
                     class="close-btn"
                     @click="$emit('close-modal')"
@@ -11,7 +11,7 @@
                     <close-icon :size="14" />
                 </button>
             </div>
-            <span class="print-modal-header-sub">
+            <span class="print-modal-header-sub" v-if="!interactionData">
                 * The full print preview will be shown in the next screen
             </span>
         </header>
@@ -42,43 +42,34 @@
                     <div>Interaction details</div>
                 </header>
                 <div
-                    class="print-modal-preview-interaction-summary"
-                    :class="{ 'flex-center': !interactionData.showWarning }"
+                    class="print-modal-preview-interaction-summary flex-coloumn"
                 >
-                    <div class="flex-coloumn">
-                        <interaction-capsules
-                            :name="interactionData.name"
-                            :color="interactionData.color"
-                            :vInteractionCount="0"
-                            :localize="false"
-                            :showDraftName="false"
-                            on-details-page
-                        />
-                        <span
-                            class="recommendation-capsule capsule"
-                            :style="{ 'color': interactionData.color }"
-                        >
-                            <component :is="interactionData.icon" :size="14" />
-                            <span class="clip-txt">{{ interaction.recommendation }}</span>
-                        </span>
-                        <span class="level-of-evidence capsule">
-                            Level of evidence:
-                            <span class="font-medium">{{ interactionData.evidenceLevel }}</span>
-                            = <span class="sub-txt">{{ evidenceLevelTxt }}</span>
-                        </span>
-                        <span class="note capsule" v-if="interactionData.showNote && interaction.note">
-                            <span class="font-bold">Note:</span> {{ interaction.note }}
-                        </span>
-                        <span
-                            class="sub-txt"
-                            v-if="interactionData.refsDetailsTxt"
-                        >
-                            {{ interactionData.refsDetailsTxt }}
-                        </span>
-                    </div>
+                    <interaction-capsules
+                        :name="interactionData.name"
+                        :color="interactionData.color"
+                        :vInteractionCount="0"
+                        :localize="false"
+                        :showDraftName="false"
+                        on-details-page
+                    />
+                    <span
+                        class="recommendation-capsule capsule"
+                        :style="{ 'color': interactionData.color }"
+                    >
+                        <component :is="interactionData.icon" :size="14" />
+                        <span class="clip-txt">{{ interaction.recommendation }}</span>
+                    </span>
+                    <span class="level-of-evidence capsule">
+                        Level of evidence:
+                        <span class="font-medium">{{ interactionData.evidenceLevel }}</span>
+                        = <span class="sub-txt">{{ evidenceLevelTxt }}</span>
+                    </span>
+                    <span class="note capsule" v-if="interactionData.showNote && interaction.note">
+                        <span class="font-bold">Note:</span> {{ interaction.note }}
+                    </span>
                     <div v-if="interactionData.showWarning">
                         <div
-                            class="narrow-therapuetic-warnning flex-center"
+                            class="narrow-therapuetic-warnning"
                         >
                             Attention: {{ interactionData.side2Name }} has a narrow therapeutic range. Differences
                             in dose or blood concentration may lead to serious therapeutic failures and/or adverse

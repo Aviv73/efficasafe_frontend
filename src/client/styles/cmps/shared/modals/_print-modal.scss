@@ -111,9 +111,9 @@
                 padding-block-end: rem(22px);
                 font-size: rem(16px);
                 line-height: rem(20px);
+                align-items: stretch;
+                gap: rem(8px);
                 position: relative;
-                display: flex;
-                gap: rem(18px);
 
                 &::after {
                     content: "";
@@ -128,24 +128,30 @@
                 &>* {
                     flex-basis: 50%;
                 }
-                .flex-coloumn {
-                    align-items: stretch;
-
-                    &>*:not(:last-child) {
-                        margin-block-end: rem(12px);
-                    }
-                }
                 .capsule {
                     border-radius: 100px;
                     border: 1px solid $clr19;
                     padding: rem(6px) rem(16px);
                 }
-                .interaction-capsules-side {
-                    width: 50%;
-                    border: 1px solid $clr19;
-                    box-shadow: none;
-                    padding: rem(6px) rem(16px);
+                .interaction-capsules {
+                    display: flex;
+
+                    &-side {
+                        height: 100%;
+                        width: 50%;
+                        border: 1px solid $clr19;
+                        box-shadow: none;
+                        padding: rem(6px) rem(16px);
+    
+                        & > span {
+                            height: 100%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+                    }
                 }
+                
                 .recommendation-capsule {
                     color: $white;
                     display: flex;
@@ -161,9 +167,8 @@
                     color: $clr1;
                 }
                 .narrow-therapuetic-warnning {
-                    height: 100%;
-                    padding: rem(20px) rem(22px);
-                    width: 100%;
+                    text-align: center;
+                    padding: rem(12px) rem(16px);
                     border: 1px solid $red;
                     border-radius: 3px;
                 }
