@@ -137,7 +137,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="font-bold small-header">{{ interaction.side1Material.name }} effect on drug metabolism Summary</div>
+                    <div class="font-bold small-header">{{ interaction.side1Material.name }} effect on drug metabolism summary</div>
                     <p
                         v-html="removeRefs(interactionData.side1PathwaysTxt)"
                     />
@@ -332,7 +332,7 @@ export default {
                 isSwapped: isList && this.isSidesSwapped,
                 isPositives: isList && this.$route.name === 'Boosters',
                 interaction: isList ? null : this.interaction,
-                interactionData: isList ? null : this.interactionData
+                interactionData: isList ? null : this.interactionData.isDBank ? this.interactionData : { ...this.interactionData, formatedPathways: this.formatedPathways }
             }
         }
     },
