@@ -9,7 +9,8 @@ export const interactionStore = ({
         openCollapses: {
             'Supp2Drug': {},
             'Boosters': {}
-        }
+        },
+        firstInteractionSide: 1
     },
     getters: {
         interactions(state) {
@@ -26,9 +27,15 @@ export const interactionStore = ({
         },
         openCollapses(state) {
             return state.openCollapses;
+        },
+        firstInteractionSide(state) {
+            return state.firstInteractionSide;
         }
     },
     mutations: {
+        setFirstInteractionSide(state, { side }) {
+            state.firstInteractionSide = side;
+        },
         setOpenCollapses(state, { openCollapses, routeName }) {
             state.openCollapses[routeName] = openCollapses;
         },

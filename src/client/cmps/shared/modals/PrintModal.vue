@@ -282,6 +282,9 @@ export default {
                     return '';
             }
         },
+        sortBySide() {
+            return this.$store.getters.firstInteractionSide;
+        },
         materialSelection() {
             return this.materials.filter(m => !m.isIncluded).map(({ userQuery }) => userQuery);
         },
@@ -372,7 +375,7 @@ export default {
         reset() {
             this.printSelection = [];
             this.isAllSelected = false;
-            this.isSidesSwapped = false;
+            this.isSidesSwapped = Boolean(this.sortBySide);
         },
         fillSelection() {
             this.printSelection = [ ...this.localizedInteraction ];
