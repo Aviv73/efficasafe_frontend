@@ -162,11 +162,6 @@ export default {
             default: false
         }
     },
-    data() {
-      return {
-        sortBySide: 1
-      }
-    },
     computed: {
         side1Name() {
             if (this.$route.name === 'Drug2Drug') return 'Drug';
@@ -175,19 +170,23 @@ export default {
         side2Name() {
             if (this.$route.name === 'Drug2Drug') return 'Drug';
             return (this.sortBySide === 1) ? 'Drug' : 'Supplement';
+        },
+        sortBySide() {
+            return this.$store.getters.firstInteractionSide;
         }
     },
     methods: {
-        emitSort(sortBy, isDesc) {
-            this.$emit('list-sorted', { sortBy, side: this.sortBySide, isDesc });
+        emitSort(sortBy, isChecked) {
+            this.$emit('list-sorted', { sortBy, side: this.sortBySide, isDesc: !isChecked });
         },
         getInteractionKey(interaction) {
             return (interaction.side2Material) ? `${interaction._id}-${interaction.side2Material._id}` : interaction._id;
         },
         changeSortBySide() {
-            if (this.sortBySide === 1) this.sortBySide = 2;
-            else this.sortBySide = 1;
-
+            let side;
+            if (this.sortBySide === 1) side = 2;
+            else side = 1;
+            this.$store.commit({ type: 'setFirstInteractionSide', side });
             eventBus.$emit(EV_sortby_side_swaped, this.sortBySide);
         }
     },
