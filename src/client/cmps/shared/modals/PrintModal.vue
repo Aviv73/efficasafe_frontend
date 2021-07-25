@@ -56,8 +56,10 @@
                         class="recommendation-capsule capsule"
                         :style="{ 'color': interactionData.color }"
                     >
-                        <component :is="interactionData.icon" :size="14" />
-                        <span class="clip-txt">{{ interaction.recommendation }}</span>
+                        <span class="clip-txt">
+                            <component :is="interactionData.icon" class="recommendation-capsule-icon" :size="14" />
+                            {{ interaction.recommendation }}
+                        </span>
                     </span>
                     <span class="level-of-evidence capsule">
                         Level of evidence:
@@ -82,7 +84,7 @@
                     class="print-modal-preview-interaction-content"
                 >
                     <div class="print-modal-preview-interaction-content-subheader">Summary</div>
-                    <p class="paragraph" v-html="removeRefs(interaction.summary)" />
+                    <p class="paragraph" v-html="interaction.summary" />
                     <div
                         class="print-modal-preview-interaction-content-subheader"
                         v-if="showMonitor"
@@ -112,6 +114,7 @@
                     </div>
                     <div class="print-modal-preview-interaction-content-subheader">Pharmacokinetics</div>
                     <div class="font-bold small-header">Drug metabolism</div>
+                    <div class="enzymes-opener">{{ interactionData.side2Name }} is metabolized by:</div>
                     <div class="paragraph">
                         <div
                             v-for="({ name, pathways }, index) in formatedPathways"
@@ -128,9 +131,9 @@
                             </span>
                         </div>
                     </div>
-                    <div class="font-bold small-header">{{ interaction.side1Material.name }} effect on drug metabolism summary</div>
+                    <div class="font-bold small-header">{{ interaction.side1Material.name }} effect on drug metabolism</div>
                     <p
-                        v-html="removeRefs(interactionData.side1PathwaysTxt)"
+                        v-html="interactionData.side1PathwaysTxt"
                     />
                 </div>
                 <div
@@ -142,9 +145,9 @@
                    <div class="print-modal-preview-interaction-content-subheader">Severity</div>
                    <p class="paragraph">{{ interaction.severity }}</p>
                    <div class="print-modal-preview-interaction-content-subheader">Extended description</div>
-                   <p class="paragraph">{{ removeRefs(interaction.extended_description, true) }}</p>
+                   <p class="paragraph">{{ interaction.extended_description }}</p>
                    <div class="print-modal-preview-interaction-content-subheader">Management</div>
-                   <p class="paragraph">{{ removeRefs(interaction.management, true) }}</p>
+                   <p class="paragraph">{{ interaction.management }}</p>
                 </div>
             </section>
         </main>
@@ -325,8 +328,7 @@ export default {
                 isD2D: isList && this.$route.name === 'Drug2Drug',
                 isSwapped: isList && this.isSidesSwapped,
                 isPositives: isList && this.$route.name === 'Boosters',
-                interaction: isList ? null : this.interaction,
-                interactionData: isList ? null : this.interactionData.isDBank ? this.interactionData : { ...this.interactionData, formatedPathways: this.formatedPathways }
+                path: isList ? '' : this.$route.fullPath
             }
         }
     },
@@ -379,10 +381,6 @@ export default {
         },
         fillSelection() {
             this.printSelection = [ ...this.localizedInteraction ];
-        },
-        removeRefs(txt, isDBank = false) {
-            const rgx = isDBank ? /\[(.*?)\]/g : /\(([\d- ,\d]+)\)|<sub>\(([\d- ,\d]+)\)<\/sub>/g;
-            return txt.replace(rgx, '');
         },
         swapSideNames() {
             this.isSidesSwapped = !this.isSidesSwapped;

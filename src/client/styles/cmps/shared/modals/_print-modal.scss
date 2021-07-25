@@ -132,6 +132,7 @@
                     border-radius: 100px;
                     border: 1px solid $clr19;
                     padding: rem(6px) rem(16px);
+                    text-align: center;
                 }
                 .interaction-capsules {
                     display: flex;
@@ -154,10 +155,15 @@
                 
                 .recommendation-capsule {
                     color: $white;
-                    display: flex;
-                    align-items: center;
-                    text-align: center;
-
+                    
+                    &-icon {
+                        margin-inline-end: rem(6px);
+                    }
+                    .clip-txt {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
                     .material-design-icon {
                         height: 16px;
                     }
@@ -187,6 +193,9 @@
                 .small-header {
                     color: $clr-txt-dark;
                     margin-block-end: rem(6px);
+                }
+                .enzymes-opener {
+                    margin-block-end: rem(4px);
                 }
             }
         }
