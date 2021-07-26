@@ -40,7 +40,7 @@
                   :alt="item.type"
                   :title="item.type"
                 />
-                <span class="text-capitalize">{{ item.name }}</span>
+                <span>{{ item.name }}</span>
               </router-link>
             </td>
 
