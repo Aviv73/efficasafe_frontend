@@ -186,6 +186,10 @@
                     .info-icon {
                         height: 16px;
                         margin-inline-end: 5px;
+
+                        &.under-construction {
+                            color: $red;
+                        }
                     }
                     .close-btn {
                         height: 16px;

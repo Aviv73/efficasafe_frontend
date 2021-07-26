@@ -79,12 +79,17 @@
                         </template>
                         <template #content>
                             <material-interactions-preview
+                                v-if="!isAllUnderStudy(result)"
                                 :materials="result.materials"
                                 :userQuery="result.txt"
                                 :disabled="result.isIncluded"
                                 :interactions="getMaterialInteractions(result)"
                                 :isOneMaterial="materials.length === 1"
                             />
+                            <div v-else class="interactions-preview under-construction">
+                                This material is still under construction. The results you may see are only partial.
+                                Because you searched this material, it will get higher priority.
+                            </div>
                         </template>
                         <li
                             class="search-engine-search-materials-chip clip-txt activator v-tour-step-1"
@@ -98,6 +103,7 @@
                             <span class="search-engine-search-materials-chip-actions">
                                 <information-outline-icon
                                     class="info-icon hover-activator"
+                                    :class="{ 'under-construction': isOneUnderStudy(result) }"
                                     :size="16"
                                     title=""
                                 />
@@ -984,6 +990,12 @@ export default {
                 const lastQ = this.undoneQueries.pop();
                 this.$router.push({ query: { q: [ ...q, lastQ ] } });
             }
+        },
+        isOneUnderStudy({ materials, isIncluded }) {
+            return materials.some(m => m.isUnderStudy) && !isIncluded;
+        },
+        isAllUnderStudy({ materials, isIncluded }) {
+            return materials.every(m => m.isUnderStudy) && !isIncluded;
         },
         isTooltipActive(result) {
             return result.isIncluded || (result.materials.length > 1 || result.txt !== result.materials[0].name) || this.getMaterialInteractions(result).length || (result.materials.length === 1 && this.materials.length !== 1);

@@ -20,6 +20,7 @@
             <ul>
                 <li
                     class="interactions-preview-composites-composite flex-align-center"
+                    :class="{ 'under-construction': material.isUnderStudy }"
                     v-for="material in materials"
                     :key="material._id"
                     :style="{
@@ -27,6 +28,19 @@
                     }"
                 >
                     <span class="clip-txt">{{ material.name }}</span>
+                    <tooltip :hidden="!material.isUnderStudy" bottom>
+                        <template #content>
+                            <div class="interactions-preview under-construction">
+                                This material is still under construction. The results you may see are only partial.
+                                Because you searched this material, it will get higher priority.
+                            </div>
+                        </template>
+                        <information-outline-icon
+                            v-if="material.isUnderStudy"
+                            title=""
+                            :size="14"
+                        />
+                    </tooltip>
                 </li>
             </ul>
             <hr v-if="interactions.length || (materials.length === 1 && !isOneMaterial)" />
@@ -64,8 +78,12 @@
 
 <script>
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
+
+import Tooltip from '@/client/cmps/common/Tooltip';
+
 import AlertCircleOutlineIcon from 'vue-material-design-icons/AlertCircleOutline';
 import InteractionIcon from '@/client/cmps/common/icons/InteractionIcon';
+import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
 
 export default {
     props: {
@@ -137,7 +155,9 @@ export default {
     },
     components: {
         AlertCircleOutlineIcon,
-        InteractionIcon
+        InteractionIcon,
+        InformationOutlineIcon,
+        Tooltip
     }
 }
 </script>
