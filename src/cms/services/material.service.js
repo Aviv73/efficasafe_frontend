@@ -1,7 +1,6 @@
 import { httpService } from './http.service.js';
 
 const END_POINT = 'material';
-
 const chache = {};
 
 export const materialService = {
