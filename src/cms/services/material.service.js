@@ -97,6 +97,7 @@ function getEmptyMaterial() {
         detailedPharmacology: '',
         externalLinks: [],
         isNarrowTherapeutic: false,
+        isUnderStudy: false,
         fdaLabel: '',
         pharmacology: {
             indication: '',

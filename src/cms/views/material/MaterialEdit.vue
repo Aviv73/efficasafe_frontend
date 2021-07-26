@@ -204,6 +204,10 @@
               label="Is Narrow Therapeutic"
               v-model="editedMaterial.isNarrowTherapeutic"
             />
+            <v-checkbox
+              label="Is Under Construction"
+              v-model="editedMaterial.isUnderStudy"
+            />
           </div>
 
           <v-text-field
