@@ -1,7 +1,6 @@
 import { httpService } from './http.service.js';
 
 const END_POINT = 'material';
-
 const chache = {};
 
 export const materialService = {
@@ -97,6 +96,7 @@ function getEmptyMaterial() {
         detailedPharmacology: '',
         externalLinks: [],
         isNarrowTherapeutic: false,
+        isUnderStudy: false,
         fdaLabel: '',
         pharmacology: {
             indication: '',

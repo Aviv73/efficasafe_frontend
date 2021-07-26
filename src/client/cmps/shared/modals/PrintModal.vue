@@ -352,7 +352,7 @@ export default {
                         this.contentWindow.onafterprint = function() {
                             document.body.removeChild(this.__container__);
                         }
-                        this.contentWindow.focus(); // Required for IE
+                        this.contentWindow.focus();
                         this.contentWindow.print();
                     }   
                     document.body.appendChild(iframe);
