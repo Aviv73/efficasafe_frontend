@@ -14,14 +14,14 @@
                         <img :src="require('@/client/assets/imgs/logo-vector.svg')" alt="Logo" />
                     </router-link>
                     <span class="interaction-details-header-actions">
-                        <button
+                        <!-- <button
                             class="print-btn print-btn-icon"
                             title="Print"
                             :disabled="!loggedInUser"
                             @click="isPrintModalActive = true"
                         >
                             <printer-icon title="" />
-                        </button>
+                        </button> -->
                         <button
                             class="share-btn share-btn-icon"
                             title="Share"
