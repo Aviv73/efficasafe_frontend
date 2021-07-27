@@ -6,6 +6,10 @@
     font-size: rem(14px);
     position: relative;
     
+    &.under-construction {
+        max-width: rem(250px);
+        text-align: center;
+    }
     h6 {
         font-size: rem(12px);
         line-height: rem(22px);
@@ -33,6 +37,15 @@
                 max-width: rem(180px);
             }
 
+            &.under-construction {
+                color: $yellow;
+
+                .information-outline-icon .material-design-icon__svg {
+                    color: $yellow;
+                    cursor: help;
+                    margin-block-end: -2px;
+                }
+            }
             &:not(:last-child) {
                 margin-block-end: rem(8px);
             }

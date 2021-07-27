@@ -170,9 +170,6 @@
                 &.disabled {
                     opacity: .5;
                 }
-                &.not-active {
-                    cursor: default;
-                }
                 &-actions {
                     position: absolute;
                     top: 50%;
@@ -186,6 +183,10 @@
                     .info-icon {
                         height: 16px;
                         margin-inline-end: 5px;
+
+                        &.under-construction {
+                            color: $yellow;
+                        }
                     }
                     .close-btn {
                         height: 16px;
