@@ -377,7 +377,7 @@ export default {
         reset() {
             this.printSelection = [];
             this.isAllSelected = false;
-            this.isSidesSwapped = Boolean(this.sortBySide);
+            this.isSidesSwapped = !this.sortBySide;
         },
         fillSelection() {
             this.printSelection = [ ...this.localizedInteraction ];
