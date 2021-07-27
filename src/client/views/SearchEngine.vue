@@ -64,7 +64,6 @@
                     <tooltip
                         v-for="(result, idx) in formatedMaterials"
                         :key="idx"
-                        :hidden="!isTooltipActive(result)"
                         on="focus"
                         wrap-el="li"
                         closable
@@ -72,7 +71,6 @@
                     >
                         <template #close-icon>
                             <close-icon
-                                v-if="isTooltipActive(result)"
                                 :size="16"
                                 title=""
                             />
@@ -94,8 +92,7 @@
                         <li
                             class="search-engine-search-materials-chip clip-txt activator v-tour-step-1"
                             :class="{
-                                'disabled': result.isIncluded,
-                                'not-active': !isTooltipActive(result)
+                                'disabled': result.isIncluded
                             }" 
                             :style="{ 'background-image': `url('${getResultIcon(result)}')` }"
                         >
@@ -996,9 +993,6 @@ export default {
         },
         isAllUnderStudy({ materials, isIncluded }) {
             return materials.every(m => m.isUnderStudy) && !isIncluded;
-        },
-        isTooltipActive(result) {
-            return result.isIncluded || (result.materials.length > 1 || result.txt !== result.materials[0].name) || this.getMaterialInteractions(result).length || (result.materials.length === 1 && this.materials.length !== 1);
         },
         getMoreSeverRecomm(isDesc, ...recommendations) {
             const { recommendationsOrderMap } = this.$options;

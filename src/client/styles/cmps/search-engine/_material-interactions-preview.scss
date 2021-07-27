@@ -38,10 +38,10 @@
             }
 
             &.under-construction {
-                color: $red;
+                color: $yellow;
 
                 .information-outline-icon .material-design-icon__svg {
-                    color: red;
+                    color: $yellow;
                     cursor: help;
                     margin-block-end: -2px;
                 }

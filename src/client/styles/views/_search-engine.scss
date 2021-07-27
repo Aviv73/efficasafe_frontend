@@ -170,9 +170,6 @@
                 &.disabled {
                     opacity: .5;
                 }
-                &.not-active {
-                    cursor: default;
-                }
                 &-actions {
                     position: absolute;
                     top: 50%;
@@ -188,7 +185,7 @@
                         margin-inline-end: 5px;
 
                         &.under-construction {
-                            color: $red;
+                            color: $yellow;
                         }
                     }
                     .close-btn {

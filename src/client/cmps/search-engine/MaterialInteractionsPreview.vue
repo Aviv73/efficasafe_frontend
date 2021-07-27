@@ -1,6 +1,5 @@
 <template>
     <section
-        v-if="disabled || (materials.length > 1 || userQuery !== materials[0].name) || interactions.length || (materials.length === 1 && !isOneMaterial)"
         class="interactions-preview"
     >
         <div
@@ -13,7 +12,7 @@
             <hr v-if="interactions.length || (materials.length === 1 && !isOneMaterial)" />
         </div>
         <div
-            v-else-if="materials.length > 1 || userQuery !== materials[0].name"
+            v-else
             class="interactions-preview-composites"
         >
             <h6>{{ previewHeader }}</h6>
@@ -110,7 +109,7 @@ export default {
     },
     computed: {
         previewHeader() {
-            if (this.materials.length === 1 && this.userQuery !== this.materials[0].name) {
+            if (this.materials.length === 1) {
                 return this.materials[0].type;
             }
             return '';
