@@ -14,6 +14,7 @@
                         <img :src="require('@/client/assets/imgs/logo-vector.svg')" alt="Logo" />
                     </router-link>
                     <span class="interaction-details-header-actions">
+                        <!-- De-comment this once you activate interaction print! -->
                         <!-- <button
                             class="print-btn print-btn-icon"
                             title="Print"
@@ -22,6 +23,7 @@
                         >
                             <printer-icon title="" />
                         </button> -->
+                        <!-- De-comment this once you activate interaction print! -->
                         <button
                             class="share-btn share-btn-icon"
                             title="Share"

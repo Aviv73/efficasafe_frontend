@@ -311,7 +311,7 @@
 <script>
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import { storageService } from '@/cms/services/storage.service';
-import { eventBus, EV_show_user_msg } from '@/cms/services/eventBus.service';
+import { eventBus, EV_show_user_msg, EV_search_results_cleared } from '@/cms/services/eventBus.service';
 
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import ShareModal from '@/client/cmps/shared/modals/ShareModal';
@@ -1062,6 +1062,7 @@ export default {
         clearSearch() {
             this.$router.push({ name: this.$route.name });
             this.undoneQueries = [];
+            eventBus.$emit(EV_search_results_cleared);
         },
         getResultIcon(result) {
             let fileName = '';

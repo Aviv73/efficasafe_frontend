@@ -1,11 +1,11 @@
 .interactions-preview {
-    padding: rem(20px) rem(16px);
+    padding: rem(20px) rem(24px) rem(20px) rem(16px);
     box-shadow: 0px 2px 4px rgba($black, .1);
     border: 1px solid $clr6;
     color: $clr1;
     font-size: rem(14px);
     position: relative;
-    
+
     &.under-construction {
         max-width: rem(250px);
         text-align: center;
@@ -28,10 +28,13 @@
     &-composites {
         &-composite {
             max-width: rem(130px);
+            display: flex;
+            flex-direction: column;
             background-repeat: no-repeat;
             background-position: rem(0px) center;
             background-size: 14px 16px;
             padding-inline-start: 18px;
+            position: relative;
 
             @include for-mobile-layout {
                 max-width: rem(180px);
@@ -39,7 +42,7 @@
 
             &.under-construction {
                 color: $yellow;
-
+                
                 .information-outline-icon .material-design-icon__svg {
                     color: $yellow;
                     cursor: help;
@@ -48,6 +51,12 @@
             }
             &:not(:last-child) {
                 margin-block-end: rem(8px);
+            }
+
+            .under-construction-icon {
+                position: absolute;
+                left: calc(100% + 8px);
+                bottom: -1.5px;
             }
         }
     }

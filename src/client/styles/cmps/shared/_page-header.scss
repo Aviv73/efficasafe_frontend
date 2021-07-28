@@ -5,4 +5,30 @@
     background-size: cover;
     background-position: center;
     margin-block-end: rem(36px);
+    position: relative;
+
+    &-link {
+        position: absolute;
+        left: 0;
+        top: 16px;
+        color: $clr1;
+        font-size: rem(12px);
+        line-height: rem(14px);
+        padding: 0 0 0 24px;
+
+        @include for-narrow-layout {
+            background-color: $clr1;
+            color: $white;
+            border-radius: 0 100px 100px 0;
+            padding: rem(12px) rem(42px) rem(12px) 24px;
+            font-size: rem(21px);
+            line-height: rem(24px);
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .chevron-left-icon {
+            height: rem(24px);
+        }
+    }
 }

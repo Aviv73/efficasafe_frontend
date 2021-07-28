@@ -14,6 +14,7 @@
                         <img :src="require('@/client/assets/imgs/logo-vector.svg')" alt="Logo" />
                     </router-link>
                     <span class="interaction-details-header-actions">
+                        <!-- De-comment this once you activate interaction print! -->
                         <!-- <button
                             class="print-btn print-btn-icon"
                             title="Print"
@@ -22,13 +23,14 @@
                         >
                             <printer-icon title="" />
                         </button> -->
+                        <!-- De-comment this once you activate interaction print! -->
                         <button
                             class="share-btn share-btn-icon"
                             title="Share"
                             :disabled="!loggedInUser"
                             @click="isShareModalActive = true"
                         >
-                            <share-variant-icon title="" />
+                            <share-variant-icon title="" :size="isScreenNarrow ? 18 : 24" />
                         </button>
                     </span>
                 </div>
@@ -440,6 +442,9 @@ export default {
         },
         loggedInUser() {
             return this.$store.getters.loggedInUser;
+        },
+        isScreenNarrow() {
+            return this.$store.getters.isScreenNarrow;
         }
     },
     methods: {

@@ -203,6 +203,7 @@
 </template>
 
 <script>
+import { eventBus, EV_search_results_cleared } from '@/cms/services/eventBus.service';
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 
 import ListPagination from '@/client/cmps/common/ListPagination';
@@ -297,8 +298,8 @@ export default {
         },
         removeDupVinteractions(lists) {
             const seenVinteractionsMap = {};
-            Object.values(lists).forEach(({ interactions }) => {
-                interactions.forEach(interaction => {
+            Object.values(lists).forEach(list => {
+                list.interactions.forEach(interaction => {
                     const side1Queries = this.$store.getters.materialNamesMap[interaction.side1Material.name];
                     const side1Name = side1Queries ? side1Queries.join(', ') : interaction.side1Material.name;
                     if (interaction.side2Material) {
@@ -326,6 +327,7 @@ export default {
                 interactions.forEach(({ _id }) => {
                     Object.values(lists).forEach(list => {
                         list.interactions = list.interactions.filter(i => i._id !== _id);
+                        list.total = list.interactions.length;
                     });
                 });
             });
@@ -379,7 +381,20 @@ export default {
         },
         getInteractionColor(recommendation) {
             return interactionUIService.getInteractionColor(recommendation);
+        },
+        reset() {
+            this.lists = null;
+            this.isLoading = false;
+            this.maxTotal = 0;
+            this.maxPageCount = 0;
+            this.page = 1;
         }
+    },
+    created() {
+        eventBus.$on(EV_search_results_cleared, this.reset);
+    },
+    beforeDestroy() {
+        eventBus.$off(EV_search_results_cleared, this.reset);
     },
     components: {
         InteractionIcon,

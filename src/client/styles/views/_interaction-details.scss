@@ -90,7 +90,7 @@
             position: absolute;
             top: 50%;
             left: 100%;
-            transform: translate(calc(-100% - 24px), -50%);
+            transform: translate(calc(-100% - 60px), -50%);
             user-select: none;
             
             @include for-narrow-layout {
@@ -106,14 +106,15 @@
             }
         }
         &-actions {
-            display: none;
-
-            @include for-narrow-layout {
-                display: initial;
-            }
-
             .print-btn {
                 margin-inline-end: rem(24px);
+            }
+            .share-btn .material-design-icon__svg {
+                margin-block-end: -4px;
+
+                @include for-narrow-layout {
+                    margin-block-end: 0;
+                }
             }
         }
     }

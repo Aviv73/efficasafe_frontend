@@ -139,7 +139,8 @@ export default {
             isActive: false,
             exceedsRight: false,
             exceedsLeft: false,
-            exceedsX: false
+            exceedsX: false,
+            viewportWidth: 0
         }
     },
     methods: {
@@ -169,10 +170,10 @@ export default {
             const rightMargin = right + width;
             const leftMargin = left - width;
             
-            if (rightMargin > window.innerWidth && leftMargin < 0) {
+            if (rightMargin > this.viewportWidth && leftMargin < 0) {
                 this.exceedsX = true;
                 return;
-            } else if (rightMargin > window.innerWidth) {
+            } else if (rightMargin > this.viewportWidth) {
                 isExceedsRight = true;
             } else if (leftMargin < 0) {
                 isExceedsLeft = true;
@@ -182,6 +183,7 @@ export default {
         }
     },
     mounted() {
+        this.viewportWidth = window.innerWidth;
         const el = this.$refs.activator.querySelector('.hover-activator');
         if (!el) return;
         el.addEventListener('mouseenter', () => {

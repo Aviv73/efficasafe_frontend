@@ -3,6 +3,7 @@
     <div class="filter-input">
       <autocomplete 
         @emitAutocomplete="updateFilter"
+        allow-term-search
       />
     </div>
     <div class="filter-type">

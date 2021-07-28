@@ -123,10 +123,12 @@
     &-drugbank-logo {
         width: 250px;
         filter: grayscale(100%);
-        transition: filter .3s linear;
+        opacity: .6;
+        transition: filter .3s linear, opacity .3s linear;
 
         @include hover-supported {
             filter: grayscale(0);
+            opacity: 1;
         }
     }
 }
