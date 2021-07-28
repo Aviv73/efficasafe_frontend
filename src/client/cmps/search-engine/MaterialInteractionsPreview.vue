@@ -18,7 +18,7 @@
             <h6>{{ previewHeader }}</h6>
             <ul>
                 <li
-                    class="interactions-preview-composites-composite flex-align-center"
+                    class="interactions-preview-composites-composite"
                     :class="{ 'under-construction': material.isUnderStudy }"
                     v-for="material in materials"
                     :key="material._id"
@@ -35,6 +35,7 @@
                             </div>
                         </template>
                         <information-outline-icon
+                            class="under-construction-icon"
                             v-if="material.isUnderStudy"
                             title=""
                             :size="14"
