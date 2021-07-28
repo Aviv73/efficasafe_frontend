@@ -203,6 +203,7 @@
 </template>
 
 <script>
+import { eventBus, EV_search_results_cleared } from '@/cms/services/eventBus.service';
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 
 import ListPagination from '@/client/cmps/common/ListPagination';
@@ -248,7 +249,6 @@ export default {
             this.isLoading = true;
             const lists = await this.$store.dispatch({ type: 'getInteractions', filterBy });
             this.lists = this.removeDupVinteractions(lists);
-            console.log(this.lists);
             const maxTotal = Math.max(lists.reds.total, lists.yellows.total, lists.greens.total);
             const maxPageCount = Math.max(lists.reds.pageCount, lists.yellows.pageCount, lists.greens.pageCount);
             this.maxTotal = maxTotal;
@@ -381,7 +381,20 @@ export default {
         },
         getInteractionColor(recommendation) {
             return interactionUIService.getInteractionColor(recommendation);
+        },
+        reset() {
+            this.lists = null;
+            this.isLoading = false;
+            this.maxTotal = 0;
+            this.maxPageCount = 0;
+            this.page = 1;
         }
+    },
+    created() {
+        eventBus.$on(EV_search_results_cleared, this.reset);
+    },
+    beforeDestroy() {
+        eventBus.$off(EV_search_results_cleared, this.reset);
     },
     components: {
         InteractionIcon,

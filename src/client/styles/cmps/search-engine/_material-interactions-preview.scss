@@ -5,7 +5,7 @@
     color: $clr1;
     font-size: rem(14px);
     position: relative;
-    
+
     &.under-construction {
         max-width: rem(250px);
         text-align: center;
@@ -27,6 +27,7 @@
     }
     &-composites {
         &-composite {
+            width: 100%;
             max-width: rem(130px);
             background-repeat: no-repeat;
             background-position: rem(0px) center;

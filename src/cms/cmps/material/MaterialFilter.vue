@@ -5,13 +5,6 @@
         @emitAutocomplete="updateFilter"
       />
     </div>
-    <div class="filter-input">
-        <!-- <v-text-field
-          placeholder="Filter by name includes"
-          @keydown.enter=""
-          clearable
-        /> -->
-    </div>
     <div class="filter-type">
       <v-select
         id="mat-filter-type"

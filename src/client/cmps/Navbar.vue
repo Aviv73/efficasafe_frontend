@@ -30,7 +30,7 @@
                                             to="/contact"
                                             class="navbar-user-dropdown-item"
                                         >
-                                            Contact
+                                            Contact us
                                         </router-link>
                                     </div>
                                     <button class="navbar-user-dropdown-item" @click="onLogout">
