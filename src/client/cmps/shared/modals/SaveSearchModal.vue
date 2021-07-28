@@ -17,9 +17,13 @@
                     type="text"
                     placeholder="Client name / Search title"
                     v-model="search.title"
-                    @keypress.enter="saveSearch"
+                    @keypress.enter="onSaveSearch"
+                    @input="msg = ''"
                 />
             </div>
+            <p class="save-search-modal-content-msg font-medium">
+                {{ msg }}
+            </p>
         </main>
         <footer class="save-search-modal-footer">
             <button
@@ -30,10 +34,11 @@
             </button>
             <button
                class="save-search-modal-footer-btn save-btn"
+               :class="{ 'replace-btn': showReplaceBtn }"
                :disabled="!search.title"
-               @click="saveSearch"
+               @click="onSaveSearch"
             >
-                Save
+                {{ showReplaceBtn ? 'Replace saved search' : 'Save' }}
             </button>
         </footer>
     </aside>
@@ -48,7 +53,9 @@ import CloseIcon from 'vue-material-design-icons/Close';
 export default {
     data() {
         return {
-            search: userService.getEmptySearch()
+            search: userService.getEmptySearch(),
+            msg: '',
+            showReplaceBtn: false
         }
     },
     computed: {
@@ -57,20 +64,40 @@ export default {
         }
     },
     methods: {
-        async saveSearch() {
-            if (!this.search.title) return;
+        async onSaveSearch() {
+            if (!this.search.title) {
+                this.msg = 'Name / title is required';
+                return;
+            }
             this.search.url = `${window.location.origin}${this.$route.fullPath}`;
             this.search.at = Date.now();
             const search = JSON.parse(JSON.stringify(this.search));
             const user = JSON.parse(JSON.stringify(this.loggedInUser));
             
-            user.searches.push(search);
+            const searchIdx = user.searches.findIndex(search => search.title === this.search.title);
+            
+            if (searchIdx === -1) {
+                user.searches.push(search);
+                await this.saveAccount(user);
+            } else {
+                if (this.showReplaceBtn) {
+                    user.searches.splice(searchIdx, 1, search);
+                    await this.saveAccount(user);
+                    return;
+                }
+                this.msg = `Search '${this.search.title}' allready exists...`;
+                this.showReplaceBtn = true;
+            }
+        },
+        async saveAccount(user) {
             await this.$store.dispatch({ type: 'updateLoggedInUser', user });
             eventBus.$emit(EV_show_user_msg, 'Your search has been saved. You can find it at your account page', 5000);
             this.reset();
         },
         reset() {
             this.search = userService.getEmptySearch();
+            this.msg = '';
+            this.showReplaceBtn = false;
             this.$emit('close-modal');
         }
     },

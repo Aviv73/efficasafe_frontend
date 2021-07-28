@@ -20,7 +20,8 @@
     &-content {
         display: flex;
         flex-direction: column;
-        padding: rem(12px) rem(24px);
+        padding: rem(12px) rem(24px) rem(48px);
+        position: relative;
 
         &-txt {
             text-align: center;
@@ -45,6 +46,16 @@
                     outline: none;
                 }
             }
+        }
+        &-msg {
+            color: $red;
+            text-align: center;
+            font-size: rem(14px);
+            line-height: rem(18px);
+            position: absolute;
+            left: 0;
+            bottom: rem(6px);
+            width: 100%;
         }
     }
     &-footer {
@@ -76,6 +87,10 @@
                 &:disabled {
                     opacity: .5;
                     cursor: default;
+                }
+                &.replace-btn {
+                    color: $red;
+                    border: 1px solid $red;
                 }
             }
         }
