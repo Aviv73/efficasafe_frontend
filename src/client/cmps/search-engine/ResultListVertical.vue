@@ -248,6 +248,7 @@ export default {
             this.isLoading = true;
             const lists = await this.$store.dispatch({ type: 'getInteractions', filterBy });
             this.lists = this.removeDupVinteractions(lists);
+            console.log(this.lists);
             const maxTotal = Math.max(lists.reds.total, lists.yellows.total, lists.greens.total);
             const maxPageCount = Math.max(lists.reds.pageCount, lists.yellows.pageCount, lists.greens.pageCount);
             this.maxTotal = maxTotal;
@@ -297,8 +298,8 @@ export default {
         },
         removeDupVinteractions(lists) {
             const seenVinteractionsMap = {};
-            Object.values(lists).forEach(({ interactions }) => {
-                interactions.forEach(interaction => {
+            Object.values(lists).forEach(list => {
+                list.interactions.forEach(interaction => {
                     const side1Queries = this.$store.getters.materialNamesMap[interaction.side1Material.name];
                     const side1Name = side1Queries ? side1Queries.join(', ') : interaction.side1Material.name;
                     if (interaction.side2Material) {
@@ -326,6 +327,7 @@ export default {
                 interactions.forEach(({ _id }) => {
                     Object.values(lists).forEach(list => {
                         list.interactions = list.interactions.filter(i => i._id !== _id);
+                        list.total = list.interactions.length;
                     });
                 });
             });

@@ -11,14 +11,8 @@
                         <dropdown>
                             <template #activator>
                                 <div class="flex-align-center">
-                                    <img
-                                        class="nav-user-img"
-                                        v-if="loggedInUser.picture"
-                                        :src="loggedInUser.picture"
-                                        alt="User's picture"
-                                    />
-                                    <span v-if="!isScreenNarrow">
-                                        {{ `Hi ${loggedInUser.nickname}` }}
+                                    <span>
+                                        {{ loggedInUser.nickname }}
                                     </span>
                                     <menu-down-icon title="" class="dropdown--animate" />
                                 </div>
@@ -60,8 +54,17 @@
                     </div>
                 </div>
                 <ul class="navbar-nav">
+                    <li class="navbar-nav-item" v-if="!isScreenNarrow">
+                        <router-link to="/" title="Home">
+                            <home-icon title="" :size="20" />
+                        </router-link>
+                    </li>
                     <li class="navbar-nav-item">
-                        <button :class="{ highlight: !loggedInUser || isNavIntersecting }">
+                        <button
+                            :class="{ highlight: !loggedInUser || isNavIntersecting }"
+                            @click="onSubscribe"
+                            title="Subscribe"
+                        >
                             Subscribe
                         </button>
                     </li>
@@ -121,7 +124,12 @@
                             class="navbar-side-nav-logo"
                         />
                         <li class="navbar-side-nav-item">
-                            <button class="subscribe-btn">Subscribe</button>
+                            <button
+                                class="subscribe-btn"
+                                @click="onSubscribe"
+                            >
+                                Subscribe
+                            </button>
                         </li>
                         <li class="navbar-side-nav-item">
                             <button
@@ -138,6 +146,11 @@
                             </button>
                         </li>
 
+                        <li class="navbar-side-nav-item">
+                            <router-link to="/" @click.native="toggleNavActive">
+                                Home
+                            </router-link>
+                        </li>
                         <li class="navbar-side-nav-item">
                             <router-link to="/search" @click.native="toggleNavActive">
                                 Search
@@ -171,6 +184,7 @@ import Dropdown from '@/client/cmps/common/Dropdown';
 import CloseIcon from 'vue-material-design-icons/Close';
 import MenuIcon from 'vue-material-design-icons/Menu';
 import MenuDownIcon from 'vue-material-design-icons/MenuDown';
+import HomeIcon from 'vue-material-design-icons/Home';
 
 export default {
     name: 'Navbar',
@@ -198,6 +212,9 @@ export default {
     methods: {
         toggleNavActive() {
             this.isNavActive = !this.isNavActive;
+        },
+        onSubscribe() {
+            alert('Subscribe is not yet available. Please signup for a free trial.');
         },
         onLogin() {
             this.$emit('login');
@@ -231,7 +248,8 @@ export default {
         CloseIcon,
         MenuIcon,
         Dropdown,
-        MenuDownIcon
+        MenuDownIcon,
+        HomeIcon
     },
 };
 </script>

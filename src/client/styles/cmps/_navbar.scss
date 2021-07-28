@@ -59,7 +59,7 @@
             &:focus {
                 outline: none;
                 background-color: $clr13;
-            }       
+            }  
         }
     }
     &-nav {
@@ -78,6 +78,9 @@
                 @include for-narrow-layout {
                     display: initial;
                 }
+            }
+            .material-design-icon__svg {
+                margin-block-end: -6px;
             }
             @include for-narrow-layout {
                 &:not(.link) > button {
