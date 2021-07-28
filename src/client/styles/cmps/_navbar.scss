@@ -73,6 +73,10 @@
         &-item {
             margin-inline-end: rem(14px);
 
+            @include hover-supported {
+                color: darken($white, 10%);
+            }
+
             &.link {
                 display: none;
                 @include for-narrow-layout {

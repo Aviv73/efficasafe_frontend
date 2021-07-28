@@ -9,8 +9,11 @@
       :search-input.sync="search"
       :loading="isLoading"
       @change="emitAutocomplete"
+      @keypress.enter="onTermSearch"
       :label="placeholder"
       :disabled="isDisabled"
+      :hint="allowTermSearch ? 'Click Enter key to search by term' : ''"
+      :persistent-hint="allowTermSearch"
       clearable
       cache-items
       hide-selected
@@ -66,6 +69,10 @@ export default {
       default: false
     },
     isSupplementsOnly: {
+      type: Boolean,
+      default: false
+    },
+    allowTermSearch: {
       type: Boolean,
       default: false
     }
@@ -125,6 +132,12 @@ export default {
       this.select = this.select || null;
       this.$emit('emitAutocomplete', JSON.parse(JSON.stringify(this.select)));
     },
+    onTermSearch() {
+      if (!this.allowTermSearch) return;
+      const selection = { text: this.search };
+      this.$refs.autocomplete.blur();
+      this.$emit('emitAutocomplete', selection);
+    }
   },
   async created() {
     if (!this.isLabel) {
