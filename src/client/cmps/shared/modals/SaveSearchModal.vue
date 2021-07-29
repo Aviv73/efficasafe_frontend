@@ -18,7 +18,7 @@
                     placeholder="Client name / Search title"
                     v-model="search.title"
                     @keypress.enter="onSaveSearch"
-                    @input="msg = ''"
+                    @input="msg = '';showReplaceBtn = false;"
                 />
             </div>
             <p class="save-search-modal-content-msg font-medium">

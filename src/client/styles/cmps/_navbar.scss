@@ -51,6 +51,7 @@
         }
         &-item {
             display: inline-block;
+            min-width: max-content;
             padding: rem(12px) rem(96px) rem(12px) rem(20px);
 
             @include hover-supported {
