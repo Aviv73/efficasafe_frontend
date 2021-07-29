@@ -370,6 +370,7 @@ export default {
                 }
                 const { q } = this.$route.query;
                 if (!q || !q.length) {
+                    eventBus.$emit(EV_search_results_cleared);
                     this.reset();
                     return;
                 }
@@ -843,6 +844,7 @@ export default {
             for (let i = 0; i < interactions.length; i++) {
                 const group = interactions[i];
                 const matchingMaterial = this.materials.find(m => m._id === group.side2Id || m.labels.some(l => l._id === group.side2Id));
+                if (!matchingMaterial) continue;
                 const side2Ids = [ matchingMaterial._id, ...matchingMaterial.labels.map(l => l._id) ];
                 for (let j = 0; j < group.vInteractions.length; j++) {
                     const vInteraction = group.vInteractions[j];

@@ -248,7 +248,7 @@ export default {
         async getInteractions(filterBy) {
             this.isLoading = true;
             const lists = await this.$store.dispatch({ type: 'getInteractions', filterBy });
-            this.lists = this.removeDupVinteractions(lists);
+            this.lists = (this.materials.length > 1) ? this.removeDupVinteractions(lists) : lists;
             const maxTotal = Math.max(lists.reds.total, lists.yellows.total, lists.greens.total);
             const maxPageCount = Math.max(lists.reds.pageCount, lists.yellows.pageCount, lists.greens.pageCount);
             this.maxTotal = maxTotal;
