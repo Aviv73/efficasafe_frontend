@@ -62,9 +62,7 @@
                             {{ interaction.evidenceLevel }}
                             <tooltip on="hover" right-top>
                                 <template #content>
-                                    <div class="evidence-level-tooltip-content">
-                                        {{ refsDetailsTxt }}
-                                    </div>
+                                    <div class="evidence-level-tooltip-content" v-html="refsDetailsTxt" />
                                 </template>
                                 <span class="refs">
                                     <span class="refs-count">({{ combinedRefs.length }})</span> 
@@ -103,7 +101,7 @@
                     </div>
                     <div class="evidence-level-mobile">
                         <span class="font-bold">Level of evidence:</span> {{ interaction.evidenceLevel }}
-                        <div class="sub-txt">{{ refsDetailsTxt }}</div>
+                        <div class="sub-txt" v-html="refsDetailsTxt" />
                     </div>
                     <h2
                         v-if="interaction.summary"
@@ -341,18 +339,35 @@ export default {
             const { getRefsCountByType, interactionRefs } = this;
             const side2Refs = this.relevantSide2Refs.concat(this.side1PathwayRefs);
 
-            const part1Clinical = getRefsCountByType(interactionRefs, 'clinical');
-            const part1Preclinical = getRefsCountByType(interactionRefs, 'pre-clinical');
-            const part1Articles = getRefsCountByType(interactionRefs, 'articles');
+            const clinicalCount1 = getRefsCountByType(interactionRefs, 'clinical');
+            const preclinicalCount1 = getRefsCountByType(interactionRefs, 'pre-clinical');
+            const articlesCount1 = getRefsCountByType(interactionRefs, 'articles');
             
-            const part2Clinical = getRefsCountByType(side2Refs, 'clinical');
-            const part2Preclinical = getRefsCountByType(side2Refs, 'pre-clinical');
-            const part2Articles = getRefsCountByType(side2Refs, 'articles');
+            const clinicalCount2 = getRefsCountByType(side2Refs, 'clinical');
+            const preclinicalCount2 = getRefsCountByType(side2Refs, 'pre-clinical');
+            const articlesCount2 = getRefsCountByType(side2Refs, 'articles');
             
-            const part1 = `The interaction is based on ${part1Clinical ? `${part1Clinical} clinical` : ''}${part1Preclinical ? `${part1Articles ? ',' : ' and'} ${part1Preclinical} pre-clinical studies` : ' studies'}${part1Articles ? ` and ${part1Articles}  article${part1Articles > 1 ? 's' : ''}.` : '.'}`;
-            const part2 = `The pharmacokinetic section is based on ${part2Clinical ? `${part2Clinical} clinical` : ''}${part2Preclinical ? `${part2Articles ? ',' : ' and'} ${part2Preclinical} pre-clinical studies` : ' studies'}${part2Articles ? ` and ${part2Articles} article${part2Articles > 1 ? 's' : ''}.` : '.'}`;
+            let txt = `<span class="font-medium">The interaction is based on:</span>`
+            if (clinicalCount1) txt += `
+                &bull; ${clinicalCount1} clinical stud${clinicalCount1 > 1 ? 'ies' : 'y'}.`;
+            if (preclinicalCount1) txt += `
+                &bull; ${preclinicalCount1} pre-clinical stud${preclinicalCount1 > 1 ? 'ies' : 'y'}.`;
+            if (articlesCount1) txt += `
+                &bull; ${articlesCount1} article${articlesCount1 > 1 ? 's' : ''}.`;
+
+            if (clinicalCount2 || preclinicalCount2 || articlesCount2) {
+                txt += `
+                    <span class="font-medium">The pharmacokinetic section is based on:</span>`;
+
+                if (clinicalCount2) txt += `
+                    &bull; ${clinicalCount2} clinical stud${clinicalCount2 > 1 ? 'ies' : 'y'}.`;
+                if (preclinicalCount2) txt += `
+                    &bull; ${preclinicalCount2} pre-clinical stud${preclinicalCount2 > 1 ? 'ies' : 'y'}.`;
+                if (articlesCount2) txt += `
+                    &bull; ${articlesCount2} article${articlesCount2 > 1 ? 's' : ''}.`;
+            }
             
-            return part1 + ' ' + part2;
+            return txt;
         },
         relevantSide2Refs() {
             let nextDraftIdx = 1;

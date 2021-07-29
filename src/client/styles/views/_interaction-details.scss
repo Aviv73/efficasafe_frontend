@@ -202,8 +202,8 @@
             }
 
             &-mobile {
+                white-space: pre-line;
                 line-height: rem(20px);
-                text-align: center;
                 margin-block-end: rem(24px);
                 order: -2;
 
@@ -213,12 +213,12 @@
             }
             
             &-tooltip-content {
+                white-space: pre-line;
                 color: $clr-txt-dark;
                 font-family: roboto, sans-serif;
                 font-weight: 400;
                 line-height: rem(16px);
                 padding: rem(16px) rem(14px);
-                max-width: 24ch;
             }
 
             .information-outline-icon {
