@@ -348,9 +348,11 @@ export default {
             const part2Clinical = getRefsCountByType(side2Refs, 'clinical');
             const part2Preclinical = getRefsCountByType(side2Refs, 'pre-clinical');
             const part2Articles = getRefsCountByType(side2Refs, 'articles');
-
-            return `The interaction is based on ${part1Clinical} clinical and ${part1Preclinical} pre-clinical studies and ${part1Articles} articles.
-            The pharmacokinetic section is based on ${part2Clinical} clinical and ${part2Preclinical} pre-clinical studies and ${part2Articles} articles.`;
+            
+            const part1 = `The interaction is based on ${part1Clinical ? `${part1Clinical} clinical` : ''}${part1Preclinical ? `${part1Articles ? ',' : ' and'} ${part1Preclinical} pre-clinical studies` : ' studies'}${part1Articles ? ` and ${part1Articles}  article${part1Articles > 1 ? 's' : ''}.` : '.'}`;
+            const part2 = `The pharmacokinetic section is based on ${part2Clinical ? `${part2Clinical} clinical` : ''}${part2Preclinical ? `${part2Articles ? ',' : ' and'} ${part2Preclinical} pre-clinical studies` : ' studies'}${part2Articles ? ` and ${part2Articles} article${part2Articles > 1 ? 's' : ''}.` : '.'}`;
+            
+            return part1 + ' ' + part2;
         },
         relevantSide2Refs() {
             let nextDraftIdx = 1;
