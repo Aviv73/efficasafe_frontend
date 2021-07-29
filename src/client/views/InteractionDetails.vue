@@ -349,22 +349,22 @@ export default {
             
             let txt = `<span class="font-medium">The interaction is based on:</span>`
             if (clinicalCount1) txt += `
-                &bull; ${clinicalCount1} clinical stud${clinicalCount1 > 1 ? 'ies' : 'y'}.`;
+                &bull; ${clinicalCount1} clinical stud${clinicalCount1 > 1 ? 'ies' : 'y'}`;
             if (preclinicalCount1) txt += `
-                &bull; ${preclinicalCount1} pre-clinical stud${preclinicalCount1 > 1 ? 'ies' : 'y'}.`;
+                &bull; ${preclinicalCount1} pre-clinical stud${preclinicalCount1 > 1 ? 'ies' : 'y'}`;
             if (articlesCount1) txt += `
-                &bull; ${articlesCount1} article${articlesCount1 > 1 ? 's' : ''}.`;
+                &bull; ${articlesCount1} article${articlesCount1 > 1 ? 's' : ''}`;
 
             if (clinicalCount2 || preclinicalCount2 || articlesCount2) {
                 txt += `
                     <span class="font-medium">The pharmacokinetic section is based on:</span>`;
 
                 if (clinicalCount2) txt += `
-                    &bull; ${clinicalCount2} clinical stud${clinicalCount2 > 1 ? 'ies' : 'y'}.`;
+                    &bull; ${clinicalCount2} clinical stud${clinicalCount2 > 1 ? 'ies' : 'y'}`;
                 if (preclinicalCount2) txt += `
-                    &bull; ${preclinicalCount2} pre-clinical stud${preclinicalCount2 > 1 ? 'ies' : 'y'}.`;
+                    &bull; ${preclinicalCount2} pre-clinical stud${preclinicalCount2 > 1 ? 'ies' : 'y'}`;
                 if (articlesCount2) txt += `
-                    &bull; ${articlesCount2} article${articlesCount2 > 1 ? 's' : ''}.`;
+                    &bull; ${articlesCount2} article${articlesCount2 > 1 ? 's' : ''}`;
             }
             
             return txt;
