@@ -335,8 +335,28 @@ export default {
     },
     computed: {
         combinedRefs() {
+            return this.interactionRefs.concat(this.relevantSide2Refs, this.side1PathwayRefs);
+        },
+        refsDetailsTxt() {
+            const { getRefsCountByType, interactionRefs } = this;
+            const side2Refs = this.relevantSide2Refs.concat(this.side1PathwayRefs);
+
+            const part1Clinical = getRefsCountByType(interactionRefs, 'clinical');
+            const part1Preclinical = getRefsCountByType(interactionRefs, 'pre-clinical');
+            const part1Articles = getRefsCountByType(interactionRefs, 'articles');
+            
+            const part2Clinical = getRefsCountByType(side2Refs, 'clinical');
+            const part2Preclinical = getRefsCountByType(side2Refs, 'pre-clinical');
+            const part2Articles = getRefsCountByType(side2Refs, 'articles');
+            
+            const part1 = `The interaction is based on ${part1Clinical ? `${part1Clinical} clinical` : ''}${part1Preclinical ? `${part1Articles ? ',' : ' and'} ${part1Preclinical} pre-clinical studies` : ' studies'}${part1Articles ? ` and ${part1Articles}  article${part1Articles > 1 ? 's' : ''}.` : '.'}`;
+            const part2 = `The pharmacokinetic section is based on ${part2Clinical ? `${part2Clinical} clinical` : ''}${part2Preclinical ? `${part2Articles ? ',' : ' and'} ${part2Preclinical} pre-clinical studies` : ' studies'}${part2Articles ? ` and ${part2Articles} article${part2Articles > 1 ? 's' : ''}.` : '.'}`;
+            
+            return part1 + ' ' + part2;
+        },
+        relevantSide2Refs() {
             let nextDraftIdx = 1;
-            const side2Refs = this.relevantSide2Pathways.reduce((acc, pathway) => {
+            return this.relevantSide2Pathways.reduce((acc, pathway) => {
                 pathway.references.forEach((pubmedId, idx) => {
                     const isValidUrl = (typeof pubmedId === 'string' && pubmedId.startsWith('http'));
                     const ref = {
@@ -351,21 +371,6 @@ export default {
                 });
                 return acc;
             }, []);
-            
-            return this.interactionRefs.concat(side2Refs, this.side1PathwayRefs);
-        },
-        refsDetailsTxt() {
-            return `Based On ${this.clinicalRefCount} Clinical Trial${this.clinicalRefCount > 1 ? 's' : ''},
-            ${this.preClinicalRefCount} Pre-clinical ${this.preClinicalRefCount > 1 ? 'Studies' : 'Study'} And ${this.articlesRefCount} Article${this.articlesRefCount > 1 ? 's' : ''}`;
-        },
-        clinicalRefCount() {
-            return this.combinedRefs.filter(ref => ref.type === 'clinical' || ref.type === 'retrospective').length;
-        },
-        preClinicalRefCount() {
-            return this.combinedRefs.filter(ref => ref.type === 'in vitro' || ref.type === 'animal').length;
-        },
-        articlesRefCount() {
-            return this.combinedRefs.length - this.clinicalRefCount - this.preClinicalRefCount;
         },
         side2Refs() {
             return this.side2Material.pathwayRefs.filter((ref, idx, refs) => {
@@ -497,6 +502,22 @@ export default {
                 this.interactionRefs
             );
             this.interactionRefs = sortedRefs;
+        },
+        getRefsCountByType(refs, type) {
+            let iterateFunc = null;
+            switch (type) {
+                case 'clinical':
+                    iterateFunc = ref => ref.type === 'clinical' || ref.type === 'retrospective';
+                break;
+                case 'pre-clinical':
+                    iterateFunc = ref => ref.type === 'in vitro' || ref.type === 'animal';
+                break;
+                case 'articles':
+                    iterateFunc = ref => ref.type !== 'clinical' && ref.type !== 'retrospective' && ref.type !== 'in vitro' && ref.type !== 'animal';
+                break;
+            }
+
+            return refs.filter(iterateFunc).length;
         },
         formatRefs(txt, isPathwaysRefs = false) {
             if (!this.interactionRefs.length) return;
