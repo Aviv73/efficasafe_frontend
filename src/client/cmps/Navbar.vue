@@ -82,9 +82,8 @@
                             Log Out
                         </button>
                     </li>
-                    <li class="navbar-nav-item">
+                    <li class="navbar-nav-item" v-if="!loggedInUser">
                         <button
-                            v-if="!loggedInUser"
                             class="login-btn"
                             id="signupBtn"
                             @click="onSignUp"
