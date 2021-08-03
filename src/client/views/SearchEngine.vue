@@ -389,6 +389,7 @@ export default {
             immediate: true
         },
         '$route'(to, from) {
+            //for paging
             if(from && JSON.stringify(from.query) === JSON.stringify(to.query) && from.name !== to.name && from.query.page !== 1 ){
                 this.$router.replace({ query: { q: [...this.$route.query.q], page: 1} }).catch(()=>{});
             }
