@@ -81,7 +81,7 @@ export default {
     },
     data() {
         return {
-            page: 1
+            page: this.$route.query.page ? +this.$route.query.page : 1
         }
     },
     watch: {
@@ -96,6 +96,6 @@ export default {
         PageFirstIcon,
         PageLastIcon,
         Loader
-    },
+    }
 };
 </script>

@@ -377,7 +377,7 @@ export default {
                 if (!Array.isArray(q) && q) {
                     this.$route.query.q = [ q ];
                 }
-                const isSameSearch = from && from.q && to.q.length === from.q.length && to.q.every((val, idx) => val === from.q[idx]);
+                const isSameSearch = from && from.q && to.q.length === from.q.length && to.q.every((val, idx) => val === from.q[idx]) && from.page === to.page;
                 if (!isSameSearch) {
                     await this.getResults();
                 }
@@ -389,6 +389,9 @@ export default {
             immediate: true
         },
         '$route'(to, from) {
+            if(from && JSON.stringify(from.query) === JSON.stringify(to.query) && from.name !== to.name && from.query.page !== 1 ){
+                this.$router.replace({ query: { q: [...this.$route.query.q], page: 1} }).catch(()=>{});
+            }
             const routesOrder = {
                 'Supp2Drug': 1,
                 'Drug2Drug': 2,
@@ -719,25 +722,24 @@ export default {
             return this.$store.getters.isScreenNarrow;
         },
         worstSupp2DrugColor() {
+            if(!this.interactions.length) return ''
             const worstRecomm = this.getMoreSeverRecomm(false, ...this.interactions.map(i => i.recommendation));
             return interactionUIService.getInteractionColor(worstRecomm);
         },
         worstDrug2DrugColor() {
+            if(!this.dBankInteractions.length) return ''
             const worstRecomm = this.getMoreSeverRecomm(false, ...this.dBankInteractions.map(i => i.recommendation));
             return interactionUIService.getInteractionColor(worstRecomm);
         },
         positivesBadgeColor() {
+            if(!this.positiveInteractions.length) return ''
             const worstRecomm = this.getMoreSeverRecomm(true, ...this.positiveInteractions.map(i => i.recommendation));
             return interactionUIService.getInteractionColor(worstRecomm);
         }
     },
     methods: {
-        async handlePaging(page) {
-            this.isLoading = true;
-            if (this.$route.name === 'Drug2Drug') await this.getDBankInteractions(page);
-            else if (this.$route.name === 'Boosters') await this.getPositives(page);
-            else await this.getInteractions(page);
-            this.isLoading = false;
+        handlePaging(page) {
+            this.$router.push({ query: { q: [ ...this.$route.query.q ], page } })
         },
         async getResults() {
             this.isLoading = true;
@@ -777,11 +779,11 @@ export default {
                 isPositives: true,
                 id: ids
             };
-            let { interactions, searchState } = await this.$store.dispatch({ type: 'getInteractions', filterBy, chacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}` });
+            let { interactions, searchState } = await this.$store.dispatch({ type: 'getInteractions', filterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}` });
             this.positiveInteractions = await this.removeDupNonPositives(interactions);
             this.restoreState('Boosters', searchState);
         },
-        async getInteractions(page = 1) {
+        async getInteractions() {
             const ids = this.materials.reduce((acc, { _id, labels }) => {
                 if (!acc.includes(_id)) acc.push(_id);
                 labels.forEach(label => {
@@ -789,13 +791,15 @@ export default {
                 });
                 return acc;
             }, []);
+            let { page } = this.$route.query
+            if(!page) page = 1
             const filterBy = {
                 isSearchResults: true,
                 page: --page,
                 id: ids,
                 materialCount: this.materials.filter(({ isIncluded }) => !isIncluded).length,
             };
-            const { interactions, pageCount, total, searchState } = await this.$store.dispatch({ type: 'getInteractions', filterBy, chacheKey: `/search?${this.$route.fullPath.split('?')[1]}` });
+            const { interactions, pageCount, total, searchState } = await this.$store.dispatch({ type: 'getInteractions', filterBy, cacheKey: `/search?${this.$route.fullPath.split('?')[1]}` });
             this.pageCount = pageCount;
             this.interactions = interactions;
             this.total = (this.materials.length === 1) ? total : interactions.reduce((acc, i) => {
@@ -809,17 +813,18 @@ export default {
             }, 0);
             this.restoreState('Supp2Drug', searchState);
         },
-        async getDBankInteractions(page = 1) {
+        async getDBankInteractions() {
             const isAllSupplements = this.materials.every(material => material.type !== 'drug');
             if (!this.materials.length || isAllSupplements) {
                 this.dBankInteractions = [];
-                this.isLoading = false;
                 return;
             }
+            let {page} = this.$route.query
+            if(!page) page = 1
             const drugBankIds = this.materials.map(mat => mat.drugBankId);
             const drugBankId = (drugBankIds.length === 1) ? drugBankIds[0] : drugBankIds;
             const criteria = { drugBankId, page: --page };
-            const { dBankInteractions, pageCount, total } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria, chacheKey: `/search/drug2drug?${this.$route.fullPath.split('?')[1]}` });
+            const { dBankInteractions, pageCount, total } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria, cacheKey: `/search/drug2drug?${this.$route.fullPath.split('?')[1]}` });
             this.dBankInteractions = dBankInteractions;
             this.dBankPageCount = pageCount;
             this.dBankTotal = total;
@@ -834,7 +839,7 @@ export default {
                 isSearchResults: true,
                 q: this.$route.query.q,
             };
-            const materials = await this.$store.dispatch({ type: 'getMaterials', criteria, doChache: true });
+            const materials = await this.$store.dispatch({ type: 'getMaterials', criteria, doCache: true });
             this.materials = this.sortMaterials(materials);
             this.$store.commit({ type: 'makeMaterialNamesMap', materials });
             this.checkForIncludedMaterials();
@@ -857,8 +862,8 @@ export default {
                         materialCount: ids.length + 1,
                         recommendation: 'non-positives'
                     };
-                    vInteraction.chacheKey = `/search/positive-boosters/${filterBy.id}`;
-                    const { total } = await this.$store.dispatch({ type: 'getInteractions', filterBy, chacheKey: `/search/positive-boosters/${filterBy.id}` });
+                    vInteraction.cacheKey = `/search/positive-boosters/${filterBy.id}`;
+                    const { total } = await this.$store.dispatch({ type: 'getInteractions', filterBy, cacheKey: `/search/positive-boosters/${filterBy.id}` });
                     if (!total) {
                         res.push(group);
                     }

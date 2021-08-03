@@ -85,8 +85,8 @@ export const interactionStore = ({
             context.commit({ type: 'setInteractionCount', total });
             return interactions;
         },
-        async getInteractions(context, { filterBy, chacheKey }) {
-            return await interactionService.list(filterBy, chacheKey);
+        async getInteractions(context, { filterBy, cacheKey }) {
+            return await interactionService.list(filterBy, cacheKey);
         },
         async loadInteraction(context, { id }) {
             return await interactionService.getById(id);

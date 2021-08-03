@@ -1,7 +1,7 @@
 import { httpService } from './http.service.js';
 
 const END_POINT = 'material';
-const chache = {};
+const cache = {};
 
 export const materialService = {
     list,
@@ -16,15 +16,15 @@ export const materialService = {
     removeMany
 }
 
-async function list(filterBy = {}, doChache = false) {
+async function list(filterBy = {}, doCache = false) {
     let key = '';
-    if (doChache) {
+    if (doCache) {
         key = filterBy.q.toString();
-        if (chache[key]) return chache[key];
+        if (cache[key]) return cache[key];
     }
 
     const res = await httpService.get(END_POINT, filterBy);
-    if (doChache) chache[key] = res;
+    if (doCache) cache[key] = res;
     return res;
 }
 

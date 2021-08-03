@@ -2,7 +2,7 @@ import { httpService } from './http.service.js';
 
 const END_POINT = 'd-bank-interaction';
 
-const chache = {};
+const cache = {};
 
 export const drugBankService = {
     getInteractions,
@@ -11,12 +11,12 @@ export const drugBankService = {
     getEmptyRef
 }
 
-async function getInteractions(filterBy, chacheKey = '') {
-    if (chacheKey && chache[chacheKey]) {
-        return chache[chacheKey];
+async function getInteractions(filterBy, cacheKey = '') {
+    if (cacheKey && cache[cacheKey]) {
+        return cache[cacheKey];
     }
     const res = await httpService.get(END_POINT, filterBy);
-    if (chacheKey) chache[chacheKey] = res;
+    if (cacheKey) cache[cacheKey] = res;
     return res;
 }
 

@@ -3,11 +3,11 @@
         <collapse
             v-for="(group, idx) in interaction.vInteractions"
             :key="group._id + idx"
-            @collapse-closed="onCollapseToggle(idx, group.chacheKey)"
+            @collapse-closed="onCollapseToggle(idx, group.cacheKey)"
             :initial-is-visible="isInitialiOpen(idx)"
         >
             <template #header>
-                <div class="interaction-preview-header table-row child" @click="onCollapseToggle(idx, group.chacheKey)">
+                <div class="interaction-preview-header table-row child" @click="onCollapseToggle(idx, group.cacheKey)">
                     <span class="table-col">
                         <minus-icon
                             class="minus-icon"
@@ -137,8 +137,8 @@ export default {
         }
     },
     created() {
-        this.interaction.vInteractions.forEach(({ chacheKey }) => {
-            const { searchState } = interactionService.getChache(chacheKey);
+        this.interaction.vInteractions.forEach(({ cacheKey }) => {
+            const { searchState } = interactionService.getChache(cacheKey);
             if(!searchState) return;
             Object.values(searchState).forEach(value => {
                 Object.keys(value).forEach(idx => {

@@ -2,7 +2,7 @@ import { httpService } from './http.service.js';
 
 const END_POINT = 'interaction';
 
-var chache = {};
+var cache = {};
 
 export const interactionService = {
     list,
@@ -18,11 +18,11 @@ export const interactionService = {
 }
 
 function getChache(key) {
-    return chache[key];
+    return cache[key];
 }
 
 function chacheSearchState({ key, parentIdx, idx }) {
-    const chached = chache[key];
+    const chached = cache[key];
     if (chached) {
         if (!chached.searchState) chached.searchState = {};
 
@@ -38,12 +38,12 @@ function chacheSearchState({ key, parentIdx, idx }) {
     }
 }
 
-async function list(filterBy, chacheKey = '') {
-    if (chacheKey && chache[chacheKey]) {
-        return chache[chacheKey];
+async function list(filterBy, cacheKey = '') {
+    if (cacheKey && cache[cacheKey]) {
+        return cache[cacheKey];
     }
     const res = await httpService.get(END_POINT, filterBy);
-    if (chacheKey) chache[chacheKey] = res;
+    if (cacheKey) cache[cacheKey] = res;
 
     return res;
 }
