@@ -22,6 +22,8 @@ import searchEngine from '@/cms/views/SearchEngine';
 import resultList from '@/cms/cmps/search-engine/ResultList';
 import dBankResultList from '@/cms/cmps/search-engine/DBankResultList';
 import dBankInteractionDetails from '@/cms/views/DBankInteractionDetails';
+import UploadData from '@/cms/views/UploadData';
+
 
 Vue.use(VueRouter);
 
@@ -176,6 +178,12 @@ const routes = [
     name: 'DBankInteractionDetails',
     component: dBankInteractionDetails,
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/upload-data',
+    name: 'UploadData',
+    component: UploadData,
+    meta: { requiresAuth: true, requiresAdmin: true }
   }
 ]
 

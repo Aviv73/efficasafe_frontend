@@ -8,25 +8,24 @@ var axios = Axios.create({
 const BASE_URL = (process.env.NODE_ENV === 'development') ? '//localhost:3000/api/' : '/api/';
 
 export const httpService = {
-    get(endpoint, data, responseType) {
-        return ajax(endpoint, 'GET', data, responseType);
+    get(endpoint, data, responseType, contentType) {
+        return ajax(endpoint, 'GET', data, responseType, contentType);
     },
-    post(endpoint, data, responseType) {
-
-        return ajax(endpoint, 'POST', data, responseType);
+    post(endpoint, data, responseType, contentType) {
+        return ajax(endpoint, 'POST', data, responseType, contentType);
     },
-    put(endpoint, data, responseType) {
-        return ajax(endpoint, 'PUT', data, responseType);
+    put(endpoint, data, responseType, contentType) {
+        return ajax(endpoint, 'PUT', data, responseType, contentType);
     },
-    patch(endpoint, data, responseType) {
-        return ajax(endpoint, 'PATCH', data, responseType);
+    patch(endpoint, data, responseType, contentType) {
+        return ajax(endpoint, 'PATCH', data, responseType, contentType);
     },
-    delete(endpoint, data, responseType) {
-        return ajax(endpoint, 'DELETE', data, responseType);
+    delete(endpoint, data, responseType, contentType) {
+        return ajax(endpoint, 'DELETE', data, responseType, contentType);
     }
 }
 
-async function ajax(endpoint, method = 'get', data = null, responseType = 'json') {
+async function ajax(endpoint, method = 'get', data = null, responseType = 'json',contentType = 'application/json' ) {
     try {
         var config = {
             url: `${BASE_URL}${endpoint}`,
@@ -34,7 +33,8 @@ async function ajax(endpoint, method = 'get', data = null, responseType = 'json'
             responseType,
             headers: {
                 authorization: storageService.load('token'),
-            }
+                'Content-Type': contentType            
+            },
         }
         if (method === 'get' || method === 'GET') config.params = { data };
         else config.data = data;

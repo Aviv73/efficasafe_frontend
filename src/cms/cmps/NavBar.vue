@@ -52,6 +52,16 @@
                 tile
                 color="white"
                 text
+                to="/upload-data"
+                v-if="isAdmin"
+            >
+                Upload Data
+            </v-btn>
+            <v-btn
+                class="nav-link"
+                tile
+                color="white"
+                text
                 v-if="loggedInUser"
                 @click="logout"
             >

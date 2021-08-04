@@ -24,4 +24,6 @@
 
 .v-toolbar__content {
     padding: 0 16px;
+    max-width: 100%;
+    overflow-x: auto;
 }
