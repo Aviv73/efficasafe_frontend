@@ -1,5 +1,6 @@
 <template>
   <section>
+      <h2>Upload Data</h2>
       <v-form @submit.prevent="uploadData">
         <v-file-input
             name="interactions"
