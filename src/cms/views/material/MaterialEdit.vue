@@ -198,6 +198,7 @@
               v-model="editedMaterial.drugBankId"
               label="DrugBank ID"
             />
+          
 
             <v-checkbox
               class="mx-auto"
@@ -209,7 +210,17 @@
               v-model="editedMaterial.isUnderStudy"
             />
           </div>
-
+            <v-btn
+              class="mx-auto"
+              style="width: fit-content"
+              small
+              outlined
+              text
+              :color="editedMaterial.drugBankId ? 'error' : 'success'"
+              @click="generateFDBId"
+            >
+              Generate FDB 
+            </v-btn>
           <v-text-field
             v-model="editedMaterial.fdaLabel"
             label="FDA Label"
@@ -864,6 +875,10 @@ export default {
     }
   },
   methods: {
+    generateFDBId(){
+      const id = `FDB${Date.now()}`
+      this.editedMaterial.drugBankId = id
+    },
     addRefs(refs) {
       if (!this.editedMaterial.refs.length) this.editedMaterial.refs = refs;
       else {

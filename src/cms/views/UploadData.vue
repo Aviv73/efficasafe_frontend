@@ -22,8 +22,24 @@
             ></v-file-input>
             <v-text-field
                 placeholder="drugBankId"
-                v-model="drugBankId">
+                v-model="drugBankId"
+                @blur="getMaterialPreview">
             </v-text-field>
+            <div>
+                <v-progress-circular 
+                    indeterminate 
+                    class="ml-2 mb-3" 
+                    v-if="isLoading">
+                </v-progress-circular>
+                <div class="d-flex align-center mb-3" v-else-if="miniMaterial">
+                    <v-avatar left class="mr-2" size="20">
+                        <v-img
+                            :src="require(`@/cms/assets/icons/${miniMaterial.type}.svg`)"
+                        ></v-img>
+                    </v-avatar>
+                    <h3>{{miniMaterial.name}}</h3>
+                </div>
+            </div>
             <v-btn 
                 type="submit"
                 :disabled="isActive"
@@ -53,9 +69,25 @@ export default {
             refs: null,
             drugBankId: '',
             response :null,
+            miniMaterial: null,
+            isLoading: false
         }
     },
     methods:{
+        async getMaterialPreview(){
+            this.isLoading = true
+            const criteria = {
+                page: 0,
+                limit: 0,
+                drugBankId: this.drugBankId
+            }
+            const {name, type} = (await this.$store.dispatch({type: 'getMaterials', criteria}))[0]
+            this.miniMaterial = {
+                name,
+                type
+            }
+            this.isLoading = false
+        },
         onFileUpload(file,name){
             this[name] = file
         },
