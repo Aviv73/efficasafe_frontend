@@ -341,21 +341,36 @@ export default {
 
             const clinicalCount1 = getRefsCountByType(interactionRefs, 'clinical');
             const preclinicalCount1 = getRefsCountByType(interactionRefs, 'pre-clinical');
+            const caseCount1 = getRefsCountByType(interactionRefs, 'case');
+            const metaCount1 = getRefsCountByType(interactionRefs, 'meta');
+            const systematicCount1 = getRefsCountByType(interactionRefs, 'systematic');
             const articlesCount1 = getRefsCountByType(interactionRefs, 'articles');
             
             const clinicalCount2 = getRefsCountByType(side2Refs, 'clinical');
             const preclinicalCount2 = getRefsCountByType(side2Refs, 'pre-clinical');
+            const caseCount2 = getRefsCountByType(side2Refs, 'case');
+            const metaCount2 = getRefsCountByType(side2Refs, 'meta');
+            const systematicCount2 = getRefsCountByType(side2Refs, 'systematic');
             const articlesCount2 = getRefsCountByType(side2Refs, 'articles');
+            console.log('caseCount2', caseCount2);
+            console.log('metaCount2', metaCount2);
+            console.log('systematicCount2', systematicCount2);
             
             let txt = `<span class="font-medium">The interaction is based on:</span>`
             if (clinicalCount1) txt += `
                 &bull; ${clinicalCount1} clinical stud${clinicalCount1 > 1 ? 'ies' : 'y'}`;
             if (preclinicalCount1) txt += `
                 &bull; ${preclinicalCount1} pre-clinical stud${preclinicalCount1 > 1 ? 'ies' : 'y'}`;
+            if (caseCount1) txt += `
+                &bull; ${caseCount1} case stud${caseCount1 > 1 ? 'ies' : 'y'}`;
+            if (metaCount1) txt += `
+                &bull; ${metaCount1} meta analysis${metaCount1 > 1 ? 'es' : ''}`;
+            if (systematicCount1) txt += `
+                &bull; ${systematicCount1} systematic review${systematicCount1 > 1 ? 's' : ''}`;
             if (articlesCount1) txt += `
                 &bull; ${articlesCount1} article${articlesCount1 > 1 ? 's' : ''}`;
 
-            if (clinicalCount2 || preclinicalCount2 || articlesCount2) {
+            if (clinicalCount2 || preclinicalCount2 || articlesCount2 || caseCount2 || metaCount2 || systematicCount2) {
                 txt += `
                     <span class="font-medium">The pharmacokinetic section is based on:</span>`;
 
@@ -363,6 +378,12 @@ export default {
                     &bull; ${clinicalCount2} clinical stud${clinicalCount2 > 1 ? 'ies' : 'y'}`;
                 if (preclinicalCount2) txt += `
                     &bull; ${preclinicalCount2} pre-clinical stud${preclinicalCount2 > 1 ? 'ies' : 'y'}`;
+                if (caseCount2) txt += `
+                    &bull; ${caseCount2} case stud${caseCount2 > 1 ? 'ies' : 'y'}`;
+                if (metaCount2) txt += `
+                    &bull; ${metaCount2} meta analysis${metaCount2 > 1 ? 'es' : ''}`;
+                if (systematicCount2) txt += `
+                    &bull; ${systematicCount2} systematic review${systematicCount2 > 1 ? 's' : ''}`;
                 if (articlesCount2) txt += `
                     &bull; ${articlesCount2} article${articlesCount2 > 1 ? 's' : ''}`;
             }
@@ -527,8 +548,17 @@ export default {
                 case 'pre-clinical':
                     iterateFunc = ref => ref.type === 'in vitro' || ref.type === 'animal';
                 break;
+                case 'systematic':
+                    iterateFunc = ref => ref.type === 'systematic'
+                break;
+                case 'meta':
+                    iterateFunc = ref => ref.type === 'meta'
+                break;
+                case 'case':
+                    iterateFunc = ref => ref.type === 'case'
+                break;
                 case 'articles':
-                    iterateFunc = ref => ref.type !== 'clinical' && ref.type !== 'retrospective' && ref.type !== 'in vitro' && ref.type !== 'animal';
+                    iterateFunc = ref => ref.type === 'review' || ref.type === 'drug label' || ref.type === 'book' || !ref.type  
                 break;
             }
 
