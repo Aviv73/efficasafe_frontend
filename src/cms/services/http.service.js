@@ -45,6 +45,7 @@ async function ajax(endpoint, method = 'get', data = null, responseType = 'json'
             console.log('Unautonticated');
             throw new Error('Unautonticated');
         }
+        return err
     }
 }
 
