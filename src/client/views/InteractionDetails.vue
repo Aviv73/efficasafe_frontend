@@ -558,7 +558,7 @@ export default {
                     iterateFunc = ref => ref.type === 'case'
                 break;
                 case 'articles':
-                    iterateFunc = ref => ref.type === 'review' || ref.type === 'drug label' || ref.type === 'book' || !ref.type  
+                    iterateFunc = ref => ref.type === 'review' || ref.type === 'drug label' || ref.type === 'book' || ref.type === 'Book' || !ref.type  
                 break;
             }
 
