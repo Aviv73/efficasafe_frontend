@@ -119,7 +119,7 @@
                 </div>
                 <div
                     class="interaction-preview-content"
-                    :class="{ 'child': isChild }"
+                    :class="{ 'child': isChild  }"
                     v-else-if="interaction.side2Label && !interaction.side2Material"
                 >
                     <label-interaction-preview
@@ -238,7 +238,7 @@ export default {
         return {
             pathwayRefCount: 0,
             primarySideInView: 1,
-            initialCollapseIsVisible: false
+            initialCollapseIsVisible: false,
         }
     },
     computed: {
@@ -424,6 +424,9 @@ export default {
         },
         swapSideNames(side) {
             this.primarySideInView = side;
+        },
+        setIsLabelChildEmpty(isEmpty){
+            this.isLabelChildEmpty = !isEmpty
         }
     },
     created() {

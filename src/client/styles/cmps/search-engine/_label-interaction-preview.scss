@@ -33,6 +33,9 @@
         box-shadow: $slight-border-top;
         margin-block-start: rem(14px);
         padding: rem(14px) 0;
+        &.is-empty{
+            box-shadow: none;
+        }
     }
     .collapse-content {
         padding: rem(14px) 0;

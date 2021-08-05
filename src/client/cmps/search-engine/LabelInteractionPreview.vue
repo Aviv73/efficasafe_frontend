@@ -100,6 +100,7 @@
         </div>
         <div
             class="label-interaction-preview-list"
+            :class="{'is-empty': !atcGroupedVinteractions.length}"
             v-if="restOfVinteractions.length"
         >
             <component
@@ -216,7 +217,6 @@ export default {
             return this.vInteractions.reduce((acc, vinteraction) => {
                 vinteraction.atcParentGroups.forEach((atcGroup) => {
                     const atcGroupName = atcGroup.split(' ').splice(1).join(' ');
-                    if (atcGroupName.includes('combination') || atcGroupName.includes('and')) return;
                     if (!acc[atcGroupName]) {
                         acc[atcGroupName] = [];
                     }
@@ -231,7 +231,8 @@ export default {
             return Object.keys(this.atcGroupVinteractionMap).reduce(
                 (acc, atcGroup) => {
                     const ids = this.atcGroupVinteractionMap[atcGroup];
-                    if (ids.length > 1) {
+                    const atcGroupName = atcGroup.split(' ').splice(1).join(' ');
+                    if (ids.length > 1 && !atcGroupName.includes('combination') && !atcGroupName.includes('and')) {
                         let vInteractions = [];
                         ids.forEach((id) => {
                             const matching = this.vInteractions.filter(vinteraction => vinteraction.side2Material._id === id);
@@ -243,17 +244,10 @@ export default {
             }, []);
         },
         restOfVinteractions() {
-            const seenDbankIdsMap = {};
-            return Object.keys(this.atcGroupVinteractionMap).reduce(
-                (acc, atcGroup) => {
-                    const ids = this.atcGroupVinteractionMap[atcGroup];
-                    if (ids.length === 1 && !seenDbankIdsMap[ids[0]]) {
-                        const vInteractions = this.vInteractions.filter(vint => vint.side2Material._id === ids[0]);
-                        acc = acc.concat(vInteractions);
-
-                        seenDbankIdsMap[ids[0]] = true;
-                    }
-                    return acc;
+            return this.vInteractions.reduce((acc, vInteraction) => {
+                const isNotExist = this.atcGroupedVinteractions.every(group=> !group.vInteractions.find(v => v._id === vInteraction._id))
+                if(isNotExist) acc.push(vInteraction)
+                return acc;
             }, []);
         },
         vInteractionHeaderEl() {
