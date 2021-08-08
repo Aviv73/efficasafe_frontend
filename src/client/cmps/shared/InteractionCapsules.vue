@@ -128,7 +128,7 @@ export default {
         draftNameContent() {
             const nameToDisplay = (this.showDraftName && this.draftName) ? this.draftName : this.side2Name;
             if (nameToDisplay.length >= 14 && this.isGroup) {
-                return `${nameToDisplay.substring(0, 14)}...(${this.vInteractionCount})`;
+                return `${nameToDisplay.substring(0, 12)}...(${this.vInteractionCount})`;
             }
             return (this.vInteractionCount) ? `${nameToDisplay} (${this.vInteractionCount})` : nameToDisplay;
         },

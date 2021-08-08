@@ -16,6 +16,7 @@
                                 class="minus-icon"
                                 title=""
                             />
+                                <!-- name="kaki" -->
                             <interaction-capsules
                                 :name="getGroupName(atcGroup.name)"
                                 :vInteractionCount="atcGroup.vInteractions.length"    
@@ -216,7 +217,7 @@ export default {
         atcGroupVinteractionMap() {
             return this.vInteractions.reduce((acc, vinteraction) => {
                 vinteraction.atcParentGroups.forEach((atcGroup) => {
-                    const atcGroupName = atcGroup.split(' ').splice(1).join(' ');
+                    const atcGroupName = atcGroup.split(' ').splice(0).join(' ');
                     if (!acc[atcGroupName]) {
                         acc[atcGroupName] = [];
                     }
@@ -228,7 +229,7 @@ export default {
             }, {});
         },
         atcGroupedVinteractions() {
-            return Object.keys(this.atcGroupVinteractionMap).reduce(
+            let groupedVinteractions = Object.keys(this.atcGroupVinteractionMap).reduce(
                 (acc, atcGroup) => {
                     const ids = this.atcGroupVinteractionMap[atcGroup];
                     const atcGroupName = atcGroup.split(' ').splice(1).join(' ');
@@ -238,10 +239,18 @@ export default {
                             const matching = this.vInteractions.filter(vinteraction => vinteraction.side2Material._id === id);
                             vInteractions = vInteractions.concat(matching);
                         });
-                        acc.push({ name: atcGroup, vInteractions });
+                        acc.push({ name: atcGroup, vInteractions: vInteractions });
                     }
                     return acc;
             }, []);
+            groupedVinteractions.sort((a,b) => {
+                const nameA = a.name.toUpperCase(); 
+                const nameB = b.name.toUpperCase(); 
+                if (nameA < nameB) return -1
+                if (nameA > nameB) return 1
+                return 0;
+            })
+            return groupedVinteractions
         },
         restOfVinteractions() {
             return this.vInteractions.reduce((acc, vInteraction) => {
@@ -318,8 +327,10 @@ export default {
                 </a>
             `;
         },
-        getGroupName(groupName) {
-            return `${this.interaction.side1Material.name} & ${groupName}`;
+        getGroupName(groupNameWithId) {
+            let noIdGroupName = groupNameWithId.split(' ').splice(1).join(' ')
+            noIdGroupName = noIdGroupName.replace(/\[(.*?)\]/g, '')
+            return `${this.interaction.side1Material.name} & ${noIdGroupName}`;
         },
         getPathwayRefCount(materialId) {
             const { pathways } = this.relatedMaterials.find(m => m._id === materialId);
