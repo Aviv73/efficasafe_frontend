@@ -89,11 +89,7 @@
         width: 100%;
         padding: rem(6px);
         background-color: rgba($clr7, .5);
-        margin-block-end: rem(36px);
-
-        @include for-mobile-horizontal {
-            margin-block-end: rem(42px);
-        }
+        margin-block-end: rem(24px);
 
         input {
             padding: rem(12px) 0;
@@ -104,6 +100,21 @@
                 text-align: initial;
                 font-size: rem(15px);
             }
+        }
+    }
+
+    &-cta{
+        margin-block-end: rem(20px);
+        border-radius: 100px;
+        padding: rem(8px) rem(36px);
+        background-color: $clr2;
+        color: $white;
+        border: 2px solid $clr2;
+        box-shadow: none;
+        transition: color .3s ease, background-color .3s ease;
+        
+        @include hover-supported {
+            box-shadow: none;
         }
     }
 

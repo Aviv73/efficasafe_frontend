@@ -18,12 +18,13 @@
                     class="home-search"
                     :placeholder1="
                         isScreenNarrow
-                            ? 'Search drug / herb'
-                            : 'Search drug / herb / supplement'
+                            ? 'Add drug / herb'
+                            : 'Add drug / herb / supplement'
                     "
                     placeholder2="Add another"
                     @item-selected="goToSearch"
                 />
+                <button class="btn home-cta" @click="searchhWithBtn">Search</button>
                 <h2 class="home-subheader">
                     <span class="font-bold">Herb-Drug-Supplement</span>
                     Interaction platform
@@ -213,6 +214,11 @@ export default {
                 this.$router.push(`/search?q=${q1}&q=${q2}`);
             }
         },
+        searchhWithBtn(){
+            if(this.searches.length === 1){
+                this.$router.push(`/search?q=${this.searches[0]}`);
+            }
+        }
     },
     async created() {
         this.stats = await this.$store.dispatch({ type: 'getStatistics' });
