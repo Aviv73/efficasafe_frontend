@@ -445,7 +445,7 @@ export default {
                 const materialName = matchingMaterial ? matchingMaterial.name : '';
                 const materialId = matchingMaterial ? matchingMaterial._id : '';
                 const userQuery = this.$store.getters.materialNamesMap[materialName];
-                group.name = userQuery ? userQuery.join(', ') : materialName;
+                group.name = userQuery ? userQuery[0] : materialName;
                 group.mainMaterialId = materialId;
                 group.isMaterialGroup = true;
                 group.vInteractions.forEach(vInteraction => {
@@ -770,8 +770,8 @@ export default {
             }
         },
         async getPositives() {
-            const ids = this.materials.reduce((acc, { type, _id, labels }) => {
-                if (type !== 'drug') return acc;
+            const ids = this.materials.reduce((acc, { type, _id, labels, isIncluded }) => {
+                if (type !== 'drug' || isIncluded) return acc;
                 if (!acc.includes(_id)) acc.push(_id);
                 labels.forEach(label => {
                     if (!acc.includes(label._id)) acc.push(label._id);
@@ -849,6 +849,7 @@ export default {
             this.checkForIncludedMaterials();
         },
         async removeDupNonPositives(interactions) {
+            console.log('interactions',interactions );
             const res = [];
             for (let i = 0; i < interactions.length; i++) {
                 const group = interactions[i];
@@ -873,6 +874,7 @@ export default {
                     }
                 }
             }
+            console.log('res', res);
             return res;
         },
         restoreState(routeName, state = {}) {
