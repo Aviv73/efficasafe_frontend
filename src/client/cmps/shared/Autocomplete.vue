@@ -77,6 +77,8 @@
 </template>
 
 <script>
+import { eventBus, EV_clear_input } from '@/cms/services/eventBus.service'
+
 export default {
     timerId: null,
     props: {
@@ -139,11 +141,16 @@ export default {
         },
         onFocusChange(ev) {
             this.isSecondaryFocused = ev.target === this.$refs.searchInput2;
+        },
+        clearInput(){
+            this.search2 = '';
+            this.$refs.searchInput2.focus();
         }
     },
     created() {
         if (this.isOnSearchPage) return;
         document.addEventListener('focusin', this.onFocusChange);
+        eventBus.$on(EV_clear_input, this.clearInput)
     },
     beforeDestroy() {
         if (this.isOnSearchPage) return;

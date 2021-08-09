@@ -22,7 +22,7 @@
         />
         <list-pagination
             class="list-pagination flex-center"
-            v-if="listData.pageCount > 1 && !isVertical"
+            v-if="listData.pageCount > 1 && !isVertical && !isLoading"
             v-model.number="page"
             :pageCount="listData.pageCount"
             :disabled="isLoading"

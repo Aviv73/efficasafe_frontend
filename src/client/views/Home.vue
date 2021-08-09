@@ -186,6 +186,7 @@ import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
 import WelcomeModal from '../cmps/shared/modals/WelcomeModal';
 import PassChangeSuccess from '../cmps/shared/modals/PassChangeSuccess';
+import { eventBus, EV_clear_input } from '@/cms/services/eventBus.service'
 
 export default {
     name: 'Home',
@@ -212,6 +213,8 @@ export default {
             if (this.searches.length === 2) {
                 const [q1, q2] = this.searches;
                 this.$router.push(`/search?q=${q1}&q=${q2}`);
+            }else if(this.searches.length === 1){
+                eventBus.$emit(EV_clear_input)
             }
         },
         searchhWithBtn(){

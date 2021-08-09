@@ -381,7 +381,7 @@ export default {
                 if (!isSameSearch) {
                     await this.getResults();
                 }
-                if (this.materials.length >= 2 && !storageService.load('did-onboarding-tour') && !this.isScreenNarrow) {
+                if (this.materialsLength >= 2 && !storageService.load('did-onboarding-tour') && !this.isScreenNarrow) {
                     this.$tours['onboarding-tour'].start();
                 }
             },
@@ -526,7 +526,7 @@ export default {
         },
         formatedInteractions() {
             let formatedInteractions = this.interactions.reduce((acc, interaction) => {
-                if (this.materials.length === 1 && this.materials[0]._id === interaction.side1Material._id) acc.push(interaction);
+                if (this.materialsLength === 1 && this.materials[0]._id === interaction.side1Material._id) acc.push(interaction);
                 else if (!interaction.side2Label) {
                     this.insertInteraction(acc, interaction);
                 } else {
@@ -558,7 +558,7 @@ export default {
                 return acc;
             }, []);
             const queryApearanceMap = {};
-            if (this.materials.length === 1) return this.sortInteractions(formatedInteractions);
+            if (this.materialsLength === 1) return this.sortInteractions(formatedInteractions);
             formatedInteractions = formatedInteractions.reduce((acc, interaction) => {
                 const { side1Name, side2Name } = this.getInteractionSidesNames(interaction);
                 if (
@@ -736,6 +736,9 @@ export default {
             if(!this.positiveInteractions.length) return ''
             const worstRecomm = this.getMoreSeverRecomm(true, ...this.positiveInteractions.map(i => i.recommendation));
             return interactionUIService.getInteractionColor(worstRecomm);
+        },
+        materialsLength() {
+            return this.materials.filter(({ isIncluded }) => !isIncluded).length;
         }
     },
     methods: {
@@ -746,7 +749,7 @@ export default {
             this.isLoading = true;
             this.isPBLoading = true;
             await this.getMaterials();
-            if (this.$route.query.q && this.$route.query.q.length === 1 && this.materials.length > 1) {
+            if (this.$route.query.q && this.$route.query.q.length === 1 && this.materialsLength > 1) {
                 eventBus.$emit(EV_show_user_msg, 'Compound as a single result isn\'t supported, Please insert more material/s', 15000);
                 this.reset(false);
                 this.isLoading = false;
@@ -793,17 +796,17 @@ export default {
                 return acc;
             }, []);
             let { page } = this.$route.query
-            if(!page) page = 1
+            if(!page) page = 1;
             const filterBy = {
                 isSearchResults: true,
                 page: --page,
                 id: ids,
-                materialCount: this.materials.filter(({ isIncluded }) => !isIncluded).length,
+                materialCount: this.materialsLength,
             };
             const { interactions, pageCount, total, searchState } = await this.$store.dispatch({ type: 'getInteractions', filterBy, cacheKey: `/search?${this.$route.fullPath.split('?')[1]}` });
             this.pageCount = pageCount;
             this.interactions = interactions;
-            this.total = (this.materials.length === 1) ? total : interactions.reduce((acc, i) => {
+            this.total = (this.materialsLength === 1) ? total : interactions.reduce((acc, i) => {
                 if (i.side2Material) acc++;
                 else {
                     const { _id } = i.side2Label;
@@ -816,7 +819,7 @@ export default {
         },
         async getDBankInteractions() {
             const isAllSupplements = this.materials.every(material => material.type !== 'drug');
-            if (!this.materials.length || isAllSupplements) {
+            if (!this.materialsLength || isAllSupplements) {
                 this.dBankInteractions = [];
                 return;
             }
@@ -876,7 +879,7 @@ export default {
             this.$store.commit({ type: 'setOpenCollapses', openCollapses: state, routeName });
         },
         getMaterialInteractions(result) {
-            if (this.materials.length <= 1 || result.isIncluded) return [];
+            if (this.materialsLength <= 1 || result.isIncluded) return [];
             const [ materialName ] = this.$store.getters.materialRealName(result.txt);
             const seenIds = {};
             let interactions = this.formatedInteractions.reduce((acc, interaction) => {
@@ -1035,13 +1038,17 @@ export default {
             }, []);
             dups.forEach(material => {
                 const queries = this.$store.getters.materialNamesMap[material.name];
+                const materialDups = this.materials.filter(m => m._id === material._id);
                 for (let i = queries.length - 1; i >= 0; i--) {
                     const query = queries[i];
                     if (this.$store.getters.queryApearanceCount(query) < 2) {
                         const includedMaterial = this.materials.find(m => m._id === material._id && m.userQuery === query);
                         includedMaterial.isIncluded = true;
-                        break;
                     }
+                }
+                const isAllIncluded = materialDups.every(m => m.isIncluded);
+                if (isAllIncluded) {
+                    materialDups[0].isIncluded = false;
                 }
             });
         },
