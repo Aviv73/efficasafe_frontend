@@ -36,6 +36,8 @@
                                 :draftName="interaction.side2DraftName"
                                 :isLabel="!!interaction.side2Label"
                                 :isMaterialGroup="!!interaction.isMaterialGroup"
+                                :exactName="exactName"
+                                :isPositive="isPositive"
                             />
                         </span>
                         <span class="table-col" :title="interaction.recommendation">
@@ -232,6 +234,10 @@ export default {
         parentIdx: {
             type: Number,
             required: false
+        },
+        exactName: {
+            type: String,
+            required: false
         }
     },
     data() {
@@ -297,7 +303,7 @@ export default {
         getSide2Name(name) {
             const side2Name = name.split(' & ')[1].trim();
             if (!this.isCompoundPart && this.$store.getters.materialNamesMap[side2Name]) {
-                return this.$store.getters.materialNamesMap[side2Name].join(', ');
+                return this.$store.getters.materialNamesMap[side2Name][0];
             }
             return side2Name;
         },

@@ -115,6 +115,14 @@ export default {
         isMaterialGroup: {
             type: Boolean,
             default: false
+        },
+        exactName: {
+            type: String,
+            required: false
+        },
+        isPositive: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {
@@ -137,7 +145,7 @@ export default {
             const side1Name = this.name.split('&')[0].trim();
             if (this.onDetailsPage || !this.isSideSwapped) return side1Name;
             if (this.$store.getters.materialNamesMap[side1Name]) {
-                return this.$store.getters.materialNamesMap[side1Name].join(', ');
+                return this.$store.getters.materialNamesMap[side1Name][0];
             }
             return side1Name;
         },
@@ -145,9 +153,12 @@ export default {
             if (!this.name) return '';
             if (this.isMaterialGroup) return this.name;
             const side2Name = this.name.split('&')[1].trim();
+            const queries = this.$store.getters.materialNamesMap[side2Name];
+            const count = queries ? this.$store.getters.queryApearanceCount(queries[0]) : 0;
+            if(this.isPositive && count > 1) return side2Name
             if (!this.localize && this.isSideSwapped) return side2Name;
-            if (this.$store.getters.materialNamesMap[side2Name]) {
-                return this.$store.getters.materialNamesMap[side2Name].join(', ');
+            if (queries) {
+                return queries[0];
             }
             return side2Name;
         },

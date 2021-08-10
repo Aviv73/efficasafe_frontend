@@ -47,6 +47,7 @@
                         :side1-id="group.side1Material._id"
                         :main-side2-material-id="interaction.mainMaterialId"
                         :materials="materials"
+                        :exactName="interaction.exactName"
                     />
                 </div>
             </template>

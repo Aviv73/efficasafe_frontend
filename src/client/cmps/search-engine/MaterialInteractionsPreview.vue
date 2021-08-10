@@ -128,7 +128,7 @@ export default {
                 this.$store.getters.materialNamesMap[side2Name] &&
                 !this.$store.getters.materialNamesMap[side2Name].includes(side2Name)
             ) {
-                side2Name = this.$store.getters.materialNamesMap[side2Name].join(', ');
+                side2Name = this.$store.getters.materialNamesMap[side2Name][0];
             }
             return side2Name;
         },

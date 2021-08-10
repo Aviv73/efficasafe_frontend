@@ -75,7 +75,7 @@
                             :to="getInteractionLink(interaction)"
                         >
                             <interaction-capsules
-                                :title="interaction.evidenceLevel || interaction.evidence_level"
+                                :title="interaction.recommendation"
                                 :name="getInteractionName(interaction)"
                                 :color="getInteractionColor('avoid coadministration')"
                                 :vInteractionCount="0"
@@ -119,7 +119,7 @@
                             :to="getInteractionLink(interaction)"
                         >
                             <interaction-capsules
-                                :title="interaction.evidenceLevel || interaction.evidence_level"
+                                :title="interaction.recommendation"
                                 :name="getInteractionName(interaction)"
                                 :color="getInteractionColor('caution should be taken')"
                                 :vInteractionCount="0"
@@ -161,7 +161,7 @@
                             :to="getInteractionLink(interaction)"
                         >
                             <interaction-capsules
-                                :title="interaction.evidenceLevel || interaction.evidence_level"
+                                :title="interaction.recommendation"
                                 :name="getInteractionName(interaction)"
                                 :color="getInteractionColor('coadministration is possible')"
                                 :vInteractionCount="0"
@@ -242,13 +242,17 @@ export default {
     computed: {
         interactions() {
             return (this.$route.name === 'Drug2Drug') ? 'dBankInteractions' : 'interactions';
+        },
+        materialsLength(){
+            console.log(this.materials.filter(m => !m.isIncluded).length);
+            return this.materials.filter(m => !m.isIncluded).length
         }
     },
     methods: {
         async getInteractions(filterBy) {
             this.isLoading = true;
             const lists = await this.$store.dispatch({ type: 'getInteractions', filterBy });
-            this.lists = (this.materials.length > 1) ? this.removeDupVinteractions(lists) : lists;
+            this.lists = (this.materialsLength > 1) ? this.removeDupVinteractions(lists) : lists;
             const maxTotal = Math.max(lists.reds.total, lists.yellows.total, lists.greens.total);
             const maxPageCount = Math.max(lists.reds.pageCount, lists.yellows.pageCount, lists.greens.pageCount);
             this.maxTotal = maxTotal;
@@ -268,7 +272,7 @@ export default {
         getResults() {
             switch (this.$route.name) {
                 case 'Drug2Drug': {
-                    const drugBankIds = this.materials.map(mat => mat.drugBankId);
+                    const drugBankIds = this.materials.filter(m => !m.isIncluded).map(mat => mat.drugBankId);
                     const drugBankId = (drugBankIds.length === 1) ? drugBankIds[0] : drugBankIds;
                     const criteria = { drugBankId, page: this.page - 1, isMultiList: true };
                     this.getDBankInteractions(criteria);
@@ -301,17 +305,17 @@ export default {
             Object.values(lists).forEach(list => {
                 list.interactions.forEach(interaction => {
                     const side1Queries = this.$store.getters.materialNamesMap[interaction.side1Material.name];
-                    const side1Name = side1Queries ? side1Queries.join(', ') : interaction.side1Material.name;
+                    const side1Name = side1Queries ? side1Queries[0] : interaction.side1Material.name;
                     if (interaction.side2Material) {
                         const userQuery = this.$store.getters.materialNamesMap[interaction.side2Material.name];
-                        const interactionName = `${side1Name} & ${userQuery ? userQuery.join(', ') : interaction.side2Material.name}`;
+                        const interactionName = `${side1Name} & ${userQuery ? userQuery[0] : interaction.side2Material.name}`;
                         
                         if (!seenVinteractionsMap[interactionName]) seenVinteractionsMap[interactionName] = [ interaction ];
                         else seenVinteractionsMap[interactionName].push(interaction);
                     } else {
                         const matchingMaterial = this.materials.find(m => m.labels.some(l => l._id === interaction.side2Label._id));
                         const userQueries = this.$store.getters.materialNamesMap[matchingMaterial.name];
-                        const side2Name = userQueries ? userQueries.join(', ') : matchingMaterial.name;
+                        const side2Name = userQueries ? userQueries[0] : matchingMaterial.name;
                         const interactionName = `${side1Name} & ${side2Name}`;
                         
                         if (!seenVinteractionsMap[interactionName]) seenVinteractionsMap[interactionName] = [ interaction ];
@@ -342,7 +346,7 @@ export default {
         },
         getPreviewWrapEl({ side2Material, side2Label }) {
             if (this.$route.name === 'Drug2Drug') return 'router-link';
-            if (this.materials.length <= 1) {
+            if (this.materialsLength <= 1) {
                 if (!side2Material) return 'span';
                 return 'router-link';
             } else {
@@ -363,12 +367,12 @@ export default {
             if (interaction.name) return interaction.name;
             if (interaction.side2Material) return `${interaction.side1Material.name} & ${interaction.side2Material.name}`;
             if (interaction.side2Label) {
-                if (this.materials.length <= 1) return `${interaction.side2Label.name}`;
+                if (this.materialsLength <= 1) return `${interaction.side2Label.name}`;
                 const materials = this.getVirtualSide2(interaction.side2Label._id);
                 
                 if (materials.length === 1) return `${interaction.side1Material.name} & ${materials[0].name}`;
                 const side2Names = materials.map(material => material.name);
-                return `${interaction.side1Material.name} & ${side2Names.join(', ')}`;
+                return `${interaction.side1Material.name} & ${side2Names[0]}`;
             }
         },
         isLongestList({ total }) {

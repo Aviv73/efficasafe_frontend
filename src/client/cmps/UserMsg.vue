@@ -55,6 +55,8 @@
 <script>
 import { eventBus, EV_show_user_msg, EV_show_cookie_notice } from '@/cms/services/eventBus.service';
 import { storageService } from '@/cms/services/storage.service';
+import { logService } from '@/cms/services/log.service';
+
 
 import CloseIcon from 'vue-material-design-icons/Close';
 
@@ -89,6 +91,7 @@ export default {
         acceptCookies() {
             this.isActive = false;
             this.isCookieNotice = false;
+            logService.add({action: 'Accepted cookies'})
             storageService.store('cookie-consent', true);
         },
         showCookieNotice() {

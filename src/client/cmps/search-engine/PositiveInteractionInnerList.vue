@@ -6,6 +6,7 @@
             :interaction="interaction"
             :materials="materials"
             :idx="idx"
+            :exactName="exactName"
             is-child
             is-positive
             link
@@ -31,6 +32,10 @@ export default {
         materials: {
             type: Array,
             required: true
+        },
+        exactName: {
+            type: String,
+            required: false
         }
     },
     data() {
@@ -80,19 +85,19 @@ export default {
             const seenVinteractionsMap = {};
             interactions.forEach(interaction => {
                 const side1Queries = this.$store.getters.materialNamesMap[interaction.side1Material.name];
-                    const side1Name = side1Queries ? side1Queries.join(', ') : interaction.side1Material.name;
+                    const side1Name = side1Queries ? side1Queries[0] : interaction.side1Material.name;
                     if (interaction.side2Material) {
-                        const userQuery = this.$store.getters.materialNamesMap[interaction.side2Material.name];
-                        const interactionName = `${side1Name} & ${userQuery ? userQuery.join(', ') : interaction.side2Material.name}`;
-                        
+                        // const userQuery = this.$store.getters.materialNamesMap[interaction.side2Material.name];
+                        // const interactionName = `${side1Name} & ${userQuery ? userQuery[0] : interaction.side2Material.name}`;
+                        const interactionName = `${side1Name} & ${interaction.side2Material.name}`;
                         if (!seenVinteractionsMap[interactionName]) seenVinteractionsMap[interactionName] = [ interaction ];
                         else seenVinteractionsMap[interactionName].push(interaction);
                     } else {
                         const matchingMaterial = this.materials.find(m => m.labels.some(l => l._id === interaction.side2Label._id));
-                        const userQueries = this.$store.getters.materialNamesMap[matchingMaterial.name];
-                        const side2Name = userQueries ? userQueries.join(', ') : matchingMaterial.name;
-                        const interactionName = `${side1Name} & ${side2Name}`;
                         
+                        const userQueries = this.$store.getters.materialNamesMap[matchingMaterial.name];
+                        const side2Name = userQueries ? userQueries[0] : matchingMaterial.name;
+                        const interactionName = `${side1Name} & ${side2Name}`;
                         if (!seenVinteractionsMap[interactionName]) seenVinteractionsMap[interactionName] = [ interaction ];
                         else seenVinteractionsMap[interactionName].push(interaction);
                     }
@@ -115,7 +120,6 @@ export default {
                 const [ mainInteraction ] = interactions.splice(mainInteractionIdx, 1);
                 interactions.unshift(mainInteraction);
             }
-
             return interactions;
         },
         getMoreSeverInteraction(interactions) {

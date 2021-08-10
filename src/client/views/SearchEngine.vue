@@ -312,6 +312,7 @@
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import { storageService } from '@/cms/services/storage.service';
 import { eventBus, EV_show_user_msg, EV_search_results_cleared } from '@/cms/services/eventBus.service';
+import { logService } from '@/cms/services/log.service';
 
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import ShareModal from '@/client/cmps/shared/modals/ShareModal';
@@ -464,7 +465,8 @@ export default {
             });
             const map = this.$options.recommendationsOrderMap;
             const formatedPositiveInteractions = this.positiveInteractions.reduce((acc, interaction) => {
-                const existing = acc.find(i => i.name === interaction.name);
+                const existing = acc.find(i => i.name === interaction.name && i.mainMaterialId === interaction.mainMaterialId);
+                // const existing = acc.find(i => i.name === interaction.name);
                 if (!existing) {
                     acc.push(interaction);
                 } else {
@@ -485,6 +487,21 @@ export default {
                 }
                 return acc;
             }, []);
+            const nameCountMap = {}
+            formatedPositiveInteractions.forEach( group => {
+                if(!nameCountMap[group.name]) nameCountMap[group.name] = 0
+                nameCountMap[group.name]++    
+            })
+            Object.keys(nameCountMap).forEach(key => {
+                if(nameCountMap[key] > 1){
+                    const dups = formatedPositiveInteractions.filter(i => i.name === key)
+                    dups.forEach(dup => {
+                        const materialName = this.materials.find( m => m._id === dup.mainMaterialId && !m.isIncluded).name
+                        dup.name = `${materialName} (${dup.name})`;
+                        dup.exactName = `${materialName}`;
+                    })
+                }
+            })
             if (this.boosterSortOptions) {
                 const { recommendationsOrderMap: map } = this.$options;
                 const { sortBy, isDesc } = this.boosterSortOptions;
@@ -507,21 +524,6 @@ export default {
                     (a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
                 });
             }
-            this.materials.forEach(material => {
-                if (material.type !== 'drug' || formatedPositiveInteractions.some(g => g.name === material.userQuery)) return;
-                const name = (material.userQuery.length >= 14) ? material.userQuery.substring(0, 14) + '...(0)' : material.userQuery + ' (0)';
-                const emptyGroup = {
-                    name,
-                    recommendation: '',
-                    evidenceLevel: '',
-                    mainMaterialId: material._id,
-                    isMaterialGroup: true,
-                    isEmpty: true,
-                    vInteractions: [],
-                    total: 0
-                };
-                formatedPositiveInteractions.push(emptyGroup);
-            });
             return formatedPositiveInteractions;
         },
         formatedInteractions() {
@@ -825,7 +827,7 @@ export default {
             }
             let {page} = this.$route.query
             if(!page) page = 1
-            const drugBankIds = this.materials.map(mat => mat.drugBankId);
+            const drugBankIds = this.materials.filter(m => !m.isIncluded).map(mat => mat.drugBankId);
             const drugBankId = (drugBankIds.length === 1) ? drugBankIds[0] : drugBankIds;
             const criteria = { drugBankId, page: --page };
             const { dBankInteractions, pageCount, total } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria, cacheKey: `/search/drug2drug?${this.$route.fullPath.split('?')[1]}` });
@@ -849,7 +851,6 @@ export default {
             this.checkForIncludedMaterials();
         },
         async removeDupNonPositives(interactions) {
-            console.log('interactions',interactions );
             const res = [];
             for (let i = 0; i < interactions.length; i++) {
                 const group = interactions[i];
@@ -874,7 +875,6 @@ export default {
                     }
                 }
             }
-            console.log('res', res);
             return res;
         },
         restoreState(routeName, state = {}) {
@@ -1118,6 +1118,7 @@ export default {
                     type: 'updateUser',
                     user: { ...this.$store.getters.loggedInUser }
                 });
+                logService.add({action: 'Approved use'})
             }
             this.isDisclaimerActive = false;
         },
