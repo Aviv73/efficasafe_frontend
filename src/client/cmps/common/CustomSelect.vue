@@ -57,12 +57,16 @@ export default {
         options: {
             type: Array,
             default: () => [],
+        },
+        placeholder:{
+            type: String,
+            required: false
         }
     },
     data() {
         return {
             isOpen: false,
-            activeOption: this.options.length ? this.options[0].title : '',
+            activeOption: this.placeholder || (this.options.length ? this.options[0].title : ''),
         };
     },
     methods: {
@@ -79,6 +83,7 @@ export default {
             this.activeOption = title;
             this.isOpen = false;
             this.$emit('input', value);
+            this.$emit('changed');
         }
     }
 };

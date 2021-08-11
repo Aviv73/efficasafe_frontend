@@ -1,31 +1,116 @@
 .contact-us {
+  flex-grow: 1;
+  display: flex;
+  color: rgba($clr10, 0.85);
+  font-size: rem(18px);
+  line-height: rem(26px);
+
+  &-container {
     flex-grow: 1;
+  }
+
+  header {
+    background-color: $clr3;
+    padding: rem(95px) 0 0 rem(65px);
+
+    p {
+      max-width: 28ch;
+    }
+    .d-block {
+      margin-block-end: rem(35px);
+    }
+  }
+
+  main {
+    position: relative;
+  }
+
+  .contact-us-form {
     display: flex;
-    color: rgba($clr10, .85);
-    font-size: rem(18px);
-    line-height: rem(26px);
+    flex-direction: column;
+    margin: rem(100px) auto 0;
+    max-width: 530px;
+    width: 90%;
 
-    &-container {
-        flex-grow: 1;
+    .last-input-form {
+      margin-block-end: rem(50px);
     }
 
-    header {
-        background-color: $clr3;
-        padding: rem(95px) 0 0 rem(65px);
+    .contact-us-custom-select {
+      margin-bottom: rem(50px);
+    }
+    .select-trigger {
+      border: 1px solid $clr16;
+      line-height: 0.8;
+      width: 100%;
+      background-color: $clr16;
+    }
+    .is-invalid .select-trigger {
+        border-color: $red;
+    }
+    .select-options {
+      background-color: $clr16;
+      top: 82%;
+    }
 
-        p {
-            max-width: 28ch;
+    textarea {
+      max-height: rem(200px);
+      margin-bottom: rem(50px);
+      resize: none;
+      border: 1px solid $clr19;
+      width: 100%;
+
+      &:focus {
+        outline: none;
+      }
+      &:focus-visible {
+        outline: none;
+      }
+      &::placeholder {
+        color: $clr19;
+      }
+    }
+
+    .contact-us-checkbox-container {
+      display: flex;
+      margin-block-end: rem(100px);
+
+      .contact-us-checkbox {
+        margin-inline-end: rem(16px);
+        .custom-checkbox-checkbox {
+          background-color: $clr16;
         }
-        .d-block {
-            margin-block-end: rem(35px);
+        [type="checkbox"]:checked + .custom-checkbox-checkbox {
+          background-color: $clr1;
         }
+      }
+
+      p {
+        color: $clr10;
+      }
     }
 
-    
-    .brim-start {
-        background-color: $clr3;
+    .contact-us-button {
+      align-self: flex-start;
+      background-color: $clr1;
+      padding: rem(10px) rem(60px);
+      margin-block-end: rem(110px);
     }
-    .heading1 {
-        margin: rem(65px) 0 rem(35px);
-    }
+  }
+
+  .brim-start {
+    background-color: $clr3;
+  }
+  .heading1 {
+    margin: rem(65px) 0 rem(35px);
+  }
+
+  .is-invalid {
+    border-color: $red !important ;
+    // border-width: 20px !important ;
+  }
+
+  .user-edit-error-msg {
+    border-radius: 0;
+  }
 }

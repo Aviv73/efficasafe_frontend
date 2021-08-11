@@ -7,7 +7,7 @@
             </span>
             <router-link to="/terms-and-conditions" class="link">Terms and Conditions</router-link>
             | <router-link to="/privacy-statement" class="link">Privacy Policy</router-link>
-            | Email: <a href="mailto:info@efficasafe.com" class="link">support@efficasafe.com</a>
+            | Email: <a href="mailto:contact@efficasafe.com" class="link">contact@efficasafe.com</a>
         </small>
     </footer>
 </template>
