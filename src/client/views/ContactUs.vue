@@ -141,6 +141,7 @@ import CustomSelect from "@/client/cmps/common/CustomSelect";
 import Checkbox from "@/client/cmps/common/Checkbox";
 import { httpService } from "@/cms/services/http.service";
 import intlTelInput from "intl-tel-input";
+import { eventBus, EV_show_user_msg } from '@/cms/services/eventBus.service';
 
 export default {
   data() {
@@ -182,8 +183,13 @@ export default {
         return;
       }
       this.checkPhoneIntlValid();
-      await httpService.post('task', this.userDetails)
-      alert('send')
+      try{
+          await httpService.post('task', this.userDetails)
+          eventBus.$emit(EV_show_user_msg, 'Email was Sent', 3000, 'success')  
+
+      }catch(err){
+          eventBus.$emit(EV_show_user_msg, 'Shomting went wrong', 3000, 'error')
+      }
     },
     setPhoneDialCode() {
       this.userDetails.phone = this.$refs.phoneInput.value;
