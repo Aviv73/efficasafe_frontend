@@ -372,8 +372,20 @@
                     Efficasafe.com website may use your Personal Information for
                     the purposes described in our <router-link to="/privacy-statement" class="link">Privacy Statement</router-link>.
                 </p>
+                <h2 class="heading2">9. Electronic Communications</h2>
+                <p class="bottom-gap">
+                    When you use Efficasfe Services, or send e-mails, text messages, 
+                    and other communications from your desktop or mobile device to us, 
+                    you may be communicating with us electronically. 
+                    You consent to receive communications from us electronically, 
+                    such as e-mails, texts, mobile push notices, or notices and messages on this site, 
+                    and you can retain copies of these communications for your records. 
+                    You agree that all agreements, notices, disclosures, and other communications 
+                    that we provide to you electronically satisfy any legal requirement that such 
+                    communications be in writing.
+                </p>
                 <h2 class="heading2">
-                    9. Consent to Disclosure and Use of Personal Information in
+                    10. Consent to Disclosure and Use of Personal Information in
                     De-identified Form.
                 </h2>
                 <p class="bottom-gap">
@@ -399,7 +411,7 @@
                     interest and you waive any right to seek compensation for
                     such disclosures or uses.
                 </p>
-                <h2 class="heading2">10. Password Protection.</h2>
+                <h2 class="heading2">11. Password Protection.</h2>
                 <p class="bottom-gap">
                     You are responsible for keeping your password confidential.
                     You should notify us immediately if your password is hacked
@@ -409,7 +421,7 @@
                     in transit or at your home, business or other place of
                     access.
                 </p>
-                <h2 class="heading2">11. Login Info and Access.</h2>
+                <h2 class="heading2">12. Login Info and Access.</h2>
                 <p class="bottom-gap">
                     Your access to the Application must be via login credentials
                     ("Login Credentials"). You agree that you are responsible
@@ -436,7 +448,7 @@
                     that you will not misrepresent your identity or your
                     affiliation with any person or entity.
                 </p>
-                <h2 class="heading2">12. Updates.</h2>
+                <h2 class="heading2">13. Updates.</h2>
                 <p>
                     Naturopedia LTD and/or the Efficasafe.com website may from
                     time to time in its sole discretion develop and provide
@@ -469,7 +481,7 @@
                     the Application and be subject to all terms and conditions
                     of this Agreement.
                 </p>
-                <h2 class="heading2">13. Term and Termination.</h2>
+                <h2 class="heading2">14. Term and Termination.</h2>
                 <ol class="bottom-gap">
                     <li>
                         The term of Agreement commences when you acknowledge
@@ -519,7 +531,7 @@
                         in equity.
                     </li>
                 </ol>
-                <h2 class="heading2">14. Disclaimer of Warranties.</h2>
+                <h2 class="heading2">15. Disclaimer of Warranties.</h2>
                 <p class="bottom-gap">
                     THE APPLICATION IS PROVIDED TO YOU “AS IS” AND WITH ALL
                     FAULTS AND DEFECTS WITHOUT WARRANTY OF ANY KIND. TO THE
@@ -546,7 +558,7 @@
                     STATUTORY RIGHTS OF A CONSUMER, SO SOME OR ALL OF THE ABOVE
                     EXCLUSIONS AND LIMITATIONS MAY NOT APPLY TO YOU.
                 </p>
-                <h2 class="heading2">15. Limitation of Liability.</h2>
+                <h2 class="heading2">16. Limitation of Liability.</h2>
                 <p>
                     TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, IN NO
                     EVENT WILL NATUROPEDIA LTD AND/OR THE FFICASAFE.COM WEBSITE
@@ -630,7 +642,7 @@
                         reliance on the Application.
                     </li>
                 </ol>
-                <h2 class="heading2">16. Indemnification.</h2>
+                <h2 class="heading2">17. Indemnification.</h2>
                 <p class="bottom-gap">
                     You agree to indemnify, defend and hold harmless Naturopedia
                     LTD and/or the Efficasafe.com website and its officers,
@@ -645,7 +657,7 @@
                     website assume no responsibility for the content you submit
                     or make available through this Application.
                 </p>
-                <h2 class="heading2">17. Severability.</h2>
+                <h2 class="heading2">18. Severability.</h2>
                 <p class="bottom-gap">
                     If any provision of this Agreement is illegal or
                     unenforceable under applicable law, the remainder of the
@@ -658,7 +670,7 @@
                     to applicable law and to reflect as nearly as possible the
                     original intention of the parties.
                 </p>
-                <h2 class="heading2">18. Force Majeure.</h2>
+                <h2 class="heading2">19. Force Majeure.</h2>
                 <p class="bottom-gap">
                     Neither party shall be liable to the other party for any
                     failure or delay in the performance of any of its
@@ -673,7 +685,7 @@
                     notify the other party as soon as practicable of any
                     anticipated delay due to Force Majeure.
                 </p>
-                <h2 class="heading2">19. Governing Law.</h2>
+                <h2 class="heading2">20. Governing Law.</h2>
                 <p class="bottom-gap">
                     This Agreement is governed by and construed in accordance
                     with the laws of the State of Israel without giving effect
@@ -687,7 +699,7 @@
                     jurisdiction over you by such courts and to venue in such
                     courts.
                 </p>
-                <h2 class="heading2">20. Limitation of Time to File Claims.</h2>
+                <h2 class="heading2">21. Limitation of Time to File Claims.</h2>
                 <p class="bottom-gap">
                     ANY CAUSE OF ACTION OR CLAIM YOU MAY HAVE ARISING OUT OF OR
                     RELATING TO THIS AGREEMENT OR THE APPLICATION MUST BE
@@ -695,7 +707,7 @@
                     ACCRUES, OTHERWISE, SUCH CAUSE OF ACTION OR CLAIM IS
                     PERMANENTLY BARRED.
                 </p>
-                <h2 class="heading2">21. Entire Agreement.</h2>
+                <h2 class="heading2">22. Entire Agreement.</h2>
                 <p class="bottom-gap">
                     This Agreement and our <router-link to="/privacy-statement" class="link">Privacy Statement</router-link> constitute the
                     entire agreement between you and Naturopedia LTD and/or the
@@ -708,7 +720,7 @@
                     Agreement conflict with any such agreement, the terms of
                     that agreement will control.
                 </p>
-                <h2 class="heading2">22. Waiver.</h2>
+                <h2 class="heading2">23. Waiver.</h2>
                 <p class="bottom-gap">
                     No failure to exercise, and no delay in exercising, on the
                     part of either party, any right or any power hereunder shall

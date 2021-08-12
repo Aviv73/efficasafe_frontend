@@ -20,7 +20,7 @@
         position: fixed;
         top: rem(280px);
         transform: translateX(-110%);
-        transition: top .6s linear;
+        transition: top .15s linear;
 
         &.sticky {
             top: 50px;

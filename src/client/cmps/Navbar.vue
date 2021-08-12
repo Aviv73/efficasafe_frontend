@@ -166,6 +166,11 @@
                             </router-link>
                         </li>
                         <li class="navbar-side-nav-item">
+                            <router-link to="/principles-and-processes" @click.native="toggleNavActive">
+                                Editorial principles
+                            </router-link>
+                        </li>
+                        <li class="navbar-side-nav-item">
                             <router-link to="/contact" @click.native="toggleNavActive">
                                 Contact us
                             </router-link>

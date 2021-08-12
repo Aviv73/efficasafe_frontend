@@ -533,7 +533,7 @@ export default {
                     this.insertInteraction(acc, interaction);
                 } else {
                     const materials = this.materials.filter(
-                        material => material.labels.findIndex(label => label._id === interaction.side2Label._id) !== -1
+                        material =>!material.isIncluded && material.labels.findIndex(label => label._id === interaction.side2Label._id) !== -1
                     );
                     materials.forEach(({ _id, name, type }) => {
                         const vInteraction = {
@@ -572,6 +572,7 @@ export default {
                     } else acc.push(interaction);
                 return acc;
             }, []);
+            console.log('BEFORE REDUCE', formatedInteractions );
             formatedInteractions = formatedInteractions.reduce((acc, interaction) => {
                 const { side1Name, side2Name } = this.getInteractionSidesNames(interaction);
                 const userQueries = this.$store.getters.materialNamesMap[side2Name];
@@ -620,7 +621,8 @@ export default {
                                 }
                             }
                             queryApearanceMap[`${side1Name}-${userQuery}`].forEach(currInteraction => {
-                                acc = acc.filter(i => i._id !== currInteraction._id && i._id !== `${currInteraction._id}-${currInteraction._id}`);
+                                acc = acc.filter(i => i._id !== currInteraction._id && i._id !== `${currInteraction._id}-${currInteraction.side2Material._id}`);
+                                // acc = acc.filter(i => i._id !== currInteraction._id && i._id !== `${currInteraction._id}-${currInteraction._id}`);
                                 acc.push(compoundGroup);
                             });
                         } else {
@@ -641,6 +643,7 @@ export default {
                 });
                 return acc;
             }, []);
+            console.log('AFTER REDUCE', formatedInteractions );
             return this.sortInteractions(formatedInteractions);
         },
         formatedMaterials() {
@@ -847,8 +850,9 @@ export default {
             };
             const materials = await this.$store.dispatch({ type: 'getMaterials', criteria, doCache: true });
             this.materials = this.sortMaterials(materials);
-            this.$store.commit({ type: 'makeMaterialNamesMap', materials });
+            this.$store.commit({ type: 'makeMaterialNamesMap', materials});
             this.checkForIncludedMaterials();
+            this.$store.commit({ type: 'makeMaterialNamesMap', materials: materials.filter(m => !m.isIncluded) });
         },
         async removeDupNonPositives(interactions) {
             const res = [];
@@ -968,7 +972,9 @@ export default {
                 (vin.side1Material._id === interaction.side1Material._id)
             );
             const groupIdx = acc.findIndex(vin => vin._id === `${interaction.side1Material._id}-${interaction.side2Material._id}`);
+            // vInteraction & v-group not found
             if (idx === -1 && groupIdx === -1) acc.push(interaction);
+            // found 1 v-interaction - make it a group
             else if (idx !== -1 && groupIdx === -1) {
                 const vInteractionGroup = {
                     _id: `${interaction.side1Material._id}-${interaction.side2Material._id}`,
@@ -983,6 +989,7 @@ export default {
                 };
                 acc.splice(idx, 1, vInteractionGroup);
             } else {
+                // Allready grouped v-interaction found - just add the new one
                 if (acc[groupIdx].vInteractions.findIndex(i => i._id === interaction._id) === -1) {
                     acc[groupIdx].vInteractions.push(interaction);
                     acc[groupIdx].recommendation = this.getMoreSeverRecomm(false, acc[groupIdx].recommendation, interaction.recommendation);

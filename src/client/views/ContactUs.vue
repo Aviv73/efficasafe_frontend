@@ -19,7 +19,7 @@
         </p>
       </header>
       <main>
-        <validation-observer v-slot="{ handleSubmit, reset }">
+        <validation-observer v-slot="{ handleSubmit, reset, invalid }" ref="observer">
           <form
             class="contact-us-form"
             @submit.prevent="handleSubmit(onSubmit)"
@@ -88,6 +88,7 @@
             </validation-provider>
 
               <custom-select
+                :key="selectKey"
                 class="contact-us-custom-select"
                 :class="{ 'is-invalid': selectError }"
                 placeholder="Inquiry type"
@@ -114,16 +115,16 @@
               </div>
             </validation-provider>
 
-            <span class="contact-us-checkbox-container">
+            <!-- <span class="contact-us-checkbox-container">
               <checkbox
                 class="contact-us-checkbox"
                 v-model="userDetails.isWantNews"
               >
               </checkbox>
               <p>efficasafe can send me news and updates</p>
-            </span>
+            </span> -->
 
-            <button class="btn contact-us-button" type="submit">Submit</button>
+            <button :class="{'disabled-btn': invalid || !userDetails.type}" class="btn contact-us-btn" type="submit">Submit</button>
             <div class="user-edit-error-msg font-bold" v-if="selectError">
                 Inquiry type is required
             </div>
@@ -138,10 +139,10 @@
 <script>
 import { ValidationProvider, ValidationObserver } from "vee-validate";
 import CustomSelect from "@/client/cmps/common/CustomSelect";
-import Checkbox from "@/client/cmps/common/Checkbox";
-import { httpService } from "@/cms/services/http.service";
+// import Checkbox from "@/client/cmps/common/Checkbox";
 import intlTelInput from "intl-tel-input";
 import { eventBus, EV_show_user_msg } from '@/cms/services/eventBus.service';
+import { httpService } from "@/cms/services/http.service";
 
 export default {
   data() {
@@ -153,7 +154,7 @@ export default {
         phone: "",
         type: "",
         msg: "",
-        isWantNews: false,
+        // isWantNews: false,
       },
       selectOptions: [
         {
@@ -169,6 +170,7 @@ export default {
         required: "Field is required",
       },
       selectError: false,
+      selectKey: 1
     };
   },
   computed: {
@@ -185,10 +187,11 @@ export default {
       this.checkPhoneIntlValid();
       try{
           await httpService.post('task', this.userDetails)
-          eventBus.$emit(EV_show_user_msg, 'Email was Sent', 3000, 'success')  
+          eventBus.$emit(EV_show_user_msg, 'Your request was submitted, we will reply as soon as possible', 5000, 'success')  
+          this.resetForm()
 
       }catch(err){
-          eventBus.$emit(EV_show_user_msg, 'Shomting went wrong', 3000, 'error')
+          eventBus.$emit(EV_show_user_msg, 'Shomting went wrong', 5000, 'error')
       }
     },
     setPhoneDialCode() {
@@ -202,6 +205,16 @@ export default {
     onSelectChange() {
       this.$refs.customSelect.classList.remove("is-invalid");
     },
+    resetForm(){
+      this.userDetails.firstName = ''
+      this.userDetails.lastName = ''
+      this.userDetails.email = ''
+      this.userDetails.phone = ''
+      this.userDetails.type = ''
+      this.userDetails.msg = ''
+      this.selectKey++
+      this.$refs.observer.reset();  
+    }
   },
   mounted() {
     this.iti = intlTelInput(this.$refs.phoneInput, {
@@ -221,7 +234,7 @@ export default {
     ValidationObserver,
     ValidationProvider,
     CustomSelect,
-    Checkbox,
+    // Checkbox,
   },
 };
 </script>

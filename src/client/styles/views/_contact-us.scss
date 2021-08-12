@@ -90,11 +90,15 @@
       }
     }
 
-    .contact-us-button {
+    .contact-us-btn {
       align-self: flex-start;
       background-color: $clr1;
       padding: rem(10px) rem(60px);
       margin-block-end: rem(110px);
+    }
+
+    .disabled-btn{
+      opacity: 0.2;
     }
   }
 
