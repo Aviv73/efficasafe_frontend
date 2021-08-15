@@ -19,6 +19,10 @@
               <span class="text-capitalize">{{item.type}}</span>
             </td>
 
+            <td width="180" align="center">
+                <span>{{ item.deletedAt | moment('DD/MM/YYYY')  }}</span>
+            </td>
+
             <td class="td-actions" width="180" align="center">
               <v-btn
                 class="mr-2"
@@ -46,6 +50,8 @@
 </template>
 
 <script>
+
+
 export default {
   name: "materialList",
   props: {
@@ -64,6 +70,11 @@ export default {
           value: "type",
         },
         {
+          text: "Deleted At",
+          value: "deletedAt",
+          align: "center"
+        },
+        {
           text: "Actions",
           name: "Action",
           value: "action",
@@ -72,6 +83,6 @@ export default {
         },
       ],
     };
-  },
+  }
 };
 </script>

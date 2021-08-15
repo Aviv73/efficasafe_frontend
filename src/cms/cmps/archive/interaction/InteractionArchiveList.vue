@@ -62,6 +62,10 @@
               </router-link>
             </td>
 
+            <td width="180" align="center">
+                <span>{{ item.deletedAt  | moment('DD/MM/YYYY')  }}</span>
+            </td>
+
             <td class="td-actions" width="180" align="center">
               <v-btn
                 class="mr-2"
@@ -117,6 +121,11 @@ export default {
         {
           text: 'Side 2',
           value: 'side2Material.name' || 'side2Label.name',
+        },
+        {
+          text: "Deleted At",
+          value: "deletedAt",
+          align: "center"
         },
         {
           text: 'Actions',

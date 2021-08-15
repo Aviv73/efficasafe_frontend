@@ -15,6 +15,10 @@
               </router-link>
             </td>
 
+            <td width="180" align="center">
+                <span>{{ item.deletedAt | moment('DD/MM/YYYY')  }}</span>
+            </td>
+
             <td class="td-color" width="80">
               <div class="color-circle" :style="{ backgroundColor: item.color }"></div>
             </td>
@@ -58,6 +62,11 @@ export default {
         {
           text: "Name",
           value: "name",
+        },
+        {
+          text: "Deleted At",
+          value: "deletedAt",
+          align: "center"
         },
         {
           text: "Color",

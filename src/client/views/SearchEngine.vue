@@ -572,7 +572,6 @@ export default {
                     } else acc.push(interaction);
                 return acc;
             }, []);
-            console.log('BEFORE REDUCE', formatedInteractions );
             formatedInteractions = formatedInteractions.reduce((acc, interaction) => {
                 const { side1Name, side2Name } = this.getInteractionSidesNames(interaction);
                 const userQueries = this.$store.getters.materialNamesMap[side2Name];
@@ -621,8 +620,7 @@ export default {
                                 }
                             }
                             queryApearanceMap[`${side1Name}-${userQuery}`].forEach(currInteraction => {
-                                acc = acc.filter(i => i._id !== currInteraction._id && i._id !== `${currInteraction._id}-${currInteraction.side2Material._id}`);
-                                // acc = acc.filter(i => i._id !== currInteraction._id && i._id !== `${currInteraction._id}-${currInteraction._id}`);
+                                acc = acc.filter(i => i._id !== currInteraction._id && i._id !== `${currInteraction._id}-${currInteraction._id}`);
                                 acc.push(compoundGroup);
                             });
                         } else {
@@ -643,7 +641,6 @@ export default {
                 });
                 return acc;
             }, []);
-            console.log('AFTER REDUCE', formatedInteractions );
             return this.sortInteractions(formatedInteractions);
         },
         formatedMaterials() {
