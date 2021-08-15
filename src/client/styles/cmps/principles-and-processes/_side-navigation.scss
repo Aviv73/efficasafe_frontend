@@ -1,7 +1,8 @@
 .side-navigation {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: sticky;
+    top: rem(86px);
+    transform: translateX(-165px);
+    float: left;
     color: $clr-txt-darker;
     font-family: roboto-bold, sans-serif;
     font-weight: 700;
@@ -14,17 +15,18 @@
     }
     @include for-wide-layout {
         font-size: rem(18px);
+        transform: translateX(-182px);
     }
     
     &-nav {
-        position: fixed;
-        top: rem(280px);
-        transform: translateX(-110%);
-        transition: top .15s linear;
+        // position: fixed;
+        // top: rem(280px);
+        // transform: translateX(-110%);
+        // transition: top .15s linear;
 
-        &.sticky {
-            top: 50px;
-        }
+        // &.sticky {
+        //     top: 50px;
+        // }
 
         &-item {
             display: flex;

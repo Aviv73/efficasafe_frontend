@@ -3,7 +3,6 @@
     color: $clr10;
     font-size: rem(18px);
     line-height: rem(26px);
-    padding-block-end: rem(70px);
     border-bottom: 1px solid rgba($black, .16);
 
     h2 {
@@ -59,6 +58,9 @@
         @include for-narrow-layout {
             padding: 0;
         }
+        .heading1 ~ * {
+            transform: translateY(-90px);
+        }
     }
     &-lists {
         display: flex;
@@ -66,6 +68,7 @@
         flex-direction: column;
         padding-block-end: rem(20px);
         margin-block-end: rem(20px);
+        width: 100%;
         border-bottom: 1px solid rgba($black, .16);
         
         @include for-narrow-layout {

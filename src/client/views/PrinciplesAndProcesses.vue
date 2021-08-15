@@ -2,6 +2,7 @@
     <section class="principles-and-processes">
         <page-header ref="header" />
         <article class="principles-and-processes-container">
+            <side-navigation :sticky="isNavFixed" />
             <h1 class="heading1">Editorial Principles and Processes</h1>
             <section class="principles-and-processes-lists">
                 <div>
@@ -212,7 +213,6 @@
                 the database also helps users to identify clinical answers to their questions -
                 on demand.
             </p>
-            <side-navigation :sticky="isNavFixed" />
         </article>
     </section>
 </template>
