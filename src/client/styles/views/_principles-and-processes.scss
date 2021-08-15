@@ -58,8 +58,18 @@
         @include for-narrow-layout {
             padding: 0;
         }
-        .heading1 ~ * {
-            transform: translateY(-90px);
+        @include for-middle-layout {
+            .heading1 {
+                transform: translateX(-18%);
+            }
+            .heading1 ~ * {
+                transform: translateY(-90px);
+            }
+        }
+        @include for-wide-layout {
+            .heading1 {
+                transform: translateX(-22%);
+            }
         }
     }
     &-lists {
