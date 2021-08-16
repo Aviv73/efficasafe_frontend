@@ -203,11 +203,13 @@
                                 </template>
                                 <template #content>
                                     <side2-pathways
+                                        v-if="relevantSide2Pathways.length"
                                         :side2Pathways="relevantSide2Pathways"
                                         :combinedRefs="combinedRefs"
                                         :side2Refs="side2Refs"
                                         :materialName="interactionName.split(' & ')[1]"
                                     />
+                                    <p v-else class="side2-pathways">there is no data on {{interaction.side2Material.name}} metabolism</p>
                                 </template>
                             </collapse>
                             <collapse

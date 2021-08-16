@@ -11,44 +11,45 @@
                 }"
             />
         </div>
-        <h3 class="font-medium">Details</h3>
-        <ul
-            v-if="pathways.length"
-            class="side1-pathways-nav flex-align-center"
-        >
-            <li
-                class="side1-pathways-nav-item"
-                v-for="pathway in pathways"
-                :key="pathway.name"
+        <template v-if="pathways.length">
+            <h3 class="font-medium">Details</h3>
+            <ul
+                class="side1-pathways-nav flex-align-center"
             >
-                <button
-                    class="chip"
-                    :class="setPathwayClassName(pathway.influence)"
-                    @click="activeTab = pathway.name"
+                <li
+                    class="side1-pathways-nav-item"
+                    v-for="pathway in pathways"
+                    :key="pathway.name"
                 >
-                    <chevron-down-icon v-if="activeTab !== pathway.name" :size="16" title="" />
-                    <chevron-up-icon v-else :size="16" title="" />
-                    {{ pathway.name }}
-                </button>
-            </li>
-        </ul>
-        <p
-            class="active-tab-txt"
-            v-show="pathways.length"
-            v-html="formatRefs(activeTabTxt, true)"
-            v-refs-tooltip.pathwaysSecond.dynamicTxt="{
-                combinedRefs,
-                side2Refs
-            }"
-        />
-        <span class="d-flex un-relevant-container">
-            <span
-                class="un-relevant"
-                v-if="unrelevantPathways.length"
-            >
-                There is no info on {{ `${materialName}'s` }} effect on: {{ unrelevantPathwayNames }}
+                    <button
+                        class="chip"
+                        :class="setPathwayClassName(pathway.influence)"
+                        @click="activeTab = pathway.name"
+                    >
+                        <chevron-down-icon v-if="activeTab !== pathway.name" :size="16" title="" />
+                        <chevron-up-icon v-else :size="16" title="" />
+                        {{ pathway.name }}
+                    </button>
+                </li>
+            </ul>
+            <p
+                class="active-tab-txt"
+                v-show="pathways.length"
+                v-html="formatRefs(activeTabTxt, true)"
+                v-refs-tooltip.pathwaysSecond.dynamicTxt="{
+                    combinedRefs,
+                    side2Refs
+                }"
+            />
+            <span class="d-flex un-relevant-container">
+                <span
+                    class="un-relevant"
+                    v-if="unrelevantPathways.length"
+                >
+                    There is no info on {{ `${materialName}'s` }} effect on: {{ unrelevantPathwayNames }}
+                </span>
             </span>
-        </span>
+        </template> 
     </section>
 </template>
 
