@@ -392,7 +392,9 @@ export default {
         '$route'(to, from) {
             //for paging
             if(from && JSON.stringify(from.query) === JSON.stringify(to.query) && from.name !== to.name && from.query.page !== 1 ){
-                this.$router.replace({ query: { q: [...this.$route.query.q], page: 1} }).catch(()=>{});
+                if(this.$route.query.q){
+                    this.$router.replace({ query: { q: [...this.$route.query.q], page: 1} }).catch(()=>{});
+                }
             }
             const routesOrder = {
                 'Supp2Drug': 1,
@@ -1132,6 +1134,15 @@ export default {
             if (approvedUse || didApproved) return;
             this.isDisclaimerActive = true;
         },
+        showMobileMsg(){
+            if(storageService.load('cookie-consent')){
+                const didSeeMsg = storageService.load('desktop-recommendation')
+                if(window.innerWidth <= 900 && !didSeeMsg){
+                    eventBus.$emit(EV_show_user_msg, 'This application is mobile compatible, but the desktop version is recommended', null);
+                    storageService.store('desktop-recommendation', true)
+                }
+            }
+        },
         savePrefs(key, val) {
             storageService.store(key, val, true);
         },
@@ -1154,6 +1165,7 @@ export default {
     mounted() {
         this.setScrollBarWidth();
         this.showDisclaimer();
+        this.showMobileMsg();
     },
     components: {
         Autocomplete,

@@ -93,6 +93,16 @@ export default {
             this.isCookieNotice = false;
             logService.add({action: 'Accepted cookies'})
             storageService.store('cookie-consent', true);
+            this.showMobileMsg()
+        },
+        showMobileMsg(){
+            if(this.$route.matched[0].path === '/search'){
+                const didSeeMsg = storageService.load('desktop-recommendation')
+                if(window.innerWidth <= 900 && !didSeeMsg){
+                    this.showMsg('This application is mobile compatible, but the desktop version is recommended', null)
+                    storageService.store('desktop-recommendation', true)
+                }
+            }
         },
         showCookieNotice() {
             this.isActive = true;
