@@ -171,6 +171,8 @@
                 <nav
                     class="search-engine-nav"
                     v-set-sticky-class-name:[`pinned`]
+                    @mousedown="hideArrow"
+                    @touchstart="hideArrow"
                 >
                     <ul>
                         <li class="search-engine-nav-link">
@@ -257,6 +259,7 @@
                             </label>
                         </li>
                     </ul>
+                    <chevron-right-icon class="chevron-right-icon" :class="{'u-hide': !isArrowShown || !isScreenNarrow}"/>
                 </nav>
                 <transition :name="routerTransitionName" mode="out-in">
                     <router-view
@@ -333,6 +336,8 @@ import CloseIcon from 'vue-material-design-icons/Close';
 import PrinterIcon from 'vue-material-design-icons/Printer';
 import ShareVariantIcon from 'vue-material-design-icons/ShareVariant';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
+import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
+// import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
 
 export default {
     recommendationsOrderMap: interactionUIService.getRecommendationOrderMap(),
@@ -358,7 +363,8 @@ export default {
             isShareModalActive: false,
             isPrintModalActive: false,
             isSaveSearchModalActive: false,
-            undoneQueries: []
+            undoneQueries: [],
+            isArrowShown: true
         }
     },
     watch: {
@@ -746,6 +752,9 @@ export default {
         }
     },
     methods: {
+        hideArrow(){
+            this.isArrowShown = false
+        },
         handlePaging(page) {
             this.$router.push({ query: { q: [ ...this.$route.query.q ], page } })
         },
@@ -1185,7 +1194,9 @@ export default {
         UndoIcon,
         RedoIcon,
         OnboardingTour,
-        SaveSearchModal
+        SaveSearchModal,
+        ChevronRightIcon,
+        // ChevronLeftIcon
     }
 };
 </script>
