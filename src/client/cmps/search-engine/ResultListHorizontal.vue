@@ -125,6 +125,20 @@
                     :idx="idx"
                 />
             </li>
+            <hr v-if="suppInteractions.length"/>
+            <li
+                class="horizontal-list-list-item"
+                v-for="(interaction, idx) in suppInteractions"
+                :key="interaction._id"
+            >
+                <interaction-preview
+                    :interaction="interaction"
+                    :materials="materials"
+                    :link="$route.name !== 'Monitor'"
+                    :idx="idx"
+                    :isSupp="true"
+                />
+            </li>
         </ul>
     </section>
 </template>
@@ -142,6 +156,10 @@ import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline
 export default {
     props: {
         interactions: {
+            type: Array,
+            default: () => []
+        },
+        suppInteractions: {
             type: Array,
             default: () => []
         },

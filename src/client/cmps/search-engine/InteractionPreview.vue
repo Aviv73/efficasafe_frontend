@@ -139,6 +139,7 @@
                         :interaction="interaction"
                         :materials="materials"
                         :parent-idx="idx"
+                        :isSupp="isSupp"
                     />
                 </div>
                 <div 
@@ -238,6 +239,10 @@ export default {
         exactName: {
             type: String,
             required: false
+        },
+        isSupp: {
+            type: Boolean,
+            default: false
         }
     },
     data() {

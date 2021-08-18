@@ -10,6 +10,7 @@
             v-else-if="!isLoading && !isVertical"
             :materials="materials"
             :interactions="listData.interactions"
+            :suppInteractions="listData.suppInteractions"
             :pageCount="listData.pageCount"
             :total="listData.total"
             :isLoading="isLoading"

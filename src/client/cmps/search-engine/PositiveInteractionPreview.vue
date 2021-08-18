@@ -14,7 +14,7 @@
                             title=""
                         />
                         <interaction-capsules
-                            :name="getInnerGroupName(group.name)"
+                            :name="getInnerGroupName(group)"
                             :isMaterialGroup="true"
                             :color="getInteractionColor(group.recommendation)"
                             :showDraftName="false"
@@ -48,6 +48,7 @@
                         :main-side2-material-id="interaction.mainMaterialId"
                         :materials="materials"
                         :exactName="interaction.exactName"
+                        :isSupp="isSupp"
                     />
                 </div>
             </template>
@@ -85,6 +86,10 @@ export default {
         parentIdx: {
             type: Number,
             required: true
+        },
+        isSupp: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -107,8 +112,10 @@ export default {
         getInteractionColor(recommendation) {
             return interactionUIService.getInteractionColor(recommendation);
         },
-        getInnerGroupName(name) {
-            return name.split('&')[0].trim();
+        getInnerGroupName(group) {
+            let idx = 0
+            if(this.isSupp && this.interaction.mainMaterialId === group.side1Material._id) idx = 1
+            return group.name.split('&')[idx].trim();
         },
         getShortRecommendation(fullRec) {
             return interactionUIService.getShortRecommendation(fullRec);
@@ -139,6 +146,7 @@ export default {
     },
     created() {
         this.interaction.vInteractions.forEach(({ cacheKey }) => {
+            if(!cacheKey) return // Will not be needed when caching work
             const { searchState } = interactionService.getChache(cacheKey);
             if(!searchState) return;
             Object.values(searchState).forEach(value => {

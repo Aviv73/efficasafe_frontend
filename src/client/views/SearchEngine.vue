@@ -259,7 +259,7 @@
                             </label>
                         </li>
                     </ul>
-                    <chevron-right-icon class="chevron-right-icon" :class="{'u-hide': !isArrowShown || !isScreenNarrow}"/>
+                    <chevron-right-icon v-if="isArrowShown && isScreenNarrow" class="chevron-right-icon"/>
                 </nav>
                 <transition :name="routerTransitionName" mode="out-in">
                     <router-view
@@ -307,7 +307,7 @@
                 @close-modal="isSaveSearchModalActive = false"
             />
         </modal-wrap>
-        <onboarding-tour />
+        <onboarding-tour />        
     </section>
 </template>
 
@@ -337,7 +337,6 @@ import PrinterIcon from 'vue-material-design-icons/Printer';
 import ShareVariantIcon from 'vue-material-design-icons/ShareVariant';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
 import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
-// import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
 
 export default {
     recommendationsOrderMap: interactionUIService.getRecommendationOrderMap(),
@@ -354,6 +353,7 @@ export default {
             dBankPageCount: 0,
             dBankTotal: 0,
             positiveInteractions: [],
+            suppPositiveInteractions: [],
             isViewVertical: storageService.load('view', true) === 'vertical' && (this.$route.name !== 'Boosters' && this.$route.name !== 'Monitor'),
             scrollBarWidth: '0px',
             routerTransitionName: '',
@@ -434,6 +434,7 @@ export default {
                     case 'Boosters':
                     return {
                         interactions: this.formatedPositiveInteractions,
+                        suppInteractions: this.formatedSuppPositiveInteractions,
                         pageCount: 0,
                         total: 0
                     };
@@ -533,6 +534,34 @@ export default {
                 });
             }
             return formatedPositiveInteractions;
+        },
+        formatedSuppPositiveInteractions(){
+            let formatedSuppPositiveInteractions = this.suppPositiveInteractions.map(group => {
+                group.recommendation = this.getMoreSeverRecomm(true, ...group.vInteractions.map(i => i.recommendation));
+                group.evidenceLevel = this.getMoreSeverEvidenceLevel(...group.vInteractions.map(i => i.evidenceLevel));
+                const matchingMaterial = this.materials.find(m => m._id === group.side2Id || m.labels.some(l => l._id === group.side2Id));
+                const materialName = matchingMaterial ? matchingMaterial.name : '';
+                const materialId = matchingMaterial ? matchingMaterial._id : '';
+                const userQuery = this.$store.getters.materialNamesMap[materialName];
+                group.name = userQuery ? userQuery[0] : materialName;
+                group.mainMaterialId = materialId;
+                group.isMaterialGroup = true;
+                group.vInteractions.forEach(vInteraction => {
+                    if (vInteraction.side2Label) {
+                        const { _id, name, type } = this.materials.find(m => m.labels.some(l => l._id === vInteraction.side2Label._id));
+                        vInteraction.side2Material = {
+                            _id,
+                            name,
+                            type
+                        };
+                        vInteraction.side2Label = null;
+                    }
+                    vInteraction.isVirtual = true;
+                    vInteraction.name = `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}`;
+                });
+                return group
+            });
+            return formatedSuppPositiveInteractions
         },
         formatedInteractions() {
             let formatedInteractions = this.interactions.reduce((acc, interaction) => {
@@ -783,7 +812,7 @@ export default {
             }
         },
         async getPositives() {
-            const ids = this.materials.reduce((acc, { type, _id, labels, isIncluded }) => {
+            const drugIds = this.materials.reduce((acc, { type, _id, labels, isIncluded }) => {
                 if (type !== 'drug' || isIncluded) return acc;
                 if (!acc.includes(_id)) acc.push(_id);
                 labels.forEach(label => {
@@ -791,13 +820,35 @@ export default {
                 });
                 return acc;
             }, []);
-            const filterBy = {
+            const drugFilterBy = {
                 isSearchResults: true,
                 isPositives: true,
-                id: ids
+                id: drugIds
             };
-            let { interactions, searchState } = await this.$store.dispatch({ type: 'getInteractions', filterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}` });
+            // let { interactions, searchState } = await this.$store.dispatch({ type: 'getInteractions', drugFilterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}` });
+            const suppIds = this.materials.reduce((acc, { type, _id, isIncluded }) => {
+                if (type === 'drug' || isIncluded) return acc;
+                if (!acc.includes(_id)) acc.push(_id);
+                // labels.forEach(label => {
+                //     if (!acc.includes(label._id)) acc.push(label._id);
+                // });
+                return acc;
+            }, []);
+            const suppFilterBy = {
+                isSearchResults: true,
+                isPositives: true,
+                id: suppIds,
+                isSupp: true
+            };
+            const [  { interactions, searchState },  { interactions: suppInteractions } ] = await Promise.all([
+                this.$store.dispatch({ type: 'getInteractions', filterBy: drugFilterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}` }),
+                this.$store.dispatch({ type: 'getInteractions', filterBy: suppFilterBy })
+            ]);
+            // let { interactions } = await this.$store.dispatch({ type: 'getInteractions', suppFilterBy });
+
             this.positiveInteractions = await this.removeDupNonPositives(interactions);
+            this.suppPositiveInteractions = suppInteractions
+            // this.positiveInteractions = await this.removeDupNonPositives(interactions);
             this.restoreState('Boosters', searchState);
         },
         async getInteractions() {
@@ -1196,7 +1247,6 @@ export default {
         OnboardingTour,
         SaveSearchModal,
         ChevronRightIcon,
-        // ChevronLeftIcon
     }
 };
 </script>
