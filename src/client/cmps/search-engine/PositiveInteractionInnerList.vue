@@ -64,7 +64,6 @@ export default {
         },
         materialSuppIds() {
             let materialsIds =  this.materials.reduce((acc, material) => {
-                // if (material.type === 'drug') return acc;
                 const ids = [ material._id, ...material.labels.map(l => l._id) ];
                 ids.forEach(id => {
                     if (!acc.includes(id)) acc.push(id);

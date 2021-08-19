@@ -825,7 +825,6 @@ export default {
                 isPositives: true,
                 id: drugIds
             };
-            // let { interactions, searchState } = await this.$store.dispatch({ type: 'getInteractions', drugFilterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}` });
             const suppIds = this.materials.reduce((acc, { type, _id, isIncluded }) => {
                 if (type === 'drug' || isIncluded) return acc;
                 if (!acc.includes(_id)) acc.push(_id);
@@ -841,11 +840,9 @@ export default {
                 this.$store.dispatch({ type: 'getInteractions', filterBy: drugFilterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}` }),
                 this.$store.dispatch({ type: 'getInteractions', filterBy: suppFilterBy })
             ]);
-            // let { interactions } = await this.$store.dispatch({ type: 'getInteractions', suppFilterBy });
 
             this.positiveInteractions = await this.removeDupNonPositives(interactions);
             this.suppPositiveInteractions = suppInteractions
-            // this.positiveInteractions = await this.removeDupNonPositives(interactions);
             this.restoreState('Boosters', searchState);
         },
         async getInteractions() {
