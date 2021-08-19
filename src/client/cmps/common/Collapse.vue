@@ -32,7 +32,7 @@
                     name="de-activator"
                     v-if="!hideDeActivator"
                 >
-                    <span>&times;</span>
+                    <span v-if="showTimes">&times;</span>
                 </slot>
             </button>
         </transition>
@@ -45,6 +45,10 @@ export default {
         isSolo: {
             type: Boolean,
             default: true
+        },
+        showTimes: {
+            type: Boolean,
+            default: false
         },
         hideDeActivator: {
             type: Boolean,

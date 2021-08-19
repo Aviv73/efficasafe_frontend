@@ -105,8 +105,8 @@ export default {
                 materialCount: this.materialIds.length + 1
             };
             let { interactions } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
-            interactions = interactions.filter(interaction => interaction.side1Material._id === this.side1Id)
             interactions = interactions.filter(interaction => interaction.side1Material._id === idToCompare || interaction.side2Material?._id === idToCompare)
+            
             this.interactions = this.formatInteractions(interactions);
         },
         formatInteractions(interactions) {

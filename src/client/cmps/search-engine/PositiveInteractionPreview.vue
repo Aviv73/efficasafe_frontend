@@ -1,7 +1,7 @@
 <template>
-    <section class="interaction-preview positive-booster">
+    <section class="interaction-preview positive-booster" v-if="currInteraction">
         <collapse
-            v-for="(group, idx) in interaction.vInteractions"
+            v-for="(group, idx) in currInteraction.vInteractions"
             :key="group._id + idx"
             @collapse-closed="onCollapseToggle(idx, group.cacheKey)"
             :initial-is-visible="isInitialiOpen(idx)"
@@ -95,7 +95,8 @@ export default {
     },
     data() {
         return {
-            openCollapses: []
+            openCollapses: [],
+            currInteraction: null
         }
     },
     methods: {
@@ -156,6 +157,7 @@ export default {
                 });
             });
         });
+         this.currInteraction = JSON.parse(JSON.stringify(this.interaction))
     },
     components: {
         Collapse,

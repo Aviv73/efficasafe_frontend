@@ -436,7 +436,8 @@ export default {
                         interactions: this.formatedPositiveInteractions,
                         suppInteractions: this.formatedSuppPositiveInteractions,
                         pageCount: 0,
-                        total: 0
+                        total: 0,
+                        suppTotal: this.totalPositiveSuppBoosters
                     };
                     case 'Monitor':
                     return {
@@ -750,7 +751,14 @@ export default {
             return this.total + this.dBankTotal;
         },
         totalPositiveBoosters() {
-            return this.formatedPositiveInteractions.reduce((acc, { total }) => {
+            const sum = this.formatedPositiveInteractions.reduce((acc, { total }) => {
+                acc += total;
+                return acc;
+            }, 0);
+            return sum + this.totalPositiveSuppBoosters
+        },
+        totalPositiveSuppBoosters(){
+           return this.formatedSuppPositiveInteractions.reduce((acc, { total }) => {
                 acc += total;
                 return acc;
             }, 0);

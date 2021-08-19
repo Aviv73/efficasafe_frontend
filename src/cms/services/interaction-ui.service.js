@@ -6,7 +6,8 @@ export const interactionUIService = {
     getRefsOrder,
     getSortedRefs,
     formatRefStrs,
-    getShortRecommendation
+    getShortRecommendation,
+    getIsRed
 }
 
 
@@ -171,6 +172,28 @@ function getEvidenceLevelDictionary() {
         'F - 1 pre clinical'
     ];
 }
+
+function getIsRed(fullRec){
+    switch (fullRec) {
+        case 'Avoid coadministration':
+        case 'Coadministration is not advised':
+            return true
+        default:
+            return false    
+    }
+}
+// function getIsRed(fullRec){
+//     switch (fullRec) {
+//         case 'Coadministration is not contraindicated and may even be advised':
+//         case 'Coadministration is not contraindicated':
+//         case 'Coadministration is possible':
+//         case 'Coadministration is possible and may even be advised':
+//         case 'Coadministration is advised':
+//             return true
+//         default:
+//             return false    
+//     }
+// }
 
 function _removeDuplicates(arr) {
     var seenMap = {};

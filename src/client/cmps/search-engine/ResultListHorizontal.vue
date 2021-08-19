@@ -125,20 +125,47 @@
                     :idx="idx"
                 />
             </li>
-            <hr v-if="suppInteractions.length"/>
-            <li
-                class="horizontal-list-list-item"
-                v-for="(interaction, idx) in suppInteractions"
-                :key="interaction._id"
-            >
-                <interaction-preview
-                    :interaction="interaction"
-                    :materials="materials"
-                    :link="$route.name !== 'Monitor'"
-                    :idx="idx"
-                    :isSupp="true"
-                />
-            </li>
+            <collapse v-if="interactions.length && suppInteractions.length" :showTimes="false">
+                <template #header>
+                    <button @click="showPosSupp" class="show-pos-supp-btn">
+                        <p>Positive boosters - supplements ({{suppTotal}})</p>
+                        <chevron-up-icon  v-if="isShowPosSupp"/>
+                        <chevron-down-icon v-else />
+                    </button>
+                </template>
+                <template #content>
+                    <div>
+                        <li 
+                            class="horizontal-list-list-item"
+                            v-for="(interaction, idx) in suppInteractions"
+                            :key="interaction._id"
+                        >
+                            <interaction-preview
+                                :interaction="interaction"
+                                :materials="materials"
+                                :link="$route.name !== 'Monitor'"
+                                :idx="idx"
+                                :isSupp="true"
+                            />
+                        </li>
+                    </div>
+                </template>
+            </collapse>
+            <div v-else>
+                <li 
+                    class="horizontal-list-list-item"
+                    v-for="(interaction, idx) in suppInteractions"
+                    :key="interaction._id"
+                >
+                    <interaction-preview
+                        :interaction="interaction"
+                        :materials="materials"
+                        :link="$route.name !== 'Monitor'"
+                        :idx="idx"
+                        :isSupp="true"
+                    />
+                </li>
+            </div> 
         </ul>
     </section>
 </template>
@@ -148,10 +175,14 @@ import { eventBus, EV_sortby_side_swaped } from '@/cms/services/eventBus.service
 
 import InteractionPreview from '@/client/cmps/search-engine/InteractionPreview';
 import Tooltip from '@/client/cmps/common/Tooltip';
+import Collapse from '@/client/cmps/common/Collapse';
 import MonitorSummary from '@/client/cmps/search-engine/MonitorSummary';
 
 import SortVerticalIcon from '@/client/cmps/common/icons/SortVerticalIcon';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
+
+import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
+import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 
 export default {
     props: {
@@ -162,6 +193,10 @@ export default {
         suppInteractions: {
             type: Array,
             default: () => []
+        },
+        suppTotal: {
+            type: Number,
+            default: 0
         },
         pageCount: {
             type: Number,
@@ -180,6 +215,12 @@ export default {
             default: false
         }
     },
+    data(){
+        return {
+            isShowPosSupp: false,
+            showBtn: true
+        }
+    },
     computed: {
         side1Name() {
             if (this.$route.name === 'Drug2Drug') return 'Drug';
@@ -191,9 +232,16 @@ export default {
         },
         sortBySide() {
             return this.$store.getters.firstInteractionSide;
+        },
+        showOrHide(){
+            if(this.isShowPosSupp) return 'Hide'
+            return 'Show'
         }
     },
     methods: {
+        showPosSupp(){
+            this.isShowPosSupp = !this.isShowPosSupp
+        },
         emitSort(sortBy, isChecked) {
             this.$emit('list-sorted', { sortBy, side: this.sortBySide, isDesc: !isChecked });
         },
@@ -208,12 +256,18 @@ export default {
             eventBus.$emit(EV_sortby_side_swaped, this.sortBySide);
         }
     },
+    created(){
+        
+    },
     components: {
         InteractionPreview,
         SortVerticalIcon,
         InformationOutlineIcon,
         Tooltip,
-        MonitorSummary
+        Collapse,
+        MonitorSummary,
+        ChevronDownIcon,
+        ChevronUpIcon
     }
 };
 </script>

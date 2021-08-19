@@ -90,6 +90,24 @@
             }
         }
     }
+    .show-pos-supp-btn{
+        display: block;
+        margin: 0 auto;
+        border-radius: 100px;
+        padding: 0.4rem 1rem;
+        background-color: $clr11;
+        color: #FFFFFF;
+        border: 2px solid $clr11;
+        box-shadow: none;
+        margin-block-start: 11px;
+        pointer-events: all;
+        display: flex;
+        margin-block-end: 7px;
+
+        p{
+            margin-top: 5px;
+        }
+    }
     &-list-item {
         box-shadow: $slight-border-bottom;
 
