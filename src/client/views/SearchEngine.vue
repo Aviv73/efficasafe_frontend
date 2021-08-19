@@ -829,9 +829,6 @@ export default {
             const suppIds = this.materials.reduce((acc, { type, _id, isIncluded }) => {
                 if (type === 'drug' || isIncluded) return acc;
                 if (!acc.includes(_id)) acc.push(_id);
-                // labels.forEach(label => {
-                //     if (!acc.includes(label._id)) acc.push(label._id);
-                // });
                 return acc;
             }, []);
             const suppFilterBy = {

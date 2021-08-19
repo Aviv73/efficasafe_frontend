@@ -25,6 +25,10 @@ export default {
             type: String,
             required: true
         },
+        side2Id: {
+            type: String,
+            required: true
+        },
         mainSide2MaterialId: {
             type: String,
             required: true
@@ -57,6 +61,17 @@ export default {
                 });
                 return acc;
             }, []);
+        },
+        materialSuppIds() {
+            let materialsIds =  this.materials.reduce((acc, material) => {
+                // if (material.type === 'drug') return acc;
+                const ids = [ material._id, ...material.labels.map(l => l._id) ];
+                ids.forEach(id => {
+                    if (!acc.includes(id)) acc.push(id);
+                });
+                return acc;
+            }, []);
+            return materialsIds
         }
     },
     methods: {
@@ -68,7 +83,31 @@ export default {
                 limit: Number.MAX_SAFE_INTEGER,
                 materialCount: this.materialIds.length + 1
             };
-            const { interactions } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
+            let { interactions } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
+            this.interactions = this.formatInteractions(interactions);
+        },
+        async getSuppInteractions() {
+            const ids = {
+                side1Id: this.side1Id,
+                side2Id: this.side2Id,
+                mainSide2MaterialId: this.mainSide2MaterialId
+            }
+            const idCountMap = Object.values(ids).reduce((acc, id) => {
+                if(!acc[id]) acc[id] = 0
+                acc[id]++ 
+                return acc
+            }, {})
+            const idToCompare = Object.keys(idCountMap).find(key => idCountMap[key] === 1)
+            const filterBy = {
+                isSearchResults: true,
+                id: [...this.materialSuppIds, idToCompare],
+                page: 0,
+                limit: Number.MAX_SAFE_INTEGER,
+                materialCount: this.materialIds.length + 1
+            };
+            let { interactions } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
+            interactions = interactions.filter(interaction => interaction.side1Material._id === this.side1Id)
+            interactions = interactions.filter(interaction => interaction.side1Material._id === idToCompare || interaction.side2Material?._id === idToCompare)
             this.interactions = this.formatInteractions(interactions);
         },
         formatInteractions(interactions) {
@@ -135,7 +174,11 @@ export default {
         }
     },
     created() {
-        this.getInteractions();
+        if(this.isSupp){
+            this.getSuppInteractions()
+        }else{
+            this.getInteractions();
+        }
     },
     components: {
         InteractionPreview: () => import('./InteractionPreview')
