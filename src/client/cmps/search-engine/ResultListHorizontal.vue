@@ -125,47 +125,119 @@
                     :idx="idx"
                 />
             </li>
-            <collapse v-if="interactions.length && suppInteractions.length" :showTimes="false">
-                <template #header>
-                    <button @click="showPosSupp" class="show-pos-supp-btn">
-                        <p>Positive boosters - supplements ({{suppTotal}})</p>
-                        <chevron-up-icon  v-if="isShowPosSupp"/>
-                        <chevron-down-icon v-else />
-                    </button>
-                </template>
-                <template #content>
-                    <div>
-                        <li 
-                            class="horizontal-list-list-item"
-                            v-for="(interaction, idx) in suppInteractions"
-                            :key="interaction._id"
-                        >
-                            <interaction-preview
-                                :interaction="interaction"
-                                :materials="materials"
-                                :link="$route.name !== 'Monitor'"
-                                :idx="idx"
-                                :isSupp="true"
-                            />
-                        </li>
-                    </div>
-                </template>
-            </collapse>
-            <div v-else>
-                <li 
-                    class="horizontal-list-list-item"
-                    v-for="(interaction, idx) in suppInteractions"
-                    :key="interaction._id"
-                >
-                    <interaction-preview
-                        :interaction="interaction"
-                        :materials="materials"
-                        :link="$route.name !== 'Monitor'"
-                        :idx="idx"
-                        :isSupp="true"
-                    />
-                </li>
-            </div> 
+            <button v-if="currSuppInteractions.length && isLoadingSuppInteractions" class="show-pos-supp-btn loading">
+                <p>Positive boosters - supplements</p>
+                <loader class="loader" />
+            </button>
+            <div v-show="!isLoadingSuppInteractions">
+                <collapse v-if="interactions.length && currSuppInteractions.length" :showTimes="false">
+                    <template #header>
+                        <button @click="showPosSupp" class="show-pos-supp-btn">
+                            <p>Positive boosters - supplements ({{suppTotal}})</p>
+                            <chevron-up-icon  v-if="isShowPosSupp"/>
+                            <chevron-down-icon v-else />
+                        </button>
+                    </template>
+                    <template #content>
+                        <div>
+                            <li 
+                                class="horizontal-list-list-item"
+                                v-for="(interaction, idx) in suppInteractionsToShow"
+                                :key="interaction._id"
+                            >
+                                <interaction-preview
+                                    :interaction="interaction"
+                                    :materials="materials"
+                                    :link="$route.name !== 'Monitor'"
+                                    :idx="idx"
+                                    :isSupp="true"
+                                    :counter="renderKey"
+                                    @removeInteraction="removeInteraction"
+                                    @interactionDone="interactionDone"
+                                />
+                            </li>
+                            <li 
+                                class="horizontal-list-list-item"
+                                v-for="(interaction, idx) in emptySuppInteractions"
+                                :key="interaction._id"
+                            >
+                                <interaction-preview
+                                    :interaction="interaction"
+                                    :materials="materials"
+                                    :link="$route.name !== 'Monitor'"
+                                    :idx="idx"
+                                    :isSupp="true"
+                                    @removeInteraction="removeInteraction"
+                                    @interactionDone="interactionDone"
+                                />
+                            </li>
+                            <li 
+                                class="horizontal-list-list-item"
+                                v-for="(interaction, idx) in suppRedInteractions"
+                                :key="interaction._id"
+                            >
+                                <interaction-preview
+                                    :interaction="interaction"
+                                    :materials="materials"
+                                    :link="$route.name !== 'Monitor'"
+                                    :idx="idx"
+                                    :isSupp="true"
+                                    @removeInteraction="removeInteraction"
+                                    @interactionDone="interactionDone"
+                                />
+                            </li>
+                        </div>
+                    </template>
+                </collapse>
+                <div v-if="!interactions.length && currSuppInteractions.length">
+                    <li 
+                        class="horizontal-list-list-item"
+                        v-for="(interaction, idx) in suppInteractionsToShow"
+                        :key="interaction._id"
+                    >
+                        <interaction-preview
+                            :interaction="interaction"
+                            :materials="materials"
+                            :link="$route.name !== 'Monitor'"
+                            :idx="idx"
+                            :counter="renderKey"
+                            :isSupp="true"
+                            @removeInteraction="removeInteraction"
+                            @interactionDone="interactionDone"
+                        />
+                    </li>
+                    <li 
+                        class="horizontal-list-list-item"
+                        v-for="(interaction, idx) in emptySuppInteractions"
+                        :key="interaction._id"
+                    >
+                        <interaction-preview
+                            :interaction="interaction"
+                            :materials="materials"
+                            :link="$route.name !== 'Monitor'"
+                            :idx="idx"
+                            :isSupp="true"
+                            @removeInteraction="removeInteraction"
+                            @interactionDone="interactionDone"
+                        />
+                    </li>
+                    <li 
+                        class="horizontal-list-list-item"
+                        v-for="(interaction, idx) in suppRedInteractions"
+                        :key="interaction._id"
+                    >
+                        <interaction-preview
+                            :interaction="interaction"
+                            :materials="materials"
+                            :link="$route.name !== 'Monitor'"
+                            :idx="idx"
+                            :isSupp="true"
+                            @removeInteraction="removeInteraction"
+                            @interactionDone="interactionDone"
+                        />
+                    </li>
+                </div> 
+            </div>
         </ul>
     </section>
 </template>
@@ -177,10 +249,10 @@ import InteractionPreview from '@/client/cmps/search-engine/InteractionPreview';
 import Tooltip from '@/client/cmps/common/Tooltip';
 import Collapse from '@/client/cmps/common/Collapse';
 import MonitorSummary from '@/client/cmps/search-engine/MonitorSummary';
+import Loader from '@/client/cmps/common/icons/Loader';
 
 import SortVerticalIcon from '@/client/cmps/common/icons/SortVerticalIcon';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
-
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 
@@ -191,6 +263,10 @@ export default {
             default: () => []
         },
         suppInteractions: {
+            type: Array,
+            default: () => []
+        },
+        suppRedInteractions: {
             type: Array,
             default: () => []
         },
@@ -218,10 +294,17 @@ export default {
     data(){
         return {
             isShowPosSupp: false,
-            showBtn: true
+            showBtn: true,
+            interactionDoneLoadingCount: 0,
+            suppInteractionsOriginalLength: null,
+            isLoadingSuppInteractions: true,
+            emptySuppInteractions: [],
+            currSuppInteractions: null,
+            renderKey: 101
         }
     },
     computed: {
+
         side1Name() {
             if (this.$route.name === 'Drug2Drug') return 'Drug';
             return (this.sortBySide === 1) ? 'Supplement' : 'Drug';
@@ -233,12 +316,33 @@ export default {
         sortBySide() {
             return this.$store.getters.firstInteractionSide;
         },
-        showOrHide(){
-            if(this.isShowPosSupp) return 'Hide'
-            return 'Show'
+        suppInteractionsToShow(){
+            const toShow =  this.currSuppInteractions.filter(i => !i.isNotToShow)
+            return toShow
         }
     },
     methods: {
+        removeInteraction(idx){
+            const emptyInteraction = {
+                        name: `${this.currSuppInteractions[idx].name} (0)`,
+                        recommendation: '',
+                        vInteractions: [],
+                        evidenceLevel: '',
+                        isMaterialGroup: true,
+                        isEmpty: true,
+                        isNotToShow: true,
+                        total: 0
+                    }
+                this.currSuppInteractions.splice(idx,1, emptyInteraction)
+                this.emptySuppInteractions.push(emptyInteraction)
+        },
+        interactionDone(){
+            this.interactionDoneLoadingCount++
+            if(this.interactionDoneLoadingCount === this.suppInteractionsOriginalLength){
+                this.isLoadingSuppInteractions = false
+                this.renderKey++
+            }
+        },
         showPosSupp(){
             this.isShowPosSupp = !this.isShowPosSupp
         },
@@ -257,7 +361,8 @@ export default {
         }
     },
     created(){
-        
+        this.currSuppInteractions = JSON.parse(JSON.stringify(this.suppInteractions))
+        this.suppInteractionsOriginalLength = this.suppInteractions.length
     },
     components: {
         InteractionPreview,
@@ -267,7 +372,8 @@ export default {
         Collapse,
         MonitorSummary,
         ChevronDownIcon,
-        ChevronUpIcon
+        ChevronUpIcon,
+        Loader
     }
 };
 </script>

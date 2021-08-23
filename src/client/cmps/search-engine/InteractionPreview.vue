@@ -29,7 +29,7 @@
                             />
                             <interaction-capsules
                                 :name="interactionName"
-                                :color="getInteractionColor(interaction.recommendation)"
+                                :color="getInteractionColor(interaction)"
                                 :vInteractionCount="getVinteractionsCount(interaction)"
                                 :localize="!isCompoundPart"
                                 :showDraftName="isDuplicate"
@@ -70,6 +70,7 @@
                 </component>
             </template>
             <template #content>
+                <div class="negative-msg" v-if="interaction.isNegative"> {{negativeMsgName(interaction.name)}} has a negative interaction with one of the searched drugs </div>
                 <div
                     class="interaction-preview-content"
                     :class="{ 'link': link }"
@@ -140,6 +141,9 @@
                         :materials="materials"
                         :parent-idx="idx"
                         :isSupp="isSupp"
+                        :key="counter"
+                        @removeInteraction="removeInteraction"
+                        @interactionDone="interactionDone"
                     />
                 </div>
                 <div 
@@ -243,6 +247,10 @@ export default {
         isSupp: {
             type: Boolean,
             default: false
+        },
+        counter: {
+            type: Number,
+            required: false
         }
     },
     data() {
@@ -284,6 +292,16 @@ export default {
         },
     },
     methods: {
+        removeInteraction(idx){
+            this.$emit('removeInteraction', idx)
+        },
+        interactionDone(){
+            this.$emit('interactionDone')
+        },
+        negativeMsgName(fullName){
+            const name = fullName.replace(' (0)', '')
+            return name
+        },
         restoreCollapses() {
             if (!this.collapsesState[this.$route.name]) return;
             Object.entries(this.collapsesState[this.$route.name]).forEach(([ key, value ]) => {
@@ -430,7 +448,8 @@ export default {
         getShortRecommendation(fullRec) {
             return interactionUIService.getShortRecommendation(fullRec);
         },
-        getInteractionColor(recommendation) {
+        getInteractionColor({recommendation, isNegative}) {
+            if(isNegative) return '#E63946'
             return interactionUIService.getInteractionColor(recommendation);
         },
         swapSideNames(side) {

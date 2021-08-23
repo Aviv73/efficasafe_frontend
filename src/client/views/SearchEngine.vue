@@ -364,7 +364,8 @@ export default {
             isPrintModalActive: false,
             isSaveSearchModalActive: false,
             undoneQueries: [],
-            isArrowShown: true
+            isArrowShown: true,
+            idsToTurnRed: []
         }
     },
     watch: {
@@ -435,6 +436,7 @@ export default {
                     return {
                         interactions: this.formatedPositiveInteractions,
                         suppInteractions: this.formatedSuppPositiveInteractions,
+                        suppRedInteractions: this.formatedSuppPositiveRed,
                         pageCount: 0,
                         total: 0,
                         suppTotal: this.totalPositiveSuppBoosters
@@ -534,6 +536,23 @@ export default {
                     (a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
                 });
             }
+            const nonSuppDrugs = this.materials.filter(m => m.type === 'drug' && !m.isIncluded)
+            nonSuppDrugs.forEach(material => {
+                const queryCount = this.$store.getters.queryApearanceCount(material.userQuery)
+                const isHaveInteractions = formatedPositiveInteractions.some(posInt => material._id === posInt.mainMaterialId)
+                if(!isHaveInteractions){
+                    const emptyInteraction = {
+                        name: queryCount > 1 ? `${material.name} (0)`: `${material.userQuery} (0)`,
+                        recommendation: '',
+                        vInteractions: [],
+                        evidenceLevel: '',
+                        isMaterialGroup: true,
+                        isEmpty: true,
+                        total: 0
+                    }
+                    formatedPositiveInteractions.push(emptyInteraction)
+                }
+            })
             return formatedPositiveInteractions;
         },
         formatedSuppPositiveInteractions(){
@@ -563,6 +582,23 @@ export default {
                 return group
             });
             return formatedSuppPositiveInteractions
+        },
+        formatedSuppPositiveRed() {
+            const formatedSuppPositiveReds = []
+            this.idsToTurnRed.forEach(id => {
+                const material = this.materials.find(m => m._id === id)
+                const redInteraction = {
+                        name: `${material.userQuery} (0)`,
+                        recommendation: '',
+                        vInteractions: [],
+                        evidenceLevel: '',
+                        isMaterialGroup: true,
+                        isNegative: true,
+                        total: 0
+                    }
+               formatedSuppPositiveReds.push(redInteraction)     
+            })
+            return formatedSuppPositiveReds
         },
         formatedInteractions() {
             let formatedInteractions = this.interactions.reduce((acc, interaction) => {
@@ -833,6 +869,14 @@ export default {
                 isPositives: true,
                 id: drugIds
             };
+            const allIds = this.materials.reduce((acc, {  _id,labels, isIncluded }) => {
+                if (isIncluded) return acc;
+                if (!acc.includes(_id)) acc.push(_id);
+                labels.forEach(label => {
+                    if (!acc.includes(label._id)) acc.push(label._id);
+                });
+                return acc;
+            }, []);
             const suppIds = this.materials.reduce((acc, { type, _id, isIncluded }) => {
                 if (type === 'drug' || isIncluded) return acc;
                 if (!acc.includes(_id)) acc.push(_id);
@@ -841,14 +885,16 @@ export default {
             const suppFilterBy = {
                 isSearchResults: true,
                 isPositives: true,
-                id: suppIds,
+                id: allIds,
+                suppIds,
                 isSupp: true
             };
-            const [  { interactions, searchState },  { interactions: suppInteractions } ] = await Promise.all([
+            const [  { interactions, searchState },  { interactions: suppInteractions, idsToTurnRed } ] = await Promise.all([
                 this.$store.dispatch({ type: 'getInteractions', filterBy: drugFilterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}` }),
                 this.$store.dispatch({ type: 'getInteractions', filterBy: suppFilterBy })
             ]);
-
+            console.log('idsToTurnRed', idsToTurnRed);
+            this.idsToTurnRed = idsToTurnRed
             this.positiveInteractions = await this.removeDupNonPositives(interactions);
             this.suppPositiveInteractions = suppInteractions
             this.restoreState('Boosters', searchState);

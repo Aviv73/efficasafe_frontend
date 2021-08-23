@@ -1,5 +1,5 @@
 <template>
-    <section class="interaction-preview positive-booster" v-if="currInteraction">
+    <section class="interaction-preview positive-booster" v-if="currInteraction && currInteraction.vInteractions.length">
         <collapse
             v-for="(group, idx) in currInteraction.vInteractions"
             :key="group._id + idx"
@@ -50,6 +50,9 @@
                         :materials="materials"
                         :exactName="interaction.exactName"
                         :isSupp="isSupp"
+                        :groupIdx="idx"
+                        @remove="removeGroup"
+                        @groupDone="groupDone"
                     />
                 </div>
             </template>
@@ -96,10 +99,27 @@ export default {
     data() {
         return {
             openCollapses: [],
-            currInteraction: null
+            currInteraction: null,
+            groupsDoneLoadingCount: 0,
+            vInteractionsOriginalLength: null
         }
     },
     methods: {
+        removeGroup(idx){
+            this.currInteraction.vInteractions.splice(idx,1)
+            if(!this.currInteraction.vInteractions.length){
+                this.$emit('removeInteraction', this.parentIdx)
+                this.$nextTick(() => {
+                    console.log('hi');
+                })
+            } 
+        },
+        groupDone(){
+            this.groupsDoneLoadingCount++
+            if(this.groupsDoneLoadingCount === this.vInteractionsOriginalLength){
+                this.$emit('interactionDone')
+            }
+        },
         isInitialiOpen(idx) {
             return this.openCollapses.includes(idx);
         },
@@ -148,7 +168,7 @@ export default {
     },
     created() {
         this.interaction.vInteractions.forEach(({ cacheKey }) => {
-            if(!cacheKey) return // Will not be needed when caching work
+            if(!cacheKey) return // Will not be needed when caching work for positive boosters - supps
             const { searchState } = interactionService.getChache(cacheKey);
             if(!searchState) return;
             Object.values(searchState).forEach(value => {
@@ -158,6 +178,7 @@ export default {
             });
         });
          this.currInteraction = JSON.parse(JSON.stringify(this.interaction))
+         this.vInteractionsOriginalLength = this.currInteraction.vInteractions.length
     },
     components: {
         Collapse,

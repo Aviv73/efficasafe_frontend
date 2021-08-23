@@ -11,6 +11,7 @@
             :materials="materials"
             :interactions="listData.interactions"
             :suppInteractions="listData.suppInteractions"
+            :suppRedInteractions="listData.suppRedInteractions"
             :pageCount="listData.pageCount"
             :total="listData.total"
             :suppTotal="listData.suppTotal"

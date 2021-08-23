@@ -105,7 +105,18 @@
         margin-block-end: 7px;
 
         p{
-            margin-top: 5px;
+            margin-top: 7px;
+        }
+    }
+    .loading{
+        opacity: 0.5;
+
+        .loader{
+            width: 20px;
+        }
+        p{
+            margin-top: 3px;
+            margin-right: 8px;
         }
     }
     &-list-item {

@@ -44,6 +44,10 @@ export default {
         isSupp: {
             type: Boolean,
             default: false
+        },
+        groupIdx: {
+            type: Number,
+            required: true
         }
     },
     data() {
@@ -106,8 +110,15 @@ export default {
             };
             let { interactions } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
             interactions = interactions.filter(interaction => interaction.side1Material._id === idToCompare || interaction.side2Material?._id === idToCompare)
-            
-            this.interactions = this.formatInteractions(interactions);
+            const redInteractions = interactions.filter( ({recommendation})=> {
+                return interactionUIService.getIsRed(recommendation)
+            })
+            if(redInteractions.length){
+                this.$emit('remove', this.groupIdx, interactions)
+            }else{
+                this.interactions = this.formatInteractions(interactions);
+            }
+            this.$emit('groupDone')
         },
         formatInteractions(interactions) {
             const { recommendationMap: map } = this.$options;
