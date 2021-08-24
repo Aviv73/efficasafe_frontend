@@ -7,7 +7,8 @@ export const interactionUIService = {
     getSortedRefs,
     formatRefStrs,
     getShortRecommendation,
-    getIsRed
+    getIsRed,
+    getIsPositive
 }
 
 
@@ -182,6 +183,19 @@ function getIsRed(fullRec){
             return false    
     }
 }
+
+function getIsPositive(fullRec){
+    switch (fullRec){
+        case 'Coadministration is not contraindicated and may even be advised':
+        case 'Coadministration is possible':
+        case 'Coadministration is possible and may even be advised':
+        case 'Coadministration is advised':
+        case 'Coadministration is possible but caution should be taken':
+            return true
+        default:
+            return false
+    }
+}                    
 
 function _removeDuplicates(arr) {
     var seenMap = {};

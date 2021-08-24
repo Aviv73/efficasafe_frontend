@@ -151,7 +151,7 @@ export default {
         },
         side2Name() {
             if (!this.name) return '';
-            if (this.isMaterialGroup) return this.name;
+            if (this.isMaterialGroup) return this.$store.getters.materialNamesMap[this.name] ? this.$store.getters.materialNamesMap[this.name][0] : this.name
             const side2Name = this.name.split('&')[1].trim();
             const queries = this.$store.getters.materialNamesMap ? this.$store.getters.materialNamesMap[side2Name] : null;
             const count = queries ? this.$store.getters.queryApearanceCount(queries[0]) : 0;

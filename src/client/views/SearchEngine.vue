@@ -372,6 +372,7 @@ export default {
         '$route.query': {
             async handler(to, from) {
                 this.$store.commit('resetPosSupp')
+                this.$store.commit('resetRedPositiveSupp')
                 if (this.$route.name === 'Boosters' && !this.isScreenNarrow && !storageService.load('did-p-boosters-tour')) {
                     this.$nextTick(() => {
                         this.$tours['boosters-tour'].start();
@@ -888,6 +889,7 @@ export default {
                 this.$store.dispatch({ type: 'getInteractions', filterBy: drugFilterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}` }),
                 this.$store.dispatch({ type: 'getInteractions', filterBy: suppFilterBy })
             ]);
+            this.$store.commit('setRedPositiveSupp', { redIds: idsToTurnRed })
             this.idsToTurnRed = idsToTurnRed
             this.positiveInteractions = await this.removeDupNonPositives(interactions);
             this.suppPositiveInteractions = suppInteractions

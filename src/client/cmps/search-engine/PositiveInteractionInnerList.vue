@@ -66,6 +66,13 @@ export default {
                 return acc;
             }, []);
         },
+        // materialSuppIds() {
+        //     let materialsIds =  this.materials.reduce((acc, material) => {
+        //         if (!acc.includes(material._id)) acc.push(material._id);
+        //         return acc;
+        //     }, []);
+        //     return materialsIds
+        // }
         materialSuppIds() {
             let materialsIds =  this.materials.reduce((acc, material) => {
                 const ids = [ material._id, ...material.labels.map(l => l._id) ];
@@ -75,6 +82,9 @@ export default {
                 return acc;
             }, []);
             return materialsIds
+        },
+        redPositiveSuppIds(){
+            return this.$store.getters.getRedPositiveSupp
         }
     },
     methods: {
@@ -100,22 +110,27 @@ export default {
                 acc[id]++ 
                 return acc
             }, {})
-            const idToCompare = Object.keys(idCountMap).find(key => idCountMap[key] === 1)
+            const idToCompare = Object.keys(idCountMap).find(key => idCountMap[key] === 1)//[2,4] [1,2,3,4]
+            const idsToSerch = this.materialSuppIds.filter(suppId => {
+                return !this.redPositiveSuppIds.includes(suppId)
+            })
             const filterBy = {
                 isSearchResults: true,
-                id: [...this.materialSuppIds, idToCompare],
+                id: [...idsToSerch, idToCompare],
+                // id: [...this.materialSuppIds, idToCompare],
                 page: 0,
                 limit: Number.MAX_SAFE_INTEGER,
                 materialCount: this.materialIds.length + 1
             };
             let { interactions } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
-            interactions = interactions.filter(interaction => interaction.side1Material._id === idToCompare || interaction.side2Material?._id === idToCompare)
+            interactions = this.filterPosSupp(interactions, idToCompare)
             const redInteractions = interactions.filter( ({recommendation})=> {
                 return interactionUIService.getIsRed(recommendation)
             })
             if(redInteractions.length){
                 this.$emit('remove', this.groupIdx)
             }else{
+                interactions = interactions.filter(({recommendation}) => interactionUIService.getIsPositive(recommendation))
                 this.interactions = this.formatInteractions(interactions);
             }
             this.$emit('groupDone')
@@ -181,6 +196,15 @@ export default {
                 return (map[a.recommendation.toLowerCase()] > map[b.recommendation.toLowerCase()]) ? -1 : (map[a.recommendation.toLowerCase()] < map[b.recommendation.toLowerCase()]) ? 1 : 0;
             });
             return interactions[0];
+        },
+        filterPosSupp(interactions, idToCompare) {
+            interactions = interactions.filter(interaction => interaction.side1Material._id === idToCompare || interaction.side2Material?._id === idToCompare)
+            if(!this.materialIds.length){
+                // interactions = interactions.filter(({recommendation}) => interactionUIService.getIsPositive(recommendation))
+                interactions = interactions.filter(interaction => interaction.side1Material.type !== 'drug' && interaction.side2Material?.type !== 'drug')
+                interactions = interactions.filter(interaction => !interaction.side2Label)
+            }
+            return interactions
         }
     },
     created() {

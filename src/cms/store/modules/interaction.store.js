@@ -10,7 +10,8 @@ export const interactionStore = ({
             'Supp2Drug': {},
             'Boosters': {}
         },
-        firstInteractionSide: 1
+        firstInteractionSide: 1,
+        redPositiveSupp: []
     },
     getters: {
         interactions(state) {
@@ -30,6 +31,9 @@ export const interactionStore = ({
         },
         firstInteractionSide(state) {
             return state.firstInteractionSide;
+        },
+        getRedPositiveSupp(state){
+            return state.redPositiveSupp
         }
     },
     mutations: {
@@ -76,6 +80,12 @@ export const interactionStore = ({
         },
         resetSupplementsRefs(state) {
             state.supplementsRefs = [];
+        },
+        resetRedPositiveSupp(state) {
+            state.redPositiveSupp = [];
+        },
+        setRedPositiveSupp(state, {redIds}) {
+            state.redPositiveSupp = redIds
         }
     },
     actions: {
