@@ -309,7 +309,8 @@ export default {
         },
         restoreCollapses() {
             if (!this.collapsesState[this.$route.name]) return;
-            Object.entries(this.collapsesState[this.$route.name]).forEach(([ key, value ]) => {
+            const route = this.isSupp ? this.collapsesState['suppBoosters'] : this.collapsesState[this.$route.name]
+            Object.entries(route).forEach(([ key, value ]) => {
                 if (this.parentIdx === undefined && this.idx === +key) {
                     this.initialCollapseIsVisible = this.isGroup;
                 }
@@ -322,7 +323,7 @@ export default {
         },
         onCollapseToggle() {
             const chacheData = {
-                key: this.$route.fullPath,
+                key: this.isSupp ? `${this.$route.fullPath}/supps` : this.$route.fullPath,
                 idx: this.idx,
                 parentIdx: this.parentIdx
             };

@@ -117,12 +117,11 @@ export default {
             const filterBy = {
                 isSearchResults: true,
                 id: [...idsToSerch, idToCompare],
-                // id: [...this.materialSuppIds, idToCompare],
                 page: 0,
                 limit: Number.MAX_SAFE_INTEGER,
                 materialCount: this.materialIds.length + 1
             };
-            let { interactions } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
+            let { interactions } = await this.$store.dispatch({ type: 'getInteractions', filterBy,  cacheKey: `/search/positive-boosters/${filterBy.id}/supps` });
             interactions = this.filterPosSupp(interactions, idToCompare)
             const redInteractions = interactions.filter( ({recommendation})=> {
                 return interactionUIService.getIsRed(recommendation)
@@ -183,7 +182,12 @@ export default {
                 (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
                 (a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
             });
-            const mainInteractionIdx = interactions.findIndex(i => i.side2Material._id === this.mainSide2MaterialId);
+            let mainInteractionIdx
+            if(this.isSupp){
+                mainInteractionIdx = interactions.findIndex(i => i.side2Material._id === this.mainSide2MaterialId || i.side1Material._id === this.mainSide2MaterialId);
+            }else{
+                mainInteractionIdx = interactions.findIndex(i => i.side2Material._id === this.mainSide2MaterialId);
+            }
             if (mainInteractionIdx > 0) {
                 const [ mainInteraction ] = interactions.splice(mainInteractionIdx, 1);
                 interactions.unshift(mainInteraction);

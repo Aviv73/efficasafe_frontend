@@ -8,8 +8,10 @@ export const interactionStore = ({
         seenRefsMap: {},
         openCollapses: {
             'Supp2Drug': {},
-            'Boosters': {}
+            'Boosters': {},
+            'suppBoosters': {}
         },
+        isPosSuppOpen: false,
         firstInteractionSide: 1,
         redPositiveSupp: []
     },
@@ -34,6 +36,9 @@ export const interactionStore = ({
         },
         getRedPositiveSupp(state){
             return state.redPositiveSupp
+        },
+        getIsPosSuppOpen(state){
+            return state.isPosSuppOpen
         }
     },
     mutations: {
@@ -86,6 +91,9 @@ export const interactionStore = ({
         },
         setRedPositiveSupp(state, {redIds}) {
             state.redPositiveSupp = redIds
+        },
+        setIsPosSuppOpen(state){
+            state.isPosSuppOpen = !state.isPosSuppOpen
         }
     },
     actions: {

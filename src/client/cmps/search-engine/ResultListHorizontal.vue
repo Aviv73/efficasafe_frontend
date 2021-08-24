@@ -130,7 +130,7 @@
                 <loader class="loader" />
             </button>
             <div v-show="!isLoadingSuppInteractions">
-                <collapse v-if="interactions.length && currSuppInteractions.length" :showTimes="false">
+                <collapse v-if="interactions.length && currSuppInteractions.length" :showTimes="false" :initial-is-visible="isShowPosSupp">
                     <template #header>
                         <button @click="showPosSupp" class="show-pos-supp-btn">
                             <p>Positive boosters - supplements ({{suppCount}})</p>
@@ -342,6 +342,7 @@ export default {
             }
         },
         showPosSupp(){
+            this.$store.commit('setIsPosSuppOpen')
             this.isShowPosSupp = !this.isShowPosSupp
         },
         emitSort(sortBy, isChecked) {
@@ -356,11 +357,18 @@ export default {
             else side = 1;
             this.$store.commit({ type: 'setFirstInteractionSide', side });
             eventBus.$emit(EV_sortby_side_swaped, this.sortBySide);
+        },
+        restoreCollapses(){
+            if(this.$store.getters.getIsPosSuppOpen){
+
+                this.isShowPosSupp = true
+            }
         }
     },
     created(){
         this.currSuppInteractions = JSON.parse(JSON.stringify(this.suppInteractions))
         this.suppInteractionsOriginalLength = this.suppInteractions.length
+        this.restoreCollapses();
     },
     components: {
         InteractionPreview,
