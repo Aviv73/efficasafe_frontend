@@ -114,7 +114,7 @@ export default {
                 return interactionUIService.getIsRed(recommendation)
             })
             if(redInteractions.length){
-                this.$emit('remove', this.groupIdx, interactions)
+                this.$emit('remove', this.groupIdx)
             }else{
                 this.interactions = this.formatInteractions(interactions);
             }

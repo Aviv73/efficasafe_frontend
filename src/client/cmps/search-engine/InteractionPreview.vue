@@ -30,7 +30,7 @@
                             <interaction-capsules
                                 :name="interactionName"
                                 :color="getInteractionColor(interaction)"
-                                :vInteractionCount="getVinteractionsCount(interaction)"
+                                :vInteractionCount="newLength || getVinteractionsCount(interaction)"
                                 :localize="!isCompoundPart"
                                 :showDraftName="isDuplicate"
                                 :draftName="interaction.side2DraftName"
@@ -144,6 +144,7 @@
                         :key="counter"
                         @removeInteraction="removeInteraction"
                         @interactionDone="interactionDone"
+                        @setCount="setCount"
                     />
                 </div>
                 <div 
@@ -258,6 +259,7 @@ export default {
             pathwayRefCount: 0,
             primarySideInView: 1,
             initialCollapseIsVisible: false,
+            newLength: null
         }
     },
     computed: {
@@ -297,6 +299,9 @@ export default {
         },
         interactionDone(){
             this.$emit('interactionDone')
+        },
+        setCount(length){
+            this.newLength = length
         },
         negativeMsgName(fullName){
             const name = fullName.replace(' (0)', '')

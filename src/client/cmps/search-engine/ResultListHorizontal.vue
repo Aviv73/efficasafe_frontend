@@ -133,7 +133,7 @@
                 <collapse v-if="interactions.length && currSuppInteractions.length" :showTimes="false">
                     <template #header>
                         <button @click="showPosSupp" class="show-pos-supp-btn">
-                            <p>Positive boosters - supplements ({{suppTotal}})</p>
+                            <p>Positive boosters - supplements ({{suppCount}})</p>
                             <chevron-up-icon  v-if="isShowPosSupp"/>
                             <chevron-down-icon v-else />
                         </button>
@@ -270,10 +270,6 @@ export default {
             type: Array,
             default: () => []
         },
-        suppTotal: {
-            type: Number,
-            default: 0
-        },
         pageCount: {
             type: Number,
             default: 0
@@ -304,7 +300,6 @@ export default {
         }
     },
     computed: {
-
         side1Name() {
             if (this.$route.name === 'Drug2Drug') return 'Drug';
             return (this.sortBySide === 1) ? 'Supplement' : 'Drug';
@@ -319,6 +314,9 @@ export default {
         suppInteractionsToShow(){
             const toShow =  this.currSuppInteractions.filter(i => !i.isNotToShow)
             return toShow
+        },
+        suppCount(){
+            return this.$store.getters.getPosSuppLength
         }
     },
     methods: {

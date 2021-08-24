@@ -371,6 +371,7 @@ export default {
     watch: {
         '$route.query': {
             async handler(to, from) {
+                this.$store.commit('resetPosSupp')
                 if (this.$route.name === 'Boosters' && !this.isScreenNarrow && !storageService.load('did-p-boosters-tour')) {
                     this.$nextTick(() => {
                         this.$tours['boosters-tour'].start();
@@ -439,7 +440,6 @@ export default {
                         suppRedInteractions: this.formatedSuppPositiveRed,
                         pageCount: 0,
                         total: 0,
-                        suppTotal: this.totalPositiveSuppBoosters
                     };
                     case 'Monitor':
                     return {
@@ -779,10 +779,11 @@ export default {
         },
         totalInteractionCount() {
             if (this.$route.name === 'Boosters') {
-                return this.formatedPositiveInteractions.reduce((acc, { total }) => {
+                const sum = this.formatedPositiveInteractions.reduce((acc, { total }) => {
                     acc += total;
                     return acc;
                 }, 0);
+                return sum + this.$store.getters.getPosSuppLength
             }
             return this.total + this.dBankTotal;
         },
@@ -791,13 +792,7 @@ export default {
                 acc += total;
                 return acc;
             }, 0);
-            return sum + this.totalPositiveSuppBoosters
-        },
-        totalPositiveSuppBoosters(){
-           return this.formatedSuppPositiveInteractions.reduce((acc, { total }) => {
-                acc += total;
-                return acc;
-            }, 0);
+            return sum + this.$store.getters.getPosSuppLength
         },
         loggedInUser() {
             return this.$store.getters.loggedInUser;
@@ -893,7 +888,6 @@ export default {
                 this.$store.dispatch({ type: 'getInteractions', filterBy: drugFilterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}` }),
                 this.$store.dispatch({ type: 'getInteractions', filterBy: suppFilterBy })
             ]);
-            console.log('idsToTurnRed', idsToTurnRed);
             this.idsToTurnRed = idsToTurnRed
             this.positiveInteractions = await this.removeDupNonPositives(interactions);
             this.suppPositiveInteractions = suppInteractions

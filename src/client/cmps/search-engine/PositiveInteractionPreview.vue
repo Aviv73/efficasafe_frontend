@@ -107,18 +107,20 @@ export default {
     methods: {
         removeGroup(idx){
             this.currInteraction.vInteractions.splice(idx,1)
+            this.$emit('setCount', this.currInteraction.vInteractions.length)
             if(!this.currInteraction.vInteractions.length){
                 this.$emit('removeInteraction', this.parentIdx)
-                this.$nextTick(() => {
-                    console.log('hi');
-                })
             } 
         },
         groupDone(){
             this.groupsDoneLoadingCount++
-            if(this.groupsDoneLoadingCount === this.vInteractionsOriginalLength){
-                this.$emit('interactionDone')
-            }
+            const ids = this.currInteraction.vInteractions.map(vInt => `${this.currInteraction.mainMaterialId}-${vInt.side1Material._id}-${vInt.side2Material._id}`)
+            this.$nextTick(() => {
+                this.$store.commit('setPosSuppIds', { ids })
+                if(this.groupsDoneLoadingCount === this.vInteractionsOriginalLength){
+                    this.$emit('interactionDone')
+                }
+            })
         },
         isInitialiOpen(idx) {
             return this.openCollapses.includes(idx);

@@ -15,7 +15,8 @@ export default new Vuex.Store({
   state: {
     materialNamesMap: null,
     isScreenNarrow: null,
-    hasFailedTasks: false
+    hasFailedTasks: false,
+    posSuppIds: []
   },
   getters: {
     hasFailedTasks(state) {
@@ -37,6 +38,9 @@ export default new Vuex.Store({
         });
         return acc;
       }, 0);
+    },
+    getPosSuppLength(state){
+      return state.posSuppIds.length
     }
   },
   mutations: {
@@ -52,6 +56,14 @@ export default new Vuex.Store({
     },
     setHasFailedTasks(state, { hasTasks }) {
       state.hasFailedTasks = hasTasks;
+    },
+    setPosSuppIds(state, { ids }){
+      ids.forEach(id => {
+        if(!state.posSuppIds.includes(id)) state.posSuppIds.push(id)
+      })
+    },
+    resetPosSupp(state){
+      state.posSuppIds = []
     }
   },
   plugins: [
