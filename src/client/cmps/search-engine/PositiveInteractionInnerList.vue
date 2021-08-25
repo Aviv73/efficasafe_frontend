@@ -66,13 +66,6 @@ export default {
                 return acc;
             }, []);
         },
-        // materialSuppIds() {
-        //     let materialsIds =  this.materials.reduce((acc, material) => {
-        //         if (!acc.includes(material._id)) acc.push(material._id);
-        //         return acc;
-        //     }, []);
-        //     return materialsIds
-        // }
         materialSuppIds() {
             let materialsIds =  this.materials.reduce((acc, material) => {
                 const ids = [ material._id, ...material.labels.map(l => l._id) ];
@@ -110,7 +103,7 @@ export default {
                 acc[id]++ 
                 return acc
             }, {})
-            const idToCompare = Object.keys(idCountMap).find(key => idCountMap[key] === 1)//[2,4] [1,2,3,4]
+            const idToCompare = Object.keys(idCountMap).find(key => idCountMap[key] === 1)
             const idsToSerch = this.materialSuppIds.filter(suppId => {
                 return !this.redPositiveSuppIds.includes(suppId)
             })
@@ -119,7 +112,7 @@ export default {
                 id: [...idsToSerch, idToCompare],
                 page: 0,
                 limit: Number.MAX_SAFE_INTEGER,
-                materialCount: this.materialIds.length + 1
+                materialCount: this.materialIds.length + 2
             };
             let { interactions } = await this.$store.dispatch({ type: 'getInteractions', filterBy,  cacheKey: `/search/positive-boosters/${filterBy.id}/supps` });
             interactions = this.filterPosSupp(interactions, idToCompare)
@@ -130,11 +123,15 @@ export default {
                 this.$emit('remove', this.groupIdx)
             }else{
                 interactions = interactions.filter(({recommendation}) => interactionUIService.getIsPositive(recommendation))
-                this.interactions = this.formatInteractions(interactions);
+                if(!this.materialIds.length){
+                    interactions = interactions.filter((int) => int.side1Material._id === this.mainSide2MaterialId || int.side2Material._id === this.mainSide2MaterialId )
+                }
+                this.interactions = this.formatInteractions(interactions, idToCompare);
+                
             }
             this.$emit('groupDone')
         },
-        formatInteractions(interactions) {
+        formatInteractions(interactions, idToCompare = null) {
             const { recommendationMap: map } = this.$options;
             interactions.forEach(interaction => {
                 if (interaction.side2Label) {
@@ -156,7 +153,15 @@ export default {
                     if (interaction.side2Material) {
                         // const userQuery = this.$store.getters.materialNamesMap[interaction.side2Material.name];
                         // const interactionName = `${side1Name} & ${userQuery ? userQuery[0] : interaction.side2Material.name}`;
-                        const interactionName = `${side1Name} & ${interaction.side2Material.name}`;
+                        let interactionName
+                        if(idToCompare){
+                            const firstName = idToCompare === interaction.side1Material._id ? side1Name : interaction.side2Material.name
+                            const lastName =  idToCompare === interaction.side1Material._id ? interaction.side2Material.name : side1Name
+                            interactionName = `${firstName} & ${lastName}`;
+                            interaction.name = interactionName
+                        }else{
+                            interactionName = `${side1Name} & ${interaction.side2Material.name}`;
+                        }
                         if (!seenVinteractionsMap[interactionName]) seenVinteractionsMap[interactionName] = [ interaction ];
                         else seenVinteractionsMap[interactionName].push(interaction);
                     } else {
@@ -164,7 +169,15 @@ export default {
                         
                         const userQueries = this.$store.getters.materialNamesMap[matchingMaterial.name];
                         const side2Name = userQueries ? userQueries[0] : matchingMaterial.name;
-                        const interactionName = `${side1Name} & ${side2Name}`;
+                        let interactionName
+                        if(idToCompare){
+                            const firstName = idToCompare === interaction.side1Material._id ? side1Name : side2Name
+                            const lastName =  idToCompare === interaction.side1Material._id ? side2Name : side1Name
+                            interactionName = `${firstName} & ${lastName}`;
+                            interaction.name = interactionName
+                        }else{
+                            interactionName = `${side1Name} & ${side2Name}`;
+                        }
                         if (!seenVinteractionsMap[interactionName]) seenVinteractionsMap[interactionName] = [ interaction ];
                         else seenVinteractionsMap[interactionName].push(interaction);
                     }

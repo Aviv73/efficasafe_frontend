@@ -170,10 +170,10 @@ export default {
     },
     created() {
         this.interaction.vInteractions.forEach(({ cacheKey }) => {
-            if(!cacheKey) return // Will not be needed when caching work for positive boosters - supps
-            const { searchState } = interactionService.getChache(cacheKey);
-            if(!searchState) return;
-            Object.values(searchState).forEach(value => {
+            if(!cacheKey) return 
+            const res = interactionService.getChache(cacheKey);
+            if(!res?.searchState) return;
+            Object.values(res.searchState).forEach(value => {
                 Object.keys(value).forEach(idx => {
                     this.openCollapses.push(+idx);
                 });

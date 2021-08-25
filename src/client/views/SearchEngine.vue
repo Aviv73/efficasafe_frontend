@@ -584,6 +584,26 @@ export default {
             });
             return formatedSuppPositiveInteractions
         },
+        materialSuppIds() {
+            let materialsIds =  this.materials.reduce((acc, material) => {
+                const ids = [ material._id, ...material.labels.map(l => l._id) ];
+                ids.forEach(id => {
+                    if (!acc.includes(id)) acc.push(id);
+                });
+                return acc;
+            }, []);
+            return materialsIds
+        },
+        materialIds() {
+            return this.materials.reduce((acc, material) => {
+                if (material.type !== 'drug') return acc;
+                const ids = [ material._id, ...material.labels.map(l => l._id) ];
+                ids.forEach(id => {
+                    if (!acc.includes(id)) acc.push(id);
+                });
+                return acc;
+            }, []);
+        },
         formatedSuppPositiveRed() {
             const formatedSuppPositiveReds = []
             this.idsToTurnRed.forEach(id => {
@@ -892,16 +912,46 @@ export default {
             this.$store.commit('setRedPositiveSupp', { redIds: idsToTurnRed })
             this.idsToTurnRed = idsToTurnRed
             this.positiveInteractions = await this.removeDupNonPositives(interactions);
-            this.suppPositiveInteractions = suppInteractions
+            this.suppPositiveInteractions = this.addCacheKey(suppInteractions)
             this.suppPositiveInteractions.forEach(int => {
                 int.vInteractions.forEach(vInt => {
                     const interactionName = vInt.side1Material._id === int.side2Id ? `${vInt.side2Material.name} & ${vInt.side1Material.name}` : `${vInt.side1Material.name} & ${vInt.side2Material.name}`
                     vInt.name = interactionName
                 })
-                int.vInteractions = this.sortInteractions(int.vInteractions)
+                int.vInteractions = this.sortInteractions(int.vInteractions, true)
             })
             this.restoreState('Boosters', searchState);
             this.restoreState('suppBoosters', searchStateSupp);
+        },
+        addCacheKey(interactions){
+            interactions.forEach(int => {
+                int.vInteractions.forEach(vInt => {
+                    const ids = {
+                        side1Id: vInt.side1Material._id,
+                        side2Id: vInt.side2Material._id,
+                        mainSide2MaterialId: int.mainSide2MaterialId
+                    }
+                    const idCountMap = Object.values(ids).reduce((acc, id) => {
+                        if(!acc[id]) acc[id] = 0
+                        acc[id]++ 
+                        return acc
+                    }, {})
+                        const idToCompare = Object.keys(idCountMap).find(key => idCountMap[key] === 1)
+                    const idsToSerch = this.materialSuppIds.filter(suppId => {
+                        return !this.idsToTurnRed.includes(suppId)
+                    })
+                    const filterBy = {
+                        isSearchResults: true,
+                        id: [...idsToSerch, idToCompare],
+                        page: 0,
+                        limit: Number.MAX_SAFE_INTEGER,
+                        materialCount: this.materialIds.length + 1
+                    };
+                    vInt.cacheKey = `/search/positive-boosters/${filterBy.id}/supps`
+                    this.$store.dispatch({ type: 'getInteractions', filterBy,  cacheKey: `/search/positive-boosters/${filterBy.id}/supps` });
+                })
+            })
+            return interactions
         },
         async getInteractions() {
             const ids = this.materials.reduce((acc, { _id, labels }) => {
@@ -1057,7 +1107,7 @@ export default {
                 return;
             }
         },
-        sortInteractions(interactions) {
+        sortInteractions(interactions, isPosSupp = false) {
             const { recommendationsOrderMap: map } = this.$options;
             if (this.sortOptions) {
                 const { sortBy, side, isDesc } = this.sortOptions;
@@ -1071,8 +1121,9 @@ export default {
                         return interactions.sort((a, b) => (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) * sortOrder);
                 }
             }
+            const positiveOrder = isPosSupp ? -1 : 1;
             return interactions.slice().sort((a, b) => {
-                return (map[b.recommendation] - map[a.recommendation]) ||
+                return ((map[b.recommendation] - map[a.recommendation]) * positiveOrder) ||
                 (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
                 (a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
             });
