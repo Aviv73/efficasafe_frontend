@@ -171,8 +171,6 @@
                 <nav
                     class="search-engine-nav"
                     v-set-sticky-class-name:[`pinned`]
-                    @mousedown="hideArrow"
-                    @touchstart="hideArrow"
                 >
                     <ul>
                         <li class="search-engine-nav-link">
@@ -213,6 +211,7 @@
                             <router-link
                                 class="link boosters pb-tour-step-0 v-tour-step-7"
                                 :to="{ name: 'Boosters', query: this.$route.query }"
+                                ref="positiveBoostersLink"
                             >
                                 Positive boosters
                                 <span v-if="totalPositiveBoosters">
@@ -1326,9 +1325,26 @@ export default {
         }
     },
     mounted() {
+        const el = this.$refs.positiveBoostersLink.$el
+        let options = {
+            rootMargin: "0px 0px 0px 0px",
+            threshold: 0.1
+        }
+        this.observer = new IntersectionObserver(([e]) => {
+            if(e.isIntersecting){
+                this.hideArrow();
+            }
+        }, options);
+        this.observer.observe(el);
+        
+
         this.setScrollBarWidth();
         this.showDisclaimer();
         this.showMobileMsg();
+    },
+    beforeDestroy(){
+        const el = this.$refs.positiveBoostersLink.$el
+        this.observer.unobserve(el);
     },
     components: {
         Autocomplete,
