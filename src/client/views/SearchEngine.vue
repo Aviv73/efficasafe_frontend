@@ -294,7 +294,7 @@
             @close-modal="isPrintModalActive = false"
         >
             <print-modal
-                :interactions="routableListData.interactions"
+                :interactions="routableListData.suppInteractions && routableListData.suppInteractions.length ? routableListData.interactions.concat(routableListData.suppInteractions) : routableListData.interactions"
                 :materials="materials"
                 @close-modal="isPrintModalActive = false"
             />
