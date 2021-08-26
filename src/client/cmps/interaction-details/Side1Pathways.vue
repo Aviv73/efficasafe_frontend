@@ -41,6 +41,7 @@
                     side2Refs
                 }"
             />
+        </template> 
             <span class="d-flex un-relevant-container">
                 <span
                     class="un-relevant"
@@ -49,7 +50,6 @@
                     There is no info on {{ `${materialName}'s` }} effect on: {{ unrelevantPathwayNames }}
                 </span>
             </span>
-        </template> 
     </section>
 </template>
 
