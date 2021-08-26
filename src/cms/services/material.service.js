@@ -113,7 +113,14 @@ function getEmptyMaterial() {
         },
         structuredAdverseEffects: [],
         structuredContraIndications: [],
-        foodInteractions: []
+        foodInteractions: [],
+        ODA: '',
+        RDA: '',
+        absorptionAndExcretion: '',
+        causesOfDeficiency: '',
+        nutritionalSources: '',
+        otherCharacteristics: '',
+        symptomsOfDeficiency: ''
     }
 }
 
