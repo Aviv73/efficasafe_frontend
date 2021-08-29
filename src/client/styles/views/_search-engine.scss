@@ -392,13 +392,18 @@
                 opacity: 1;
             }
         }
-        .chevron-right-icon{
+        .arrow-container{
             position: absolute;
-            right: 3px;
+            right: 0;
             top: 50%;
-            transform: scale(1.5) translateY(-28%);
-            animation: blink 1s infinite; 
 
+                .chevron-right-icon{
+                    position: fixed;
+                    right: 3px;
+                    transform: scale(1.5) translateY(-28%);
+                    animation: blink 1s infinite; 
+        
+                }
         }
     }
     .inner-view {

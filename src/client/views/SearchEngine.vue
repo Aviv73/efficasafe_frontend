@@ -211,7 +211,6 @@
                             <router-link
                                 class="link boosters pb-tour-step-0 v-tour-step-7"
                                 :to="{ name: 'Boosters', query: this.$route.query }"
-                                ref="positiveBoostersLink"
                             >
                                 Positive boosters
                                 <span v-if="totalPositiveBoosters">
@@ -229,6 +228,7 @@
                             <router-link
                                 class="link"
                                 :to="{ name: 'Monitor', query: this.$route.query }"
+                                ref="whatToMonitorLink"
                             >
                                 What to monitor
                             </router-link>
@@ -258,7 +258,9 @@
                             </label>
                         </li>
                     </ul>
-                    <chevron-right-icon v-if="isArrowShown && isScreenNarrow" class="chevron-right-icon"/>
+                    <div class="arrow-container">
+                        <chevron-right-icon v-if="isArrowShown && isScreenNarrow" class="chevron-right-icon"/>
+                    </div>
                 </nav>
                 <transition :name="routerTransitionName" mode="out-in">
                     <router-view
@@ -372,6 +374,7 @@ export default {
             async handler(to, from) {
                 this.$store.commit('resetPosSupp')
                 this.$store.commit('resetRedPositiveSupp')
+                this.isArrowShown = true
                 if (this.$route.name === 'Boosters' && !this.isScreenNarrow && !storageService.load('did-p-boosters-tour')) {
                     this.$nextTick(() => {
                         this.$tours['boosters-tour'].start();
@@ -1325,10 +1328,10 @@ export default {
         }
     },
     mounted() {
-        const el = this.$refs.positiveBoostersLink.$el
+        const el = this.$refs.whatToMonitorLink.$el
         let options = {
             rootMargin: "0px 0px 0px 0px",
-            threshold: 0.1
+            threshold: 1
         }
         this.observer = new IntersectionObserver(([e]) => {
             if(e.isIntersecting){
@@ -1343,7 +1346,7 @@ export default {
         this.showMobileMsg();
     },
     beforeDestroy(){
-        const el = this.$refs.positiveBoostersLink.$el
+        const el = this.$refs.whatToMonitorLink.$el
         this.observer.unobserve(el);
     },
     components: {
