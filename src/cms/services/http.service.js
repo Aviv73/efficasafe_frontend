@@ -45,6 +45,9 @@ async function ajax(endpoint, method = 'get', data = null, responseType = 'json'
             console.log('Unautonticated');
             throw new Error('Unautonticated');
         }
+        if(err.response.status === 420){
+            throw err.response.data
+        }
         return err
     }
 }

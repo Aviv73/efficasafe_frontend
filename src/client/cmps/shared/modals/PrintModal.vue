@@ -178,6 +178,7 @@
 
 <script>
 import { interactionService } from '@/cms/services/interaction.service';
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import { eventBus, EV_show_user_msg, EV_sortby_side_swaped } from '@/cms/services/eventBus.service';
 
 import Checkbox from '@/client/cmps/common/Checkbox';
@@ -341,13 +342,9 @@ export default {
                 iframe.style.position = 'absolute';
                 iframe.srcdoc = elToPrint;
                 iframe.onload = function() {
-                    // var css = document.createElement("style");
-                    // css.textContent = `
-                    //     * {
-                    //         color: red 
-                    //     }
-                    // `
-                    // this.contentDocument.head.appendChild(css);
+                    var css = document.createElement("style");
+                    css.textContent = interactionUIService.getPrintStyle()
+                    this.contentDocument.head.appendChild(css);
                     this.contentWindow.__container__ = this;
                     this.contentWindow.onbeforeunload = function() {
                         document.body.removeChild(this.__container__);

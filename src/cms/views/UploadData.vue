@@ -112,7 +112,6 @@ export default {
             },6000)
             
         },
-        
     },
     computed:{
         alertType(){

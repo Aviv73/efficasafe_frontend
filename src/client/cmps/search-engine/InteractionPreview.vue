@@ -130,7 +130,7 @@
                         :material="materials[0]"
                         :materialIds="materialIds"
                         :shortRecommendation="getShortRecommendation(interaction.recommendation)"
-                        :color="getInteractionColor(interaction.recommendation)"
+                        :color="getInteractionColor(interaction)"
                         :link="link"
                         :parent-idx="idx"
                     />
