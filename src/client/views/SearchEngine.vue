@@ -171,6 +171,7 @@
                 <nav
                     class="search-engine-nav"
                     v-set-sticky-class-name:[`pinned`]
+                    @scroll="moveArrow"
                 >
                     <ul>
                         <li class="search-engine-nav-link">
@@ -258,7 +259,7 @@
                             </label>
                         </li>
                     </ul>
-                    <div class="arrow-container">
+                    <div class="arrow-container" :style="{ right: arrowRightPositin + 'px'}">
                         <chevron-right-icon v-if="isArrowShown && isScreenNarrow" class="chevron-right-icon"/>
                     </div>
                 </nav>
@@ -366,7 +367,8 @@ export default {
             isSaveSearchModalActive: false,
             undoneQueries: [],
             isArrowShown: true,
-            idsToTurnRed: []
+            idsToTurnRed: [],
+            arrowRightPositin: 3
         }
     },
     watch: {
@@ -1325,6 +1327,9 @@ export default {
             this.sortOptions = null;
             this.isLoading = false;
             this.$store.commit({ type: 'resetSupplementsRefs' });
+        },
+        moveArrow({target}){
+            this.arrowRightPositin = (target.scrollLeft * -1)
         }
     },
     mounted() {
@@ -1338,8 +1343,7 @@ export default {
                 this.hideArrow();
             }
         }, options);
-        this.observer.observe(el);
-        
+        this.observer.observe(el);     
 
         this.setScrollBarWidth();
         this.showDisclaimer();

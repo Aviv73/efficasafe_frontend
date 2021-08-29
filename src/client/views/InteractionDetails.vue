@@ -209,7 +209,7 @@
                                         :side2Refs="side2Refs"
                                         :materialName="interactionName.split(' & ')[1]"
                                     />
-                                    <p v-else class="side2-pathways">there is no data on {{interaction.side2Material.name}} metabolism</p>
+                                    <p v-else class="side2-pathways">There is no data on {{side2Material.name}} metabolism</p>
                                 </template>
                             </collapse>
                             <collapse
