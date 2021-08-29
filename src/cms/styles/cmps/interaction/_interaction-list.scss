@@ -48,3 +48,9 @@
         cursor: pointer;
     }
 }
+
+.v-data-table-header{
+    th:first-child{
+        min-width: 300px;
+    }
+}

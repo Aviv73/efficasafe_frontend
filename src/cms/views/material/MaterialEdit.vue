@@ -675,37 +675,37 @@
             v-model="editedMaterial.pharmacology.clearance"
             :config="CKEditorConfig"
           />
-          <h4>ODA (Optimal Daily Allowance):</h4>
+          <h4>supp ODA (Optimal Daily Allowance):</h4>
           <ckeditor
             v-model="editedMaterial.ODA"
             :config="CKEditorConfig"
           />
-          <h4>RDA (Recommended Daily Allowance):</h4>
+          <h4>supp RDA (Recommended Daily Allowance):</h4>
           <ckeditor
             v-model="editedMaterial.RDA"
             :config="CKEditorConfig"
           />
-          <h4>Nutritional sources:</h4>
+          <h4>supp Nutritional sources:</h4>
           <ckeditor
             v-model="editedMaterial.nutritionalSources"
             :config="CKEditorConfig"
           />
-          <h4>Other characteristics:</h4>
+          <h4>supp Other characteristics:</h4>
           <ckeditor
             v-model="editedMaterial.otherCharacteristics"
             :config="CKEditorConfig"
           />
-          <h4>Absorption and excretion:</h4>
+          <h4>supp Absorption and excretion:</h4>
           <ckeditor
             v-model="editedMaterial.absorptionAndExcretion"
             :config="CKEditorConfig"
           />
-          <h4>Causes of deficiency:</h4>
+          <h4>supp Causes of deficiency:</h4>
           <ckeditor
             v-model="editedMaterial.causesOfDeficiency"
             :config="CKEditorConfig"
           />
-          <h4>Symptoms of deficiency:</h4>
+          <h4>supp Symptoms of deficiency:</h4>
           <ckeditor
             v-model="editedMaterial.symptomsOfDeficiency"
             :config="CKEditorConfig"

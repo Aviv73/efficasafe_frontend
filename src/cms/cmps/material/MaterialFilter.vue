@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       filterBy: {
-        q: '',
+        name: '',
         type: 'all',
       },
       material: {
@@ -80,9 +80,9 @@ export default {
     },
     updateFilter(material) {
       if (material && material.text) {
-        this.filterBy.q = material.text;
+        this.filterBy.name = material.text;
       } else {
-        this.filterBy.q = '';
+        this.filterBy.name = '';
       }
       this.emitFilter();
     },

@@ -111,9 +111,9 @@ export default {
     },
   },
   methods: {
-    async getResults(q) {
+    async getResults(name) {
       this.isLoading = true;
-      const criteria = { q: q || '' };
+      const criteria = { name: name || '' };
       if (this.isSuperLabelImport) {
         criteria.isSuper = true;
         criteria.limit = 0;
