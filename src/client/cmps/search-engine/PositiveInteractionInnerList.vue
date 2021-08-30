@@ -122,7 +122,7 @@ export default {
             if(redInteractions.length){
                 this.$emit('remove', this.groupIdx)
             }else{
-                interactions = interactions.filter(({recommendation}) => interactionUIService.getIsPositive(recommendation))
+                // interactions = interactions.filter(({recommendation}) => interactionUIService.getIsPositive(recommendation))
                 if(!this.materialIds.length){
                     interactions = interactions.filter((int) => int.side1Material._id === this.mainSide2MaterialId || int.side2Material._id === this.mainSide2MaterialId )
                 }
