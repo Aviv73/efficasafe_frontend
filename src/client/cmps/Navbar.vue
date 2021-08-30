@@ -1,6 +1,6 @@
 <template>
     <nav
-        class="navbar"
+        class="navbar no-print"
         :class="{ 'light': isNavIntersecting }"
         ref="navbar"
     >

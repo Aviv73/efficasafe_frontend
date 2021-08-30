@@ -4,7 +4,7 @@
             <div class="interaction-details-header-container">
                 <span class="brim-start" />
                 <div class="flex-space-between">
-                    <span class="interaction-details-header-link">
+                    <span class="interaction-details-header-link no-print">
                         <button class="flex-align-center" @click="$router.go(-1)">
                             <chevron-left-icon title="" />
                             Back to search
@@ -14,18 +14,16 @@
                         <img :src="require('@/client/assets/imgs/logo-vector.svg')" alt="Logo" />
                     </router-link>
                     <span class="interaction-details-header-actions">
-                        <!-- De-comment this once you activate interaction print! -->
-                        <!-- <button
-                            class="print-btn print-btn-icon"
+                        <button
+                            class="print-btn print-btn-icon no-print"
                             title="Print"
                             :disabled="!loggedInUser"
-                            @click="isPrintModalActive = true"
+                            @click="printWindow()"
                         >
                             <printer-icon title="" />
-                        </button> -->
-                        <!-- De-comment this once you activate interaction print! -->
+                        </button>
                         <button
-                            class="share-btn share-btn-icon"
+                            class="share-btn share-btn-icon no-print"
                             title="Share"
                             :disabled="!loggedInUser"
                             @click="isShareModalActive = true"
@@ -175,7 +173,7 @@
         >
             <share-modal @close-modal="isShareModalActive = false" />
         </modal-wrap>
-        <modal-wrap
+        <!-- <modal-wrap
             :isActive="isPrintModalActive"
             @close-modal="isPrintModalActive = false"
         >
@@ -193,7 +191,7 @@
                     isDBank: true
                 }"
             />
-        </modal-wrap>
+        </modal-wrap> -->
     </section>
 </template>
 
@@ -207,7 +205,7 @@ import ReferenceList from '@/client/cmps/interaction-details/ReferenceList';
 import Error404 from '@/client/cmps/shared/Error404';
 import ModalWrap from '@/client/cmps/common/ModalWrap';
 import ShareModal from '@/client/cmps/shared/modals/ShareModal';
-import PrintModal from '@/client/cmps/shared/modals/PrintModal';
+// import PrintModal from '@/client/cmps/shared/modals/PrintModal';
 
 import Loader from '@/client/cmps/common/icons/Loader';
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
@@ -275,6 +273,9 @@ export default {
         }
     },
     methods: {
+        printWindow(){
+            window.print();
+        },
         async getInteraction() {
             this.isLoading = true;
             const { id } = this.$route.params;
@@ -331,7 +332,7 @@ export default {
         Loader,
         ModalWrap,
         ShareModal,
-        PrintModal,
+        // PrintModal,
         CancelIcon: () => import('vue-material-design-icons/Cancel'),
         AlertCircleOutlineIcon: () => import('vue-material-design-icons/AlertCircleOutline'),
         CheckIcon: () => import('vue-material-design-icons/Check'),

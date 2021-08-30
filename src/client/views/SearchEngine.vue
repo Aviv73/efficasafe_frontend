@@ -572,6 +572,7 @@ export default {
                 group.mainMaterialId = materialId;
                 group.isMaterialGroup = true;
                 group.vInteractions.forEach(vInteraction => {
+                    vInteraction.isSupp = true
                     if (vInteraction.side2Label) {
                         const { _id, name, type } = this.materials.find(m => m.labels.some(l => l._id === vInteraction.side2Label._id));
                         vInteraction.side2Material = {
@@ -952,6 +953,7 @@ export default {
                         materialCount: this.materialIds.length + 1
                     };
                     vInt.cacheKey = `/search/positive-boosters/${filterBy.id}/supps`
+                    this.$nextTick(() => vInt.mainMaterialName = int.name)
                     this.$store.dispatch({ type: 'getInteractions', filterBy,  cacheKey: `/search/positive-boosters/${filterBy.id}/supps` });
                 })
             })
