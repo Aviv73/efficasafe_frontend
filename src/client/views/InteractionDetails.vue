@@ -259,29 +259,6 @@
         >
             <share-modal @close-modal="isShareModalActive = false" />
         </modal-wrap>
-        <!-- <modal-wrap
-            v-if="interaction"
-            :isActive="isPrintModalActive"
-            @close-modal="isPrintModalActive = false"
-        >
-            <print-modal
-                :interaction="interaction"
-                @close-modal="isPrintModalActive = false"
-                :interaction-data="{
-                    name: interactionName,
-                    color: interactionColor,
-                    icon: recommendationIconName,
-                    evidenceLevel: interaction.evidenceLevel,
-                    showNote: !isPrimaryMaterial,
-                    showWarning: side2Material.isNarrowTherapeutic,
-                    side2Name: side2Material.name,
-                    side2Pathways: relevantSide2Pathways,
-                    side1PathwaysTxt: effectOnDrugMetabolism,
-                    refsDetailsTxt: refsDetailsTxt,
-                    isDBank: false
-                }"
-            />
-        </modal-wrap> -->
     </section>
 </template>
 
@@ -297,7 +274,6 @@ import Tooltip from '@/client/cmps/common/Tooltip';
 import Collapse from '@/client/cmps/common/Collapse';
 import ModalWrap from '@/client/cmps/common/ModalWrap';
 import Error404 from '@/client/cmps/shared/Error404';
-// import PrintModal from '@/client/cmps/shared/modals/PrintModal';
 import ShareModal from '@/client/cmps/shared/modals/ShareModal';
 
 import Loader from '@/client/cmps/common/icons/Loader';
@@ -319,7 +295,6 @@ export default {
             isLoading: false,
             effectOnDrugMetabolism: '',
             isShareModalActive: false,
-            // isPrintModalActive: false
         }
     },
     watch: {
@@ -613,7 +588,6 @@ export default {
         Loader,
         ModalWrap,
         ShareModal,
-        // PrintModal,
         CancelIcon: () => import('vue-material-design-icons/Cancel'),
         AlertCircleOutlineIcon: () => import('vue-material-design-icons/AlertCircleOutline'),
         CheckIcon: () => import('vue-material-design-icons/Check'),

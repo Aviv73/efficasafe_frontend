@@ -217,7 +217,6 @@ export default {
         filterPosSupp(interactions, idToCompare) {
             interactions = interactions.filter(interaction => interaction.side1Material._id === idToCompare || interaction.side2Material?._id === idToCompare)
             if(!this.materialIds.length){
-                // interactions = interactions.filter(({recommendation}) => interactionUIService.getIsPositive(recommendation))
                 interactions = interactions.filter(interaction => interaction.side1Material.type !== 'drug' && interaction.side2Material?.type !== 'drug')
                 interactions = interactions.filter(interaction => !interaction.side2Label)
             }

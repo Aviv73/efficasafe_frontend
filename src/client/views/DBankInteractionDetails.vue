@@ -173,25 +173,6 @@
         >
             <share-modal @close-modal="isShareModalActive = false" />
         </modal-wrap>
-        <!-- <modal-wrap
-            :isActive="isPrintModalActive"
-            @close-modal="isPrintModalActive = false"
-        >
-            <print-modal
-                v-if="interaction"
-                :interaction="interaction"
-                @close-modal="isPrintModalActive = false"
-                :interaction-data="{
-                    name: interactionName,
-                    color: interactionColor,
-                    icon: recommendationIconName,
-                    evidenceLevel: interaction.evidence_level,
-                    showNote: false,
-                    showWarning: false,
-                    isDBank: true
-                }"
-            />
-        </modal-wrap> -->
     </section>
 </template>
 
@@ -205,7 +186,6 @@ import ReferenceList from '@/client/cmps/interaction-details/ReferenceList';
 import Error404 from '@/client/cmps/shared/Error404';
 import ModalWrap from '@/client/cmps/common/ModalWrap';
 import ShareModal from '@/client/cmps/shared/modals/ShareModal';
-// import PrintModal from '@/client/cmps/shared/modals/PrintModal';
 
 import Loader from '@/client/cmps/common/icons/Loader';
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
@@ -220,7 +200,6 @@ export default {
             interaction: null,
             isLoading: false,
             isShareModalActive: false,
-            isPrintModalActive: false
         }
     },
     watch: {
@@ -332,7 +311,6 @@ export default {
         Loader,
         ModalWrap,
         ShareModal,
-        // PrintModal,
         CancelIcon: () => import('vue-material-design-icons/Cancel'),
         AlertCircleOutlineIcon: () => import('vue-material-design-icons/AlertCircleOutline'),
         CheckIcon: () => import('vue-material-design-icons/Check'),

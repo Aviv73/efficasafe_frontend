@@ -178,7 +178,6 @@
 
 <script>
 import { interactionService } from '@/cms/services/interaction.service';
-// import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import { eventBus, EV_show_user_msg, EV_sortby_side_swaped } from '@/cms/services/eventBus.service';
 
 import Checkbox from '@/client/cmps/common/Checkbox';
@@ -335,29 +334,6 @@ export default {
     },
     methods: {
         async onPrint(action) {
-            // if(this.interactionData){
-            //     const elToPrint = this.$refs.printContentInteraction.outerHTML
-            //     const iframe = document.createElement('iframe');
-            //     iframe.style.visibility = 'hidden';
-            //     iframe.style.position = 'absolute';
-            //     iframe.srcdoc = elToPrint;
-            //     iframe.onload = function() {
-            //         var css = document.createElement("style");
-            //         css.textContent = interactionUIService.getPrintStyle()
-            //         this.contentDocument.head.appendChild(css);
-            //         this.contentWindow.__container__ = this;
-            //         this.contentWindow.onbeforeunload = function() {
-            //             document.body.removeChild(this.__container__);
-            //         }
-            //         this.contentWindow.onafterprint = function() {
-            //             document.body.removeChild(this.__container__);
-            //         }
-            //         this.contentWindow.focus();
-            //         this.contentWindow.print();
-            //     }   
-            //     document.body.appendChild(iframe);
-            //     return
-            // }
             try {
                 const buffer = await interactionService.getPrintPreview(this.printData);
                 const blob = new Blob([ buffer ], { type: 'application/pdf' });
