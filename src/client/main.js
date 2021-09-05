@@ -11,6 +11,12 @@ import './directives';
 import '../cms/filters';
 import './validation';
 
+// import Axios from 'axios';
+
+// var axios = Axios.create({
+//     withCredentials: true
+// });
+
 require('vue-tour/dist/vue-tour.css');
 Vue.use(VueTour);
 
@@ -21,3 +27,8 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount("#app");
+
+// (async ()=>{
+//   await axios.post('//localhost:3000/api/login', {});
+//   axios.post('//localhost:3000/api/acc', {});
+// })()

@@ -12,7 +12,7 @@
                             <template #activator>
                                 <div class="flex-align-center">
                                     <span>
-                                        {{ loggedInUser.nickname }}
+                                        {{ loggedInUser.username }}
                                     </span>
                                     <menu-down-icon title="" class="dropdown--animate" />
                                 </div>

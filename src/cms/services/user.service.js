@@ -2,6 +2,10 @@
 import { httpService } from './http.service';
 import { storageService } from './storage.service';
 
+// var axios = Axios.create({
+//     withCredentials: true
+// });
+
 const AUTH_END_POINT = 'auth';
 const ACCOUNT_END_POINT = 'account';
 
@@ -18,10 +22,12 @@ export const userService = {
     resetPassword,
     resnedVerifcationMail,
     updateAutoPilotContact,
-    updateAuth0Account,
     checkTrial,
     getEmptySearch,
-    verifyEmail
+    verifyEmail,
+    signup,
+    login,
+    signupWithGoogle
 }
 
 function verifyEmail(token) {
@@ -38,10 +44,6 @@ function removeMany(ids) {
 
 function update(user) {
     return httpService.put(`${ACCOUNT_END_POINT}/${user._id}`, user);
-}
-
-function updateAuth0Account(user) {
-    return httpService.post(`${ACCOUNT_END_POINT}/auth0-account`, user);
 }
 
 function updateAutoPilotContact(user) {
@@ -110,5 +112,14 @@ async function resetPassword(pass, token) {
     return await httpService.put(`${ACCOUNT_END_POINT}/reset-pass`, { pass, token });
 }
 
+async function signup(cred) {
+    return await httpService.post(AUTH_END_POINT+'/signup', cred);
+}
 
+async function signupWithGoogle() {
+    return await httpService.get(AUTH_END_POINT+'/google');
+}
 
+async function login(cred) {
+    return await httpService.post(AUTH_END_POINT+'/login', cred);
+}

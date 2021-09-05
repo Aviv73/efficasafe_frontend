@@ -8,7 +8,10 @@
         <auth-modal
             v-if="authModal"
             @closeModal="authModal = false"
-            :allowLogin="allowLogin"
+        />
+        <login-modal
+            v-if="loginModal"
+            @closeModal="loginModal = false"
         />
         <user-msg />
     </div>
@@ -21,6 +24,7 @@ import { storageService } from '@/cms/services/storage.service';
 import Navbar from '@/client/cmps/Navbar';
 import MainFooter from '@/client/cmps/MainFooter';
 import AuthModal from '@/client/cmps/shared/modals/AuthModal';
+import loginModal from '@/client/cmps/shared/modals/LoginModal';
 import UserMsg from '@/client/cmps/UserMsg.vue';
 
 export default {
@@ -28,7 +32,7 @@ export default {
     data() {
         return {
             authModal: false,
-            allowLogin: false,
+            loginModal: false
         };
     },
     computed: {
@@ -38,11 +42,9 @@ export default {
     },
     methods: {
         onLogin() {
-            this.allowLogin = true;
-            this.authModal = true;
+            this.loginModal = true;
         },
         onSignUp() {
-            this.allowLogin = false;
             this.authModal = true;
         },
     },
@@ -56,6 +58,7 @@ export default {
         Navbar,
         MainFooter,
         AuthModal,
+        loginModal,
         UserMsg
     },
 };

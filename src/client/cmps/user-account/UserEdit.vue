@@ -96,7 +96,7 @@
                 </form>
             </validation-observer>
         </div>
-        <div class="user-edit-card" v-if="isEmailPasswordAuth">
+        <div class="user-edit-card">
             <h3>Update password or email</h3>
             <button
                 class="user-edit-card-btn flex-align-center"
@@ -131,12 +131,12 @@ import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 
 export default {
     data() {
-        const { given_name, family_name, phone, name } = this.$store.getters.loggedInUser;
+        const { given_name, family_name, phone, username } = this.$store.getters.loggedInUser;
         return {
             editedDetails: {
                 given_name: given_name || '',
                 family_name: family_name || '',
-                name: name || '',
+                name: username || '',
                 phone: phone || ''
             },
             validationMessages: {
@@ -150,9 +150,6 @@ export default {
     computed: {
         loggedInUser() {
             return this.$store.getters.loggedInUser;
-        },
-        isEmailPasswordAuth() {
-            return !!this.loggedInUser.sub.match(/.*auth0.*/);
         },
         isFormPristine() {
             return Object.values(this.editedDetails).every(val => !val);

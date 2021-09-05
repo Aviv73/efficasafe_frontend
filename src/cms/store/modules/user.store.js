@@ -20,12 +20,7 @@ export const userStore = {
         }
     },
     mutations: {
-        setToken(state, { token }) {
-            state.token = token;
-            storageService.store('token', token);
-        },
         logout(state) {
-            storageService.remove('token');
             storageService.remove('userProfile');
             state.loggedInUser = null;
         },
@@ -96,6 +91,48 @@ export const userStore = {
         async loadUsers({ commit }, { filterBy }) {
             const { users, total } = await userService.loadUsers(filterBy);
             commit({ type: 'setUsers', users, total });
-        }
+        },
+        async signup({ commit, dispatch }, { cred }) {
+            try {
+              const user = await userService.signup(cred);
+              await dispatch({type: 'updateAutoPilotContact', user});
+              commit({ type: 'setLoggedInUser', user });
+              storageService.store('userProfile', user);
+            } catch (err) {
+              console.log(err);
+            }
+        },
+        async signupWithGoogle() {
+        // async signupWithGoogle({ commit, dispatch }) {
+            try {
+              const user = await userService.signupWithGoogle();
+              console.log(user);
+            //   await dispatch({type: 'updateAutoPilotContact', user});
+            //   commit({ type: 'setLoggedInUser', user });
+            //   storageService.store('userProfile', user);
+            } catch (err) {
+              console.log(err);
+            }
+        },
+        async login({ commit }, { cred }) {
+            try {
+              const user = await userService.login(cred);
+              commit({ type: 'setLoggedInUser', user });
+              storageService.store('userProfile', user);
+              return 'successes'
+            } catch (err) {
+                throw 'err'
+            }
+        },
+        // async loginWithGoogle({ commit }) {
+        //     try {
+        //       const user = await userService.loginWithGoogle();
+        //       commit({ type: 'setLoggedInUser', user });
+        //       storageService.store('userProfile', user);
+        //       return 'successes'
+        //     } catch (err) {
+        //         throw 'err'
+        //     }
+        // },
     }
 }

@@ -1,7 +1,7 @@
 .auth-modal {
     position: absolute;
     z-index: 999;
-    top: 9%;
+    top: 6%;
     background-color: $white;
     box-shadow: 0px 2px 4px rgba($black, .6);
     border: 1px solid $clr6;
@@ -27,18 +27,70 @@
     &-content {
         position: fixed;
         z-index: 999;
-        top: 9%;
+        top: 7%;
         left: 50%;
         width: rem(350px);
         transform: translateX(-50%);
         background-color: $white;
         box-shadow: 0px 2px 4px rgba($black, .6);
-        border: 1px solid $clr6;
         border-radius: 6px;
-        padding: rem(30px);
-    
-        @include for-mobile-layout {
-            padding: rem(70px) rem(90px);
+        height: 570px;
+        animation: fade-in 1s; 
+
+        img{
+            margin-top: rem(40px);
+            margin-bottom: rem(25px);
+        }
+        &-media-btns{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            button{
+                margin-bottom: 13px;
+                height: 43px;
+                width: 72%;
+                font-size: rem(13px);
+                font-family: roboto-medium;
+                color: #FFFFFF;
+                border-radius: 6px;
+            }
+
+            .red{
+                background-color:#DA4436;
+            }
+            .blue{
+                background-color:#3A5897;
+            }
+        }
+
+        .msg{
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            line-height: 1.8;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            animation: fade-in 1s; 
+        }
+
+        .failed{
+            background-color: #ff3e00 !important;
+        }
+
+        .successe{
+            background-color: #54C394;
+        }
+
+        .forgot-pass-link{
+            font-size: 13px;
+            color: rgba(0,0,0,0.87);
+            cursor: pointer;
+            margin-bottom: 10px;
+            
         }
     
         .resend-email-btn {
@@ -47,7 +99,7 @@
             position: absolute;
             outline: $clr4;
             color: $clr4;
-            bottom: 20px;
+            bottom: 60px;
             left: 50%;
             transform: translateX(-50%);
     
@@ -59,12 +111,33 @@
         @include for-mobile-layout {
             width: rem(550px);
         }
+        
+        .register-btn{
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            height: rem(70px);
+            width: rem(350px);
+            background-color: #54C394;
+            border-radius: 0px 0px 5px 5px;
+            font-size: rem(13px);
+            font-family: roboto-medium;
+            color: #FFFFFF;
+
+            @include for-mobile-layout {
+                width: rem(550px);
+            }
+        }
+
+        .invalid-btn{
+            background-color: red;
+        }
     }
 
     &-title {
         color: $clr1;
         font-size: rem(22px);
-        margin-block-start: rem(72px);
+        // margin-block-start: rem(72px);
         margin-block-end: rem(48px);
     }
 
@@ -80,12 +153,14 @@
     &-sub-title {
         color: $clr-txt-darker;
         font-size: rem(16px);
+        padding: 0 12px;
     }
 
     &-field {
         position: relative;
         margin-block-end: rem(24px);
         font-size: rem(14px);
+        margin-bottom: -10px;
         
         &-pass-toggle {
             position: absolute;
@@ -97,7 +172,8 @@
 
         input {
             height: rem(43px);
-            width: 100%;
+            width: 72%;
+            margin-bottom: 13px;
             background-color: $clr3;
             border: 1px solid $clr3;
             border-radius: 6px;
@@ -112,7 +188,26 @@
                 border-color: $clr6;
             }
             &::placeholder {
-                text-align: center;
+                text-align: start;
+            }
+        }
+        .checkbox-container{
+            display: flex;
+            margin-left: 80px;
+            .checkbox{
+                width: 12px;
+                height: unset;
+                display: block;
+                margin-top: 3px;
+                background-color: #fff;
+            }
+            
+            p{
+                margin-left: 5px;
+            }
+
+            a{
+                color: $clr2;
             }
         }
     }
@@ -156,6 +251,7 @@
         margin-top: rem(32px);
         font-size: rem(14px);
         color: $clr-txt-darker;
+        padding: 0px 10px;
     }
 
     .assistance {

@@ -81,7 +81,6 @@ export default {
             user.newEmail = this.email;
             await Promise.all([
                 this.$store.dispatch({ type: 'updateAutoPilotContact', user }),
-                this.$store.dispatch({ type: 'updateAuth0Account', user })
             ]);
             user.email = user.newEmail;
             delete user.newEmail;

@@ -15,7 +15,7 @@ export default {
         async VerifyEmail() {
             const { token } = this.$route.params;
             const res = await userService.verifyEmail(token);
-            if (res.status === 200) this.$router.push('/?congratulations=yes');
+            if (res.success) this.$router.push('/?congratulations=yes');
         },
     },
     created() {

@@ -195,7 +195,6 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const { loggedInUser } = store.state.userStore;
-
   if (loggedInUser && (loggedInUser.role === 'admin' || loggedInUser.role === 'editor')) {
     if (to.meta.requiresAdmin) {
       if (loggedInUser.role !== 'admin') {

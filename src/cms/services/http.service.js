@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import { storageService } from './storage.service'
+// import { storageService } from './storage.service'
 
 var axios = Axios.create({
     withCredentials: true
@@ -32,8 +32,8 @@ async function ajax(endpoint, method = 'get', data = null, responseType = 'json'
             method,
             responseType,
             headers: {
-                authorization: storageService.load('token'),
-                'Content-Type': contentType            
+                // authorization: storageService.load('token'),
+                'Content-Type': contentType ,
             },
         }
         if (method === 'get' || method === 'GET') config.params = { data };
@@ -43,7 +43,8 @@ async function ajax(endpoint, method = 'get', data = null, responseType = 'json'
     } catch (err) {
         if (err.response && err.response.status === 401) {
             console.log('Unautonticated');
-            throw new Error('Unautonticated');
+            // throw new Error('Unautonticated');
+            throw err.response
         }
         if(err.response.status === 420){
             throw err.response.data
