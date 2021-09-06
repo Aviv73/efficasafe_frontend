@@ -3,6 +3,7 @@
             <div class="auth-modal-cover" @click.stop="closeModal"></div>
             <div class="auth-modal-content txt-center">
                 <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
+                <p style="padding: 0 10px 5px 10px">We updated our registration system, if you are a returning user, please signup again</p>
                     <div v-if="isShowFailedMsg" class="msg failed">WRONG EMAIL OR PASSWORD.</div>
                     <div v-if="isShowSuccesseMsg" class="msg successe">You are now logged in.</div>
                     <form @submit.prevent="onRegister" class="auth-modal-field">
