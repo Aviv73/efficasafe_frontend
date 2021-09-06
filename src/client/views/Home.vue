@@ -228,7 +228,7 @@ export default {
         if (this.$route.query.congratulations) this.welcomeModal = true;
         if (this.$route.query.passwordreset) this.passwordModal = true;
         if(!this.$store.getters.loggedInUser){
-            await this.$store.dispatch('getUserInfo')
+            await this.$store.dispatch('getUserInfo');
         }
     },
     components: {

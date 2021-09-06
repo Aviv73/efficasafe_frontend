@@ -12,6 +12,7 @@
         <login-modal
             v-if="loginModal"
             @closeModal="loginModal = false"
+            @openAuthModal="switchModals"
         />
         <user-msg />
     </div>
@@ -47,6 +48,10 @@ export default {
         onSignUp() {
             this.authModal = true;
         },
+        switchModals(){
+            this.loginModal = false;
+            this.authModal = true;
+        }
     },
     mounted() {
         const hasConsent = storageService.load('cookie-consent');
