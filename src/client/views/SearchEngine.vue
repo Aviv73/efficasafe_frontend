@@ -184,7 +184,7 @@
                                     {{'\xa0'}}
                                     <span
                                         class="badge"
-                                        :style="{ 'background-color': worstSupp2DrugColor }"
+                                        :style="worstSupp2DrugColor"
                                     >
                                         {{ total }}
                                     </span>
@@ -201,7 +201,7 @@
                                     {{'\xa0'}}
                                     <span
                                         class="badge"
-                                        :style="{ 'background-color': worstDrug2DrugColor }"
+                                        :style="worstDrug2DrugColor"
                                     >
                                         {{ dBankTotal }}
                                     </span>
@@ -218,7 +218,7 @@
                                     {{'\xa0'}}
                                     <span
                                         class="badge"
-                                        :style="{ 'background-color': positivesBadgeColor }"
+                                        :style="positivesBadgeColor"
                                     >
                                         {{ totalPositiveBoosters }}
                                     </span>
@@ -829,17 +829,23 @@ export default {
         worstSupp2DrugColor() {
             if(!this.interactions.length) return ''
             const worstRecomm = this.getMoreSeverRecomm(false, ...this.interactions.map(i => i.recommendation));
-            return interactionUIService.getInteractionColor(worstRecomm);
+            var bgc = interactionUIService.getInteractionColor(worstRecomm);
+            if(bgc === '#F6D55C') return { 'background-color': bgc, 'color': 'blue'}
+            return { 'background-color': bgc, 'color': 'white'}
         },
         worstDrug2DrugColor() {
             if(!this.dBankInteractions.length) return ''
             const worstRecomm = this.getMoreSeverRecomm(false, ...this.dBankInteractions.map(i => i.recommendation));
-            return interactionUIService.getInteractionColor(worstRecomm);
+            var bgc = interactionUIService.getInteractionColor(worstRecomm);
+            if(bgc === '#F6D55C') return { 'background-color': bgc, 'color': 'blue'}
+            return { 'background-color': bgc, 'color': 'white'}
         },
         positivesBadgeColor() {
             if(!this.positiveInteractions.length) return ''
             const worstRecomm = this.getMoreSeverRecomm(true, ...this.positiveInteractions.map(i => i.recommendation));
-            return interactionUIService.getInteractionColor(worstRecomm);
+            var bgc = interactionUIService.getInteractionColor(worstRecomm);
+            if(bgc === '#F6D55C') return { 'background-color': bgc, 'color': 'blue'}
+            return { 'background-color': bgc, 'color': 'white'}
         },
         materialsLength() {
             return this.materials.filter(({ isIncluded }) => !isIncluded).length;

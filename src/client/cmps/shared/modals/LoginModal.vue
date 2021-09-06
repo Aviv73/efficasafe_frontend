@@ -15,8 +15,8 @@
                     </div>
                     <p style="margin-bottom: 10px">or</p>
                     <div class="auth-modal-content-media-btns">
-                        <button class="red">LOGIN WITH GOOGLE</button>
-                        <button class="blue">LOGIN WITH FACEBOOK</button>
+                        <a :href="googleLink" class="red" role="button">SIGN UP WITH GOOGLE</a>
+                        <a :href="facebookLink" class="blue" role="button">SIGN UP WITH FACEBOOK</a>
                     </div>
                     <button @click="onRegister" class="register-btn">LOGIN</button>
             </div>
@@ -39,6 +39,12 @@ export default {
     computed: {
         loggedInUser() {
             return this.$store.getters.loggedInUser;
+        },
+        googleLink(){
+            return (process.env.NODE_ENV === 'development') ? 'http://localhost:3000/auth/google' : '/auth/google'
+        },
+        facebookLink(){
+            return (process.env.NODE_ENV === 'development') ? 'http://localhost:3000/auth/facebook' : '/auth/facebook'
         },
     },
     methods: {

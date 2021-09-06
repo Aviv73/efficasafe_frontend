@@ -73,10 +73,7 @@ async function checkTrial(user) {
 }
 
 async function getUserInfo() {
-    const token = storageService.load('token');
-    if (token) {
         return await httpService.get(`${AUTH_END_POINT}/userInfo`);
-    }
 }
 
 function getLoggedInUser() {

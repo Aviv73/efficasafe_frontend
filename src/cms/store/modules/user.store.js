@@ -26,6 +26,7 @@ export const userStore = {
         },
         setLoggedInUser(state, { user }) {
             state.loggedInUser = user;
+            storageService.store('userProfile', user);
         },
         setUsers(state, { users, total }) {
             state.users = users;
@@ -102,18 +103,6 @@ export const userStore = {
               console.log(err);
             }
         },
-        async signupWithGoogle() {
-        // async signupWithGoogle({ commit, dispatch }) {
-            try {
-              const user = await userService.signupWithGoogle();
-              console.log(user);
-            //   await dispatch({type: 'updateAutoPilotContact', user});
-            //   commit({ type: 'setLoggedInUser', user });
-            //   storageService.store('userProfile', user);
-            } catch (err) {
-              console.log(err);
-            }
-        },
         async login({ commit }, { cred }) {
             try {
               const user = await userService.login(cred);
@@ -123,16 +112,6 @@ export const userStore = {
             } catch (err) {
                 throw 'err'
             }
-        },
-        // async loginWithGoogle({ commit }) {
-        //     try {
-        //       const user = await userService.loginWithGoogle();
-        //       commit({ type: 'setLoggedInUser', user });
-        //       storageService.store('userProfile', user);
-        //       return 'successes'
-        //     } catch (err) {
-        //         throw 'err'
-        //     }
-        // },
+        }
     }
 }

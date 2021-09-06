@@ -16,10 +16,8 @@
                     </form>
                     <p style="margin-bottom: 10px">or</p>
                     <div class="auth-modal-content-media-btns">
-                        <!-- <a href="http://localhost:3000/api/auth/google" role="button">SIGN UP WITH GOOGLE</a> -->
-                        <!-- <button @click="onSignUpWithGoogle" class="red">SIGN UP WITH GOOGLE</button> -->
-                        <button class="red">SIGN UP WITH GOOGLE</button>
-                        <button class="blue">SIGN UP WITH FACEBOOK</button>
+                        <a :href="googleLink" class="red" role="button">SIGN UP WITH GOOGLE</a>
+                        <a :href="facebookLink" class="blue" role="button">SIGN UP WITH FACEBOOK</a>
                     </div>
                     <button @click="onRegister" class="register-btn" :class="{'invalid-btn': isInvaliedEmail || isInvaliedPassword || isInvaliedName || !cred.agreedToTerm}">{{btnTxt}}</button>
                 </template>
@@ -81,7 +79,13 @@ export default {
             if(this.isInvaliedName) return 'USERNAME IS REQUIRED'
             if(!this.cred.agreedToTerm) return 'YOU MUST AGREE TO THE TERMS AND CONDITIONS'
             return 'SIGN UP'
-        }
+        },
+        googleLink(){
+            return (process.env.NODE_ENV === 'development') ? 'http://localhost:3000/auth/google' : '/auth/google'
+        },
+        facebookLink(){
+            return (process.env.NODE_ENV === 'development') ? 'http://localhost:3000/auth/facebook' : '/auth/facebook'
+        },
     },
     methods: {
         closeModal() {

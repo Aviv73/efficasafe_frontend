@@ -227,6 +227,9 @@ export default {
         this.stats = await this.$store.dispatch({ type: 'getStatistics' });
         if (this.$route.query.congratulations) this.welcomeModal = true;
         if (this.$route.query.passwordreset) this.passwordModal = true;
+        if(!this.$store.getters.loggedInUser){
+            await this.$store.dispatch('getUserInfo')
+        }
     },
     components: {
         Swiper,
