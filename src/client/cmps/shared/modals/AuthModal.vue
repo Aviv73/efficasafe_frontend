@@ -2,6 +2,9 @@
         <div class="auth-modal">
             <div class="auth-modal-cover" @click.stop="closeModal"></div>
             <div class="auth-modal-content txt-center">
+                <button @click="closeModal" class="close-modal-btn">
+                    <close-icon :size="14" />
+                </button>
                 <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
                 <template v-if="!isShowVereficationMsg">
                     <form @submit.prevent="onRegister" class="auth-modal-field">
@@ -9,7 +12,7 @@
                         <input @focus="resetError('pass')" :class="{ 'is-invalid': isInvaliedPassword }" type="password" placeholder="Password" v-model="cred.password">
                         <input @focus="resetError('name')" :class="{ 'is-invalid': isInvaliedName }" type="text" placeholder="Username" v-model="cred.username">
                         <div class="checkbox-container">
-                            <input class='checkbox' :class="{ 'is-invalid': isInvaliedName }" type="checkbox" v-model="cred.agreedToTerm">  
+                            <input @change="changeCheckbox" class='checkbox' :class="{ 'is-invalid': isInvaliedName }" type="checkbox" v-model="cred.agreedToTerm">  
                             <p>I agree to the <a href="/terms-and-conditions">term and conditions</a></p>
                         </div>  
                         <button></button>
@@ -19,7 +22,7 @@
                         <a :href="googleLink" class="red" role="button">SIGN UP WITH GOOGLE</a>
                         <a :href="facebookLink" class="blue" role="button">SIGN UP WITH FACEBOOK</a>
                     </div>
-                    <button @click="onRegister" class="register-btn" :class="{'invalid-btn': isInvaliedEmail || isInvaliedPassword || isInvaliedName || !cred.agreedToTerm}">{{btnTxt}}</button>
+                    <button @click="onRegister" class="register-btn" :class="{'invalid-btn': isInvaliedEmail || isInvaliedPassword || isInvaliedName || isNotAgreed}">{{btnTxt}}</button>
                 </template>
                 <template v-else>
                     <p class="auth-modal-title font-medium">Please confirm your email address</p>
@@ -52,6 +55,7 @@
 
 <script>
 import { userService } from '@/cms/services/user.service';
+import CloseIcon from 'vue-material-design-icons/Close';
 
 export default {
     data() {
@@ -60,13 +64,14 @@ export default {
                 email:'',
                 password:'',
                 username:'',
-                agreedToTerm: true,
+                agreedToTerm: false,
                 // agreedToMarketing: false
             },
             isShowVereficationMsg: false,
             isInvaliedEmail: false,
             isInvaliedPassword: false,
-            isInvaliedName: false
+            isInvaliedName: false,
+            isNotAgreed: false
         };
     },
     computed: {
@@ -77,7 +82,7 @@ export default {
             if(this.isInvaliedEmail) return 'INVALID EMAIL'
             if(this.isInvaliedPassword) return 'PASSWORD MUST BE AT LEAST 8 CHARACTERS, WITH 1 UPPERCASE LETTER, 1 LOWERCASS LETTER AND 1 NUMBER'
             if(this.isInvaliedName) return 'USERNAME IS REQUIRED'
-            if(!this.cred.agreedToTerm) return 'YOU MUST AGREE TO THE TERMS AND CONDITIONS'
+            if(this.isNotAgreed) return 'YOU MUST AGREE TO THE TERMS AND CONDITIONS'
             return 'SIGN UP'
         },
         googleLink(){
@@ -95,6 +100,7 @@ export default {
             if(!this.verifyEmail()) this.isInvaliedEmail = true 
             if(!this.verifyPassword()) this.isInvaliedPassword = true
             if(this.cred.username === '') this.isInvaliedName = true
+            if(!this.cred.agreedToTerm) this.isNotAgreed = true
             if(this.isInvaliedEmail || this.isInvaliedPassword || this.isInvaliedName || !this.cred.agreedToTerm) return
             try{
                 await this.$store.dispatch({type: 'signup', cred: this.cred});
@@ -118,13 +124,12 @@ export default {
             if(type === 'pass') this.isInvaliedPassword = false
             if(type === 'name') this.isInvaliedName = false
         },
-        async onSignUpWithGoogle(){
-            try{
-                await this.$store.dispatch({type: 'signupWithGoogle'});
-            }catch(err){
-                console.log('Walla Kaki');
-            }
+        changeCheckbox(){
+            if(this.cred.agreedToTerm) this.isNotAgreed = false
         }
+    },
+    components:{
+        CloseIcon
     }
 };
 </script>

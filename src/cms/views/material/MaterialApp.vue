@@ -19,11 +19,20 @@
           @options-updated="setFilter"
           @header-clicked="setFilter"
           @delete-many-materials="removeMany"
+          @updateMaterial="updateMaterial"
         />
       </v-card>
 
       <icons-map />
     </div>
+    <v-alert 
+        class="material-update-alert" 
+        v-if="response.msg"
+        :type="response.type"
+        dismissible
+    >
+        {{response.msg}}
+    </v-alert>
   </section>
 </template>
 
@@ -35,7 +44,11 @@ import iconsMap from '@/cms/cmps/general/IconsMap';
 export default {
   data() {
     return {
-      loading: false
+      loading: false,
+      response: {
+        msg: null,
+        type: null
+      }
     };
   },
   watch: {
@@ -82,6 +95,20 @@ export default {
     },
     async removeMany(ids) {
       await this.$store.dispatch({ type: 'removeMaterials', ids });
+    },
+    async updateMaterial(material){
+      try{
+        await this.$store.dispatch({ type: 'saveMaterial', material })
+        this.response.type = 'success'
+        this.response.msg = `${material.name} was updated`
+      }catch(err){
+        this.response.type = 'error'
+        this.response.msg = `SOMTING WHNT WRONG`
+      }
+      setTimeout(() => {
+        this.response.type = null
+        this.response.msg = null
+      },1500)
     }
   },
   components: {

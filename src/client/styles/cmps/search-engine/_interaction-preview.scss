@@ -154,4 +154,15 @@
             color: rgba($clr-txt-dark, .8);
         }
     }
+    .poss-booster-count{
+        position: absolute;
+        left: 10%;
+        top: 26px;
+
+        @include for-narrow-layout {
+            left: 35%;
+            top: 29px;
+            transform: translateX(10px);
+        }
+    }
 }

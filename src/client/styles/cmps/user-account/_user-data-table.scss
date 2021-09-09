@@ -44,7 +44,7 @@
 
     .td-actions {
         column-count: $clr1;
-
+        height: 100% !important;
         .search-link {
             border-radius: 2px;
             background-color: $clr1;

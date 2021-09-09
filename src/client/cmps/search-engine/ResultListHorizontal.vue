@@ -125,12 +125,12 @@
                     :idx="idx"
                 />
             </li>
-            <button v-if="currSuppInteractions.length && isLoadingSuppInteractions" class="show-pos-supp-btn loading">
+            <button v-if="(currSuppInteractions.length || emptySuppInteractions.length || suppRedInteractions.length) && isLoadingSuppInteractions" class="show-pos-supp-btn loading">
                 <p>Positive boosters - supplements</p>
                 <loader class="loader" />
             </button>
             <div v-show="!isLoadingSuppInteractions">
-                <collapse v-if="interactions.length && currSuppInteractions.length" :showTimes="false" :initial-is-visible="isShowPosSupp">
+                <collapse v-if="interactions.length && (currSuppInteractions.length || emptySuppInteractions.length || suppRedInteractions.length)" :showTimes="false" :initial-is-visible="isShowPosSupp">
                     <template #header>
                         <button @click="showPosSupp" class="show-pos-supp-btn">
                             <p>Positive boosters - supplements ({{suppCount}})</p>
@@ -189,7 +189,7 @@
                         </div>
                     </template>
                 </collapse>
-                <div v-if="!interactions.length && currSuppInteractions.length">
+                <div v-if="!interactions.length && (currSuppInteractions.length || emptySuppInteractions.length || suppRedInteractions)">
                     <li 
                         class="horizontal-list-list-item"
                         v-for="(interaction, idx) in suppInteractionsToShow"
@@ -270,6 +270,10 @@ export default {
             type: Array,
             default: () => []
         },
+        suppEmptyInteractions: {
+            type: Array,
+            default: () => []
+        },
         pageCount: {
             type: Number,
             default: 0
@@ -322,7 +326,7 @@ export default {
     methods: {
         removeInteraction(idx){
             const emptyInteraction = {
-                        name: `${this.currSuppInteractions[idx].name} (0)`,
+                        name: this.currSuppInteractions[idx].name,
                         recommendation: '',
                         vInteractions: [],
                         evidenceLevel: '',
@@ -333,8 +337,15 @@ export default {
                     }
                 this.currSuppInteractions.splice(idx,1, emptyInteraction)
                 this.emptySuppInteractions.push(emptyInteraction)
+                setTimeout(() => {
+                    this.isLoadingSuppInteractions = false
+                },10000)
         },
         interactionDone(){
+            if(!this.currSuppInteractions.length){
+                this.isLoadingSuppInteractions = false
+                this.renderKey++
+                }
             this.interactionDoneLoadingCount++
             if(this.interactionDoneLoadingCount === this.suppInteractionsOriginalLength){
                 this.isLoadingSuppInteractions = false
@@ -367,7 +378,12 @@ export default {
     },
     created(){
         this.currSuppInteractions = JSON.parse(JSON.stringify(this.suppInteractions))
+        if(!this.currSuppInteractions.length){
+            this.isLoadingSuppInteractions = false
+            this.renderKey++
+            }
         this.suppInteractionsOriginalLength = this.suppInteractions.length
+        this.emptySuppInteractions = JSON.parse(JSON.stringify(this.suppEmptyInteractions))
         this.restoreCollapses();
     },
     components: {

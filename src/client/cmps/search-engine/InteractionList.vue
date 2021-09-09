@@ -12,6 +12,7 @@
             :interactions="listData.interactions"
             :suppInteractions="listData.suppInteractions"
             :suppRedInteractions="listData.suppRedInteractions"
+            :suppEmptyInteractions="listData.suppEmptyInteractions"
             :pageCount="listData.pageCount"
             :total="listData.total"
             :suppTotal="listData.suppTotal"

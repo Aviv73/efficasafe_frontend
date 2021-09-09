@@ -10,6 +10,7 @@
                     :to="interactionURL"
                     @click="onCollapseToggle"
                 >
+                    <span v-if="$route.name === 'Boosters' && !isChild && (newLength || getVinteractionsCount(interaction))" class="poss-booster-count badge" style="background-color: #55C595">{{newLength || getVinteractionsCount(interaction)}}</span>
                     <div
                         class="interaction-preview-header table-row"
                         :class="{

@@ -131,13 +131,16 @@ export default {
         },
         draftNameFullContent() {
             const nameToDisplay = (this.showDraftName && this.draftName) ? this.draftName : this.side2Name;
+            if(this.$route.name === 'Boosters') return nameToDisplay
             return (this.vInteractionCount) ? `${nameToDisplay} (${this.vInteractionCount})` : nameToDisplay;
         },
         draftNameContent() {
             const nameToDisplay = (this.showDraftName && this.draftName) ? this.draftName : this.side2Name;
             if (nameToDisplay.length >= 14 && this.isGroup) {
+                if(this.$route.name === 'Boosters') return nameToDisplay.substring(0, 12)
                 return `${nameToDisplay.substring(0, 12)}...(${this.vInteractionCount})`;
             }
+            if(this.$route.name === 'Boosters') return nameToDisplay
             return (this.vInteractionCount) ? `${nameToDisplay} (${this.vInteractionCount})` : nameToDisplay;
         },
         side1Name() {

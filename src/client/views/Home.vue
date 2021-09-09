@@ -218,6 +218,9 @@ export default {
             }
         },
         searchhWithBtn(){
+            if(this.searches.length === 0){
+                this.$router.push(`/search`);
+            }
             if(this.searches.length === 1){
                 this.$router.push(`/search?q=${this.searches[0]}`);
             }
@@ -228,9 +231,7 @@ export default {
         if (this.$route.query.congratulations) this.welcomeModal = true;
         if (this.$route.query.passwordreset) this.passwordModal = true;
         if(!this.$store.getters.loggedInUser){
-            this.$nextTick(async () => {
                 await this.$store.dispatch('getUserInfo');
-            })
         }
     },
     components: {

@@ -2,6 +2,9 @@
         <div class="auth-modal">
             <div class="auth-modal-cover" @click.stop="closeModal"></div>
             <div class="auth-modal-content txt-center">
+                <button @click="closeModal" class="close-modal-btn">
+                    <close-icon :size="14" />
+                </button>
                 <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
                 <p style="padding: 0 10px 5px 10px">We have upgraded our registration system, if you are a returning user,</p>
                 <p style="padding: 0 10px 5px 10px">please signup again</p>
@@ -27,6 +30,8 @@
 </template>
 
 <script>
+
+import CloseIcon from 'vue-material-design-icons/Close';
 
 export default {
     data() {
@@ -69,6 +74,9 @@ export default {
             this.isShowFailedMsg = false
         }
         
+    },
+    components:{
+        CloseIcon
     }
 };
 </script>

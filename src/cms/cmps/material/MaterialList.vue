@@ -50,7 +50,7 @@
               </router-link>
             </td>
 
-            <td class="td-actions d-flex align-center justify-center"  align="center">
+            <td class="td-actions d-flex align-center justify-center" style="height: 100%" align="center">
               <v-checkbox
                 class="mr-2"
                 v-model="selected"
@@ -60,6 +60,17 @@
               <v-btn small color="primary" :to="`/material/edit/${item._id}`">
                 <v-icon small>mdi-pencil</v-icon>
               </v-btn>
+            </td>
+            <td>
+              <div style="margin-left: 41%;">
+                <v-checkbox
+                  class="mr-2"
+                  v-model="item.isUnderStudy"
+                  :value="item.isUnderStudy"
+                  title="Under construction"
+                  @change="updateMaterial(item)"
+                />
+              </div>
             </td>
           </tr>
         </tbody>
@@ -138,6 +149,11 @@ export default {
           sortable: false,
           align: 'center',
         },
+        {
+          text: 'Under construction',
+          align: 'center',
+          value: 'isUnderStudy',
+        },
       ],
     };
   },
@@ -166,6 +182,10 @@ export default {
     },
     isSortedBy(property) {
       return this.$route.query.sortBy === property;
+    },
+    updateMaterial(material){
+      if(material.isUnderStudy === null ) material.isUnderStudy = false
+      this.$emit('updateMaterial', material)
     }
   }
 };

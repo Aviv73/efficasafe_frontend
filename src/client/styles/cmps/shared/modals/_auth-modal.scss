@@ -37,6 +37,13 @@
         height: 570px;
         animation: fade-in 1s; 
 
+        .close-modal-btn{
+            position: absolute;
+            right: 17px;
+            top: 12px;
+            color: #b1b1b1;
+        }
+
         img{
             margin-top: rem(40px);
             margin-bottom: rem(25px);

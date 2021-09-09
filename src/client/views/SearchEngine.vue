@@ -356,6 +356,7 @@ export default {
             dBankTotal: 0,
             positiveInteractions: [],
             suppPositiveInteractions: [],
+            emptySuppPositiveInteractions: [], 
             isViewVertical: storageService.load('view', true) === 'vertical' && (this.$route.name !== 'Boosters' && this.$route.name !== 'Monitor'),
             scrollBarWidth: '0px',
             routerTransitionName: '',
@@ -443,6 +444,7 @@ export default {
                         interactions: this.formatedPositiveInteractions,
                         suppInteractions: this.formatedSuppPositiveInteractions,
                         suppRedInteractions: this.formatedSuppPositiveRed,
+                        suppEmptyInteractions: this.emptySuppPositiveInteractions,
                         pageCount: 0,
                         total: 0,
                     };
@@ -931,8 +933,42 @@ export default {
                 })
                 int.vInteractions = this.sortInteractions(int.vInteractions, true)
             })
+            this.emptySuppPositiveInteractions = this.getEmptyPositiveSupp()
             this.restoreState('Boosters', searchState);
             this.restoreState('suppBoosters', searchStateSupp);
+        },
+        getEmptyPositiveSupp(){
+            const suppMaterials = this.materials.filter(m => m.type !== 'drug')
+            const emptySupps = suppMaterials.reduce((acc,suppMatiral) => {
+                let isIncluded = false
+                this.suppPositiveInteractions.forEach(suppPositve => {
+                    if(suppMatiral._id === suppPositve.side2Id){
+                        isIncluded = true 
+                        return
+                    }
+                })
+                this.idsToTurnRed.forEach(redId => {
+                    if(suppMatiral._id === redId){
+                        isIncluded = true 
+                        return
+                    }
+                })
+                if(!isIncluded){
+                    const emptyInteraction = {
+                        name: suppMatiral.name,
+                        recommendation: '',
+                        vInteractions: [],
+                        evidenceLevel: '',
+                        isMaterialGroup: true,
+                        isEmpty: true,
+                        isNotToShow: true,
+                        total: 0
+                    }
+                    acc.push(emptyInteraction)
+                }
+                return acc
+            }, [])
+            return emptySupps
         },
         addCacheKey(interactions){
             interactions.forEach(int => {
