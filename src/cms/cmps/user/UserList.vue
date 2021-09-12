@@ -47,24 +47,15 @@
                         </td>
                         <td class="centered text-center">
                             {{
-                                item.resgisteredTime
-                                    ? new Date(item.resgisteredTime)
-                                          .toISOString()
-                                          .substr(0, 10)
-                                    : '---'
+                                dateToShow(item.resgisteredTime)
                             }}
                         </td>
-
                         <td class="centered text-center">
                             {{ item.type ? item.type : 'T' }}
                         </td>
                         <td class="centered text-center">
                             {{
-                                item.trialTime
-                                    ? new Date(item.trialTime)
-                                          .toISOString()
-                                          .substr(0, 10)
-                                    : '---'
+                                dateToShow(item.trialTime)
                             }}
                         </td>
                     </tr>
@@ -161,6 +152,11 @@ export default {
             this.selected = [];
             this.confirmDialog = false;
         },
+        dateToShow(originalDate){
+            if(!originalDate) return '---'
+            let date = new Date(originalDate).toISOString().substr(0, 10)
+            return date.split('-').reverse().join('-')
+        }
     },
 };
 </script>

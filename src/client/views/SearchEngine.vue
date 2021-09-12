@@ -369,12 +369,15 @@ export default {
             undoneQueries: [],
             isArrowShown: true,
             idsToTurnRed: [],
-            arrowRightPositin: 3
+            arrowRightPositin: 3,
+            loadingTime: 0
         }
     },
     watch: {
         '$route.query': {
             async handler(to, from) {
+                this.loadingTime = 0
+                this.countLoadingTime()
                 this.$store.commit('resetPosSupp')
                 this.$store.commit('resetRedPositiveSupp')
                 this.isArrowShown = true
@@ -445,6 +448,7 @@ export default {
                         suppInteractions: this.formatedSuppPositiveInteractions,
                         suppRedInteractions: this.formatedSuppPositiveRed,
                         suppEmptyInteractions: this.emptySuppPositiveInteractions,
+                        loadingTime: this.loadingTime,
                         pageCount: 0,
                         total: 0,
                     };
@@ -616,7 +620,7 @@ export default {
             this.idsToTurnRed.forEach(id => {
                 const material = this.materials.find(m => m._id === id)
                 const redInteraction = {
-                        name: `${material.userQuery} (0)`,
+                        name: material.userQuery,
                         recommendation: '',
                         vInteractions: [],
                         evidenceLevel: '',
@@ -854,6 +858,14 @@ export default {
         }
     },
     methods: {
+        countLoadingTime(){
+            let loadingTimeInterval = setInterval(()=>{
+                this.loadingTime++
+                if(!this.isLoading || this.loadingTime > 40){
+                    clearInterval(loadingTimeInterval)
+                }
+            },1000)
+        },
         hideArrow(){
             this.isArrowShown = false
         },

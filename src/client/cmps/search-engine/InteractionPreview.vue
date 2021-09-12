@@ -10,7 +10,7 @@
                     :to="interactionURL"
                     @click="onCollapseToggle"
                 >
-                    <span v-if="$route.name === 'Boosters' && !isChild && (newLength || getVinteractionsCount(interaction))" class="poss-booster-count badge" style="background-color: #55C595">{{newLength || getVinteractionsCount(interaction)}}</span>
+                    <span v-if="$route.name === 'Boosters' && !isChild && !interaction.isNegative" class="poss-booster-count badge" :style="getBadgeColor(interaction)">{{newLength || getVinteractionsCount(interaction)}}</span>
                     <div
                         class="interaction-preview-header table-row"
                         :class="{
@@ -458,6 +458,13 @@ export default {
         getInteractionColor({recommendation, isNegative}) {
             if(isNegative) return '#E63946'
             return interactionUIService.getInteractionColor(recommendation);
+        },
+        getBadgeColor({recommendation}){
+            const count = this.newLength || this.getVinteractionsCount(this.interaction)
+            if(count === 0) return 'background-color: #a4b8c6'
+            const color = interactionUIService.getInteractionColor(recommendation);
+            if(color === '#F6D55C') return 'background-color: #F6D55C; color: blue'
+            return 'background-color: #55C595'
         },
         swapSideNames(side) {
             this.primarySideInView = side;

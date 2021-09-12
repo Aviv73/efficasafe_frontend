@@ -1,0 +1,10 @@
+.loading-err-container{
+    margin-top: 40px;
+    @include for-narrow-layout {
+        margin-top: unset
+    }
+    .report-btn{
+        margin-top: 50px;
+    }
+}
+

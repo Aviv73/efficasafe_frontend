@@ -89,18 +89,22 @@ export default {
             });
         },
         getMonitorTxt(propName) {
-            const seenMap = {};
-            return this.flatInteractions.reduce((acc, { monitor }) => {
+           const seenMap = {};
+           return this.flatInteractions.reduce((acc, { monitor }) => {
                 let words = monitor[propName].split(',').filter(str => str).map(str =>str.trim());
                 words = words.reduce((acc, word) => {
                     if (!seenMap[word]) {
-                        const copy = word;
+                        // const copy = word;
                         const secChar = word.charAt(1);
                         word = (secChar !== secChar.toUpperCase()) ? word.charAt(0).toLowerCase() + word.slice(1) : word;
                         const lastChar = word.charAt(word.length - 1);
                         word = (lastChar === '.') ? word.substring(0, word.length - 1) : word;
-                        acc.push(word);
-                        seenMap[copy] = true;
+                        // acc.push(word);
+                        // seenMap[copy] = true;
+                        if(!seenMap[word]){
+                            acc.push(word);
+                            seenMap[word] = true;
+                        }
                     }
                     return acc;
                 }, []);

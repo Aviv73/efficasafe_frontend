@@ -1,49 +1,58 @@
 <template>
     <section>
-        <div
-            v-if="isLoading || ($route.name === 'Boosters' && isPBLoading)"
-            class="flex-center"
-        >
-            <loader />
+        <div v-if="listData.loadingTime > 30" class="loading-err-container flex-center flex-coloumn">
+            <h3>There seems to be a problem with your search</h3>
+            <h3>Please report this issue</h3>
+            <h3>And try narrowing your search</h3>
+            <button @click="onReport" class="btn home-cta report-btn">Report</button>
         </div>
-        <result-list-horizontal
-            v-else-if="!isLoading && !isVertical"
-            :materials="materials"
-            :interactions="listData.interactions"
-            :suppInteractions="listData.suppInteractions"
-            :suppRedInteractions="listData.suppRedInteractions"
-            :suppEmptyInteractions="listData.suppEmptyInteractions"
-            :pageCount="listData.pageCount"
-            :total="listData.total"
-            :suppTotal="listData.suppTotal"
-            :isLoading="isLoading"
-            :evidenceLevelPopupActive="evidenceLevelPopupActive"
-            @list-sorted="$emit('list-sorted', $event)"
-        />
-        <result-list-vertical
-            v-else-if="!isLoading && isVertical"
-            :materials="materials"
-        />
-        <list-pagination
-            class="list-pagination flex-center"
-            v-if="listData.pageCount > 1 && !isVertical && !isLoading"
-            v-model.number="page"
-            :pageCount="listData.pageCount"
-            :disabled="isLoading"
-        >
-            <template #first-btn>
-                <page-first-icon
-                    :size="18"
-                    title="First page"
-                />
-            </template>
-            <template #last-btn>
-                <page-last-icon
-                    :size="18"
-                    title="Last page"
-                />
-            </template>
-        </list-pagination>
+        <template v-else>
+            <div
+                v-if="isLoading || ($route.name === 'Boosters' && isPBLoading)"
+                class="flex-center flex-coloumn"
+            >
+                <loader />
+                <h3 v-if="$route.name === 'Boosters'">Loading may take a few seconds</h3>
+            </div>
+            <result-list-horizontal
+                v-else-if="!isLoading && !isVertical"
+                :materials="materials"
+                :interactions="listData.interactions"
+                :suppInteractions="listData.suppInteractions"
+                :suppRedInteractions="listData.suppRedInteractions"
+                :suppEmptyInteractions="listData.suppEmptyInteractions"
+                :pageCount="listData.pageCount"
+                :total="listData.total"
+                :suppTotal="listData.suppTotal"
+                :isLoading="isLoading"
+                :evidenceLevelPopupActive="evidenceLevelPopupActive"
+                @list-sorted="$emit('list-sorted', $event)"
+            />
+            <result-list-vertical
+                v-else-if="!isLoading && isVertical"
+                :materials="materials"
+            />
+            <list-pagination
+                class="list-pagination flex-center"
+                v-if="listData.pageCount > 1 && !isVertical && !isLoading"
+                v-model.number="page"
+                :pageCount="listData.pageCount"
+                :disabled="isLoading"
+            >
+                <template #first-btn>
+                    <page-first-icon
+                        :size="18"
+                        title="First page"
+                    />
+                </template>
+                <template #last-btn>
+                    <page-last-icon
+                        :size="18"
+                        title="Last page"
+                    />
+                </template>
+            </list-pagination>
+        </template>
     </section>
 </template>
 
@@ -55,6 +64,9 @@ import ListPagination from '@/client/cmps/common/ListPagination';
 import Loader from '@/client/cmps/common/icons/Loader';
 import PageFirstIcon from 'vue-material-design-icons/PageFirst';
 import PageLastIcon from 'vue-material-design-icons/PageLast';
+
+import { httpService } from "@/cms/services/http.service";
+import { eventBus, EV_show_user_msg } from '@/cms/services/eventBus.service';
 
 export default {
     props: {
@@ -91,6 +103,28 @@ export default {
     watch: {
         page(val) {
             this.$emit('page-changed', val);
+        }
+    },
+    computed:{
+        loggedInUser() {
+            return this.$store.getters.loggedInUser;
+        },
+    },
+    methods:{
+        async onReport(){
+            const url = this.$route.fullPath
+            const reportDetails = {
+                firstName: this.loggedInUser.username || 'Guest',
+                email: this.loggedInUser.email || 'Unknown',
+                type: "Positive Boosters bug",
+                msg: url,
+            }
+            try{
+                await httpService.post('task', reportDetails)
+                eventBus.$emit(EV_show_user_msg, 'Thank you for reporting, we will review the problem as soon as possible', 5000, 'success')  
+            }catch(err){
+                eventBus.$emit(EV_show_user_msg, 'Shomting went wrong', 5000, 'error')
+            }
         }
     },
     components: {
