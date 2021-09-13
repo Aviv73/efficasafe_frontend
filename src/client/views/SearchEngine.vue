@@ -605,6 +605,7 @@ export default {
             }, []);
             return materialsIds
         },
+        
         materialIds() {
             return this.materials.reduce((acc, material) => {
                 if (material.type !== 'drug') return acc;
