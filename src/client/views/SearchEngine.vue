@@ -861,7 +861,9 @@ export default {
         countLoadingTime(){
             let loadingTimeInterval = setInterval(()=>{
                 this.loadingTime++
-                if(!this.isLoading || this.loadingTime > 40){
+                console.log(this.loadingTime);
+                if(!this.isLoading || this.loadingTime > 30){
+                    console.log('STOP!');
                     clearInterval(loadingTimeInterval)
                 }
             },1000)
