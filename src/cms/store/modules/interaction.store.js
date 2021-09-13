@@ -13,7 +13,8 @@ export const interactionStore = ({
         },
         isPosSuppOpen: false,
         firstInteractionSide: 1,
-        redPositiveSupp: []
+        redPositiveSupp: [],
+        sortBy:['recommendation', true]
     },
     getters: {
         interactions(state) {
@@ -34,6 +35,9 @@ export const interactionStore = ({
         firstInteractionSide(state) {
             return state.firstInteractionSide;
         },
+        InteractionSort(state) {
+            return state.sortBy;
+        },
         getRedPositiveSupp(state){
             return state.redPositiveSupp
         },
@@ -42,6 +46,9 @@ export const interactionStore = ({
         }
     },
     mutations: {
+        setSortBy(state, { newSort }) {
+            state.sortBy = newSort
+        },
         setFirstInteractionSide(state, { side }) {
             state.firstInteractionSide = side;
         },

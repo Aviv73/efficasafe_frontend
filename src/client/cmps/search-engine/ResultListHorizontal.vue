@@ -315,6 +315,9 @@ export default {
         sortBySide() {
             return this.$store.getters.firstInteractionSide;
         },
+        sortBy(){
+            return this.$store.getters.InteractionSort;
+        },
         suppInteractionsToShow(){
             const toShow =  this.currSuppInteractions.filter(i => !i.isNotToShow)
             return toShow
@@ -358,6 +361,10 @@ export default {
         },
         emitSort(sortBy, isChecked) {
             this.$emit('list-sorted', { sortBy, side: this.sortBySide, isDesc: !isChecked });
+            if(this.$route.name === 'Supp2Drug'){
+                const newSort = [sortBy, isChecked]
+                this.$store.commit({ type: 'setSortBy', newSort});
+            }
         },
         getInteractionKey(interaction) {
             return (interaction.side2Material) ? `${interaction._id}-${interaction.side2Material._id}` : interaction._id;
@@ -371,8 +378,17 @@ export default {
         },
         restoreCollapses(){
             if(this.$store.getters.getIsPosSuppOpen){
-
                 this.isShowPosSupp = true
+            }
+        },
+        restoreSort(){
+            if(this.$route.name === 'Supp2Drug'){
+                this.$nextTick(() => {
+                    this.emitSort(this.sortBy[0], this.sortBy[1])
+                })
+                this.$nextTick(() => {
+                    eventBus.$emit(EV_sortby_side_swaped, this.sortBySide);
+                })
             }
         }
     },
@@ -385,6 +401,7 @@ export default {
         this.suppInteractionsOriginalLength = this.suppInteractions.length
         this.emptySuppInteractions = JSON.parse(JSON.stringify(this.suppEmptyInteractions))
         this.restoreCollapses();
+        this.restoreSort();
     },
     components: {
         InteractionPreview,
