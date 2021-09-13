@@ -78,18 +78,18 @@ export default {
             
             if (searchIdx === -1) {
                 user.searches.push(search);
-                await this.saveAccount(user);
+                await this.saveToAccount(user);
             } else {
                 if (this.showReplaceBtn) {
                     user.searches.splice(searchIdx, 1, search);
-                    await this.saveAccount(user);
+                    await this.saveToAccount(user);
                     return;
                 }
                 this.msg = `Search '${this.search.title}' allready exists...`;
                 this.showReplaceBtn = true;
             }
         },
-        async saveAccount(user) {
+        async saveToAccount(user) {
             await this.$store.dispatch({ type: 'updateLoggedInUser', user });
             eventBus.$emit(EV_show_user_msg, 'Your search has been saved. You can find it at your account page', 5000);
             this.reset();

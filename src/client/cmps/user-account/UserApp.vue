@@ -64,6 +64,8 @@ import ListPagination from '@/client/cmps/common/ListPagination';
 import PageFirstIcon from 'vue-material-design-icons/PageFirst';
 import PageLastIcon from 'vue-material-design-icons/PageLast';
 
+import { userService } from '@/cms/services/user.service';
+
 export default {
     data() {
         return {
@@ -90,7 +92,8 @@ export default {
                     { title: 'Show 50', value: 50 },
                     { title: 'Show 100', value: 100 }
                 ]
-            }
+            },
+            userSearches: []
         }
     },
     computed: {
@@ -128,7 +131,7 @@ export default {
             const { filterBy } = this;
             if (this.$route.name === 'Searches') {
                 const from = (filterBy.page - 1) * filterBy.itemsPerPage;
-                return this.loggedInUser.searches
+                return this.userSearches
                 .filter(({ title, at }) => {
                     return title.toLowerCase().includes(filterBy.name.toLowerCase())
                     && at > filterBy.createdAt;
@@ -139,6 +142,17 @@ export default {
                     return (a[field] > b[field] ? 1 : a[field] < b[field] ? -1 : 0) * sortOrder;
                 })
                 .slice(from, from + filterBy.itemsPerPage);
+                // return this.loggedInUser.searches
+                // .filter(({ title, at }) => {
+                //     return title.toLowerCase().includes(filterBy.name.toLowerCase())
+                //     && at > filterBy.createdAt;
+                // })
+                // .sort((a, b) => {
+                //     const { field, isDesc } = this.sortBy;
+                //     const sortOrder = isDesc ? 1 : -1;
+                //     return (a[field] > b[field] ? 1 : a[field] < b[field] ? -1 : 0) * sortOrder;
+                // })
+                // .slice(from, from + filterBy.itemsPerPage);
             }
             /// return purchases table headers in their route
             return [];
@@ -151,8 +165,9 @@ export default {
             const { loggedInUser } = this;
             if (!loggedInUser || this.$route.name !== 'Searches') return 0;
             // const items = (this.$route.name === 'Searches') ? 'searches' : 'purchases';
-            const items = 'searches';
-            return loggedInUser[items].length;
+            // const items = 'searches';
+            // return loggedInUser[items].length;
+            return this.userSearches.length;
         },
         isScreenNarrow() {
             return this.$store.getters.isScreenNarrow;
@@ -168,6 +183,7 @@ export default {
             // const items = (this.$route.name === 'Searches') ? 'searches' : 'purchases';
             const user = JSON.parse(JSON.stringify(this.loggedInUser));
             user.searches.splice(itemIdx, 1);
+            this.userSearches.splice(itemIdx, 1)
             this.$store.dispatch({ type: 'updateLoggedInUser', user });
         },
         getDaysAgo(days) {
@@ -176,6 +192,9 @@ export default {
             today.setHours(0, 0, 0, 0);
             return today.getTime();
         }
+    },
+    async created(){
+        this.userSearches = await userService.getUserSearches(this.loggedInUser._id)
     },
     components: {
         CustomSelect,

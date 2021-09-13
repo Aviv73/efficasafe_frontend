@@ -27,7 +27,7 @@ export const userService = {
     verifyEmail,
     signup,
     login,
-    signupWithGoogle
+    getUserSearches
 }
 
 function verifyEmail(token) {
@@ -113,10 +113,10 @@ async function signup(cred) {
     return await httpService.post(AUTH_END_POINT+'/signup', cred);
 }
 
-async function signupWithGoogle() {
-    return await httpService.get(AUTH_END_POINT+'/google');
-}
-
 async function login(cred) {
     return await httpService.post(AUTH_END_POINT+'/login', cred);
+}
+
+async function getUserSearches(userId){
+    return await httpService.put(ACCOUNT_END_POINT+'/getUserSearches', { userId });
 }
