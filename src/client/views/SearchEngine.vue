@@ -861,9 +861,7 @@ export default {
         countLoadingTime(){
             let loadingTimeInterval = setInterval(()=>{
                 this.loadingTime++
-                console.log(this.loadingTime);
                 if(!this.isLoading || this.loadingTime > 30){
-                    console.log('STOP!');
                     clearInterval(loadingTimeInterval)
                 }
             },1000)
@@ -932,24 +930,28 @@ export default {
                 suppIds,
                 isSupp: true
             };
-            const [  { interactions, searchState },  { interactions: suppInteractions, idsToTurnRed, searchState: searchStateSupp } ] = await Promise.all([
-                this.$store.dispatch({ type: 'getInteractions', filterBy: drugFilterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}` }),
-                this.$store.dispatch({ type: 'getInteractions', filterBy: suppFilterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}/supps` })
-            ]);
-            this.$store.commit('setRedPositiveSupp', { redIds: idsToTurnRed })
-            this.idsToTurnRed = idsToTurnRed
-            this.positiveInteractions = await this.removeDupNonPositives(interactions);
-            this.suppPositiveInteractions = this.addCacheKey(suppInteractions)
-            this.suppPositiveInteractions.forEach(int => {
-                int.vInteractions.forEach(vInt => {
-                    const interactionName = vInt.side1Material._id === int.side2Id ? `${vInt.side2Material.name} & ${vInt.side1Material.name}` : `${vInt.side1Material.name} & ${vInt.side2Material.name}`
-                    vInt.name = interactionName
+            try{
+                const [  { interactions, searchState },  { interactions: suppInteractions, idsToTurnRed, searchState: searchStateSupp } ] = await Promise.all([
+                    this.$store.dispatch({ type: 'getInteractions', filterBy: drugFilterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}` }),
+                    this.$store.dispatch({ type: 'getInteractions', filterBy: suppFilterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}/supps` })
+                ]);
+                this.$store.commit('setRedPositiveSupp', { redIds: idsToTurnRed })
+                this.idsToTurnRed = idsToTurnRed
+                this.positiveInteractions = await this.removeDupNonPositives(interactions);
+                this.suppPositiveInteractions = this.addCacheKey(suppInteractions)
+                this.suppPositiveInteractions.forEach(int => {
+                    int.vInteractions.forEach(vInt => {
+                        const interactionName = vInt.side1Material._id === int.side2Id ? `${vInt.side2Material.name} & ${vInt.side1Material.name}` : `${vInt.side1Material.name} & ${vInt.side2Material.name}`
+                        vInt.name = interactionName
+                    })
+                    int.vInteractions = this.sortInteractions(int.vInteractions, true)
                 })
-                int.vInteractions = this.sortInteractions(int.vInteractions, true)
-            })
-            this.emptySuppPositiveInteractions = this.getEmptyPositiveSupp()
-            this.restoreState('Boosters', searchState);
-            this.restoreState('suppBoosters', searchStateSupp);
+                this.emptySuppPositiveInteractions = this.getEmptyPositiveSupp()
+                this.restoreState('Boosters', searchState);
+                this.restoreState('suppBoosters', searchStateSupp);
+            }catch(err){
+                this.loadingTime = 31
+            }
         },
         getEmptyPositiveSupp(){
             const suppMaterials = this.materials.filter(m => m.type !== 'drug')
