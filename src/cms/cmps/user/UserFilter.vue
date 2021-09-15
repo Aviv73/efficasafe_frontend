@@ -4,7 +4,7 @@
             <v-text-field
                 style="max-width: 50%"
                 class="mr-8"
-                label="Search User By name or email"
+                label="Search User By username or email"
                 v-model="filterBy.q"
             />
             <section class="d-flex align-center">

@@ -26,7 +26,7 @@
       <icons-map />
     </div>
     <v-alert 
-        class="material-update-alert" 
+        class="cms-alert" 
         v-if="response.msg"
         :type="response.type"
         dismissible

@@ -21,18 +21,12 @@
                 >
                     <v-text-field
                         type="text"
-                        v-model="editedUser.name"
-                        label="Name*"
+                        v-model="editedUser.username"
+                        label="username*"
                         required
                         :rules="[
                             (v) => !!v || 'Label Name is required',
                         ]"
-                    />
-                    <v-text-field
-                        type="text"
-                        v-model="editedUser.nickname"
-                        label="username*"
-                        required
                     />
                     <v-text-field
                         type="text"
@@ -150,6 +144,14 @@
                 </div>
             </v-card>
         </div>
+        <v-alert 
+            class="cms-alert" 
+            v-if="response.msg"
+            :type="response.type"
+            dismissible
+        >
+            {{response.msg}}
+        </v-alert>
         <div class="container">
             <v-card class="py-2 px-4 text-center">
                 <p>user purchase history</p>
@@ -172,6 +174,10 @@ export default {
             menu: false,
             modal: false,
             menu2: false,
+            response: {
+                msg: null,
+                type: null
+            }
         };
     },
     methods: {
@@ -190,11 +196,19 @@ export default {
             this.date = new Date(user.trialTime).toISOString().substr(0, 10);
         },
         async saveUser() {
-            if (!this.editedUser.name) return;
-            await this.$store.dispatch({
-                type: 'updateUser',
-                user: this.editedUser,
-            });
+            if (!this.editedUser.username) return;
+            try{
+                await this.$store.dispatch({ type: 'updateUser', user: this.editedUser });
+                this.response.type = 'success'
+                this.response.msg = `${this.editedUser.username} was updated`
+            }catch(err){
+                this.response.type = 'error'
+                this.response.msg = `SOMTING WHNT WRONG`
+            }
+            setTimeout(() => {
+                this.response.type = null
+                this.response.msg = null
+            },1500)
         },
     },
     created() {

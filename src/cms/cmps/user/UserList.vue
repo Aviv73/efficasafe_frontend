@@ -33,7 +33,7 @@
                         <td class="td-name-img">
                             <router-link :to="`user/edit/${item._id}`">
                                 <span class="text-capitalize">{{
-                                    item.name
+                                    item.username
                                 }}</span>
                             </router-link>
                         </td>
@@ -90,8 +90,8 @@ export default {
             isDesc: true,
             headers: [
                 {
-                    text: 'Name',
-                    value: 'name',
+                    text: 'Username',
+                    value: 'username',
                 },
                 {
                     text: 'Role',
