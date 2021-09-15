@@ -76,18 +76,18 @@
                             />
                         </template>
                         <template #content>
+                                <!-- v-if="!isAllUnderStudy(result)" -->
                             <material-interactions-preview
-                                v-if="!isAllUnderStudy(result)"
                                 :materials="result.materials"
                                 :userQuery="result.txt"
                                 :disabled="result.isIncluded"
                                 :interactions="getMaterialInteractions(result)"
                                 :isOneMaterial="materials.length === 1"
                             />
-                            <div v-else class="interactions-preview under-construction">
+                            <!-- <div v-else class="interactions-preview under-construction">
                                 This material is still under construction. The results you may see are only partial.
                                 Because you searched this material, it will get higher priority.
-                            </div>
+                            </div> -->
                         </template>
                         <li
                             class="search-engine-search-materials-chip clip-txt activator v-tour-step-1"
@@ -862,7 +862,7 @@ export default {
         countLoadingTime(){
             let loadingTimeInterval = setInterval(()=>{
                 this.loadingTime++
-                if(!this.isLoading || this.loadingTime > 30){
+                if(!this.isLoading || this.loadingTime > 20){
                     clearInterval(loadingTimeInterval)
                 }
             },1000)

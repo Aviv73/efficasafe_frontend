@@ -1,18 +1,24 @@
 <template>
     <section>
-        <div v-if="listData.loadingTime > 30" class="loading-err-container flex-center flex-coloumn">
-            <h3>There seems to be a problem with your search</h3>
-            <h3>Please report this issue</h3>
-            <h3>And try narrowing your search</h3>
-            <button @click="onReport" class="btn home-cta report-btn">Report</button>
-        </div>
-        <template v-else>
+        <template>
             <div
                 v-if="isLoading || ($route.name === 'Boosters' && isPBLoading)"
                 class="flex-center flex-coloumn"
             >
                 <loader />
-                <h3 v-if="$route.name === 'Boosters'">Loading may take a few seconds</h3>
+                <template v-if="$route.name === 'Boosters'">
+                    <h3 v-if="listData.loadingTime < 20">Loading may take a few seconds</h3>
+                    <template v-else class="loading-err-container flex-center flex-coloumn">
+                        <h3>Loading is taking more time than expected.</h3>
+                        <h3>This could happen if the network connection is poor</h3>
+                        <h3>Or a problem has occurred</h3>
+                        <h3>Please allow a few more seconds,</h3>
+                        <h3>And if the problem persists</h3>
+                        <h3>Please report this issue</h3>
+                        <h3>And/or try narrowing your search</h3>
+                        <button @click="onReport" class="btn home-cta report-btn">Report</button>
+                    </template>
+                </template>
             </div>
             <result-list-horizontal
                 v-else-if="!isLoading && !isVertical"
