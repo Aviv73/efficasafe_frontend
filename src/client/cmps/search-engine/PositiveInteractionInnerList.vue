@@ -205,6 +205,7 @@ export default {
                 const [ mainInteraction ] = interactions.splice(mainInteractionIdx, 1);
                 interactions.unshift(mainInteraction);
             }
+            this.$emit('setInnerInteractionsLength', { length: interactions.length, idx: this.groupIdx })
             return interactions;
         },
         getMoreSeverInteraction(interactions) {

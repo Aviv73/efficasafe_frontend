@@ -165,4 +165,9 @@
             transform: translateX(10px);
         }
     }
+    .inner {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+    }
 }

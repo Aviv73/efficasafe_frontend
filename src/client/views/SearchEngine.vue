@@ -544,6 +544,7 @@ export default {
                 formatedPositiveInteractions.sort((a, b) => {
                     return (map[b.recommendation] - map[a.recommendation]) * -1 ||
                     (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
+                    (b.vInteractions.length - a.vInteractions.length) || 
                     (a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
                 });
             }
@@ -593,6 +594,13 @@ export default {
                 });
                 return group
             });
+            const map = this.$options.recommendationsOrderMap;
+            formatedSuppPositiveInteractions.sort((a, b) => {
+                    return (map[b.recommendation] - map[a.recommendation]) * -1 ||
+                    (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
+                    (b.vInteractions.length - a.vInteractions.length) || 
+                    (a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+                });
             return formatedSuppPositiveInteractions
         },
         materialSuppIds() {

@@ -13,6 +13,7 @@
                             class="minus-icon"
                             title=""
                         />
+                        <positive-inner-list-count :key="renderKey" :group="group" :length="group.innerLength"/>
                         <interaction-capsules
                             :name="getInnerGroupName(group)"
                             :isMaterialGroup="true"
@@ -53,6 +54,7 @@
                         :groupIdx="idx"
                         @remove="removeGroup"
                         @groupDone="groupDone"
+                        @setInnerInteractionsLength="setInnerInteractionsLength"
                     />
                 </div>
             </template>
@@ -71,6 +73,7 @@ import Collapse from '@/client/cmps/common/Collapse';
 import Tooltip from '@/client/cmps/common/Tooltip';
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 import PositiveInteractionInnerList from '@/client/cmps/search-engine/PositiveInteractionInnerList';
+import PositiveInnerListCount from '@/client/cmps/search-engine/PositiveInnerListCount';
 
 import CollapseToggleIcon from '@/client/cmps/common/icons/CollapseToggleIcon';
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
@@ -101,10 +104,22 @@ export default {
             openCollapses: [],
             currInteraction: null,
             groupsDoneLoadingCount: 0,
-            vInteractionsOriginalLength: null
+            vInteractionsOriginalLength: null,
+            renderKey: 101
         }
     },
     methods: {
+        getBadgeColor({recommendation}){
+            const color = interactionUIService.getInteractionColor(recommendation);
+            if(color === '#F6D55C') return 'background-color: #F6D55C; color: blue'
+            return 'background-color: #55C595'
+        },
+        setInnerInteractionsLength(data){
+            if(this.currInteraction.vInteractions[data.idx]) {
+                this.currInteraction.vInteractions[data.idx].innerLength = data.length
+            }
+            this.renderKey++
+        },
         removeGroup(idx){
             this.currInteraction.vInteractions.splice(idx,1)
             this.$emit('setCount', this.currInteraction.vInteractions.length)
@@ -190,6 +205,7 @@ export default {
         ChevronUpIcon,
         ChevronDownIcon,
         PositiveInteractionInnerList,
+        PositiveInnerListCount,
         CollapseToggleIcon
     }
 }
