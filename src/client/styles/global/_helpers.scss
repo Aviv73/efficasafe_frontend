@@ -125,3 +125,9 @@
 .fade-leave-to {
     opacity: 0;
 }
+
+.pointer{
+    &:hover {
+        cursor: pointer;
+    }
+}

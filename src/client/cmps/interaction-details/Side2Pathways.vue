@@ -8,7 +8,7 @@
             v-for="({ name, pathways }, index) in formatedPathways"
             :key="index"
         >
-            <span class="font-medium font-capitalize">{{ name }}: </span>
+            <span class="font-medium font-capitalize blue">{{ name }}: </span>
             <span
                 class="pathway"
                 v-for="(pathway, idx) in pathways"

@@ -43,6 +43,7 @@
                                 <span class="highlight">Coadministration is not contraindicated</span>
                                 means that the
                                 combination has been only examined in preclinical studies.
+                                <span class="highlight pointer" @click="openAllRecommendations">See all recommendations</span>
                             </p>
                         </div>
                     </template>
@@ -239,6 +240,13 @@
                 </div> 
             </div>
         </ul>
+        <modal-wrap
+            :isActive="isAllRecommendationsModalActive"
+            @close-modal="closeAllRecommendations"
+            >
+            <all-recommendations-modal @close-modal="closeAllRecommendations">
+            </all-recommendations-modal>
+        </modal-wrap>
     </section>
 </template>
 
@@ -250,6 +258,8 @@ import Tooltip from '@/client/cmps/common/Tooltip';
 import Collapse from '@/client/cmps/common/Collapse';
 import MonitorSummary from '@/client/cmps/search-engine/MonitorSummary';
 import Loader from '@/client/cmps/common/icons/Loader';
+import ModalWrap from '@/client/cmps/common/ModalWrap';
+import AllRecommendationsModal from '@/client/cmps/shared/modals/AllRecommendationsModal';
 
 import SortVerticalIcon from '@/client/cmps/common/icons/SortVerticalIcon';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
@@ -300,6 +310,7 @@ export default {
             isLoadingSuppInteractions: true,
             emptySuppInteractions: [],
             currSuppInteractions: null,
+            isAllRecommendationsModalActive: false,
             renderKey: 101
         }
     },
@@ -390,6 +401,12 @@ export default {
                     eventBus.$emit(EV_sortby_side_swaped, this.sortBySide);
                 })
             }
+        },
+        openAllRecommendations(){
+            this.isAllRecommendationsModalActive = true
+        },
+        closeAllRecommendations(){
+            this.isAllRecommendationsModalActive = false
         }
     },
     created(){
@@ -408,6 +425,8 @@ export default {
         SortVerticalIcon,
         InformationOutlineIcon,
         Tooltip,
+        ModalWrap,
+        AllRecommendationsModal,
         Collapse,
         MonitorSummary,
         ChevronDownIcon,

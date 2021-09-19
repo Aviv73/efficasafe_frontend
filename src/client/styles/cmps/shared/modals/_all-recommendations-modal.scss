@@ -1,0 +1,34 @@
+.recommendations-modal{
+    width: 550px;
+    height: 360px;
+    background-color: $white;
+
+    &-header{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .close-btn{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    }
+
+    &-content{
+        .red-recomm{
+            background-color: #E63946;
+        }
+        .yellow-recomm{
+            background-color: #F6D55C;
+        }
+        .green-recomm{
+            background-color: #56C596;
+        }
+
+        p{
+            padding-left: 5px;
+            font-family: roboto-medium;
+        }
+    }
+}
