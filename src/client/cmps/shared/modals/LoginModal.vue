@@ -22,7 +22,6 @@
                     <p style="margin-bottom: 10px">or</p>
                     <div class="auth-modal-content-media-btns">
                         <a :href="googleLink" class="red" role="button">LOGIN WITH GOOGLE</a>
-                        <a :href="facebookLink" class="blue" role="button">LOGIN WITH FACEBOOK</a>
                     </div>
                     <button @click="onRegister" class="register-btn">LOGIN</button>
             </div>
@@ -50,9 +49,6 @@ export default {
         },
         googleLink(){
             return (process.env.NODE_ENV === 'development') ? 'http://localhost:3000/auth/google' : '/auth/google'
-        },
-        facebookLink(){
-            return (process.env.NODE_ENV === 'development') ? 'http://localhost:3000/auth/facebook' : '/auth/facebook'
         },
     },
     methods: {

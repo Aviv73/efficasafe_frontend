@@ -35,16 +35,18 @@
                 <tooltip on="hover" right right-bottom>
                     <template #content>
                         <div class="tooltip-content">
-                            <p class="recommendation-tooltip">
+                            <div class="recommendation-tooltip">
                                 <span class="d-block">
                                     <span class="highlight">Coadministration is possible</span> means that the combination
                                     has been examined in clinical trials and was found to be safe.
                                 </span>
-                                <span class="highlight">Coadministration is not contraindicated</span>
-                                means that the
-                                combination has been only examined in preclinical studies.
-                                <span class="highlight pointer" @click="openAllRecommendations">See all recommendations</span>
-                            </p>
+                                <span class="d-block">
+                                    <span class="highlight">Coadministration is not contraindicated</span>
+                                    means that the
+                                    combination has been only examined in preclinical studies.
+                                </span>
+                            <span class="highlight pointer" @click="openAllRecommendations">See all recommendations</span>
+                            </div>
                         </div>
                     </template>
                     <information-outline-icon

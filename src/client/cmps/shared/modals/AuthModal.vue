@@ -20,7 +20,6 @@
                     <p style="margin-bottom: 10px">or</p>
                     <div class="auth-modal-content-media-btns">
                         <a :href="googleLink" class="red" role="button">SIGN UP WITH GOOGLE</a>
-                        <a :href="facebookLink" class="blue" role="button">SIGN UP WITH FACEBOOK</a>
                     </div>
                     <button @click="onRegister" class="register-btn" :class="{'invalid-btn': isInvaliedEmail || isInvaliedPassword || isInvaliedName || isNotAgreed}">{{btnTxt}}</button>
                 </template>
@@ -87,9 +86,6 @@ export default {
         },
         googleLink(){
             return (process.env.NODE_ENV === 'development') ? 'http://localhost:3000/auth/google' : '/auth/google'
-        },
-        facebookLink(){
-            return (process.env.NODE_ENV === 'development') ? 'http://localhost:3000/auth/facebook' : '/auth/facebook'
         },
     },
     methods: {
