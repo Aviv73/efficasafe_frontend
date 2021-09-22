@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import { eventBus, EV_Unauthenticated } from '@/cms/services/eventBus.service';
 // import { storageService } from './storage.service'
 
 var axios = Axios.create({
@@ -32,7 +33,6 @@ async function ajax(endpoint, method = 'get', data = null, responseType = 'json'
             method,
             responseType,
             headers: {
-                // authorization: storageService.load('token'),
                 'Content-Type': contentType ,
             },
         }
@@ -42,8 +42,7 @@ async function ajax(endpoint, method = 'get', data = null, responseType = 'json'
         return res.data;
     } catch (err) {
         if (err.response && err.response.status === 401) {
-            console.log('Unautonticated');
-            // throw new Error('Unautonticated');
+            eventBus.$emit(EV_Unauthenticated, { type: 'Unauthenticated', isError: true });
             throw err.response
         }
         if(err.response.status === 420){

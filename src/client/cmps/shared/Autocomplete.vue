@@ -113,8 +113,26 @@ export default {
             this.isLoading = true;
             const criteria = { autocomplete: true, q };
             const results = await this.$store.dispatch({ type: 'getMaterials', criteria });
-            this.results = results;
+            this.results = this.sortRes(results, q);
             this.isLoading = false;
+        },
+        sortRes(res, q){
+            const startWithQ = res.filter(str => {
+                const strUpper = str.charAt(0).toUpperCase() + str.slice(1)
+                const strlower = str.charAt(0).toLowerCase() + str.slice(1)
+                if(strUpper.startsWith(q) || strlower.startsWith(q)){
+                    return str
+                }
+            })
+            const dontStartWithQ = res.filter(str => {
+                const strUpper = str.charAt(0).toUpperCase() + str.slice(1)
+                const strlower = str.charAt(0).toLowerCase() + str.slice(1)
+                if(!strUpper.startsWith(q) && !strlower.startsWith(q)){
+                    return str
+                }
+            })
+            return startWithQ.concat(dontStartWithQ)
+
         },
         emitSelection(item) {
             this.$emit('item-selected', item);

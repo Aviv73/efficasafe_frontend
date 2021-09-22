@@ -9,7 +9,7 @@
             close-icon="mdi-close"
             dense
         >
-            {{ isError ? `Unable to save ${type}` : `${type} ${name} Saved` }}
+            {{ msgToShow }}
         </v-alert>
     </section>
 </template>
@@ -21,6 +21,7 @@ import {
     EV_addLabel,
     EV_addInteraction,
     EV_edit_interaction_failed,
+    EV_Unauthenticated
 } from '@/cms/services/eventBus.service';
 
 export default {
@@ -57,11 +58,19 @@ export default {
             clearTimeout(this.$options.timeout);
         },
     },
+    computed:{
+        msgToShow(){
+            if(this.type === 'Unauthenticated') return `You are unauthenticated, please logout and login again`
+            if(this.isError) return `Unable to save ${this.type}`
+            return `${this.type} ${this.name} Saved`
+        }
+    },
     created() {
         eventBus.$on(EV_addMaterial, this.displayMessage);
         eventBus.$on(EV_addLabel, this.displayMessage);
         eventBus.$on(EV_addInteraction, this.displayMessage);
         eventBus.$on(EV_edit_interaction_failed, this.displayMessage);
+        eventBus.$on(EV_Unauthenticated, this.displayMessage);
     },
 };
 </script>
