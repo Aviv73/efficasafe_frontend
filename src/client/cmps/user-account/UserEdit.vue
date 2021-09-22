@@ -31,7 +31,7 @@
                                 <input
                                     type="text"
                                     placeholder="Enter your username"
-                                    v-model="editedDetails.name"
+                                    v-model="editedDetails.username"
                                 />
                                 <span class="label">Enter your username</span>
                             </label>
@@ -39,30 +39,6 @@
                         <div class="user-edit-error-msg font-bold" v-if="errors.length">
                             {{ errors[0] }}
                         </div>
-                    </validation-provider>
-                    <validation-provider name="firstName">
-                        <div class="form-input">
-                            <label>
-                                <input
-                                    type="text"
-                                    placeholder="Enter your first name"
-                                    v-model="editedDetails.given_name"
-                                />
-                                <span class="label">Enter your first name</span>
-                            </label>
-                        </div>
-                    </validation-provider>
-                    <validation-provider name="lastName">
-                    <div class="form-input">
-                        <label>
-                            <input
-                                type="text"
-                                placeholder="Enter your last name"
-                                v-model="editedDetails.family_name"
-                            />
-                            <span class="label">Enter your last name</span>
-                        </label>
-                    </div>
                     </validation-provider>
                     <validation-provider
                         name="firstName"
@@ -131,12 +107,10 @@ import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 
 export default {
     data() {
-        const { given_name, family_name, phone, username } = this.$store.getters.loggedInUser;
+        const { phone, username } = this.$store.getters.loggedInUser;
         return {
             editedDetails: {
-                given_name: given_name || '',
-                family_name: family_name || '',
-                name: username || '',
+                username: username || '',
                 phone: phone || ''
             },
             validationMessages: {
