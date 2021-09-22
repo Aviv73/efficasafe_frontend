@@ -42,11 +42,20 @@ async function list(filterBy, cacheKey = '') {
     if (cacheKey && cache[cacheKey]) {
         return cache[cacheKey];
     }
-    const res = await httpService.get(END_POINT, filterBy);
+    const res = await httpService.post(END_POINT, {filterBy});
     if (cacheKey) cache[cacheKey] = res;
 
     return res;
 }
+// async function list(filterBy, cacheKey = '') {
+//     if (cacheKey && cache[cacheKey]) {
+//         return cache[cacheKey];
+//     }
+//     const res = await httpService.get(END_POINT, filterBy);
+//     if (cacheKey) cache[cacheKey] = res;
+
+//     return res;
+// }
 
 function getById(id) {
     return httpService.get(`${END_POINT}/${id}`);
