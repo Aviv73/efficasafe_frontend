@@ -92,6 +92,9 @@ export default {
            const seenMap = {};
            const reduced =  this.flatInteractions.reduce((acc, { monitor }) => {
                 let words = monitor[propName].split(',').filter(str => str).map(str =>str.trim());
+                if(monitor[propName].includes('(') && monitor[propName].includes(')')){
+                    words = [monitor[propName]]
+                }
                 words = words.reduce((acc, word) => {
                     if (!seenMap[word]) {
                         const secChar = word.charAt(1);
