@@ -237,7 +237,7 @@ export default {
     .tooltip { 
         position: absolute;
         width: max-content;
-        z-index: 1;
+        z-index: 999;
         
         
         &.fade {

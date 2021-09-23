@@ -76,7 +76,6 @@
                             />
                         </template>
                         <template #content>
-                                <!-- v-if="!isAllUnderStudy(result)" -->
                             <material-interactions-preview
                                 :materials="result.materials"
                                 :userQuery="result.txt"
@@ -84,10 +83,6 @@
                                 :interactions="getMaterialInteractions(result)"
                                 :isOneMaterial="materials.length === 1"
                             />
-                            <!-- <div v-else class="interactions-preview under-construction">
-                                This material is still under construction. The results you may see are only partial.
-                                Because you searched this material, it will get higher priority.
-                            </div> -->
                         </template>
                         <li
                             class="search-engine-search-materials-chip clip-txt activator v-tour-step-1"

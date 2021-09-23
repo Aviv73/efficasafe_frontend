@@ -48,10 +48,14 @@ export const userStore = {
     actions: {
         async getUserInfo({ commit }) {
             const user = await userService.getUserInfo();
-            if (!user.config) {
+            if (!user.message) {
                 storageService.store('userProfile', user);
                 commit({ type: 'setLoggedInUser', user });
             }
+        },
+        async checkIfSession({ dispatch }) {
+            const session = await userService.checkIfSession();
+            if(session.message === 'No session') await dispatch({type: 'logout'});
         },
         async removeUsers(context, { ids }) {
             await userService.removeMany(ids)

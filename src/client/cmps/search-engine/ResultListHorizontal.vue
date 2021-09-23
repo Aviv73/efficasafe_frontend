@@ -45,7 +45,7 @@
                                     means that the
                                     combination has been only examined in preclinical studies.
                                 </span>
-                            <span class="highlight pointer" @click="openAllRecommendations">See all recommendations</span>
+                            <span class="highlight pointer all-rec" @click="openAllRecommendations">See all recommendations</span>
                             </div>
                         </div>
                     </template>

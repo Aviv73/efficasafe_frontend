@@ -117,17 +117,21 @@ export default {
         sortRes(str){
             const strs = str.split(',').map(str =>str.trim())
             const noCaps = strs.filter(str => {
-                if(str !== 'aPTT' && str !== str.toUpperCase()) return str
+                if(str !== 'aPTT' && str !== 'hbA1c' && str !== str.toUpperCase()) return str
             })
-            const caps = strs.filter(str => {
-                if(str === str.toUpperCase() || str === 'aPTT') return str
+            let caps = strs.filter(str => {
+                if(str === str.toUpperCase() || str === 'aPTT' || str === 'hbA1c') return str
+            })
+            caps = caps.map(c => {
+                if(c === 'hbA1c') return 'HbA1c'
+                return c
             })
             const all = caps.concat(noCaps)
-            const idx = all.findIndex( str => str === 'Blood drug level' || str === 'blood drug level')
-            if(idx >= 0){
-                const first = all[idx]
-                all.splice(idx, 1)
-                all.unshift(first)
+            const bloodDrugLvlIdx = all.findIndex( str => str === 'Blood drug level' || str === 'blood drug level')
+            if(bloodDrugLvlIdx >= 0){
+                const bloodDrugLvl = all[bloodDrugLvlIdx]
+                all.splice(bloodDrugLvlIdx, 1)
+                all.unshift(bloodDrugLvl)
             }
             const newStr = all.join(', ')
             return newStr

@@ -16,7 +16,6 @@
             class="interactions-preview-composites"
         >
             <h6>{{ previewHeader }}</h6>
-            <ul>
                 <li
                     class="interactions-preview-composites-composite"
                     :class="{ 'under-construction': material.isUnderStudy }"
@@ -26,7 +25,6 @@
                         'background-image': `url('${require(`@/client/assets/icons/types/${getTypeImgName(material.type)}.svg`)}')`
                     }"
                 >
-                    <span class="clip-txt">{{ material.name }}</span>
                     <tooltip :hidden="!material.isUnderStudy" bottom>
                         <template #content>
                             <div class="interactions-preview under-construction">
@@ -41,6 +39,18 @@
                             :size="14"
                         />
                     </tooltip>
+                </li>
+            <ul>
+                <li
+                    class="interactions-preview-composites-composite"
+                    :class="{ 'under-construction': material.isUnderStudy }"
+                    v-for="material in materials"
+                    :key="material._id"
+                    :style="{
+                        'background-image': `url('${require(`@/client/assets/icons/types/${getTypeImgName(material.type)}.svg`)}')`
+                    }"
+                >
+                    <span class="clip-txt">{{ material.name }}</span>
                 </li>
             </ul>
             <hr v-if="interactions.length || (materials.length === 1 && !isOneMaterial)" />

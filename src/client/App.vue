@@ -59,6 +59,15 @@ export default {
             eventBus.$emit(EV_show_cookie_notice);
         }
     },
+    async created(){
+        if(this.$store.getters.loggedInUser){
+            try{
+                await this.$store.dispatch('checkIfSession')
+            }catch(err){
+                console.log(err);
+            }
+        }
+    },
     components: {
         Navbar,
         MainFooter,

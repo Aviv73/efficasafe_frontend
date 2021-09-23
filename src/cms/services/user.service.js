@@ -27,7 +27,8 @@ export const userService = {
     verifyEmail,
     signup,
     login,
-    getUserSearches
+    getUserSearches,
+    checkIfSession
 }
 
 function verifyEmail(token) {
@@ -74,6 +75,10 @@ async function checkTrial(user) {
 
 async function getUserInfo() {
         return await httpService.get(`${AUTH_END_POINT}/userInfo`);
+}
+
+async function checkIfSession(){
+    return await httpService.get(`${AUTH_END_POINT}/checkIfSession`)
 }
 
 function getLoggedInUser() {
