@@ -43,7 +43,6 @@
             <ul>
                 <li
                     class="interactions-preview-composites-composite"
-                    :class="{ 'under-construction': material.isUnderStudy }"
                     v-for="material in materials"
                     :key="material._id"
                     :style="{

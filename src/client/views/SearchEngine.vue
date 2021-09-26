@@ -1328,9 +1328,9 @@ export default {
             return this.$route.query.q.indexOf(query) !== -1;
         },
         clearSearch() {
-            this.$router.push({ name: this.$route.name });
             this.undoneQueries = [];
             eventBus.$emit(EV_search_results_cleared);
+            this.$router.push({ name: this.$route.name }).catch(()=>{});
         },
         getResultIcon(result) {
             let fileName = '';
