@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import { storageService } from '../services/storage.service';
 import { userStore } from './modules/user.store';
 import { materialStore } from './modules/material.store';
 import { labelStore } from './modules/label.store';
@@ -16,7 +17,8 @@ export default new Vuex.Store({
     materialNamesMap: null,
     isScreenNarrow: null,
     hasFailedTasks: false,
-    posSuppIds: []
+    posSuppIds: [],
+    freeSearchesCount: null
   },
   getters: {
     hasFailedTasks(state) {
@@ -41,6 +43,9 @@ export default new Vuex.Store({
     },
     getPosSuppLength(state){
       return state.posSuppIds.length
+    },
+    getFreeSearchesCount(state) {
+      return state.freeSearchesCount
     }
   },
   mutations: {
@@ -64,6 +69,16 @@ export default new Vuex.Store({
     },
     resetPosSupp(state){
       state.posSuppIds = []
+    },
+    setFreeSearchesCount(state){
+      if(!storageService.load('searches-left')){
+        storageService.store('searches-left', 20)
+      }
+      state.freeSearchesCount = storageService.load('searches-left')
+    },
+    reduceFreeSearches(state){
+      state.freeSearchesCount -= 1
+      storageService.store('searches-left', state.freeSearchesCount)
     }
   },
   plugins: [

@@ -67,6 +67,9 @@ export default {
                 console.log(err);
             }
         }
+        if(!this.$store.getters.loggedInUser){
+            this.$store.commit('setFreeSearchesCount');
+        }
     },
     components: {
         Navbar,

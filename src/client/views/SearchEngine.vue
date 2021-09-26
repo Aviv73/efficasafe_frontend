@@ -110,11 +110,15 @@
                         </li>
                     </tooltip>
                 </ul>
-                <div class="search-engine-search-cta">
+                <div v-if="!loggedInUser" class="search-engine-search-cta">
                     <span class="search-engine-search-msg">
                         <span class="font-medium">6</span>
                         Free searches left
                     </span>
+                    <!-- <span class="search-engine-search-msg" :class="isRed">
+                        <span class="font-medium" :class="isRed">{{ freeSearchesCount }}</span>
+                        Free searches left
+                    </span> -->
                     <button
                         class="btn"
                         id="searchPageSignup"
@@ -830,6 +834,13 @@ export default {
             }, 0);
             return sum + this.$store.getters.getPosSuppLength
         },
+        freeSearchesCount(){
+            return this.$store.getters.getFreeSearchesCount;
+        },
+        isRed(){
+            const isRed = this.freeSearchesCount <= 5 ? true : false
+            return { red: isRed }
+        },
         loggedInUser() {
             return this.$store.getters.loggedInUser;
         },
@@ -1288,6 +1299,13 @@ export default {
             });
         },
         addMaterials(query) {
+            // if(!this.loggedInUser){
+            //     if(this.freeSearchesCount <= 0){
+            //         alert('NO MORE')
+            //         return
+            //     }
+            //     this.$store.commit('reduceFreeSearches');
+            // }
             if (this.$route.query.q) {
                 if (!this.isQueryExists(query)) {
                     const queries = [ ...this.$route.query.q, query ];

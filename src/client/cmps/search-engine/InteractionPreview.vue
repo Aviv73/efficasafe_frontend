@@ -39,6 +39,7 @@
                                 :isMaterialGroup="!!interaction.isMaterialGroup"
                                 :exactName="exactName"
                                 :isPositive="isPositive"
+                                :isSearcheEngin="true"
                             />
                         </span>
                         <span class="table-col" :title="interaction.recommendation">

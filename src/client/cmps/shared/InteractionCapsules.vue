@@ -10,7 +10,8 @@
             class="interaction-capsules-side"
             :class="{
                 'dense': dense,
-                'wide': onDetailsPage
+                'wide': onDetailsPage,
+                'serach-engin-capsule': isSearcheEngin
             }"
             v-if="!showDraftName && !isMaterialGroup"
         >
@@ -31,7 +32,8 @@
             class="interaction-capsules-side"
             :class="{
                 'dense': dense,
-                'wide': onDetailsPage
+                'wide': onDetailsPage,
+                'serach-engin-capsule': isSearcheEngin
             }"
         >
         <svg
@@ -121,6 +123,10 @@ export default {
             required: false
         },
         isPositive: {
+            type: Boolean,
+            default: false
+        },
+        isSearcheEngin: {
             type: Boolean,
             default: false
         }

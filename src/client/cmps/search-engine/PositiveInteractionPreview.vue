@@ -13,7 +13,7 @@
                             class="minus-icon"
                             title=""
                         />
-                        <positive-inner-list-count :key="renderKey" :group="group" :length="group.innerLength"/>
+                        <!-- <positive-inner-list-count :key="renderKey" :group="group" :length="group.innerLength"/> -->
                         <interaction-capsules
                             :name="getInnerGroupName(group)"
                             :isMaterialGroup="true"
@@ -73,7 +73,7 @@ import Collapse from '@/client/cmps/common/Collapse';
 import Tooltip from '@/client/cmps/common/Tooltip';
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 import PositiveInteractionInnerList from '@/client/cmps/search-engine/PositiveInteractionInnerList';
-import PositiveInnerListCount from '@/client/cmps/search-engine/PositiveInnerListCount';
+// import PositiveInnerListCount from '@/client/cmps/search-engine/PositiveInnerListCount';
 
 import CollapseToggleIcon from '@/client/cmps/common/icons/CollapseToggleIcon';
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
@@ -205,7 +205,7 @@ export default {
         ChevronUpIcon,
         ChevronDownIcon,
         PositiveInteractionInnerList,
-        PositiveInnerListCount,
+        // PositiveInnerListCount,
         CollapseToggleIcon
     }
 }
