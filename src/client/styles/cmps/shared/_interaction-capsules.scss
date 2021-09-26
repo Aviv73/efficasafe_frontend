@@ -90,6 +90,9 @@
     }
 
     .serach-engin-capsule{
-        width: rem(155px)
+        width: rem(155px);
+        @include for-mobile-layout {
+            width: rem(140px);
+        }
     }
 }
