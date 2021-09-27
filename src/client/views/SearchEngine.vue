@@ -839,7 +839,7 @@ export default {
         },
         isRed(){
             const isRed = this.freeSearchesCount <= 5 ? true : false
-            return { red: isRed }
+            return { 'red-txt': isRed }
         },
         loggedInUser() {
             return this.$store.getters.loggedInUser;

@@ -63,7 +63,7 @@ function getById(id) {
 
 function save(interaction) {
     if (interaction._id) return httpService.put(`${END_POINT}/${interaction._id}`, interaction);
-    else return httpService.post(`${END_POINT}`, interaction);
+    else return httpService.post(`${END_POINT}/add`, interaction);
 }
 
 function restore(interaction) {
