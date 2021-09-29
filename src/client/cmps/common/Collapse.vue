@@ -3,7 +3,7 @@
         <header
             tabindex="0"
             class="collapse-header"
-            @click="isContentVisible = !isContentVisible"
+            @click="onToggleVisible"
             :class="{ 'open': isContentVisible }"
         >
             <slot name="header">
@@ -61,6 +61,10 @@ export default {
         initialIsVisible: {
             type: Boolean,
             default: false
+        },
+        disable : {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -77,6 +81,10 @@ export default {
         closeCollapse() {
             this.$emit('collapse-closed');
             this.isContentVisible = false;
+        },
+        onToggleVisible(){
+            if(this.disable) return
+            this.isContentVisible = !this.isContentVisible
         }
     }
 }

@@ -6,6 +6,12 @@
                     <close-icon :size="14" />
                 </button>
                 <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
+                <div v-if="showFreeSearchesMsg" class="searches-msg">
+                    <h3>No free searches left</h3>
+                    <h4>Want to enjoy efficasafe free trial for</h4>
+                    <h4>another 14 days?</h4>
+                    <p><span>No problem!</span> just sign up and continue searching</p>
+                </div>
                 <template v-if="!isShowVereficationMsg">
                     <form @submit.prevent="onRegister" class="auth-modal-field">
                         <input @focus="resetError('email')" :class="{ 'is-invalid': isInvaliedEmail }" type="text" placeholder="Email" v-model="cred.email">
@@ -57,6 +63,12 @@ import { userService } from '@/cms/services/user.service';
 import CloseIcon from 'vue-material-design-icons/Close';
 
 export default {
+    props: {
+        showFreeSearchesMsg: {
+            type: Boolean,
+            default: false
+        },
+    },
     data() {
         return {
             cred:{

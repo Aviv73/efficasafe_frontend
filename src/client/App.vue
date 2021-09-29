@@ -2,16 +2,17 @@
     <div id="app">
         <navbar @login="onLogin" @signup="onSignUp" />
         <main>
-            <router-view @signup="onSignUp" />
+            <router-view @signup="onSignUp" @showAuth="onShowAuth"/>
         </main>
         <main-footer />
         <auth-modal
             v-if="authModal"
-            @closeModal="authModal = false"
+            @closeModal="authModal = false, showFreeSearchesMsg = false"
+            :showFreeSearchesMsg = showFreeSearchesMsg
         />
         <login-modal
             v-if="loginModal"
-            @closeModal="loginModal = false"
+            @closeModal="loginModal = false, showFreeSearchesMsg = false"
             @openAuthModal="switchModals"
         />
         <user-msg />
@@ -19,7 +20,7 @@
 </template>
 
 <script>
-import { eventBus, EV_show_cookie_notice } from '@/cms/services/eventBus.service';
+import { eventBus, EV_show_cookie_notice, EV_open_singup } from '@/cms/services/eventBus.service';
 import { storageService } from '@/cms/services/storage.service';
 
 import Navbar from '@/client/cmps/Navbar';
@@ -33,7 +34,8 @@ export default {
     data() {
         return {
             authModal: false,
-            loginModal: false
+            loginModal: false,
+            showFreeSearchesMsg: false
         };
     },
     computed: {
@@ -48,6 +50,10 @@ export default {
         onSignUp() {
             this.authModal = true;
         },
+        onShowAuth(){
+            this.showFreeSearchesMsg = true
+            this.authModal = true;
+        },
         switchModals(){
             this.loginModal = false;
             this.authModal = true;
@@ -60,6 +66,7 @@ export default {
         }
     },
     async created(){
+        eventBus.$on(EV_open_singup, this.onSignUp);
         if(this.$store.getters.loggedInUser){
             try{
                 await this.$store.dispatch('checkIfSession')

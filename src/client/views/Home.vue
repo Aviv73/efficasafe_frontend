@@ -206,10 +206,23 @@ export default {
         isScreenNarrow() {
             return this.$store.getters.isScreenNarrow;
         },
+        loggedInUser() {
+            return this.$store.getters.loggedInUser;
+        },
+        freeSearchesCount(){
+            return this.$store.getters.getFreeSearchesCount;
+        },
     },
     methods: {
         goToSearch(query) {
             this.searches.push(query);
+            if(!this.loggedInUser){
+                if(this.freeSearchesCount <= 0){
+                    this.$emit('showAuth')
+                    return
+                }
+                this.$store.commit('reduceFreeSearches');
+            }
             if (this.searches.length === 2) {
                 const [q1, q2] = this.searches;
                 this.$router.push(`/search?q=${q1}&q=${q2}`);
@@ -218,6 +231,13 @@ export default {
             }
         },
         searchhWithBtn(){
+            if(!this.loggedInUser){
+                if(this.freeSearchesCount <= 0){
+                    this.$emit('showAuth')
+                    return
+                }
+                this.$store.commit('reduceFreeSearches');
+            }
             if(this.searches.length === 0){
                 this.$router.push(`/search`);
             }

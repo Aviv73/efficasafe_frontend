@@ -244,7 +244,6 @@ export default {
             return (this.$route.name === 'Drug2Drug') ? 'dBankInteractions' : 'interactions';
         },
         materialsLength(){
-            console.log(this.materials.filter(m => !m.isIncluded).length);
             return this.materials.filter(m => !m.isIncluded).length
         }
     },

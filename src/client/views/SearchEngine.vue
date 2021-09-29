@@ -111,14 +111,10 @@
                     </tooltip>
                 </ul>
                 <div v-if="!loggedInUser" class="search-engine-search-cta">
-                    <span class="search-engine-search-msg">
-                        <span class="font-medium">6</span>
-                        Free searches left
-                    </span>
-                    <!-- <span class="search-engine-search-msg" :class="isRed">
+                    <span class="search-engine-search-msg" :class="isRed">
                         <span class="font-medium" :class="isRed">{{ freeSearchesCount }}</span>
                         Free searches left
-                    </span> -->
+                    </span>
                     <button
                         class="btn"
                         id="searchPageSignup"
@@ -308,6 +304,14 @@
                 @close-modal="isSaveSearchModalActive = false"
             />
         </modal-wrap>
+        <modal-wrap
+            :isActive="isSearchesLeftModalActive"
+            @close-modal="isSearchesLeftModalActive = false"
+        >
+            <searches-left-modal
+                @close-modal="isSearchesLeftModalActive = false"
+            />
+        </modal-wrap>
         <onboarding-tour />        
     </section>
 </template>
@@ -322,6 +326,7 @@ import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import ShareModal from '@/client/cmps/shared/modals/ShareModal';
 import PrintModal from '@/client/cmps/shared/modals/PrintModal';
 import SaveSearchModal from '@/client/cmps/shared/modals/SaveSearchModal';
+import SearchesLeftModal from '@/client/cmps/shared/modals/SearchesLeftModal';
 import Tooltip from '@/client/cmps/common/Tooltip';
 import ModalWrap from '@/client/cmps/common/ModalWrap';
 import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
@@ -365,6 +370,7 @@ export default {
             isShareModalActive: false,
             isPrintModalActive: false,
             isSaveSearchModalActive: false,
+            isSearchesLeftModalActive: false,
             undoneQueries: [],
             isArrowShown: true,
             idsToTurnRed: [],
@@ -1299,13 +1305,15 @@ export default {
             });
         },
         addMaterials(query) {
-            // if(!this.loggedInUser){
-            //     if(this.freeSearchesCount <= 0){
-            //         alert('NO MORE')
-            //         return
-            //     }
-            //     this.$store.commit('reduceFreeSearches');
-            // }
+            if(!this.loggedInUser){
+                if(this.freeSearchesCount === 6){
+                    this.isSearchesLeftModalActive = true
+                }
+                if(this.freeSearchesCount === 1){
+                    this.$emit('showAuth')
+                }
+                this.$store.commit('reduceFreeSearches');
+            }
             if (this.$route.query.q) {
                 if (!this.isQueryExists(query)) {
                     const queries = [ ...this.$route.query.q, query ];
@@ -1446,6 +1454,7 @@ export default {
         Disclaimer,
         ShareModal,
         PrintModal,
+        SearchesLeftModal,
         UndoIcon,
         RedoIcon,
         OnboardingTour,

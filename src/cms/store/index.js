@@ -71,12 +71,13 @@ export default new Vuex.Store({
       state.posSuppIds = []
     },
     setFreeSearchesCount(state){
-      if(!storageService.load('searches-left')){
+      if(!storageService.load('searches-left') && storageService.load('searches-left') !== 0){
         storageService.store('searches-left', 20)
       }
       state.freeSearchesCount = storageService.load('searches-left')
     },
     reduceFreeSearches(state){
+      if(state.freeSearchesCount === 0) return
       state.freeSearchesCount -= 1
       storageService.store('searches-left', state.freeSearchesCount)
     }

@@ -49,6 +49,11 @@
     align-items: center;
     justify-content: space-between;
 }
+.flex-start{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
 .flex-wrap {
     flex-wrap: wrap;
 }

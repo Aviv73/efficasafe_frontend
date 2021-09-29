@@ -3,6 +3,7 @@
         <collapse
             @collapse-closed="onCollapseToggle"
             :initial-is-visible="initialCollapseIsVisible"
+            :disable="!isAllowed"
         >
             <template #header>
                 <component
@@ -42,10 +43,13 @@
                                 :isSearcheEngin="true"
                             />
                         </span>
-                        <span class="table-col" :title="interaction.recommendation">
+                        <span v-if="isAllowed" class="table-col" :title="interaction.recommendation">
                             {{ getShortRecommendation(interaction.recommendation) }}
                         </span>
-                        <span class="table-col">
+                        <span v-else class="table-col flex-start" title="Open only for registered subscribers">
+                            <lock-icon class="lock-icon" :size="18"/> <p> open only for registered subscribers</p>
+                        </span>
+                        <span v-if="isAllowed" class="table-col">
                             <tooltip
                                 :txt="getLongEvidenceLevel(interaction.evidenceLevel || interaction.evidence_level)"
                                 right
@@ -67,6 +71,12 @@
                                 <chevron-up-icon class="opened" title="" />
                                 <chevron-down-icon class="closed" title="" />
                             </span>
+                        </span>
+                        <span v-else class="table-col sign-up-tabel flex-start" @click="onOpenSignUp">
+                            <p>
+                                Sign up
+                            </p>
+                            <chevron-right-icon class="chevron-right-icon"/>
                         </span>
                     </div>
                 </component>
@@ -188,7 +198,7 @@
 </template>
 
 <script>
-import { eventBus, EV_sortby_side_swaped } from '@/cms/services/eventBus.service';
+import { eventBus, EV_sortby_side_swaped, EV_open_singup } from '@/cms/services/eventBus.service';
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import { interactionService } from '@/cms/services/interaction.service';
 
@@ -202,7 +212,9 @@ import PositiveInteractionPreview from '@/client/cmps/search-engine/PositiveInte
 import CollapseToggleIcon from '@/client/cmps/common/icons/CollapseToggleIcon';
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
+import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 import MinusIcon from 'vue-material-design-icons/Minus';
+import LockIcon from 'vue-material-design-icons/Lock';
 
 export default {
     name: 'InteractionPreview',
@@ -287,6 +299,7 @@ export default {
             return !this.link || !!this.interaction.vInteractions || !!this.interaction.side2Label;
         },
         headerCmp() {
+            if(!this.isAllowed) return 'span'
             return this.isGroup ? 'span' : 'router-link';
         },
         interactionURL() {
@@ -294,8 +307,25 @@ export default {
             if (interaction.subject_drug) return `/interaction/drug2drug/${interaction._id}`;
             return interaction.isVirtual ? `/interaction/${interaction._id}/${interaction.side2Material._id}` : `/interaction/${interaction._id}`;
         },
+        loggedInUser() {
+            return this.$store.getters.loggedInUser;
+        },
+        freeSearchesCount(){
+            return this.$store.getters.getFreeSearchesCount;
+        },
+        isAllowed(){
+            let idxToShow = 4
+            if(this.$route.name === 'Boosters') idxToShow = 0
+            if(!this.loggedInUser && this.freeSearchesCount <= 0) return false
+            if(this.isChild) return true
+            if(!this.loggedInUser && this.idx > idxToShow)  return false
+            return true
+        }
     },
     methods: {
+        onOpenSignUp(){
+            eventBus.$emit(EV_open_singup);
+        },
         removeInteraction(idx){
             this.$emit('removeInteraction', idx)
         },
@@ -456,11 +486,13 @@ export default {
         getShortRecommendation(fullRec) {
             return interactionUIService.getShortRecommendation(fullRec);
         },
-        getInteractionColor({recommendation, isNegative}) {
+        getInteractionColor({recommendation, isNegative}) { 
+            if(!this.isAllowed) return '#a4b8c6'
             if(isNegative) return '#E63946'
             return interactionUIService.getInteractionColor(recommendation);
         },
         getBadgeColor({recommendation}){
+            if(!this.isAllowed) return 'background-color: #a4b8c6'
             const count = this.newLength || this.getVinteractionsCount(this.interaction)
             if(count === 0) return 'background-color: #a4b8c6'
             const color = interactionUIService.getInteractionColor(recommendation);
@@ -490,9 +522,11 @@ export default {
         LabelInteractionPreview,
         Tooltip,
         ChevronDownIcon,
+        ChevronRightIcon,
         MinusIcon,
         PositiveInteractionPreview,
-        CollapseToggleIcon
+        CollapseToggleIcon,
+        LockIcon
     }
 }
 </script>

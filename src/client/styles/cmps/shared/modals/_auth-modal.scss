@@ -37,6 +37,27 @@
         height: 550px;
         animation: fade-in 1s; 
 
+        .searches-msg{
+            h3{
+                font-weight: bold;
+                color: red;
+                margin-bottom: 4px;
+            }
+            
+            h4{
+                font-weight: bold;
+                color: $clr1;
+                margin-bottom: 4px;
+            }
+
+            p{
+                font-size: rem(12px);
+                span{
+                    font-weight: bold;
+                }
+            }
+        }
+
         .close-modal-btn{
             position: absolute;
             right: 17px;
@@ -46,7 +67,7 @@
 
         img{
             margin-top: rem(40px);
-            margin-bottom: rem(25px);
+            margin-bottom: rem(15px);
         }
         &-media-btns{
             display: flex;

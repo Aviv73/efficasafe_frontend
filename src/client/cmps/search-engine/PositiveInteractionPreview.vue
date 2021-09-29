@@ -5,6 +5,7 @@
             :key="group._id + idx"
             @collapse-closed="onCollapseToggle(idx, group.cacheKey)"
             :initial-is-visible="isInitialiOpen(idx)"
+            :disable="!isAllowed(idx)"
         >
             <template #header>
                 <div class="interaction-preview-header table-row child" @click="onCollapseToggle(idx, group.cacheKey)">
@@ -17,16 +18,19 @@
                         <interaction-capsules
                             :name="getInnerGroupName(group)"
                             :isMaterialGroup="true"
-                            :color="getInteractionColor(group.recommendation)"
+                            :color="getInteractionColor(group.recommendation, idx)"
                             :showDraftName="false"
                             :vInteractionCount="0"
                             :localize="true"
                         />
                     </span>
-                    <span class="table-col" :title="group.recommendation">
+                    <span v-if="isAllowed(idx)" class="table-col" :title="group.recommendation">
                         {{ getShortRecommendation(group.recommendation) }}
                     </span>
-                    <span class="table-col">
+                    <span v-else class="table-col flex-start" title="Open only for registered subscribers">
+                        <lock-icon class="lock-icon" :size="18"/> <p> open only for registered subscribers</p>
+                    </span>
+                    <span v-if="isAllowed(idx)" class="table-col">
                         <tooltip
                             :txt="getLongEvidenceLevel(group.evidenceLevel)"
                             right
@@ -39,6 +43,12 @@
                             <chevron-up-icon class="opened" title="" />
                             <chevron-down-icon class="closed" title="" />
                         </span>
+                    </span>
+                    <span v-else class="table-col sign-up-tabel flex-start" @click="onOpenSignUp">
+                        <p>
+                            Sign up
+                        </p>
+                        <chevron-right-icon class="chevron-right-icon"/>
                     </span>
                 </div>
             </template>
@@ -66,6 +76,7 @@
 </template>
 
 <script>
+import { eventBus, EV_open_singup } from '@/cms/services/eventBus.service';
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import { interactionService } from '@/cms/services/interaction.service';
 
@@ -79,6 +90,8 @@ import CollapseToggleIcon from '@/client/cmps/common/icons/CollapseToggleIcon';
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
 import MinusIcon from 'vue-material-design-icons/Minus';
+import LockIcon from 'vue-material-design-icons/Lock';
+import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 
 export default {
     props: {
@@ -108,7 +121,19 @@ export default {
             renderKey: 101
         }
     },
+    computed:{
+        isAllowed(){
+            return (idx) => {
+                if(!this.loggedInUser && this.freeSearchesCount <= 0) return false
+                if(!this.loggedInUser && idx > 0)  return false
+                return true
+            }
+        }
+    },
     methods: {
+        onOpenSignUp(){
+            eventBus.$emit(EV_open_singup);
+        },
         getBadgeColor({recommendation}){
             const color = interactionUIService.getInteractionColor(recommendation);
             if(color === '#F6D55C') return 'background-color: #F6D55C; color: blue'
@@ -148,7 +173,8 @@ export default {
             };
             interactionService.chacheSearchState(chacheData);
         },
-        getInteractionColor(recommendation) {
+        getInteractionColor(recommendation, idx) {
+            if(!this.isAllowed(idx)) return '#a4b8c6'
             return interactionUIService.getInteractionColor(recommendation);
         },
         getInnerGroupName(group) {
@@ -206,7 +232,9 @@ export default {
         ChevronDownIcon,
         PositiveInteractionInnerList,
         // PositiveInnerListCount,
-        CollapseToggleIcon
+        CollapseToggleIcon,
+        LockIcon,
+        ChevronRightIcon
     }
 }
 </script>
