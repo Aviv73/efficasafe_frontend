@@ -9,6 +9,7 @@ import SendPassResetForm from '@/client/views/auth/SendPassResetForm.vue';
 import VerifyEmail from '@/client/views/auth/VerifyEmail.vue';
 import DBankInteractionDetails from '@/client/views/DBankInteractionDetails';
 import UserAccount from '@/client/views/UserAccount';
+import Subscribe from '@/client/views/Subscribe';
 
 import InteractionList from '@/client/cmps/search-engine/InteractionList';
 import UserApp from '@/client/cmps/user-account/UserApp';
@@ -22,6 +23,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/subscribe',
+    name: 'Subscribe',
+    component: Subscribe
   },
   {
     path: '/verifyEmail/:token',

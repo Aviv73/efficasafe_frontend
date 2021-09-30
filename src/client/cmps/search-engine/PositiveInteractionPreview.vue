@@ -128,6 +128,9 @@ export default {
                 if(!this.loggedInUser && idx > 0)  return false
                 return true
             }
+        },
+        loggedInUser(){
+            return this.$store.getters.loggedInUser;
         }
     },
     methods: {
