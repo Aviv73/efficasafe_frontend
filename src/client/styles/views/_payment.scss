@@ -67,7 +67,7 @@
 
                 .label{
                     color: black !important;
-                    opacity: 60%;
+                    // opacity: 60%;
                 }
             }
 
@@ -82,7 +82,7 @@
 
         .label{
             color: black;
-            opacity: 80%;
+            // opacity: 80%;
         }
 
         @media (max-width: $break-narrow) {
@@ -129,7 +129,7 @@
                 font-size: 14.5px;
                 color: #56C596;
                 font-weight: bold;
-                opacity: 85%;
+                // opacity: 85%;
                 margin-top: 21.6px;
                 margin-bottom: 22.2px;
             }
