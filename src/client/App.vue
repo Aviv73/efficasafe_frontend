@@ -68,6 +68,7 @@ export default {
     async created(){
         eventBus.$on(EV_open_singup, this.onSignUp);
         eventBus.$on(EV_open_login, this.onLogin);
+        await this.$store.dispatch('pullManagementData')
         if(this.$store.getters.loggedInUser){
             try{
                 await this.$store.dispatch('checkIfSession')

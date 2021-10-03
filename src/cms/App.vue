@@ -31,7 +31,8 @@ export default {
         },
         
     },
-    created() {
+    async created() {
+        await this.$store.dispatch('pullManagementData')
         if (this.loggedInUser) this.loadData();
     },
 };

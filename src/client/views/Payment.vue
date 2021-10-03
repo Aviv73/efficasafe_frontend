@@ -92,6 +92,7 @@
 <script>
 
 import intlTelInput from "intl-tel-input";
+import { manageService } from '@/cms/services/manage.service'
 import { eventBus, EV_show_user_msg, EV_open_singup, EV_open_login } from '@/cms/services/eventBus.service';
 
 export default {
@@ -168,17 +169,11 @@ export default {
       nationalMode: false,
     });
   },
-  created() {
-    //get plans from server
-    this.plans = [
-        {_id:'001', priceUSD: 19, priceILS: 69, priceEUR: 19, duration: 30, durationTxt: '1 month plan', isRecommended: false},
-        {_id:'002', priceUSD: 12, priceILS: 39, priceEUR: 12, duration: 365, durationTxt: '1 year plan', isRecommended: false},
-        {_id:'003', priceUSD: 9, priceILS: 29, priceEUR: 9, duration: 730, durationTxt: '2 years plan', isRecommended: true},
-    ]
-    //get selected plan from store
-    this.selectedPlan = this.$store.getters.getSelectedPaymentPlan
-    this.user = this.$store.getters.loggedInUser || {}
-    
+  async created() {
+      const managementData = await manageService.list()
+      this.plans = managementData.plans
+      this.selectedPlan = this.$store.getters.getSelectedPaymentPlan
+      this.user = this.$store.getters.loggedInUser || {}
     //get user contry to show currect prices
   },
 };

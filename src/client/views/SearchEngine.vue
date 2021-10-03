@@ -112,15 +112,24 @@
                 </ul>
                 <div v-if="!loggedInUser" class="search-engine-search-cta">
                     <span class="search-engine-search-msg" :class="isRed">
-                        <span class="font-medium" :class="isRed">{{ freeSearchesCount }}</span>
-                        Free searches left
-                    </span>
+                        <span class="font-medium" :class="isRed">{{ freeSearchesCount }}</span> Free searches left</span>
                     <button
                         class="btn"
                         id="searchPageSignup"
                         @click="$emit('signup')"
                     >
                         Register for free trial
+                    </button>
+                </div>
+                <div v-if="loggedInUser && !loggedInUser.isSubscribe" class="search-engine-search-cta">
+                    <span class="search-engine-search-msg">
+                        <span class="font-medium">{{ freeTrialTime }}</span> Free Trail days left</span>
+                    <button
+                        class="btn"
+                        id="searchPageSignup"
+                        @click="$router.push('/subscribe')"
+                    >
+                        Subscribe now
                     </button>
                 </div>
             </div>
@@ -842,6 +851,18 @@ export default {
         },
         freeSearchesCount(){
             return this.$store.getters.getFreeSearchesCount;
+        },
+        managementData(){
+            return this.$store.getters.getManagementData;
+        },
+        freeTrialTime() {
+            const {
+                loggedInUser: { registeredTime, trialTime },
+            } = this.$store.getters;
+
+            const timeLeft = trialTime - registeredTime;
+            const daysLeft = timeLeft / (1000 * 3600 * 24);
+            return daysLeft > 1 ? Math.floor(daysLeft) : Math.ceil(daysLeft);
         },
         isRed(){
             const isRed = this.freeSearchesCount <= 5 ? true : false

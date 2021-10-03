@@ -10,6 +10,8 @@ import { atcStore } from './modules/atc.store';
 import { drugBankStore } from './modules/drug-bank.store';
 import { featuredInteractionStore } from './modules/featured-interaction.store';
 
+import { manageService } from '@/cms/services/manage.service'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -19,7 +21,8 @@ export default new Vuex.Store({
     hasFailedTasks: false,
     posSuppIds: [],
     freeSearchesCount: null,
-    selectedPaymentPlan: null
+    selectedPaymentPlan: null,
+    managementData: null
   },
   getters: {
     hasFailedTasks(state) {
@@ -50,6 +53,9 @@ export default new Vuex.Store({
     },
     getSelectedPaymentPlan(state){
       return state.selectedPaymentPlan 
+    },
+    getManagementData(state){
+      return state.managementData
     }
   },
   mutations: {
@@ -76,7 +82,7 @@ export default new Vuex.Store({
     },
     setFreeSearchesCount(state){
       if(!storageService.load('searches-left') && storageService.load('searches-left') !== 0){
-        storageService.store('searches-left', 20)
+        storageService.store('searches-left', state.managementData.freeSearchesNum)
       }
       state.freeSearchesCount = storageService.load('searches-left')
     },
@@ -87,6 +93,19 @@ export default new Vuex.Store({
     },
     setSelectedPaymentPlan(state, { SelectedPlan }){
       state.selectedPaymentPlan = SelectedPlan
+    },
+    setManagementData(state, { manage }){
+      state.managementData = manage
+    }
+  },
+  actions:{
+    async pullManagementData({ commit }){
+      const manage = await manageService.list();
+      commit({ type: 'setManagementData', manage });
+    },
+    async updateManagementData({ commit }, { manage }){
+      const newManage = await manageService.update(manage);
+      commit({ type: 'setManagementData', newManage });
     }
   },
   plugins: [

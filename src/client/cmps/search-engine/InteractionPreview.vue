@@ -313,10 +313,24 @@ export default {
         freeSearchesCount(){
             return this.$store.getters.getFreeSearchesCount;
         },
+        managementData(){
+            return this.$store.getters.getManagementData;
+        },
+        freeTrialTime() {
+            const {
+                loggedInUser: { registeredTime, trialTime },
+            } = this.$store.getters;
+
+            const timeLeft = trialTime - registeredTime;
+            const daysLeft = timeLeft / (1000 * 3600 * 24);
+            return daysLeft > 1 ? Math.floor(daysLeft) : Math.ceil(daysLeft);
+        },
         isAllowed(){
-            let idxToShow = 4
-            if(this.$route.name === 'Boosters') idxToShow = 0
+            if(this.loggedInUser && this.loggedInUser.isSubscribe) return true
+            if(this.loggedInUser && this.freeTrialTime <= 0) return false
             if(!this.loggedInUser && this.freeSearchesCount <= 0) return false
+
+            let idxToShow = this.$route.name === 'Boosters' ? this.managementData.showPositiveInteractionsNum - 1 : this.managementData.showInteractionsNum - 1
             if(this.isChild) return true
             if(!this.loggedInUser && this.idx > idxToShow)  return false
             return true

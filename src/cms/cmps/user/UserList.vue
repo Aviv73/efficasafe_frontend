@@ -47,7 +47,7 @@
                         </td>
                         <td class="centered text-center">
                             {{
-                                dateToShow(item.resgisteredTime)
+                                dateToShow(item.registeredTime)
                             }}
                         </td>
                         <td class="centered text-center">

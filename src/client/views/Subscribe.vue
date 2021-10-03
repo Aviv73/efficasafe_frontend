@@ -92,6 +92,7 @@
 
 <script>
 
+import { manageService } from '@/cms/services/manage.service'
 
 export default {
   data() {
@@ -114,13 +115,9 @@ export default {
         this.$router.push('/payment')
     }
   },
-  created() {
-    //get plans from server
-    this.plans = [
-        {_id:'001', priceUSD: 25.99, priceISL: 84.99, priceEUR: 24.99, duration: 30, durationTxt: '1 month plan', isRecommended: false},
-        {_id:'002', priceUSD: 12.99, priceISL: 44.99, priceEUR: 11.99, duration: 365, durationTxt: '1 year plan', isRecommended: false},
-        {_id:'003', priceUSD: 9.99, priceISL: 35.99, priceEUR: 8.99, duration: 730, durationTxt: '2 years plan', isRecommended: true},
-    ]
+  async created() {
+      const managementData = await manageService.list()
+      this.plans = managementData.plans
     //get user contry to show currect prices
   },
 };

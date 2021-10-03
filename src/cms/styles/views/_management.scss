@@ -1,0 +1,48 @@
+.management-title{
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.management-subtitle{
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.management-input{
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .v-text-field{
+        padding-top: 0;
+        margin-top: 0;
+        margin-left: 5px;
+    }
+    
+}
+
+.cards-containrt{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+
+    .card{
+        margin-bottom: 10px;
+        padding: 10px;
+
+        .checkbox{
+            margin-left: 10px;
+        }
+    }
+}
+
+.management-alert{
+    position: fixed;
+    top: 72px;
+    right: 24px;
+    width: fit-content;
+}

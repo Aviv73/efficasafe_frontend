@@ -23,6 +23,7 @@ import resultList from '@/cms/cmps/search-engine/ResultList';
 import dBankResultList from '@/cms/cmps/search-engine/DBankResultList';
 import dBankInteractionDetails from '@/cms/views/DBankInteractionDetails';
 import UploadData from '@/cms/views/UploadData';
+import Management from '@/cms/views/Management';
 
 
 Vue.use(VueRouter);
@@ -32,6 +33,12 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/management',
+    name: 'Management',
+    component: Management,
     meta: { requiresAuth: true }
   },
   {

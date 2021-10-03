@@ -12,7 +12,7 @@
                             <template #activator>
                                 <div class="flex-align-center">
                                     <span>
-                                        {{ loggedInUser.username }}
+                                        {{ loggedInUser.username }} 
                                     </span>
                                     <menu-down-icon title="" class="dropdown--animate" />
                                 </div>
@@ -43,13 +43,10 @@
                             class="flex-center"
                             v-if="!loggedInUser.isSubscribe"
                         >
-                            <p v-if="freeTrialTime < 14 && freeTrialTime > 0">
-                                {{
-                                    isScreenNarrow
-                                        ? `Free Trial -  ${freeTrialTime} days left`
-                                        : `Free Trial - you have ${freeTrialTime} days left`
-                                }}
+                            <p v-if="freeTrialTime <= 14 && freeTrialTime > 0">
+                                {{freeTrialMsg}}
                             </p>
+                            <p v-else>| Your free trial has ended - Subscribe Now</p>
                         </div>
                     </div>
                 </div>
@@ -205,13 +202,22 @@ export default {
         },
         freeTrialTime() {
             const {
-                loggedInUser: { resgisteredTime, trialTime },
+                loggedInUser: { registeredTime, trialTime },
             } = this.$store.getters;
 
-            const timeLeft = trialTime - resgisteredTime;
+            const timeLeft = trialTime - registeredTime;
             const daysLeft = timeLeft / (1000 * 3600 * 24);
+            console.log(daysLeft > 1 ? Math.floor(daysLeft) : Math.ceil(daysLeft));
             return daysLeft > 1 ? Math.floor(daysLeft) : Math.ceil(daysLeft);
         },
+        freeTrialMsg(){
+            if(this.isScreenNarrow){
+                if(this.freeTrialTime === 1) return `| Free Trial -  ${this.freeTrialTime} day left`
+                return `| Free Trial -  ${this.freeTrialTime} days left`
+            }
+            if(this.freeTrialTime === 1) return `| Free Trial - you have ${this.freeTrialTime} day left`
+            return `| Free Trial - you have ${this.freeTrialTime} days left`
+        }
     },
     methods: {
         toggleNavActive() {

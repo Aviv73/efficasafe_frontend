@@ -88,7 +88,7 @@
                             class="pt-0 pl-3 mt-1"
                             type="text"
                             :value="
-                                new Date(editedUser.resgisteredTime)
+                                new Date(editedUser.registeredTime)
                                     .toISOString()
                                     .substr(0, 10)
                             "
