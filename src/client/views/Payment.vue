@@ -100,7 +100,7 @@ export default {
     return {
       plans: null,
       selectedPlan: null,
-      user: null
+      user: {}
     };
   },
   computed: {
