@@ -275,8 +275,12 @@
         width: rem(500px);
         max-width: 96%;
     }
-    .desc {
+
+    .mt{
         margin-top: rem(32px);
+    }
+    
+    .desc {
         font-size: rem(14px);
         color: $clr-txt-darker;
         padding: 0px 10px;

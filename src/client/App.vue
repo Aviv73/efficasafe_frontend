@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { eventBus, EV_show_cookie_notice, EV_open_singup } from '@/cms/services/eventBus.service';
+import { eventBus, EV_show_cookie_notice, EV_open_singup, EV_open_login } from '@/cms/services/eventBus.service';
 import { storageService } from '@/cms/services/storage.service';
 
 import Navbar from '@/client/cmps/Navbar';
@@ -67,6 +67,7 @@ export default {
     },
     async created(){
         eventBus.$on(EV_open_singup, this.onSignUp);
+        eventBus.$on(EV_open_login, this.onLogin);
         if(this.$store.getters.loggedInUser){
             try{
                 await this.$store.dispatch('checkIfSession')

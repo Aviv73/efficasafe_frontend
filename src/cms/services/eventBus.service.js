@@ -24,3 +24,5 @@ export const EV_search_results_cleared = 'search-results-cleared';
 export const EV_focus_on_input = 'focus-on-input';
 export const EV_clear_input = 'clear-input';
 export const EV_open_singup = 'open-signup';
+export const EV_open_login = 'open-login';
+export const EV_email_exists = 'email-exists';

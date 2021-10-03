@@ -18,7 +18,8 @@ export default new Vuex.Store({
     isScreenNarrow: null,
     hasFailedTasks: false,
     posSuppIds: [],
-    freeSearchesCount: null
+    freeSearchesCount: null,
+    selectedPaymentPlan: null
   },
   getters: {
     hasFailedTasks(state) {
@@ -46,6 +47,9 @@ export default new Vuex.Store({
     },
     getFreeSearchesCount(state) {
       return state.freeSearchesCount
+    },
+    getSelectedPaymentPlan(state){
+      return state.selectedPaymentPlan 
     }
   },
   mutations: {
@@ -80,6 +84,9 @@ export default new Vuex.Store({
       if(state.freeSearchesCount === 0) return
       state.freeSearchesCount -= 1
       storageService.store('searches-left', state.freeSearchesCount)
+    },
+    setSelectedPaymentPlan(state, { SelectedPlan }){
+      state.selectedPaymentPlan = SelectedPlan
     }
   },
   plugins: [

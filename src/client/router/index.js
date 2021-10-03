@@ -10,6 +10,7 @@ import VerifyEmail from '@/client/views/auth/VerifyEmail.vue';
 import DBankInteractionDetails from '@/client/views/DBankInteractionDetails';
 import UserAccount from '@/client/views/UserAccount';
 import Subscribe from '@/client/views/Subscribe';
+import Payment from '@/client/views/Payment';
 
 import InteractionList from '@/client/cmps/search-engine/InteractionList';
 import UserApp from '@/client/cmps/user-account/UserApp';
@@ -28,6 +29,11 @@ const routes = [
     path: '/subscribe',
     name: 'Subscribe',
     component: Subscribe
+  },
+  {
+    path: '/payment',
+    name: 'Payment',
+    component: Payment
   },
   {
     path: '/verifyEmail/:token',

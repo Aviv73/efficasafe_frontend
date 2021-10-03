@@ -12,6 +12,7 @@
                     <h4>another 14 days?</h4>
                     <p><span>No problem!</span> just sign up and continue searching</p>
                 </div>
+                <div v-if="isEmailExists" class="msg failed">This email already exists</div>
                 <template v-if="!isShowVereficationMsg">
                     <form @submit.prevent="onRegister" class="auth-modal-field">
                         <input @focus="resetError('email')" :class="{ 'is-invalid': isInvaliedEmail }" type="text" placeholder="Email" v-model="cred.email">
@@ -33,15 +34,19 @@
                     <p class="auth-modal-title font-medium">Please confirm your email address</p>
 
                     <p class="auth-modal-sub-title font-bold">
-                        An email will be sent to you shortly.
-                        in order to complete registration process, please go to your
+                        An email has been sent to you.
+                        in order to complete the registration process, please go to your
                         mail and click the confirmation link.
                     </p>
 
+                    <p class="desc mt">
+                        If you can't find the confirmation email, please check
+                        your spam or sales folder. 
+                    </p>
                     <p class="desc">
-                        If you did not receive a confirmation email, please check
-                        your spam or sales folder. Also, please verify that you entered a
-                        valid email address in our sign-up form.
+                        In addition, please verify that you entered a
+                        valid email address. you can find your email in your account in the
+                        upper left corner.
                     </p>
 
                     <p class="assistance">
@@ -60,6 +65,7 @@
 
 <script>
 import { userService } from '@/cms/services/user.service';
+import { eventBus, EV_email_exists } from '@/cms/services/eventBus.service';
 import CloseIcon from 'vue-material-design-icons/Close';
 
 export default {
@@ -82,7 +88,8 @@ export default {
             isInvaliedEmail: false,
             isInvaliedPassword: false,
             isInvaliedName: false,
-            isNotAgreed: false
+            isNotAgreed: false,
+            isEmailExists: false
         };
     },
     computed: {
@@ -112,7 +119,10 @@ export default {
             if(this.isInvaliedEmail || this.isInvaliedPassword || this.isInvaliedName || !this.cred.agreedToTerm) return
             try{
                 await this.$store.dispatch({type: 'signup', cred: this.cred});
-                this.isShowVereficationMsg = true
+                if(!this.isEmailExists){
+                    if(this.$route.name !== 'Payment') this.isShowVereficationMsg = true
+                    else this.closeModal()
+                }
             }catch(err){
                console.log('auth failed');
             }
@@ -128,13 +138,22 @@ export default {
             return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(this.cred.password)
         },
         resetError(type){
-            if(type === 'email') this.isInvaliedEmail = false
+            if(type === 'email') {
+                this.isInvaliedEmail = false
+                this.isEmailExists = false
+            }
             if(type === 'pass') this.isInvaliedPassword = false
             if(type === 'name') this.isInvaliedName = false
         },
         changeCheckbox(){
             if(this.cred.agreedToTerm) this.isNotAgreed = false
+        },
+        showEmailExistsMsg(){
+            this.isEmailExists = true
         }
+    },
+    created(){
+        eventBus.$on(EV_email_exists, this.showEmailExistsMsg)
     },
     components:{
         CloseIcon
