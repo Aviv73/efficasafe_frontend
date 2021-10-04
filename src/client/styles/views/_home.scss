@@ -104,14 +104,16 @@
     }
 
     &-cta{
-        margin-block-end: rem(20px);
-        border-radius: 100px;
-        padding: rem(8px) rem(36px);
-        background-color: $clr2;
-        color: $white;
-        border: 2px solid $clr2;
-        box-shadow: none;
-        transition: color .3s ease, background-color .3s ease;
+        margin-block-end: rem(60px);
+        margin-block-start: rem(28px);
+        height: 48px;
+        width: 160px;
+        left: 640px;
+        top: 374px;
+        border-radius: 45px;
+        padding: 11px 20px 11px 20px;
+        font-size: 17px;
+
         
         @include hover-supported {
             box-shadow: none;

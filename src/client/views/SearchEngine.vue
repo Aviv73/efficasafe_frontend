@@ -121,7 +121,7 @@
                         Register for free trial
                     </button>
                 </div>
-                <div v-if="loggedInUser && !loggedInUser.isSubscribe" class="search-engine-search-cta">
+                <div v-if="loggedInUser && loggedInUser.type !== 'subscribed'" class="search-engine-search-cta">
                     <span class="search-engine-search-msg">
                         <span class="font-medium">{{ freeTrialTime }}</span> Free Trail days left</span>
                     <button
@@ -856,13 +856,10 @@ export default {
             return this.$store.getters.getManagementData;
         },
         freeTrialTime() {
-            const {
-                loggedInUser: { registeredTime, trialTime },
-            } = this.$store.getters;
-
-            const timeLeft = trialTime - registeredTime;
+            const { loggedInUser: { trialTime }} = this.$store.getters;
+            const timeLeft = trialTime - Date.now();
             const daysLeft = timeLeft / (1000 * 3600 * 24);
-            return daysLeft > 1 ? Math.floor(daysLeft) : Math.ceil(daysLeft);
+            return  daysLeft > 0 ? Math.ceil(daysLeft) : 0
         },
         isRed(){
             const isRed = this.freeSearchesCount <= 5 ? true : false

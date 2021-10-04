@@ -1,35 +1,74 @@
 .recommendations-modal{
-    width: 550px;
-    height: 360px;
+    width: 650px;
+    height: 413px;
     background-color: $white;
+    border-radius: 6px;
 
     &-header{
         display: flex;
-        align-items: center;
-        justify-content: center;
+
+        .recommendations-modal-title{
+            margin-left: 19px;
+            font-size: 20px;
+            margin-bottom: 10px;
+            margin-top: 15px;
+            color: #225474;
+        }
 
         .close-btn{
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 25px;
+            right: 25px;
+            color: #A5A5A5;
         }
     }
 
     &-content{
-        .red-recomm{
-            background-color: #E63946;
-        }
-        .yellow-recomm{
-            background-color: #F6D55C;
-        }
-        .green-recomm{
-            background-color: #56C596;
-        }
+        margin-left: 30px;
 
-        p{
-            padding-left: 5px;
-            font-family: roboto-medium;
-            font-size: 16px;
+        .line{
+            display: flex;
+            height: 29px;
+            align-items: center;
+
+            .red{
+                background-color: #E63946;
+
+            }
+            .yellow{
+                background-color: #F6D55C;
+                font-size: 15px;
+                font-weight: 600;
+            }
+            .green{
+                background-color: #7BE495;
+                font-size: 13px;
+
+                span{
+                    margin-top: 2px;
+                }
+            }
+            .icon-container{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 20px;
+                height: 20px;
+                border-radius: 20.1258px;
+                
+                .cancel-icon{
+                    margin-top: 6px;
+                    color: white;
+                }
+                
+            }
+            .txt{
+                padding-left: 5px;
+                font-family: roboto;
+                font-size: 15px;
+                color: #484848;
+                margin-left: 12px;
+            }
         }
     }
 }

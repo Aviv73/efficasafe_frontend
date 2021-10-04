@@ -41,9 +41,9 @@
                         </dropdown>
                         <div
                             class="flex-center"
-                            v-if="!loggedInUser.isSubscribe"
+                            v-if="loggedInUser.type !== 'subscribed'"
                         >
-                            <p v-if="freeTrialTime <= 14 && freeTrialTime > 0">
+                            <p v-if="freeTrialTime > 0">
                                 {{freeTrialMsg}}
                             </p>
                             <p v-else>| Your free trial has ended - Subscribe Now</p>
@@ -201,14 +201,10 @@ export default {
             return this.$store.getters.loggedInUser;
         },
         freeTrialTime() {
-            const {
-                loggedInUser: { registeredTime, trialTime },
-            } = this.$store.getters;
-
-            const timeLeft = trialTime - registeredTime;
+            const {loggedInUser: { trialTime }} = this.$store.getters;
+            const timeLeft = trialTime - Date.now();
             const daysLeft = timeLeft / (1000 * 3600 * 24);
-            console.log(daysLeft > 1 ? Math.floor(daysLeft) : Math.ceil(daysLeft));
-            return daysLeft > 1 ? Math.floor(daysLeft) : Math.ceil(daysLeft);
+            return  daysLeft > 0 ? Math.ceil(daysLeft) : 0
         },
         freeTrialMsg(){
             if(this.isScreenNarrow){

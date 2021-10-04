@@ -1,6 +1,12 @@
 .interaction-list {
     display: grid;
     gap: 4px;
+
+    .v-data-table-header{
+        th:first-child{
+            min-width: 400px;
+        }
+    }
 }
 
 .tr-interaction {
@@ -49,8 +55,4 @@
     }
 }
 
-.v-data-table-header{
-    th:first-child{
-        min-width: 300px;
-    }
-}
+

@@ -124,7 +124,7 @@ export default {
     computed:{
         isAllowed(){
             return (idx) => {
-                if(this.loggedInUser && this.loggedInUser.isSubscribe) return true
+                if(this.loggedInUser && this.loggedInUser.type === 'subscribed') return true
                 if(this.loggedInUser && this.freeTrialTime <= 0) return false
                 if(!this.loggedInUser && this.freeSearchesCount <= 0) return false
                 if(!this.loggedInUser && idx > 0)  return false
@@ -135,13 +135,10 @@ export default {
             return this.$store.getters.loggedInUser;
         },
         freeTrialTime() {
-            const {
-                loggedInUser: { registeredTime, trialTime },
-            } = this.$store.getters;
-
-            const timeLeft = trialTime - registeredTime;
+            const { loggedInUser: { trialTime }} = this.$store.getters;
+            const timeLeft = trialTime - Date.now();
             const daysLeft = timeLeft / (1000 * 3600 * 24);
-            return daysLeft > 1 ? Math.floor(daysLeft) : Math.ceil(daysLeft);
+            return  daysLeft > 0 ? Math.ceil(daysLeft) : 0
         },
     },
     methods: {

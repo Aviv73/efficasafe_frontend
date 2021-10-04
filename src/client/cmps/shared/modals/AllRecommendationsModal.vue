@@ -1,6 +1,7 @@
 <template>
     <section class="recommendations-modal">
         <header class="recommendations-modal-header">
+            <h3 class="recommendations-modal-title">Recommendations</h3>
             <button
                 class="close-btn"
                 @click="close"
@@ -9,21 +10,45 @@
             </button>
         </header>
         <main class="recommendations-modal-content">
-            <div class="red-recomm">
-                <p>Avoid coadministration</p>
-                <p>Coadministration is not advised</p>
+            <div class="line">
+                <div class="icon-container red"><cancel-icon :size="14"/></div>
+                <p class="txt">Avoid coadministration</p>
             </div>
-            <div class="yellow-recomm">
-                <p>Caution should be taken	</p>
-                <p>Coadministration is not contraindicated but Caution should be taken</p>
-                <p>Coadministration is possible but Caution should be taken</p>
+            <div class="line">
+                <div class="icon-container red"><cancel-icon :size="14"/></div>
+                <p class="txt">Coadministration is not advised</p>
             </div>
-            <div class="green-recomm">
-                <p>Coadministration is not contraindicated</p>
-                <p>Coadministration is not contraindicated and may even be advised</p>
-                <p>Coadministration is possible</p>
-                <p>Coadministration is possible and may even be advised</p>
-                <p>Coadministration is advised</p>
+            <div class="line">
+                <div class="icon-container yellow">!</div>
+                <p class="txt">Caution should be taken	</p>
+            </div>
+            <div class="line">
+                <div class="icon-container yellow">!</div>
+                <p class="txt">Coadministration is not contraindicated but Caution should be taken</p>
+            </div>
+            <div class="line">
+                <div class="icon-container yellow">!</div>
+                <p class="txt">Coadministration is possible but Caution should be taken</p>
+            </div>
+            <div class="line">
+                <div class="icon-container green"><span>✔</span></div>
+                <p class="txt">Coadministration is not contraindicated</p>
+            </div>
+            <div class="line">
+                <div class="icon-container green"><span>✔</span></div>
+                <p class="txt">Coadministration is not contraindicated and may even be advised</p>
+            </div>
+            <div class="line">
+                <div class="icon-container green"><span>✔</span></div>
+                <p class="txt">Coadministration is possible</p>
+            </div>
+            <div class="line">
+                <div class="icon-container green"><span>✔</span></div>
+                <p class="txt">Coadministration is possible and may even be advised</p>
+            </div>
+            <div class="line">
+                <div class="icon-container green"><span>✔</span></div>
+                <p class="txt">Coadministration is advised</p>
             </div>
         </main>
     </section>
@@ -32,6 +57,7 @@
 <script>
 
 import CloseIcon from 'vue-material-design-icons/Close';
+import CancelIcon from 'vue-material-design-icons/Cancel';
 
 export default {
     methods: {
@@ -40,7 +66,8 @@ export default {
         }
     },
     components: {
-        CloseIcon
+        CloseIcon,
+        CancelIcon
     }
 }
 </script>

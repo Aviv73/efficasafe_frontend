@@ -128,10 +128,17 @@
                     class="form-actions d-flex align-center justify-space-between"
                 >
                     <v-btn
-                        to="/user/"
+                        to="/user"
                         color="normal"
                     >
                         cancel
+                    </v-btn>
+
+                    <v-btn
+                        color="error"
+                        @click="isWarning = true"
+                    >
+                        delete user
                     </v-btn>
 
                     <v-btn
@@ -157,6 +164,21 @@
                 <p>user purchase history</p>
             </v-card>
         </div>
+        <div v-if="isWarning" class="warning-container">
+            <v-alert
+            prominent
+            type="error"
+            class="alert"
+            >
+                <v-row align="center" class="row">
+                    <v-col >
+                        <p>{{warningTxt}}</p>
+                        <v-btn @click="onDeleteUser">Delete</v-btn>
+                        <v-btn class="ml-2" color="primary" @click="isWarning = false">cancel</v-btn>
+                    </v-col>
+                </v-row>
+            </v-alert>
+        </div>
     </section>
 </template>
 
@@ -177,7 +199,8 @@ export default {
             response: {
                 msg: null,
                 type: null
-            }
+            },
+            isWarning: false
         };
     },
     methods: {
@@ -203,13 +226,31 @@ export default {
                 this.response.msg = `${this.editedUser.username} was updated`
             }catch(err){
                 this.response.type = 'error'
-                this.response.msg = `SOMTING WHNT WRONG`
+                this.response.msg = `SOMTING WENT WRONG`
             }
             setTimeout(() => {
                 this.response.type = null
                 this.response.msg = null
             },1500)
         },
+        async onDeleteUser(){
+            try{
+                await this.$store.dispatch({ type: 'removeUsers', ids: [this.editedUser._id] });
+                this.$router.push('/user').catch(()=>{})
+            }catch(err){
+                this.response.type = 'error'
+                this.response.msg = `SOMTING WENT WRONG`
+                setTimeout(() => {
+                    this.response.type = null
+                    this.response.msg = null
+                },1500)
+            }
+        }
+    },
+    computed:{
+        warningTxt(){
+            return `Are you sure you want to delete ${this.editedUser.username}?`
+        }
     },
     created() {
         this.loadUser();
