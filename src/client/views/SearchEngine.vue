@@ -710,9 +710,10 @@ export default {
                     if (!queryApearanceMap[`${side1Name}-${userQuery}`]) {
                         queryApearanceMap[`${side1Name}-${userQuery}`] = [ interaction ];
                         if (queryApearanceCount <= 1) {
-                            if (acc.findIndex(vi => vi._id === interaction._id) === -1) {
+                            // if (acc.findIndex(vi => vi._id === interaction._id) === -1) {
+                            //     acc.push(interaction);
+                            //     }
                                 acc.push(interaction);
-                            }
                         } else {
                             const compoundGroup = {
                                 _id: interaction._id,

@@ -6,6 +6,7 @@ export const interactionStore = ({
         interactionCount: 0,
         supplementsRefs: [],
         seenRefsMap: {},
+        pathwayRefCount:{},
         openCollapses: {
             'Supp2Drug': {},
             'Boosters': {},
@@ -43,6 +44,9 @@ export const interactionStore = ({
         },
         getIsPosSuppOpen(state){
             return state.isPosSuppOpen
+        },
+        getPathwayRefCount(state){
+            return state.pathwayRefCount
         }
     },
     mutations: {
@@ -101,6 +105,9 @@ export const interactionStore = ({
         },
         setIsPosSuppOpen(state){
             state.isPosSuppOpen = !state.isPosSuppOpen
+        },
+        setPathwayRefCount(state, {data}){
+            state.pathwayRefCount[data.id] = data.count
         }
     },
     actions: {

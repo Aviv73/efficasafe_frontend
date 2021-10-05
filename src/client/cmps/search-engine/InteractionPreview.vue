@@ -307,6 +307,9 @@ export default {
             if (interaction.subject_drug) return `/interaction/drug2drug/${interaction._id}`;
             return interaction.isVirtual ? `/interaction/${interaction._id}/${interaction.side2Material._id}` : `/interaction/${interaction._id}`;
         },
+        totalPathwaysRefsCount() {
+            return this.$store.getters.getPathwayRefCount;
+        },
         loggedInUser() {
             return this.$store.getters.loggedInUser;
         },
@@ -381,6 +384,9 @@ export default {
         },
         getRefsCount(interaction) {
             if (interaction.refs) {
+                if(this.totalPathwaysRefsCount[`${interaction.side1Material.name}-${interaction.side2Material.name}`]){
+                    return `(${interaction.refs.length + this.totalPathwaysRefsCount[`${interaction.side1Material.name}-${interaction.side2Material.name}`]})`;
+                }
                 return `(${interaction.refs.length + this.pathwayRefCount})`;
             }
             return '';
@@ -450,7 +456,7 @@ export default {
                     seenRefsMap[ref] = true;
                 }
             });
-            
+            this.$store.commit({ type: 'setPathwayRefCount', data: {id:`${side1Material.name}-${side2Material.name}`, count: side1PathwayRefs.length + side2Refs.length} });
             this.$store.commit({ type: 'updateSupplementsRefs', refs: side1PathwayRefs });
             this.pathwayRefCount = side1PathwayRefs.length + side2Refs.length;
         },
@@ -517,7 +523,7 @@ export default {
             this.isLabelChildEmpty = !isEmpty
         }
     },
-    created() {
+    async created() {
         this.getPathwayRefsCount();
         eventBus.$on(EV_sortby_side_swaped, this.swapSideNames);
         this.restoreCollapses();
