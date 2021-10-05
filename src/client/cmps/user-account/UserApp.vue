@@ -124,13 +124,31 @@ export default {
                     }
                 ];
             }
-            /// return purchases table headers in their route
-            return [];
+            return [
+                {
+                    title: 'Purchase Date',
+                    field: 'at',
+                    sortable: true
+                },
+                {
+                    title: 'Price',
+                    field: 'price',
+                    sortable: true
+                },
+                {
+                    title: 'Plan',
+                    field: 'plan',
+                },
+                {
+                    title: 'Valid until',
+                    field: 'until'
+                }
+            ];
         },
         tableItems() {
             const { filterBy } = this;
+            const from = (filterBy.page - 1) * filterBy.itemsPerPage;
             if (this.$route.name === 'Searches') {
-                const from = (filterBy.page - 1) * filterBy.itemsPerPage;
                 return this.userSearches
                 .filter(({ title, at }) => {
                     return title.toLowerCase().includes(filterBy.name.toLowerCase())
@@ -142,20 +160,16 @@ export default {
                     return (a[field] > b[field] ? 1 : a[field] < b[field] ? -1 : 0) * sortOrder;
                 })
                 .slice(from, from + filterBy.itemsPerPage);
-                // return this.loggedInUser.searches
-                // .filter(({ title, at }) => {
-                //     return title.toLowerCase().includes(filterBy.name.toLowerCase())
-                //     && at > filterBy.createdAt;
-                // })
-                // .sort((a, b) => {
-                //     const { field, isDesc } = this.sortBy;
-                //     const sortOrder = isDesc ? 1 : -1;
-                //     return (a[field] > b[field] ? 1 : a[field] < b[field] ? -1 : 0) * sortOrder;
-                // })
-                // .slice(from, from + filterBy.itemsPerPage);
             }
-            /// return purchases table headers in their route
-            return [];
+            let purchasesCopy = JSON.parse(JSON.stringify(this.purchases))
+            return purchasesCopy
+                    .sort((a, b) => {
+                        const { field, isDesc } = this.sortBy;
+                        const sortOrder = isDesc ? 1 : -1;
+                        return (a[field] > b[field] ? 1 : a[field] < b[field] ? -1 : 0) * sortOrder;
+                })
+                .slice(from, from + filterBy.itemsPerPage);
+            
         },
         pageCount() {
             const { totalItems, filterBy } = this;
@@ -163,11 +177,8 @@ export default {
         },
         totalItems() {
             const { loggedInUser } = this;
-            if (!loggedInUser || this.$route.name !== 'Searches') return 0;
-            // const items = (this.$route.name === 'Searches') ? 'searches' : 'purchases';
-            // const items = 'searches';
-            // return loggedInUser[items].length;
-            return this.userSearches.length;
+            const items = (this.$route.name === 'Searches') ? 'searches' : 'purchases';
+            return loggedInUser[items].length;
         },
         isScreenNarrow() {
             return this.$store.getters.isScreenNarrow;
@@ -180,7 +191,6 @@ export default {
         },
         removeItem(itemIdx) {
             if (this.$route.name !== 'Searches') return;
-            // const items = (this.$route.name === 'Searches') ? 'searches' : 'purchases';
             const user = JSON.parse(JSON.stringify(this.loggedInUser));
             user.searches.splice(itemIdx, 1);
             this.userSearches.splice(itemIdx, 1)
@@ -194,7 +204,8 @@ export default {
         }
     },
     async created(){
-        this.userSearches = await userService.getUserSearches(this.loggedInUser._id)
+        if(this.$route.name === 'Searches') this.userSearches = await userService.getUserSearches(this.loggedInUser._id)
+        else this.purchases = JSON.parse(JSON.stringify(this.loggedInUser.purchases))
     },
     components: {
         CustomSelect,

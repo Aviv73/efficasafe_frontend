@@ -37,6 +37,15 @@
                         <span v-else-if="header.field === 'at'">
                             {{ item[header.field] | moment('DD/MM/YYYY') }}
                         </span>
+                        <span v-else-if="header.field === 'price'">
+                            ${{ item[header.field] }}
+                        </span>
+                        <span v-else-if="header.field === 'plan'">
+                            {{ item[header.field] }}
+                        </span>
+                        <span v-else-if="header.field === 'until'">
+                            {{ item[header.field] | moment('DD/MM/YYYY')}}
+                        </span>
                         <span
                             class="flex-space-between td-actions"
                             v-else-if="!header.title"

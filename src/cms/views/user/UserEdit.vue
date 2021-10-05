@@ -162,6 +162,22 @@
         <div class="container">
             <v-card class="py-2 px-4 text-center">
                 <p>user purchase history</p>
+                <v-data-table
+                    :headers="purchaseHedaers"
+                    :items="tableItems"
+                    :items-per-page="5"
+                    class="elevation-1"
+                >
+                    <template v-slot:[`item.at`]="{ item }">
+                        <span>{{ item.at | moment('DD/MM/YYYY') }}</span>
+                    </template>
+                    <template v-slot:[`item.until`]="{ item }">
+                        <span>{{ item.until | moment('DD/MM/YYYY') }}</span>
+                    </template>
+                    <template v-slot:[`item.price`]="{ item }">
+                        <span>${{item.price}}</span>
+                    </template>
+                </v-data-table>
             </v-card>
         </div>
         <div v-if="isWarning" class="warning-container">
@@ -200,7 +216,13 @@ export default {
                 msg: null,
                 type: null
             },
-            isWarning: false
+            isWarning: false,
+            purchaseHedaers: [
+                {text: 'Purchase Date', value: 'at'},
+                {text: 'Price', value: 'price'},
+                {text: 'Plan', value: 'plan'},
+                {text: 'Valid Until', value: 'until'},
+            ]
         };
     },
     methods: {
@@ -250,6 +272,9 @@ export default {
     computed:{
         warningTxt(){
             return `Are you sure you want to delete ${this.editedUser.username}?`
+        },
+        tableItems(){
+            return this.editedUser.purchases
         }
     },
     created() {
