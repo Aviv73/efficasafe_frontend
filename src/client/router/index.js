@@ -9,8 +9,9 @@ import SendPassResetForm from '@/client/views/auth/SendPassResetForm.vue';
 import VerifyEmail from '@/client/views/auth/VerifyEmail.vue';
 import DBankInteractionDetails from '@/client/views/DBankInteractionDetails';
 import UserAccount from '@/client/views/UserAccount';
-import Subscribe from '@/client/views/Subscribe';
-import Payment from '@/client/views/Payment';
+// import Subscribe from '@/client/views/Subscribe';
+// import Payment from '@/client/views/Payment';
+// import Success from '@/client/views/Success';
 
 import InteractionList from '@/client/cmps/search-engine/InteractionList';
 import UserApp from '@/client/cmps/user-account/UserApp';
@@ -25,16 +26,21 @@ const routes = [
     name: 'Home',
     component: Home
   },
-  {
-    path: '/subscribe',
-    name: 'Subscribe',
-    component: Subscribe
-  },
-  {
-    path: '/payment',
-    name: 'Payment',
-    component: Payment
-  },
+  // {
+  //   path: '/subscribe',
+  //   name: 'Subscribe',
+  //   component: Subscribe
+  // },
+  // {
+  //   path: '/payment',
+  //   name: 'Payment',
+  //   component: Payment
+  // },
+  // {
+  //   path: '/success',
+  //   name: 'Success',
+  //   component: Success
+  // },
   {
     path: '/verifyEmail/:token',
     name: 'verifyEmail',

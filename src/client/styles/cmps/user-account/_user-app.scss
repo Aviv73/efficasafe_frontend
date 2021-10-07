@@ -85,6 +85,13 @@
         & > div:first-child {
             margin-block-end: rem(24px);
         }
+
+        .subscribe-until {
+            margin-left: 5px;
+            font-weight: bold;
+            color: $gradient-clr1;
+            margin-bottom: 10px;
+        }
     }
     &-content {
         flex-grow: 1;

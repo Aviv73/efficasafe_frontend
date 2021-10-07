@@ -1,6 +1,7 @@
 <template>
     <section class="user-app">
         <div class="user-app-header">
+            <!-- <h3 v-if="loggedInUser.type === 'subscribed'" class="subscribe-until">Subscribed until: <span>{{loggedInUser.trialTime | moment('DD/MM/YYYY')}}</span></h3> -->
             <div class="flex-align-center">
                 <div class="user-app-header-search font-medium">
                     <input

@@ -92,8 +92,10 @@
 <script>
 
 import intlTelInput from "intl-tel-input";
+import axios from 'axios';
 import { manageService } from '@/cms/services/manage.service'
 import { eventBus, EV_show_user_msg, EV_open_singup, EV_open_login } from '@/cms/services/eventBus.service';
+import { storageService } from '@/cms/services/storage.service';
 
 export default {
   data() {
@@ -121,6 +123,12 @@ export default {
     },
     getPriceByLocation(plan){
         return plan.priceUSD
+    },
+    getReleventCoin(){
+        return 2
+    },
+    getReleventPrice(){
+        return this.selectedPlan.priceUSD * this.selectedPlan.duration
     },
     onSelectPrice(ev, plan){
         this.selectedPlan = plan
@@ -157,7 +165,23 @@ export default {
                 this.$store.dispatch({ type: 'updateLoggedInUser', user }),
                 this.$store.dispatch({ type: 'updateAutoPilotContact', user })
             ]);
-        
+        // Payment!!!
+        // const key = process.env.VUE_APP_YAAD_PAY_KEY
+        // console.log(process.env.VUE_APP_YAAD_PAY_KEY);
+        const key = 'in project folder'
+        const pass = 'in project folder'
+        const masof = 'in project folder'
+        const address = encodeURI(user.address)
+        const city = encodeURI(user.city)
+        const {phone, zipCode, email} = user
+        const coin = this.getReleventCoin()
+        // const price = 1
+        const price = this.getReleventPrice()
+        const durationTxt = encodeURI(this.selectedPlan.durationTxt)
+        const apiSignAddress = `https://icom.yaad.net/p/?action=APISign&What=SIGN&KEY=${key}&PassP=${pass}&Masof=${masof}&Order=12345678910&Info=${durationTxt}&Amount=${price}&UTF8=True&UTF8out=True&street=${address}&city=${city}&zip=${zipCode}&phone=${phone}&email=${email}&Tash=2&FixTash=False&ShowEngTashText=True&Coin=${coin}&Postpone=False&J5=False&Sign=True&MoreData=True&sendemail=False&SendHesh=True&heshDesc=[0~${durationTxt}~1~${price}]&Pritim=True&PageLang=ENG&tmp=1`
+        const res = await axios.get(apiSignAddress)
+        storageService.store('isPaying', true)
+        window.location = `https://icom.yaad.net/p/?action=pay&${res.data}`;
     }
   },
   watch:{

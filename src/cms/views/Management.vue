@@ -49,7 +49,7 @@
                 <div class="cards-containrt">
                     <v-card class="card" v-for="(plan, idx) in managementData.plans" :key="idx">
                         <div class="management-input">
-                            <h3>Duration in days:</h3>
+                            <h3>Duration in months:</h3>
                             <v-text-field
                                 v-model="managementData.plans[idx].duration"
                                 placeholder="Duration in days"

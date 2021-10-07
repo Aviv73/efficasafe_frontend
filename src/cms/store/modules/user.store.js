@@ -67,6 +67,7 @@ export const userStore = {
                 type: 'updateUser',
                 user: savedUser
             });
+            context.commit({ type: 'setLoggedInUser', user });
             return savedUser;
         },
         async updateLoggedInUser(context, { user }) {
