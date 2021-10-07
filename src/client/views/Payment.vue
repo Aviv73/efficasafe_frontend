@@ -96,6 +96,7 @@ import axios from 'axios';
 import { manageService } from '@/cms/services/manage.service'
 import { eventBus, EV_show_user_msg, EV_open_singup, EV_open_login } from '@/cms/services/eventBus.service';
 import { storageService } from '@/cms/services/storage.service';
+import config from '../config/index'
 
 export default {
   data() {
@@ -166,11 +167,9 @@ export default {
                 this.$store.dispatch({ type: 'updateAutoPilotContact', user })
             ]);
         // Payment!!!
-        // const key = process.env.VUE_APP_YAAD_PAY_KEY
-        // console.log(process.env.VUE_APP_YAAD_PAY_KEY);
-        const key = 'in project folder'
-        const pass = 'in project folder'
-        const masof = 'in project folder'
+        const key = config.yaadPayKey
+        const pass = config.yaadPayPassP
+        const masof = config.yaadPayMasof
         const address = encodeURI(user.address)
         const city = encodeURI(user.city)
         const {phone, zipCode, email} = user
