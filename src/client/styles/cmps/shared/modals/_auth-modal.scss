@@ -75,7 +75,9 @@
             align-items: center;
             justify-content: center;
 
+            
             a{
+                position: relative;
                 margin-bottom: 13px;
                 width: 72%;
                 line-height: 43px;
@@ -83,6 +85,13 @@
                 font-family: roboto-medium;
                 color: #FFFFFF;
                 border-radius: 6px;
+
+                img{
+                    position: absolute;
+                    margin: 0;
+                    left: 23px;
+                    top: 10px;
+                }
             }
 
             .red{

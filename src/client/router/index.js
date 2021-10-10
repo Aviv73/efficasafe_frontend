@@ -9,6 +9,7 @@ import SendPassResetForm from '@/client/views/auth/SendPassResetForm.vue';
 import VerifyEmail from '@/client/views/auth/VerifyEmail.vue';
 import DBankInteractionDetails from '@/client/views/DBankInteractionDetails';
 import UserAccount from '@/client/views/UserAccount';
+import Logo from '@/client/views/Logo';
 // import Subscribe from '@/client/views/Subscribe';
 // import Payment from '@/client/views/Payment';
 // import Success from '@/client/views/Success';
@@ -25,6 +26,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/logo',
+    name: 'Logo',
+    component: Logo
   },
   // {
   //   path: '/subscribe',
