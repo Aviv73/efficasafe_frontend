@@ -63,11 +63,11 @@ export const userStore = {
         },
         async updateUser(context, { user }) {
             const savedUser = await userService.update(user);
+            await userService.updateAutoPilotContact(user)
             context.commit({
                 type: 'updateUser',
                 user: savedUser
             });
-            context.commit({ type: 'setLoggedInUser', user });
             return savedUser;
         },
         async updateLoggedInUser(context, { user }) {

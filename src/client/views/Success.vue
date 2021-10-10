@@ -52,7 +52,7 @@ export default {
               until: user.trialTime
           })
           // user.isStillPaying = true
-          await this.$store.dispatch({ type: 'updateUser', user });
+          await this.$store.dispatch({ type: 'updateLoggedInUser', user });
       }
     }
   },

@@ -1393,7 +1393,7 @@ export default {
             if (this.loggedInUser) {
                 this.$store.commit({ type: 'setUseApproval' });
                 this.$store.dispatch({
-                    type: 'updateUser',
+                    type: 'updateLoggedInUser',
                     user: { ...this.$store.getters.loggedInUser }
                 });
                 logService.add({action: 'Approved use'})

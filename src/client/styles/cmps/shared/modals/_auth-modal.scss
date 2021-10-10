@@ -221,7 +221,12 @@
         }
         .checkbox-container{
             display: flex;
-            margin-left: 80px;
+            margin-left: 50.5px;
+
+            @include for-mobile-layout {
+                margin-left: 80px;
+            }
+
             .checkbox{
                 width: 12px;
                 height: unset;
