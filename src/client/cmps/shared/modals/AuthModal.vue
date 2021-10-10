@@ -83,6 +83,7 @@ export default {
                 username:'',
                 agreedToTerm: false,
                 // agreedToMarketing: false
+                
             },
             isShowVereficationMsg: false,
             isInvaliedEmail: false,
