@@ -114,3 +114,22 @@
         justify-content: space-evenly;
     }
 }
+
+.delete-ref-dialog{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    p{
+        margin: 30px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .btn-container{
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+    }
+}

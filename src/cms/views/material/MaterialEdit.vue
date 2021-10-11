@@ -40,6 +40,7 @@
               v-model="editedRef.pubmedId"
             />
             <div class="ref-form-actions">
+              <v-btn class="cancel-btn" @click="openDeleteRefDialog" color="error">delete reference</v-btn>
               <v-btn class="cancel-btn" @click="closeRefDialog" color="normal">cancel</v-btn>
               <v-btn
                 type="submit"
@@ -49,6 +50,16 @@
               >Save Reference</v-btn>
             </div>
           </v-form>
+        </v-card>
+        <v-card v-if="refDeleteDialog" class="delete-ref-dialog" width="550" height="250">
+          <v-card-title class="primary headline" style="color:white; font-weight:bold; width: 100%;">
+            Are you sure you want to delete this ref?
+          </v-card-title>
+          <p>deletenig a ref without clearing it from all other interactions can lead to bugs</p>
+          <div class="btn-container">
+            <v-btn class="cancel-btn" @click="closeDeleteRefDialog" color="normal">cancel</v-btn>
+            <v-btn class="cancel-btn" @click="deleteRef" color="error">delete</v-btn>
+          </div>
         </v-card>
       </v-dialog>
       <v-dialog v-model="pathwayDialog" class="pathway-dialog" persistent max-width="600">
@@ -813,6 +824,7 @@ export default {
       valid: true,
       dialog: false,
       refDialog: false,
+      refDeleteDialog: false,
       dBankRefDialog: false,
       pathwayDialog: false,
       externalLinksDialog: false,
@@ -1000,6 +1012,18 @@ export default {
         this.editedMaterial.refs.splice(idx, 1, { ...this.editedRef });
       }
       this.closeRefDialog();
+    },
+    deleteRef(){
+      const idx = this.editedMaterial.refs.findIndex(ref => ref.draftIdx === this.editedRef.draftIdx)
+      this.editedMaterial.refs.splice(idx,1)
+      this.closeRefDialog()
+      this.closeDeleteRefDialog()
+    },
+    openDeleteRefDialog(){
+      this.refDeleteDialog = true
+    },
+    closeDeleteRefDialog(){
+      this.refDeleteDialog = false
     },
     openRefDialog(ref) {
       if (ref) {

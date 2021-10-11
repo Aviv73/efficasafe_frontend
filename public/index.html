@@ -85,8 +85,7 @@
 
   <!-- Image to display -->
   <!-- Replace   «example.com/image01.jpg» with your own -->
-  <meta property="og:image" content="./img/icons/ms-icon-310x310.png">
-
+  <meta property="og:image" content="<%= htmlWebpackPlugin.options.url %>/img/icons/ms-icon-310x310.png" />
   <!-- No need to change anything here -->
   <meta property="og:type" content="website" />
   <meta property="og:image:type" content="image/png">
@@ -96,7 +95,7 @@
   <meta property="og:image:height" content="300">
 
   <!-- Website to visit when clicked in fb or WhatsApp-->
-  <meta property="og:url" content="http://www.https://www.efficasafe.com">
+  <meta property="og:url" content="<%= htmlWebpackPlugin.options.url %>" />
   
   <link rel="icon" href="<%= BASE_URL %>favicon.ico">
   <title><%= htmlWebpackPlugin.options.title %></title>
