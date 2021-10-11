@@ -16,13 +16,5 @@ module.exports = {
   "transpileDependencies": [
     "vuetify"
   ],
-  outputDir: '../backend/public',
-  chainWebpack: config => {
-    config
-      .plugin('html')
-      .tap(args => {
-        args[0].url = 'https://www.efficasafe.com'
-        return args
-      })
-  }
+  outputDir: '../backend/public'
 }
