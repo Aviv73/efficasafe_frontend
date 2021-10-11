@@ -96,19 +96,19 @@
                             >
                                <li v-if="interaction.monitor.general">
                                    <span class="monitor-list-header font-bold">General:</span>
-                                   {{ interaction.monitor.general | remove-ending-dot }}
+                                   {{ interaction.monitor.general | remove-ending-dot | capitalize}}
                                </li>
                                <li v-if="interaction.monitor.labTests">
                                    <span class="monitor-list-header font-bold">Lab tests:</span>
-                                   {{ interaction.monitor.labTests | remove-ending-dot }}
+                                   {{ interaction.monitor.labTests | remove-ending-dot | capitalize}}
                                </li>
                                <li v-if="interaction.monitor.otherTests">
                                    <span class="monitor-list-header font-bold">Other tests:</span>
-                                   {{ interaction.monitor.otherTests | remove-ending-dot }}
+                                   {{ interaction.monitor.otherTests | remove-ending-dot | capitalize}}
                                </li>
                                <li v-if="interaction.monitor.symptoms">
                                    <span class="monitor-list-header font-bold">Symptoms:</span>
-                                   {{ interaction.monitor.symptoms | remove-ending-dot }}
+                                   {{ interaction.monitor.symptoms | remove-ending-dot | capitalize }}
                                </li>
                            </ul>
                            <p class="monitor-list" v-else>There is nothing to monitor for this interaction.</p>
