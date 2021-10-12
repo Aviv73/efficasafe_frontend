@@ -62,7 +62,7 @@
             position: absolute;
             right: 17px;
             top: 12px;
-            color: #b1b1b1;
+            // color: #b1b1b1;
         }
 
         img{
@@ -83,7 +83,7 @@
                 line-height: 43px;
                 font-size: rem(13px);
                 font-family: roboto-medium;
-                color: #FFFFFF;
+                color: #fff;
                 border-radius: 6px;
 
                 img{
@@ -94,8 +94,8 @@
                 }
             }
 
-            .red{
-                background-color:#DA4436;
+            .light-blue{
+                background-color:#1dbfbe;
             }
             .blue{
                 background-color:#3A5897;

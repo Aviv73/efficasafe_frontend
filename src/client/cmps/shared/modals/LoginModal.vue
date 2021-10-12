@@ -21,7 +21,7 @@
                     </div>
                     <p style="margin-bottom: 10px">or</p>
                     <div class="auth-modal-content-media-btns">
-                        <a :href="googleLink" class="red" role="button">
+                        <a :href="googleLink" class="light-blue" role="button">
                             <img src="@/client/assets/imgs/google.svg" alt="Logo" />
                             LOGIN WITH GOOGLE
                         </a>
