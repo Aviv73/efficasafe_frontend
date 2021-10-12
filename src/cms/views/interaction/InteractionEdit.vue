@@ -14,6 +14,16 @@
             <v-btn
               fab
               class="warning-btn"
+              @click="calculateEvidenceLevel"
+              elevation="5"
+              color="primary"
+              title="Calculate Evidence Level"
+            >
+              <v-icon>mdi-calculator-variant-outline</v-icon>
+            </v-btn>
+            <v-btn
+              fab
+              class="warning-btn"
               @click="handleRefsChange"
               elevation="5"
               color="warning"
@@ -398,7 +408,6 @@ export default {
     handleRefsChange() {
       this.setInteractionRefs();
       this.makeRefsSub();
-      this.calculateEvidenceLevel();
     },
     makeRefsSub() {
       const regex = /\(([\d- ,\d]+)\)|<sub>\(([\d- ,\d]+)\)<\/sub>/g;
@@ -567,7 +576,6 @@ export default {
     await this.loadInteraction();
     if (this.editedInteraction.side1Material) {
       this.setInteractionRefs();
-      this.calculateEvidenceLevel();
     }
     this.getRelatedMaterials();
   },

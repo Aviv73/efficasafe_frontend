@@ -5,6 +5,7 @@
     flex-direction: column;
     justify-content: center;
     margin-bottom: 16px;
+    margin-left: 62px;
     transition: flex-basis .4s linear;
 
     h3 {
@@ -133,3 +134,10 @@
         justify-content: space-evenly;
     }
 }
+
+.drawer-btn{
+    position: fixed;
+    top: 70px;
+    left: 40px;
+}
+

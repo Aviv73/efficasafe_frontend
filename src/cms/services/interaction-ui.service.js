@@ -48,7 +48,6 @@ function getRefsOrder(txt, isUnique = true, withRange = true) {
     const notUniqueRefs = txt.match(regex);
     if (!notUniqueRefs) return [];
     const refs = (isUnique) ? notUniqueRefs.filter(_onlyUnique) : notUniqueRefs;
-    
     let cleanRefs = refs.map(ref => {
         ref = ref.substring(1, ref.length - 1);
         if (!ref.includes(',') && !ref.includes('-')) ref = +ref;
@@ -79,7 +78,6 @@ function getRefsOrder(txt, isUnique = true, withRange = true) {
 
 function calculateEvidenceLevel(refs) {
     const map = _getEvidenceLevelMap(refs)
-
     if (
         (map.meta || map.systematic || map['drug label']) ||
         ((map.clinical && map.clinical > 1) || (map.retrospective && map.retrospective > 1) || (map.retrospective && map.clinical))

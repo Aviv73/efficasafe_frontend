@@ -123,19 +123,19 @@
                         <h2 class="subheader">What to monitor</h2>
                         <div v-if="interaction.monitor.general">
                             <span class="font-medium">General: </span>
-                            {{ interaction.monitor.general | remove-ending-dot }}
+                            {{ interaction.monitor.general | remove-ending-dot | capitalize}}
                         </div>
                         <div v-if="interaction.monitor.labTests">
                             <span class="font-medium">Lab tests: </span>
-                            {{ interaction.monitor.labTests | remove-ending-dot }}
+                            {{ interaction.monitor.labTests | remove-ending-dot | capitalize}}
                         </div>
                         <div v-if="interaction.monitor.otherTests">
                             <span class="font-medium">Other tests: </span>
-                            {{ interaction.monitor.otherTests | remove-ending-dot }}
+                            {{ interaction.monitor.otherTests | remove-ending-dot | capitalize}}
                         </div>
                         <div v-if="interaction.monitor.symptoms">
                             <span class="font-medium">Symptoms: </span>
-                            {{ interaction.monitor.symptoms | remove-ending-dot }}
+                            {{ interaction.monitor.symptoms | remove-ending-dot | capitalize}}
                         </div>
                     </div>
                     <collapse

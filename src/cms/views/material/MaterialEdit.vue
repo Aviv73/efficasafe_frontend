@@ -1,10 +1,57 @@
 <template>
   <section class="container">
+      <v-app-bar-nav-icon class="drawer-btn" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-navigation-drawer
+        v-model="drawer"
+        fixed
+        bottom
+        temporary
+      >
+        <v-list nav dense>
+        <v-subheader>Navigation</v-subheader>
+          <v-list-item-group
+            color="primary"
+          >
+            <v-subheader>Navigation</v-subheader>
+            <v-list-item @click="goto('Description')">Description</v-list-item>
+            <v-list-item @click="goto('DBDescription')">DB Description</v-list-item>
+            <v-list-item @click="goto('DrugBanks clinical description')">DrugBank's clinical description</v-list-item>
+            <v-list-item @click="goto('Dosage')">Dosage</v-list-item>
+            <v-list-item @click="goto('Sensitivities')">Sensitivities</v-list-item>
+            <v-list-item @click="goto('Adverse Reactions')">Adverse Reactions</v-list-item>
+            <v-list-item @click="goto('Overdosage')">Overdosage</v-list-item>
+            <v-list-item @click="goto('Precautions')">Precautions</v-list-item>
+            <v-list-item @click="goto('Mechanism Of Action')">Mechanism Of Action</v-list-item>
+            <v-list-item @click="goto('Contraindications')">Contraindications</v-list-item>
+            <v-list-item @click="goto('Toxicity')">Toxicity</v-list-item>
+            <v-list-item @click="goto('Pregnancy')">Pregnancy</v-list-item>
+            <v-list-item @click="goto('Lactation')">Lactation</v-list-item>
+            <v-list-item @click="goto('Effect on drug metabolism')">Effect on drug metabolism</v-list-item>
+            <v-list-item @click="goto('Detailed Pharmacology')">Detailed Pharmacology</v-list-item>
+            <v-list-item @click="goto('Active Constituents')">Active Constituents</v-list-item>
+            <v-list-item @click="goto('References')">References</v-list-item>
+            <v-list-item @click="goto('Pathways')">Pathways</v-list-item>
+            <v-list-item @click="goto('Pharmacology')">Pharmacology</v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-navigation-drawer>      
       <confirm-delete-item
         :dialog="dialog"
         @remove-item-canceled="removeItemCanceled"
         @remove-item-confirmed="removeItemConfirmed"
       />
+      <v-dialog v-model="refDeleteAllDialog" persistent max-width="600">
+        <v-card class="delete-ref-dialog" width="600" height="200">
+          <v-card-title class="primary headline" style="color:white; font-weight:bold;">
+            Are you sure you want to delete this all ref?
+          </v-card-title>
+          <p>Deleting all refs can lead to bugs if not done carefully</p>
+          <div class="btn-container">
+            <v-btn class="cancel-btn" @click="closeDeleteAllRefDialog" color="normal">cancel</v-btn>
+            <v-btn class="cancel-btn" @click="deleteAllRef" color="error">delete all</v-btn>
+          </div>
+        </v-card>
+      </v-dialog>
       <v-dialog v-model="refDialog" persistent max-width="600">
         <v-card>
           <v-card-title class="primary headline" style="color:white; font-weight:bold;">
@@ -256,19 +303,19 @@
             </v-chip-group>
            </div>
 
-          <h3>Description:</h3>
+          <h3 ref="Description">Description:</h3>
           <ckeditor
             v-model="editedMaterial.desc"
             :config="CKEditorConfig"
           ></ckeditor>
 
-          <h3 class="text-capitalize">DrugBank's description</h3>
+          <h3 ref="DBDescription" class="text-capitalize">DrugBank's description</h3>
           <ckeditor
             v-model="editedMaterial.dBankDesc"
             :config="CKEditorConfig"
           ></ckeditor>
 
-          <h3 class="text-capitalize">DrugBank's clinical description</h3>
+          <h3 ref="DrugBanks clinical description" class="text-capitalize">DrugBank's clinical description</h3>
           <ckeditor
             v-model="editedMaterial.dBankClinicalDesc"
             :config="CKEditorConfig"
@@ -387,79 +434,79 @@
             </v-chip-group>
           </div>
 
-          <h3>Dosage:</h3>
+          <h3 ref="Dosage">Dosage:</h3>
           <ckeditor
             v-model="editedMaterial.dosage"
             :config="CKEditorConfig"
           ></ckeditor>
 
-          <h3>Sensitivities:</h3>
+          <h3 ref="Sensitivities">Sensitivities:</h3>
           <ckeditor
             v-model="editedMaterial.sensitivities"
             :config="CKEditorConfig"
           ></ckeditor>
 
-          <h3>Adverse Reactions:</h3>
+          <h3 ref="Adverse Reactions">Adverse Reactions:</h3>
           <ckeditor
             v-model="editedMaterial.adverseReactions"
             :config="CKEditorConfig"
           ></ckeditor>
 
-          <h3>Overdosage:</h3>
+          <h3 ref="Overdosage">Overdosage:</h3>
           <ckeditor
             v-model="editedMaterial.overdosage"
             :config="CKEditorConfig"
           ></ckeditor>
 
-          <h3>Precautions:</h3>
+          <h3 ref="Precautions">Precautions:</h3>
           <ckeditor
             v-model="editedMaterial.precautions"
             :config="CKEditorConfig"
           ></ckeditor>
 
-          <h3>Mechanism Of Action:</h3>
+          <h3 ref="Mechanism Of Action">Mechanism Of Action:</h3>
           <ckeditor
             v-model="editedMaterial.mechanismOfAction"
             :config="CKEditorConfig"
           ></ckeditor>
 
-          <h3>Contraindications:</h3>
+          <h3 ref="Contraindications">Contraindications:</h3>
           <ckeditor
             v-model="editedMaterial.contraindications"
             :config="CKEditorConfig"
           ></ckeditor>
 
-          <h3>Toxicity:</h3>
+          <h3 ref="Toxicity">Toxicity:</h3>
           <ckeditor
             v-model="editedMaterial.toxicity"
             :config="CKEditorConfig"
           ></ckeditor>
 
-          <h3>Pregnancy:</h3>
+          <h3 ref="Pregnancy">Pregnancy:</h3>
           <ckeditor
             v-model="editedMaterial.pregnancy"
             :config="CKEditorConfig"
           ></ckeditor>
 
-          <h3>Lactation:</h3>
+          <h3 ref="Lactation">Lactation:</h3>
           <ckeditor
             v-model="editedMaterial.lactation"
             :config="CKEditorConfig"
           ></ckeditor>
 
-          <h3>Effect on drug metabolism:</h3>
+          <h3 ref="Effect on drug metabolism">Effect on drug metabolism:</h3>
           <ckeditor
             v-model="editedMaterial.effectOnDrugMetabolism"
             :config="CKEditorConfig"
           ></ckeditor>
 
-          <h3>Detailed Pharmacology:</h3>
+          <h3 ref="Detailed Pharmacology">Detailed Pharmacology:</h3>
           <ckeditor
             v-model="editedMaterial.detailedPharmacology"
             :config="CKEditorConfig"
           ></ckeditor>
 
-          <h3>Active Constituents:</h3>
+          <h3 ref="Active Constituents">Active Constituents:</h3>
           <ckeditor
             v-model="editedMaterial.activeConstituents"
             :config="CKEditorConfig"
@@ -483,7 +530,7 @@
             </v-chip-group>
           </div>
 
-          <h3 class="text-center mb-2">References</h3>
+          <h3 ref="References" class="text-center mb-2">References</h3>
           <reference-table
             class="ref-table mb-6"
             :isEdit="true"
@@ -491,6 +538,8 @@
             :references="editedMaterial.refs"
             @refs-uploaded="addRefs"
           />
+
+          <v-btn class="mb-10" color="error" width="200" @click="openDeleteAllRefDialog">DELETE ALL references</v-btn>
           
           <d-bank-refs-table 
             :refs="editedMaterial.dBankRefs"
@@ -549,7 +598,7 @@
             />
           </div>
           
-          <h3 class="text-center mb-2">Pathways</h3>
+          <h3 ref="Pathways" class="text-center mb-2">Pathways</h3>
           <pathway-table 
             :items="editedMaterial.pathways"
             :isEdit="true"
@@ -630,7 +679,7 @@
             </v-list>
           </div>
 
-          <h3>Pharmacology:</h3>
+          <h3 ref="Pharmacology">Pharmacology:</h3>
           <h4>Indication:</h4>
           <ckeditor
             v-model="editedMaterial.pharmacology.indication"
@@ -825,9 +874,11 @@ export default {
       dialog: false,
       refDialog: false,
       refDeleteDialog: false,
+      refDeleteAllDialog:false,
       dBankRefDialog: false,
       pathwayDialog: false,
       externalLinksDialog: false,
+      drawer: false,
       editedExternalLink: {
         resource: '',
         url: ''
@@ -1019,6 +1070,10 @@ export default {
       this.closeRefDialog()
       this.closeDeleteRefDialog()
     },
+    deleteAllRef(){
+      this.editedMaterial.refs = []
+      this.closeDeleteAllRefDialog()
+    },
     openDeleteRefDialog(){
       this.refDeleteDialog = true
     },
@@ -1034,6 +1089,12 @@ export default {
     closeRefDialog() {
       this.editedRef = materialService.getEmptyRef();
       this.refDialog = false;
+    },
+    openDeleteAllRefDialog(){
+      this.refDeleteAllDialog = true
+    },
+    closeDeleteAllRefDialog(){
+      this.refDeleteAllDialog = false
     },
     async loadLabels() {
       this.$store.dispatch({ type: 'loadLabels' });
@@ -1128,6 +1189,13 @@ export default {
       if (idx === -1) {
         this.editedMaterial[arrName].push(label);
       }
+    },
+    goto(refName) {
+      var element = this.$refs[refName];
+      var top = element.offsetTop;
+
+      window.scrollTo(0, top);
+      this.drawer = !this.drawer
     }
   },
   async created() {

@@ -85,7 +85,7 @@
         z-index: 9;
         transition: right .4s linear;
 
-        button:first-child {
+        button:first-child,  button:nth-child(2){
             margin-right: 12px;
         }
     }
