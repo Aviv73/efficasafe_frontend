@@ -28,7 +28,7 @@ export default {
             onboardingTourSteps: [
                 {
                     target: '.v-tour-step-0',
-                    content: '<p class="v-step-txt">Let us show you around. Take a short tour with us</p>',
+                    content: '<p class="v-step-txt">Let us show you around! insert your materials here</p>',
                     params: {
                         enableScrolling: false
                     }
@@ -106,7 +106,7 @@ export default {
                 },
                 {
                     target: '.v-tour-step-6',
-                    content: '<p class="v-step-txt">Gain valuable insights on clinical and laboratory parameters to monitor</p>',
+                    content: '<p class="v-step-txt">Optimize treatment with synergistics</p>',
                     params: {
                         placement: 'top',
                         enableScrolling: false
@@ -120,7 +120,7 @@ export default {
                 },
                 {
                     target: '.v-tour-step-7',
-                    content: '<p class="v-step-txt">Optimize treatment with synergistics</p>',
+                    content: '<p class="v-step-txt">Gain valuable insights on clinical and laboratory parameters to monitor</p>',
                     params: {
                         placement: 'top',
                         enableScrolling: false

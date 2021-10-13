@@ -86,16 +86,14 @@
                         </template>
                         <li
                             class="search-engine-search-materials-chip clip-txt activator v-tour-step-1"
-                            :class="{
-                                'disabled': result.isIncluded
-                            }" 
-                            :style="{ 'background-image': `url('${getResultIcon(result)}')` }"
                         >
-                            {{ result.txt }}
+                            <img :src="getResultIcon(result)" alt="" :class="{'disabled': result.isIncluded}">
+                            <p :class="{'disabled': result.isIncluded}">{{ result.txt }}</p> 
+                            
                             <span class="search-engine-search-materials-chip-actions">
                                 <information-outline-icon
                                     class="info-icon hover-activator"
-                                    :class="{ 'under-construction': isOneUnderStudy(result) }"
+                                    :class="{ 'under-construction': isOneUnderStudy(result), 'red': result.isIncluded }"
                                     :size="16"
                                     title=""
                                 />
@@ -104,7 +102,7 @@
                                     @click.stop="removeMaterials(result.txt)"
                                     :data-close-btn="true"
                                 >
-                                    <close-icon :size="16" title="" />
+                                    <close-icon :size="16" title="" class='black'/>
                                 </button>
                             </span>
                         </li>
@@ -214,7 +212,7 @@
                         </li>
                         <li class="search-engine-nav-link">
                             <router-link
-                                class="link boosters pb-tour-step-0 v-tour-step-7"
+                                class="link boosters pb-tour-step-0 v-tour-step-6"
                                 :to="{ name: 'Boosters', query: this.$route.query }"
                             >
                                 Positive boosters
@@ -229,7 +227,7 @@
                                 </span>
                             </router-link>
                         </li>
-                        <li class="search-engine-nav-link v-tour-step-6">
+                        <li class="search-engine-nav-link v-tour-step-7">
                             <router-link
                                 class="link"
                                 :to="{ name: 'Monitor', query: this.$route.query }"
@@ -413,7 +411,7 @@ export default {
                 if (!isSameSearch) {
                     await this.getResults();
                 }
-                if (this.materialsLength >= 2 && !storageService.load('did-onboarding-tour') && !this.isScreenNarrow) {
+                if (this.materialsLength >= 1 && !storageService.load('did-onboarding-tour') && !this.isScreenNarrow) {
                     this.$tours['onboarding-tour'].start();
                 }
             },

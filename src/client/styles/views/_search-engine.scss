@@ -167,9 +167,20 @@
                 cursor: pointer;
                 animation: fade-in .4s ease;
 
-                &.disabled {
+                .disabled {
                     opacity: .5;
                 }
+                
+                img{
+                    width: 14px;
+                    margin-left: -21px;
+                    position: absolute;
+                    top: 11px;
+                }
+                p{
+                    display: inline;
+                }
+                
                 &-actions {
                     position: absolute;
                     top: 50%;
@@ -183,13 +194,21 @@
                     .info-icon {
                         height: 16px;
                         margin-inline-end: 5px;
+                        color:#56c596 ;
 
                         &.under-construction {
                             color: $yellow;
                         }
+                        &.red {
+                            color: #e63946;
+                        }
                     }
                     .close-btn {
                         height: 16px;
+                        color: rgba(0, 0, 0, 0.719);
+                    }
+                    .black {
+                        color: black
                     }
                 }
             }
@@ -364,6 +383,7 @@
             
             &.boosters {
                 flex-wrap: wrap;
+                color: $green;
             }
             &::after {
                 content: "";
@@ -432,14 +452,17 @@
         font-size: rem(15px);
         line-height: rem(17px);
         max-width: 700px;
+        z-index: 80;
 
         &-container {
-            width: rem(250px);
+            width: rem(400px);
         }
 
         &-txt {
             width: 80%;
             margin: 0 auto;
+            margin-top: 10px;
+            margin-bottom: 10px;
             font-size: rem(18px);
             line-height: rem(24px);
         }
@@ -479,3 +502,4 @@
         opacity: 0;
     }
 }
+

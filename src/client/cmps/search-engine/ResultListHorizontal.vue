@@ -28,7 +28,7 @@
                     title="Sort by recommendation"
                     tabindex="0"
                 >
-                    <input type="checkbox" hidden @change="emitSort('recommendation', $event.target.checked)" />
+                    <input type="checkbox" hidden @change="emitSort('recommendation', !$event.target.checked)" />
                     <sort-vertical-icon class="sort-icon" title="" />
                     <span>Recommendation</span>
                 </label>
@@ -84,6 +84,7 @@
                                 <li>D - case report</li>
                                 <li>E - multi pre-clinical</li>
                                 <li>F - 1 pre-clinical</li>
+                                <li>Z - no rating</li>
                             </ul>
                         </div>
                     </template>

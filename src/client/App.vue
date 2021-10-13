@@ -69,14 +69,16 @@ export default {
         eventBus.$on(EV_open_singup, this.onSignUp);
         eventBus.$on(EV_open_login, this.onLogin);
         await this.$store.dispatch('pullManagementData')
-        if(this.$store.getters.loggedInUser){
+        if(!this.$store.getters.loggedInUser){
             try{
-                await this.$store.dispatch('checkIfSession')
+                await this.$store.dispatch('getUserInfo');
             }catch(err){
                 console.log(err);
             }
         }
-        if(!this.$store.getters.loggedInUser){
+        if(this.$store.getters.loggedInUser){
+            await this.$store.dispatch('checkIfSession')
+        }else{
             this.$store.commit('setFreeSearchesCount');
         }
     },
