@@ -80,7 +80,7 @@
         </div>
         <div v-if="materials.length === 1 && !isOneMaterial" class="interactions-preview-actions">
             <router-link :to="`/search?q=${userQuery}`" target="_blank">
-                All interactions of material
+                All interactions of this material
             </router-link>
         </div>
     </section>

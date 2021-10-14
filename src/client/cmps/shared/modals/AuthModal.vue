@@ -2,66 +2,72 @@
         <div class="auth-modal">
             <div class="auth-modal-cover" @click.stop="closeModal"></div>
             <div class="auth-modal-content txt-center">
-                <button @click="closeModal" class="close-modal-btn">
-                    <close-icon :size="14" />
-                </button>
-                <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
-                <div v-if="showFreeSearchesMsg" class="searches-msg">
-                    <h3>No free searches left</h3>
-                    <h4>Want to enjoy efficasafe free trial for</h4>
-                    <h4>another 14 days?</h4>
-                    <p><span>No problem!</span> just sign up and continue searching</p>
-                </div>
-                <div v-if="isEmailExists" class="msg failed">This email already exists</div>
-                <template v-if="!isShowVereficationMsg">
-                    <form @submit.prevent="onRegister" class="auth-modal-field">
-                        <input @focus="resetError('email')" :class="{ 'is-invalid': isInvaliedEmail }" type="text" placeholder="Email" v-model="cred.email">
-                        <input @focus="resetError('pass')" :class="{ 'is-invalid': isInvaliedPassword }" type="password" placeholder="Password" v-model="cred.password">
-                        <input @focus="resetError('name')" :class="{ 'is-invalid': isInvaliedName }" type="text" placeholder="Username" v-model="cred.username">
-                        <div class="checkbox-container">
-                            <input @change="changeCheckbox" class='checkbox' :class="{ 'is-invalid': isInvaliedName }" type="checkbox" v-model="cred.agreedToTerm">  
-                            <p>I agree to the <a href="/terms-and-conditions">term and conditions</a></p>
-                        </div>  
-                        <button></button>
-                    </form>
-                    <p style="margin-bottom: 10px">or</p>
-                    <div class="auth-modal-content-media-btns">
-                        <a :href="googleLink" class="blue" role="button">
-                            <img src="@/client/assets/imgs/google.svg" alt="Logo" />
-                            SIGN UP WITH GOOGLE 
-                        </a>
-                    </div>
-                    <button @click="onRegister" class="register-btn" :class="{'invalid-btn': isInvaliedEmail || isInvaliedPassword || isInvaliedName || isNotAgreed}">{{btnTxt}}</button>
-                </template>
-                <template v-else>
-                    <p class="auth-modal-title font-medium">Please confirm your email address</p>
-
-                    <p class="auth-modal-sub-title font-bold">
-                        An email has been sent to you.
-                        in order to complete the registration process, please go to your
-                        mail and click the confirmation link.
-                    </p>
-
-                    <p class="desc mt">
-                        If you can't find the confirmation email, please check
-                        your spam or sales folder. 
-                    </p>
-                    <p class="desc">
-                        In addition, please verify that you entered a
-                        valid email address. you can find your email in your account in the
-                        upper left corner.
-                    </p>
-
-                    <p class="assistance">
-                        If you need assistance, please contact us.
-                    </p>
-                    <button
-                        class="resend-email-btn"
-                        @click="onResendEmail"
-                    >
-                        Resend email verification
+                <div class="auth-modal-content-container">
+                    <button @click="closeModal" class="close-modal-btn">
+                        <close-icon :size="14" />
                     </button>
-                </template>
+                    <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
+                    <div v-if="showFreeSearchesMsg" class="searches-msg">
+                        <h3>No free searches left</h3>
+                        <h4>Want to enjoy efficasafe free trial for</h4>
+                        <h4>another 14 days?</h4>
+                        <p><span>No problem!</span> just sign up and continue searching</p>
+                    </div>
+                    <div v-if="isEmailExists" class="msg failed">This email already exists</div>
+                    <template v-if="!isShowVereficationMsg">
+                        <form @submit.prevent="onRegister" class="auth-modal-field">
+                            <input @focus="resetError('email')" :class="{ 'is-invalid': isInvaliedEmail }" type="text" placeholder="Email" v-model="cred.email">
+                            <input @focus="resetError('pass')" :class="{ 'is-invalid': isInvaliedPassword }" type="password" placeholder="Password" v-model="cred.password">
+                            <input @focus="resetError('name')" :class="{ 'is-invalid': isInvaliedName }" type="text" placeholder="Username" v-model="cred.username">
+                            <div class="checkbox-container">
+                                <input @change="changeCheckbox" class='checkbox' :class="{ 'is-invalid': isInvaliedName }" type="checkbox" v-model="cred.agreedToTerm">  
+                                <p>I agree to the <a href="/terms-and-conditions">term and conditions</a></p>
+                            </div>  
+                            <button @click="onRegister" class="register-btn" :class="{'invalid-btn': isInvaliedEmail || isInvaliedPassword || isInvaliedName || isNotAgreed}">{{btnTxt}}</button>
+                        </form>
+                        <div class="or-container">
+                            <div class="line"></div>
+                            <p style="margin-bottom: 10px">or Signup with</p>
+                            <div class="line"></div>
+                        </div>
+                        <div class="auth-modal-content-media-btns">
+                            <a :href="googleLink" class="blue" role="button">
+                                <img src="@/client/assets/imgs/google.jpeg" alt="Logo" />
+                                Signup with google 
+                            </a>
+                        </div>
+                        
+                    </template>
+                    <template v-else>
+                        <p class="auth-modal-title font-medium">Please confirm your email address</p>
+
+                        <p class="auth-modal-sub-title font-bold">
+                            An email has been sent to you.
+                            in order to complete the registration process, please go to your
+                            mail and click the confirmation link.
+                        </p>
+
+                        <p class="desc mt">
+                            If you can't find the confirmation email, please check
+                            your spam or sales folder. 
+                        </p>
+                        <p class="desc">
+                            In addition, please verify that you entered a
+                            valid email address. you can find your email in your account in the
+                            upper left corner.
+                        </p>
+
+                        <p class="assistance">
+                            If you need assistance, please contact us.
+                        </p>
+                        <button
+                            class="resend-email-btn"
+                            @click="onResendEmail"
+                        >
+                            Resend email verification
+                        </button>
+                    </template>
+                </div>
             </div>
         </div>
 </template>
@@ -105,7 +111,7 @@ export default {
             if(this.isInvaliedPassword) return 'PASSWORD MUST BE AT LEAST 8 CHARACTERS, WITH 1 UPPERCASE LETTER, 1 LOWERCASS LETTER AND 1 NUMBER'
             if(this.isInvaliedName) return 'USERNAME IS REQUIRED'
             if(this.isNotAgreed) return 'YOU MUST AGREE TO THE TERMS AND CONDITIONS'
-            return 'SIGN UP'
+            return 'Signup'
         },
         googleLink(){
             return (process.env.NODE_ENV === 'development') ? 'http://localhost:3000/auth/google' : '/auth/google'
