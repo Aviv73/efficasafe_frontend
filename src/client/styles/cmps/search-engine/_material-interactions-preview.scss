@@ -64,6 +64,10 @@
         padding-block-start: rem(14px);
         line-height: rem(29px);
 
+        &-title{
+            color: $clr7;
+        }
+
         &-interaction {
             max-width: rem(130px);
 

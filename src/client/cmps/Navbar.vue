@@ -220,7 +220,7 @@ export default {
             this.isNavActive = !this.isNavActive;
         },
         onSubscribe() {
-            alert('Subscribe is not yet available. Please signup for a free trial.');
+            this.$router.push('/subscribe')
         },
         onLogin() {
             this.$emit('login');

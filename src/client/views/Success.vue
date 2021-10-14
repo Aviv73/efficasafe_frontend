@@ -32,6 +32,7 @@ export default {
   async created() {
     const isPaying = storageService.load('isPaying')
     if(isPaying){
+      await this.$store.dispatch({type: 'getUserInfo'})
       storageService.remove('isPaying')
       const user = JSON.parse(JSON.stringify(this.loggedInUser))
       const managementData = await manageService.list()
@@ -51,7 +52,6 @@ export default {
               plan: plan.durationTxt,
               until: user.trialTime
           })
-          // user.isStillPaying = true
           await this.$store.dispatch({ type: 'updateLoggedInUser', user });
       }
     }

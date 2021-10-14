@@ -26,7 +26,6 @@ export const userStore = {
         },
         setLoggedInUser(state, { user }) {
             state.loggedInUser = user;
-            // storageService.store('userProfile', user);
         },
         setUsers(state, { users, total }) {
             state.users = users;
@@ -49,7 +48,6 @@ export const userStore = {
         async getUserInfo({ commit }) {
             const user = await userService.getUserInfo();
             if (!user.message) {
-                // storageService.store('userProfile', user);
                 commit({ type: 'setLoggedInUser', user });
             }
         },
@@ -76,7 +74,6 @@ export const userStore = {
                 type: 'setLoggedInUser',
                 user: savedUser
             });
-            // storageService.store('userProfile', savedUser);
             return savedUser;
         },
         async updateAutoPilotContact(context, { user }) {
@@ -100,7 +97,6 @@ export const userStore = {
               const user = await userService.signup(cred);
               await dispatch({type: 'updateAutoPilotContact', user});
               commit({ type: 'setLoggedInUser', user });
-            //   storageService.store('userProfile', user);
             } catch (err) {
               console.log(err);
             }
@@ -109,7 +105,6 @@ export const userStore = {
             try {
               const user = await userService.login(cred);
               commit({ type: 'setLoggedInUser', user });
-            //   storageService.store('userProfile', user);
               return 'successes'
             } catch (err) {
                 throw 'err'

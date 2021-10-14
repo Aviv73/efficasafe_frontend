@@ -50,10 +50,13 @@
                             <lock-icon class="lock-icon" :size="18"/> <p> open only for registered subscribers</p>
                         </span>
                         <span v-if="isAllowed" class="table-col">
-                            <tooltip
-                                :txt="getLongEvidenceLevel(interaction.evidenceLevel || interaction.evidence_level)"
-                                right
-                            >
+                            <tooltip right :txt="getLongEvidenceLevel(interaction.evidenceLevel || interaction.evidence_level)">
+                                <template #content>
+                                    <ul class="loe-tooltip">
+                                        <li>{{getLongEvidenceLevel(interaction.evidenceLevel || interaction.evidence_level)}}</li>
+                                        <li v-if="interaction.refs && !interaction.side2Label">{{getRefsCountTxt(interaction)}} scientific articles</li>
+                                    </ul>
+                                </template>
                                 <span class="evidence-level">
                                     {{ interaction.evidenceLevel || interaction.evidence_level }}
                                 </span>
@@ -388,6 +391,15 @@ export default {
                     return `(${interaction.refs.length + this.totalPathwaysRefsCount[`${interaction.side1Material.name}-${interaction.side2Material.name}`]})`;
                 }
                 return `(${interaction.refs.length + this.pathwayRefCount})`;
+            }
+            return '';
+        },
+        getRefsCountTxt(interaction) {
+            if (interaction.refs) {
+                if(this.totalPathwaysRefsCount[`${interaction.side1Material.name}-${interaction.side2Material.name}`]){
+                    return `${interaction.refs.length + this.totalPathwaysRefsCount[`${interaction.side1Material.name}-${interaction.side2Material.name}`]}`;
+                }
+                return `${interaction.refs.length + this.pathwayRefCount}`;
             }
             return '';
         },

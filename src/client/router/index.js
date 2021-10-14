@@ -10,9 +10,9 @@ import VerifyEmail from '@/client/views/auth/VerifyEmail.vue';
 import DBankInteractionDetails from '@/client/views/DBankInteractionDetails';
 import UserAccount from '@/client/views/UserAccount';
 import Logo from '@/client/views/Logo';
-// import Subscribe from '@/client/views/Subscribe';
-// import Payment from '@/client/views/Payment';
-// import Success from '@/client/views/Success';
+import Subscribe from '@/client/views/Subscribe';
+import Payment from '@/client/views/Payment';
+import Success from '@/client/views/Success';
 
 import InteractionList from '@/client/cmps/search-engine/InteractionList';
 import UserApp from '@/client/cmps/user-account/UserApp';
@@ -32,21 +32,21 @@ const routes = [
     name: 'Logo',
     component: Logo
   },
-  // {
-  //   path: '/subscribe',
-  //   name: 'Subscribe',
-  //   component: Subscribe
-  // },
-  // {
-  //   path: '/payment',
-  //   name: 'Payment',
-  //   component: Payment
-  // },
-  // {
-  //   path: '/success',
-  //   name: 'Success',
-  //   component: Success
-  // },
+  {
+    path: '/subscribe',
+    name: 'Subscribe',
+    component: Subscribe
+  },
+  {
+    path: '/payment',
+    name: 'Payment',
+    component: Payment
+  },
+  {
+    path: '/success',
+    name: 'Success',
+    component: Success
+  },
   {
     path: '/verifyEmail/:token',
     name: 'verifyEmail',

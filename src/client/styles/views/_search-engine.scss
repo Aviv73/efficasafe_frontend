@@ -384,6 +384,7 @@
             &.boosters {
                 flex-wrap: wrap;
                 color: $green;
+                font-weight: bold;
             }
             &::after {
                 content: "";

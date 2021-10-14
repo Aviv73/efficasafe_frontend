@@ -59,6 +59,7 @@
             class="interactions-preview-interactions"
         >
             <ul>
+                <p class="interactions-preview-interactions-title">Interacts with:</p>
                 <li
                     class="interactions-preview-interactions-interaction"
                     v-for="interaction in interactions"
