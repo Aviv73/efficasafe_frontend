@@ -71,7 +71,7 @@
                                 class="interaction-icon"
                                 :color="getInteractionColor(interaction.recommendation)"
                             />
-                            {{ getInteractionShortName(interaction.name) }}
+                            <p>{{ getInteractionShortName(interaction.name) }}</p>
                         </div>
                     </span>
                 </li>
@@ -80,7 +80,7 @@
         </div>
         <div v-if="materials.length === 1 && !isOneMaterial" class="interactions-preview-actions">
             <router-link :to="`/search?q=${userQuery}`" target="_blank">
-                All interactions of {{ userQuery }}
+                All interactions of material
             </router-link>
         </div>
     </section>

@@ -5,6 +5,7 @@
     color: $clr1;
     font-size: rem(14px);
     position: relative;
+    width: 275px;
 
     &.under-construction {
         max-width: rem(250px);
@@ -13,7 +14,7 @@
     h6 {
         font-size: rem(12px);
         line-height: rem(22px);
-        margin-block-end: rem(14px);
+        margin-block-end: rem(3px);
         color: $clr7;
     }
     &-warnning {
@@ -37,7 +38,11 @@
             position: relative;
 
             @include for-mobile-layout {
-                max-width: rem(180px);
+                max-width: rem(270px);
+            }
+
+            p{
+                width: 240px;
             }
 
             &.under-construction {
@@ -65,14 +70,16 @@
         line-height: rem(29px);
 
         &-title{
-            color: $clr7;
+            color: #626262;
+            font-size: 12px;
+            margin-block-end: rem(3px);
         }
 
         &-interaction {
             max-width: rem(130px);
 
             @include for-mobile-layout {
-                max-width: rem(180px);
+                max-width: rem(270px);
             }
 
             .interaction-icon {
@@ -90,7 +97,7 @@
 
         a {
             display: inline-block;
-            max-width: 20ch;
+            max-width: 26ch;
         }
     }
     hr {
