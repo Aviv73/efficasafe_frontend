@@ -15,7 +15,8 @@ export const interactionStore = ({
         isPosSuppOpen: false,
         firstInteractionSide: 1,
         redPositiveSupp: [],
-        sortBy:['recommendation', true]
+        sortBy:['recommendation', true],
+        interactionPageHeight: null
     },
     getters: {
         interactions(state) {
@@ -47,6 +48,9 @@ export const interactionStore = ({
         },
         getPathwayRefCount(state){
             return state.pathwayRefCount
+        },
+        getInteractionPageHeight(state){
+            return state.interactionPageHeight
         }
     },
     mutations: {
@@ -108,6 +112,9 @@ export const interactionStore = ({
         },
         setPathwayRefCount(state, {data}){
             state.pathwayRefCount[data.id] = data.count
+        },
+        setInteractionHeight(state, {interactionPageHeight}){
+            state.interactionPageHeight = interactionPageHeight
         }
     },
     actions: {

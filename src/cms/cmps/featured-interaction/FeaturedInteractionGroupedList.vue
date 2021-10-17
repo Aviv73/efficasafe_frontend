@@ -96,6 +96,7 @@ export default {
             return this.$route.query.sortBy === property;
         },
         onRowClick(row) {
+            this.$store.commit ({type: 'setFeaturedHeight', height: window.pageYOffset})
             const idx = this.expanded.indexOf(row);
             if (idx === -1) this.expanded = [ row ];
             else {
@@ -103,7 +104,7 @@ export default {
                 this.$store.commit({ type: 'setLastFilterBy', filterBy: null });
                 this.expanded = [];
             }
-        }
+        },
     },
     created() {
         const { expandedGroups } = this.$store.getters;

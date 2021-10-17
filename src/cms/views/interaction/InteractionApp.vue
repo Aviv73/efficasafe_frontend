@@ -52,6 +52,9 @@ export default {
     totalItems() {
       return this.$store.getters.interactionCount;
     },
+    interactionPageHeight(){
+      return this.$store.getters.getInteractionPageHeight
+    }
   },
   methods: {
     async removeMany(ids) {
@@ -109,6 +112,11 @@ export default {
         console.log('Error:', err);
       }
     },
+  },
+  mounted(){
+    if(this.interactionPageHeight){
+      window.scrollTo(0, this.interactionPageHeight)
+    }
   },
   components: {
     interactionFilter,

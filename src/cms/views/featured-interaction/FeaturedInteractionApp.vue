@@ -49,6 +49,9 @@ export default {
         },
         groupsCount() {
             return this.$store.getters.featuredGroupsCount;
+        },
+        height(){
+            return this.$store.getters.getHeight
         }
     },
     methods: {
@@ -70,6 +73,11 @@ export default {
             filterBy.limit = filterBy.limit || Number.MAX_SAFE_INTEGER;
             await this.$store.dispatch({ type: 'loadFeaturedInteractionGroups', filterBy });
             this.isLoading = false;
+        }
+    },
+    mounted(){
+        if(this.height){
+            window.scrollTo(0, this.height);
         }
     },
     components: {

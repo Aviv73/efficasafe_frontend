@@ -34,7 +34,7 @@
               style="max-width: 200px;"
               :title="item.side1Material.name"
             >
-              <router-link :to="`/interaction/${item._id}`">
+              <div @click="goToInteraction(item._id)">
                 <div class="side-name-img" v-if="item.side1Material">
                   <img
                     :src="require(`@/cms/assets/icons/${item.side1Material.type}.svg`)"
@@ -45,10 +45,10 @@
                     {{ item.side1Material.name }}
                   </span>
                 </div>
-              </router-link>
+              </div>
             </td>
             <td class="td-side">
-              <router-link :to="`/interaction/${item._id}`">
+              <div @click="goToInteraction(item._id)">
                 <div class="side-name-img" v-if="item.side2Material">
                   <img
                     :src="
@@ -81,7 +81,7 @@
                     {{ item.side2DraftName }}
                   </span>
                 </div>
-              </router-link>
+              </div>
             </td>
             <td
               class="td-active"
@@ -221,6 +221,10 @@ export default {
     },
     isSortedBy(property) {
       return this.$route.query.sortBy === property;
+    },
+    goToInteraction(id){
+      this.$store.commit({type:'setInteractionHeight', interactionPageHeight: window.pageYOffset})
+      this.$router.push(`/interaction/${id}`)
     }
   }
 };

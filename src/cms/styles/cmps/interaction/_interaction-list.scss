@@ -11,11 +11,13 @@
 
 .tr-interaction {
     .td-side {
-        a {
+        div {
             text-decoration: none;
             display: flex;
             align-items: center;
             height: 100%;
+            color: #2f83d6;
+            cursor: pointer;
 
             img,
             span {

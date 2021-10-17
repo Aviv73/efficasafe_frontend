@@ -6,7 +6,8 @@ export const featuredInteractionStore = {
         featuredGroupsCount: 0,
         expandedGroups: null,
         lastFilterBy: null,
-        prevState: null
+        prevState: null,
+        height: null
     },
     getters: {
         prevState(state) {
@@ -23,6 +24,9 @@ export const featuredInteractionStore = {
         },
         featuredGroupsCount(state) {
             return state.featuredGroupsCount;
+        },
+        getHeight(state){
+            return state.height
         }
     },
     mutations: {
@@ -40,6 +44,9 @@ export const featuredInteractionStore = {
         },
         setFeaturedGroupsCount(state, { total }) {
             state.featuredGroupsCount = total;
+        },
+        setFeaturedHeight(state, {height}){
+            state.height = height
         }
     },
     actions: {
