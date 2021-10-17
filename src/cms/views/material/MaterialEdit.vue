@@ -5,7 +5,8 @@
         v-model="drawer"
         fixed
         bottom
-        temporary
+        permanent
+        hide-overlay
       >
         <v-list nav dense>
         <v-subheader>Navigation</v-subheader>

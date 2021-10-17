@@ -117,22 +117,13 @@ export default {
             this.isLoading = false;
         },
         sortRes(res, q){
-            const startWithQ = res.filter(str => {
-                const strUpper = str.charAt(0).toUpperCase() + str.slice(1)
-                const strlower = str.charAt(0).toLowerCase() + str.slice(1)
-                if(strUpper.startsWith(q) || strlower.startsWith(q)){
-                    return str
-                }
-            })
-            const dontStartWithQ = res.filter(str => {
-                const strUpper = str.charAt(0).toUpperCase() + str.slice(1)
-                const strlower = str.charAt(0).toLowerCase() + str.slice(1)
-                if(!strUpper.startsWith(q) && !strlower.startsWith(q)){
-                    return str
-                }
-            })
-            return startWithQ.concat(dontStartWithQ)
-
+            const idx = res.findIndex(str => str.toUpperCase() === q.toUpperCase())
+            if(idx >=0){
+                const first = res[idx]
+                res.splice(idx, 1)
+                res.unshift(first)
+            }
+            return res
         },
         emitSelection(item) {
             this.$emit('item-selected', item);

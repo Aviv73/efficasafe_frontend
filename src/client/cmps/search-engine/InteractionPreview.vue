@@ -60,13 +60,13 @@
                                 <span class="evidence-level">
                                     {{ interaction.evidenceLevel || interaction.evidence_level }}
                                 </span>
+                                <span
+                                    class="refs" 
+                                    v-if="interaction.refs && !interaction.side2Label"
+                                >
+                                    {{ getRefsCount(interaction) }}
+                                </span>
                             </tooltip>
-                            <span
-                                class="refs" 
-                                v-if="interaction.refs && !interaction.side2Label"
-                            >
-                                {{ getRefsCount(interaction) }}
-                            </span>
                             <span
                                 v-if="((!interaction.refs && !interaction.severity) || interaction.side2Label) && !interaction.isEmpty"
                                 class="de-activator"
