@@ -1,0 +1,33 @@
+.coupon-edit{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+
+    &-content{
+        padding: 20px;
+
+        .coupon-input{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+    
+            h3{
+                margin-block-start: 16px;
+                margin-right: 10px;
+            }
+        }
+    }
+
+    .btn-container{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        margin-block-end: 10px;
+    }
+}    
+
+.red-txt{
+    color: red;
+}

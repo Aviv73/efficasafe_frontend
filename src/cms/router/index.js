@@ -24,6 +24,7 @@ import dBankResultList from '@/cms/cmps/search-engine/DBankResultList';
 import dBankInteractionDetails from '@/cms/views/DBankInteractionDetails';
 import UploadData from '@/cms/views/UploadData';
 import Management from '@/cms/views/Management';
+import Coupon from '@/cms/views/Coupon';
 
 
 Vue.use(VueRouter);
@@ -39,6 +40,12 @@ const routes = [
     path: '/management',
     name: 'Management',
     component: Management,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/coupon',
+    name: 'Coupon',
+    component: Coupon,
     meta: { requiresAuth: true }
   },
   {

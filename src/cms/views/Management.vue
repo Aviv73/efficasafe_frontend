@@ -1,6 +1,7 @@
 <template>
     <section class="container">
         <template v-if="managementData">
+            <v-btn class="mb-4" @click="$router.push('/coupon')">Manage coupons</v-btn>
             <h2 class="management-title">Management Data</h2>
             <v-form @submit.prevent="uploadData">
                 <h2 class="management-subtitle">Guest mode</h2>
@@ -52,7 +53,7 @@
                             <h3>Duration in months:</h3>
                             <v-text-field
                                 v-model="managementData.plans[idx].duration"
-                                placeholder="Duration in days"
+                                placeholder="Duration in month"
                                 hide-details
                                 single-line
                                 type="number"
@@ -62,7 +63,7 @@
                             <h3>Duration in words:</h3>
                             <v-text-field
                                 v-model="managementData.plans[idx].durationTxt"
-                                placeholder="Duration in days"
+                                placeholder="Duration in words"
                                 hide-details
                                 single-line
                             />
@@ -71,7 +72,7 @@
                             <h3>Price in USD:</h3>
                             <v-text-field
                                 v-model="managementData.plans[idx].priceUSD"
-                                placeholder="Duration in days"
+                                placeholder="Price in USD"
                                 hide-details
                                 single-line
                                 type="number"
@@ -81,17 +82,17 @@
                             <h3>Price in EUR:</h3>
                             <v-text-field
                                 v-model="managementData.plans[idx].priceEUR"
-                                placeholder="Duration in days"
+                                placeholder="Price in EUR"
                                 hide-details
                                 single-line
                                 type="number"
                             />
                         </div>
                         <div class="management-input">
-                            <h3>Price in ISL:</h3>
+                            <h3>Price in ILS:</h3>
                             <v-text-field
                                 v-model="managementData.plans[idx].priceISL"
-                                placeholder="Duration in days"
+                                placeholder="Price in ILS"
                                 hide-details
                                 single-line
                                 type="number"

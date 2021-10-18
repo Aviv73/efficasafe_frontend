@@ -79,11 +79,20 @@
     <div class="form-input cupon-input">
         <label for="">
             <input
+            v-model="couponInput"
             type="text"
             placeholder="Cupon Code"
+            @change="onSearchCoupon"
             />
             <span class="label">Cupon Code</span>
         </label>
+    </div>
+    <div v-if="couponPlan" class="cards-container coupon">
+        <div class="card" :class="{'selected':isSelected(couponPlan._id)}">
+            <h3 class="card-title">{{couponPlan.durationTxt}}</h3>
+            <p class="card-price">{{getCurrencyByLocation()}} <span>{{getPriceByLocation(couponPlan)}}</span> /mo</p>
+            <button class="card-btn" @click="onSelectPrice($event,couponPlan)">select</button>
+        </div>
     </div>
     <button @click="onSubmit" class="payment-btn">Continue to payment</button>
   </section>
@@ -102,7 +111,10 @@ export default {
   data() {
     return {
       plans: null,
+      coupons: null, 
+      couponPlan: null,
       selectedPlan: null,
+      couponInput: '',
       user: {}
     };
   },
@@ -146,7 +158,17 @@ export default {
         this.user.phone = `+1 ${this.user.phone}`;
       }
     },
-    
+    onSearchCoupon(){
+        this.couponPlan = this.coupons.find(cop => cop.code === this.couponInput)
+        this.couponInput = ''
+        if(this.couponPlan){
+            if(this.couponPlan.validUntil < Date.now()) {
+                this.couponPlan = null
+                return 
+            }
+            this.selectedPlan = JSON.parse(JSON.stringify(this.couponPlan))
+        }
+    },
     async onSubmit(){
         if(!this.loggedInUser){
             eventBus.$emit(EV_show_user_msg, 'Please Login', 3000);
@@ -196,6 +218,7 @@ export default {
   async created() {
       const managementData = await manageService.list()
       this.plans = managementData.plans
+      this.coupons = managementData.coupons
       this.selectedPlan = this.$store.getters.getSelectedPaymentPlan
       this.user = this.$store.getters.loggedInUser || {}
     //get user contry to show currect prices
