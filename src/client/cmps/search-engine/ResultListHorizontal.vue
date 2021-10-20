@@ -1,5 +1,12 @@
 <template>
     <section class="horizontal-list">
+        <div class="results-header">
+            <div v-if="$route.name === 'Results'" class="btn-container">
+                <button v-if="!isAllSupp" @click="showResults('all')" :class="{selected: isSelected('all')}">All Results</button>
+                <button @click="showResults('supp')" :class="{selected: isSelected('supp')}">{{suppDrugBtnTxt}}</button>
+                <button v-if="!isAllSupp" @click="showResults('drug')" :class="{selected: isSelected('drug')}">Drug - Drug</button>
+            </div>
+        </div>
         <header class="horizontal-list-header">
             <span class="horizontal-list-header-item">
                 <label
@@ -57,27 +64,21 @@
                 </tooltip>
             </span>
             <span class="horizontal-list-header-item">
-                <label
+                <div
                     class="flex-align-center"
                     title="Sort by level of evidence"
                     tabindex="0"
                 >
-                    <input type="checkbox" hidden @change="emitSort('evidenceLevel', $event.target.checked)" />
-                    <sort-vertical-icon class="sort-icon" title="" />
                     <span>Level of Evidence</span>
-                </label>
+                </div>
                 <tooltip on="hover" right right-bottom>
                     <template #content>
                         <div class="tooltip-content">
-                            <ol v-if="$route.name === 'Drug2Drug'">
-                                <li>
-                                    information formally provided in official prescribing information
-                                </li>
-                                <li>
-                                    based on scientific and clinical knowledge referenced from a variety of evidence sources
-                                </li>
-                            </ol>
-                            <ul v-else>
+                            <ul>
+                                <h3 class="loe-tootltip-header">DRUGBANK Ratings</h3>
+                                <li>1 - Drug label</li>
+                                <li>2 - Research</li>
+                                <h3 class="loe-tootltip-header mt">Efficasafe Ratings</h3>
                                 <li>A - multi clinical or meta analysis</li>
                                 <li>B - 1 clinical or cohort + pre-clinical</li>
                                 <li>C - 1 clinical or cohort</li>
@@ -332,15 +333,35 @@ export default {
         sortBy(){
             return this.$store.getters.InteractionSort;
         },
+        listType(){
+            return this.$store.getters.getListType;
+        },
         suppInteractionsToShow(){
             const toShow =  this.currSuppInteractions.filter(i => !i.isNotToShow)
             return toShow
         },
         suppCount(){
             return this.$store.getters.getPosSuppLength
+        },
+        isSelected(){
+            return (type) => {
+                return type === this.listType
+            }
+        },
+        isAllSupp(){
+            if(!this.materials.length) return false
+            return this.materials.every(material => material.type !== 'drug');
+        },
+        suppDrugBtnTxt(){
+            if(this.isAllSupp) return 'All Results'
+            return 'Supplements - Drug'
         }
     },
     methods: {
+        showResults(type){
+            this.$store.commit({type: 'setListType', listType: type})
+            this.$router.push({ query: { q: [ ...this.$route.query.q ], page: 1 } }).catch(() => {})
+        },
         removeInteraction(idx){
             const emptyInteraction = {
                         name: this.currSuppInteractions[idx].name,

@@ -109,11 +109,19 @@ export default {
     watch: {
         page(val) {
             this.$emit('page-changed', val);
-        }
+        },
+        listType:{
+            handler(){
+                this.page = 1
+            }
+        },
     },
     computed:{
         loggedInUser() {
             return this.$store.getters.loggedInUser;
+        },
+        listType(){
+            return this.$store.getters.getListType;
         },
     },
     methods:{

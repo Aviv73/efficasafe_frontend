@@ -68,7 +68,7 @@ const routes = [
     children: [
       {
         path: '/search',
-        name: 'Supp2Drug',
+        name: 'Results',
         component: InteractionList
       },
       {

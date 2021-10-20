@@ -179,33 +179,34 @@
                         <li class="search-engine-nav-link">
                             <router-link
                                 class="link"
-                                :to="{ name: 'Supp2Drug', query: this.$route.query }"
+                                :to="{ name: 'Results', query: this.$route.query }"
                             >
-                                Supplement - Drug
-                                <span v-if="total">
+                                {{resultsCount}} Results
+                                <span v-if="allInteractionsColorCount && allInteractionsColorCount.red">
                                     {{'\xa0'}}
                                     <span
                                         class="badge"
-                                        :style="worstSupp2DrugColor"
+                                        style="color: white; background-color: #E63946"
                                     >
-                                        {{ total }}
+                                        {{ allInteractionsColorCount.red }}
                                     </span>
                                 </span>
-                            </router-link>
-                        </li>
-                        <li class="search-engine-nav-link">
-                            <router-link
-                                class="link"
-                                :to="{ name: 'Drug2Drug', query: this.$route.query }"
-                            >
-                                Drug - Drug
-                                <span v-if="dBankTotal">
+                                <span v-if="allInteractionsColorCount && allInteractionsColorCount.yellow">
                                     {{'\xa0'}}
                                     <span
                                         class="badge"
-                                        :style="worstDrug2DrugColor"
+                                        style="color: blue; background-color: #F6D55C"
                                     >
-                                        {{ dBankTotal }}
+                                        {{ allInteractionsColorCount.yellow }}
+                                    </span>
+                                </span>
+                                <span v-if="allInteractionsColorCount && allInteractionsColorCount.green">
+                                    {{'\xa0'}}
+                                    <span
+                                        class="badge"
+                                        style="color: white; background-color: #56C596"
+                                    >
+                                        {{ allInteractionsColorCount.green }}
                                     </span>
                                 </span>
                             </router-link>
@@ -359,12 +360,15 @@ export default {
             isLoading: false,
             isPBLoading: false,
             materials: [],
+            allInteractions: [],
             interactions: [],
             pageCount: 0,
             total: 0,
+            interactionsColorCountMap: {red: 0, yellow: 0, green: 0},
             dBankInteractions: [],
             dBankPageCount: 0,
             dBankTotal: 0,
+            dBankInteractionsColorCountMap: {red: 0, yellow: 0, green: 0},
             positiveInteractions: [],
             suppPositiveInteractions: [],
             emptySuppPositiveInteractions: [], 
@@ -390,7 +394,6 @@ export default {
             async handler(to, from) {
                 this.loadingTime = 0
                 this.countLoadingTime()
-                this.$store.commit('resetPosSupp')
                 this.$store.commit('resetRedPositiveSupp')
                 this.isArrowShown = true
                 if (this.$route.name === 'Boosters' && !this.isScreenNarrow && !storageService.load('did-p-boosters-tour')) {
@@ -400,8 +403,9 @@ export default {
                 }
                 const { q } = this.$route.query;
                 if (!q || !q.length) {
-                    eventBus.$emit(EV_search_results_cleared);
+                    this.$store.commit('resetPosSupp')
                     this.reset();
+                    eventBus.$emit(EV_search_results_cleared);
                     return;
                 }
                 if (!Array.isArray(q) && q) {
@@ -409,6 +413,7 @@ export default {
                 }
                 const isSameSearch = from && from.q && to.q.length === from.q.length && to.q.every((val, idx) => val === from.q[idx]) && from.page === to.page;
                 if (!isSameSearch) {
+                    this.$store.commit('resetPosSupp')
                     await this.getResults();
                 }
                 if (this.materialsLength >= 1 && !storageService.load('did-onboarding-tour') && !this.isScreenNarrow) {
@@ -426,10 +431,9 @@ export default {
                 }
             }
             const routesOrder = {
-                'Supp2Drug': 1,
-                'Drug2Drug': 2,
-                'Boosters': 3,
-                'Monitor': 4
+                'Results': 1,
+                'Boosters': 2,
+                'Monitor': 3
             };
             if (to.name === 'Boosters' || to.name === 'Monitor') {
                 this.isViewVertical = false;
@@ -442,17 +446,11 @@ export default {
     computed: {
         routableListData() {
             switch (this.$route.name) {
-                case 'Supp2Drug':
+                case 'Results':
                     return {
-                        interactions: this.formatedInteractions,
-                        pageCount: this.pageCount,
+                        interactions: this.getRelevetInteractions,
+                        pageCount: this.getReleventPageCount,
                         total: this.total
-                    };
-                    case 'Drug2Drug':
-                    return {
-                        interactions: this.dBankInteractions,
-                        pageCount: this.dBankPageCount,
-                        total: this.dBankTotal
                     };
                     case 'Boosters':
                     return {
@@ -472,6 +470,51 @@ export default {
                     };
             }
             return []
+        },
+        getRelevetInteractions(){
+            if(this.listType === 'supp') return this.formatedInteractions
+            else if(this.listType === 'drug') return this.dBankInteractions
+            else {
+                const isAllSupplements = this.materials.every(material => material.type !== 'drug');
+                if(isAllSupplements) return this.formatedInteractions
+                let { page } = this.$route.query
+                if(!page) page = 1
+                const limit = Math.max(this.pageCount, this.dBankPageCount)
+                if( limit == page) return this.allInteractions
+                return this.dBankInteractions
+                }
+        },
+        getReleventPageCount(){
+            if(this.listType === 'supp') return this.pageCount 
+            else return this.dBankPageCount 
+        },
+        allInteractionCount(){
+            let intCount = this.total || 0
+            let dBankIntCount = this.dBankTotal || 0
+            return intCount + dBankIntCount
+
+        },
+        listType(){
+            return this.$store.getters.getListType;
+        },
+        allInteractionsColorCount(){
+            if(!this.interactionsColorCountMap && !this.dBankInteractionsColorCountMap) return null
+            if(this.listType === 'supp') return this.interactionsColorCountMap
+            if(this.listType === 'drug') return this.dBankInteractionsColorCountMap
+            if(this.listType === 'all'){
+                return {
+                    red: this.interactionsColorCountMap.red + this.dBankInteractionsColorCountMap.red,
+                    yellow: this.interactionsColorCountMap.yellow + this.dBankInteractionsColorCountMap.yellow,
+                    green: this.interactionsColorCountMap.green + this.dBankInteractionsColorCountMap.green
+                }
+            }
+            return null
+        },
+        resultsCount(){
+            if(this.listType === 'all') return this.totalInteractionCount
+            if(this.listType === 'supp') return this.interactionsColorCountMap.red + this.interactionsColorCountMap.yellow + this.interactionsColorCountMap.green
+            if(this.listType === 'drug') return this.dBankInteractionsColorCountMap.red + this.dBankInteractionsColorCountMap.yellow + this.dBankInteractionsColorCountMap.green
+            return ''
         },
         formatedPositiveInteractions() {
             this.positiveInteractions.forEach(group => {
@@ -839,14 +882,28 @@ export default {
                 }, 0);
                 return sum + this.$store.getters.getPosSuppLength
             }
-            return this.total + this.dBankTotal;
+            else{
+                let interactionsSum
+                let dBankInteractionsSum
+                if(! this.interactionsColorCountMap) interactionsSum = 0
+                else interactionsSum = this.interactionsColorCountMap.red + this.interactionsColorCountMap.yellow + this.interactionsColorCountMap.green
+                if(!this.dBankInteractionsColorCountMap) dBankInteractionsSum = 0
+                else dBankInteractionsSum = this.dBankInteractionsColorCountMap.red + this.dBankInteractionsColorCountMap.yellow + this.dBankInteractionsColorCountMap.green
+                return interactionsSum + dBankInteractionsSum
+            }
         },
         totalPositiveBoosters() {
             const sum = this.formatedPositiveInteractions.reduce((acc, { total }) => {
                 acc += total;
                 return acc;
             }, 0);
-            return sum + this.$store.getters.getPosSuppLength
+            const sumPos = this.formatedSuppPositiveInteractions.reduce((acc, { total }) => {
+                acc += total;
+                return acc;
+            }, 0);
+            // if(this.$store.getters.getPosSuppLength) return sum + this.$store.getters.getPosSuppLength
+            // else return sum + sumPos
+            return sum + sumPos
         },
         freeSearchesCount(){
             return this.$store.getters.getFreeSearchesCount;
@@ -870,22 +927,8 @@ export default {
         isScreenNarrow() {
             return this.$store.getters.isScreenNarrow;
         },
-        worstSupp2DrugColor() {
-            if(!this.interactions.length) return ''
-            const worstRecomm = this.getMoreSeverRecomm(false, ...this.interactions.map(i => i.recommendation));
-            var bgc = interactionUIService.getInteractionColor(worstRecomm);
-            if(bgc === '#F6D55C') return { 'background-color': bgc, 'color': 'blue'}
-            return { 'background-color': bgc, 'color': 'white'}
-        },
-        worstDrug2DrugColor() {
-            if(!this.dBankInteractions.length) return ''
-            const worstRecomm = this.getMoreSeverRecomm(false, ...this.dBankInteractions.map(i => i.recommendation));
-            var bgc = interactionUIService.getInteractionColor(worstRecomm);
-            if(bgc === '#F6D55C') return { 'background-color': bgc, 'color': 'blue'}
-            return { 'background-color': bgc, 'color': 'white'}
-        },
         positivesBadgeColor() {
-            if(!this.positiveInteractions.length) return ''
+            if(!this.positiveInteractions.length) return { 'background-color': '#56C596', 'color': 'white'}
             const worstRecomm = this.getMoreSeverRecomm(true, ...this.positiveInteractions.map(i => i.recommendation));
             var bgc = interactionUIService.getInteractionColor(worstRecomm);
             if(bgc === '#F6D55C') return { 'background-color': bgc, 'color': 'blue'}
@@ -929,10 +972,14 @@ export default {
             } else {
                 const prms = [ this.getInteractions(), this.getDBankInteractions() ];
                 await Promise.all(prms);
+                this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions)
                 this.isLoading = false;
                 await this.getPositives();
                 this.isPBLoading = false;
             }
+            const isAllSupplements = this.materials.every(material => material.type !== 'drug');
+            if(this.materials.length && isAllSupplements) this.$store.commit({type: 'setListType', listType: 'supp'})
+            else this.$store.commit({type: 'setListType', listType: 'all'})
         },
         async getPositives() {
             const drugIds = this.materials.reduce((acc, { type, _id, labels, isIncluded }) => {
@@ -1063,7 +1110,8 @@ export default {
             if(!page) page = 1;
             const filterBy = {
                 isSearchResults: true,
-                page: --page,
+                page: 0,
+                // page: --page,
                 id: ids,
                 materialCount: this.materialsLength,
             };
@@ -1079,6 +1127,8 @@ export default {
                 }
                 return acc;
             }, 0);
+            filterBy.listsCount = true
+            this.interactionsColorCountMap = await this.$store.dispatch({ type: 'getInteractions', filterBy });
             this.restoreState('Supp2Drug', searchState);
         },
         async getDBankInteractions() {
@@ -1096,6 +1146,8 @@ export default {
             this.dBankInteractions = dBankInteractions;
             this.dBankPageCount = pageCount;
             this.dBankTotal = total;
+            criteria.listsCount = true
+            this.dBankInteractionsColorCountMap = await this.$store.dispatch({ type: 'getDBankInteractions', criteria });
         },
         async getMaterials() {
             if (!this.$route.query.q || !this.$route.query.q.length) {
@@ -1178,20 +1230,43 @@ export default {
         },
         handleSort({ sortBy, side, isDesc }) {
             const { recommendationsOrderMap: map } = this.$options;
-            const sortOrder = isDesc ? -1 : 1;
+            const sortOrder = isDesc ? 1 : -1;
             switch (this.$route.name) {
-                case 'Drug2Drug': {
-                    const sideName = (side === 1) ? 'subject_drug' : 'affected_drug';
-                    switch (sortBy) {
-                        case 'name':
-                            this.dBankInteractions.sort((a, b) => a[sideName].name.toLowerCase().localeCompare(b[sideName].name.toLowerCase()) * sortOrder);
-                        break;
-                        case 'recommendation':
-                            this.dBankInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
-                        break;
-                        case 'evidenceLevel':
-                            this.dBankInteractions.sort((a, b) => (a.evidence_level - b.evidence_level) * sortOrder);
-                        break;
+                case 'Results': {
+                    let { page } = this.$route.query
+                    if(!page) page = 1
+                    const limit = Math.max(this.pageCount, this.dBankPageCount)
+                    if(this.listType === 'supp'){
+                        this.sortOptions = { sortBy, side, isDesc };
+                        this.interactions.splice(0, 0);
+                    }
+                    if(this.listType === 'drug' || (this.listType === 'all') && page != limit){
+                        const sideName = (side === 1) ? 'subject_drug' : 'affected_drug';
+                        switch (sortBy) {
+                            case 'name':
+                                this.dBankInteractions.sort((a, b) => a[sideName].name.toLowerCase().localeCompare(b[sideName].name.toLowerCase()) * sortOrder);
+                            break;
+                            case 'recommendation':
+                                this.dBankInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
+                            break;
+                            case 'evidenceLevel':
+                                this.dBankInteractions.sort((a, b) => (a.evidence_level - b.evidence_level) * sortOrder);
+                            break;
+                        }
+                    }if(this.listType === 'all' && page == limit){
+                        switch (sortBy) {
+                            case 'name':
+                                return this.allInteractions.sort((a, b) => (a.name.split(' & ')[side - 1].toLowerCase().localeCompare(b.name.split(' & ')[side - 1].toLowerCase())) * sortOrder);
+                            case 'recommendation':
+                                return this.allInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
+                            case 'evidenceLevel':
+                                return this.allInteractions.sort((a, b) => {
+                                    let order
+                                    if(a.evidenceLevel > b.evidenceLevel) order = -1
+                                    else order = 1
+                                    return order * sortOrder
+                                });
+                        }
                     }
                 }
                 return;
@@ -1423,6 +1498,9 @@ export default {
             this.interactions = [];
             this.dBankInteractions = [];
             this.positiveInteractions = [];
+            this.suppPositiveInteractions = []
+            this.interactionsColorCountMap = {red: 0, yellow: 0, green: 0}
+            this.dBankInteractionsColorCountMap = {red: 0, yellow: 0, green: 0}
             this.pageCount = 0;
             this.dBankPageCount = 0;
             this.total = 0;
@@ -1430,6 +1508,7 @@ export default {
             this.sortOptions = null;
             this.isLoading = false;
             this.$store.commit({ type: 'resetSupplementsRefs' });
+            this.$store.commit({type: 'setListType', listType: 'all'})
         },
         moveArrow({target}){
             this.arrowRightPositin = (target.scrollLeft * -1)

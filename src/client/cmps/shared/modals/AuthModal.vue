@@ -21,7 +21,7 @@
                             <input @focus="resetError('name')" :class="{ 'is-invalid': isInvaliedName }" type="text" placeholder="Username" v-model="cred.username">
                             <div class="checkbox-container">
                                 <input @change="changeCheckbox" class='checkbox' :class="{ 'is-invalid': isInvaliedName }" type="checkbox" v-model="cred.agreedToTerm">  
-                                <p>I agree to the <a href="/terms-and-conditions">term and conditions</a></p>
+                                <p>I agree to the <a href="/terms-and-conditions">terms and conditions</a></p>
                             </div>  
                             <button @click="onRegister" class="register-btn" :class="{'invalid-btn': isInvaliedEmail || isInvaliedPassword || isInvaliedName || isNotAgreed}">{{btnTxt}}</button>
                         </form>

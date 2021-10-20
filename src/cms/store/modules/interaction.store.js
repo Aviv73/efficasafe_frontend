@@ -16,7 +16,8 @@ export const interactionStore = ({
         firstInteractionSide: 1,
         redPositiveSupp: [],
         sortBy:['recommendation', true],
-        interactionPageHeight: null
+        interactionPageHeight: null,
+        listType: 'all'
     },
     getters: {
         interactions(state) {
@@ -51,6 +52,9 @@ export const interactionStore = ({
         },
         getInteractionPageHeight(state){
             return state.interactionPageHeight
+        },
+        getListType(state){
+            return state.listType
         }
     },
     mutations: {
@@ -115,6 +119,9 @@ export const interactionStore = ({
         },
         setInteractionHeight(state, {interactionPageHeight}){
             state.interactionPageHeight = interactionPageHeight
+        },
+        setListType(state, {listType}){
+            state.listType = listType
         }
     },
     actions: {
