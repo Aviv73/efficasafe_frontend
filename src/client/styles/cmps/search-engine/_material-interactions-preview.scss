@@ -70,8 +70,9 @@
 
             .under-construction-icon {
                 position: absolute;
-                left: 202%;
-                top: -21.5px;
+                right: -123px;
+                bottom: -3px;
+                color: $yellow;
             }
         }
     }
@@ -108,4 +109,8 @@
         margin-block-start: rem(20px);
         border-top: 1px solid rgba($clr6, .4);
     }
+
+    // .interactions-preview-name-containrt{
+    //     display: flex;
+    // }
 }

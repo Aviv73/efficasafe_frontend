@@ -53,7 +53,7 @@
                         <td class="centered text-center">
                             {{ item.type ? item.type : 'T' }}
                         </td>
-                        <td class="centered text-center">
+                        <td class="centered text-center" :class="{'red-txt': item.trialTime < Date.now()}">
                             {{
                                 dateToShow(item.trialTime)
                             }}

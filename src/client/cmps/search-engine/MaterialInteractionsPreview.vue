@@ -15,7 +15,8 @@
             v-else
             class="interactions-preview-composites"
         >
-            <h6 class="sub-title">{{ previewHeader }}</h6>
+            <h6 v-if="previewHeader" class="sub-title">{{ previewHeader }}</h6>
+            <ul v-if="previewHeader">
                 <li
                     class="interactions-preview-composites-composite"
                     :class="{ 'under-construction': material.isUnderStudy }"
@@ -25,21 +26,8 @@
                         'background-image': `url('${require(`@/client/assets/icons/types/${getTypeImgName(material.type)}.svg`)}')`
                     }"
                 >
-                    <tooltip :hidden="!material.isUnderStudy" bottom>
-                        <template #content>
-                            <div class="interactions-preview under-construction">
-                                This material is still under construction. The results you may see are only partial.
-                                Because you searched this material, it will get higher priority.
-                            </div>
-                        </template>
-                        <information-outline-icon
-                            class="under-construction-icon"
-                            v-if="material.isUnderStudy"
-                            title=""
-                            :size="14"
-                        />
-                    </tooltip>
                 </li>
+            </ul>
             <ul>
                 <li
                     class="interactions-preview-composites-composite"
@@ -49,7 +37,21 @@
                         'background-image': `url('${require(`@/client/assets/icons/types/${getTypeImgName(material.type)}.svg`)}')`
                     }"
                 >
-                    <span class="clip-txt">{{ material.name }}</span>
+                <span class="clip-txt">{{ material.name }}</span>
+                <tooltip :hidden="!material.isUnderStudy" bottom>
+                    <template #content>
+                        <div class="interactions-preview under-construction">
+                            This material is still under construction. The results you may see are only partial.
+                            Because you searched this material, it will get higher priority.
+                        </div>
+                    </template>
+                        <information-outline-icon
+                            class="under-construction-icon"
+                            v-if="material.isUnderStudy"
+                            title=""
+                            :size="14"
+                        />
+                </tooltip>
                 </li>
             </ul>
             <hr v-if="interactions.length || (materials.length === 1 && !isOneMaterial)" />

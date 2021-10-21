@@ -33,6 +33,17 @@
     .bottom-gap {
         margin-block-end: rem(40px);
     }
+
+    .sub-sec-title{
+        color: $clr-txt-dark;
+        font-family: roboto-bold, sans-serif;
+        font-weight: 700;
+        font-size: rem(18px);
+        line-height: rem(28px);
+    }
+    .sub-sec{
+        margin-inline-start: rem(24px);
+    }
     .link {
         color: $clr1;
         text-decoration: underline;
