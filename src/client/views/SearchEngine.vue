@@ -979,7 +979,6 @@ export default {
             }
             const isAllSupplements = this.materials.every(material => material.type !== 'drug');
             if(this.materials.length && isAllSupplements) this.$store.commit({type: 'setListType', listType: 'supp'})
-            else this.$store.commit({type: 'setListType', listType: 'all'})
         },
         async getPositives() {
             const drugIds = this.materials.reduce((acc, { type, _id, labels, isIncluded }) => {
@@ -1508,7 +1507,6 @@ export default {
             this.sortOptions = null;
             this.isLoading = false;
             this.$store.commit({ type: 'resetSupplementsRefs' });
-            this.$store.commit({type: 'setListType', listType: 'all'})
         },
         moveArrow({target}){
             this.arrowRightPositin = (target.scrollLeft * -1)

@@ -88,14 +88,14 @@
                 <template #pagination-prev>
                     <chevron-left-circle-icon
                         :size="32"
-                        fillColor="#56C596"
+                        fillColor="#205072"
                         title=""
                     />
                 </template>
                 <template #pagination-next>
                     <chevron-right-circle-icon
                         :size="32"
-                        fillColor="#56C596"
+                        fillColor="#205072"
                         title=""
                     />
                 </template>

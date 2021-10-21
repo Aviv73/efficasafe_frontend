@@ -225,6 +225,8 @@ export default {
     data() {
         return {
             lists: null,
+            suppList: null,
+            dBankLists: null,
             isLoading: false,
             maxTotal: 0,
             maxPageCount: 0,
@@ -245,13 +247,16 @@ export default {
         },
         materialsLength(){
             return this.materials.filter(m => !m.isIncluded).length
+        },
+        listType(){
+            return this.$store.getters.getListType;
         }
     },
     methods: {
         async getInteractions(filterBy) {
             this.isLoading = true;
             const lists = await this.$store.dispatch({ type: 'getInteractions', filterBy });
-            this.lists = (this.materialsLength > 1) ? this.removeDupVinteractions(lists) : lists;
+            this.suppList = (this.materialsLength > 1) ? this.removeDupVinteractions(lists) : lists;
             const maxTotal = Math.max(lists.reds.total, lists.yellows.total, lists.greens.total);
             const maxPageCount = Math.max(lists.reds.pageCount, lists.yellows.pageCount, lists.greens.pageCount);
             this.maxTotal = maxTotal;
@@ -261,20 +266,47 @@ export default {
         async getDBankInteractions(criteria) {
             this.isLoading = true;
             const lists = await this.$store.dispatch({ type: 'getDBankInteractions', criteria });
-            this.lists = lists;
+            this.dBankLists = lists;
             const maxTotal = Math.max(lists.reds.total, lists.yellows.total, lists.greens.total);
             const maxPageCount = Math.max(lists.reds.pageCount, lists.yellows.pageCount, lists.greens.pageCount);
             this.maxTotal = maxTotal;
             this.maxPageCount = maxPageCount;
             this.isLoading = false;
         },
-        getResults() {
+        async getResults() {
             switch (this.$route.name) {
-                case 'Drug2Drug': {
-                    const drugBankIds = this.materials.filter(m => !m.isIncluded).map(mat => mat.drugBankId);
-                    const drugBankId = (drugBankIds.length === 1) ? drugBankIds[0] : drugBankIds;
-                    const criteria = { drugBankId, page: this.page - 1, isMultiList: true };
-                    this.getDBankInteractions(criteria);
+                case 'Results': {
+                        const drugBankIds = this.materials.filter(m => !m.isIncluded).map(mat => mat.drugBankId);
+                        const drugBankId = (drugBankIds.length === 1) ? drugBankIds[0] : drugBankIds;
+                        const criteria = { drugBankId, page: this.page - 1, isMultiList: true };
+                        await this.getDBankInteractions(criteria);
+
+                        const ids = this.materials.reduce((acc, { _id, labels }) => {
+                            if (!acc.includes(_id)) acc.push(_id);
+                            labels.forEach(label => {
+                                if (!acc.includes(label._id)) acc.push(label._id);
+                            });
+                            return acc;
+                        }, []);
+                        const filterBy = {
+                            isSearchResults: true,
+                            page: this.page - 1,
+                            id: ids,
+                            materialCount: this.materials.filter(({ isIncluded }) => !isIncluded).length,
+                            isMultiList: true
+                        };
+                        await this.getInteractions(filterBy);
+
+                        this.lists = {
+                            greens:{},
+                            yellows:{},
+                            reds:{}
+                        }
+
+                        this.lists.greens.interactions = this.dBankLists.greens.dBankInteractions.concat(this.suppList.greens.interactions)
+                        this.lists.yellows.interactions = this.dBankLists.yellows.dBankInteractions.concat(this.suppList.yellows.interactions)
+                        this.lists.reds.interactions = this.dBankLists.reds.dBankInteractions.concat(this.suppList.reds.interactions)
+
                 }
                 break;
                 case 'Monitor':
@@ -343,20 +375,22 @@ export default {
             });
             return interactions[0];
         },
-        getPreviewWrapEl({ side2Material, side2Label }) {
-            if (this.$route.name === 'Drug2Drug') return 'router-link';
-            if (this.materialsLength <= 1) {
-                if (!side2Material) return 'span';
-                return 'router-link';
-            } else {
-                if (side2Material) return 'router-link';
-                const materials = this.getVirtualSide2(side2Label._id);
-                if (materials.length === 1) return 'router-link';
-                return 'span'; 
-            }
+        getPreviewWrapEl() {
+        // getPreviewWrapEl({ side2Material, side2Label }) {
+            // if (this.$route.name === 'Drug2Drug') return 'router-link';
+            // if (this.materialsLength <= 1) {
+            //     if (!side2Material) return 'span';
+            //     return 'router-link';
+            // } else {
+            //     if (side2Material) return 'router-link';
+            //     const materials = this.getVirtualSide2(side2Label._id);
+            //     if (materials.length === 1) return 'router-link';
+            //     return 'span'; 
+            // }
+            return 'router-link'
         },
-        getInteractionLink({ _id, side2Material, side2Label }) {
-            if (this.$route.name === 'Drug2Drug') return `/interaction/drug2drug/${_id}`;
+        getInteractionLink({ _id, side2Material, side2Label, extended_description }) {
+            if (extended_description) return `/interaction/drug2drug/${_id}`;
             if (side2Material) return `/interaction/${_id}`;
             const materials = this.getVirtualSide2(side2Label._id);
             if (materials.length === 1) return `/interaction/${_id}/${materials[0]._id}`;

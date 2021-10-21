@@ -15,7 +15,7 @@
             v-else
             class="interactions-preview-composites"
         >
-            <h6>{{ previewHeader }}</h6>
+            <h6 class="sub-title">{{ previewHeader }}</h6>
                 <li
                     class="interactions-preview-composites-composite"
                     :class="{ 'under-construction': material.isUnderStudy }"
@@ -59,7 +59,7 @@
             class="interactions-preview-interactions"
         >
             <ul>
-                <p class="interactions-preview-interactions-title">Interacts with:</p>
+                <p class="sub-title">Interacts with:</p>
                 <li
                     class="interactions-preview-interactions-interaction"
                     v-for="interaction in interactions"

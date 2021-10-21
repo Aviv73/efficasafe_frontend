@@ -2,9 +2,9 @@
     <section class="horizontal-list">
         <div class="results-header">
             <div v-if="$route.name === 'Results'" class="btn-container">
-                <button v-if="!isAllSupp" @click="showResults('all')" :class="{selected: isSelected('all')}">All Results</button>
+                <button @click="showResults('all')" :class="{selected: isSelected('all')}">All Results</button>
                 <button @click="showResults('supp')" :class="{selected: isSelected('supp')}">{{suppDrugBtnTxt}}</button>
-                <button v-if="!isAllSupp" @click="showResults('drug')" :class="{selected: isSelected('drug')}">Drug - Drug</button>
+                <button @click="showResults('drug')" :class="{selected: isSelected('drug')}">Drug - Drug</button>
             </div>
         </div>
         <header class="horizontal-list-header">
@@ -347,10 +347,6 @@ export default {
             return (type) => {
                 return type === this.listType
             }
-        },
-        isAllSupp(){
-            if(!this.materials.length) return false
-            return this.materials.every(material => material.type !== 'drug');
         },
         suppDrugBtnTxt(){
             if(this.isAllSupp) return 'All Results'

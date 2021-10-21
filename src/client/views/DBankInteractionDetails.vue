@@ -65,15 +65,15 @@
                                             class="d-flex"
                                             v-if="interaction.evidence_level === 1"
                                         >
-                                            <span>1.</span>
-                                            information formally provided in official prescribing information
+                                            <span>1- </span>
+                                            information formally provided in official prescribing documentation 
                                         </p>
                                         <p
                                             class="d-flex"
                                             v-else-if="interaction.evidence_level === 2"
                                         >
-                                            <span>2.</span>
-                                            based on scientific and clinical knowledge referenced from a variety of evidence sources
+                                            <span>2- </span>
+                                            based on scientific research
                                         </p>
                                     </div>
                                 </template>

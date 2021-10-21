@@ -505,9 +505,9 @@ export default {
                 case 'F':
                     return 'F - 1 pre-clinical';
                 case '1':
-                    return 'information formally provided in official prescribing information';
+                    return 'information formally provided in official prescribing documentation';
                 case '2':
-                    return 'based on scientific and clinical knowledge referenced from a variety of evidence sources';
+                    return 'based on scientific research';
                 default:
                     return '';
             }
