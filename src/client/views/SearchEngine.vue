@@ -511,7 +511,7 @@ export default {
             return null
         },
         resultsCount(){
-            if(this.listType === 'all') return this.totalInteractionCount
+            if(this.listType === 'all') return this.totalInteractionCountNoBoosters
             if(this.listType === 'supp') return this.interactionsColorCountMap.red + this.interactionsColorCountMap.yellow + this.interactionsColorCountMap.green
             if(this.listType === 'drug') return this.dBankInteractionsColorCountMap.red + this.dBankInteractionsColorCountMap.yellow + this.dBankInteractionsColorCountMap.green
             return ''
@@ -891,6 +891,15 @@ export default {
                 else dBankInteractionsSum = this.dBankInteractionsColorCountMap.red + this.dBankInteractionsColorCountMap.yellow + this.dBankInteractionsColorCountMap.green
                 return interactionsSum + dBankInteractionsSum
             }
+        },
+        totalInteractionCountNoBoosters(){
+            let interactionsSum
+            let dBankInteractionsSum
+            if(! this.interactionsColorCountMap) interactionsSum = 0
+            else interactionsSum = this.interactionsColorCountMap.red + this.interactionsColorCountMap.yellow + this.interactionsColorCountMap.green
+            if(!this.dBankInteractionsColorCountMap) dBankInteractionsSum = 0
+            else dBankInteractionsSum = this.dBankInteractionsColorCountMap.red + this.dBankInteractionsColorCountMap.yellow + this.dBankInteractionsColorCountMap.green
+            return interactionsSum + dBankInteractionsSum
         },
         totalPositiveBoosters() {
             const sum = this.formatedPositiveInteractions.reduce((acc, { total }) => {

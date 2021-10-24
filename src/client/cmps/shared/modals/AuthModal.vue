@@ -23,7 +23,7 @@
                                 <input @change="changeCheckbox" class='checkbox' :class="{ 'is-invalid': isInvaliedName }" type="checkbox" v-model="cred.agreedToTerm">  
                                 <p>I agree to the <a href="/terms-and-conditions">terms and conditions</a></p>
                             </div>  
-                            <button @click="onRegister" class="register-btn" :class="{'invalid-btn': isInvaliedEmail || isInvaliedPassword || isInvaliedName || isNotAgreed}">{{btnTxt}}</button>
+                            <button @click="onRegister" :disabled="isBtnDisabled" class="register-btn" :class="{'invalid-btn': isInvaliedEmail || isInvaliedPassword || isInvaliedName || isNotAgreed, 'disabled': isBtnDisabled}">{{btnTxt}}</button>
                         </form>
                         <div class="or-container">
                             <div class="line"></div>
@@ -99,7 +99,8 @@ export default {
             isInvaliedPassword: false,
             isInvaliedName: false,
             isNotAgreed: false,
-            isEmailExists: false
+            isEmailExists: false,
+            isBtnDisabled: false
         };
     },
     computed: {
@@ -128,11 +129,13 @@ export default {
             if(!this.cred.agreedToTerm) this.isNotAgreed = true
             if(this.isInvaliedEmail || this.isInvaliedPassword || this.isInvaliedName || !this.cred.agreedToTerm) return
             try{
+                this.isBtnDisabled = true
                 await this.$store.dispatch({type: 'signup', cred: this.cred});
                 if(!this.isEmailExists){
                     if(this.$route.name !== 'Payment') this.isShowVereficationMsg = true
                     else this.closeModal()
                 }
+                this.isBtnDisabled = false
             }catch(err){
                console.log('auth failed');
             }

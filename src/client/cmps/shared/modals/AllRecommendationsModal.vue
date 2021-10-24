@@ -51,6 +51,10 @@
                 <p class="txt">Coadministration is advised</p>
             </div>
         </main>
+        <section class="recommendations-modal-txt">
+            <p><span>Coadministration is possible</span> - The combination has been examined in clinical trials and was found to be safe.</p>
+            <p><span>Coadministration is not contraindicated</span> - The combination has been only examined in preclinical studies.</p>
+        </section>
     </section>
 </template>
 

@@ -15,7 +15,7 @@
             }"
             v-if="!showDraftName && !isMaterialGroup"
         >
-            <span :title="side1Name">{{ side1Name }}</span>
+            <span :title="side1NameToShow">{{ side1NameToShow }}</span>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="cap cap-left"
@@ -135,18 +135,33 @@ export default {
         isGroup() {
             return this.vInteractionCount > 0;
         },
+        sortBySide() {
+            return this.$store.getters.firstInteractionSide;
+        },
         draftNameFullContent() {
+            if(this.$route.name === 'InteractionDetails' && this.sortBySide === 2) return this.side1Name
             const nameToDisplay = (this.showDraftName && this.draftName) ? this.draftName : this.side2Name;
             if(this.$route.name === 'Boosters') return nameToDisplay
             return (this.vInteractionCount) ? `${nameToDisplay} (${this.vInteractionCount})` : nameToDisplay;
         },
         draftNameContent() {
+            if(this.$route.name === 'InteractionDetails' && this.sortBySide === 2) return this.side1Name
             const nameToDisplay = (this.showDraftName && this.draftName) ? this.draftName : this.side2Name;
             if(this.$route.name === 'Boosters') return nameToDisplay
             if (nameToDisplay.length >= 14 && this.isGroup) {
                 return `${nameToDisplay.substring(0, 12)}...(${this.vInteractionCount})`;
             }
             return (this.vInteractionCount) ? `${nameToDisplay} (${this.vInteractionCount})` : nameToDisplay;
+        },
+        side1NameToShow(){
+            if (!this.name || this.isMaterialGroup) return '';
+            if(this.$route.name === 'InteractionDetails' && this.sortBySide === 2) return this.side2Name
+            const side1Name = this.name.split('&')[0].trim();
+            if (this.onDetailsPage || !this.isSideSwapped) return side1Name;
+            if (this.$store.getters.materialNamesMap[side1Name]) {
+                return this.$store.getters.materialNamesMap[side1Name][0];
+            }
+            return side1Name;
         },
         side1Name() {
             if (!this.name || this.isMaterialGroup) return '';
@@ -176,4 +191,4 @@ export default {
         }
     }
 };
-</script>
+</script> 

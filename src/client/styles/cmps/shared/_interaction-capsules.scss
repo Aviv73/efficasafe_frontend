@@ -37,11 +37,11 @@
         @include for-narrow-layout {
             width: rem(120px);
         }
-        @include for-middle-layout {
+        @include for-middle2-layout {
             width: rem(160px);
         }
         @include for-wide-layout {
-            width: rem(180px);
+            width: rem(255px);
         }
         &.wide {
             width: rem(160px);
@@ -52,14 +52,14 @@
             @include for-narrow-layout {
                 width: rem(140px);
             }
-            @include for-middle-layout {
-                width: rem(180px);
+            @include for-middle2-layout {
+                width: rem(255px);
             }
         }
         &.dense {
             width: rem(100px);
 
-            @include for-middle-layout {
+            @include for-middle2-layout {
                 width: rem(120px);
             }
         }

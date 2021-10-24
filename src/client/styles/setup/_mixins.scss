@@ -18,6 +18,12 @@
     }
 }
 
+@mixin for-middle2-layout {
+    @media (min-width: 1300px) {
+        @content;
+    }
+}
+
 @mixin for-wide-layout {
     @media (min-width: $break-wide) {
         @content;

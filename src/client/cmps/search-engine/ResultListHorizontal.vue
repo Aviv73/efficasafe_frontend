@@ -14,7 +14,7 @@
                     title="Sort A-Z / Z-A"
                     tabindex="0"
                 >
-                    <input type="checkbox" hidden @change="emitSort('name', $event.target.checked)" />
+                    <input type="checkbox" hidden @change="emitSort('name', !$event.target.checked)" />
                     <sort-vertical-icon class="sort-icon v-tour-step-2" title="" />
                     <span>{{ side1Name }} vs {{ side2Name }}</span>
                 </label>
@@ -30,7 +30,7 @@
                 </button>
             </span>
             <span class="horizontal-list-header-item">
-                <label
+            <label
                     class="flex-align-center"
                     title="Sort by recommendation"
                     tabindex="0"
@@ -39,29 +39,12 @@
                     <sort-vertical-icon class="sort-icon" title="" />
                     <span>Recommendation</span>
                 </label>
-                <tooltip on="hover" right right-bottom>
-                    <template #content>
-                        <div class="tooltip-content">
-                            <div class="recommendation-tooltip">
-                                <span class="d-block">
-                                    <span class="highlight">Coadministration is possible</span> means that the combination
-                                    has been examined in clinical trials and was found to be safe.
-                                </span>
-                                <span class="d-block">
-                                    <span class="highlight">Coadministration is not contraindicated</span>
-                                    means that the
-                                    combination has been only examined in preclinical studies.
-                                </span>
-                            <span class="highlight pointer all-rec" @click="openAllRecommendations">See all recommendations</span>
-                            </div>
-                        </div>
-                    </template>
-                    <information-outline-icon
-                        class="tooltip-trigger v-tour-step-3"
-                        :size="12"
-                        title=""
-                    />
-                </tooltip>
+                <information-outline-icon
+                    class="clickable v-tour-step-3"
+                    :size="12"
+                    title=""
+                    @click="openAllRecommendations"
+                />
             </span>
             <span class="horizontal-list-header-item">
                 <div
@@ -320,11 +303,11 @@ export default {
     },
     computed: {
         side1Name() {
-            if (this.$route.name === 'Drug2Drug') return 'Drug';
+            if (this.listType === 'drug') return 'Drug';
             return (this.sortBySide === 1) ? 'Supplement' : 'Drug';
         },
         side2Name() {
-            if (this.$route.name === 'Drug2Drug') return 'Drug';
+            if (this.listType === 'drug') return 'Drug';
             return (this.sortBySide === 1) ? 'Drug' : 'Supplement';
         },
         sortBySide() {
@@ -392,7 +375,7 @@ export default {
         },
         emitSort(sortBy, isChecked) {
             this.$emit('list-sorted', { sortBy, side: this.sortBySide, isDesc: !isChecked });
-            if(this.$route.name === 'Supp2Drug'){
+            if(this.$route.name === 'Results'){
                 const newSort = [sortBy, isChecked]
                 this.$store.commit({ type: 'setSortBy', newSort});
             }
@@ -413,7 +396,7 @@ export default {
             }
         },
         restoreSort(){
-            if(this.$route.name === 'Supp2Drug'){
+            if(this.$route.name === 'Results'){
                 this.$nextTick(() => {
                     this.emitSort(this.sortBy[0], this.sortBy[1])
                 })
@@ -439,6 +422,9 @@ export default {
         this.emptySuppInteractions = JSON.parse(JSON.stringify(this.suppEmptyInteractions))
         this.restoreCollapses();
         this.restoreSort();
+        this.$nextTick(()=>{
+            eventBus.$emit(EV_sortby_side_swaped, this.sortBySide);
+        })
     },
     components: {
         InteractionPreview,

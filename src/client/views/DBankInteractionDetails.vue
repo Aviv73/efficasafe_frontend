@@ -65,15 +65,13 @@
                                             class="d-flex"
                                             v-if="interaction.evidence_level === 1"
                                         >
-                                            <span>1- </span>
-                                            information formally provided in official prescribing documentation 
+                                            1- Information formally provided in official prescribing documentation 
                                         </p>
                                         <p
                                             class="d-flex"
                                             v-else-if="interaction.evidence_level === 2"
                                         >
-                                            <span>2- </span>
-                                            based on scientific research
+                                            2- Based on scientific research
                                         </p>
                                     </div>
                                 </template>
@@ -262,6 +260,7 @@ export default {
             this.isLoading = false;
         },
         getRefsToDisplay(txt) {
+            // const regex = /\[[a-zA-Z][0-9]*]/g; // for matching [A12345]
             const regex = /\[(.*?)\]/g;
             const matches = txt.match(regex);
             if (!matches) return txt;

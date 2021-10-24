@@ -106,7 +106,7 @@ export default {
             if (this.$route.name === 'Searches') {
                 return [
                     {
-                        title: this.isScreenNarrow ? 'Name' : 'Client name',
+                        title: this.isScreenNarrow ? 'Name' : 'Patient name',
                         field: 'title',
                         sortable: true
                     },

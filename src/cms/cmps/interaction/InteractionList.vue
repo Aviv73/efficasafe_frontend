@@ -89,7 +89,7 @@
               @click="$emit('toggle-is-active', item._id)"
             >
               <v-icon color="info" v-if="item.isActive">
-                mdi-check-box-outline
+                mdi-checkbox-marked
               </v-icon>
               <v-icon v-else>
                 mdi-checkbox-blank-off-outline
