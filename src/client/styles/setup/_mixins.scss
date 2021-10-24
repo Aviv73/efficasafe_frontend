@@ -19,7 +19,7 @@
 }
 
 @mixin for-middle2-layout {
-    @media (min-width: 1300px) {
+    @media (min-width: 1400px) {
         @content;
     }
 }
