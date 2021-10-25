@@ -159,7 +159,8 @@ export default {
     { text: 'Bad text field (interactions)', value: 'bad-txt-field' },
     { text: 'Unformated refs - outside <sub>(...)</sub> (interactions)', value: 'unformated-refs' },
     { text: 'Broken \'monitor.general\' (interactions)', value: 'broken-monitor' },
-    { text: 'Trailing/leading spaces in pathway names', value: 'bad-pathway-names' }
+    { text: 'Trailing/leading spaces in pathway names', value: 'bad-pathway-names' },
+    { text: 'Interactions without LOE', value: 'z-loe-names' },
   ],
   data() {
     return {
