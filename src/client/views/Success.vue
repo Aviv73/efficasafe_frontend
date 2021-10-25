@@ -30,13 +30,14 @@ export default {
     
   },
   async created() {
+    //Coupons still needs to be implemented, needs to understand if we can pass more parameters on url
     const isPaying = storageService.load('isPaying')
     if(isPaying){
       await this.$store.dispatch({type: 'getUserInfo'})
       storageService.remove('isPaying')
       const user = JSON.parse(JSON.stringify(this.loggedInUser))
       const managementData = await manageService.list()
-      const plan = managementData.plans.filter(p => p.durationTxt === this.$route.query.Info)[0]
+      const plan = managementData.plans.filter(p => p.durationTxt === this.$route.query.Info)[0] // or by coupon code (from url)
       const months = +plan.duration
       if(plan){
           const timeToAdd = 1000 * 60 * 60 * 24 * 30 * months
@@ -46,6 +47,7 @@ export default {
           }else{
             user.trialTime += timeToAdd
           }
+          //add copune bonus time to user: user.bonusTime = X
           user.purchases.unshift({
               at: Date.now(),
               price: plan.priceUSD * plan.duration,

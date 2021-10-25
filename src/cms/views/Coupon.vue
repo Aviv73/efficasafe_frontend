@@ -66,6 +66,15 @@
                     />
                 </div>
                 <div class="coupon-input">
+                    <h3>Bonus time in months:</h3>
+                    <v-text-field
+                        v-model="couponToEdit.bonusTime"
+                        placeholder="Bonus time in months"
+                        hide-details
+                        single-line
+                    />
+                </div>
+                <div class="coupon-input">
                     <h3>Price in USD:</h3>
                     <v-text-field
                         v-model="couponToEdit.priceUSD"
@@ -152,6 +161,7 @@ export default {
                 priceISL: 0,
                 priceUSD: 0,
                 validUntil: null,
+                bonusTime: 0
             }
         },
         async onSaveEditCoupon(){

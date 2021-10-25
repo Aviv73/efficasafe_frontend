@@ -73,21 +73,45 @@
 
         }
     }
+    
+    .coupon-input-container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin-block-end: 37px;
 
-    .cupon-input{
-        align-self: start;
-        margin-left: 112px;
-        width: 77%;
-        margin-bottom: 30px;
-
-        .label{
-            color: black;
-            // opacity: 80%;
+        .coupon-input{
+            width: 300px;
+            border: none;
+            border-bottom: 1px solid grey;
+            &:focus{
+                outline: none;
+            }
         }
 
-        @media (max-width: $break-narrow) {
-            margin-left: 15px;
-            width: 88%;
+        .coupon-input-btn{
+            width: 150px;
+            height: 30px;
+            text-transform: uppercase;
+            color: white;
+            font-size: 10.8px;
+            background-color: #205072;
+            border: 1px solid #205072;
+            border-radius: 5px;
+            margin-bottom: 27.6px;
+            letter-spacing: 1px;
+            margin-top: 19.8px;
+            margin-left: 7px;
+        }
+
+        .invalid-input{
+            border-color: $red;
+        }
+
+        .invalid-btn{
+            background-color: $red;
+            border: none;
         }
     }
 
@@ -186,6 +210,14 @@
     .coupon{
         align-items: center;
         justify-content: center;
+
+        .coupon-ribbon{
+            bottom: -1.5px !important;
+            right: 13px !important;
+            font-size: 10px !important;
+            font-weight: bold !important;
+            color: #F0F9FF !important;
+        }
     }
 
     .payment-btn{

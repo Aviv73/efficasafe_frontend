@@ -91,10 +91,8 @@ export default {
         getMonitorTxt(propName) {
            const seenMap = {};
            const reduced =  this.flatInteractions.reduce((acc, { monitor }) => {
-                let words = monitor[propName].split(',').filter(str => str).map(str =>str.trim());
-                if(monitor[propName].includes('(') && monitor[propName].includes(')')){
-                    words = [monitor[propName]]
-                }
+               const regex = new RegExp(", (?![^(]*\\))")
+                let words = monitor[propName].split(regex).filter(str => str).map(str =>str.trim());
                 words = words.reduce((acc, word) => {
                     if (!seenMap[word]) {
                         const secChar = word.charAt(1);
@@ -115,17 +113,18 @@ export default {
             return sortted
         },
         sortRes(str){
-            const strs = str.split(',').map(str =>str.trim())
+            const regex = new RegExp(", (?![^(]*\\))");
+            const strs = str.split(regex).map(str =>str.trim())
             const noCaps = strs.filter(str => {
                 if(str !== 'aPTT' && str !== 'hbA1c' && str !== str.toUpperCase()) return str
-            })
+            }).sort()
             let caps = strs.filter(str => {
                 if(str === str.toUpperCase() || str === 'aPTT' || str === 'hbA1c') return str
             })
             caps = caps.map(c => {
                 if(c === 'hbA1c') return 'HbA1c'
                 return c
-            })
+            }).sort()
             const all = caps.concat(noCaps)
             const bloodDrugLvlIdx = all.findIndex( str => str === 'Blood drug level' || str === 'blood drug level')
             if(bloodDrugLvlIdx >= 0){

@@ -11,22 +11,23 @@
                 </div>
             </v-btn>
             <v-spacer></v-spacer>
-            <v-btn class="nav-link" tile color="white" text to="/search">Search-Engine</v-btn>
-            <v-btn class="nav-link" :class="{ 'error': hasFailedTasks }" tile color="white" text to="/data-integrity">
+            <v-btn class="nav-link" tile color="white" text to="/search" v-if="isAdmin || isEditor">Search-Engine</v-btn>
+            <v-btn class="nav-link" :class="{ 'error': hasFailedTasks }" tile color="white" text to="/data-integrity" v-if="isAdmin || isEditor">
                 Alerts
             </v-btn>
-            <v-btn class="nav-link" tile color="white" text to="/material">Materials</v-btn>
-            <v-btn class="nav-link" tile color="white" text to="/label">Labels</v-btn>
+            <v-btn class="nav-link" tile color="white" text to="/material" v-if="isAdmin || isEditor">Materials</v-btn>
+            <v-btn class="nav-link" tile color="white" text to="/label" v-if="isAdmin || isEditor || isAssistantEditor">Labels</v-btn>
             <v-btn
                 class="nav-link"
                 tile
                 color="white"
                 text
                 to="/featured-interaction"
+                v-if="isAdmin || isEditor || isAssistantEditor"
                 >
                 Workshop
             </v-btn>
-            <v-btn class="nav-link" tile color="white" text to="/interaction">Interactions</v-btn>
+            <v-btn class="nav-link" tile color="white" text to="/interaction" v-if="isAdmin || isEditor">Interactions</v-btn>
             <v-btn
                 class="nav-link"
                 tile
@@ -43,7 +44,7 @@
                 color="white"
                 text
                 to="/user"
-                v-if="isAdmin"
+                v-if="isAdmin || isSales"
             >
                 Users
             </v-btn>
@@ -63,7 +64,7 @@
                 color="white"
                 text
                 to="/upload-data"
-                v-if="isAdmin"
+                v-if="isAdmin || isEditor"
             >
                 Upload Data
             </v-btn>
@@ -92,6 +93,15 @@ export default {
         },
         isAdmin() {
             return this.loggedInUser ? this.loggedInUser.role === 'admin' : false;
+        },
+        isEditor() {
+            return this.loggedInUser ? this.loggedInUser.role === 'editor' : false;
+        },
+        isSales() {
+            return this.loggedInUser ? this.loggedInUser.role === 'sales' : false;
+        },
+        isAssistantEditor() {
+            return this.loggedInUser ? this.loggedInUser.role === 'assistantEditor' : false;
         },
         hasFailedTasks() {
           return this.$store.getters.hasFailedTasks;

@@ -33,157 +33,156 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
-    meta: { requiresAuth: true }
+    component: Home
   },
   {
     path: '/management',
     name: 'Management',
     component: Management,
-    meta: { requiresAuth: true }
+    meta: { allowed: ['admin'] }
   },
   {
     path: '/coupon',
     name: 'Coupon',
     component: Coupon,
-    meta: { requiresAuth: true }
+    meta: { allowed: ['admin'] }
   },
   {
     path: '/material',
     name: 'Materials',
     component: materialApp,
-    meta: { requiresAuth: true }
+    meta: { allowed: ['admin', 'editor']}
   },
   {
     path: '/material/edit/:id?',
     name: 'MaterialEdit',
     component: materialEdit,
-    meta: { requiresAuth: true }
+    meta: { allowed: ['admin', 'editor'] }
   },
   {
     path: '/material/:id',
     name: 'MaterialDetails',
     component: materialDetails,
-    meta: { requiresAuth: true }
+    meta: { allowed: ['admin', 'editor'] }
   },
   {
     path: '/label',
     name: 'Labels',
     component: LabelApp,
-    meta: { requiresAuth: true }
+    meta: { allowed: ['admin', 'editor', 'assistantEditor'] }
   },
   {
     path: '/label/edit/:id?',
     name: 'LabelEdit',
     component: labelEdit,
-    meta: { requiresAuth: true }
+    meta: { allowed: ['admin', 'editor', 'assistantEditor'] }
   },
   {
     path: '/label/:id',
     name: 'LabelDetails',
     component: labelDetails,
-    meta: { requiresAuth: true }
+    meta: { allowed: ['admin', 'editor', 'assistantEditor'] }
   },
   {
     path: '/user',
     name: 'Users',
     component: UserApp,
-    meta: { requiresAuth: true, requiresAdmin: true }
+    meta: { allowed: ['admin', 'sales'] }
   },
   {
     path: '/user/edit/:id',
     name: 'UserEdit',
     component: UserEdit,
-    meta: { requiresAuth: true, requiresAdmin: true }
+    meta: { allowed: ['admin', 'sales'] }
   },
   {
     path: '/interaction',
     name: 'Interactions',
     component: interactionApp,
-    meta: { requiresAuth: true }
+    meta: { allowed: ['admin', 'editor'] }
   },
   {
     path: '/interaction/edit/:id?',
     name: 'InteractionsEdit',
     component: interactionEdit,
-    meta: { requiresAuth: true }
+    meta: { allowed: ['admin', 'editor'] }
   },
   {
     path: '/interaction/:id/:matId',
     name: 'vInteractionsDetails',
     component: vInteractionDetails,
-    meta: { requiresAuth: true }
+    meta: { allowed: ['admin', 'editor'] }
   },
   {
     path: '/interaction/:id',
     name: 'InteractionsDetails',
     component: interactionDetails,
-    meta: { requiresAuth: true }
+    meta: { allowed: ['admin', 'editor'] }
   },
   {
     path: '/featured-interaction',
     name: 'FeaturedInteraction',
     component: featuredInteractionApp,
-    meta: { requiresAuth: true }
+    meta: { allowed: ['admin', 'editor', 'assistantEditor'] }
   },
   {
     path: '/featured-interaction/edit/:id',
     name: 'FeaturedInteractionEdit',
     component: featuredInteractionEdit,
-    meta: { requiresAuth: true }
+    meta: { allowed: ['admin', 'editor', 'assistantEditor'] }
   },
   {
     path: '/featured-interaction/:id',
     name: 'FeaturedInteractionDetails',
     component: dBankInteractionDetails,
-    meta: { requiresAuth: true }
+    meta: { allowed: ['admin', 'editor', 'assistantEditor'] }
   },
   {
     path: '/archive',
     name: 'Archives',
     component: archiveApp,
-    meta: { requiresAuth: true, requiresAdmin: true }
+    meta: { allowed: ['admin'] }
   },
   {
     path: '/archive/label/:id',
     name: 'ArchiveLabelDetails',
     component: labelDetails,
-    meta: { requiresAuth: true }
+    meta: { allowed: ['admin'] }
   },
   {
     path: '/archive/interaction/:id',
     name: 'ArchiveInteractionDetails',
     component: interactionDetails,
-    meta: { requiresAuth: true }
+    meta: { allowed: ['admin'] }
   },
   {
     path: '/archive/material/:id',
     name: 'ArchiveMaterialDetails',
     component: materialDetails,
-    meta: { requiresAuth: true }
+    meta: { allowed: ['admin'] }
   },
   {
     path: '/data-integrity',
     name: 'DataIntegrity',
     component: DataIntegrity,
-    meta: { requiresAuth: true }
+    meta: { allowed: ['admin', 'editor'] }
   },
   {
     path: '/search',
     component: searchEngine,
-    meta: { requiresAuth: true },
+    meta: { allowed: ['admin', 'editor'] },
     children: [
       {
         path: '',
         name: 'Results',
         component: resultList,
-        meta: { requiresAuth: true }
+        meta: { allowed: ['admin', 'editor'] }
       },
       {
         path: 'drug-bank',
         name: 'DBankResults',
         component: dBankResultList,
-        meta: { requiresAuth: true }
+        meta: { allowed: ['admin', 'editor'] }
       }
     ]
   },
@@ -191,13 +190,13 @@ const routes = [
     path: '/d-bank-interaction/:id',
     name: 'DBankInteractionDetails',
     component: dBankInteractionDetails,
-    meta: { requiresAuth: true }
+    meta: { allowed: ['admin', 'editor'] }
   },
   {
     path: '/upload-data',
     name: 'UploadData',
     component: UploadData,
-    meta: { requiresAuth: true, requiresAdmin: true }
+    meta: { allowed: ['admin', 'editor'] }
   }
 ]
 
@@ -210,11 +209,11 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
   await store.dispatch('getUserInfo');
   const { loggedInUser } = store.state.userStore;
-  if (loggedInUser && (loggedInUser.role === 'admin' || loggedInUser.role === 'editor')) {
-    if (to.meta.requiresAdmin) {
-      if (loggedInUser.role !== 'admin') {
-        next({ name: from.name });
-      } else {
+  if (loggedInUser && (loggedInUser.role === 'admin' || loggedInUser.role === 'editor' || loggedInUser.role === 'sales' || loggedInUser.role === 'assistantEditor')) {
+    if (to.meta.allowed) {
+      if(!to.meta.allowed.includes(loggedInUser.role)){
+        next({ name: 'Home' });
+      }else{
         next();
       }
     } else {

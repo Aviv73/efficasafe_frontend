@@ -88,7 +88,7 @@
               v-model="editedRef.pubmedId"
             />
             <div class="ref-form-actions">
-              <v-btn class="cancel-btn" @click="openDeleteRefDialog" color="error">delete reference</v-btn>
+              <v-btn class="cancel-btn" @click="openDeleteRefDialog" color="error" v-if="isAdmin">delete reference</v-btn>
               <v-btn class="cancel-btn" @click="closeRefDialog" color="normal">cancel</v-btn>
               <v-btn
                 type="submit"
@@ -540,7 +540,7 @@
             @refs-uploaded="addRefs"
           />
 
-          <v-btn class="mb-10" color="error" width="200" @click="openDeleteAllRefDialog">DELETE ALL references</v-btn>
+          <v-btn class="mb-10" color="error" width="200" @click="openDeleteAllRefDialog" v-if="isAdmin">DELETE ALL references</v-btn>
           
           <d-bank-refs-table 
             :refs="editedMaterial.dBankRefs"
@@ -946,6 +946,12 @@ export default {
     };
   },
   computed: {
+    loggedInUser() {
+      return this.$store.getters.loggedInUser;
+    },
+    isAdmin() {
+      return this.loggedInUser ? this.loggedInUser.role === 'admin' : false;
+    },
     labels() {
       return this.$store.getters.labels;
     },

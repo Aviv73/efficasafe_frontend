@@ -206,7 +206,7 @@ export default {
         return {
             editedUser: null,
             valid: true,
-            roles: ['admin', 'user', 'editor'],
+            roles: ['admin', 'user', 'editor', 'sales', 'assistantEditor'],
             types: ['trial', 'subscribed', 'registered'],
             date: new Date().toISOString().substr(0, 10),
             menu: false,
