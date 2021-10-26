@@ -29,6 +29,7 @@
                     'right-bottom': rightBottom,
                     'right-top': rightTop,
                     'bottom-left': bottomLeft,
+                    'right-top-corner': topRightCorner,
                     bottom,
                     top,
                     left,
@@ -114,6 +115,10 @@ export default {
             default: false
         },
         rightTop: {
+            type: Boolean,
+            default: false
+        },
+        topRightCorner: {
             type: Boolean,
             default: false
         },
@@ -238,7 +243,11 @@ export default {
         position: absolute;
         width: max-content;
         z-index: 999;
-        
+
+        &.right-top-corner{
+            left: 16px;
+            bottom: 18px;
+        }
         
         &.fade {
             transition-property: opacity;

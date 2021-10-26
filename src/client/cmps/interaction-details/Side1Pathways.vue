@@ -12,7 +12,32 @@
             />
         </div>
         <template v-if="pathways.length">
-            <h3 class="font-medium">Details</h3>
+            <div class="details-container">
+                <h3 class="font-medium">Details</h3>
+                <tooltip on="hover" topRightCorner>
+                    <template #content>
+                        <section class="pathways-tooltip-container">
+                            <div class="tip">
+                                <p>A <span class="green">green</span> pathway means that clinical studies have shown no effect</p>
+                                <p>of the supplement on the pathway.</p>
+                            </div>
+                            <div class="tip">
+                                <p>A <span class="red">red</span> pathway means that clinical studies have shown that the </p>
+                                <p>supplement inhibits or induces the pathway.</p>
+                            </div>
+                            <div class="tip">
+                                <p>A <span class="yellow">yellow</span> pathway means that there are only pre-clinical studies</p>
+                                <p>and the effect of the supplement on the pathway is unclear.</p>
+                            </div>
+                        </section>
+                    </template>
+                    <information-outline-icon
+                        class="info-icon"
+                        :size="16"
+                        title=""
+                    />
+                </tooltip>
+            </div>
             <ul
                 class="side1-pathways-nav flex-align-center"
             >
@@ -56,6 +81,9 @@
 <script>
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
+import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
+
+import Tooltip from '@/client/cmps/common/Tooltip';
 
 export default {
     props: {
@@ -149,7 +177,9 @@ export default {
     },
     components: {
         ChevronUpIcon,
-        ChevronDownIcon
+        ChevronDownIcon,
+        InformationOutlineIcon,
+        Tooltip
     }
 }
 </script>
