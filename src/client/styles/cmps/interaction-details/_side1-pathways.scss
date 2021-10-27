@@ -16,7 +16,7 @@
             .tip{
                 margin-block-start: 10px;
 
-                span{
+                .bold{
                     font-weight: bold;
                 }
 
@@ -28,6 +28,10 @@
                 }
                 .yellow{
                     color: $yellow;
+                }
+
+                .underline{
+                    text-decoration: underline;
                 }
             }
         }

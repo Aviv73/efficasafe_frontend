@@ -53,7 +53,10 @@
                 width: rem(140px);
             }
             @include for-middle2-layout {
-                width: rem(255px);
+                width: rem(200px);
+            }
+            @include for-wide-layout {
+                width: rem(235px);
             }
         }
         &.dense {

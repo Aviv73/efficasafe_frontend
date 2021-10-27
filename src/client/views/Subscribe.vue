@@ -33,11 +33,11 @@
     </div>
     <h3 class="headline">Choose your payment plan</h3>
     <div class="cards-container">
-        <div v-for="(plan,idx) in plans" :key="idx" class="card">
-            <div v-if="plan.isRecommended" class="ribbon">
-                <span>Recomended</span> 
+        <div v-for="(plan,idx) in plans" :key="idx" class="card" :class="{'with-stars': plan.isRecommended}">
+            <div v-if="plan.isRecommended" class="stars">
+                <star-icon v-for="idx in 5" :key="idx" class="star-icon"></star-icon>
             </div>
-            <h3 class="card-title">{{plan.durationTxt}}</h3>
+            <h3 class="card-title" :class="{'margin-top': plan.isRecommended}" >{{plan.durationTxt}}</h3>
             <p class="card-price">{{getCurrencyByLocation()}} <span>{{getPriceByLocation(plan)}}</span> /mo</p>
             <button class="card-btn" @click="onSelectPrice($event,plan)">select</button>
         </div>
@@ -78,11 +78,11 @@
         </div>
     </div>
     <div class="cards-container">
-        <div v-for="(plan,idx) in plans" :key="idx" class="card">
-            <div v-if="plan.isRecommended" class="ribbon">
-                <span>Recommended</span> 
+        <div v-for="(plan,idx) in plans" :key="idx" class="card" :class="{'with-stars': plan.isRecommended}">
+            <div v-if="plan.isRecommended" class="stars">
+                <star-icon v-for="idx in 5" :key="idx" class="star-icon"></star-icon>
             </div>
-            <h3 class="card-title">{{plan.durationTxt}}</h3>
+            <h3 class="card-title" :class="{'margin-top': plan.isRecommended}" >{{plan.durationTxt}}</h3>
             <p class="card-price">{{getCurrencyByLocation()}} <span>{{getPriceByLocation(plan)}}</span> /mo</p>
             <button class="card-btn" @click="onSelectPrice($event,plan)">select</button>
         </div>
@@ -93,6 +93,7 @@
 <script>
 
 import { manageService } from '@/cms/services/manage.service'
+import StarIcon from 'vue-material-design-icons/Star';
 
 export default {
   data() {
@@ -120,5 +121,8 @@ export default {
       this.plans = managementData.plans
     //get user contry to show currect prices
   },
+  components:{
+      StarIcon
+  }
 };
 </script>

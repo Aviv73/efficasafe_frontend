@@ -18,15 +18,15 @@
                     <template #content>
                         <section class="pathways-tooltip-container">
                             <div class="tip">
-                                <p>A <span class="green">green</span> pathway means that clinical studies have shown no effect</p>
+                                <p>A <span class="green bold">green</span> pathway means that <span class="underline">clinical studies</span> have shown no effect</p>
                                 <p>of the supplement on the pathway.</p>
                             </div>
                             <div class="tip">
-                                <p>A <span class="red">red</span> pathway means that clinical studies have shown that the </p>
+                                <p>A <span class="red bold">red</span> pathway means that <span class="underline">clinical studies</span> have shown that the </p>
                                 <p>supplement inhibits or induces the pathway.</p>
                             </div>
                             <div class="tip">
-                                <p>A <span class="yellow">yellow</span> pathway means that there are only pre-clinical studies</p>
+                                <p>A <span class="yellow bold">yellow</span> pathway means that there are only <span class="underline">pre-clinical</span> studies</p>
                                 <p>and the effect of the supplement on the pathway is unclear.</p>
                             </div>
                         </section>

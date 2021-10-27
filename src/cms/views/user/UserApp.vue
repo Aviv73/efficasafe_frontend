@@ -50,7 +50,7 @@ export default {
         async loadUsers() {
             this.isLoading = true;
             const filterBy = this.$route.query;
-            filterBy.limit = filterBy.limit || 15;
+            filterBy.limit = filterBy.limit || 50;
             if (filterBy.q) filterBy.page = 0;
             await this.$store.dispatch({ type: 'loadUsers', filterBy });
             this.isLoading = false;
