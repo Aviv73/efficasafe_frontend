@@ -52,6 +52,7 @@
                             class="recommendation-capsule"
                             :class="{ 'txt-dark': interactionColor === '#F6D55C' }"
                             :style="{ 'background-color': interactionColor }"
+                            :title="interaction.recommendation"
                         >
                             <component :is="recommendationIconName" :size="14" />
                             <span class="clip-txt">{{ interaction.recommendation }}</span>
