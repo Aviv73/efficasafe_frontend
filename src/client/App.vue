@@ -81,6 +81,7 @@ export default {
         }else{
             this.$store.commit('setFreeSearchesCount');
         }
+        this.$store.commit('initialLoadingDone')
     },
     components: {
         Navbar,

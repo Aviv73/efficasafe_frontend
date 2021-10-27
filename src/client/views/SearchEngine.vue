@@ -108,7 +108,7 @@
                         </li>
                     </tooltip>
                 </ul>
-                <div v-if="!loggedInUser" class="search-engine-search-cta">
+                <div v-if="initialLoadingDone && !loggedInUser" class="search-engine-search-cta">
                     <span v-if="freeSearchesCount > 0" class="search-engine-search-msg" :class="isRed"><span class="font-medium" :class="isRed">{{ freeSearchesCount }}</span> Free searches left</span>
                     <span v-else class="search-engine-search-msg red-txt">No free searches left</span>
                     <button
@@ -119,7 +119,7 @@
                         Register for free trial
                     </button>
                 </div>
-                <div v-if="loggedInUser && loggedInUser.type !== 'subscribed'" class="search-engine-search-cta">
+                <div v-if="initialLoadingDone &&loggedInUser && loggedInUser.type !== 'subscribed'" class="search-engine-search-cta">
                     <span class="search-engine-search-msg">
                         <span class="font-medium">{{ freeTrialTime }}</span> Free Trail days left</span>
                     <button
@@ -496,6 +496,9 @@ export default {
         },
         listType(){
             return this.$store.getters.getListType;
+        },
+        initialLoadingDone(){
+            return this.$store.getters.getInitialLoading
         },
         allInteractionsColorCount(){
             if(!this.interactionsColorCountMap && !this.dBankInteractionsColorCountMap) return null

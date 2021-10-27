@@ -14,7 +14,7 @@
                     title="Sort A-Z / Z-A"
                     tabindex="0"
                 >
-                    <input type="checkbox" hidden @change="emitSort('name', !$event.target.checked)" />
+                    <input type="checkbox" hidden @change="emitSort('name', $event.target.checked)" />
                     <sort-vertical-icon class="sort-icon v-tour-step-2" title="" />
                     <span>{{ side1Name }} vs {{ side2Name }}</span>
                 </label>

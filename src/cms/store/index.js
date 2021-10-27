@@ -22,7 +22,8 @@ export default new Vuex.Store({
     posSuppIds: [],
     freeSearchesCount: null,
     selectedPaymentPlan: null,
-    managementData: null
+    managementData: null,
+    initialLoading: false
   },
   getters: {
     hasFailedTasks(state) {
@@ -56,6 +57,9 @@ export default new Vuex.Store({
     },
     getManagementData(state){
       return state.managementData
+    },
+    getInitialLoading(state){
+      return state.initialLoading
     }
   },
   mutations: {
@@ -96,6 +100,9 @@ export default new Vuex.Store({
     },
     setManagementData(state, { manage }){
       state.managementData = manage
+    },
+    initialLoadingDone(state){
+      state.initialLoading = true
     }
   },
   actions:{
