@@ -67,13 +67,13 @@
     </div>
     <h3 class="headline">Choose your membership payment plan</h3>
     <div class="cards-container">
-        <div v-for="(plan,idx) in plans" :key="idx" class="card" :class="{'with-stars': plan.isRecommended}">
+        <div v-for="(plan,idx) in plans" :key="idx" class="card" :class="{'with-stars': plan.isRecommended, 'selected':isSelected(plan._id)}">
             <div v-if="plan.isRecommended" class="stars">
                 <star-icon v-for="idx in 5" :key="idx" class="star-icon"></star-icon>
             </div>
             <h3 class="card-title" :class="{'margin-top': plan.isRecommended}" >{{plan.durationTxt}}</h3>
             <p class="card-price">{{getCurrencyByLocation()}} <span>{{getPriceByLocation(plan)}}</span> /mo</p>
-            <button class="card-btn" @click="onSelectPrice($event,plan)">select</button>
+            <button class="card-btn" @click="onSelectPlan($event,plan)">select</button>
         </div>
     </div>
     <div class="coupon-input-container">
