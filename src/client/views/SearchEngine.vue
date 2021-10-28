@@ -50,7 +50,6 @@
                             </span>
                         </template>
                         <button
-                            class="v-tour-step-7"
                             :disabled="!loggedInUser || (!$route.query.q || !$route.query.q.length)"
                             @click="isSaveSearchModalActive = true"
                         >
@@ -86,7 +85,7 @@
                             />
                         </template>
                         <li
-                            class="search-engine-search-materials-chip clip-txt activator v-tour-step-0"
+                            class="search-engine-search-materials-chip clip-txt activator"
                         >
                             <img :src="getResultIcon(result)" alt="" :class="{'disabled': result.isIncluded}">
                             <p :class="{'disabled': result.isIncluded}">{{ result.txt }}</p> 
@@ -214,7 +213,7 @@
                         </li>
                         <li class="search-engine-nav-link">
                             <router-link
-                                class="link boosters pb-tour-step-0 v-tour-step-5"
+                                class="link boosters pb-tour-step-0"
                                 :to="{ name: 'Boosters', query: this.$route.query }"
                             >
                                 Positive boosters
@@ -229,7 +228,7 @@
                                 </span>
                             </router-link>
                         </li>
-                        <li class="search-engine-nav-link v-tour-step-6">
+                        <li class="search-engine-nav-link">
                             <router-link
                                 class="link"
                                 :to="{ name: 'Monitor', query: this.$route.query }"
@@ -238,7 +237,7 @@
                                 What to monitor
                             </router-link>
                         </li>
-                        <li class="search-engine-nav-link v-tour-step-4">
+                        <li class="search-engine-nav-link">
                             <label class="display-toggle">
                                 <input
                                     type="radio"

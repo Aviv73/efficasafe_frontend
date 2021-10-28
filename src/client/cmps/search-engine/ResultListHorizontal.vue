@@ -3,7 +3,7 @@
         <div class="results-header">
             <div v-if="$route.name === 'Results'" class="btn-container">
                 <button @click="showResults('all')" :class="{selected: isSelected('all')}">All Results</button>
-                <button class="v-tour-step-1" @click="showResults('supp')" :class="{selected: isSelected('supp')}">{{suppDrugBtnTxt}}</button>
+                <button @click="showResults('supp')" :class="{selected: isSelected('supp')}">{{suppDrugBtnTxt}}</button>
                 <button @click="showResults('drug')" :class="{selected: isSelected('drug')}">Drug - Drug</button>
             </div>
         </div>
@@ -15,7 +15,7 @@
                     tabindex="0"
                 >
                     <input type="checkbox" hidden @change="emitSort('name', $event.target.checked)" />
-                    <sort-vertical-icon class="sort-icon v-tour-step-2" title="" />
+                    <sort-vertical-icon class="sort-icon" title="" />
                     <span>{{ side1Name }} vs {{ side2Name }}</span>
                 </label>
                 <button
@@ -40,7 +40,7 @@
                     <span>Recommendation</span>
                 </label>
                 <information-outline-icon
-                    class="clickable v-tour-step-3"
+                    class="clickable"
                     :size="12"
                     title=""
                     @click="openAllRecommendations"

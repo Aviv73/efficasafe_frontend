@@ -63,7 +63,7 @@
                                 <template #content>
                                     <div class="evidence-level-tooltip-content" v-html="refsDetailsTxt" />
                                 </template>
-                                <span class="refs v-tour-interaction-step-1">
+                                <span class="refs">
                                     <span class="refs-count">({{ combinedRefs.length }})</span> 
                                     <information-outline-icon :size="12" title="" />
                                 </span>
@@ -104,7 +104,7 @@
                     </div>
                     <h2
                         v-if="interaction.summary"
-                        class="subheader v-tour-interaction-step-0"
+                        class="subheader"
                     >
                         Summary
                     </h2>
@@ -146,7 +146,7 @@
                         allow-overflow
                     >
                         <template #header>
-                            <h2 class="subheader flex-align-center v-tour-interaction-step-2">
+                            <h2 class="subheader flex-align-center">
                                 Review of studies
                                 <span class="de-activator">
                                     <chevron-up-icon class="opened" title="" />
@@ -171,7 +171,7 @@
                         allow-overflow
                     >
                         <template #header>
-                            <h2 class="subheader flex-align-center v-tour-interaction-step-3">
+                            <h2 class="subheader flex-align-center">
                                 Pharmacokinetics
                                 <span
                                     class="badge"
