@@ -1,6 +1,16 @@
 <template>
     <aside>
         <v-tour
+            name="onboarding-interaction-tour"
+            :steps="onboardingInteractionSteps"
+            :callbacks="onboardingInteractionTourCallbacks"
+        />
+        <v-tour
+            name="onboarding-no-searches-tour"
+            :steps="onboardingNoSerchesSteps"
+            :callbacks="onboardingNoSearchesTourCallbacks"
+        />
+        <v-tour
             name="onboarding-tour"
             :steps="onboardingTourSteps"
             :callbacks="onboardingTourCallbacks"
@@ -18,27 +28,220 @@ import { storageService } from '@/cms/services/storage.service';
 import BoostersImg1 from '@/client/assets/imgs/pb1.jpg';
 import BoostersImg2 from '@/client/assets/imgs/pb2.jpg';
 import BoostersImg3 from '@/client/assets/imgs/pb3.jpg';
+import OnboardingNoSearchImg from '@/client/assets/imgs/onboradingNoSearch.jpg';
 import OnboardingImg1 from '@/client/assets/imgs/onboarding1.jpg';
 import OnboardingImg2 from '@/client/assets/imgs/onboarding2.jpg';
 import OnboardingImg3 from '@/client/assets/imgs/onboarding3.jpg';
+import OnboardingImg4 from '@/client/assets/imgs/onboarding4.jpg';
+import OnboardingImg5 from '@/client/assets/imgs/onboarding5.jpg';
+import OnboardingImg6 from '@/client/assets/imgs/onboarding6.jpg';
+import OnboardingImg7 from '@/client/assets/imgs/onboarding7.jpg';
+import OnboardingImg8 from '@/client/assets/imgs/onboarding8.jpg';
+import interactionImg1 from '@/client/assets/imgs/int1.jpg';
+import interactionImg2 from '@/client/assets/imgs/int2.jpg';
+import interactionImg3 from '@/client/assets/imgs/int3.jpg';
+import interactionImg4 from '@/client/assets/imgs/int4.jpg';
+import interactionImg5 from '@/client/assets/imgs/int5.jpg';
+import interactionImg6 from '@/client/assets/imgs/int6.jpg';
+import interactionImg7 from '@/client/assets/imgs/int7.jpg';
 
 export default {
     data() {
         return {
-            onboardingTourSteps: [
+            onboardingInteractionSteps:[
                 {
-                    target: '.v-tour-step-0',
-                    content: '<p class="v-step-txt">Let us show you around! insert your materials here</p>',
+                    target: '.v-tour-interaction-step-0',
+                    content: `
+                        <div class="v-step-container">
+                            <p class="v-step-txt">
+                                Let us help you understand the Supplement-Drug interaction page.
+                            </p>
+                            <p class="v-step-txt">
+                                First is a summary of the evidence. 
+                                We write this part only after we thoroughly review all the studies.
+                                Then we suggest clinical and laboratory parameters to monitor
+                            </p>
+                            <img
+                                class="onboarding-img"
+                                src="${interactionImg1}"
+                                alt="Explanatory usage image"
+                            />
+                        </div>
+                    `,
                     params: {
+                        placement: 'right-end',
                         enableScrolling: false
                     }
                 },
                 {
-                    target: '.v-tour-step-1',
+                    target: '.v-tour-interaction-step-1',
                     content: `
                         <div class="v-step-container">
                             <p class="v-step-txt">
-                                Click on any material to see more info on the material and its interactions within the search plus a link to all of its interactions
+                                Hover the rating on the top right to see full details of the research included
+                            </p>
+                            <img
+                                class="onboarding-img"
+                                src="${interactionImg2}"
+                                alt="Explanatory usage image"
+                            />
+                        </div>
+                    `,
+                    params: {
+                        placement: 'right-end',
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour-interaction-step-1',
+                    content: `
+                        <div class="v-step-container">
+                            <p class="v-step-txt">
+                                If special warnings apply, they will appear here
+                            </p>
+                            <img
+                                class="onboarding-img"
+                                src="${interactionImg3}"
+                                alt="Explanatory usage image"
+                            />
+                        </div>
+                    `,
+                    params: {
+                        placement: 'right-end',
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour-interaction-step-2',
+                    content: `
+                        <div class="v-step-container">
+                            <p class="v-step-txt">
+                                You can go deeper and explore a detailed review of each study
+                            </p>
+                            <img
+                                class="onboarding-img"
+                                src="${interactionImg4}"
+                                alt="Explanatory usage image"
+                            />
+                        </div>
+                    `,
+                    params: {
+                        placement: 'right-end',
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour-interaction-step-3',
+                    content: `
+                        <div class="v-step-container">
+                            <p class="v-step-txt">
+                                These interactions also contain a unique pharmacokinetic section
+                                Drug metabolism shows the different metabolism pathways of the drug
+                            </p>
+                            <img
+                                class="onboarding-img"
+                                src="${interactionImg5}"
+                                alt="Explanatory usage image"
+                            />
+                        </div>
+                    `,
+                    params: {
+                        placement: 'right-end',
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour-interaction-step-3',
+                    content: `
+                        <div class="v-step-container">
+                            <p class="v-step-txt">
+                                Followed by a summary of the supplement effect on the different pathways, And detailed research on each pathway
+                            </p>
+                            <img
+                                class="onboarding-img"
+                                src="${interactionImg6}"
+                                alt="Explanatory usage image"
+                            />
+                        </div>
+                    `,
+                    params: {
+                        placement: 'right-end',
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour-interaction-step-3',
+                    content: `
+                        <div class="v-step-container">
+                            <p class="v-step-txt">
+                                As you probably noticed, we like colors, so:
+                            </p>
+                            <img
+                                class="onboarding-img"
+                                src="${interactionImg7}"
+                                alt="Explanatory usage image"
+                            />
+                        </div>
+                    `,
+                    params: {
+                        placement: 'right-end',
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour-interaction-step-4',
+                    content: `
+                        <div class="v-step-container">
+                            <p class="v-step-txt">
+                                That's it!
+                                Now it’s up to you to use this data wisely and optimize the treatment!
+                            </p>
+                        </div>
+                    `,
+                    params: {
+                        placement: 'bottom',
+                        enableScrolling: false
+                    }
+                },
+            ],
+            onboardingInteractionTourCallbacks: {
+                onStop: () => {
+                    storageService.store('did-onboarding-interaction-tour', true);
+                }
+            },
+            onboardingNoSerchesSteps:[
+                {
+                    target: '.v-tour1-step-0',
+                    content: `
+                        <div class="v-step-container first-tour">
+                            <p class="v-step-txt">
+                                Type your search terms in the search box, And select from the dropdown results
+                            </p>
+                            <img
+                                class="onboarding-img"
+                                src="${OnboardingNoSearchImg}"
+                                alt="Explanatory usage image"
+                            />
+                        </div>
+                    `,
+                    params: {
+                        placement: 'right-end',
+                        enableScrolling: false
+                    }
+                },
+            ],
+            onboardingNoSearchesTourCallbacks: {
+                onStop: () => {
+                    storageService.store('did-onboarding-no-searches-tour', true);
+                }
+            },
+            onboardingTourSteps: [
+                {
+                    target: '.v-tour-step-0',
+                    content: `
+                        <div class="v-step-container">
+                            <p class="v-step-txt">
+                                Click on any search result to discover more information 
                             </p>
                             <img
                                 class="onboarding-img"
@@ -53,43 +256,65 @@ export default {
                     }
                 },
                 {
+                    target: '.v-tour-step-1',
+                    content: `
+                        <div class="v-step-container">
+                            <p class="v-step-txt">
+                                You can filter the category of interactions 
+                            </p>
+                            <img
+                                class="onboarding-img"
+                                src="${OnboardingImg2}"
+                                alt="Explanatory usage image"
+                            />
+                        </div>
+                    `,
+                    params: {
+                        placement: 'left-end',
+                        enableScrolling: false
+                    }
+                },
+                {
                     target: '.v-tour-step-2',
                     content: `
                         <p class="v-step-txt">
-                            You can sort results by name, recommendation or level of evidence
+                            Sort results by A-Z, type (Drug or Supplement), or Recommendation
                         </p>
                         <img
                             class="onboarding-img"
-                            src="${OnboardingImg2}"
+                            src="${OnboardingImg3}"
                             alt="Explanatory usage image"
                         />
                     `,
                     params: {
-                        placement: 'top',
+                        placement: 'bottom',
                         enableScrolling: false
                     }
                 },
                 {
                     target: '.v-tour-step-3',
-                    content: '<p class="v-step-txt">Hover to view recommendation reasoning</p>',
+                    content: `
+                        <p class="v-step-txt">
+                            5.	Interact with the info icon to view recommendations and evidence level ratings
+                        </p>
+                        <img
+                            class="onboarding-img"
+                            src="${OnboardingImg4}"
+                            alt="Explanatory usage image"
+                        />
+                    `,
                     params: {
+                        placement: 'bottom',
                         enableScrolling: false
                     }
                 },
                 {
                     target: '.v-tour-step-4',
-                    content: '<p class="v-step-txt">Hover to view evidence level index</p>',
-                    params: {
-                        enableScrolling: false
-                    }
-                },
-                {
-                    target: '.v-tour-step-5',
                     content: `
-                        <p class="v-step-txt">Change to vertical view</p>
+                        <p class="v-step-txt">Change to vertical view and see the whole picture!</p>
                         <img
                             class="boosters-img"
-                            src="${OnboardingImg3}"
+                            src="${OnboardingImg5}"
                             alt="Explanatory usage image"
                         />
                     `,
@@ -105,10 +330,38 @@ export default {
                     })
                 },
                 {
-                    target: '.v-tour-step-6',
-                    content: '<p class="v-step-txt">Optimize treatment with synergistics</p>',
+                    target: '.v-tour-step-5',
+                    content: `
+                        <p class="v-step-txt">Check out positive boosters for the drugs you searched</p>
+                        <img
+                            class="boosters-img"
+                            src="${OnboardingImg6}"
+                            alt="Explanatory usage image"
+                        />
+                    `,
                     params: {
-                        placement: 'top',
+                        placement: 'bottom',
+                        enableScrolling: false
+                    },
+                    before: () => new Promise((resolve) => {
+                        const elNav = document.querySelector('.search-engine-nav');
+                        const maxScroll = elNav.scrollWidth - elNav.clientWidth;
+                        elNav.scrollLeft += maxScroll;
+                        resolve();
+                    })
+                },
+                {
+                    target: '.v-tour-step-6',
+                    content: `
+                        <p class="v-step-txt">Gain valuable insights on clinical and laboratory parameters to monitor</p>
+                        <img
+                            class="boosters-img"
+                            src="${OnboardingImg7}"
+                            alt="Explanatory usage image"
+                        />
+                    `,
+                    params: {
+                        placement: 'bottom',
                         enableScrolling: false
                     },
                     before: () => new Promise((resolve) => {
@@ -120,22 +373,25 @@ export default {
                 },
                 {
                     target: '.v-tour-step-7',
-                    content: '<p class="v-step-txt">Gain valuable insights on clinical and laboratory parameters to monitor</p>',
+                    content: `
+                        <p class="v-step-txt">As a registered user, you can save your searches for quick access</p>
+                        <img
+                            class="boosters-img"
+                            src="${OnboardingImg8}"
+                            alt="Explanatory usage image"
+                        />
+                        <p class="v-step-txt">You can find the saved searches in your account</p>
+                    `,
                     params: {
-                        placement: 'top',
+                        placement: 'right-end',
                         enableScrolling: false
                     },
-                    before: () => new Promise((resolve) => {
-                        const elNav = document.querySelector('.search-engine-nav');
-                        const maxScroll = elNav.scrollWidth - elNav.clientWidth;
-                        elNav.scrollLeft += maxScroll;
-                        resolve();
-                    })
                 }
             ],
             onboardingTourCallbacks: {
                 onStop: () => {
                     storageService.store('did-onboarding-tour', true);
+                     storageService.store('did-onboarding-no-searches-tour', true);
                 }
             },
             boostersTourSteps: [
@@ -143,15 +399,14 @@ export default {
                     target: '.pb-tour-step-0',
                     content: `
                         <p class="v-step-txt">
-                            This tab will show you positive combinations
-                            with the drugs that are in your search
+                            This tab will show you positive boosters for what you searched 
+                            First for the drugs, and then for the supplements
                         </p>
                         <img
                             class="boosters-img"
                             src="${BoostersImg1}"
                             alt="Usage example"
                         />
-                        <p class="v-step-txt">The order of the drugs shown is set by the recommendations</p>
                     `,
                     params: {
                         placement: 'left-start',
@@ -162,8 +417,7 @@ export default {
                     target: '.pb-tour-step-0',
                     content: `
                         <p class="v-step-txt">
-                            A click on each drug will show you all the herbs and/or
-                            supplements that can be coadministered with the drug
+                            A click on each drug will show you all the supplements that can be coadministered with the drug
                         </p>
                         <img
                             class="boosters-img"
@@ -180,9 +434,8 @@ export default {
                     target: '.pb-tour-step-0',
                     content: `
                         <p class="v-step-txt">
-                            A click on each herb/supplement will show you the interaction
-                            with the chosen drug followed by the interactions of this
-                            herb/supplement with the other drugs in your search
+                            A click on each supplement will show you the interaction with the chosen drug followed by the interactions 
+                            of this supplement with the other drugs in your search, so you can see the whole picture at a glance
                         </p>
                         <img
                             class="boosters-img"

@@ -14,7 +14,7 @@
                     />
                 </router-link>
                 <autocomplete
-                    class="search-engine-search-bar v-tour-step-0"
+                    class="search-engine-search-bar v-tour1-step-0"
                     :isOnSearchPage="true"
                     :placeholder1="isScreenNarrow ? 'Add another' : '+   Add another'"
                     @item-selected="addMaterials"
@@ -50,6 +50,7 @@
                             </span>
                         </template>
                         <button
+                            class="v-tour-step-7"
                             :disabled="!loggedInUser || (!$route.query.q || !$route.query.q.length)"
                             @click="isSaveSearchModalActive = true"
                         >
@@ -85,7 +86,7 @@
                             />
                         </template>
                         <li
-                            class="search-engine-search-materials-chip clip-txt activator v-tour-step-1"
+                            class="search-engine-search-materials-chip clip-txt activator v-tour-step-0"
                         >
                             <img :src="getResultIcon(result)" alt="" :class="{'disabled': result.isIncluded}">
                             <p :class="{'disabled': result.isIncluded}">{{ result.txt }}</p> 
@@ -213,7 +214,7 @@
                         </li>
                         <li class="search-engine-nav-link">
                             <router-link
-                                class="link boosters pb-tour-step-0 v-tour-step-6"
+                                class="link boosters pb-tour-step-0 v-tour-step-5"
                                 :to="{ name: 'Boosters', query: this.$route.query }"
                             >
                                 Positive boosters
@@ -228,7 +229,7 @@
                                 </span>
                             </router-link>
                         </li>
-                        <li class="search-engine-nav-link v-tour-step-7">
+                        <li class="search-engine-nav-link v-tour-step-6">
                             <router-link
                                 class="link"
                                 :to="{ name: 'Monitor', query: this.$route.query }"
@@ -237,7 +238,7 @@
                                 What to monitor
                             </router-link>
                         </li>
-                        <li class="search-engine-nav-link v-tour-step-5">
+                        <li class="search-engine-nav-link v-tour-step-4">
                             <label class="display-toggle">
                                 <input
                                     type="radio"
@@ -417,6 +418,8 @@ export default {
                     await this.getResults();
                 }
                 if (this.materialsLength >= 1 && !storageService.load('did-onboarding-tour') && !this.isScreenNarrow) {
+                    let tour = document.getElementById('v-step-cdfcdc5c')
+                    if(tour) tour.style.display = 'none'
                     this.$tours['onboarding-tour'].start();
                 }
             },
@@ -1524,7 +1527,7 @@ export default {
             this.arrowRightPositin = (target.scrollLeft * -1)
         }
     },
-    mounted() {
+    async mounted() {
         const el = this.$refs.whatToMonitorLink.$el
         let options = {
             rootMargin: "0px 0px 0px 0px",
@@ -1540,10 +1543,27 @@ export default {
         this.setScrollBarWidth();
         this.showDisclaimer();
         this.showMobileMsg();
+        await this.getMaterials();
+        if (this.materialsLength === 0 && !storageService.load('did-onboarding-no-searches-tour') && !this.isScreenNarrow) {
+            this.$tours['onboarding-no-searches-tour'].start();
+        }
     },
     beforeDestroy(){
         const el = this.$refs.whatToMonitorLink.$el
         this.observer.unobserve(el);
+    },
+    created(){
+        eventBus.$on('start-tour', () =>{
+            if(this.materialsLength === 0){
+                storageService.remove('did-onboarding-tour')
+                this.$tours['onboarding-no-searches-tour'].start();
+            }else{
+                this.$tours['onboarding-tour'].start();
+            }
+        })
+        eventBus.$on('start-boosters-tour', () =>{
+            this.$tours['boosters-tour'].start();
+        })
     },
     components: {
         Autocomplete,

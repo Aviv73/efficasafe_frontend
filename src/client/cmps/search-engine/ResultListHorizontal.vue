@@ -3,7 +3,7 @@
         <div class="results-header">
             <div v-if="$route.name === 'Results'" class="btn-container">
                 <button @click="showResults('all')" :class="{selected: isSelected('all')}">All Results</button>
-                <button @click="showResults('supp')" :class="{selected: isSelected('supp')}">{{suppDrugBtnTxt}}</button>
+                <button class="v-tour-step-1" @click="showResults('supp')" :class="{selected: isSelected('supp')}">{{suppDrugBtnTxt}}</button>
                 <button @click="showResults('drug')" :class="{selected: isSelected('drug')}">Drug - Drug</button>
             </div>
         </div>
@@ -73,7 +73,7 @@
                         </div>
                     </template>
                     <information-outline-icon
-                        class="tooltip-trigger v-tour-step-4"
+                        class="tooltip-trigger"
                         :size="12"
                         title=""
                     />

@@ -10,7 +10,7 @@
                             Back to search
                         </button>
                     </span>
-                    <router-link to="/" class="interaction-details-header-logo">
+                    <router-link to="/" class="interaction-details-header-logo v-tour-interaction-step-4">
                         <img :src="require('@/client/assets/imgs/logo-vector.svg')" alt="Logo" />
                     </router-link>
                     <span class="interaction-details-header-actions">
@@ -63,7 +63,7 @@
                                 <template #content>
                                     <div class="evidence-level-tooltip-content" v-html="refsDetailsTxt" />
                                 </template>
-                                <span class="refs">
+                                <span class="refs v-tour-interaction-step-1">
                                     <span class="refs-count">({{ combinedRefs.length }})</span> 
                                     <information-outline-icon :size="12" title="" />
                                 </span>
@@ -104,7 +104,7 @@
                     </div>
                     <h2
                         v-if="interaction.summary"
-                        class="subheader"
+                        class="subheader v-tour-interaction-step-0"
                     >
                         Summary
                     </h2>
@@ -146,7 +146,7 @@
                         allow-overflow
                     >
                         <template #header>
-                            <h2 class="subheader flex-align-center">
+                            <h2 class="subheader flex-align-center v-tour-interaction-step-2">
                                 Review of studies
                                 <span class="de-activator">
                                     <chevron-up-icon class="opened" title="" />
@@ -171,7 +171,7 @@
                         allow-overflow
                     >
                         <template #header>
-                            <h2 class="subheader flex-align-center">
+                            <h2 class="subheader flex-align-center v-tour-interaction-step-3">
                                 Pharmacokinetics
                                 <span
                                     class="badge"
@@ -260,12 +260,15 @@
         >
             <share-modal @close-modal="isShareModalActive = false" />
         </modal-wrap>
+        <onboarding-tour /> 
     </section>
 </template>
 
 <script>
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import { utilService } from '@/cms/services/util.service';
+import { storageService } from '@/cms/services/storage.service';
+import { eventBus } from '@/cms/services/eventBus.service';
 
 import Side2Pathways from '@/client/cmps/interaction-details/Side2Pathways';
 import Side1Pathways from '@/client/cmps/interaction-details/Side1Pathways';
@@ -276,6 +279,7 @@ import Collapse from '@/client/cmps/common/Collapse';
 import ModalWrap from '@/client/cmps/common/ModalWrap';
 import Error404 from '@/client/cmps/shared/Error404';
 import ShareModal from '@/client/cmps/shared/modals/ShareModal';
+import OnboardingTour from '@/client/cmps/search-engine/OnboardingTour';
 
 import Loader from '@/client/cmps/common/icons/Loader';
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
@@ -505,6 +509,9 @@ export default {
                 this.interactionRefs = refs.filter(ref => this.interaction.refs.includes(ref.draftIdx));
             }
             this.isLoading = false;
+            if (!storageService.load('did-onboarding-interaction-tour') && !this.isScreenNarrow) {
+                this.$tours['onboarding-interaction-tour'].start();
+            }
         },
         sortInteractionRefs() {
             if (!this.interaction) return;
@@ -572,6 +579,11 @@ export default {
             return txt;
         }
     },
+    created(){
+        eventBus.$on('start-interaction-tour', ()=>{
+            this.$tours['onboarding-interaction-tour'].start();
+        })
+    },
     components: {
         ChevronLeftIcon,
         PrinterIcon,
@@ -580,6 +592,7 @@ export default {
         InformationOutlineIcon,
         Tooltip,
         Collapse,
+        OnboardingTour,
         ChevronDownIcon,
         ChevronUpIcon,
         Side2Pathways,

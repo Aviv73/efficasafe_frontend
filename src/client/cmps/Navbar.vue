@@ -7,8 +7,8 @@
         <div class="main-container">
             <div class="flex-space-between">
                 <div class="navbar-msgs flex-center">
-                    <div class="flex-center" v-if="loggedInUser">
-                        <dropdown>
+                    <div class="flex-center">
+                        <dropdown v-if="loggedInUser">
                             <template #activator>
                                 <div class="flex-align-center">
                                     <span>
@@ -41,13 +41,18 @@
                         </dropdown>
                         <div
                             class="flex-center"
-                            v-if="loggedInUser.type !== 'subscribed'"
+                            v-if="loggedInUser && loggedInUser.type !== 'subscribed'"
                         >
                             <p v-if="freeTrialTime > 0">
                                 {{freeTrialMsg}}
                             </p>
                             <p v-else>| Your free trial has ended - Subscribe Now</p>
                         </div>
+                        <button v-if="!isScreenNarrow && ($route.name === 'Results' || $route.name === 'Boosters' || $route.name === 'InteractionDetails' || $route.name === 'VinteractionDetails')" 
+                        @click="activeReleventTour"
+                        class="tour-btn">
+                            Take a tour
+                        </button>
                     </div>
                 </div>
                 <ul class="navbar-nav">
@@ -180,6 +185,9 @@
 </template>
 
 <script>
+
+import { eventBus } from '@/cms/services/eventBus.service';
+
 import Dropdown from '@/client/cmps/common/Dropdown';
 
 import CloseIcon from 'vue-material-design-icons/Close';
@@ -216,6 +224,17 @@ export default {
         }
     },
     methods: {
+        activeReleventTour(){
+            if(this.$route.name === 'Results'){
+                eventBus.$emit('start-tour')
+            }
+            if(this.$route.name === 'Boosters'){
+                eventBus.$emit('start-boosters-tour')
+            }
+            if(this.$route.name === 'InteractionDetails' || this.$route.name === 'VinteractionDetails'){
+                eventBus.$emit('start-interaction-tour')
+            }
+        },
         toggleNavActive() {
             this.isNavActive = !this.isNavActive;
         },

@@ -7,6 +7,7 @@
         text-transform: uppercase;
         color: $clr1;
         margin-block-end: rem(20px);
+        width: fit-content;
     }
     .subheader2 {
         color: $clr-txt-dark;
@@ -362,6 +363,39 @@
                 transform: translateX(-105%);
                 user-select: none;
             }
+        }
+    }
+    .v-tour .v-step {
+        background-color: $clr1;
+        border-radius: 15px;
+        box-shadow: 0px 3px 8px rgba($black, .15);
+        padding: rem(16px) rem(24px);
+        font-family: roboto-medium, sans-serif;
+        font-weight: 500;
+        font-size: rem(15px);
+        line-height: rem(17px);
+        max-width: 700px;
+        z-index: 80;
+
+        &-container {
+            width: rem(400px);
+        }
+
+        &-txt {
+            width: 80%;
+            margin: 0 auto;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-size: rem(18px);
+            line-height: rem(24px);
+        }
+        .boosters-img  {
+            width: 100%;
+            margin: rem(12px) 0;
+        }
+        .onboarding-img {
+            width: 100%;
+            margin: rem(12px) 0;
         }
     }
     &-refs {
