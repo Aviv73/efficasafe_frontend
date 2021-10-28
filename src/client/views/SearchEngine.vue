@@ -418,8 +418,6 @@ export default {
                     await this.getResults();
                 }
                 if (this.materialsLength >= 1 && !storageService.load('did-onboarding-tour') && !this.isScreenNarrow) {
-                    let tour = document.getElementById('v-step-cdfcdc5c')
-                    if(tour) tour.style.display = 'none'
                     this.$tours['onboarding-tour'].start();
                 }
             },
@@ -1555,10 +1553,9 @@ export default {
     created(){
         eventBus.$on('start-tour', () =>{
             if(this.materialsLength === 0){
-                storageService.remove('did-onboarding-tour')
-                this.$tours['onboarding-no-searches-tour'].start();
+                this.$nextTick(() => this.$tours['onboarding-no-searches-tour'].start())
             }else{
-                this.$tours['onboarding-tour'].start();
+                this.$nextTick(() => this.$tours['onboarding-tour'].start())  
             }
         })
         eventBus.$on('start-boosters-tour', () =>{

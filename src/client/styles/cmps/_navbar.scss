@@ -10,6 +10,11 @@
     padding: rem(10px) 0;
     transition: background-color .6s ease;
 
+    @include for-wide-layout {
+        height: 50px;
+        font-size: rem(14px);
+    }
+
     &.light {
         background-image: none;
         background-color: $white;
@@ -76,6 +81,10 @@
         display: inline-flex;
         align-items: center;
         justify-content: flex-end;
+
+        @include for-wide-layout {
+            margin-block-start: 2px;
+        }
         
         
         &-item {

@@ -510,7 +510,7 @@ export default {
             }
             this.isLoading = false;
             if (!storageService.load('did-onboarding-interaction-tour') && !this.isScreenNarrow) {
-                this.$tours['onboarding-interaction-tour'].start();
+                this.$nextTick(() => this.$tours['onboarding-interaction-tour'].start())
             }
         },
         sortInteractionRefs() {
