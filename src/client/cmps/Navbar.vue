@@ -100,7 +100,7 @@
                         <router-link to="/about">About us</router-link>
                     </li>
                 </ul>
-                <button class="navbar-toggle" @click="toggleNavActive">
+                <button class="navbar-toggle" @click="toggleNavActive" title="Side menu">
                     <menu-icon title="" />
                 </button>
                 <div

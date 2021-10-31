@@ -1,9 +1,9 @@
 <template>
     <section class="side1-pathways">
         <div v-if="summary">
-            <h3 class="font-medium">Summary</h3>
+            <h3 class="font-medium regular-pointer">Summary</h3>
             <p
-                class="paragraph"
+                class="paragraph regular-pointer"
                 v-html="formatRefs(summaryWithRefs, true)"
                 v-refs-tooltip.pathwaysSecond="{
                     combinedRefs,
@@ -13,20 +13,20 @@
         </div>
         <template v-if="pathways.length">
             <div class="details-container">
-                <h3 class="font-medium">Details</h3>
+                <h3 class="font-medium regular-pointer">Details</h3>
                 <tooltip on="hover" topRightCorner>
                     <template #content>
                         <section class="pathways-tooltip-container">
                             <div class="tip">
-                                <p>A <span class="green bold">green</span> pathway means that <span class="underline">clinical studies</span> have shown no effect</p>
+                                <p>A <span class="green bold">green</span> marking means that <span class="underline">clinical studies</span> have shown no effect</p>
                                 <p>of the supplement on the pathway.</p>
                             </div>
                             <div class="tip">
-                                <p>A <span class="red bold">red</span> pathway means that <span class="underline">clinical studies</span> have shown that the </p>
+                                <p>A <span class="red bold">red</span> marking means that <span class="underline">clinical studies</span> have shown that the </p>
                                 <p>supplement inhibits or induces the pathway.</p>
                             </div>
                             <div class="tip">
-                                <p>A <span class="yellow bold">yellow</span> pathway means that there are only <span class="underline">pre-clinical</span> studies</p>
+                                <p>A <span class="yellow bold">yellow</span> marking means that there are only <span class="underline">pre-clinical</span> studies</p>
                                 <p>and the effect of the supplement on the pathway is unclear.</p>
                             </div>
                         </section>
@@ -58,7 +58,7 @@
                 </li>
             </ul>
             <p
-                class="active-tab-txt"
+                class="active-tab-txt regular-pointer"
                 v-show="pathways.length"
                 v-html="formatRefs(activeTabTxt, true)"
                 v-refs-tooltip.pathwaysSecond.dynamicTxt="{
@@ -69,7 +69,7 @@
         </template> 
             <span class="d-flex un-relevant-container">
                 <span
-                    class="un-relevant"
+                    class="un-relevant regular-pointer"
                     v-if="unrelevantPathways.length"
                 >
                     There is no info on {{ `${materialName}'s` }} effect on: {{ unrelevantPathwayNames }}

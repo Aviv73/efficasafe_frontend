@@ -1,6 +1,6 @@
 <template>
     <section class="side2-pathways">
-        <p class="side2-pathways-header">
+        <p class="side2-pathways-header regular-pointer">
             {{ materialName }} is metabolized by:
         </p>
         <div
@@ -8,7 +8,7 @@
             v-for="({ name, pathways }, index) in formatedPathways"
             :key="index"
         >
-            <span class="font-medium font-capitalize blue">{{ name }}: </span>
+            <span class="font-medium font-capitalize blue regular-pointer">{{ name }}: </span>
             <span
                 class="pathway"
                 v-for="(pathway, idx) in pathways"

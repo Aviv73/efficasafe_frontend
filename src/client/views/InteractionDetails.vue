@@ -104,12 +104,12 @@
                     </div>
                     <h2
                         v-if="interaction.summary"
-                        class="subheader"
+                        class="subheader regular-pointer"
                     >
                         Summary
                     </h2>
                     <p
-                        class="paragraph"
+                        class="paragraph regular-pointer"
                         v-if="interaction.summary"
                         v-html="formatRefs(interaction.summary)"
                         v-refs-tooltip="{
@@ -156,7 +156,7 @@
                         </template>
                         <template #content>
                             <p
-                                class="paragraph"
+                                class="paragraph regular-pointer"
                                 v-html="formatRefs(interaction.reviewOfStudies)"
                                 v-refs-tooltip="{
                                     combinedRefs,
@@ -174,11 +174,22 @@
                             <h2 class="subheader flex-align-center">
                                 Pharmacokinetics
                                 <span
-                                    class="badge"
-                                    :class="worstPathwayEffectClassName"
-                                    v-if="relevantSide1Pathways.length"
+                                    class="badge badge-red"
+                                    v-if="releventSide1PathwaysByColors.red"
                                 >
-                                    {{ relevantSide1Pathways.length }}
+                                    {{ releventSide1PathwaysByColors.red }}
+                                </span>
+                                <span
+                                    class="badge badge-yellow"
+                                    v-if="releventSide1PathwaysByColors.yellow"
+                                >
+                                    {{ releventSide1PathwaysByColors.yellow }}
+                                </span>
+                                <span
+                                    class="badge badge-green"
+                                    v-if="releventSide1PathwaysByColors.green"
+                                >
+                                    {{ releventSide1PathwaysByColors.green }}
                                 </span>
                                 <span class="de-activator">
                                     <chevron-up-icon class="opened" title="" />
@@ -419,22 +430,22 @@ export default {
                 return idx !== -1;
             });
         },
-        worstPathwayEffectClassName() {
-            let red = '', yellow = '', green = '';
+        releventSide1PathwaysByColors(){
+            let map = {red:0,yellow:0,green:0}
             this.relevantSide1Pathways.forEach(({ influence }) => {
                 let firstLine = influence.split('</p>')[0];
                 if (!firstLine) return;
                 firstLine = firstLine.toLowerCase();
 
                 if (firstLine.includes('may induce') || firstLine.includes('may inhibit') || firstLine.includes('may bind')) {
-                    red = 'badge-red';
+                    map.red++
                 } else if (firstLine.includes('is unclear')) {
-                    yellow = 'badge-yellow';
+                    map.yellow++
                 } else if (firstLine.includes('not likely to affect')) {
-                    green = 'badge-green';
+                    map.green++
                 }
             });
-            return red || yellow || green;
+            return map
         },
         unRelevantSide2Pathways() {
             return this.relevantSide2Pathways.filter(pathway => {
@@ -509,7 +520,7 @@ export default {
                 this.interactionRefs = refs.filter(ref => this.interaction.refs.includes(ref.draftIdx));
             }
             this.isLoading = false;
-            if (!storageService.load('did-onboarding-interaction-tour') && !this.isScreenNarrow) {
+            if (!storageService.load('did-onboarding-interaction-tour1') && !this.isScreenNarrow) {
                 this.$nextTick(() => this.$tours['onboarding-interaction-tour'].start())
             }
         },

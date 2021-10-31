@@ -217,13 +217,13 @@
                                 :to="{ name: 'Boosters', query: this.$route.query }"
                             >
                                 Positive boosters
-                                <span v-if="totalPositiveBoosters">
+                                <span v-if="boostersCount">
                                     {{'\xa0'}}
                                     <span
                                         class="badge"
                                         :style="positivesBadgeColor"
                                     >
-                                        {{ totalPositiveBoosters }}
+                                        {{ boostersCount }}
                                     </span>
                                 </span>
                             </router-link>
@@ -320,7 +320,7 @@
                 @close-modal="isSearchesLeftModalActive = false"
             />
         </modal-wrap>
-        <onboarding-tour />        
+        <onboarding-tour />      
     </section>
 </template>
 
@@ -396,7 +396,7 @@ export default {
                 this.countLoadingTime()
                 this.$store.commit('resetRedPositiveSupp')
                 this.isArrowShown = true
-                if (this.$route.name === 'Boosters' && !this.isScreenNarrow && !storageService.load('did-p-boosters-tour')) {
+                if (this.$route.name === 'Boosters' && !this.isScreenNarrow && !storageService.load('did-p-boosters-tour1')) {
                     this.$nextTick(() => {
                         this.$tours['boosters-tour'].start();
                     });
@@ -416,7 +416,7 @@ export default {
                     this.$store.commit('resetPosSupp')
                     await this.getResults();
                 }
-                if (this.materialsLength >= 1 && !storageService.load('did-onboarding-tour') && !this.isScreenNarrow) {
+                if (this.materialsLength >= 1 && !storageService.load('did-onboarding-tour1') && !this.isScreenNarrow) {
                     this.$tours['onboarding-tour'].start();
                 }
             },
@@ -470,6 +470,9 @@ export default {
                     };
             }
             return []
+        },
+        boostersCount(){
+            return this.$store.getters.getPosBoostersCount || this.totalPositiveBoosters
         },
         getRelevetInteractions(){
             if(this.listType === 'supp') return this.formatedInteractions
@@ -877,13 +880,9 @@ export default {
             
             return refsCount + dBankRefsCount + pathwayRefsCount + this.$store.getters.supplementsRefs.length;
         },
-        totalInteractionCount() {
+        totalInteractionCount(){
             if (this.$route.name === 'Boosters') {
-                const sum = this.formatedPositiveInteractions.reduce((acc, { total }) => {
-                    acc += total;
-                    return acc;
-                }, 0);
-                return sum + this.$store.getters.getPosSuppLength
+                return this.boostersCount
             }
             else{
                 let interactionsSum
@@ -913,8 +912,6 @@ export default {
                 acc += total;
                 return acc;
             }, 0);
-            // if(this.$store.getters.getPosSuppLength) return sum + this.$store.getters.getPosSuppLength
-            // else return sum + sumPos
             return sum + sumPos
         },
         freeSearchesCount(){
@@ -942,6 +939,7 @@ export default {
         positivesBadgeColor() {
             if(!this.positiveInteractions.length) return { 'background-color': '#56C596', 'color': 'white'}
             const worstRecomm = this.getMoreSeverRecomm(true, ...this.positiveInteractions.map(i => i.recommendation));
+            if(!worstRecomm) return { 'background-color': '#56C596', 'color': 'white'}
             var bgc = interactionUIService.getInteractionColor(worstRecomm);
             if(bgc === '#F6D55C') return { 'background-color': bgc, 'color': 'blue'}
             return { 'background-color': bgc, 'color': 'white'}
@@ -1172,6 +1170,7 @@ export default {
             };
             const materials = await this.$store.dispatch({ type: 'getMaterials', criteria, doCache: true });
             this.materials = this.sortMaterials(materials);
+            this.$store.commit({ type: 'setMaterials', materials});
             this.$store.commit({ type: 'makeMaterialNamesMap', materials});
             this.checkForIncludedMaterials();
             this.$store.commit({ type: 'makeMaterialNamesMap', materials: materials.filter(m => !m.isIncluded) });
@@ -1264,12 +1263,13 @@ export default {
                                 this.dBankInteractions.sort((a, b) => (a.evidence_level - b.evidence_level) * sortOrder);
                             break;
                         }
-                    }if(this.listType === 'all' && page == limit){
+                    }
+                    if(this.listType === 'all' && page == limit){
                         switch (sortBy) {
                             case 'name':
-                                return this.allInteractions.sort((a, b) => (a.name.split(' & ')[side - 1].toLowerCase().localeCompare(b.name.split(' & ')[side - 1].toLowerCase())) * sortOrder);
+                                return this.allInteractions.sort((a, b) => (a.name.split(' & ')[side - 1].toLowerCase().localeCompare(b.name.split(' & ')[side - 1].toLowerCase())) * (sortOrder * -1));
                             case 'recommendation':
-                                return this.allInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
+                                return this.allInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * (sortOrder * -1));
                             case 'evidenceLevel':
                                 return this.allInteractions.sort((a, b) => {
                                     let order
@@ -1298,7 +1298,7 @@ export default {
                 const sortOrder = isDesc ? -1 : 1;
                 switch (sortBy) {
                     case 'name':
-                        return interactions.sort((a, b) => (a.name.split(' & ')[side - 1].toLowerCase().localeCompare(b.name.split(' & ')[side - 1].toLowerCase())) * sortOrder);
+                        return interactions.sort((a, b) => (a.name.split(' & ')[side - 1].toLowerCase().localeCompare(b.name.split(' & ')[side - 1].toLowerCase())) * (sortOrder * -1));
                     case 'recommendation':
                         return interactions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
                     case 'evidenceLevel':
@@ -1541,7 +1541,7 @@ export default {
         this.showDisclaimer();
         this.showMobileMsg();
         await this.getMaterials();
-        if (this.materialsLength === 0 && !storageService.load('did-onboarding-no-searches-tour') && !this.isScreenNarrow) {
+        if (this.materialsLength === 0 && !storageService.load('did-onboarding-no-searches-tour1') && !this.isScreenNarrow) {
             this.$tours['onboarding-no-searches-tour'].start();
         }
     },

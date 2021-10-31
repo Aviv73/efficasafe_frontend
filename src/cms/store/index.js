@@ -20,6 +20,10 @@ export default new Vuex.Store({
     isScreenNarrow: null,
     hasFailedTasks: false,
     posSuppIds: [],
+    posBoostersCountMap:{},
+    posBoostersCount: 0,
+    posSuppBoostersCountMap:{},
+    posSuppBoostersCount: 0,
     freeSearchesCount: null,
     selectedPaymentPlan: null,
     managementData: null,
@@ -60,6 +64,12 @@ export default new Vuex.Store({
     },
     getInitialLoading(state){
       return state.initialLoading
+    },
+    getPosBoostersCount(state){
+      return state.posBoostersCount
+    },
+    getPosSuppBoostersCount(state){
+      return state.posSuppBoostersCount
     }
   },
   mutations: {
@@ -83,6 +93,26 @@ export default new Vuex.Store({
     },
     resetPosSupp(state){
       state.posSuppIds = []
+      state.posBoostersCountMap = {}
+      state.posBoostersCount = 0
+      state.posSuppBoostersCountMap = {}
+      state.posSuppBoostersCount = 0
+    },
+    setPosSuppBoostersCount(state, {data}){
+      if(data.name.includes('&')) return
+      state.posBoostersCountMap[data.name] = data.count
+      state.posBoostersCount =  Object.values(state.posBoostersCountMap).reduce((acc, num) => {
+          acc += num
+          return acc
+      }, 0)
+      const material = materialStore.state.materials.find(mat => mat.name === data.name)
+      if(material && material.type !== 'drug'){
+        state.posSuppBoostersCountMap[data.name] = data.count
+        state.posSuppBoostersCount =  Object.values(state.posSuppBoostersCountMap).reduce((acc, num) => {
+            acc += num
+            return acc
+        }, 0)
+      }
     },
     setFreeSearchesCount(state){
       if(!storageService.load('searches-left') && storageService.load('searches-left') !== 0){

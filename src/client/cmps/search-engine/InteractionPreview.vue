@@ -350,6 +350,7 @@ export default {
             this.$emit('interactionDone')
         },
         setCount(length){
+            this.$store.commit({ type: 'setPosSuppBoostersCount', data:{name: this.interaction.name, count: length, isSupp: this.isSupp}})
             this.newLength = length
         },
         negativeMsgName(fullName){
@@ -474,12 +475,14 @@ export default {
         },
         getVinteractionsCount(interaction) {
             if (!('vInteractions' in interaction)) return 0;
-            return interaction.vInteractions.reduce((acc, vInteraction) => {
+            let sum =  interaction.vInteractions.reduce((acc, vInteraction) => {
                 if (!vInteraction.vInteractions) acc++;
                 else acc += vInteraction.vInteractions.length;
 
                 return acc;
             }, 0);
+            this.$store.commit({ type: 'setPosSuppBoostersCount', data:{name: interaction.name, count: sum}})
+            return sum
         },
         getInteractionLink(interaction) {
             const url = interaction.isVirtual ? `/interaction/${interaction._id}/${interaction.side2Material._id}` : `/interaction/${interaction._id}`;

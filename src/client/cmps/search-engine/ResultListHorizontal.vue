@@ -324,7 +324,7 @@ export default {
             return toShow
         },
         suppCount(){
-            return this.$store.getters.getPosSuppLength
+            return this.$store.getters.getPosSuppBoostersCount
         },
         isSelected(){
             return (type) => {

@@ -55,11 +55,9 @@ export default {
                         <div class="v-step-container v-step-wide-container">
                             <p class="v-step-txt">
                                 Let us help you understand the Supplement-Drug interaction page.
-                            </p>
-                            <p class="v-step-txt">
-                                First is a summary of the evidence. 
+                                It begins with a summary of the evidence. 
                                 We write this part only after we thoroughly review all the studies.
-                                Then we suggest clinical and laboratory parameters to monitor
+                                Then we suggest clinical and laboratory parameters to monitor.
                             </p>
                             <img
                                 class="onboarding-img"
@@ -76,9 +74,9 @@ export default {
                 {
                     target: '.v-tour-interaction-step-4',
                     content: `
-                        <div class="v-step-container">
+                        <div class="v-step-container" style="width: 32rem;">
                             <p class="v-step-txt">
-                                Hover the rating on the top right to see full details of the research included
+                                Hover the mouse pointer over the rating on the top right to see full details of the research included.
                             </p>
                             <img
                                 class="onboarding-img"
@@ -97,7 +95,7 @@ export default {
                     content: `
                         <div class="v-step-container">
                             <p class="v-step-txt">
-                                If special warnings apply, they will appear here
+                                If special warnings apply, they will appear here.
                             </p>
                             <img
                                 class="onboarding-img"
@@ -116,7 +114,7 @@ export default {
                     content: `
                         <div class="v-step-container v-step-wide-container">
                             <p class="v-step-txt">
-                                You can go deeper and explore a detailed review of each study
+                                You can go deeper and explore a detailed review of each study.
                             </p>
                             <img
                                 class="onboarding-img"
@@ -135,8 +133,8 @@ export default {
                     content: `
                         <div class="v-step-container v-step-wide-container">
                             <p class="v-step-txt">
-                                These interactions also contain a unique pharmacokinetic section
-                                Drug metabolism shows the different metabolism pathways of the drug
+                                These interactions also contain a unique pharmacokinetic section.
+                                Drug metabolism shows the different metabolism pathways of the drug.
                             </p>
                             <img
                                 class="onboarding-img"
@@ -155,7 +153,7 @@ export default {
                     content: `
                         <div class="v-step-container v-step-wide-container">
                             <p class="v-step-txt">
-                                Followed by a summary of the supplement effect on the different pathways, And detailed research on each pathway
+                                There is a summary of the supplement’s effect on the different pathways, and detailed research on each pathway.
                             </p>
                             <img
                                 class="onboarding-img"
@@ -172,7 +170,7 @@ export default {
                 {
                     target: '.v-tour-interaction-step-4',
                     content: `
-                        <div class="v-step-container">
+                        <div class="v-step-container" style="width: 27rem;">
                             <p class="v-step-txt">
                                 As you probably noticed, we like colors, so:
                             </p>
@@ -206,7 +204,7 @@ export default {
             ],
             onboardingInteractionTourCallbacks: {
                 onStop: () => {
-                    storageService.store('did-onboarding-interaction-tour', true);
+                    storageService.store('did-onboarding-interaction-tour1', true);
                 }
             },
             onboardingNoSerchesSteps:[
@@ -227,9 +225,9 @@ export default {
                 {
                     target: '.v-tour1-step-0',
                     content: `
-                        <div class="v-step-container first-tour">
+                        <div class="v-step-container first-tour" style="width: 27rem;">
                             <p class="v-step-txt">
-                                Type your search terms in the search box, And select from the dropdown results
+                                Type your search terms in the search box, and select from the dropdown results.
                             </p>
                             <img
                                 class="onboarding-img"
@@ -399,8 +397,8 @@ export default {
             ],
             onboardingNoSearchesTourCallbacks: {
                 onStop: () => {
-                    storageService.store('did-onboarding-tour', true);
-                    storageService.store('did-onboarding-no-searches-tour', true);
+                    storageService.store('did-onboarding-tour1', true);
+                    storageService.store('did-onboarding-no-searches-tour1', true);
                 }
             },
             onboardingTourSteps: [
@@ -574,8 +572,8 @@ export default {
             ],
             onboardingTourCallbacks: {
                 onStop: () => {
-                    storageService.store('did-onboarding-tour', true);
-                    storageService.store('did-onboarding-no-searches-tour', true);
+                    storageService.store('did-onboarding-tour1', true);
+                    storageService.store('did-onboarding-no-searches-tour1', true);
                 }
             },
             boostersTourSteps: [
@@ -583,8 +581,8 @@ export default {
                     target: '.pb-tour-step-0',
                     content: `
                         <p class="v-step-txt">
-                            This tab will show you positive boosters for what you searched 
-                            First for the drugs, and then for the supplements
+                            This tab will show you positive boosters for what you searched.
+                            First for the drugs, and then for the supplements.
                         </p>
                         <img
                             class="boosters-img"
@@ -635,7 +633,7 @@ export default {
             ],
             boostersTourCallbacks: {
                 onStop: () => {
-                    storageService.store('did-p-boosters-tour', true);
+                    storageService.store('did-p-boosters-tour1', true);
                 }
             }
         }
