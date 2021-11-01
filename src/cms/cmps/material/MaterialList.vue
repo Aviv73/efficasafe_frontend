@@ -9,7 +9,7 @@
       :loading="loading"
       :items-per-page="15"
       :footer-props="{
-        'items-per-page-options': [ 15, 50, -1 ]
+        'items-per-page-options': [ 15, 50, 200 ]
       }"
     >
       <template v-slot:[`header.name`]="{ header }">
@@ -25,6 +25,15 @@
         <th>
           <label class="list-header">
             <input type="checkbox" hidden @change="onSort('type', $event.target.checked)">
+            {{ header.text }}
+            <v-icon class="icon" :class="{ 'icon-active': isSortedBy(header.value) }">mdi-arrow-down</v-icon>
+          </label>
+        </th>
+      </template>
+      <template v-slot:[`header.isUnderStudy`]="{ header }">
+        <th class="d-flex justify-center">
+          <label class="list-header">
+            <input type="checkbox" hidden @change="onSort('isUnderStudy', $event.target.checked)">
             {{ header.text }}
             <v-icon class="icon" :class="{ 'icon-active': isSortedBy(header.value) }">mdi-arrow-down</v-icon>
           </label>

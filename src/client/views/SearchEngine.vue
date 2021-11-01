@@ -409,6 +409,7 @@ export default {
                     return;
                 }
                 if (!Array.isArray(q) && q) {
+                    if(q === 'tour') return
                     this.$route.query.q = [ q ];
                 }
                 const isSameSearch = from && from.q && to.q.length === from.q.length && to.q.every((val, idx) => val === from.q[idx]) && from.page === to.page;
@@ -1540,6 +1541,11 @@ export default {
         this.setScrollBarWidth();
         this.showDisclaimer();
         this.showMobileMsg();
+        const { q } = this.$route.query;
+        if(q === 'tour' && !this.isScreenNarrow){
+            this.$tours['onboarding-no-searches-tour'].start();
+            return
+        } 
         await this.getMaterials();
         if (this.materialsLength === 0 && !storageService.load('did-onboarding-no-searches-tour1') && !this.isScreenNarrow) {
             this.$tours['onboarding-no-searches-tour'].start();
