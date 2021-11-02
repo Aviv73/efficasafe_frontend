@@ -6,6 +6,7 @@ export const userStore = {
         loggedInUser: userService.getLoggedInUser(),
         token: null,
         users: null,
+        userPageHeight: null,
         total: 0
     },
     getters: {
@@ -17,6 +18,9 @@ export const userStore = {
         },
         usersTotal(state) {
             return state.total;
+        },
+        getUserPageHeight(state){
+            return state.userPageHeight
         }
     },
     mutations: {
@@ -42,6 +46,9 @@ export const userStore = {
         },
         setUseApproval(state) {
             state.loggedInUser.approvedUse = true;
+        },
+        setUserPageHeight(state, {height}){
+            state.userPageHeight = height
         }
     },
     actions: {

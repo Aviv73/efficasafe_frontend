@@ -45,6 +45,9 @@ export default {
         totalItems() {
             return this.$store.getters.usersTotal;
         },
+        height(){
+            return this.$store.getters.getUserPageHeight
+        }
     },
     methods: {
         async loadUsers() {
@@ -66,6 +69,11 @@ export default {
         async removeMany(ids) {
             await this.$store.dispatch({ type: 'removeUsers', ids });
         },
+    },
+    mounted(){
+        if(this.height){
+            window.scrollTo(0, this.height);
+        }
     },
     components: {
         UserList,

@@ -12,7 +12,82 @@
                 'items-per-page-options': [ 50, 100, -1 ],
             }"
         >
-            <template v-slot:[`header.name`]="{ header }">
+            <template v-slot:[`header.username`]="{ header }">
+                <label class="list-header">
+                    <input
+                        type="checkbox"
+                        hidden
+                        @change="onSort(header.value, $event.target.checked)"
+                    />
+                    {{ header.text }}
+                    <v-icon
+                        class="icon"
+                        :class="{ 'icon-active': isSortedBy(header.value) }"
+                        >mdi-arrow-down</v-icon
+                    >
+                </label>
+            </template>
+            <template v-slot:[`header.role`]="{ header }">
+                <label class="list-header">
+                    <input
+                        type="checkbox"
+                        hidden
+                        @change="onSort(header.value, $event.target.checked)"
+                    />
+                    {{ header.text }}
+                    <v-icon
+                        class="icon"
+                        :class="{ 'icon-active': isSortedBy(header.value) }"
+                        >mdi-arrow-down</v-icon
+                    >
+                </label>
+            </template>
+            <template v-slot:[`header.email`]="{ header }">
+                <label class="list-header">
+                    <input
+                        type="checkbox"
+                        hidden
+                        @change="onSort(header.value, $event.target.checked)"
+                    />
+                    {{ header.text }}
+                    <v-icon
+                        class="icon"
+                        :class="{ 'icon-active': isSortedBy(header.value) }"
+                        >mdi-arrow-down</v-icon
+                    >
+                </label>
+            </template>
+            <template v-slot:[`header.registeredTime`]="{ header }">
+                <label class="list-header">
+                    <input
+                        type="checkbox"
+                        hidden
+                        @change="onSort(header.value, $event.target.checked)"
+                    />
+                    {{ header.text }}
+                    <v-icon
+                        class="icon"
+                        :class="{ 'icon-active': isSortedBy(header.value) }"
+                        >mdi-arrow-down</v-icon
+                    >
+                </label>
+            </template>
+            <template v-slot:[`header.type`]="{ header }">
+                <label class="list-header">
+                    <input
+                        type="checkbox"
+                        hidden
+                        @change="onSort(header.value, $event.target.checked)"
+                    />
+                    {{ header.text }}
+                    <v-icon
+                        class="icon"
+                        :class="{ 'icon-active': isSortedBy(header.value) }"
+                        >mdi-arrow-down</v-icon
+                    >
+                </label>
+            </template>
+            <template v-slot:[`header.trialTime`]="{ header }">
                 <label class="list-header">
                     <input
                         type="checkbox"
@@ -31,12 +106,19 @@
                 <tbody>
                     <tr class="tr-label" v-for="item in items" :key="item._id">
                         <td class="td-name-img">
+                            <div style="color: rgb(47, 131, 214); cursor: pointer;" @click="onUserClicked(item._id)">
+                                <span class="text-capitalize">{{
+                                    item.username
+                                }}</span>
+                            </div>
+                        </td>
+                        <!-- <td class="td-name-img">
                             <router-link :to="`user/edit/${item._id}`">
                                 <span class="text-capitalize">{{
                                     item.username
                                 }}</span>
                             </router-link>
-                        </td>
+                        </td> -->
 
                         <td class="centered text-center">
                             {{ item.role }}
@@ -107,17 +189,17 @@ export default {
                 },
                 {
                     text: 'Registered',
-                    value: 'Registered',
+                    value: 'registeredTime',
                     align: 'center',
                 },
                 {
                     text: 'Type',
-                    value: 'subType',
+                    value: 'type',
                     align: 'center',
                 },
                 {
                     text: 'End Trial',
-                    value: 'endTrial',
+                    value: 'trialTime',
                     align: 'center',
                 },
             ],
@@ -156,6 +238,10 @@ export default {
             if(!originalDate) return '---'
             let date = new Date(originalDate).toISOString().substr(0, 10)
             return date.split('-').reverse().join('-')
+        },
+        onUserClicked(userId){
+            this.$store.commit ({type: 'setUserPageHeight', height: window.pageYOffset})
+            this.$router.push(`user/edit/${userId}`)
         }
     },
 };
