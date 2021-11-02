@@ -16,8 +16,10 @@
                     <div v-if="isEmailExists" class="msg failed">This email already exists</div>
                     <template v-if="!isShowVereficationMsg">
                         <form @submit.prevent="onRegister" class="auth-modal-field">
+                            <eye-icon v-if="!isShowPass" @click="isShowPass = !isShowPass" class="eye-icon"></eye-icon>
+                            <eye-off-icon v-else @click="isShowPass = !isShowPass" class="eye-icon"></eye-off-icon>
                             <input @focus="resetError('email')" :class="{ 'is-invalid': isInvaliedEmail }" type="text" placeholder="Email" v-model="cred.email">
-                            <input @focus="resetError('pass')" :class="{ 'is-invalid': isInvaliedPassword }" type="password" placeholder="Password" v-model="cred.password">
+                            <input @focus="resetError('pass')" :class="{ 'is-invalid': isInvaliedPassword }" :type="passInputType" placeholder="Password" v-model="cred.password">
                             <input @focus="resetError('name')" :class="{ 'is-invalid': isInvaliedName }" type="text" placeholder="Username" v-model="cred.username">
                             <div class="checkbox-container">
                                 <input @change="changeCheckbox" class='checkbox' :class="{ 'is-invalid': isInvaliedName }" type="checkbox" v-model="cred.agreedToTerm">  
@@ -76,6 +78,8 @@
 import { userService } from '@/cms/services/user.service';
 import { eventBus, EV_email_exists } from '@/cms/services/eventBus.service';
 import CloseIcon from 'vue-material-design-icons/Close';
+import EyeIcon from 'vue-material-design-icons/Eye';
+import EyeOffIcon from 'vue-material-design-icons/EyeOff';
 
 export default {
     props: {
@@ -100,7 +104,8 @@ export default {
             isInvaliedName: false,
             isNotAgreed: false,
             isEmailExists: false,
-            isBtnDisabled: false
+            isBtnDisabled: false,
+            isShowPass: false
         };
     },
     computed: {
@@ -117,6 +122,10 @@ export default {
         googleLink(){
             return (process.env.NODE_ENV === 'development') ? 'http://localhost:3000/auth/google' : '/auth/google'
         },
+        passInputType(){
+            if(!this.isShowPass) return 'password'
+            return 'text'
+        }
     },
     methods: {
         closeModal() {
@@ -169,7 +178,9 @@ export default {
         eventBus.$on(EV_email_exists, this.showEmailExistsMsg)
     },
     components:{
-        CloseIcon
+        CloseIcon,
+        EyeIcon,
+        EyeOffIcon
     }
 };
 </script>

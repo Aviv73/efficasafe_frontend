@@ -69,7 +69,18 @@ export default {
                 this.msg = 'Name / title is required';
                 return;
             }
-            this.search.url = `${window.location.origin}${this.$route.fullPath}`;
+            
+            let endpoint
+            let strings = this.$route.fullPath.split('/')
+            if(this.$route.fullPath.includes('positive-boosters')){
+                strings[2] = strings[2].slice(17,strings[2].length)
+                endpoint = strings.join('/')
+            }else if(this.$route.fullPath.includes('what-to-monitor')){
+                strings[2] = strings[2].slice(15,strings[2].length)
+                endpoint = strings.join('/')
+            }else endpoint = this.$route.fullPath
+
+            this.search.url = `${window.location.origin}${endpoint}`;
             this.search.at = Date.now();
             const search = JSON.parse(JSON.stringify(this.search));
             const user = JSON.parse(JSON.stringify(this.loggedInUser));

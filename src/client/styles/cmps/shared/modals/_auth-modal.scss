@@ -217,6 +217,14 @@
             color: $gray;
         }
 
+        .eye-icon{
+            position: absolute;
+            top: 65px;
+            right: 15px;
+            cursor: pointer;
+            color: #7e7575;
+        }
+
         input {
             height: rem(43px);
             width: 100%;

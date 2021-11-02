@@ -238,7 +238,7 @@
                             </router-link>
                         </li>
                         <li class="search-engine-nav-link">
-                            <label class="display-toggle">
+                            <label class="display-toggle" title="Horizontal view">
                                 <input
                                     type="radio"
                                     name="isVertical"
@@ -249,7 +249,7 @@
                                 />
                                 <mobile-menu-icon title="" />
                             </label>
-                            <label class="display-toggle">
+                            <label class="display-toggle" title="Vertical view">
                                 <input
                                     type="radio"
                                     name="isVertical"

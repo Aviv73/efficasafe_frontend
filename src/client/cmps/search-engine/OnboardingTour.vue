@@ -213,7 +213,7 @@ export default {
                     content: `
                         <div class="v-step-container">
                             <p class="v-step-txt">
-                                Welcome! Let’s take a quick tour
+                                Welcome! Let’s take a quick tour.
                             </p>
                         </div>
                     `,
@@ -246,7 +246,7 @@ export default {
                     content: `
                         <div class="v-step-container">
                             <p class="v-step-txt">
-                                Click on any search result to discover more information 
+                                Click on any search result to discover more information.
                             </p>
                             <img
                                 class="onboarding-img"
@@ -265,7 +265,7 @@ export default {
                     content: `
                         <div class="v-step-container v-step-wide-container">
                             <p class="v-step-txt">
-                                You can filter the category of interactions 
+                                You can filter the category of interactions. 
                             </p>
                             <img
                                 class="onboarding-img"
@@ -283,7 +283,7 @@ export default {
                     target: '.v-tour1-step-0',
                     content: `
                         <p class="v-step-txt">
-                            Sort results by A-Z, type (Drug or Supplement), or Recommendation
+                            Sort results by A-Z, type (Drug or Supplement), or Recommendation.
                         </p>
                         <img
                             class="onboarding-img"
@@ -301,7 +301,7 @@ export default {
                     content: `
                         <div class="v-step-container v-step-wide-container">
                             <p class="v-step-txt">
-                                Interact with the info icon to view recommendations and evidence level ratings
+                                Interact with the info icon to view recommendations and evidence level ratings.
                             </p>
                             <img
                                 class="onboarding-img"
@@ -339,7 +339,7 @@ export default {
                 {
                     target: '.v-tour1-step-0',
                     content: `
-                        <p class="v-step-txt">Check out positive boosters for the drugs you searched</p>
+                        <p class="v-step-txt">Check out positive boosters for the drugs you searched.</p>
                         <img
                             class="boosters-img"
                             src="${OnboardingImg6}"
@@ -360,7 +360,7 @@ export default {
                 {
                     target: '.v-tour1-step-0',
                     content: `
-                        <p class="v-step-txt">Gain valuable insights on clinical and laboratory parameters to monitor</p>
+                        <p class="v-step-txt">Gain valuable insights on clinical and laboratory parameters to monitor.</p>
                         <img
                             class="boosters-img"
                             src="${OnboardingImg7}"
@@ -381,13 +381,13 @@ export default {
                 {
                     target: '.v-tour1-step-0',
                     content: `
-                        <p class="v-step-txt">As a registered user, you can save your searches for quick access</p>
+                        <p class="v-step-txt">As a registered user, you can save your searches for quick access.</p>
                         <img
                             class="boosters-img"
                             src="${OnboardingImg8}"
                             alt="Explanatory usage image"
                         />
-                        <p class="v-step-txt">You can find the saved searches in your account</p>
+                        <p class="v-step-txt">You can find the saved searches in your account.</p>
                     `,
                     params: {
                         placement: 'right-end',
@@ -407,7 +407,7 @@ export default {
                     content: `
                         <div class="v-step-container">
                             <p class="v-step-txt">
-                                Welcome! Let’s take a quick tour
+                                Welcome! Let’s take a quick tour.
                             </p>
                         </div>
                     `,
@@ -421,7 +421,7 @@ export default {
                     content: `
                         <div class="v-step-container">
                             <p class="v-step-txt">
-                                Click on any search result to discover more information 
+                                Click on any search result to discover more information.
                             </p>
                             <img
                                 class="onboarding-img"
@@ -440,7 +440,7 @@ export default {
                     content: `
                         <div class="v-step-container v-step-wide-container">
                             <p class="v-step-txt">
-                                You can filter the category of interactions 
+                                You can filter the category of interactions.
                             </p>
                             <img
                                 class="onboarding-img"
@@ -458,7 +458,7 @@ export default {
                     target: '.v-tour1-step-0',
                     content: `
                         <p class="v-step-txt">
-                            Sort results by A-Z, type (Drug or Supplement), or Recommendation
+                            Sort results by A-Z, type (Drug or Supplement), or Recommendation.
                         </p>
                         <img
                             class="onboarding-img"
@@ -476,7 +476,7 @@ export default {
                     content: `
                     <div class="v-step-container v-step-wide-container">
                         <p class="v-step-txt">
-                            Interact with the info icon to view recommendations and evidence level ratings
+                            Interact with the info icon to view recommendations and evidence level ratings.
                         </p>
                         <img
                             class="onboarding-img"
@@ -514,7 +514,7 @@ export default {
                 {
                     target: '.v-tour1-step-0',
                     content: `
-                        <p class="v-step-txt">Check out positive boosters for the drugs you searched</p>
+                        <p class="v-step-txt">Check out positive boosters for the drugs you searched.</p>
                         <img
                             class="boosters-img"
                             src="${OnboardingImg6}"
@@ -535,7 +535,7 @@ export default {
                 {
                     target: '.v-tour1-step-0',
                     content: `
-                        <p class="v-step-txt">Gain valuable insights on clinical and laboratory parameters to monitor</p>
+                        <p class="v-step-txt">Gain valuable insights on clinical and laboratory parameters to monitor.</p>
                         <img
                             class="boosters-img"
                             src="${OnboardingImg7}"
@@ -556,13 +556,13 @@ export default {
                 {
                     target: '.v-tour1-step-0',
                     content: `
-                        <p class="v-step-txt">As a registered user, you can save your searches for quick access</p>
+                        <p class="v-step-txt">As a registered user, you can save your searches for quick access.</p>
                         <img
                             class="boosters-img"
                             src="${OnboardingImg8}"
                             alt="Explanatory usage image"
                         />
-                        <p class="v-step-txt">You can find the saved searches in your account</p>
+                        <p class="v-step-txt">You can find the saved searches in your account.</p>
                     `,
                     params: {
                         placement: 'right-end',
@@ -599,7 +599,7 @@ export default {
                     target: '.pb-tour-step-0',
                     content: `
                         <p class="v-step-txt">
-                            A click on each drug will show you all the supplements that can be coadministered with the drug
+                            A click on each drug will show you all the supplements that can be coadministered with the drug.
                         </p>
                         <img
                             class="boosters-img"
@@ -617,7 +617,7 @@ export default {
                     content: `
                         <p class="v-step-txt">
                             A click on each supplement will show you the interaction with the chosen drug followed by the interactions 
-                            of this supplement with the other drugs in your search, so you can see the whole picture at a glance
+                            of this supplement with the other drugs in your search, so you can see the whole picture at a glance.
                         </p>
                         <img
                             class="boosters-img"

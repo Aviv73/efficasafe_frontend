@@ -11,8 +11,10 @@
                         <div v-if="isShowFailedMsg" class="msg failed">WRONG EMAIL OR PASSWORD.</div>
                         <div v-if="isShowSuccesseMsg" class="msg successe">You are now logged in.</div>
                         <form @submit.prevent="onRegister" class="auth-modal-field">
+                            <eye-icon v-if="!isShowPass" @click="isShowPass = !isShowPass" class="eye-icon"></eye-icon>
+                            <eye-off-icon v-else @click="isShowPass = !isShowPass" class="eye-icon"></eye-off-icon>
                             <input @input="removeFailedmsg" type="text" placeholder="Email" v-model="cred.email">
-                            <input @input="removeFailedmsg" type="password" placeholder="Password" v-model="cred.password">
+                            <input @input="removeFailedmsg" :type="passInputType" placeholder="Password" v-model="cred.password">
                             <div class="forgot-pass-link">
                                 <a href="/email-pass">Forgot password?</a>
                             </div>
@@ -37,6 +39,8 @@
 <script>
 
 import CloseIcon from 'vue-material-design-icons/Close';
+import EyeIcon from 'vue-material-design-icons/Eye';
+import EyeOffIcon from 'vue-material-design-icons/EyeOff';
 
 export default {
     data() {
@@ -46,7 +50,8 @@ export default {
                 password:'',
             },
             isShowFailedMsg: false,
-            isShowSuccesseMsg: false
+            isShowSuccesseMsg: false,
+            isShowPass: false
         };
     },
     computed: {
@@ -56,6 +61,10 @@ export default {
         googleLink(){
             return (process.env.NODE_ENV === 'development') ? 'http://localhost:3000/auth/google' : '/auth/google'
         },
+        passInputType(){
+            if(!this.isShowPass) return 'password'
+            return 'text'
+        }
     },
     methods: {
         closeModal() {
@@ -78,7 +87,9 @@ export default {
         
     },
     components:{
-        CloseIcon
+        CloseIcon,
+        EyeIcon,
+        EyeOffIcon
     }
 };
 </script>
