@@ -15,7 +15,7 @@
             <div class="save-search-modal-content-input">
                 <input
                     type="text"
-                    placeholder="Client name / Search title"
+                    placeholder="Patient name / Search title"
                     v-model="search.title"
                     @keypress.enter="onSaveSearch"
                     @input="msg = '';showReplaceBtn = false;"

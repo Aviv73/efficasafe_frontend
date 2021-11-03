@@ -1258,7 +1258,7 @@ export default {
                                 this.dBankInteractions.sort((a, b) => a[sideName].name.toLowerCase().localeCompare(b[sideName].name.toLowerCase()) * sortOrder);
                             break;
                             case 'recommendation':
-                                this.dBankInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
+                                this.dBankInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * (sortOrder * -1));
                             break;
                             case 'evidenceLevel':
                                 this.dBankInteractions.sort((a, b) => (a.evidence_level - b.evidence_level) * sortOrder);

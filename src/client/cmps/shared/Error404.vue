@@ -291,7 +291,7 @@
         </svg>
         <p class="error-404-txt">
             <span>Ooops..</span>
-            loooks like the web page you are looking for doesn't exists
+            looks like the web page you are looking for doesn't exists
         </p>
     </section>
 </template>
