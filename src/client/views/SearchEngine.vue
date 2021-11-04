@@ -247,19 +247,30 @@
                                     hidden
                                     @input="savePrefs('view', 'horizontal')"
                                 />
-                                <mobile-menu-icon title="" />
+                                <mobile-menu-icon class="rotate90" title="" />
                             </label>
-                            <label class="display-toggle" title="Vertical view">
-                                <input
-                                    type="radio"
-                                    name="isVertical"
-                                    v-model="isViewVertical"
-                                    :value="true"
-                                    hidden
-                                    @input="savePrefs('view', 'vertical')"
-                                />
-                                <mobile-menu-icon title="" />
-                            </label>
+                            <tooltip
+                                :hidden="!!loggedInUser && (freeTrialTime > 0 || loggedInUser.type === 'subscribed')"
+                                right
+                            >
+                                <template #content>
+                                    <span class="msg">
+                                        Vertical view is available for registered users
+                                    </span>
+                                </template>
+                                <label class="display-toggle" title="Vertical view">
+                                    <input
+                                        :disabled="!loggedInUser || (loggedInUser.type !== 'subscribed' && freeTrialTime <= 0)"
+                                        type="radio"
+                                        name="isVertical"
+                                        v-model="isViewVertical"
+                                        :value="true"
+                                        hidden
+                                        @input="savePrefs('view', 'vertical')"
+                                    />
+                                    <mobile-menu-icon title="" />
+                                </label>
+                            </tooltip>
                         </li>
                     </ul>
                     <div class="arrow-container" :style="{ right: arrowRightPositin + 'px'}">

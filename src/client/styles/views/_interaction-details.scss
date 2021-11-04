@@ -366,7 +366,7 @@
         }
     }
     .v-tour .v-step {
-        background-color: $clr1;
+        background-color: #163246;
         border-radius: 15px;
         box-shadow: 0px 3px 8px rgba($black, .15);
         padding: rem(16px) rem(24px);
@@ -385,19 +385,25 @@
             width: rem(650px);
         }
 
+        &__buttons{
+            text-align: end;
+        }
+
         &-txt {
-            width: 80%;
-            margin: 0 auto;
+            width: 100%;
             margin-top: 10px;
             margin-bottom: 10px;
             font-size: rem(18px);
             line-height: rem(24px);
+            text-align: start;
         }
         .boosters-img  {
+            border-radius: 15px;
             width: 100%;
             margin: rem(12px) 0;
         }
         .onboarding-img {
+            border-radius: 15px;
             width: 100%;
             margin: rem(12px) 0;
         }

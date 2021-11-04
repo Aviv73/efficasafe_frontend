@@ -55,6 +55,8 @@ export default {
                         <div class="v-step-container v-step-wide-container">
                             <p class="v-step-txt">
                                 Let us help you understand the Supplement-Drug interaction page.
+                            </p>
+                            <p class="v-step-txt">
                                 It begins with a summary of the evidence. 
                                 We write this part only after we thoroughly review all the studies.
                                 Then we suggest clinical and laboratory parameters to monitor.
@@ -192,6 +194,8 @@ export default {
                         <div class="v-step-container">
                             <p class="v-step-txt">
                                 That's it!
+                            </p>
+                            <p class="v-step-txt">
                                 Now it’s up to you to use this data wisely and optimize the treatment!
                             </p>
                         </div>
@@ -213,7 +217,10 @@ export default {
                     content: `
                         <div class="v-step-container">
                             <p class="v-step-txt">
-                                Welcome! Let’s take a quick tour.
+                                Welcome! 
+                            </p>
+                            <p class="v-step-txt">
+                                Let’s take a quick tour.
                             </p>
                         </div>
                     `,
@@ -407,7 +414,10 @@ export default {
                     content: `
                         <div class="v-step-container">
                             <p class="v-step-txt">
-                                Welcome! Let’s take a quick tour.
+                                Welcome! 
+                            </p>
+                            <p class="v-step-txt">
+                                Let’s take a quick tour.
                             </p>
                         </div>
                     `,
@@ -582,6 +592,8 @@ export default {
                     content: `
                         <p class="v-step-txt">
                             This tab will show you positive boosters for what you searched.
+                        </p>
+                        <p class="v-step-txt">
                             First for the drugs, and then for the supplements.
                         </p>
                         <img

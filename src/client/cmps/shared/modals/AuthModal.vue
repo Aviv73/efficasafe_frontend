@@ -10,7 +10,7 @@
                     <div v-if="showFreeSearchesMsg" class="searches-msg">
                         <h3>No free searches left</h3>
                         <h4>Want to enjoy efficasafe free trial for</h4>
-                        <h4>another 14 days?</h4>
+                        <h4>another {{managementData.freeTrailDaysNum}} days?</h4>
                         <p><span>No problem!</span> just sign up and continue searching</p>
                     </div>
                     <div v-if="isEmailExists" class="msg failed">This email already exists</div>
@@ -125,7 +125,10 @@ export default {
         passInputType(){
             if(!this.isShowPass) return 'password'
             return 'text'
-        }
+        },
+        managementData(){
+            return this.$store.getters.getManagementData;
+        },
     },
     methods: {
         closeModal() {

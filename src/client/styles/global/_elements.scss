@@ -180,7 +180,7 @@ sub {
                 justify-content: start;
                 text-align: center;
                 padding-inline-end: 0;
-                padding-inline-start: 50px;
+                padding-inline-start: 4%;
             }
 
             .refs {
@@ -197,6 +197,18 @@ sub {
                     right: 22.5%;
                 }
             }
+        }
+
+    }
+    .off-interaction-col-1{
+        @include for-narrow-layout {
+            flex-basis: 46% !important;
+        }
+    }
+
+    .off-interaction-col-2{
+        @include for-narrow-layout {
+            flex-basis: 40% !important;
         }
     }
 }

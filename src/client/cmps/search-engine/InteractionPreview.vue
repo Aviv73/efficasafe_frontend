@@ -22,7 +22,7 @@
                     >
                         <span
                             class="table-col"
-                            :class="{ 'flex-align-center': isDuplicate }"
+                            :class="{ 'flex-align-center': isDuplicate, 'off-interaction-col-1': !isAllowed}"
                         >
                             <minus-icon
                                 class="minus-icon"
@@ -46,7 +46,7 @@
                         <span v-if="isAllowed" class="table-col" :title="interaction.recommendation">
                             {{ getShortRecommendation(interaction.recommendation) }}
                         </span>
-                        <span v-else class="table-col flex-start" title="Open only for registered subscribers">
+                        <span v-else class="table-col flex-start off-interaction-col-2" title="Open only for registered subscribers">
                             <lock-icon class="lock-icon" :size="18"/> <p> open only for registered subscribers</p>
                         </span>
                         <span v-if="isAllowed" class="table-col">

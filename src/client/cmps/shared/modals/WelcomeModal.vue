@@ -7,7 +7,7 @@
                 <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
                 <div class="auth-modal-small-title font-medium gap-lg">
                     Congratulations!
-                    <span class="d-block">You now have 2 weeks of free trial</span>
+                    <span class="d-block">You now have {{managementData.freeTrailDaysNum}} days of free trial</span>
                 </div>
 
                 <button class="btn" @click="$router.push('/search')">
@@ -38,6 +38,11 @@ export default {
             this.$router.push('/');
         },
     },
+    computed:{
+        managementData(){
+            return this.$store.getters.getManagementData;
+        },
+    }
 };
 </script>
 

@@ -135,6 +135,7 @@
                     </v-btn>
 
                     <v-btn
+                        v-if="loggedInUser && loggedInUser.role === 'admin'"
                         color="error"
                         @click="isWarning = true"
                     >
@@ -275,7 +276,10 @@ export default {
         },
         tableItems(){
             return this.editedUser.purchases
-        }
+        },
+        loggedInUser() {
+            return this.$store.getters.loggedInUser;
+        },
     },
     created() {
         this.loadUser();
