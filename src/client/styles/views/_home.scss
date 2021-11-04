@@ -385,8 +385,15 @@
                     position: absolute;
 
                     &-1 {
-                        top: 32px;
-                        right: 236px;
+                        width: 387px;
+                        top: 13px;
+                        right: 126px;
+
+                        @include for-wide-layout {
+                            width: 445px;
+                            top: 21px;
+                            right: 194px;
+                        }
                     }
 
                     &-2 {

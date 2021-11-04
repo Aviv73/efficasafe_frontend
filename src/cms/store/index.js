@@ -11,6 +11,7 @@ import { drugBankStore } from './modules/drug-bank.store';
 import { featuredInteractionStore } from './modules/featured-interaction.store';
 
 import { manageService } from '@/cms/services/manage.service'
+import { statisticsService } from '@/cms/services/statistics.service'
 
 Vue.use(Vuex)
 
@@ -143,6 +144,9 @@ export default new Vuex.Store({
     async updateManagementData({ commit }, { manage }){
       const newManage = await manageService.update(manage);
       commit({ type: 'setManagementData', newManage });
+    },
+    async countSearches(action, { query }){
+      await statisticsService.addSearch(query)
     }
   },
   plugins: [

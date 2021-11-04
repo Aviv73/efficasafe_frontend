@@ -107,10 +107,12 @@
                 <li class="home-content-list-item">
                     <article class="main-container">
                         <h1>Search</h1>
-                        <p>
+                        <p class="margin-bottom-40">
                             <span class="font-bold">Cross check</span> multiple
                             Drug-Drug and Herb-Supplement-Drug interactions
                             instantly.
+                        </p>
+                        <p>
                             <span class="font-bold">Receive</span> concise
                             recommendations, summaries, and detailed study
                             reviews.

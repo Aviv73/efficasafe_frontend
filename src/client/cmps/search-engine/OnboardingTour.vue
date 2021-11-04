@@ -251,7 +251,7 @@ export default {
                 {
                     target: '.v-tour1-step-0',
                     content: `
-                        <div class="v-step-container">
+                        <div class="v-step-container big-container">
                             <p class="v-step-txt">
                                 Click on any search result to discover more information.
                             </p>
@@ -429,7 +429,7 @@ export default {
                 {
                     target: '.v-tour1-step-0',
                     content: `
-                        <div class="v-step-container">
+                        <div class="v-step-container big-container">
                             <p class="v-step-txt">
                                 Click on any search result to discover more information.
                             </p>

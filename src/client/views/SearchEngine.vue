@@ -254,7 +254,7 @@
                                 right
                             >
                                 <template #content>
-                                    <span class="msg">
+                                    <span class="vertical-msg">
                                         Vertical view is available for registered users
                                     </span>
                                 </template>
@@ -1429,6 +1429,7 @@ export default {
                 }
                 this.$store.commit('reduceFreeSearches');
             }
+            // this.$store.dispatch({type: 'countSearches', query});
             if (this.$route.query.q) {
                 if (!this.isQueryExists(query)) {
                     const queries = [ ...this.$route.query.q, query ];

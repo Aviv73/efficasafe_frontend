@@ -1,1 +1,58 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="412" height="96" viewBox="0 0 412 96"><defs><style>.a{fill:#fff;}.b{fill:#e63946;}.c{fill:#484848;font-size:14px;font-family:Roboto-Medium, Roboto;font-weight:500;}.d{fill:#f6d55c;}.e{filter:url(#g);}.f{filter:url(#e);}.g{filter:url(#c);}.h{filter:url(#a);}</style><filter id="a" x="0" y="0" width="176" height="46" filterUnits="userSpaceOnUse"><feOffset dy="2" input="SourceAlpha"/><feGaussianBlur stdDeviation="1" result="b"/><feFlood flood-color="#bababa" flood-opacity="0.306"/><feComposite operator="in" in2="b"/><feComposite in="SourceGraphic"/></filter><filter id="c" x="170" y="0" width="176" height="46" filterUnits="userSpaceOnUse"><feOffset dy="2" input="SourceAlpha"/><feGaussianBlur stdDeviation="1" result="d"/><feFlood flood-color="#bababa" flood-opacity="0.306"/><feComposite operator="in" in2="d"/><feComposite in="SourceGraphic"/></filter><filter id="e" x="66" y="50" width="176" height="46" filterUnits="userSpaceOnUse"><feOffset dy="2" input="SourceAlpha"/><feGaussianBlur stdDeviation="1" result="f"/><feFlood flood-color="#bababa" flood-opacity="0.306"/><feComposite operator="in" in2="f"/><feComposite in="SourceGraphic"/></filter><filter id="g" x="236" y="50" width="176" height="46" filterUnits="userSpaceOnUse"><feOffset dy="2" input="SourceAlpha"/><feGaussianBlur stdDeviation="1" result="h"/><feFlood flood-color="#bababa" flood-opacity="0.306"/><feComposite operator="in" in2="h"/><feComposite in="SourceGraphic"/></filter></defs><g transform="translate(-422 -1912)"><g transform="translate(66 -152)"><g class="h" transform="matrix(1, 0, 0, 1, 356, 2064)"><rect class="a" width="170" height="40" rx="20" transform="translate(3 1)"/></g><g class="g" transform="matrix(1, 0, 0, 1, 356, 2064)"><rect class="a" width="170" height="40" rx="20" transform="translate(173 1)"/></g><path class="b" d="M19.192,40H18.017a18.1,18.1,0,0,1-7.4-1.572A18.918,18.918,0,0,1,4.57,34.142,20.033,20.033,0,0,1,.494,27.785a21.03,21.03,0,0,1,0-15.57A20.031,20.031,0,0,1,4.57,5.858a18.918,18.918,0,0,1,6.044-4.286A18.1,18.1,0,0,1,18.017,0h1.174V2A17.5,17.5,0,0,0,6.726,7.272a18.187,18.187,0,0,0,0,25.456A17.5,17.5,0,0,0,19.192,38v2Z" transform="translate(528.518 2105) rotate(180)"/><text class="c" transform="translate(368 2077.037)"><tspan x="41.86" y="13">Hypericum</tspan></text><text class="c" transform="translate(538 2077.037)"><tspan x="43.877" y="13">Coumadin</tspan></text><path class="b" d="M19.192,39.774h-.175a18.178,18.178,0,0,1-7.4-1.563A18.929,18.929,0,0,1,5.57,33.949a19.9,19.9,0,0,1-4.075-6.321,20.792,20.792,0,0,1,0-15.482A19.909,19.909,0,0,1,5.57,5.824a18.928,18.928,0,0,1,6.045-4.262A18.189,18.189,0,0,1,19.017,0h.175V2.021a17.466,17.466,0,0,0-5.826,1.374,17.881,17.881,0,0,0-9.442,9.526,17.984,17.984,0,0,0,3.8,19.622,17.671,17.671,0,0,0,5.64,3.836,17.476,17.476,0,0,0,5.826,1.374v2.02Z" transform="translate(528.326 2065)"/></g><g transform="translate(470 1462)"><g class="f" transform="matrix(1, 0, 0, 1, -48, 450)"><rect class="a" width="170" height="40" rx="20" transform="translate(69 51)"/></g><g class="e" transform="matrix(1, 0, 0, 1, -48, 450)"><rect class="a" width="170" height="40" rx="20" transform="translate(239 51)"/></g><path class="d" d="M19.192,40h-.175a18.111,18.111,0,0,1-7.4-1.571A18.935,18.935,0,0,1,5.57,34.142a20.031,20.031,0,0,1-4.076-6.357,21.031,21.031,0,0,1,0-15.57A20.031,20.031,0,0,1,5.57,5.858a18.917,18.917,0,0,1,6.044-4.286A18.1,18.1,0,0,1,19.017,0h.175V2.032a17.389,17.389,0,0,0-6.2,1.541,17.7,17.7,0,0,0-5.269,3.7,18.188,18.188,0,0,0,0,25.456,17.7,17.7,0,0,0,5.269,3.7,17.394,17.394,0,0,0,6.2,1.54V40Z" transform="translate(191.518 541) rotate(180)"/><text class="c" transform="translate(30 513.037)"><tspan x="49.059" y="13">Ginseng</tspan></text><text class="c" transform="translate(200 513.037)"><tspan x="50.156" y="13">Warfarin</tspan></text><path class="d" d="M19.192,39.774h-.175a18.178,18.178,0,0,1-7.4-1.563A18.929,18.929,0,0,1,5.57,33.949a19.9,19.9,0,0,1-4.075-6.321,20.792,20.792,0,0,1,0-15.482A19.909,19.909,0,0,1,5.57,5.824a18.928,18.928,0,0,1,6.045-4.262A18.189,18.189,0,0,1,19.017,0h.175V2.021a17.466,17.466,0,0,0-5.826,1.374,17.881,17.881,0,0,0-9.442,9.526,17.984,17.984,0,0,0,3.8,19.622,17.671,17.671,0,0,0,5.64,3.836,17.476,17.476,0,0,0,5.826,1.374v2.02Z" transform="translate(190.326 501)"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="412" height="96" viewBox="0 0 412 96">
+  <defs>
+    <filter id="Rectangle_865" x="0" y="0" width="176" height="46" filterUnits="userSpaceOnUse">
+      <feOffset dy="2" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="1" result="blur"/>
+      <feFlood flood-color="#bababa" flood-opacity="0.306"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Rectangle_866" x="170" y="0" width="176" height="46" filterUnits="userSpaceOnUse">
+      <feOffset dy="2" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="1" result="blur-2"/>
+      <feFlood flood-color="#bababa" flood-opacity="0.306"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Rectangle_865-2" x="66" y="50" width="176" height="46" filterUnits="userSpaceOnUse">
+      <feOffset dy="2" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="1" result="blur-3"/>
+      <feFlood flood-color="#bababa" flood-opacity="0.306"/>
+      <feComposite operator="in" in2="blur-3"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Rectangle_866-2" x="236" y="50" width="176" height="46" filterUnits="userSpaceOnUse">
+      <feOffset dy="2" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="1" result="blur-4"/>
+      <feFlood flood-color="#bababa" flood-opacity="0.306"/>
+      <feComposite operator="in" in2="blur-4"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="capsules_image_2" data-name="capsules image 2" transform="translate(-422 -1912)">
+    <g id="Group_5736" data-name="Group 5736" transform="translate(66 -152)">
+      <g transform="matrix(1, 0, 0, 1, 356, 2064)" filter="url(#Rectangle_865)">
+        <rect id="Rectangle_865-3" data-name="Rectangle 865" width="170" height="40" rx="20" transform="translate(3 1)" fill="#fff"/>
+      </g>
+      <g transform="matrix(1, 0, 0, 1, 356, 2064)" filter="url(#Rectangle_866)">
+        <rect id="Rectangle_866-3" data-name="Rectangle 866" width="170" height="40" rx="20" transform="translate(173 1)" fill="#fff"/>
+      </g>
+      <path id="Subtraction_50" data-name="Subtraction 50" d="M19.192,40H18.017a18.1,18.1,0,0,1-7.4-1.572A18.918,18.918,0,0,1,4.57,34.142,20.033,20.033,0,0,1,.494,27.785a21.03,21.03,0,0,1,0-15.57A20.031,20.031,0,0,1,4.57,5.858a18.918,18.918,0,0,1,6.044-4.286A18.1,18.1,0,0,1,18.017,0h1.174V2A17.5,17.5,0,0,0,6.726,7.272a18.187,18.187,0,0,0,0,25.456A17.5,17.5,0,0,0,19.192,38v2Z" transform="translate(528.518 2105) rotate(180)" fill="#e63946"/>
+      <text id="Hypericum" transform="translate(368 2077.037)" fill="#484848" font-size="14" font-family="Roboto-Medium, Roboto" font-weight="500"><tspan x="41.86" y="13">Hypericum</tspan></text>
+      <text id="Acetaminophen" transform="translate(538 2077.037)" fill="#484848" font-size="14" font-family="Roboto-Medium, Roboto" font-weight="500"><tspan x="26.404" y="13">Acetaminophen</tspan></text>
+      <path id="Subtraction_50-2" data-name="Subtraction 50" d="M19.192,39.774h-.175a18.178,18.178,0,0,1-7.4-1.563A18.929,18.929,0,0,1,5.57,33.949a19.9,19.9,0,0,1-4.075-6.321,20.792,20.792,0,0,1,0-15.482A19.909,19.909,0,0,1,5.57,5.824a18.928,18.928,0,0,1,6.045-4.262A18.189,18.189,0,0,1,19.017,0h.175V2.021a17.466,17.466,0,0,0-5.826,1.374,17.881,17.881,0,0,0-9.442,9.526,17.984,17.984,0,0,0,3.8,19.622,17.671,17.671,0,0,0,5.64,3.836,17.476,17.476,0,0,0,5.826,1.374v2.02Z" transform="translate(528.326 2065)" fill="#e63946"/>
+    </g>
+    <g id="Group_5554" data-name="Group 5554" transform="translate(470 1462)">
+      <g transform="matrix(1, 0, 0, 1, -48, 450)" filter="url(#Rectangle_865-2)">
+        <rect id="Rectangle_865-4" data-name="Rectangle 865" width="170" height="40" rx="20" transform="translate(69 51)" fill="#fff"/>
+      </g>
+      <g transform="matrix(1, 0, 0, 1, -48, 450)" filter="url(#Rectangle_866-2)">
+        <rect id="Rectangle_866-4" data-name="Rectangle 866" width="170" height="40" rx="20" transform="translate(239 51)" fill="#fff"/>
+      </g>
+      <path id="capsul_left_yellow" data-name="capsul left yellow" d="M19.192,40h-.175a18.111,18.111,0,0,1-7.4-1.571A18.935,18.935,0,0,1,5.57,34.142a20.031,20.031,0,0,1-4.076-6.357,21.031,21.031,0,0,1,0-15.57A20.031,20.031,0,0,1,5.57,5.858a18.917,18.917,0,0,1,6.044-4.286A18.1,18.1,0,0,1,19.017,0h.175V2.032a17.389,17.389,0,0,0-6.2,1.541,17.7,17.7,0,0,0-5.269,3.7,18.188,18.188,0,0,0,0,25.456,17.7,17.7,0,0,0,5.269,3.7,17.394,17.394,0,0,0,6.2,1.54V40Z" transform="translate(191.518 541) rotate(180)" fill="#f6d55c"/>
+      <text id="Warfarin" transform="translate(30 513.037)" fill="#484848" font-size="14" font-family="Roboto-Medium, Roboto" font-weight="500"><tspan x="49.059" y="13">Warfarin</tspan></text>
+      <text id="Panax_ginseng" data-name="Panax ginseng" transform="translate(200 513.037)" fill="#484848" font-size="14" font-family="Roboto-Medium, Roboto" font-weight="500"><tspan x="29.785" y="13">Panax ginseng</tspan></text>
+      <path id="casul_right_yellow" data-name="casul right yellow" d="M19.192,39.774h-.175a18.178,18.178,0,0,1-7.4-1.563A18.929,18.929,0,0,1,5.57,33.949a19.9,19.9,0,0,1-4.075-6.321,20.792,20.792,0,0,1,0-15.482A19.909,19.909,0,0,1,5.57,5.824a18.928,18.928,0,0,1,6.045-4.262A18.189,18.189,0,0,1,19.017,0h.175V2.021a17.466,17.466,0,0,0-5.826,1.374,17.881,17.881,0,0,0-9.442,9.526,17.984,17.984,0,0,0,3.8,19.622,17.671,17.671,0,0,0,5.64,3.836,17.476,17.476,0,0,0,5.826,1.374v2.02Z" transform="translate(190.326 501)" fill="#f6d55c"/>
+    </g>
+  </g>
+</svg>

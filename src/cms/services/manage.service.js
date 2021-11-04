@@ -4,7 +4,7 @@ const END_POINT = 'manage';
 
 export const manageService = {
     list,
-    update
+    update,
 }
 
 function list() {
@@ -13,5 +13,4 @@ function list() {
 
 function update(manage) {
     return httpService.put(`${END_POINT}/${manage._id}`, manage);
-
 }
