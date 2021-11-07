@@ -329,11 +329,15 @@ export default {
             return  daysLeft > 0 ? Math.ceil(daysLeft) : 0
         },
         isAllowed(){
+            let idxToShow = this.$route.name === 'Boosters' ? this.managementData.showPositiveInteractionsNum - 1 : this.managementData.showInteractionsNum - 1
             if(this.loggedInUser && this.loggedInUser.type === 'subscribed') return true
+            if(this.loggedInUser && !this.loggedInUser.email_verified){
+                if(this.idx > idxToShow || this.freeSearchesCount <= 0) return false
+                return true
+            }
             if(this.loggedInUser && this.freeTrialTime <= 0) return false
             if(!this.loggedInUser && this.freeSearchesCount <= 0) return false
 
-            let idxToShow = this.$route.name === 'Boosters' ? this.managementData.showPositiveInteractionsNum - 1 : this.managementData.showInteractionsNum - 1
             if(this.isChild) return true
             if(!this.loggedInUser && this.idx > idxToShow)  return false
             return true

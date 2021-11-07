@@ -2,13 +2,14 @@
     <div id="app">
         <navbar @login="onLogin" @signup="onSignUp" />
         <main>
-            <router-view @signup="onSignUp" @showAuth="onShowAuth"/>
+            <router-view @signup="onSignUp" @showAuth="onShowAuth" @showValidate="onShowValidate"/>
         </main>
         <main-footer />
         <auth-modal
             v-if="authModal"
-            @closeModal="authModal = false, showFreeSearchesMsg = false"
+            @closeModal="authModal = false, showFreeSearchesMsg = false, showValidateMsg = false"
             :showFreeSearchesMsg = showFreeSearchesMsg
+            :showValidateMsg = showValidateMsg
         />
         <login-modal
             v-if="loginModal"
@@ -35,7 +36,8 @@ export default {
         return {
             authModal: false,
             loginModal: false,
-            showFreeSearchesMsg: false
+            showFreeSearchesMsg: false,
+            showValidateMsg: false
         };
     },
     computed: {
@@ -52,6 +54,10 @@ export default {
         },
         onShowAuth(){
             this.showFreeSearchesMsg = true
+            this.authModal = true;
+        },
+        onShowValidate(){
+            this.showValidateMsg = true
             this.authModal = true;
         },
         switchModals(){
@@ -78,9 +84,8 @@ export default {
         }
         if(this.$store.getters.loggedInUser){
             await this.$store.dispatch('checkIfSession')
-        }else{
-            this.$store.commit('setFreeSearchesCount');
         }
+        this.$store.commit('setFreeSearchesCount');
         this.$store.commit('initialLoadingDone')
     },
     components: {

@@ -125,6 +125,10 @@ export default {
         isAllowed(){
             return (idx) => {
                 if(this.loggedInUser && this.loggedInUser.type === 'subscribed') return true
+                if(this.loggedInUser && !this.loggedInUser.email_verified){
+                    if(idx > 0 || this.freeSearchesCount <= 0) return false
+                    return true
+                }
                 if(this.loggedInUser && this.freeTrialTime <= 0) return false
                 if(!this.loggedInUser && this.freeSearchesCount <= 0) return false
                 if(!this.loggedInUser && idx > 0)  return false

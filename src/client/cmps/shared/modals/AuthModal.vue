@@ -76,7 +76,7 @@
 
 <script>
 import { userService } from '@/cms/services/user.service';
-import { eventBus, EV_email_exists } from '@/cms/services/eventBus.service';
+import { eventBus, EV_email_exists, EV_show_user_msg } from '@/cms/services/eventBus.service';
 import CloseIcon from 'vue-material-design-icons/Close';
 import EyeIcon from 'vue-material-design-icons/Eye';
 import EyeOffIcon from 'vue-material-design-icons/EyeOff';
@@ -84,6 +84,10 @@ import EyeOffIcon from 'vue-material-design-icons/EyeOff';
 export default {
     props: {
         showFreeSearchesMsg: {
+            type: Boolean,
+            default: false
+        },
+        showValidateMsg: {
             type: Boolean,
             default: false
         },
@@ -154,7 +158,12 @@ export default {
         },
         async onResendEmail() {
             if (!this.loggedInUser) return;
-            await userService.resnedVerifcationMail(this.loggedInUser);
+            try{
+                await userService.resnedVerifcationMail(this.loggedInUser);
+                eventBus.$emit(EV_show_user_msg, 'An email has been sent to you', 5000);
+            }catch(err){
+                console.log(err);
+            }
         },
         verifyEmail(){
             return /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(this.cred.email)
@@ -178,6 +187,7 @@ export default {
         }
     },
     created(){
+        if(this.showValidateMsg) this.isShowVereficationMsg = true
         eventBus.$on(EV_email_exists, this.showEmailExistsMsg)
     },
     components:{

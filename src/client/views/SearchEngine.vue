@@ -108,18 +108,18 @@
                         </li>
                     </tooltip>
                 </ul>
-                <div v-if="initialLoadingDone && !loggedInUser" class="search-engine-search-cta">
+                <div v-if="initialLoadingDone && !loggedInUser || (loggedInUser && !loggedInUser.email_verified)" class="search-engine-search-cta">
                     <span v-if="freeSearchesCount > 0" class="search-engine-search-msg" :class="isRed"><span class="font-medium" :class="isRed">{{ freeSearchesCount }}</span> Free searches left</span>
                     <span v-else class="search-engine-search-msg red-txt">No free searches left</span>
                     <button
                         class="btn"
                         id="searchPageSignup"
-                        @click="$emit('signup')"
+                        @click="handleCtaBtn"
                     >
-                        Register for free trial
+                        {{ctaBtnTxt}}
                     </button>
                 </div>
-                <div v-if="initialLoadingDone &&loggedInUser && loggedInUser.type !== 'subscribed'" class="search-engine-search-cta">
+                <div v-if="initialLoadingDone && loggedInUser && loggedInUser.type !== 'subscribed' && loggedInUser.email_verified" class="search-engine-search-cta">
                     <span class="search-engine-search-msg">
                         <span class="font-medium">{{ freeTrialTime }}</span> Free Trail days left</span>
                     <button
@@ -250,7 +250,7 @@
                                 <mobile-menu-icon class="rotate90" title="" />
                             </label>
                             <tooltip
-                                :hidden="!!loggedInUser && (freeTrialTime > 0 || loggedInUser.type === 'subscribed')"
+                                :hidden="loggedInUser && loggedInUser.email_verified && (freeTrialTime > 0 || loggedInUser.type === 'subscribed')"
                                 right
                             >
                                 <template #content>
@@ -260,7 +260,7 @@
                                 </template>
                                 <label class="display-toggle" title="Vertical view">
                                     <input
-                                        :disabled="!loggedInUser || (loggedInUser.type !== 'subscribed' && freeTrialTime <= 0)"
+                                        :disabled="!loggedInUser || !loggedInUser.email_verified || (loggedInUser.type !== 'subscribed' && freeTrialTime <= 0)"
                                         type="radio"
                                         name="isVertical"
                                         v-model="isViewVertical"
@@ -533,6 +533,10 @@ export default {
             if(this.listType === 'supp') return this.interactionsColorCountMap.red + this.interactionsColorCountMap.yellow + this.interactionsColorCountMap.green
             if(this.listType === 'drug') return this.dBankInteractionsColorCountMap.red + this.dBankInteractionsColorCountMap.yellow + this.dBankInteractionsColorCountMap.green
             return ''
+        },
+        ctaBtnTxt(){
+            if(!this.loggedInUser) return 'Register for free trial'
+            else return 'Verify your email'
         },
         formatedPositiveInteractions() {
             this.positiveInteractions.forEach(group => {
@@ -974,6 +978,10 @@ export default {
         },
         handlePaging(page) {
             this.$router.push({ query: { q: [ ...this.$route.query.q ], page } })
+        },
+        handleCtaBtn(){
+            if(this.loggedInUser && !this.loggedInUser.email_verified) this.$emit('showValidate')
+            else this.$emit('signup')
         },
         async getResults() {
             this.isLoading = true;
@@ -1420,7 +1428,7 @@ export default {
             });
         },
         addMaterials(query) {
-            if(!this.loggedInUser){
+            if(!this.loggedInUser || !this.loggedInUser.email_verified){
                 if(this.freeSearchesCount === 6){
                     this.isSearchesLeftModalActive = true
                 }

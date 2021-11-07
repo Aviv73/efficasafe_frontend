@@ -43,7 +43,8 @@
                             class="flex-center"
                             v-if="loggedInUser && loggedInUser.type !== 'subscribed'"
                         >
-                            <p v-if="freeTrialTime > 0">
+                            <p v-if="!loggedInUser.email_verified">Verifiy your email for a free trial</p>
+                            <p v-else-if="freeTrialTime > 0">
                                 {{freeTrialMsg}}
                             </p>
                             <p v-else>| Your free trial has ended - Subscribe Now</p>

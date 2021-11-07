@@ -28,7 +28,8 @@ export const userService = {
     signup,
     login,
     getUserSearches,
-    checkIfSession
+    checkIfSession,
+    updateSession
 }
 
 function verifyEmail(token) {
@@ -46,6 +47,7 @@ function removeMany(ids) {
 function update(user) {
     return httpService.put(`${ACCOUNT_END_POINT}/${user._id}`, user);
 }
+
 
 function updateAutoPilotContact(user) {
     return httpService.post(`${ACCOUNT_END_POINT}/autopilot-contact`, user);
@@ -74,11 +76,15 @@ async function checkTrial(user) {
 }
 
 async function getUserInfo() {
-        return await httpService.get(`${AUTH_END_POINT}/userInfo`);
+    return await httpService.get(`${AUTH_END_POINT}/userInfo`);
 }
 
 async function checkIfSession(){
     return await httpService.get(`${AUTH_END_POINT}/checkIfSession`)
+}
+
+async function updateSession(user){
+    return await httpService.put(`${AUTH_END_POINT}/update-session`, user);
 }
 
 function getLoggedInUser() {

@@ -77,6 +77,7 @@ export const userStore = {
         },
         async updateLoggedInUser(context, { user }) {
             const savedUser = await userService.update(user);
+            await userService.updateSession(savedUser)
             context.commit({
                 type: 'setLoggedInUser',
                 user: savedUser
