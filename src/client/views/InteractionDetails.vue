@@ -8,6 +8,7 @@
                         <button class="flex-align-center" @click="$router.go(-1)">
                             <chevron-left-icon title="" />
                             Back to search
+                            
                         </button>
                     </span>
                     <router-link to="/" class="interaction-details-header-logo v-tour-interaction-step-4">
