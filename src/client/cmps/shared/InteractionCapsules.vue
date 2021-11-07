@@ -139,13 +139,13 @@ export default {
             return this.$store.getters.firstInteractionSide;
         },
         draftNameFullContent() {
-            if(this.$route.name === 'InteractionDetails' && this.sortBySide === 2) return this.side1Name
+            if((this.$route.name === 'InteractionDetails' ||  this.$route.name === 'VinteractionDetails') && this.sortBySide === 2) return this.side1Name
             const nameToDisplay = (this.showDraftName && this.draftName) ? this.draftName : this.side2Name;
             if(this.$route.name === 'Boosters') return nameToDisplay
             return (this.vInteractionCount) ? `${nameToDisplay} (${this.vInteractionCount})` : nameToDisplay;
         },
         draftNameContent() {
-            if(this.$route.name === 'InteractionDetails' && this.sortBySide === 2) return this.side1Name
+            if((this.$route.name === 'InteractionDetails' ||  this.$route.name === 'VinteractionDetails') && this.sortBySide === 2) return this.side1Name
             const nameToDisplay = (this.showDraftName && this.draftName) ? this.draftName : this.side2Name;
             if(this.$route.name === 'Boosters') return nameToDisplay
             if (nameToDisplay.length >= 14 && this.isGroup) {
@@ -155,10 +155,10 @@ export default {
         },
         side1NameToShow(){
             if (!this.name || this.isMaterialGroup) return '';
-            if(this.$route.name === 'InteractionDetails' && this.sortBySide === 2) return this.side2Name
+            if((this.$route.name === 'InteractionDetails' ||  this.$route.name === 'VinteractionDetails') && this.sortBySide === 2) return this.side2Name
             const side1Name = this.name.split('&')[0].trim();
-            if (this.onDetailsPage || !this.isSideSwapped) return side1Name;
-            if (this.$store.getters.materialNamesMap[side1Name]) {
+            // if (this.onDetailsPage || !this.isSideSwapped) return side1Name;
+            if (this.$store.getters.materialNamesMap && this.$store.getters.materialNamesMap[side1Name]) {
                 return this.$store.getters.materialNamesMap[side1Name][0];
             }
             return side1Name;
@@ -166,8 +166,8 @@ export default {
         side1Name() {
             if (!this.name || this.isMaterialGroup) return '';
             const side1Name = this.name.split('&')[0].trim();
-            if (this.onDetailsPage || !this.isSideSwapped) return side1Name;
-            if (this.$store.getters.materialNamesMap[side1Name]) {
+            // if (this.onDetailsPage || !this.isSideSwapped) return side1Name;
+            if (this.$store.getters.materialNamesMap && this.$store.getters.materialNamesMap[side1Name]) {
                 return this.$store.getters.materialNamesMap[side1Name][0];
             }
             return side1Name;
@@ -179,7 +179,7 @@ export default {
             const queries = this.$store.getters.materialNamesMap ? this.$store.getters.materialNamesMap[side2Name] : null;
             const count = queries ? this.$store.getters.queryApearanceCount(queries[0]) : 0;
             if(this.isPositive && count > 1) return side2Name
-            if (!this.localize && this.isSideSwapped) return side2Name;
+            // if (!this.localize && this.isSideSwapped) return side2Name;
             if (queries) {
                 return queries[0];
             }
