@@ -417,6 +417,7 @@ export default {
                     this.$store.commit('resetPosSupp')
                     this.reset();
                     eventBus.$emit(EV_search_results_cleared);
+                    this.$store.commit({type: 'setListType', listType: 'all'})
                     return;
                 }
                 if (!Array.isArray(q) && q) {
@@ -1007,8 +1008,11 @@ export default {
                 await this.getPositives();
                 this.isPBLoading = false;
             }
-            const isAllSupplements = this.materials.every(material => material.type !== 'drug');
-            if(this.materials.length && isAllSupplements) this.$store.commit({type: 'setListType', listType: 'supp'})
+            if(this.materials.length){
+                const isAllSupplements = this.materials.every(material => material.type !== 'drug');
+                if(isAllSupplements) this.$store.commit({type: 'setListType', listType: 'supp'})
+                else this.$store.commit({type: 'setListType', listType: 'all'})
+            }
         },
         async getPositives() {
             const drugIds = this.materials.reduce((acc, { type, _id, labels, isIncluded }) => {

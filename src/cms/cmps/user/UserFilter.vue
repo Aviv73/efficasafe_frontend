@@ -8,18 +8,36 @@
                 v-model="filterBy.q"
             />
             <section class="d-flex align-center">
-                <v-text-field
-                    class="small-search mr-9"
-                    label="Search By Invoice number"
-                    v-model="filterBy.invoiceNum"
-                    type="number"
-                />
                 <v-select
+                    class="small-search mr-8"
+                    :items="searchOptions"
+                    label="Select search method"
+                    v-model="searchBy"
+                ></v-select>
+                <v-select
+                    v-if="searchBy === 'Type'"
                     class="small-search"
-                    :items="items"
+                    :items="typeItems"
                     label="Search By Type"
                     v-model="filterBy.planType"
                 ></v-select>
+                <v-select
+                    v-if="searchBy === 'Role'"
+                    class="small-search"
+                    :items="roleItems"
+                    label="Search By Role"
+                    v-model="filterBy.roleType"
+                ></v-select>
+                <v-date-picker 
+                    v-if="searchBy === 'Registration Date'"
+                    width="300"
+                    @change="handlefilterByDate('registration', $event)"
+                ></v-date-picker>
+                <v-date-picker 
+                    v-if="searchBy === 'End Trial Date'"
+                    width="300"
+                    @change="handlefilterByDate('endTrial', $event)"
+                ></v-date-picker>
             </section>
         </div>
     </section>
@@ -32,10 +50,15 @@ export default {
         return {
             filterBy: {
                 q: '',
-                invoiceNum: null,
                 planType: '',
+                roleType: '',
+                registrationDate: '',
+                endTrialDate: ''
             },
-            items: ['all', 'subscribed', 'trial', 'registered'],
+            searchBy: 'Role',
+            searchOptions: ['Role', 'Type', 'Registration Date', 'End Trial Date'],
+            typeItems: ['all', 'subscribed', 'trial', 'registered'],
+            roleItems: ['all', 'user', 'editor', 'sales', 'admin'],
         };
     },
     watch: {
@@ -60,6 +83,11 @@ export default {
                 JSON.parse(JSON.stringify(this.filterBy))
             );
         },
+        handlefilterByDate(type, value){
+            const date = new Date(value).getTime()
+            if(type === 'registration') this.filterBy.registrationDate = date
+            else this.filterBy.endTrialDate = date
+        }
     },
 };
 </script>

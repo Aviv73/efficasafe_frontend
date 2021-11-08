@@ -188,6 +188,7 @@
             />
             <div class="pathway-form-actions">
               <v-btn class="cancel-btn" @click="closePathwayDialog" color="normal">cancel</v-btn>
+              <v-btn class="cancel-btn" @click="openDeletePathwayDialog" color="error">Delete Pathway</v-btn>
               <v-btn
                 type="submit"
                 class="submit-btn"
@@ -196,6 +197,15 @@
               >Save Pathway</v-btn>
             </div>
           </v-form>
+        </v-card>
+        <v-card v-if="pathwayDeleteDialog" class="delete-pathway-dialog" width="550" height="200">
+          <v-card-title class="primary headline" style="color:white; font-weight:bold; width: 100%;">
+            Are you sure you want to delete this pathway?
+          </v-card-title>
+          <div class="btn-container">
+            <v-btn class="cancel-btn" @click="closeDeletePathwayDialog" color="normal">cancel</v-btn>
+            <v-btn class="cancel-btn" @click="deletePathway" color="error">delete</v-btn>
+          </div>
         </v-card>
       </v-dialog>
       <v-dialog v-model="dBankRefDialog" persistent max-width="600">
@@ -886,7 +896,7 @@ export default {
     'clinical', 'meta', 'systematic', 'drug label', 'animal',
     'in vitro', 'retrospective', 'case', 'review'
   ],
-  pathwayTypes: [ 'enzyme', 'transporter', 'carrier' ],
+  pathwayTypes: [ 'enzyme', 'transporter', 'carrier', '' ],
   pathwayActions: [ 'substrate', 'inhibitor', 'inducer', 'no effect' ],
   data() {
     return {
@@ -900,7 +910,8 @@ export default {
       dialog: false,
       refDialog: false,
       refDeleteDialog: false,
-      refDeleteAllDialog:false,
+      refDeleteAllDialog: false,
+      pathwayDeleteDialog: false,
       dBankRefDialog: false,
       pathwayDialog: false,
       externalLinksDialog: false,
@@ -1131,6 +1142,18 @@ export default {
     },
     closeDeleteAllRefDialog(){
       this.refDeleteAllDialog = false
+    },
+    openDeletePathwayDialog(){
+      this.pathwayDeleteDialog = true
+    },
+    closeDeletePathwayDialog(){
+      this.pathwayDeleteDialog = false
+    },
+    deletePathway(){
+      this.closeDeletePathwayDialog()
+      this.closePathwayDialog()
+      this.editedMaterial.pathways.splice(this.editedPathwayIdx, 1)
+      this.editedPathwayIdx = undefined
     },
     async loadLabels() {
       this.$store.dispatch({ type: 'loadLabels' });
