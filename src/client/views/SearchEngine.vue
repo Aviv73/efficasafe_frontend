@@ -397,7 +397,8 @@ export default {
             isArrowShown: true,
             idsToTurnRed: [],
             arrowRightPositin: 3,
-            loadingTime: 0
+            loadingTime: 0,
+            sameQ: false
         }
     },
     watch: {
@@ -424,6 +425,7 @@ export default {
                     if(q === 'tour') return
                     this.$route.query.q = [ q ];
                 }
+                this.sameQ = from && from.q && to.q.length === from.q.length && to.q.every((val, idx) => val === from.q[idx]) ? true : false
                 const isSameSearch = from && from.q && to.q.length === from.q.length && to.q.every((val, idx) => val === from.q[idx]) && from.page === to.page;
                 if (!isSameSearch) {
                     this.$store.commit('resetPosSupp')
@@ -1008,7 +1010,7 @@ export default {
                 await this.getPositives();
                 this.isPBLoading = false;
             }
-            if(this.materials.length){
+            if(!this.sameQ && this.materials.length){
                 const isAllSupplements = this.materials.every(material => material.type !== 'drug');
                 if(isAllSupplements) this.$store.commit({type: 'setListType', listType: 'supp'})
                 else this.$store.commit({type: 'setListType', listType: 'all'})
