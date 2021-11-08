@@ -1,6 +1,16 @@
 <template>
     <section class="user-page">
         <div class="container">
+            <v-btn class="download-btn" title="Download list" color="success">
+                <download-excel
+                    :data="userToExcel"
+                    :escapeCsv="false"
+                    type="csv"
+                    name="User List.xls"
+                    >
+                    <v-icon>mdi-download</v-icon>
+                </download-excel>
+            </v-btn>
             <v-card v-if="users" class="mb-10">
                 <v-card-title>
                     Users collection
@@ -47,6 +57,22 @@ export default {
         },
         height(){
             return this.$store.getters.getUserPageHeight
+        },
+        userToExcel(){
+            if(!this.users) return []
+            const users = JSON.parse(JSON.stringify(this.users))
+            const convertedUsers =  users.map(user => {
+                user.registeredTime = new Date(user.registeredTime).toLocaleDateString("he-IL")
+                user.trialTime = new Date(user.trialTime).toLocaleDateString("he-IL")
+                delete user._id
+                delete user.password
+                delete user.isSubscribe
+                delete user.purchases
+                delete user.searches
+                return user
+            })
+            console.log(convertedUsers);
+            return convertedUsers
         }
     },
     methods: {

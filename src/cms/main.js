@@ -8,6 +8,9 @@ import store from './store';
 import './styles/global.scss';
 import './directives';
 import './filters';
+import JsonExcel from "vue-json-excel";
+
+Vue.component("downloadExcel", JsonExcel);
 
 Vue.config.productionTip = false
 

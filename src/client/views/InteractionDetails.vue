@@ -427,7 +427,7 @@ export default {
         },
         relevantSide1Pathways() {
             return this.side1Pathways.filter(pathway => {
-                const idx = this.relevantSide2Pathways.findIndex(side2Pathway => side2Pathway.name.replace('CYP', '').toUpperCase().trim() === pathway.name.replace('CYP', '').toUpperCase().trim());
+                const idx = this.relevantSide2Pathways.findIndex(side2Pathway => side2Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
                 return idx !== -1;
             });
         },
