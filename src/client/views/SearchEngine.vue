@@ -337,6 +337,7 @@
 
 <script>
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
+// import { statisticsService } from '@/cms/services/statistics.service';
 import { storageService } from '@/cms/services/storage.service';
 import { eventBus, EV_show_user_msg, EV_search_results_cleared } from '@/cms/services/eventBus.service';
 import { logService } from '@/cms/services/log.service';
@@ -1145,8 +1146,8 @@ export default {
             if(!page) page = 1;
             const filterBy = {
                 isSearchResults: true,
-                page: 0,
-                // page: --page,
+                // page: 0,
+                page: --page,
                 id: ids,
                 materialCount: this.materialsLength,
             };
@@ -1443,7 +1444,7 @@ export default {
                 }
                 this.$store.commit('reduceFreeSearches');
             }
-            // this.$store.dispatch({type: 'countSearches', query});
+            // statisticsService.addSearch(query)
             if (this.$route.query.q) {
                 if (!this.isQueryExists(query)) {
                     const queries = [ ...this.$route.query.q, query ];

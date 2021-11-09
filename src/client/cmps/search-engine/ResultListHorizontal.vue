@@ -104,7 +104,7 @@
             <li
                 class="horizontal-list-list-item"
                 v-for="(interaction, idx) in interactions"
-                :key="idx"
+                :key="interaction._id + idx"
             >
                 <interaction-preview
                     :interaction="interaction"
