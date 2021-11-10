@@ -58,6 +58,11 @@ export const userStore = {
                 commit({ type: 'setLoggedInUser', user });
             }
         },
+        async completeEmailVerification({ commit }){
+            const updatedUser = await userService.completeEmailVerification();
+            await userService.updateAutoPilotContact(updatedUser)
+            commit({ type: 'setLoggedInUser',user: updatedUser });
+        },
         async checkIfSession({ dispatch }) {
             const session = await userService.checkIfSession();
             if(session.message === 'No session') await dispatch({type: 'logout'});

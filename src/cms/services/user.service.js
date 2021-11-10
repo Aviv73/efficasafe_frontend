@@ -29,7 +29,8 @@ export const userService = {
     login,
     getUserSearches,
     checkIfSession,
-    updateSession
+    updateSession,
+    completeEmailVerification
 }
 
 function verifyEmail(token) {
@@ -87,12 +88,16 @@ async function updateSession(user){
     return await httpService.put(`${AUTH_END_POINT}/update-session`, user);
 }
 
+async function completeEmailVerification(){
+    return await httpService.get(`${AUTH_END_POINT}/completeVerification`)
+}
+
 function getLoggedInUser() {
     return storageService.load('userProfile');
 }
 
 function logout() {
-    httpService.post(`${AUTH_END_POINT}/logout`);
+    httpService.get(`${AUTH_END_POINT}/logout`);
 }
 
 function getEmptyUser() {
