@@ -21,6 +21,7 @@ async function list(filterBy = {}, doCache = false) {
     if (doCache) {
         key = filterBy.q.toString();
         if (cache[key]) return cache[key];
+        
     }
 
     const res = await httpService.get(END_POINT, filterBy);
