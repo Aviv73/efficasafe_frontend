@@ -6,11 +6,6 @@
 import { userService } from '@/cms/services/user.service';
 
 export default {
-    data() {
-        return {
-            isVerified: false,
-        };
-    },
     methods: {
         async VerifyEmail() {
             const { token } = this.$route.params;
