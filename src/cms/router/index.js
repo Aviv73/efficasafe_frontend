@@ -24,6 +24,7 @@ import dBankResultList from '@/cms/cmps/search-engine/DBankResultList';
 import dBankInteractionDetails from '@/cms/views/DBankInteractionDetails';
 import UploadData from '@/cms/views/UploadData';
 import Management from '@/cms/views/Management';
+import Statistics from '@/cms/views/Statistics';
 import Coupon from '@/cms/views/Coupon';
 
 
@@ -39,6 +40,12 @@ const routes = [
     path: '/management',
     name: 'Management',
     component: Management,
+    meta: { allowed: ['admin'] }
+  },
+  {
+    path: '/statistics',
+    name: 'Statistics',
+    component: Statistics,
     meta: { allowed: ['admin'] }
   },
   {

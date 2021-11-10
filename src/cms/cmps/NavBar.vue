@@ -63,6 +63,16 @@
                 tile
                 color="white"
                 text
+                to="/statistics"
+                v-if="isAdmin"
+            >
+                statistics
+            </v-btn>
+            <v-btn
+                class="nav-link"
+                tile
+                color="white"
+                text
                 to="/upload-data"
                 v-if="isAdmin || isEditor"
             >

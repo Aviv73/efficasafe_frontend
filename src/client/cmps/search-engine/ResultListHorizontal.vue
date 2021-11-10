@@ -32,7 +32,7 @@
             <span class="horizontal-list-header-item">
             <label
                     class="flex-align-center"
-                    title="Sort by recommendation"
+                    :title="sortRecommendationTxt"
                     tabindex="0"
                 >
                     <input type="checkbox" hidden @change="emitSort('recommendation', !$event.target.checked)" />
@@ -334,6 +334,10 @@ export default {
         suppDrugBtnTxt(){
             if(this.isAllSupp) return 'All Results'
             return 'Supplements - Drug'
+        },
+        sortRecommendationTxt(){
+            if(this.pageCount > 1) return 'sorting is only available for one page at a time'
+            return 'Sort by recommendation'
         }
     },
     methods: {
