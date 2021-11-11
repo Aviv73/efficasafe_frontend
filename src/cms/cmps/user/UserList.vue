@@ -1,5 +1,9 @@
 <template>
     <section class="user-list">
+        <div class="btn-container">
+            <v-btn color="primary" class="mr-6" @click="selectAll">Select all</v-btn>
+            <v-btn color="error" @click="selected = []">Clear all</v-btn>
+        </div>
         <v-data-table
             :headers="headers"
             :items="users"
@@ -9,7 +13,7 @@
             disable-sort
             :items-per-page="50"
             :footer-props="{
-                'items-per-page-options': [ 50, 100, -1 ],
+                'items-per-page-options': [ 10, 100, -1 ],
             }"
         >
             <template v-slot:[`header.username`]="{ header }">
@@ -112,14 +116,6 @@
                                 }}</span>
                             </div>
                         </td>
-                        <!-- <td class="td-name-img">
-                            <router-link :to="`user/edit/${item._id}`">
-                                <span class="text-capitalize">{{
-                                    item.username
-                                }}</span>
-                            </router-link>
-                        </td> -->
-
                         <td class="centered text-center">
                             {{ item.role }}
                         </td>
@@ -140,14 +136,37 @@
                                 dateToShow(item.trialTime)
                             }}
                         </td>
+                        <td class="tcentered text-center" style="height: 100%" align="center">
+                            <v-checkbox
+                                v-model="selected"
+                                :value="item._id"
+                            />
+                        </td>
                     </tr>
                 </tbody>
             </template>
         </v-data-table>
+        <v-fab-transition>
+            <v-btn
+                class="edit-btn"
+                v-if="selected.length"
+                @click="$emit('openEdit', [...selected])"
+                :title="`Edit ${selected.length} users`"
+                color="primary"
+                fab
+                fixed
+                bottom
+            >
+                <v-icon>mdi-pencil</v-icon>
+            </v-btn>
+        </v-fab-transition>
     </section>
 </template>
 
 <script>
+
+import { eventBus } from '@/cms/services/eventBus.service';
+
 export default {
     props: {
         users: {
@@ -202,6 +221,9 @@ export default {
                     value: 'trialTime',
                     align: 'center',
                 },
+                {
+                    text: 'Edit',
+                },
             ],
         };
     },
@@ -242,7 +264,15 @@ export default {
         onUserClicked(userId){
             this.$store.commit ({type: 'setUserPageHeight', height: window.pageYOffset})
             this.$router.push(`user/edit/${userId}`)
+        },
+        selectAll(){
+            this.selected = this.users.map(user => user._id)
         }
     },
+    created(){
+        eventBus.$on('clear-selected-users', () => {
+            this.selected = []
+        })
+    }
 };
 </script>

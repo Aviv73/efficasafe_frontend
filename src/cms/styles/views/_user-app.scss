@@ -1,11 +1,54 @@
 .download-btn{
     position: fixed;
-    bottom: 36px;
-    right: 24px;
+    bottom: 17px;
+    right: 16px;
     z-index: 9;
     border-radius: 50%;
     min-width: unset !important;
     width: 56px !important;
     height: 56px !important;
     box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 6px 10px 0px rgb(0 0 0 / 14%), 0px 1px 18px 0px rgb(0 0 0 / 12%);
+}
+
+.edit-btn{
+    right: 85px;
+}
+
+.edit-card{
+    position: fixed;
+    z-index: 999;
+    width: 500px;
+    height: fit-content;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+
+    .title{
+        background-color: #2196f3;
+        color: white;
+    }
+
+    .select-field-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .edit-action-container{
+        width: 360px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cancel-btn{
+        margin-left: 42%;
+        margin-top: 10px;
+        margin-bottom: 18px;
+    }
+}
+
+.btn-container{
+    margin-left: 76%;
 }

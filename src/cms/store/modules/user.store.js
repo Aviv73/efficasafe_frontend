@@ -80,6 +80,9 @@ export const userStore = {
             });
             return savedUser;
         },
+        async updatedManyUsers(context, {data}){
+            await userService.updateMany(data)
+        },
         async updateLoggedInUser(context, { user }) {
             const savedUser = await userService.update(user);
             await userService.updateSession(savedUser)

@@ -24,9 +24,40 @@
                     @header-clicked="setFilter"
                     @options-updated="setFilter"
                     @delete-many-users="removeMany"
+                    @openEdit="openEdit"
                 />
             </v-card>
         </div>
+        <v-card v-if="selectedUsersIds.length" class="edit-card">
+            <v-card-title class="title"><v-icon color="white">mdi-pencil</v-icon> Edit selected users</v-card-title>
+            <div class="select-field-container">
+                <h3 class="ml-8 font-weight-medium">Field to edit:</h3>
+                <v-select
+                    class="small-search mr-2 ml-8"
+                    :items="fieldOptions"
+                    v-model="filedToUpdate"
+                ></v-select>
+            </div>
+            <div class="edit-action-container edit-type" v-if="filedToUpdate === 'Type'">
+                <v-select
+                    class="small-search mr-2 ml-8"
+                    label="Select a user type"
+                    :items="typeOptions"
+                    v-model="selectedType"
+                ></v-select>
+                <v-btn color="success" @click="updateUsersType">Update</v-btn>
+            </div>
+            <div class="edit-action-container" v-if="filedToUpdate === 'End trial'">
+                <v-date-picker
+                    v-model="trialDateToUpdate"
+                    no-title
+                    scrollable
+                >
+                </v-date-picker>
+                <v-btn color="success" @click="updateUsersTrialTime">Update</v-btn>
+            </div>
+            <v-btn class="cancel-btn" @click="selectedUsersIds = []">Cancel</v-btn>
+        </v-card>
     </section>
 </template>
 
@@ -34,10 +65,18 @@
 import UserList from '@/cms/cmps/user/UserList';
 import UserFilter from '@/cms/cmps/user/UserFilter';
 
+import { eventBus } from '@/cms/services/eventBus.service';
+
 export default {
     data() {
         return {
             isLoading: false,
+            selectedUsersIds:[],
+            fieldOptions: ['Type', 'End trial'],
+            typeOptions: ['trial', 'subscribed', 'registered'],
+            selectedType: 'trial',
+            trialDateToUpdate: null,
+            filedToUpdate:'Type'
         };
     },
     watch: {
@@ -71,7 +110,6 @@ export default {
                 delete user.searches
                 return user
             })
-            console.log(convertedUsers);
             return convertedUsers
         }
     },
@@ -85,12 +123,38 @@ export default {
             this.isLoading = false;
         },
         setFilter(filterBy) {
+            eventBus.$emit('clear-selected-users')
             const criteria = {
                 ...this.$route.query,
                 ...filterBy,
             };
             const queryStr = '?' + new URLSearchParams(criteria).toString();
             this.$router.push(queryStr);
+        },
+        openEdit(ids){
+            if(this.selectedUsersIds.length) this.selectedUsersIds = []
+            else this.selectedUsersIds = [...ids]
+        },
+        async updateUsersType(){
+            const data = {
+                field: 'type',
+                ids: [...this.selectedUsersIds],
+                newValue: this.selectedType
+            }
+            await this.$store.dispatch({ type: 'updatedManyUsers', data})
+            this.selectedUsersIds = []
+            this.loadUsers()
+        },
+        async updateUsersTrialTime(){
+            const dateAsTimestamp = new Date(this.trialDateToUpdate).getTime()
+            const data = {
+                field: 'trialTime',
+                ids: [...this.selectedUsersIds],
+                newValue: dateAsTimestamp
+            }
+            await this.$store.dispatch({ type: 'updatedManyUsers', data})
+            this.selectedUsersIds = []
+            this.loadUsers()
         },
         async removeMany(ids) {
             await this.$store.dispatch({ type: 'removeUsers', ids });

@@ -30,7 +30,8 @@ export const userService = {
     getUserSearches,
     checkIfSession,
     updateSession,
-    completeEmailVerification
+    completeEmailVerification,
+    updateMany
 }
 
 function verifyEmail(token) {
@@ -49,6 +50,9 @@ function update(user) {
     return httpService.put(`${ACCOUNT_END_POINT}/${user._id}`, user);
 }
 
+function updateMany(data) {
+    return httpService.put(`${ACCOUNT_END_POINT}/updateMany`, data);
+}
 
 function updateAutoPilotContact(user) {
     return httpService.post(`${ACCOUNT_END_POINT}/autopilot-contact`, user);
