@@ -1,0 +1,22 @@
+.date-container{
+    position: absolute;
+    right: 5px;
+    top: 8px;
+    
+    .date-btn{
+        height: 64px !important;
+        border-radius: 50%;
+    }
+    .date-picker{
+        position: absolute;
+        right: 258px;
+        top: 24px;
+        z-index: 999;
+
+        .reset-btn{
+            position: absolute;
+            bottom: 0;
+            left: 200px;
+        }
+    }
+}

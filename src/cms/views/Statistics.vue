@@ -1,7 +1,25 @@
 <template>
     <section class="container">
         <h1 style="font-size: 24px" class="text-center font-weight-bold mb-10">Statistics</h1>
-        <h3 class="text-lg-h6 mb-10">The most searched UC materials are <span style="color: #2196f3">{{mostSearchedUcNames}}</span> with <span style="color: #2196f3">{{mostSearchedUC[0].count}}</span> searches</h3>
+        <div class="date-container">
+            <v-btn class="date-btn" color="primary" @click="isShowDate = !isShowDate"><v-icon>mdi-calendar-range</v-icon></v-btn>
+            <v-card v-if="isShowDate" class="date-picker">
+                <v-date-picker
+                    v-model="dateToShowFrom"
+                    no-title
+                    scrollable
+                >
+                </v-date-picker>
+                <v-btn
+                    text
+                    color="primary"
+                    class="reset-btn"
+                    @click="dateToShowFrom = null"
+                >
+                    show all
+                </v-btn>
+            </v-card>
+        </div>
         <template>
             <v-card class="mb-10">
                 <v-card-title>
@@ -16,8 +34,27 @@
                 </v-card-title>
                 <v-data-table
                 :headers="searchTableHeaders"
-                :items="searchCountItems"
+                :items="searchItems"
                 :search="searchMaterial"
+                ></v-data-table>
+            </v-card>
+        </template>
+        <template>
+            <v-card class="mb-10">
+                <v-card-title>
+                <h2 class="mr-10">Searched Under Construction Materials</h2>
+                    <v-text-field
+                        v-model="searchUCMaterial"
+                        append-icon="mdi-magnify"
+                        label="Search"
+                        single-line
+                        hide-details
+                    ></v-text-field>
+                </v-card-title>
+                <v-data-table
+                :headers="searchTableHeaders"
+                :items="searchUCItems"
+                :search="searchUCMaterial"
                 ></v-data-table>
             </v-card>
         </template>
@@ -35,7 +72,7 @@
                 </v-card-title>
                 <v-data-table
                 :headers="interactionTableHeaders"
-                :items="interactionCountItems"
+                :items="interactionItems"
                 :search="searchInteraction"
                 ></v-data-table>
             </v-card>
@@ -51,68 +88,101 @@ export default {
     name: 'Statistics',
     data(){
         return {
-            searchCountMap:{},
+            searches: [],
             searchTableHeaders:[{text:'Material', value: 'name'}, {text:'Count', value: 'count'}],
             searchMaterial:'',
-            interactionCountMap:{},
+            searchUCMaterial:'',
+            interactions: [],
             interactionTableHeaders:[{text:'Interaction', value: 'name'}, {text:'Count', value: 'count'}],
             searchInteraction:'',
-            underConstructionCountMap:{},
+            dateToShowFrom: null,
+            isShowDate: false
         }
     },
     computed: {
-        searchCountItems(){
-            const searches = []
-            for(const material in this.searchCountMap){
-                let item = { name: material, count: this.searchCountMap[material]}
-                searches.push(item)
+        searchItems(){
+            let searches
+            if(this.dateAsTimestamp){
+                searches = this.searches.filter(search => search.date >= this.dateAsTimestamp)
+            }else{
+                searches = JSON.parse(JSON.stringify(this.searches))
             }
-            searches.sort((a,b) => {
+            const searchesCountMap = {}
+            searches.forEach(search => {
+                if(!searchesCountMap[search.name]) searchesCountMap[search.name] = 0
+                searchesCountMap[search.name]++
+            })
+            const searchesToShow = []
+            for(const material in searchesCountMap){
+                let item = { name: material, count: searchesCountMap[material]}
+                searchesToShow.push(item)
+            }
+            searchesToShow.sort((a,b) => {
                 if(a.count - b.count > 0) return -1
                 if(b.count - a.count > 0) return 1
                 return 0
             })
-            return searches
+            return searchesToShow
         },
-        interactionCountItems(){
-            const searches = []
-            for(const interaction in this.interactionCountMap){
-                let item = { name: interaction, count: this.interactionCountMap[interaction]}
-                searches.push(item)
+        searchUCItems(){
+            let searches
+            if(this.dateAsTimestamp){
+                searches = this.searches.filter(search => search.date >= this.dateAsTimestamp)
+            }else{
+                searches = JSON.parse(JSON.stringify(this.searches))
             }
-            searches.sort((a,b) => {
+            const searchesCountMap = {}
+            searches.forEach(search => {
+                if(!search.isUnderConstruction) return
+                if(!searchesCountMap[search.name]) searchesCountMap[search.name] = 0
+                searchesCountMap[search.name]++
+            })
+            const searchesToShow = []
+            for(const material in searchesCountMap){
+                let item = { name: material, count: searchesCountMap[material]}
+                searchesToShow.push(item)
+            }
+            searchesToShow.sort((a,b) => {
                 if(a.count - b.count > 0) return -1
                 if(b.count - a.count > 0) return 1
                 return 0
             })
-            return searches
+            return searchesToShow
         },
-        mostSearchedUC(){
-            let mostSearched = [{name:'', count: 0}]
-            for(const material in this.underConstructionCountMap){
-                const name = material
-                const count = this.underConstructionCountMap[material]
-                if(count > mostSearched[0].count){
-                    mostSearched = [{name, count}]
-                    continue
-                }
-                if(count === mostSearched[0].count){
-                    mostSearched.push({name, count})
-                    continue
-                }
+        interactionItems(){
+            let interactions
+            if(this.dateAsTimestamp){
+                interactions = this.interactions.filter(interaction => interaction.date >= this.dateAsTimestamp)
+            }else{
+                interactions = JSON.parse(JSON.stringify(this.interactions))
             }
-            return mostSearched
+            const interactionsCountMap = {}
+            interactions.forEach(interaction => {
+                if(!interactionsCountMap[interaction.name]) interactionsCountMap[interaction.name] = 0
+                interactionsCountMap[interaction.name]++
+            })
+            const interactionsToShow = []
+            for(const interactionName in interactionsCountMap){
+                let item = { name: interactionName, count: interactionsCountMap[interactionName]}
+                interactionsToShow.push(item)
+            }
+            interactionsToShow.sort((a,b) => {
+                if(a.count - b.count > 0) return -1
+                if(b.count - a.count > 0) return 1
+                return 0
+            })
+            return interactionsToShow
         },
-        mostSearchedUcNames(){
-            const names = this.mostSearchedUC.map(item => item.name)
-            return names.join(', ')
-        }
+        dateAsTimestamp(){
+            if(!this.dateToShowFrom) return null
+            const dateFormat = new Date(this.dateToShowFrom).getTime();
+            return dateFormat
+        },
     },
     async created() {
         const statistics = await statisticsService.list()
-        this.searchCountMap = statistics.searchCountMap 
-        this.underConstructionCountMap =  statistics.underConstructionCountMap
-        this.interactionCountMap = statistics.interactionCountMap
+        this.searches = statistics.searches
+        this.interactions = statistics.interactions
     },
 };
 </script>
