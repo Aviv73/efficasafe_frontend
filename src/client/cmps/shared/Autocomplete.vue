@@ -111,6 +111,7 @@ export default {
                 return;
             }
             this.isLoading = true;
+            q = q.trim()
             const criteria = { autocomplete: true, q };
             const results = await this.$store.dispatch({ type: 'getMaterials', criteria });
             this.results = this.sortRes(results, q);

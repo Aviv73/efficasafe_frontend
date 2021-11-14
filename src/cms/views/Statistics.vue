@@ -4,8 +4,16 @@
         <div class="date-container">
             <v-btn class="date-btn" color="primary" @click="isShowDate = !isShowDate"><v-icon>mdi-calendar-range</v-icon></v-btn>
             <v-card v-if="isShowDate" class="date-picker">
+                <h3>From:</h3>
                 <v-date-picker
                     v-model="dateToShowFrom"
+                    no-title
+                    scrollable
+                >
+                </v-date-picker>
+                <h3>To:</h3>
+                <v-date-picker
+                    v-model="dateToShowTo"
                     no-title
                     scrollable
                 >
@@ -14,7 +22,7 @@
                     text
                     color="primary"
                     class="reset-btn"
-                    @click="dateToShowFrom = null"
+                    @click="dateToShowFrom = null, dateToShowTo = null"
                 >
                     show all
                 </v-btn>
@@ -96,14 +104,19 @@ export default {
             interactionTableHeaders:[{text:'Interaction', value: 'name'}, {text:'Count', value: 'count'}],
             searchInteraction:'',
             dateToShowFrom: null,
+            dateToShowTo: null,
             isShowDate: false
         }
     },
     computed: {
         searchItems(){
             let searches
-            if(this.dateAsTimestamp){
-                searches = this.searches.filter(search => search.date >= this.dateAsTimestamp)
+            if(this.dateFromAsTimestamp){
+                if(!this.dateToAsTimestamp){
+                    searches = this.searches.filter(search => search.date >= this.dateFromAsTimestamp)
+                }else{
+                    searches = this.searches.filter(search => search.date >= this.dateFromAsTimestamp && search.date <= this.dateToAsTimestamp)
+                }
             }else{
                 searches = JSON.parse(JSON.stringify(this.searches))
             }
@@ -126,8 +139,8 @@ export default {
         },
         searchUCItems(){
             let searches
-            if(this.dateAsTimestamp){
-                searches = this.searches.filter(search => search.date >= this.dateAsTimestamp)
+            if(this.dateFromAsTimestamp){
+                searches = this.searches.filter(search => search.date >= this.dateFromAsTimestamp)
             }else{
                 searches = JSON.parse(JSON.stringify(this.searches))
             }
@@ -151,8 +164,8 @@ export default {
         },
         interactionItems(){
             let interactions
-            if(this.dateAsTimestamp){
-                interactions = this.interactions.filter(interaction => interaction.date >= this.dateAsTimestamp)
+            if(this.dateFromAsTimestamp){
+                interactions = this.interactions.filter(interaction => interaction.date >= this.dateFromAsTimestamp)
             }else{
                 interactions = JSON.parse(JSON.stringify(this.interactions))
             }
@@ -173,10 +186,15 @@ export default {
             })
             return interactionsToShow
         },
-        dateAsTimestamp(){
+        dateFromAsTimestamp(){
             if(!this.dateToShowFrom) return null
             const dateFormat = new Date(this.dateToShowFrom).getTime();
             return dateFormat
+        },
+        dateToAsTimestamp(){
+            if(!this.dateToShowTo) return null
+            const dateFormat = new Date(this.dateToShowTo).getTime();
+            return dateFormat + (1000 * 60 * 60 * 24)
         },
     },
     async created() {
