@@ -19,15 +19,6 @@
                 transform: translateX(80px);
             }
         }
-        .minus-icon {
-            position: absolute;
-            top: rem(15px);
-            left: 0;
-
-            @include for-narrow-layout {
-                display: none;
-            }
-        }
     }
     &-list {
         box-shadow: $slight-border-top;

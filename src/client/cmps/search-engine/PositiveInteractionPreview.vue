@@ -10,10 +10,6 @@
             <template #header>
                 <div class="interaction-preview-header table-row child" @click="onCollapseToggle(idx, group.cacheKey)">
                     <span class="table-col">
-                        <minus-icon
-                            class="minus-icon"
-                            title=""
-                        />
                         <!-- <positive-inner-list-count :key="renderKey" :group="group" :length="group.innerLength"/> -->
                         <interaction-capsules
                             :name="getInnerGroupName(group)"
@@ -89,7 +85,6 @@ import PositiveInteractionInnerList from '@/client/cmps/search-engine/PositiveIn
 import CollapseToggleIcon from '@/client/cmps/common/icons/CollapseToggleIcon';
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
-import MinusIcon from 'vue-material-design-icons/Minus';
 import LockIcon from 'vue-material-design-icons/Lock';
 import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 
@@ -240,7 +235,6 @@ export default {
     },
     components: {
         Collapse,
-        MinusIcon,
         InteractionCapsules,
         Tooltip,
         ChevronUpIcon,

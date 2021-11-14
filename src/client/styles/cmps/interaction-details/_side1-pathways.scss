@@ -12,6 +12,11 @@
 
         .pathways-tooltip-container{
             margin: 10px;
+            width: 230px;
+
+            @include for-narrow-layout {
+                width: unset;
+            }
 
             .tip{
                 margin-block-start: 10px;

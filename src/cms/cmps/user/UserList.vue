@@ -13,7 +13,7 @@
             disable-sort
             :items-per-page="50"
             :footer-props="{
-                'items-per-page-options': [ 10, 100, -1 ],
+                'items-per-page-options': [ 50, 100, -1 ],
             }"
         >
             <template v-slot:[`header.username`]="{ header }">

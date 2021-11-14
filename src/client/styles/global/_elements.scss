@@ -153,7 +153,8 @@ sub {
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-            flex-basis: 65%;
+            flex-basis: 55%;
+            margin-left: 19px;
 
             @include for-narrow-layout {
                 flex-basis: 25%;
@@ -163,7 +164,7 @@ sub {
             }
         }
         &:nth-child(3) {
-            flex-basis: 30%;
+            flex-basis: 38%;
             display: inline-flex;
             justify-content: flex-end;
             align-items: center;

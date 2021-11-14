@@ -13,10 +13,6 @@
                     <template #header>
                         <div class="label-interaction-preview-group-header table-row" @click="onCollapseToggle(idx)">
                             <span class="table-col">
-                                <minus-icon
-                                    class="minus-icon"
-                                    title=""
-                                />
                                 <interaction-capsules
                                     :name="getGroupName(atcGroup.name)"
                                     :vInteractionCount="atcGroup.vInteractions.length"    
@@ -50,10 +46,6 @@
                                 <template #header>
                                     <div class="label-interaction-preview-group-header table-row child">
                                         <span class="table-col">
-                                            <minus-icon
-                                                class="minus-icon"
-                                                title=""
-                                            />
                                             <interaction-capsules
                                                 :name="`${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}`"
                                                 :vInteractionCount="0"    
@@ -116,10 +108,6 @@
                         <template #header>
                             <div class="label-interaction-preview-group-header table-row">
                                 <span class="table-col">
-                                    <minus-icon
-                                        class="minus-icon"
-                                        title=""
-                                    />
                                     <interaction-capsules
                                         :name="`${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}`"
                                         :vInteractionCount="0"    
@@ -177,7 +165,6 @@ import Loader from '@/client/cmps/common/icons/Loader';
 import CollapseToggleIcon from '@/client/cmps/common/icons/CollapseToggleIcon';
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
-import MinusIcon from 'vue-material-design-icons/Minus';
 
 export default {
     props: {
@@ -425,7 +412,6 @@ export default {
         ChevronUpIcon,
         LongTxt,
         ChevronDownIcon,
-        MinusIcon,
         CollapseToggleIcon,
         Loader
     }

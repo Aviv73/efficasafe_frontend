@@ -108,7 +108,12 @@
         }
         &-actions {
             .print-btn {
+                display: none;
                 margin-inline-end: rem(24px);
+
+                @include for-narrow-layout {
+                    display: unset;
+                }
             }
             .share-btn .material-design-icon__svg {
                 margin-block-end: -4px;

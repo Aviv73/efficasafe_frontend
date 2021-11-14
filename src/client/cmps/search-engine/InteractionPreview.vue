@@ -24,11 +24,6 @@
                             class="table-col"
                             :class="{ 'flex-align-center': isDuplicate, 'off-interaction-col-1': !isAllowed}"
                         >
-                            <minus-icon
-                                class="minus-icon"
-                                v-if="isChild"
-                                title=""
-                            />
                             <interaction-capsules
                                 :name="interactionName"
                                 :color="getInteractionColor(interaction)"
@@ -216,7 +211,6 @@ import CollapseToggleIcon from '@/client/cmps/common/icons/CollapseToggleIcon';
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
 import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
-import MinusIcon from 'vue-material-design-icons/Minus';
 import LockIcon from 'vue-material-design-icons/Lock';
 
 export default {
@@ -559,7 +553,6 @@ export default {
         Tooltip,
         ChevronDownIcon,
         ChevronRightIcon,
-        MinusIcon,
         PositiveInteractionPreview,
         CollapseToggleIcon,
         LockIcon
