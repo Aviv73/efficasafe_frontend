@@ -1,5 +1,6 @@
 .about-hebrew-page{
     direction: rtl;
+
     &-container{
         max-width: 800px;
         margin: 0 auto;
@@ -42,16 +43,11 @@
         }
 
         .img1{
-            width: 550px;
+            width: 70%;
         }
 
         .img2{
-            width: 800px;
-            margin-bottom: 40px;
-        }
-
-        .img3{
-            width: 700px;
+            width: 100%;
             margin-bottom: 40px;
         }
 
@@ -68,5 +64,16 @@
         .space-bottom{
             margin-bottom: 15px !important;
         }
+
+        .highlight{
+            font-weight: bold;
+            background: -webkit-linear-gradient(left, $gradient-clr1, $gradient-clr2);
+            background: -o-linear-gradient(right, $gradient-clr1, $gradient-clr2);
+            background: -moz-linear-gradient(right, $gradient-clr1, $gradient-clr2);
+            background: linear-gradient(to right, $gradient-clr1, $gradient-clr2); 
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
     }
 }

@@ -2,7 +2,7 @@
     <section class="about-hebrew-page">
         <page-header/>
         <article class="about-hebrew-page-container">
-            <h1 class="title">מה הופך את Efficasafe למנוע האינטראקציות הכי טוב בעולם?</h1>
+            <h1 class="title">מה הופך את <span class="highlight">Efficasafe</span> למנוע האינטראקציות הכי טוב בעולם?</h1>
             <section>
                 <p>ייחודו של המנוע הוא קודם בדאטה.</p>
                 <p>כמות הראיות והמחקרים הנסקרים בכל אינטראקציה.</p>
@@ -23,13 +23,13 @@
             <img class="img2 center" src="@/client/assets/imgs/about-hebrew-img-4.jpeg" alt="">
             <section>
                 <p class="sub-title-3">בממוצע 4-6 מקורות לכל אינטראקציה, מתוכם 2-3 קליניים.</p>
-                <p class="sub-title-4">ועכשיו בואו נראה את כמות הראיות ב-Efficasafe:</p>
+                <p class="sub-title-4">ועכשיו בואו נראה את כמות הראיות ב-<span class="highlight">Efficasafe</span>:</p>
             </section>
             <img class="img2 center" src="@/client/assets/imgs/about-hebrew-img-2.jpeg" alt="">
             <section>
                 <p class="sub-title-3">יותר. הרבה יותר....</p>
                 <p>כפי שוודאי שמתם לב, לא רק כמות הראיות שונה אלא ההמלצות עצמן שונות לגמרי.</p>
-                <p>בעוד שבכל המנועים מופיעות אזהרות, ההמלצות של Efficasafe הן חיוביות.</p>
+                <p>בעוד שבכל המנועים מופיעות אזהרות, ההמלצות של <span class="highlight">Efficasafe</span> הן חיוביות.</p>
                 <p>בחלק מהמקרים ההמלצה היא אפילו שכדאי לשלב.</p>
             </section>
             <section>
@@ -50,7 +50,7 @@
                 <p class="sub-title-4">או במלים אחרות, אולי הגודל כן קובע :)</p>
             </section>
             <section>
-                <p class="space-bottom">וזו לא רק כמות הדאטה, המנוע של Efficasafe מאפשר</p>
+                <p class="space-bottom">וזו לא רק כמות הדאטה, המנוע של <span class="highlight">Efficasafe</span> מאפשר</p>
                 <ul>
                     <li>חיפוש בלתי מוגבל של תרופות ותוספים במקביל</li>
                     <li>כולל אינטראקציות של תרופות עם תרופות</li>
@@ -68,13 +68,13 @@
                 <p>המערכת שלנו יודעת להראות לכם את כל השילובים המומלצים עם התרופות שחיפשתם!</p>
                 <p class="sub-title-4">אנחנו קוראים לזה Positive boosters</p>
                 <p class="sub-title-3">וזה ממש לא הכל. השארנו לכם לגלות עוד יכולות שטרם חוויתם.</p>
-                <p class="sub-title-4">הירשמו כבר היום ל-Efficasafe ותתחילו לראות תוצאות!</p>
+                <p class="sub-title-4">הירשמו כבר היום ל-<span class="highlight">Efficasafe</span> ותתחילו לראות תוצאות!</p>
             </section>
             <section>
                 <p>אגב לא שכחנו את ישראל.</p>
                 <p class="sub-title-4">ככה המטפל.ת שלו רואה אותו:</p>
             </section>
-            <img class="img3 center" src="@/client/assets/imgs/about-hebrew-img-3.jpeg" alt="">
+            <img class="img2 center" src="@/client/assets/imgs/about-hebrew-img-3.jpeg" alt="">
             <h3 class="sub-title-4">הירשמו עכשיו ותוכלו גם אתם לראות טוב יותר!</h3>
         </article>
     </section>
