@@ -146,6 +146,11 @@ const routes = [
       import(/* webpackChunkName: 'about' */ '../views/About')
   },
   {
+    path: '/we-are-better-hebrew',
+    name: 'WeAreBetterHebrew',
+    component: () => import(/* webpackChunkName: 'we-are-better-hebrew' */ '../views/WeAreBetterHebrew')
+  },
+  {
     path: '/principles-and-processes',
     name: 'PrinciplesAndProcesses',
     component: () => import(/* webpackChunkName: 'principles-and-processes' */ '../views/PrinciplesAndProcesses')

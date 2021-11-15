@@ -154,7 +154,8 @@ sub {
             white-space: nowrap;
             text-overflow: ellipsis;
             flex-basis: 55%;
-            margin-left: 19px;
+            margin-left: 11px;
+            margin-right: 8px;
 
             @include for-narrow-layout {
                 flex-basis: 25%;

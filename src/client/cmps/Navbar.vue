@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <ul class="navbar-nav">
-                    <li class="navbar-nav-item" v-if="!isScreenNarrow">
+                    <li class="navbar-nav-item">
                         <router-link to="/" title="Home">
                             <home-icon title="" :size="20" />
                         </router-link>
