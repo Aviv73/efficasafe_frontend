@@ -165,7 +165,7 @@ sub {
             }
         }
         &:nth-child(3) {
-            flex-basis: 38%;
+            flex-basis: 37%;
             display: inline-flex;
             justify-content: flex-end;
             align-items: center;
@@ -173,7 +173,7 @@ sub {
             font-family: roboto-bold, sans-serif;
             font-weight: 700;
             text-align: right;
-            padding-inline-end: rem(50px);
+            padding-inline-end: rem(40px);
             position: relative;
             
             @include for-narrow-layout {

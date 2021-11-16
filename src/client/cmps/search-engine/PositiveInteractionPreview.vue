@@ -24,7 +24,7 @@
                         {{ getShortRecommendation(group.recommendation) }}
                     </span>
                     <span v-else class="table-col flex-start" title="Open only for registered subscribers">
-                        <lock-icon class="lock-icon" :size="18"/> <p> open only for registered subscribers</p>
+                        <lock-icon class="lock-icon" :size="18"/> <p class="clip-txt"> open only for registered subscribers</p>
                     </span>
                     <span v-if="isAllowed(idx)" class="table-col">
                         <tooltip

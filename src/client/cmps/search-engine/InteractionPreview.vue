@@ -42,7 +42,7 @@
                             {{ getShortRecommendation(interaction.recommendation) }}
                         </span>
                         <span v-else class="table-col flex-start off-interaction-col-2" title="Open only for registered subscribers">
-                            <lock-icon class="lock-icon" :size="18"/> <p> open only for registered subscribers</p>
+                            <lock-icon class="lock-icon" :size="18"/> <p class="clip-txt"> open only for registered subscribers</p>
                         </span>
                         <span v-if="isAllowed" class="table-col">
                             <tooltip right :txt="getLongEvidenceLevel(interaction.evidenceLevel || interaction.evidence_level)">

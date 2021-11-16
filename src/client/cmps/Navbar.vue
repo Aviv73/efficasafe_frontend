@@ -67,6 +67,7 @@
                             :class="{ highlight: !loggedInUser || isNavIntersecting }"
                             @click="onSubscribe"
                             title="Subscribe"
+                            disabled
                         >
                             Subscribe
                         </button>
@@ -129,6 +130,7 @@
                             <button
                                 class="subscribe-btn"
                                 @click="onSubscribe"
+                                disabled
                             >
                                 Subscribe
                             </button>
