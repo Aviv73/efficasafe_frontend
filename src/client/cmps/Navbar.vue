@@ -67,7 +67,6 @@
                             :class="{ highlight: !loggedInUser || isNavIntersecting }"
                             @click="onSubscribe"
                             title="Subscribe"
-                            disabled
                         >
                             Subscribe
                         </button>
@@ -130,7 +129,6 @@
                             <button
                                 class="subscribe-btn"
                                 @click="onSubscribe"
-                                disabled
                             >
                                 Subscribe
                             </button>
@@ -242,7 +240,8 @@ export default {
             this.isNavActive = !this.isNavActive;
         },
         onSubscribe() {
-            this.$router.push('/subscribe')
+            // this.$router.push('/subscribe')
+            alert('Subscription will be available soon. In the meantime your free trial will be extended')
         },
         onLogin() {
             this.$emit('login');

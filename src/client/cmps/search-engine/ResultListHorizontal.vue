@@ -1,7 +1,7 @@
 <template>
     <section class="horizontal-list">
-        <div class="results-header">
-            <div v-if="$route.name === 'Results'" class="btn-container">
+        <div v-if="$route.name === 'Results'" class="results-header" >
+            <div class="btn-container">
                 <button @click="showResults('all')" :class="{selected: isSelected('all')}">All Results</button>
                 <button @click="showResults('supp')" :class="{selected: isSelected('supp')}">{{suppDrugBtnTxt}}</button>
                 <button @click="showResults('drug')" :class="{selected: isSelected('drug')}">Drug - Drug</button>
@@ -89,7 +89,7 @@
             </li>
             <li
                 class="horizontal-list-list-item boosters-opener flex-center"
-                v-else-if="$route.name === 'Boosters'"
+                v-else-if="$route.name === 'Boosters' && !isScreenNarrow"
             >
                 <span>
                     To see an explanation tour about this tab
@@ -338,7 +338,10 @@ export default {
         sortRecommendationTxt(){
             if(this.pageCount > 1) return 'sorting is only available for one page at a time'
             return 'Sort by recommendation'
-        }
+        },
+        isScreenNarrow() {
+            return this.$store.getters.isScreenNarrow;
+        },
     },
     methods: {
         showResults(type){
