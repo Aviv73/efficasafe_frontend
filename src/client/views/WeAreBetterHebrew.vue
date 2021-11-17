@@ -75,7 +75,7 @@
                 <p class="sub-title-4">ככה המטפל.ת שלו רואה אותו:</p>
             </section>
             <img class="img2 center border" src="@/client/assets/imgs/about-hebrew-img-3.jpeg" alt="">
-            <h3 class="sub-title-4">הירשמו עכשיו ותוכלו גם אתם לראות טוב יותר!</h3>
+            <p>הירשמו עכשיו ותוכלו גם אתם לראות טוב יותר!</p>
         </article>
     </section>
 </template>

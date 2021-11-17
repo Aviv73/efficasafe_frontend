@@ -6,7 +6,6 @@
         v-if="editedMaterial"
         fixed
         bottom
-        permanent
         hide-overlay
       >
         <v-list nav dense>
@@ -31,7 +30,10 @@
             <v-list-item v-if="editedMaterial.effectOnDrugMetabolism || isShowEmptyLink" @click="goto('Effect on drug metabolism')">Effect on drug metabolism</v-list-item>
             <v-list-item v-if="editedMaterial.detailedPharmacology || isShowEmptyLink" @click="goto('Detailed Pharmacology')">Detailed Pharmacology</v-list-item>
             <v-list-item v-if="editedMaterial.activeConstituents || isShowEmptyLink" @click="goto('Active Constituents')">Active Constituents</v-list-item>
+            <v-list-item v-if="editedMaterial.labels.length || isShowEmptyLink" @click="goto('Labels')">Labels</v-list-item>
             <v-list-item v-if="editedMaterial.refs.length || isShowEmptyLink" @click="goto('References')">References</v-list-item>
+            <v-list-item v-if="editedMaterial.brands.length || isShowEmptyLink" @click="goto('Brands')">Brands</v-list-item>
+            <v-list-item v-if="editedMaterial.compounds.length || isShowEmptyLink" @click="goto('Compounds')">Compounds</v-list-item>
             <v-list-item v-if="editedMaterial.structuredAdverseEffects.length || isShowEmptyLink" @click="goto('Structured Adverse Effects')">Structured Adverse Effects</v-list-item>
             <v-list-item v-if="editedMaterial.pathways.length || isShowEmptyLink" @click="goto('Pathways')">Pathways</v-list-item>
             <v-list-group :value="false">
@@ -547,7 +549,7 @@
             :config="CKEditorConfig"
           ></ckeditor>
 
-          <div class="list-chips">
+          <div ref="Labels" class="list-chips">
             <autocomplete 
               placeholder="Search label"
               :isLabel="true"
@@ -582,7 +584,7 @@
             @edit-ref="openDBankRefDialog"
           />
 
-          <div class="list-chips">
+          <div ref="Brands" class="list-chips">
             <v-text-field
               v-model="model.brands"
               label="Brands"
@@ -598,6 +600,7 @@
               >
             </v-chip-group>
           </div>
+          <h3 ref="Compounds" class="text-center mb-2">Compounds</h3>
           <v-expansion-panels flat>
             <v-expansion-panel>
               <v-expansion-panel-header class="pa-0 my-6">
