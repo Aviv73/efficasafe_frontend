@@ -274,7 +274,7 @@ export default {
                     content: `
                         <div class="v-step-container big-container">
                             <p class="v-step-txt">
-                                A <span style="color: #F6D55C">yellow info icon</span> means the supplement you searched is still under construction. Your search will give it a priority.
+                                A <span style="color: #F6D55C">yellow info icon</span> means the supplement you searched is still under construction. Your search will give it priority.
                             </p>
                             <img
                                 class="onboarding-img"
@@ -490,7 +490,7 @@ export default {
                     content: `
                         <div class="v-step-container big-container">
                             <p class="v-step-txt">
-                                A <span style="color: #F6D55C">yellow info icon</span> means the supplement you searched is still under construction. Your search will give it a priority.
+                                A <span style="color: #F6D55C">yellow info icon</span> means the supplement you searched is still under construction. Your search will give it priority.
                             </p>
                             <img
                                 class="onboarding-img"
