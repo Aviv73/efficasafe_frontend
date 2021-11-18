@@ -37,6 +37,8 @@ import OnboardingImg5 from '@/client/assets/imgs/onboarding5.jpg';
 import OnboardingImg6 from '@/client/assets/imgs/onboarding6.jpg';
 import OnboardingImg7 from '@/client/assets/imgs/onboarding7.jpg';
 import OnboardingImg8 from '@/client/assets/imgs/onboarding8.jpg';
+import OnboardingImg9 from '@/client/assets/imgs/onboarding9.png';
+import OnboardingImg10 from '@/client/assets/imgs/onboarding10.png';
 import interactionImg1 from '@/client/assets/imgs/int1.png';
 import interactionImg2 from '@/client/assets/imgs/int2.png';
 import interactionImg3 from '@/client/assets/imgs/int3.png';
@@ -270,6 +272,44 @@ export default {
                 {
                     target: '.v-tour1-step-0',
                     content: `
+                        <div class="v-step-container big-container">
+                            <p class="v-step-txt">
+                                A <span style="color: #F6D55C">yellow info icon</span> means the supplement you searched is still under construction. Your search will give it a priority.
+                            </p>
+                            <img
+                                class="onboarding-img"
+                                src="${OnboardingImg9}"
+                                alt="Explanatory usage image"
+                            />
+                        </div>
+                    `,
+                    params: {
+                        placement: 'right-end',
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour1-step-0',
+                    content: `
+                        <div class="v-step-container big-container">
+                            <p class="v-step-txt">
+                                A <span style="color: #E63946">red info icon</span> means that the drug or supplement you searched is already in the list.
+                            </p>
+                            <img
+                                class="onboarding-img"
+                                src="${OnboardingImg10}"
+                                alt="Explanatory usage image"
+                            />
+                        </div>
+                    `,
+                    params: {
+                        placement: 'right-end',
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour1-step-0',
+                    content: `
                         <div class="v-step-container v-step-wide-container">
                             <p class="v-step-txt">
                                 You can filter the category of interactions. 
@@ -436,6 +476,44 @@ export default {
                             <img
                                 class="onboarding-img"
                                 src="${OnboardingImg1}"
+                                alt="Explanatory usage image"
+                            />
+                        </div>
+                    `,
+                    params: {
+                        placement: 'right-end',
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour1-step-0',
+                    content: `
+                        <div class="v-step-container big-container">
+                            <p class="v-step-txt">
+                                A <span style="color: #F6D55C">yellow info icon</span> means the supplement you searched is still under construction. Your search will give it a priority.
+                            </p>
+                            <img
+                                class="onboarding-img"
+                                src="${OnboardingImg9}"
+                                alt="Explanatory usage image"
+                            />
+                        </div>
+                    `,
+                    params: {
+                        placement: 'right-end',
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour1-step-0',
+                    content: `
+                        <div class="v-step-container big-container">
+                            <p class="v-step-txt">
+                                A <span style="color: #E63946">red info icon</span> means that the drug or supplement you searched is already in the list.
+                            </p>
+                            <img
+                                class="onboarding-img"
+                                src="${OnboardingImg10}"
                                 alt="Explanatory usage image"
                             />
                         </div>

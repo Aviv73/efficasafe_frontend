@@ -216,7 +216,7 @@
                                 class="link boosters pb-tour-step-0"
                                 :to="{ name: 'Boosters', query: this.$route.query }"
                             >
-                                Positive boosters
+                                Synergistics
                                 <span v-if="boostersCount">
                                     {{'\xa0'}}
                                     <span

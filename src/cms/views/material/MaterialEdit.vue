@@ -1,22 +1,26 @@
 <template>
   <section class="container">
       <v-app-bar-nav-icon class="drawer-btn" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <!-- <v-app-bar-nav-icon class="drawer-btn" @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
       <v-navigation-drawer
-        v-model="drawer"
         v-if="editedMaterial"
         fixed
         bottom
+        v-model="drawer"
         hide-overlay
       >
         <v-list nav dense>
-        <v-subheader>Navigation</v-subheader>
+        <v-subheader></v-subheader>
           <v-list-item-group
             color="primary"
           >
+            <v-app-bar-nav-icon class="drawer-btn" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-subheader class="mt-8">Navigation <v-btn class="ml-4" @click="isShowEmptyLink = !isShowEmptyLink">{{showEmptyLinkTxt}}</v-btn> </v-subheader>
             <v-list-item v-if="editedMaterial.desc || isShowEmptyLink" @click="goto('Description')">Description</v-list-item>
             <v-list-item v-if="editedMaterial.dBankDesc || isShowEmptyLink" @click="goto('DBDescription')">DB Description</v-list-item>
             <v-list-item v-if="editedMaterial.dBankClinicalDesc || isShowEmptyLink" @click="goto('DrugBanks clinical description')">DrugBank's clinical description</v-list-item>
+            <v-list-item v-if="editedMaterial.aliases.length || isShowEmptyLink" @click="goto('aliases')">Aliases</v-list-item>
+            <v-list-item v-if="editedMaterial.dBankAliases.length || isShowEmptyLink" @click="goto('dBankAliases')">dBankAliases</v-list-item>
             <v-list-item v-if="editedMaterial.dosage || isShowEmptyLink" @click="goto('Dosage')">Dosage</v-list-item>
             <v-list-item v-if="editedMaterial.sensitivities || isShowEmptyLink" @click="goto('Sensitivities')">Sensitivities</v-list-item>
             <v-list-item v-if="editedMaterial.adverseReactions || isShowEmptyLink" @click="goto('Adverse Reactions')">Adverse Reactions</v-list-item>
@@ -368,7 +372,7 @@
             label="Plant Part Used"
           />
 
-          <div class="list-chips">
+          <div ref="aliases" class="list-chips">
             <v-text-field
               v-model="model.aliases"
               label="Aliases"
@@ -385,7 +389,7 @@
             </v-chip-group>
           </div>
 
-          <div class="list-chips">
+          <div ref="dBankAliases" class="list-chips">
             <v-text-field
               v-model="model.dBankAliases"
               label="DrugBank's Aliases"
@@ -1257,7 +1261,6 @@ export default {
       var top = element.offsetTop;
 
       window.scrollTo(0, top);
-      this.drawer = !this.drawer
     }
   },
   async created() {
