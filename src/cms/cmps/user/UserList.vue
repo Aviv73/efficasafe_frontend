@@ -146,16 +146,18 @@
                 </tbody>
             </template>
         </v-data-table>
-        <v-btn class="download-btn" title="Download list" color="success">
-            <download-excel
-                :data="userToExcel"
-                :escapeCsv="false"
-                type="csv"
-                name="User List.xls"
-                >
-                <v-icon>mdi-download</v-icon>
-            </download-excel>
-        </v-btn>
+        <v-fab-transition>
+            <v-btn v-if="selected.length" class="download-btn" title="Download list" color="success">
+                <download-excel
+                    :data="userToExcel"
+                    :escapeCsv="false"
+                    type="csv"
+                    name="User List.xls"
+                    >
+                    <v-icon>mdi-download</v-icon>
+                </download-excel>
+            </v-btn>
+        </v-fab-transition>
         <v-fab-transition>
             <v-btn
                 class="edit-btn"

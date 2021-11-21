@@ -97,7 +97,10 @@
                 }
 
                 .facebook-img{
-                    width: 7%;
+                    width: 10%;
+                    @include for-mobile-layout {
+                        width: 7%;
+                    }
                 }
             }
 
