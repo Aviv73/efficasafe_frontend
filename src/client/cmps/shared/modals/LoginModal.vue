@@ -32,7 +32,7 @@
                             </a>
                             <a :href="facebookLink" class="blue" role="button">
                                 <img class="facebook-img" src="@/client/assets/imgs/facebook.png" alt="Logo" />
-                                Signup with facebook 
+                                Login with facebook 
                             </a>
                         </div>
                 </div>
