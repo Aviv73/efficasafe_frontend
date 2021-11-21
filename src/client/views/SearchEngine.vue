@@ -139,7 +139,7 @@
                     <div class="flex-space-between">
                         <span class="search-engine-results-amount font-medium">
                             <animated-integer :value="totalInteractionCount" />
-                            {{ ($route.name === 'Boosters') ? 'Boosters' : 'Interactions' }}
+                            {{ ($route.name === 'Boosters') ? 'Optimizers' : 'Interactions' }}
                         </span>
                         <span class="search-engine-results-actions">
                             <button
@@ -216,7 +216,7 @@
                                 class="link boosters pb-tour-step-0"
                                 :to="{ name: 'Boosters', query: this.$route.query }"
                             >
-                                Synergistics
+                                Optimizers
                                 <span v-if="boostersCount">
                                     {{'\xa0'}}
                                     <span
