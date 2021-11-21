@@ -146,6 +146,16 @@
                 </tbody>
             </template>
         </v-data-table>
+        <v-btn class="download-btn" title="Download list" color="success">
+            <download-excel
+                :data="userToExcel"
+                :escapeCsv="false"
+                type="csv"
+                name="User List.xls"
+                >
+                <v-icon>mdi-download</v-icon>
+            </download-excel>
+        </v-btn>
         <v-fab-transition>
             <v-btn
                 class="edit-btn"
@@ -267,6 +277,23 @@ export default {
         },
         selectAll(){
             this.selected = this.users.map(user => user._id)
+        }
+    },
+    computed:{
+        userToExcel(){
+            const users = JSON.parse(JSON.stringify(this.users))
+            const convertedUsers =  this.selected.map(id => {
+                const user = users.find( user => user._id === id)
+                user.registeredTime = new Date(user.registeredTime).toLocaleDateString("he-IL")
+                user.trialTime = new Date(user.trialTime).toLocaleDateString("he-IL")
+                delete user._id
+                delete user.password
+                delete user.isSubscribe
+                delete user.purchases
+                delete user.searches
+                return user
+            })
+            return convertedUsers
         }
     },
     created(){

@@ -31,12 +31,22 @@
                 <v-date-picker 
                     v-if="searchBy === 'Registration Date'"
                     width="300"
-                    @change="handlefilterByDate('registration', $event)"
+                    @change="handlefilterByDateFrom('registration', $event)"
+                ></v-date-picker>
+                <v-date-picker 
+                    v-if="searchBy === 'Registration Date'"
+                    width="300"
+                    @change="handlefilterByDateTo('registration', $event)"
                 ></v-date-picker>
                 <v-date-picker 
                     v-if="searchBy === 'End Trial Date'"
                     width="300"
-                    @change="handlefilterByDate('endTrial', $event)"
+                    @change="handlefilterByDateFrom('endTrial', $event)"
+                ></v-date-picker>
+                <v-date-picker 
+                    v-if="searchBy === 'End Trial Date'"
+                    width="300"
+                    @change="handlefilterByDateTo('endTrial', $event)"
                 ></v-date-picker>
             </section>
         </div>
@@ -52,7 +62,8 @@ export default {
                 q: '',
                 planType: '',
                 roleType: '',
-                registrationDate: '',
+                registrationDateFrom: '',
+                registrationDateTo: '',
                 endTrialDate: ''
             },
             searchBy: 'Role',
@@ -83,10 +94,17 @@ export default {
                 JSON.parse(JSON.stringify(this.filterBy))
             );
         },
-        handlefilterByDate(type, value){
+        handlefilterByDateFrom(type, value){
             const date = new Date(value).getTime()
-            if(type === 'registration') this.filterBy.registrationDate = date
-            else this.filterBy.endTrialDate = date
+            if(type === 'registration') this.filterBy.registrationDateFrom = date
+            else this.filterBy.endTrialDateFrom = date
+            this.emitFilterBy()
+        },
+        handlefilterByDateTo(type, value){
+            const date = new Date(value).getTime()
+            if(type === 'registration') this.filterBy.registrationDateTo = date
+            else this.filterBy.endTrialDateTo = date
+            this.emitFilterBy()
         }
     },
 };

@@ -37,6 +37,10 @@
                                 <img src="@/client/assets/imgs/google.jpeg" alt="Logo" />
                                 Signup with google 
                             </a>
+                            <a :href="facebookLink" class="blue" role="button">
+                                <img class="facebook-img" src="@/client/assets/imgs/facebook.png" alt="Logo" />
+                                Signup with facebook 
+                            </a>
                         </div>
                         
                     </template>
@@ -125,6 +129,9 @@ export default {
         },
         googleLink(){
             return (process.env.NODE_ENV === 'development') ? 'http://localhost:3000/auth/google' : '/auth/google'
+        },
+        facebookLink(){
+            return (process.env.NODE_ENV === 'development') ? 'http://localhost:3000/auth/facebook' : '/auth/facebook'
         },
         passInputType(){
             if(!this.isShowPass) return 'password'
