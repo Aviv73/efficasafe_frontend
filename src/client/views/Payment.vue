@@ -233,7 +233,6 @@ export default {
       this.selectedPlan = this.$store.getters.getSelectedPaymentPlan
       this.user = this.$store.getters.loggedInUser || {}
     //get user contry to show currect prices
-    
   },
   components:{
       StarIcon
