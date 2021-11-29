@@ -1,8 +1,6 @@
 <template>
     <section class="user-app">
         <div class="user-app-header">
-            <!-- <h3 v-if="loggedInUser.type === 'subscribed'" class="subscribe-until">Subscribed until: <span>{{loggedInUser.trialTime | moment('DD/MM/YYYY')}}</span></h3> -->
-            
             <div class="flex-align-center">
                 <div class="user-app-header-search font-medium">
                     <input
@@ -34,6 +32,7 @@
                 :items="tableItems"
                 @item-deleted="removeItem"
                 @header-clicked="onSort"
+                @end-subscription="openEndSubscriptionModal"
             />
             <list-pagination
                 class="list-pagination flex-center"
@@ -55,6 +54,13 @@
                 </template>
             </list-pagination>
         </div>
+        <modal-wrap
+            v-if="isEndSubscriptionModal"
+            :isActive="isEndSubscriptionModal"
+            @close-modal="closeEndSubscriptionModal"
+            >
+            <end-subscription-modal :HKId="HKIdToEnd" @close-modal="closeEndSubscriptionModal" @update-user="updateEndSubscriptionUser"/>
+        </modal-wrap>
     </section>
 </template>
 
@@ -62,6 +68,8 @@
 import CustomSelect from '@/client/cmps/common/CustomSelect';
 import UserDataTable from '@/client/cmps/user-account/UserDataTable';
 import ListPagination from '@/client/cmps/common/ListPagination';
+import ModalWrap from '@/client/cmps/common/ModalWrap';
+import EndSubscriptionModal from '@/client/cmps/shared/modals/EndSubscriptionModal';
 
 import PageFirstIcon from 'vue-material-design-icons/PageFirst';
 import PageLastIcon from 'vue-material-design-icons/PageLast';
@@ -71,6 +79,8 @@ import { userService } from '@/cms/services/user.service';
 export default {
     data() {
         return {
+            isEndSubscriptionModal: false,
+            HKIdToEnd: null,
             filterBy: {
                 name: '',
                 page: 1,
@@ -144,6 +154,9 @@ export default {
                 {
                     title: 'Valid until',
                     field: 'until'
+                },
+                {
+                    title: ''
                 }
             ];
         },
@@ -203,6 +216,37 @@ export default {
             today.setDate(today.getDate() - days);
             today.setHours(0, 0, 0, 0);
             return today.getTime();
+        },
+        openEndSubscriptionModal(item){
+            this.HKIdToEnd = item.HKId
+            this.isEndSubscriptionModal = true
+        },
+        closeEndSubscriptionModal(){
+            this.HKIdToEnd = null
+            this.isEndSubscriptionModal = false
+        },
+        async updateEndSubscriptionUser(){
+            const user = JSON.parse(JSON.stringify(this.loggedInUser))
+            const updatedUser = this.calcEndSubscription(user)
+            const updattedUser = await this.$store.dispatch({ type: 'updateLoggedInUser', user: updatedUser })
+            this.purchases = JSON.parse(JSON.stringify(updattedUser.purchases))
+            this.closeEndSubscriptionModal()
+            location.reload();
+        },
+        calcEndSubscription(user){
+            const purchase = user.purchases[0]
+            const newUntil = this.checkIfDatePassed(purchase.at, purchase.duration)
+            user.purchases[0].until = newUntil
+            return user
+        },
+        checkIfDatePassed(startTime, numOfMonth){
+            const timeToAdd = 1000 * 60 * 60 * 24 * 30 * numOfMonth
+            const newTime = startTime + timeToAdd
+            const currDate = Date.now()
+            if(newTime < currDate){
+                return this.checkIfDatePassed(newTime, numOfMonth)
+            }
+            return newTime
         }
     },
     async created(){
@@ -214,7 +258,9 @@ export default {
         UserDataTable,
         ListPagination,
         PageFirstIcon,
-        PageLastIcon
+        PageLastIcon,
+        ModalWrap,
+        EndSubscriptionModal
     }
 }
 </script>

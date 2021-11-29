@@ -62,7 +62,7 @@
                             <home-icon title="" :size="20" />
                         </router-link>
                     </li>
-                    <li class="navbar-nav-item">
+                    <li v-if="!loggedInUser || loggedInUser.type !== 'subscribed'" class="navbar-nav-item">
                         <button
                             :class="{ highlight: !loggedInUser || isNavIntersecting }"
                             @click="onSubscribe"
@@ -127,6 +127,7 @@
                         />
                         <li class="navbar-side-nav-item">
                             <button
+                                v-if="!loggedInUser || loggedInUser.type !== 'subscribed'"
                                 class="subscribe-btn"
                                 @click="onSubscribe"
                             >
@@ -240,8 +241,7 @@ export default {
             this.isNavActive = !this.isNavActive;
         },
         onSubscribe() {
-            // this.$router.push('/subscribe')
-            alert('Subscription will be available soon. In the meantime your free trial will be extended')
+            this.$router.push('/subscribe')
         },
         onLogin() {
             this.$emit('login');

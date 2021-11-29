@@ -669,10 +669,10 @@ export default {
                     target: '.pb-tour-step-0',
                     content: `
                         <p class="v-step-txt">
-                            This tab will show you positive boosters for what you searched.
+                            Optimizers are combinations of drugs and supplements that increase drug efficacy or reduce toxicity and adverse events.
                         </p>
                         <p class="v-step-txt">
-                            First for the drugs, and then for the supplements.
+                            This tab will show you Optimizers, first for the drugs, and then for the supplements.
                         </p>
                         <img
                             class="boosters-img"
@@ -689,7 +689,7 @@ export default {
                     target: '.pb-tour-step-0',
                     content: `
                         <p class="v-step-txt">
-                            A click on each drug will show you all the supplements that can be coadministered with the drug.
+                            You can click on each drug to see all the supplements that are beneficial when coadministered.
                         </p>
                         <img
                             class="boosters-img"

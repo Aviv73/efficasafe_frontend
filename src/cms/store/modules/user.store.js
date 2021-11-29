@@ -52,17 +52,19 @@ export const userStore = {
         }
     },
     actions: {
-        async getUserInfo({ commit }) {
+        async getUserInfo({ commit, dispatch }) {
             const user = await userService.getUserInfo();
             if (!user.message) {
-                commit({ type: 'setLoggedInUser', user });
+                if(user.purchases.length && typeof user.purchases[0].until === 'number' && user.purchases[0].until < Date.now()){
+                    user.purchases[0].until = 'Done'
+                    user.type = 'registered'
+                    user.trialTime = null
+                    await dispatch({ type: 'updateLoggedInUser', user });
+                }else{
+                    commit({ type: 'setLoggedInUser', user });
+                }
             }
         },
-        // async completeEmailVerification({ commit }){
-        //     const updatedUser = await userService.completeEmailVerification();
-        //     await userService.updateAutoPilotContact(updatedUser)
-        //     commit({ type: 'setLoggedInUser',user: updatedUser });
-        // },
         async checkIfSession({ dispatch }) {
             const session = await userService.checkIfSession();
             if(session.message === 'No session') await dispatch({type: 'logout'});

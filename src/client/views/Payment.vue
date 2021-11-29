@@ -89,9 +89,6 @@
     </div>
     <div v-if="couponPlan" class="cards-container coupon">
         <div class="card" :class="{'selected':isSelected(couponPlan._id)}">
-            <div v-if="couponPlan.bonusTime" class="ribbon">
-                <span class="coupon-ribbon">Get free {{couponPlan.bonusTime}} months</span> 
-            </div>
             <h3 class="card-title">{{couponPlan.durationTxt}}</h3>
             <p class="card-price">{{getCurrencyByLocation()}} <span>{{getPriceByLocation(couponPlan)}}</span> /mo</p>
             <button class="card-btn" @click="onSelectPlan($event,couponPlan)">select</button>
@@ -141,16 +138,16 @@ export default {
   },
   methods: {
     getCurrencyByLocation(){
-        return 'USD'
+        return 'ILS'
     },
     getPriceByLocation(plan){
-        return plan.priceUSD
+        return plan.priceISL
     },
     getReleventCoin(){
-        return 2
+        return 1
     },
     getReleventPrice(){
-        return this.selectedPlan.priceUSD * this.selectedPlan.duration
+        return this.selectedPlan.priceISL * this.selectedPlan.duration
     },
     onSelectPlan(ev, plan){
         this.selectedPlan = plan
@@ -203,14 +200,19 @@ export default {
         const key = config.yaadPayKey
         const pass = config.yaadPayPassP
         const masof = config.yaadPayMasof
+
+        // const key = config.yaadPayKeyTest
+        // const pass = config.yaadPayPassPTest
+        // const masof = config.yaadPayMasofTest
+
         const address = encodeURI(user.address)
         const city = encodeURI(user.city)
         const {phone, zipCode, email} = user
         const coin = this.getReleventCoin()
-        // const price = 1
         const price = this.getReleventPrice()
-        const durationTxt = encodeURI(this.selectedPlan.durationTxt)
-        const apiSignAddress = `https://icom.yaad.net/p/?action=APISign&What=SIGN&KEY=${key}&PassP=${pass}&Masof=${masof}&Order=12345678910&Info=${durationTxt}&Amount=${price}&UTF8=True&UTF8out=True&street=${address}&city=${city}&zip=${zipCode}&phone=${phone}&email=${email}&Tash=2&FixTash=False&ShowEngTashText=True&Coin=${coin}&Postpone=False&J5=False&Sign=True&MoreData=True&sendemail=False&SendHesh=True&heshDesc=[0~${durationTxt}~1~${price}]&Pritim=True&PageLang=ENG&tmp=1`
+        const durationTxt = this.selectedPlan.code ? encodeURI(`${this.selectedPlan.code} - ${this.selectedPlan.durationTxt}`) : encodeURI(this.selectedPlan.durationTxt)
+        const duration = +this.selectedPlan.duration
+        const apiSignAddress = `https://icom.yaad.net/p/?action=APISign&What=SIGN&KEY=${key}&PassP=${pass}&Masof=${masof}&Order=12345678910&Info=${durationTxt}&Amount=${price}&UTF8=True&UTF8out=True&street=${address}&city=${city}&zip=${zipCode}&phone=${phone}&email=${email}&Tash=999&FixTash=False&ShowEngTashText=True&Coin=${coin}&Postpone=False&J5=False&Sign=True&MoreData=True&sendemail=False&SendHesh=True&heshDesc=[0~${durationTxt}~1~${price}]&Pritim=True&PageLang=ENG&tmp=1&HK=True&freq=${duration}`
         storageService.store('isPaying', true)
         const res = await paymentService.getEndpoint(apiSignAddress)
         window.location = `https://icom.yaad.net/p/?action=pay&${res.payload}`;

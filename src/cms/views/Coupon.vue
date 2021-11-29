@@ -48,31 +48,15 @@
                 </div>
                 <div class="coupon-input">
                     <h3>Duration in months:</h3>
-                    <v-text-field
+                    <v-select
+                        :items="durations"
+                        label="Duration in month"
                         v-model="couponToEdit.duration"
-                        placeholder="Duration in month"
-                        hide-details
-                        single-line
-                        type="number"
-                    />
+                    ></v-select>
                 </div>
                 <div class="coupon-input">
                     <h3>Duration in words:</h3>
-                    <v-text-field
-                        v-model="couponToEdit.durationTxt"
-                        placeholder="Duration in words"
-                        hide-details
-                        single-line
-                    />
-                </div>
-                <div class="coupon-input">
-                    <h3>Bonus time in months:</h3>
-                    <v-text-field
-                        v-model="couponToEdit.bonusTime"
-                        placeholder="Bonus time in months"
-                        hide-details
-                        single-line
-                    />
+                    <h3>{{durationTxtToShow}}</h3>
                 </div>
                 <div class="coupon-input">
                     <h3>Price in USD:</h3>
@@ -146,6 +130,20 @@ export default {
         editorTitle(){
             if(this.couponToEdit.id) return 'Edit'
             return 'Add'
+        },
+        durations(){
+            return this.managementData.plans.map(plan => plan.duration)
+        },
+        durationTxtMap(){
+            const map = this.managementData.plans.reduce((acc, plan) => {
+                acc[plan.duration] = plan.durationTxt
+                return acc;
+            }, {});
+            return map
+        },
+        durationTxtToShow(){
+            if(!this.couponToEdit.duration) return 'Enter duration in month to see the rigth text'
+            return this.durationTxtMap[this.couponToEdit.duration]
         }
     },
     methods: {
@@ -161,11 +159,12 @@ export default {
                 priceISL: 0,
                 priceUSD: 0,
                 validUntil: null,
-                bonusTime: 0
             }
         },
         async onSaveEditCoupon(){
             this.couponToEdit.validUntil = new Date(this.couponToEdit.validUntil).getTime()
+            this.couponToEdit.durationTxt = this.durationTxtToShow
+            if(this.couponToEdit.code.includes('-')) return
             if(this.couponToEdit.id){
                 const idx = this.managementData.coupons.findIndex(cop => cop.id === this.couponToEdit.id)
                 this.managementData.coupons.splice(idx, 1, this.couponToEdit)

@@ -46,6 +46,15 @@
                         <span v-else-if="header.field === 'until'">
                             {{ item[header.field] | moment('DD/MM/YYYY')}}
                         </span>
+                        <span v-else-if="!header.field && $route.name === 'Purchases'">
+                            <button
+                                class="end-subscrition-btn"
+                                @click="onEndSubscription(item)"
+                                v-if="item.until === 'Ongoing'"
+                            >
+                                End subscription
+                            </button>
+                        </span>
                         <span
                             class="flex-space-between td-actions"
                             v-else-if="!header.title"
@@ -134,6 +143,9 @@ export default {
                 return fullUrl.substring(window.location.origin.length);
             }
             return fullUrl;
+        },
+        onEndSubscription(item){
+            this.$emit('end-subscription', item);
         }
     },
     components: {

@@ -106,10 +106,10 @@ export default {
   },
   methods: {
     getCurrencyByLocation(){
-        return 'USD'
+        return 'ILS'
     },
     getPriceByLocation(plan){
-        return plan.priceUSD
+        return plan.priceISL
     },
     onSelectPrice(ev, plan){
         this.$store.commit({ type: 'setSelectedPaymentPlan', SelectedPlan: plan });

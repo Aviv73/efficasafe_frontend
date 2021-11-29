@@ -13,11 +13,6 @@ import { manageService } from '@/cms/services/manage.service'
 import { storageService } from '@/cms/services/storage.service';
 
 export default {
-  data() {
-    return {
-      pay:false
-    };
-  },
   computed: {
     selectedPlan(){
         return this.$store.getters.getSelectedPaymentPlan
@@ -27,34 +22,36 @@ export default {
     }
   },
   methods: {
-    
+    getPlan(management, text){
+      if(text.includes('-')){
+        const couponName = text.split('-')[0].trim()
+        return management.coupons.find(c => c.code === couponName)
+      }else{
+        return management.plans.find(p => p.durationTxt === this.$route.query.Info)
+      }
+    }
   },
   async created() {
-    //Coupons still needs to be implemented, needs to understand if we can pass more parameters on url
     const isPaying = storageService.load('isPaying')
     if(isPaying){
       await this.$store.dispatch({type: 'getUserInfo'})
       storageService.remove('isPaying')
       const user = JSON.parse(JSON.stringify(this.loggedInUser))
       const managementData = await manageService.list()
-      const plan = managementData.plans.filter(p => p.durationTxt === this.$route.query.Info)[0] // or by coupon code (from url)
-      const months = +plan.duration
+      const plan = this.getPlan(managementData, this.$route.query.Info)
       if(plan){
-          const timeToAdd = 1000 * 60 * 60 * 24 * 30 * months
-          if(user.type === 'trial' || user.type === 'registered'){
-            user.trialTime = Date.now() + timeToAdd 
-            user.type = 'subscribed'
-          }else{
-            user.trialTime += timeToAdd
-          }
-          //add copune bonus time to user: user.bonusTime = X
-          user.purchases.unshift({
+          user.type = 'subscribed'
+          const purchase = {
               at: Date.now(),
+              duration: plan.duration,
               price: plan.priceUSD * plan.duration,
               plan: plan.durationTxt,
-              until: user.trialTime
-          })
+              until: 'Ongoing',
+              HKId: this.$route.query.HKId
+          }
+          user.purchases.unshift(purchase)
           await this.$store.dispatch({ type: 'updateLoggedInUser', user });
+          // update the user autopilot profile and transfer him to a "subscribed" list
       }
     }
   },

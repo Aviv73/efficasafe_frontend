@@ -12,6 +12,7 @@ import UserAccount from '@/client/views/UserAccount';
 import Logo from '@/client/views/Logo';
 import Subscribe from '@/client/views/Subscribe';
 import Payment from '@/client/views/Payment';
+import PaymentFailed from '@/client/views/PaymentFailed';
 import Success from '@/client/views/Success';
 
 import InteractionList from '@/client/cmps/search-engine/InteractionList';
@@ -35,12 +36,23 @@ const routes = [
   {
     path: '/subscribe',
     name: 'Subscribe',
-    component: Subscribe
+    component: Subscribe,
+    meta: {
+      blockSubscribed: true
+    }
   },
   {
     path: '/payment',
     name: 'Payment',
-    component: Payment
+    component: Payment,
+    meta: {
+      blockSubscribed: true
+    }
+  },
+  {
+    path: '/payment-failed',
+    name: 'paymentFailed',
+    component: PaymentFailed
   },
   {
     path: '/success',
@@ -187,10 +199,23 @@ const router = new VueRouter({
   routes
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+  await store.dispatch('getUserInfo');
+  if(store.getters.loggedInUser && store.getters.loggedInUser.type === 'subscribed'){
+    const user = JSON.parse(JSON.stringify(store.getters.loggedInUser))
+    if(user.purchases.length && typeof user.purchases[0].until === 'number' && user.purchases[0].until < Date.now()){
+      user.purchases[0].until = 'Done'
+      user.type = 'registered'
+      user.trialTime = null
+      await store.dispatch({ type: 'updateLoggedInUser', user });
+    }
+  }
   if (to.meta.requiresAuth) {
     if (store.getters.loggedInUser) next();
     else next({ name: 'Home' });
+  }
+  if(to.meta.blockSubscribed){
+    if (store.getters.loggedInUser && store.getters.loggedInUser.type === 'subscribed') next({ name: 'Home' });
   }
   window.scrollTo(0, 0);
   next();

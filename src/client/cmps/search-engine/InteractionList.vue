@@ -137,7 +137,7 @@ export default {
                 await httpService.post('task', reportDetails)
                 eventBus.$emit(EV_show_user_msg, 'Thank you for reporting, we will review the problem as soon as possible', 5000, 'success')  
             }catch(err){
-                eventBus.$emit(EV_show_user_msg, 'Shomting went wrong', 5000, 'error')
+                eventBus.$emit(EV_show_user_msg, 'Something went wrong', 5000, 'error')
             }
         }
     },
