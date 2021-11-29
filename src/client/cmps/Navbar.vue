@@ -241,7 +241,8 @@ export default {
             this.isNavActive = !this.isNavActive;
         },
         onSubscribe() {
-            this.$router.push('/subscribe')
+            // this.$router.push('/subscribe')
+            alert('Subscription will be available soon. In the meantime your free trial will be extended')
         },
         onLogin() {
             this.$emit('login');

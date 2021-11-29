@@ -10,10 +10,10 @@ import VerifyEmail from '@/client/views/auth/VerifyEmail.vue';
 import DBankInteractionDetails from '@/client/views/DBankInteractionDetails';
 import UserAccount from '@/client/views/UserAccount';
 import Logo from '@/client/views/Logo';
-import Subscribe from '@/client/views/Subscribe';
-import Payment from '@/client/views/Payment';
-import PaymentFailed from '@/client/views/PaymentFailed';
-import Success from '@/client/views/Success';
+// import Subscribe from '@/client/views/Subscribe';
+// import Payment from '@/client/views/Payment';
+// import PaymentFailed from '@/client/views/PaymentFailed';
+// import Success from '@/client/views/Success';
 
 import InteractionList from '@/client/cmps/search-engine/InteractionList';
 import UserApp from '@/client/cmps/user-account/UserApp';
@@ -33,32 +33,32 @@ const routes = [
     name: 'Logo',
     component: Logo
   },
-  {
-    path: '/subscribe',
-    name: 'Subscribe',
-    component: Subscribe,
-    meta: {
-      blockSubscribed: true
-    }
-  },
-  {
-    path: '/payment',
-    name: 'Payment',
-    component: Payment,
-    meta: {
-      blockSubscribed: true
-    }
-  },
-  {
-    path: '/payment-failed',
-    name: 'paymentFailed',
-    component: PaymentFailed
-  },
-  {
-    path: '/success',
-    name: 'Success',
-    component: Success
-  },
+  // {
+  //   path: '/subscribe',
+  //   name: 'Subscribe',
+  //   component: Subscribe,
+  //   meta: {
+  //     blockSubscribed: true
+  //   }
+  // },
+  // {
+  //   path: '/payment',
+  //   name: 'Payment',
+  //   component: Payment,
+  //   meta: {
+  //     blockSubscribed: true
+  //   }
+  // },
+  // {
+  //   path: '/payment-failed',
+  //   name: 'paymentFailed',
+  //   component: PaymentFailed
+  // },
+  // {
+  //   path: '/success',
+  //   name: 'Success',
+  //   component: Success
+  // },
   {
     path: '/verifyEmail/:token',
     name: 'verifyEmail',
