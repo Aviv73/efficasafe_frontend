@@ -44,7 +44,7 @@ export default {
           const purchase = {
               at: Date.now(),
               duration: plan.duration,
-              price: plan.priceUSD * plan.duration,
+              price: plan.priceISL * plan.duration,
               plan: plan.durationTxt,
               until: 'Ongoing',
               HKId: this.$route.query.HKId

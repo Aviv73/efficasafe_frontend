@@ -38,7 +38,7 @@
                             {{ item[header.field] | moment('DD/MM/YYYY') }}
                         </span>
                         <span v-else-if="header.field === 'price'">
-                            ${{ item[header.field] }}
+                            ₪{{ item[header.field] }}
                         </span>
                         <span v-else-if="header.field === 'plan'">
                             {{ item[header.field] }}
