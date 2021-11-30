@@ -248,4 +248,19 @@
         letter-spacing: 1px;
         margin-top: 30px;
     }
+
+    .disabled{
+        background-color: #7292a9;
+        border: none;
+    }
+    .loader-container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .loader{
+            width: 33px;
+            margin-left: 10px;
+        }
+    }
 }

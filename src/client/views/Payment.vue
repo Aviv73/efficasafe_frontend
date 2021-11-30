@@ -9,7 +9,7 @@
             <button class="signup-btn" @click="onOpenLogin">Login</button>
         </div>
     </div>
-    <div v-show="loggedInUser" class="form-container">
+    <!-- <div v-show="loggedInUser" class="form-container">
         <form class="user-registration-form">
             <h3 class="form-title">Please complete your registration</h3>
             <div class="form-input">
@@ -64,7 +64,7 @@
                 </label>
             </div>
         </form>
-    </div>
+    </div> -->
     <h3 class="headline">Choose your membership payment plan</h3>
     <div class="cards-container">
         <div v-for="(plan,idx) in plans" :key="idx" class="card" :class="{'with-stars': plan.isRecommended, 'selected':isSelected(plan._id)}">
@@ -94,14 +94,20 @@
             <button class="card-btn" @click="onSelectPlan($event,couponPlan)">select</button>
         </div>
     </div>
-    <button @click="onSubmit" class="payment-btn">Continue to payment</button>
+    <button @click="onSubmit" :disabled="isLoading" class="payment-btn" :class="{'disabled': isLoading}">
+        <div v-if="!isLoading">Continue to payment</div> 
+        <div v-else class="loader-container">
+            <h2>Loading...</h2><loader class="loader"/>
+        </div>
+    </button>
   </section>
 </template>
 
 <script>
 
 import StarIcon from 'vue-material-design-icons/Star';
-import intlTelInput from "intl-tel-input";
+import Loader from '@/client/cmps/common/icons/Loader';
+// import intlTelInput from "intl-tel-input";
 import { manageService } from '@/cms/services/manage.service'
 import { eventBus, EV_show_user_msg, EV_open_singup, EV_open_login } from '@/cms/services/eventBus.service';
 import { storageService } from '@/cms/services/storage.service';
@@ -117,7 +123,8 @@ export default {
       selectedPlan: null,
       couponInput: '',
       user: {},
-      isCouponInvalid: false
+      isCouponInvalid: false,
+      isLoading: false
     };
   },
   computed: {
@@ -159,11 +166,11 @@ export default {
     onOpenLogin(){
         eventBus.$emit(EV_open_login)
     },
-    checkPhoneIntlValid() {
-      if (this.user.phone && !this.user.phone.startsWith("+")) {
-        this.user.phone = `+1 ${this.user.phone}`;
-      }
-    },
+    // checkPhoneIntlValid() {
+    //   if (this.user.phone && !this.user.phone.startsWith("+")) {
+    //     this.user.phone = `+1 ${this.user.phone}`;
+    //   }
+    // },
     onInputCoupon(){
         if(this.isCouponInvalid) this.isCouponInvalid = false
     },
@@ -182,39 +189,39 @@ export default {
             eventBus.$emit(EV_show_user_msg, 'Please Login', 3000);
             return
         }
-        this.checkPhoneIntlValid();
-        const user = JSON.parse(JSON.stringify(this.user));
-        if(!user.phone || !user.address || !user.city || !user.country || !user.zipCode){
-            eventBus.$emit(EV_show_user_msg, 'Please complete your registration', 3000, 'error');
-            return
-        }
+        // this.checkPhoneIntlValid();
+        // const user = JSON.parse(JSON.stringify(this.user));
+        // if(!user.phone || !user.address || !user.city || !user.country || !user.zipCode){
+        //     eventBus.$emit(EV_show_user_msg, 'Please complete your registration', 3000, 'error');
+        //     return
+        // }
         if(!this.selectedPlan){
             eventBus.$emit(EV_show_user_msg, 'Please select a payment plan', 3000, 'error');
             return 
         }
-        await Promise.all([
-                this.$store.dispatch({ type: 'updateLoggedInUser', user }),
-                this.$store.dispatch({ type: 'updateAutoPilotContact', user })
-            ]);
+        // await Promise.all([
+        //         this.$store.dispatch({ type: 'updateLoggedInUser', user }),
+        //         this.$store.dispatch({ type: 'updateAutoPilotContact', user })
+        //     ]);
         // Payment!!!
+        this.isLoading = true
         const key = config.yaadPayKey
         const pass = config.yaadPayPassP
         const masof = config.yaadPayMasof
 
-        // const key = config.yaadPayKeyTest
-        // const pass = config.yaadPayPassPTest
-        // const masof = config.yaadPayMasofTest
-
-        const address = encodeURI(user.address)
-        const city = encodeURI(user.city)
-        const {phone, zipCode, email} = user
+        // const address = encodeURI(user.address)
+        // const city = encodeURI(user.city)
+        // const {phone, zipCode, email} = user
+        const {email} = this.user
         const coin = this.getReleventCoin()
         const price = this.getReleventPrice()
         const durationTxt = this.selectedPlan.code ? encodeURI(`${this.selectedPlan.code} - ${this.selectedPlan.durationTxt}`) : encodeURI(this.selectedPlan.durationTxt)
         const duration = +this.selectedPlan.duration
-        const apiSignAddress = `https://icom.yaad.net/p/?action=APISign&What=SIGN&KEY=${key}&PassP=${pass}&Masof=${masof}&Order=12345678910&Info=${durationTxt}&Amount=${price}&UTF8=True&UTF8out=True&street=${address}&city=${city}&zip=${zipCode}&phone=${phone}&email=${email}&Tash=999&FixTash=False&ShowEngTashText=True&Coin=${coin}&Postpone=False&J5=False&Sign=True&MoreData=True&sendemail=False&SendHesh=True&heshDesc=[0~${durationTxt}~1~${price}]&Pritim=True&PageLang=ENG&tmp=1&HK=True&freq=${duration}`
+        const apiSignAddress = `https://icom.yaad.net/p/?action=APISign&What=SIGN&KEY=${key}&PassP=${pass}&Masof=${masof}&Order=12345678910&Info=${durationTxt}&Amount=${price}&UTF8=True&UTF8out=True&email=${email}&Tash=999&FixTash=False&ShowEngTashText=True&Coin=${coin}&Postpone=False&J5=False&Sign=True&MoreData=True&sendemail=False&SendHesh=True&heshDesc=[0~${durationTxt}~1~${price}]&Pritim=True&PageLang=ENG&tmp=1&HK=True&freq=${duration}`
+        // const apiSignAddress = `https://icom.yaad.net/p/?action=APISign&What=SIGN&KEY=${key}&PassP=${pass}&Masof=${masof}&Order=12345678910&Info=${durationTxt}&Amount=${price}&UTF8=True&UTF8out=True&street=${address}&city=${city}&zip=${zipCode}&phone=${phone}&email=${email}&Tash=999&FixTash=False&ShowEngTashText=True&Coin=${coin}&Postpone=False&J5=False&Sign=True&MoreData=True&sendemail=False&SendHesh=True&heshDesc=[0~${durationTxt}~1~${price}]&Pritim=True&PageLang=ENG&tmp=1&HK=True&freq=${duration}`
         storageService.store('isPaying', true)
         const res = await paymentService.getEndpoint(apiSignAddress)
+        this.isLoading = false
         window.location = `https://icom.yaad.net/p/?action=pay&${res.payload}`;
     }
   },
@@ -223,11 +230,11 @@ export default {
           this.user = newUser
       }
   },
-  mounted() {
-    this.iti = intlTelInput(this.$refs.phoneInput, {
-      nationalMode: false,
-    });
-  },
+//   mounted() {
+//     this.iti = intlTelInput(this.$refs.phoneInput, {
+//       nationalMode: false,
+//     });
+//   },
   async created() {
       const managementData = await manageService.list()
       this.plans = managementData.plans
@@ -237,7 +244,8 @@ export default {
     //get user contry to show currect prices
   },
   components:{
-      StarIcon
+      StarIcon,
+      Loader
   }
 };
 </script>
