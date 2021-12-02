@@ -72,6 +72,14 @@ export default {
         }
     },
     async created(){
+        // const BASE_URL = (process.env.NODE_ENV === 'development') ? '//localhost:3000' : '';
+        // const events = new EventSource(`${BASE_URL}/events`);
+
+        // events.onmessage = (event) => {
+        //     console.log('parsedData', event.data);
+        //     console.log('Event from server');
+        // };
+
         eventBus.$on(EV_open_singup, this.onSignUp);
         eventBus.$on(EV_open_login, this.onLogin);
         await this.$store.dispatch('pullManagementData')

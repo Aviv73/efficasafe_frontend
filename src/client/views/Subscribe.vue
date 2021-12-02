@@ -38,7 +38,7 @@
                 <star-icon v-for="idx in 5" :key="idx" class="star-icon"></star-icon>
             </div>
             <h3 class="card-title" :class="{'margin-top': plan.isRecommended}" >{{plan.durationTxt}}</h3>
-            <p class="card-price">{{getCurrencyByLocation()}} <span>{{getPriceByLocation(plan)}}</span> /mo</p>
+            <p class="card-price">{{localCurrency}} <span>{{getPriceByLocation(plan)}}</span> /mo</p>
             <button class="card-btn" @click="onSelectPrice($event,plan)">select</button>
         </div>
     </div>
@@ -83,7 +83,7 @@
                 <star-icon v-for="idx in 5" :key="idx" class="star-icon"></star-icon>
             </div>
             <h3 class="card-title" :class="{'margin-top': plan.isRecommended}" >{{plan.durationTxt}}</h3>
-            <p class="card-price">{{getCurrencyByLocation()}} <span>{{getPriceByLocation(plan)}}</span> /mo</p>
+            <p class="card-price">{{localCurrency}} <span>{{getPriceByLocation(plan)}}</span> /mo</p>
             <button class="card-btn" @click="onSelectPrice($event,plan)">select</button>
         </div>
     </div>
@@ -93,23 +93,24 @@
 <script>
 
 import { manageService } from '@/cms/services/manage.service'
+import { locationService } from '@/cms/services/location.service'
 import StarIcon from 'vue-material-design-icons/Star';
 
 export default {
   data() {
     return {
-      plans: null
+      plans: null,
+      localCurrency: 'USD'
     };
   },
   computed: {
     
   },
   methods: {
-    getCurrencyByLocation(){
-        return 'ILS'
-    },
     getPriceByLocation(plan){
-        return plan.priceISL
+        if(this.localCurrency === 'ILS') return plan.priceISL
+        if(this.localCurrency === 'EUR') return plan.priceEUR
+        return plan.priceUSD
     },
     onSelectPrice(ev, plan){
         this.$store.commit({ type: 'setSelectedPaymentPlan', SelectedPlan: plan });
@@ -119,7 +120,8 @@ export default {
   async created() {
       const managementData = await manageService.list()
       this.plans = managementData.plans
-    //get user contry to show currect prices
+      this.localCurrency = await locationService.getLocalCurrency()
+      if(this.localCurrency !== 'ILS' && this.localCurrency !== 'EUR') this.localCurrency = 'USD'
   },
   components:{
       StarIcon

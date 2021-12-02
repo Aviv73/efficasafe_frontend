@@ -29,6 +29,17 @@ export default {
       }else{
         return management.plans.find(p => p.durationTxt === this.$route.query.Info)
       }
+    },
+    calcAmount(plan,coin){
+      let price = plan.priceUSD
+      if(coin === '1') price = plan.priceISL
+      if(coin === '3') price = plan.priceEUR
+      return price * plan.duration
+    },
+    getCoinSymbol(coin){
+      if(coin === '1') return '₪'
+      if(coin === '3') return '€'
+      return '$'
     }
   },
   async created() {
@@ -44,14 +55,15 @@ export default {
           const purchase = {
               at: Date.now(),
               duration: plan.duration,
-              price: plan.priceISL * plan.duration,
+              price: this.calcAmount(plan,this.$route.query.Coin),
+              coin: this.getCoinSymbol(this.$route.query.Coin),
               plan: plan.durationTxt,
               until: 'Ongoing',
               HKId: this.$route.query.HKId
           }
           user.purchases.unshift(purchase)
           await this.$store.dispatch({ type: 'updateLoggedInUser', user });
-          // update the user autopilot profile and transfer him to a "subscribed" list
+          await this.$store.dispatch({ type: 'updateAutoPilotContact', user});
       }
     }
   },

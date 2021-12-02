@@ -208,6 +208,8 @@ router.beforeEach(async (to, from, next) => {
       user.type = 'registered'
       user.trialTime = null
       await store.dispatch({ type: 'updateLoggedInUser', user });
+      user.type = 'was subscribed'
+      await this.$store.dispatch({ type: 'updateAutoPilotContact', user});
     }
   }
   if (to.meta.requiresAuth) {

@@ -114,14 +114,14 @@
                 />
             </li>
             <button v-if="(currSuppInteractions.length || emptySuppInteractions.length || suppRedInteractions.length) && isLoadingSuppInteractions" class="show-pos-supp-btn loading">
-                <p>Positive boosters - supplements</p>
+                <p>Optimizers - supplements</p>
                 <loader class="loader" />
             </button>
             <div v-show="!isLoadingSuppInteractions">
                 <collapse v-if="interactions.length && (currSuppInteractions.length || emptySuppInteractions.length || suppRedInteractions.length)" :showTimes="false" :initial-is-visible="isShowPosSupp">
                     <template #header>
                         <button @click="showPosSupp" class="show-pos-supp-btn">
-                            <p>Positive boosters - supplements ({{suppCount}})</p>
+                            <p>Optimizers - supplements ({{suppCount}})</p>
                             <chevron-up-icon  v-if="isShowPosSupp"/>
                             <chevron-down-icon v-else />
                         </button>

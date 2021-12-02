@@ -38,13 +38,13 @@
                             {{ item[header.field] | moment('DD/MM/YYYY') }}
                         </span>
                         <span v-else-if="header.field === 'price'">
-                            ₪{{ item[header.field] }}
+                            {{item.coin || '$'}}{{ item[header.field] }}
                         </span>
                         <span v-else-if="header.field === 'plan'">
                             {{ item[header.field] }}
                         </span>
                         <span v-else-if="header.field === 'until'">
-                            {{ item[header.field] | moment('DD/MM/YYYY')}}
+                            {{ item[header.field] | moment('DD/MM/YYYY') }}
                         </span>
                         <span v-else-if="!header.field && $route.name === 'Purchases'">
                             <button

@@ -63,6 +63,7 @@ export const userStore = {
                 }else{
                     commit({ type: 'setLoggedInUser', user });
                 }
+                return user
             }else{
                 await dispatch({type: 'logout'});
             }

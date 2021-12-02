@@ -130,7 +130,7 @@ export default {
             const reportDetails = {
                 firstName: this.loggedInUser.username || 'Guest',
                 email: this.loggedInUser.email || 'Unknown',
-                type: "Positive Boosters bug",
+                type: "Optimizers bug",
                 msg: url,
             }
             try{

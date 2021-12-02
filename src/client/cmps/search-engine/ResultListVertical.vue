@@ -226,7 +226,7 @@
         </div>
         <div v-else-if="$route.name === 'Boosters' || $route.name === 'Monitor'">
             <p class="vertical-list-msg">
-                {{ $route.name === 'Boosters' ? 'Positive boosters are' : 'Monitor is' }} only available in default view.
+                {{ $route.name === 'Boosters' ? 'Optimizers are' : 'Monitor is' }} only available in default view.
             </p>
         </div>
     </section>

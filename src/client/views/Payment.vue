@@ -72,7 +72,7 @@
                 <star-icon v-for="idx in 5" :key="idx" class="star-icon"></star-icon>
             </div>
             <h3 class="card-title" :class="{'margin-top': plan.isRecommended}" >{{plan.durationTxt}}</h3>
-            <p class="card-price">{{getCurrencyByLocation()}} <span>{{getPriceByLocation(plan)}}</span> /mo</p>
+            <p class="card-price">{{localCurrency}} <span>{{getPriceByLocation(plan)}}</span> /mo</p>
             <button class="card-btn" @click="onSelectPlan($event,plan)">select</button>
         </div>
     </div>
@@ -90,7 +90,7 @@
     <div v-if="couponPlan" class="cards-container coupon">
         <div class="card" :class="{'selected':isSelected(couponPlan._id)}">
             <h3 class="card-title">{{couponPlan.durationTxt}}</h3>
-            <p class="card-price">{{getCurrencyByLocation()}} <span>{{getPriceByLocation(couponPlan)}}</span> /mo</p>
+            <p class="card-price">{{localCurrency}} <span>{{getPriceByLocation(couponPlan)}}</span> /mo</p>
             <button class="card-btn" @click="onSelectPlan($event,couponPlan)">select</button>
         </div>
     </div>
@@ -107,8 +107,8 @@
 
 import StarIcon from 'vue-material-design-icons/Star';
 import Loader from '@/client/cmps/common/icons/Loader';
-// import intlTelInput from "intl-tel-input";
 import { manageService } from '@/cms/services/manage.service'
+import { locationService } from '@/cms/services/location.service'
 import { eventBus, EV_show_user_msg, EV_open_singup, EV_open_login } from '@/cms/services/eventBus.service';
 import { storageService } from '@/cms/services/storage.service';
 import { paymentService } from '@/cms/services/payment.service';
@@ -124,7 +124,8 @@ export default {
       couponInput: '',
       user: {},
       isCouponInvalid: false,
-      isLoading: false
+      isLoading: false,
+      localCurrency: 'USD'
     };
   },
   computed: {
@@ -144,17 +145,21 @@ export default {
     }
   },
   methods: {
-    getCurrencyByLocation(){
-        return 'ILS'
-    },
     getPriceByLocation(plan){
-        return plan.priceISL
+        if(this.localCurrency === 'ILS') return plan.priceISL
+        if(this.localCurrency === 'EUR') return plan.priceEUR
+        return plan.priceUSD
     },
     getReleventCoin(){
-        return 1
+        if(this.localCurrency === 'ILS') return 1
+        if(this.localCurrency === 'EUR') return 3
+        return 2
     },
     getReleventPrice(){
-        return this.selectedPlan.priceISL * this.selectedPlan.duration
+        let price = this.selectedPlan.priceUSD 
+        if(this.localCurrency === 'ILS') price = this.selectedPlan.priceISL 
+        if(this.localCurrency === 'EUR') price = this.selectedPlan.priceEUR
+        return price * this.selectedPlan.duration
     },
     onSelectPlan(ev, plan){
         this.selectedPlan = plan
@@ -166,11 +171,6 @@ export default {
     onOpenLogin(){
         eventBus.$emit(EV_open_login)
     },
-    // checkPhoneIntlValid() {
-    //   if (this.user.phone && !this.user.phone.startsWith("+")) {
-    //     this.user.phone = `+1 ${this.user.phone}`;
-    //   }
-    // },
     onInputCoupon(){
         if(this.isCouponInvalid) this.isCouponInvalid = false
     },
@@ -189,21 +189,10 @@ export default {
             eventBus.$emit(EV_show_user_msg, 'Please Login', 3000);
             return
         }
-        // this.checkPhoneIntlValid();
-        // const user = JSON.parse(JSON.stringify(this.user));
-        // if(!user.phone || !user.address || !user.city || !user.country || !user.zipCode){
-        //     eventBus.$emit(EV_show_user_msg, 'Please complete your registration', 3000, 'error');
-        //     return
-        // }
         if(!this.selectedPlan){
             eventBus.$emit(EV_show_user_msg, 'Please select a payment plan', 3000, 'error');
             return 
         }
-        // await Promise.all([
-        //         this.$store.dispatch({ type: 'updateLoggedInUser', user }),
-        //         this.$store.dispatch({ type: 'updateAutoPilotContact', user })
-        //     ]);
-        // Payment!!!
         this.isLoading = true
         const key = config.yaadPayKey
         const pass = config.yaadPayPassP
@@ -230,18 +219,14 @@ export default {
           this.user = newUser
       }
   },
-//   mounted() {
-//     this.iti = intlTelInput(this.$refs.phoneInput, {
-//       nationalMode: false,
-//     });
-//   },
   async created() {
       const managementData = await manageService.list()
       this.plans = managementData.plans
       this.coupons = managementData.coupons
       this.selectedPlan = this.$store.getters.getSelectedPaymentPlan
       this.user = this.$store.getters.loggedInUser || {}
-    //get user contry to show currect prices
+      this.localCurrency = await locationService.getLocalCurrency()
+      if(this.localCurrency !== 'ILS' && this.localCurrency !== 'EUR') this.localCurrency = 'USD'
   },
   components:{
       StarIcon,

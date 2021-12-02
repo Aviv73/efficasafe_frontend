@@ -386,7 +386,7 @@ export default {
                 {
                     target: '.v-tour1-step-0',
                     content: `
-                        <p class="v-step-txt">Check out positive boosters for the drugs you searched.</p>
+                        <p class="v-step-txt">Check out optimizers for the drugs you searched.</p>
                         <img
                             class="boosters-img"
                             src="${OnboardingImg6}"
@@ -602,7 +602,7 @@ export default {
                 {
                     target: '.v-tour1-step-0',
                     content: `
-                        <p class="v-step-txt">Check out positive boosters for the drugs you searched.</p>
+                        <p class="v-step-txt">Check out optimizers for the drugs you searched.</p>
                         <img
                             class="boosters-img"
                             src="${OnboardingImg6}"
