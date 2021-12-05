@@ -39,7 +39,7 @@
                 <div v-else-if="isOtherLogin">
                     <p class="user-msg-other-login-txt">
                         <span class="user-msg-other-login-title">
-                            An additional login attempt has caused this device to be disconnected.
+                            A login attempt from another device has caused this device to be disconnected.
                         </span>
                         If it wasn’t you, please <span class="user-msg-other-login-link" @click="goToResetPass">reset your password</span>
                     </p>
