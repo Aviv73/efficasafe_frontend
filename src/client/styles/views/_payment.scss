@@ -16,12 +16,12 @@
         }
     }
 
-    .loggin-container{
+    .login-container{
         display: flex;
         flex-direction: column;
         align-items: center;
         margin-bottom: 30px;
-        .loggin-req{
+        .login-req{
             color: #133146;
             font-weight: bold;
             font-size: 15px;
@@ -261,6 +261,20 @@
         .loader{
             width: 33px;
             margin-left: 10px;
+        }
+    }
+
+    .payment-disclaimer{
+        width: 80%;
+        p{
+            font-size: 14px;
+            color: grey;
+            margin-top: 15px;
+        }
+
+        a{
+            text-decoration: underline;
+            color: $clr2;
         }
     }
 }

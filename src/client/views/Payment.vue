@@ -1,8 +1,8 @@
 <template>
   <section class="payment-page">
     <img class="logo" src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
-    <div v-show="!loggedInUser" class="loggin-container">
-        <h3 class="loggin-req">You must be logged in to continue</h3>
+    <div v-show="!loggedInUser" class="login-container">
+        <h3 class="login-req">You must be logged in to continue</h3>
         <div>
             <button class="signup-btn" @click="onOpenSignup">Sign Up</button>
             or
@@ -100,6 +100,10 @@
             <h2>Loading...</h2><loader class="loader"/>
         </div>
     </button>
+    <div class="payment-disclaimer">
+        <p>Your subscription will automatically renew every month if you select the Monthly Plan, every 12 months if you select the Annual Plan, or every twenty-four months if you select the Bi-Annual Plan. You will be charged the price listed above for the plan you select, plus applicable taxes, on each renewal until you cancel in your account settings. If you cancel, previous charges will not be refunded, but you may continue to use the service until the end of the term you paid for.</p>
+        <p>By clicking the "Continue to payment" button above, you are agreeing to our <a href="/terms-and-conditions">Terms of Service</a> and acknowledge that you have read our <a href="/privacy-statement"> Privacy Policy</a>.</p>
+    </div>
   </section>
 </template>
 

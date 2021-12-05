@@ -53,20 +53,21 @@ export const userStore = {
     },
     actions: {
         async getUserInfo({ commit, dispatch }) {
-            const user = await userService.getUserInfo();
-            if (!user.message) {
-                if(user.purchases.length && typeof user.purchases[0].until === 'number' && user.purchases[0].until < Date.now()){
-                    user.purchases[0].until = 'Done'
-                    user.type = 'registered'
-                    user.trialTime = null
-                    await dispatch({ type: 'updateLoggedInUser', user });
-                }else{
-                    commit({ type: 'setLoggedInUser', user });
-                }
-                return user
-            }else{
+            const res = await userService.getUserInfo();
+            if(!res.user){
                 await dispatch({type: 'logout'});
+                return
             }
+            const {user} = res
+            if(user.purchases.length && typeof user.purchases[0].until === 'number' && user.purchases[0].until < Date.now()){
+                user.purchases[0].until = 'Done'
+                user.type = 'registered'
+                user.trialTime = null
+                await dispatch({ type: 'updateLoggedInUser', user });
+            }else{
+                commit({ type: 'setLoggedInUser', user });
+            }
+            return user
         },
         async checkIfSession({ dispatch }) {
             const session = await userService.checkIfSession();
@@ -126,6 +127,7 @@ export const userStore = {
             try {
               const user = await userService.login(cred);
               commit({ type: 'setLoggedInUser', user });
+              location.reload() // temp for renewing event for disconnecting other clients
               return 'successes'
             } catch (err) {
                 throw 'err'
