@@ -28,7 +28,6 @@ export const userService = {
     signup,
     login,
     getUserSearches,
-    checkIfSession,
     updateSession,
     completeEmailVerification,
     updateMany
@@ -82,10 +81,6 @@ async function checkTrial(user) {
 
 async function getUserInfo() {
     return await httpService.get(`${AUTH_END_POINT}/userInfo`);
-}
-
-async function checkIfSession(){
-    return await httpService.get(`${AUTH_END_POINT}/checkIfSession`)
 }
 
 async function updateSession(user){

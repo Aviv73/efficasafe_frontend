@@ -18,13 +18,10 @@
         border: 1px solid $clr19;
         padding: rem(22px) rem(26px) rem(32px);
         position: relative;
+        margin-block-end: rem(24px);
         
         @include for-mobile-layout {
             padding: rem(44px) rem(54px) rem(74px);
-        }
-
-        &:first-child {
-            margin-block-end: rem(24px);
         }
 
         h3 {
@@ -90,5 +87,66 @@
         border-radius: 0 0 6px 6px;
         background-color: $red;
         text-align: center;
+    }
+
+    .delete-user-modal{
+        width: 80%;
+        max-width: 500px;
+        background-color: #fff;
+        border-radius: 10px;
+        height: fit-content;
+        text-align: center;
+        padding: 30px 10px;
+        
+        @include for-narrow-layout {
+            height: 250px;
+            padding: 10px;
+        }
+
+        &-title{
+            font-size: rem(18px);
+            font-weight: bold;
+            color: $clr1;
+            margin-block-end: 25px;
+            
+            @include for-narrow-layout {
+                margin-block-start: 25px;
+            }
+        }
+        &-txt{
+            font-size: rem(14px);
+            color: grey;
+            margin-block-end: 25px;
+            @include for-narrow-layout {
+                padding: rem(12px);
+            }
+        }
+        &-btn-container{
+            width: 90%;
+            color: grey;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+
+            button{
+                padding: 5px;
+                border-radius: 5px;
+                font-weight: bold;
+                color: $white;
+
+                @include for-narrow-layout {
+                    padding: rem(10px);
+                }
+            }
+
+            .red{
+                background-color: $red;
+            }
+
+            .green{
+                background-color: $green;
+            }
+        }
     }
 }

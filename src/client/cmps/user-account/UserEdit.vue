@@ -89,13 +89,42 @@
                 <chevron-right-icon title="" :size="16" />
             </button>
         </div>
+        <!-- <div class="user-edit-card">
+            <h3>Manage Account</h3>
+            <button
+                class="user-edit-card-btn flex-align-center"
+                @click="downloadPersonalInfo"
+            >
+                Download Your Personal Information
+                <chevron-right-icon title="" :size="16" />
+            </button>
+            <button
+                class="user-edit-card-btn flex-align-center"
+                @click="deleteModalActive = true"
+            >
+                Delete Account
+                <chevron-right-icon title="" :size="16" />
+            </button>
+        </div> -->
         <modal-wrap :isActive="emailModalActive" @close-modal="emailModalActive = false" persistent>
             <change-email-form @close-modal="emailModalActive = false" />
+        </modal-wrap>
+        <modal-wrap :isActive="deleteModalActive" @close-modal="deleteModalActive = false" persistent>
+            <div class="delete-user-modal">
+                <h3 class="delete-user-modal-title">Are you sure you want to delete your account?</h3>
+                <p class="delete-user-modal-txt">This process is permanent, once you delete your account there is no way to retrieve it. If your are a subscribed user your subscription will be terminated.</p>
+                <div class="delete-user-modal-btn-container">
+                    <button @click="onDeleteAccount" class="red">Delete account</button>
+                    <button class="green" @click="closeDeleteModal">Cancel</button>
+                </div>
+            </div>
         </modal-wrap>
     </section>
 </template>
 
 <script>
+import config from '@/client/config/index'
+import { paymentService } from '@/cms/services/payment.service';
 import { eventBus, EV_show_user_msg } from '@/cms/services/eventBus.service';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import intlTelInput from 'intl-tel-input';
@@ -118,7 +147,8 @@ export default {
                 required: 'Username is required'
             },
             iti: null,
-            emailModalActive: false
+            emailModalActive: false,
+            deleteModalActive: false
         }
     },
     computed: {
@@ -148,6 +178,48 @@ export default {
         checkPhoneIntlValid() {
             if (this.editedDetails.phone && !this.editedDetails.phone.startsWith('+')) {
                 this.editedDetails.phone = `+1 ${this.editedDetails.phone}`;
+            }
+        },
+        downloadPersonalInfo(){
+            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.loggedInUser));
+            var downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href",     dataStr);
+            downloadAnchorNode.setAttribute("download", "Efficasafe - Personal Information");
+            document.body.appendChild(downloadAnchorNode); // required for firefox
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        },
+        closeDeleteModal(){
+            this.deleteModalActive = false
+        },
+        async onDeleteAccount(){
+            const user = JSON.parse(JSON.stringify(this.loggedInUser))
+            try{
+                if(user.type === 'subscribed' && user.purchases.length && user.purchases[0].until === 'Ongoing'){
+                    console.log('hereee');
+                    const data = {
+                        HKId: user.purchases[0].HKId,
+                        massof: config.yaadPayMasof,
+                        pass: config.yaadPayPassP
+                    }
+                    const res = await paymentService.endSubscription(data)
+                    if(res.payload === false){
+                        eventBus.$emit(EV_show_user_msg, 'Something went wrong, please try again or contact us', 5000, 'error')
+                        this.closeDeleteModal()
+                        return
+                    }
+                }
+                //Delete the account
+                console.log('before removing');
+                await this.$store.dispatch({ type: 'removeUsers', ids: [user._id] });
+                console.log('after removing');
+                await this.$store.dispatch({ type: 'logout' });
+                console.log('after logout');
+                this.closeDeleteModal()
+                this.$router.push('/');
+            }catch(err){
+                eventBus.$emit(EV_show_user_msg, 'Something went wrong, please try again or contact us', 5000, 'error')
+                this.closeDeleteModal()
             }
         }
     },

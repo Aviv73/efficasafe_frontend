@@ -105,7 +105,7 @@ export default new Vuex.Store({
           acc += num
           return acc
       }, 0)
-      const material = materialStore.state.materials.find(mat => mat.name === data.name)
+      const material = materialStore.state.materials.find(mat => mat.name === data.name || mat.userQuery === data.name)
       if(material && material.type !== 'drug'){
         state.posSuppBoostersCountMap[data.name] = data.count
         state.posSuppBoostersCount =  Object.values(state.posSuppBoostersCountMap).reduce((acc, num) => {

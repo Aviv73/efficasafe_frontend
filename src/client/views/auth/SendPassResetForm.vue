@@ -2,7 +2,7 @@
     <div class="auth-modal">
         <div class="auth-modal-cover" @click.stop="$router.go(-1)"></div>
         <div>
-            <div class="auth-modal-content txt-center">
+            <div class="auth-modal-content txt-center reset-pass">
                 <button @click="$router.go(-1)" class="close-modal-btn">
                     <close-icon :size="14" />
                 </button>

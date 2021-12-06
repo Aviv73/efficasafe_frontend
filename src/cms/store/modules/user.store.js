@@ -69,10 +69,6 @@ export const userStore = {
             }
             return user
         },
-        async checkIfSession({ dispatch }) {
-            const session = await userService.checkIfSession();
-            if(session.message === 'No session') await dispatch({type: 'logout'});
-        },
         async removeUsers(context, { ids }) {
             await userService.removeMany(ids)
             context.commit({ type: 'removeUsers', ids })
