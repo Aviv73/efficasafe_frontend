@@ -10,6 +10,7 @@ import VerifyEmail from '@/client/views/auth/VerifyEmail.vue';
 import DBankInteractionDetails from '@/client/views/DBankInteractionDetails';
 import UserAccount from '@/client/views/UserAccount';
 import Logo from '@/client/views/Logo';
+import ManageEmails from '@/client/views/ManageEmails';
 // import Subscribe from '@/client/views/Subscribe';
 // import Payment from '@/client/views/Payment';
 // import PaymentFailed from '@/client/views/PaymentFailed';
@@ -68,6 +69,11 @@ const routes = [
     path: '/email-pass',
     name: 'email-pass',
     component: SendPassResetForm
+  },
+  {
+    path: '/manage-emails',
+    name: 'manage-emails',
+    component: ManageEmails
   },
   {
     path: '/reset-pass/:token',

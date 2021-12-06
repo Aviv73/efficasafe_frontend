@@ -42,6 +42,7 @@ export const userStore = {
         },
         
         removeUsers(state, { ids }) {
+            if(!state.users) return
             state.users = state.users.filter(user => !ids.includes(user._id));
         },
         setUseApproval(state) {

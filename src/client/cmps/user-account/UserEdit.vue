@@ -89,7 +89,7 @@
                 <chevron-right-icon title="" :size="16" />
             </button>
         </div>
-        <!-- <div class="user-edit-card">
+        <div class="user-edit-card">
             <h3>Manage Account</h3>
             <button
                 class="user-edit-card-btn flex-align-center"
@@ -105,18 +105,21 @@
                 Delete Account
                 <chevron-right-icon title="" :size="16" />
             </button>
-        </div> -->
+        </div>
         <modal-wrap :isActive="emailModalActive" @close-modal="emailModalActive = false" persistent>
             <change-email-form @close-modal="emailModalActive = false" />
         </modal-wrap>
         <modal-wrap :isActive="deleteModalActive" @close-modal="deleteModalActive = false" persistent>
-            <div class="delete-user-modal">
+            <div v-if="!isLoading" class="delete-user-modal">
                 <h3 class="delete-user-modal-title">Are you sure you want to delete your account?</h3>
                 <p class="delete-user-modal-txt">This process is permanent, once you delete your account there is no way to retrieve it. If your are a subscribed user your subscription will be terminated.</p>
                 <div class="delete-user-modal-btn-container">
                     <button @click="onDeleteAccount" class="red">Delete account</button>
                     <button class="green" @click="closeDeleteModal">Cancel</button>
                 </div>
+            </div>
+            <div v-else class="delete-user-modal">
+                <loader />
             </div>
         </modal-wrap>
     </section>
@@ -131,6 +134,7 @@ import intlTelInput from 'intl-tel-input';
 import 'intl-tel-input/build/css/intlTelInput.css';
 import ModalWrap from '@/client/cmps/common/ModalWrap';
 import ChangeEmailForm from '@/client/cmps/shared/modals/ChangeEmailForm';
+import Loader from '@/client/cmps/common/icons/Loader';
 
 import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 
@@ -148,7 +152,8 @@ export default {
             },
             iti: null,
             emailModalActive: false,
-            deleteModalActive: false
+            deleteModalActive: false,
+            isLoading: false
         }
     },
     computed: {
@@ -193,10 +198,11 @@ export default {
             this.deleteModalActive = false
         },
         async onDeleteAccount(){
+            if(!this.loggedInUser) return 
             const user = JSON.parse(JSON.stringify(this.loggedInUser))
+            this.isLoading = true
             try{
                 if(user.type === 'subscribed' && user.purchases.length && user.purchases[0].until === 'Ongoing'){
-                    console.log('hereee');
                     const data = {
                         HKId: user.purchases[0].HKId,
                         massof: config.yaadPayMasof,
@@ -205,20 +211,19 @@ export default {
                     const res = await paymentService.endSubscription(data)
                     if(res.payload === false){
                         eventBus.$emit(EV_show_user_msg, 'Something went wrong, please try again or contact us', 5000, 'error')
+                        this.isLoading = false
                         this.closeDeleteModal()
                         return
                     }
                 }
-                //Delete the account
-                console.log('before removing');
                 await this.$store.dispatch({ type: 'removeUsers', ids: [user._id] });
-                console.log('after removing');
-                await this.$store.dispatch({ type: 'logout' });
-                console.log('after logout');
+                this.isLoading = false
                 this.closeDeleteModal()
+                await this.$store.dispatch({ type: 'logout' });
                 this.$router.push('/');
             }catch(err){
                 eventBus.$emit(EV_show_user_msg, 'Something went wrong, please try again or contact us', 5000, 'error')
+                this.isLoading = false
                 this.closeDeleteModal()
             }
         }
@@ -233,7 +238,8 @@ export default {
         ValidationProvider,
         ChevronRightIcon,
         ModalWrap,
-        ChangeEmailForm
+        ChangeEmailForm,
+        Loader
     }
 }
 </script>

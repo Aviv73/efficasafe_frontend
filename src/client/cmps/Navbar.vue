@@ -250,8 +250,8 @@ export default {
         onSignUp() {
             this.$emit('signup');
         },
-        onLogout() {
-            this.$store.dispatch({ type: 'logout' });
+        async onLogout() {
+            await this.$store.dispatch({ type: 'logout' });
             if (this.$route.path !== '/') {
                 this.$router.push('/');
             }

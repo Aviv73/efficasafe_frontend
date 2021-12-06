@@ -1,0 +1,130 @@
+.manage-emails-page{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    max-width: 800px;
+    margin: 0 auto;
+
+    @include for-narrow-layout{
+        width: 38%;
+    }
+
+    .logo{
+        width: 220px;
+        margin-block-start: 59px;
+    }
+
+    .login-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 30px;
+        margin-block-start: 25px;
+        .login-req{
+            color: #133146;
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .signup-btn{
+            margin-block-end: rem(20px);
+            border-radius: 100px;
+            padding: rem(8px) rem(36px);
+            background-color: $clr2;
+            color: $white;
+            
+            @include hover-supported {
+                box-shadow: none;
+            }
+        }
+    }
+    
+    &-title{
+        margin-block-start: 66px;
+        font-size: rem(17px);
+        font-weight: bold;
+
+        @include for-narrow-layout{
+            margin-block-start: 100px;
+            font-size: rem(32px);
+        }
+    }
+    
+    &-email{
+        margin-block-start: 21px;
+        font-size: rem(16px);
+        color: #6F818E;
+
+        @include for-narrow-layout{
+            font-size: rem(24px);
+        }
+
+    }
+
+    .line{
+        width: 100%;
+        border: 1px solid #6F818E;
+        margin-block-start: 21px;
+    }
+
+    .checkboxes-container{
+        margin-block-start: 21px;
+        width: 100%;
+
+        @include for-narrow-layout{
+            margin-block-start: 59px;
+        }
+
+        .checkbox-container{
+            width: 100%;
+            margin-block-end: 24px;
+
+            @include for-narrow-layout{
+                margin-block-end: 32px;
+            }
+        }
+
+        .checkbox-header-container{
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+
+            .checkbox-title{
+                font-size: 16px;
+                font-weight: bold;
+                margin-inline-start: 6px;
+                
+                @include for-narrow-layout{
+                    margin-inline-start: 10px;
+                    font-size: 24px;
+                }
+            }
+        }
+
+        .checkbox-disc{
+            margin-block-start: 5px;
+            margin-inline-start: 30px;
+            font-size: rem(14px);
+
+            @include for-narrow-layout{
+                font-size: rem(16px);
+                margin-inline-start: 35px;
+            }
+        }
+
+        button{
+            font-size: 14px;
+            background-color: $clr1;
+            color: $white;
+            padding: 12px 24px;
+            border-radius: 2px;
+            margin-block-start: 20px;
+
+            @include for-narrow-layout{
+                margin-block-start: 55px;
+            }
+        }
+    }
+}
