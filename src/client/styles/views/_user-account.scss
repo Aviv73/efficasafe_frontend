@@ -6,7 +6,7 @@
         flex-grow: 1;
     }
     &-navigation {
-        padding: rem(45px) 0;
+        padding: rem(20px) 0 rem(20px) 0;
         
         @include for-narrow-layout {
             padding: rem(85px) 0 0 0;
@@ -14,7 +14,11 @@
         }
 
         &-logo {
-            margin-block-end: rem(85px);
+            margin-block-end: rem(35px);
+
+            @include for-narrow-layout {
+                margin-block-end: rem(85px);
+            }
 
             img {
                 width: 220px;

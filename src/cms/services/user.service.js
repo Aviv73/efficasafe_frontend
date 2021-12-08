@@ -114,7 +114,7 @@ function getEmptySearch() {
         url: '',
         title: '',
         materials: null,
-        updates: {}
+        updates: []
     }
 }
 

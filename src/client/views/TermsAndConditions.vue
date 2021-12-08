@@ -268,7 +268,7 @@
           subscription to the Service:
         </p>
         <p class="sub-sec">
-          a. Using the ‘Account’ section of the Site.
+          a. Using the ‘Account’ section of the Site, under the ‘Purchase history’ tab.
         </p>
         <p class="sub-sec">
           b. By emailing contact@efficasafe.com and providing your email

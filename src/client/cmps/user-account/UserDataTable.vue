@@ -35,16 +35,19 @@
                             {{ item[header.field] }}
                         </span>
                         <span v-if="header.title === 'Updates'" class="font-medium">
-                            <tooltip v-if="item.updates && item.updates.interactionName" on="focus" bottom>
+                            <tooltip v-if="item.updates && item.updates.length" on="focus" bottom>
                                 <template #content>
                                     <div class="notification-container">
-                                        <h3>The <span>{{item.updates.interactionName}}</span> interaction has been updated:</h3>
-                                        <ul>
-                                            <li v-if="item.updates.txt">Some text has been changed</li>
-                                            <li v-if="item.updates.newRefs.length">{{refsAddedTxt(item.updates.newRefs)}}</li>
-                                            <li v-if="item.updates.loe">{{`The level of evidence has changed from ${item.updates.loe.old} to ${item.updates.loe.new}`}}</li>
-                                            <li v-if="item.updates.rec">The recommendation has changed from <span :style="{color: getRecColor(item.updates.rec.old)}">{{item.updates.rec.old}}</span> to <span :style="{color: getRecColor(item.updates.rec.new)}">{{item.updates.rec.new}}</span></li>
-                                        </ul>
+                                        <div class="rapper" v-for="(update, idx) in item.updates" :key="idx">
+                                            <h3>The <span>{{update.interactionName}}</span> interaction has been updated:</h3>
+                                            <ul>
+                                                <li v-if="update.txt">Some text has been changed</li>
+                                                <li v-if="update.newRefs.length">{{refsAddedTxt(update.newRefs)}}</li>
+                                                <li v-if="update.loe">{{`The level of evidence has changed from ${update.loe.old} to ${update.loe.new}`}}</li>
+                                                <li v-if="update.rec">The recommendation has changed from <span :style="{'background-color': getRecColor(update.rec.old)}">{{update.rec.old}}</span> to <span :style="{'background-color': getRecColor(update.rec.new)}">{{update.rec.new}}</span></li>
+                                            </ul>
+                                            <hr v-if="idx !== item.updates.length-1">
+                                        </div>
                                     </div>
                                 </template>
                                 <bell-icon @click="removeUpdate(rowIdx, $event)" class="bell-icon" title="Interaction Update"/>

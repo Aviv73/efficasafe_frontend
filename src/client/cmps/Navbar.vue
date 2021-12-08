@@ -232,7 +232,7 @@ export default {
             let updatedCount = 0
             if(!this.userSearches) return 0
             this.userSearches.forEach(search => {
-                if(search.updates && search.updates.interactionName) updatedCount++
+                if(search.updates && search.updates.length) updatedCount += search.updates.length
             });
             return updatedCount
         }

@@ -250,7 +250,7 @@ export default {
         },
         async removeUpdate(idx){
             const user = JSON.parse(JSON.stringify(this.loggedInUser))
-            user.searches[idx].updates = {}
+            user.searches[idx].updates = []
             await this.$store.dispatch({ type: 'updateLoggedInUser', user })
         }
     },

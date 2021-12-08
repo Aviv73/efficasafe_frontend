@@ -82,19 +82,23 @@
     .notification-container{
         padding: 15px;
         max-width: 475px;
+        .rapper:not(:first-child){
+            margin-top: 20px;
+        }
 
         h3{
             font-size: rem(15px);
-            color: $clr1;
+            color: black;
 
             span{
-                color: $clr2;
+                color: $clr1;
             }
         }
 
         ul{
             padding-left: 15px;
             list-style: decimal;
+            margin-bottom: 20px;
         }
     }
 }

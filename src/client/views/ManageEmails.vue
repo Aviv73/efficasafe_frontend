@@ -35,7 +35,18 @@
               </div>
               <p class="checkbox-disc">Get exclusive deals and upgrades, so you can save more on the tools you need.</p>
             </div>
-            <button @click="onSubmit">Save changes</button>
+            <div class="line" style="margin-bottom: 32px"></div>
+            <div class="checkbox-container">
+              <div class="checkbox-header-container">
+                <checkbox class="checkbox" @change="onUnsubscribe" :isChecked="isUnsubscribe"></checkbox>
+                <h4 class="checkbox-title">Unsubscribe from all emails</h4>
+              </div>
+              <p class="checkbox-disc">Note: You will always receive transactional emails related to your account.</p>
+            </div>
+            <div class="btn-container">
+              <button @click="onSubmit">Save changes</button>
+              <button class="cancel-btn" @click="$router.push('/')">Cancel</button>
+            </div>
           </section>
         </template>
     </section>
@@ -53,6 +64,7 @@ export default {
       opt1: true,
       opt2: true,
       opt3: true,
+      isUnsubscribe: false
     };
   },
   computed:{
@@ -76,10 +88,17 @@ export default {
     checkOpt3(bol){
       this.opt3 = bol
     },
+    onUnsubscribe(bol){
+      this.opt1 = !bol
+      this.opt2 = !bol
+      this.opt3 = !bol
+      this.isUnsubscribe = bol
+    },
     onSubmit(){
       console.log(this.opt1);
       console.log(this.opt2);
       console.log(this.opt3);
+      console.log(this.isUnsubscribe);
     }
   },
   components: {

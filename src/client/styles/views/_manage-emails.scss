@@ -114,17 +114,27 @@
             }
         }
 
-        button{
-            font-size: 14px;
-            background-color: $clr1;
-            color: $white;
-            padding: 12px 24px;
-            border-radius: 2px;
-            margin-block-start: 20px;
+        .btn-container{
+            display: flex;
+            justify-content: space-between;
 
-            @include for-narrow-layout{
-                margin-block-start: 55px;
+            button{
+                font-size: 14px;
+                background-color: $clr1;
+                color: $white;
+                padding: 12px 24px;
+                border-radius: 2px;
+                margin-block-start: 20px;
+    
+                @include for-narrow-layout{
+                    margin-block-start: 55px;
+                }
+            }
+
+            .cancel-btn{
+                background-color: gray;
             }
         }
+
     }
 }
