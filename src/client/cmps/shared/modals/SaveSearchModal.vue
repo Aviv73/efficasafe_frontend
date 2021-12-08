@@ -82,6 +82,7 @@ export default {
 
             this.search.url = `${window.location.origin}${endpoint}`;
             this.search.at = Date.now();
+            this.search.materials = this.$store.getters.materials
             const search = JSON.parse(JSON.stringify(this.search));
             const user = JSON.parse(JSON.stringify(this.loggedInUser));
             

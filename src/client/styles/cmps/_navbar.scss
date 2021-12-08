@@ -15,6 +15,35 @@
         font-size: rem(14px);
     }
 
+    .account-updated{
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background-color: red;
+        color: $white; 
+        position: absolute;
+        top: 11px;
+        right: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+    }
+
+    .updated{
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background-color: red;
+        position: absolute;
+        top: -5px;
+        right: -10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+    }
+
     &.light {
         background-image: none;
         background-color: $white;

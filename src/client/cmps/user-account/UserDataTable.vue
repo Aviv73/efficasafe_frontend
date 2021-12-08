@@ -34,6 +34,22 @@
                         <span v-if="header.field === 'title'" class="font-medium">
                             {{ item[header.field] }}
                         </span>
+                        <span v-if="header.title === 'Updates'" class="font-medium">
+                            <tooltip v-if="item.updates && item.updates.interactionName" on="focus" bottom>
+                                <template #content>
+                                    <div class="notification-container">
+                                        <h3>The <span>{{item.updates.interactionName}}</span> interaction has been updated:</h3>
+                                        <ul>
+                                            <li v-if="item.updates.txt">Some text has been changed</li>
+                                            <li v-if="item.updates.newRefs.length">{{refsAddedTxt(item.updates.newRefs)}}</li>
+                                            <li v-if="item.updates.loe">{{`The level of evidence has changed from ${item.updates.loe.old} to ${item.updates.loe.new}`}}</li>
+                                            <li v-if="item.updates.rec">The recommendation has changed from <span :style="{color: getRecColor(item.updates.rec.old)}">{{item.updates.rec.old}}</span> to <span :style="{color: getRecColor(item.updates.rec.new)}">{{item.updates.rec.new}}</span></li>
+                                        </ul>
+                                    </div>
+                                </template>
+                                <bell-icon @click="removeUpdate(rowIdx, $event)" class="bell-icon" title="Interaction Update"/>
+                            </tooltip>
+                        </span>
                         <span v-else-if="header.field === 'at'">
                             {{ item[header.field] | moment('DD/MM/YYYY') }}
                         </span>
@@ -96,9 +112,12 @@
 <script>
 import ModalWrap from '@/client/cmps/common/ModalWrap';
 import ConfirmDelete from '@/client/cmps/shared/modals/ConfirmDelete';
+import Tooltip from '@/client/cmps/common/Tooltip';
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
 
 import SortVerticalIcon from '@/client/cmps/common/icons/SortVerticalIcon';
 import DeleteIcon from 'vue-material-design-icons/Delete';
+import BellIcon from 'vue-material-design-icons/Bell';
 
 export default {
     props: {
@@ -146,11 +165,25 @@ export default {
         },
         onEndSubscription(item){
             this.$emit('end-subscription', item);
+        },
+        removeUpdate(idx, ev){
+            ev.target.style.color = '#133146'
+            this.$emit('remove-update', idx)
+        },
+        refsAddedTxt(refs){
+            const refTxt = refs.join()
+            if(refs.length === 1) return `Reference ${refTxt} was added`
+            return `References ${refTxt} were added`
+        },
+        getRecColor(rec){
+            return interactionUIService.getInteractionColor(rec)
         }
     },
     components: {
+        Tooltip,
         SortVerticalIcon,
         DeleteIcon,
+        BellIcon,
         ModalWrap,
         ConfirmDelete
     }

@@ -32,6 +32,7 @@
                 :items="tableItems"
                 @item-deleted="removeItem"
                 @header-clicked="onSort"
+                @remove-update="removeUpdate"
                 @end-subscription="openEndSubscriptionModal"
             />
             <list-pagination
@@ -127,8 +128,7 @@ export default {
                     },
                     {
                         title: 'Updates',
-                        field: '',
-                        sortable: true
+                        field: ''
                     },
                     {
                         title: '',
@@ -247,11 +247,19 @@ export default {
                 return this.checkIfDatePassed(newTime, numOfMonth)
             }
             return newTime
+        },
+        async removeUpdate(idx){
+            const user = JSON.parse(JSON.stringify(this.loggedInUser))
+            user.searches[idx].updates = {}
+            await this.$store.dispatch({ type: 'updateLoggedInUser', user })
         }
     },
     async created(){
         if(this.$route.name === 'Searches') this.userSearches = await userService.getUserSearches(this.loggedInUser._id)
         else this.purchases = JSON.parse(JSON.stringify(this.loggedInUser.purchases))
+    },
+    async destroyed(){
+        await this.$store.dispatch('getUserInfo');
     },
     components: {
         CustomSelect,

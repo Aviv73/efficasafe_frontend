@@ -112,7 +112,9 @@ function getEmptySearch() {
     return {
         at: null,
         url: '',
-        title: ''
+        title: '',
+        materials: null,
+        updates: {}
     }
 }
 

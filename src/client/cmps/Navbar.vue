@@ -15,6 +15,7 @@
                                         {{ loggedInUser.username }} 
                                     </span>
                                     <menu-down-icon title="" class="dropdown--animate" />
+                                    <span v-if="updatedCount" class="updated" title="Updated interactions">{{updatedCount}}</span>
                                 </div>
                             </template>
                             <template #content>
@@ -25,6 +26,7 @@
                                             class="navbar-user-dropdown-item"
                                         >
                                             Account
+                                            <span v-if="updatedCount" class="account-updated" title="Updated interactions">{{updatedCount}}</span>
                                         </router-link>
                                         <router-link
                                             to="/contact"
@@ -189,6 +191,7 @@
 <script>
 
 import { eventBus } from '@/cms/services/eventBus.service';
+import { userService } from '@/cms/services/user.service';
 
 import Dropdown from '@/client/cmps/common/Dropdown';
 
@@ -201,7 +204,8 @@ export default {
     name: 'Navbar',
     data: () => ({
         isNavActive: false,
-        isNavIntersecting: false
+        isNavIntersecting: false,
+        userSearches: null
     }),
     computed: {
         isScreenNarrow() {
@@ -223,6 +227,14 @@ export default {
             }
             if(this.freeTrialTime === 1) return `| Free Trial - you have ${this.freeTrialTime} day left`
             return `| Free Trial - you have ${this.freeTrialTime} days left`
+        },
+        updatedCount(){
+            let updatedCount = 0
+            if(!this.userSearches) return 0
+            this.userSearches.forEach(search => {
+                if(search.updates && search.updates.interactionName) updatedCount++
+            });
+            return updatedCount
         }
     },
     methods: {
@@ -265,6 +277,9 @@ export default {
             const elNav = this.$refs.navbar;
             this.isNavIntersecting = window.scrollY >= (intersectingEl.offsetTop - elNav.offsetHeight);
         }
+    },
+    async updated(){
+        if(this.loggedInUser) this.userSearches = await userService.getUserSearches(this.loggedInUser._id)
     },
     mounted() {
         document.addEventListener('scroll', this.setNavClassName);

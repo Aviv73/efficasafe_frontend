@@ -17,23 +17,23 @@
             <div class="checkbox-container">
               <div class="checkbox-header-container">
                 <checkbox class="checkbox" @change="checkOpt1" :isChecked="opt1"></checkbox>
-                <h4 class="checkbox-title">Title</h4>
+                <h4 class="checkbox-title">Educational</h4>
               </div>
-              <p class="checkbox-disc">Felis amet risus pellentesque venenatis a amet. Amet commodo commodo auctor ipsum nibh vulputate.</p>
+              <p class="checkbox-disc">Learn more about interactions mechanisms, get the latest interactions updates, and explore case studies, so you can stay on top of things.</p>
             </div>
             <div class="checkbox-container">
               <div class="checkbox-header-container">
                 <checkbox class="checkbox" @change="checkOpt2" :isChecked="opt2"></checkbox>
-                <h4 class="checkbox-title">Title</h4>
+                <h4 class="checkbox-title">News and announcements</h4>
               </div>
-              <p class="checkbox-disc">Felis amet risus pellentesque venenatis a amet. Amet commodo commodo auctor ipsum nibh vulputate.</p>
+              <p class="checkbox-disc">Stay updated on new site features we’ve developed to help improve your experience and productivity.</p>
             </div>
             <div class="checkbox-container">
               <div class="checkbox-header-container">
                 <checkbox class="checkbox" @change="checkOpt3" :isChecked="opt3"></checkbox>
-                <h4 class="checkbox-title">Title</h4>
+                <h4 class="checkbox-title">Offers and promotions</h4>
               </div>
-              <p class="checkbox-disc">Felis amet risus pellentesque venenatis a amet. Amet commodo commodo auctor ipsum nibh vulputate.</p>
+              <p class="checkbox-disc">Get exclusive deals and upgrades, so you can save more on the tools you need.</p>
             </div>
             <button @click="onSubmit">Save changes</button>
           </section>
