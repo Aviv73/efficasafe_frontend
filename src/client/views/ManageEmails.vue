@@ -81,12 +81,21 @@ export default {
     },
     checkOpt1(bol){
       this.opt1 = bol
+      if(bol){
+        this.isUnsubscribe = false
+      }
     },
     checkOpt2(bol){
       this.opt2 = bol
+      if(bol){
+        this.isUnsubscribe = false
+      }
     },
     checkOpt3(bol){
       this.opt3 = bol
+      if(bol){
+        this.isUnsubscribe = false
+      }
     },
     onUnsubscribe(bol){
       this.opt1 = !bol

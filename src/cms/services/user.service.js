@@ -1,17 +1,11 @@
 
 import { httpService } from './http.service';
-import { storageService } from './storage.service';
-
-// var axios = Axios.create({
-//     withCredentials: true
-// });
 
 const AUTH_END_POINT = 'auth';
 const ACCOUNT_END_POINT = 'account';
 
 export const userService = {
     logout,
-    getLoggedInUser,
     getUserInfo,
     loadUsers,
     getById,
@@ -89,10 +83,6 @@ async function updateSession(user){
 
 async function completeEmailVerification(){
     return await httpService.get(`${AUTH_END_POINT}/completeVerification`)
-}
-
-function getLoggedInUser() {
-    return storageService.load('userProfile');
 }
 
 function logout() {

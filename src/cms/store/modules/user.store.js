@@ -3,15 +3,19 @@ import { storageService } from '../../services/storage.service'
 
 export const userStore = {
     state: {
-        loggedInUser: userService.getLoggedInUser(),
+        loggedInUser: null,
         token: null,
         users: null,
         userPageHeight: null,
+        userSearches: [],
         total: 0
     },
     getters: {
         loggedInUser(state) {
             return state.loggedInUser
+        },
+        userSearches(state) {
+            return state.userSearches
         },
         users(state) {
             return state.users
@@ -30,6 +34,9 @@ export const userStore = {
         },
         setLoggedInUser(state, { user }) {
             state.loggedInUser = user;
+        },
+        setUserSearches(state, { searches }) {
+            state.userSearches = searches;
         },
         setUsers(state, { users, total }) {
             state.users = users;
@@ -69,6 +76,11 @@ export const userStore = {
                 commit({ type: 'setLoggedInUser', user });
             }
             return user
+        },
+        async getUserSearches({commit, state}) {
+            if(!state.loggedInUser) return
+            const searches = await userService.getUserSearches(state.loggedInUser._id)
+            commit({ type: 'setUserSearches', searches })
         },
         async removeUsers(context, { ids }) {
             await userService.removeMany(ids)

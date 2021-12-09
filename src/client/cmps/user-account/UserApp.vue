@@ -66,6 +66,8 @@
 </template>
 
 <script>
+import { eventBus, EV_update_nav } from '@/cms/services/eventBus.service';
+
 import CustomSelect from '@/client/cmps/common/CustomSelect';
 import UserDataTable from '@/client/cmps/user-account/UserDataTable';
 import ListPagination from '@/client/cmps/common/ListPagination';
@@ -74,8 +76,6 @@ import EndSubscriptionModal from '@/client/cmps/shared/modals/EndSubscriptionMod
 
 import PageFirstIcon from 'vue-material-design-icons/PageFirst';
 import PageLastIcon from 'vue-material-design-icons/PageLast';
-
-import { userService } from '@/cms/services/user.service';
 
 export default {
     data() {
@@ -106,12 +106,15 @@ export default {
                     { title: 'Show 100', value: 100 }
                 ]
             },
-            userSearches: []
+            updatesToRemove:[]
         }
     },
     computed: {
         loggedInUser() {
             return this.$store.getters.loggedInUser;
+        },
+        userSearches() {
+            return this.$store.getters.userSearches;
         },
         tableHeaders() {
             if (this.$route.name === 'Searches') {
@@ -249,14 +252,19 @@ export default {
             return newTime
         },
         async removeUpdate(idx){
+            this.updatesToRemove.push(idx)
             const user = JSON.parse(JSON.stringify(this.loggedInUser))
-            user.searches[idx].updates = []
+            const searches = JSON.parse(JSON.stringify(this.userSearches))
+            this.updatesToRemove.forEach(idx => {
+                searches[idx].updates = []
+            })
+            user.searches = searches
+            eventBus.$emit(EV_update_nav, searches);
             await this.$store.dispatch({ type: 'updateLoggedInUser', user })
         }
     },
     async created(){
-        if(this.$route.name === 'Searches') this.userSearches = await userService.getUserSearches(this.loggedInUser._id)
-        else this.purchases = JSON.parse(JSON.stringify(this.loggedInUser.purchases))
+        this.purchases = JSON.parse(JSON.stringify(this.loggedInUser.purchases))
     },
     async destroyed(){
         await this.$store.dispatch('getUserInfo');

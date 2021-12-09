@@ -61,6 +61,9 @@ export default {
     computed: {
         loggedInUser() {
             return this.$store.getters.loggedInUser;
+        },
+        userSearches() {
+            return this.$store.getters.userSearches;
         }
     },
     methods: {
@@ -86,7 +89,7 @@ export default {
             const search = JSON.parse(JSON.stringify(this.search));
             const user = JSON.parse(JSON.stringify(this.loggedInUser));
             
-            const searchIdx = user.searches.findIndex(search => search.title === this.search.title);
+            const searchIdx = this.userSearches.findIndex(search => search.title === this.search.title);
             
             if (searchIdx === -1) {
                 user.searches.push(search);
@@ -103,6 +106,7 @@ export default {
         },
         async saveToAccount(user) {
             await this.$store.dispatch({ type: 'updateLoggedInUser', user });
+            await this.$store.dispatch('getUserSearches');
             eventBus.$emit(EV_show_user_msg, 'Your search has been saved. You can find it at your account page', 5000);
             this.reset();
         },

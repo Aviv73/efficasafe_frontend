@@ -35,7 +35,7 @@
                             {{ item[header.field] }}
                         </span>
                         <span v-if="header.title === 'Updates'" class="font-medium">
-                            <tooltip v-if="item.updates && item.updates.length" on="focus" bottom>
+                            <tooltip class="bell-container" v-if="item.updates && item.updates.length" on="focus" bottom>
                                 <template #content>
                                     <div class="notification-container">
                                         <div class="rapper" v-for="(update, idx) in item.updates" :key="idx">
@@ -50,7 +50,7 @@
                                         </div>
                                     </div>
                                 </template>
-                                <bell-icon @click="removeUpdate(rowIdx, $event)" class="bell-icon" title="Interaction Update"/>
+                                <bell-icon @mousedown="removeUpdate(rowIdx, $event)" class="bell-icon" title="Interaction Update"/>
                             </tooltip>
                         </span>
                         <span v-else-if="header.field === 'at'">

@@ -3,10 +3,10 @@
         <img src="@/client/assets/imgs/logo-symbol.png" alt="Efficasafe logo" class="main-footer-logo" />
         <small class="main-footer-details">
             <span class="d-block">
-                Copyright © efficasafe | All RIghts Reserved | Site Last Updated {{ lastSiteUpdate | moment('LL') }} | Phone: +972-35105050 | Naturopedia Ltd, 11 Hatavor st. Tel-Aviv
+                Site Last Updated {{ lastSiteUpdate | moment('LL') }} | Copyright © Naturopedia LTD | All Rights Reserved 
             </span>
             <router-link to="/terms-and-conditions" class="link">Terms and Conditions</router-link>
-            | <router-link to="/privacy-statement" class="link">Privacy Policy</router-link>
+            | <router-link to="/privacy-statement" class="link">Privacy Statement</router-link>
             | Email: <a href="mailto:contact@efficasafe.com" class="link">contact@efficasafe.com</a>
         </small>
     </footer>

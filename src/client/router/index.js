@@ -207,6 +207,7 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   await store.dispatch('getUserInfo');
+  await store.dispatch('getUserSearches');
   if(store.getters.loggedInUser && store.getters.loggedInUser.type === 'subscribed'){
     const user = JSON.parse(JSON.stringify(store.getters.loggedInUser))
     if(user.purchases.length && typeof user.purchases[0].until === 'number' && user.purchases[0].until < Date.now()){

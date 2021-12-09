@@ -74,7 +74,6 @@
     }
 
     .bell-icon{
-        margin-left: 62%;
         color: $red;
         cursor: pointer;
     }
@@ -100,5 +99,10 @@
             list-style: decimal;
             margin-bottom: 20px;
         }
+    }
+
+    .bell-container{
+        position: relative;
+        margin-left: 12%;
     }
 }
