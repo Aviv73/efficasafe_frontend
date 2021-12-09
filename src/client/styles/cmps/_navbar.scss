@@ -44,6 +44,15 @@
         justify-content: center;
         font-weight: bold;
         font-size: 11px;
+
+        @include for-wide-layout {
+            width: 17px;
+            height: 17px;
+            padding-top: 1px;
+            padding-right: 0.5px;
+            font-size: rem(12px);
+            left: -23px;
+        }
     }
 
     &.light {

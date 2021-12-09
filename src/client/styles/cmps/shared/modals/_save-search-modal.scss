@@ -96,3 +96,13 @@
         }
     }
 }
+
+.loader-container{
+    background-color: $white;
+    border-radius: 6px;
+    width: 350px;
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

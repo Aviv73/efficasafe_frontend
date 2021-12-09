@@ -1,53 +1,59 @@
 <template>
-    <aside class="save-search-modal">
-        <header class="save-search-modal-header">
-            <button
-                class="close-btn"
-                @click="reset"
-            >
-                <close-icon :size="14" />
-            </button>
-        </header>
-        <main class="save-search-modal-content">
-            <p class="save-search-modal-content-txt font-medium">
-                Please provide a name for your search
-            </p>
-            <div class="save-search-modal-content-input">
-                <input
-                    type="text"
-                    placeholder="Patient name / Search title"
-                    v-model="search.title"
-                    @keypress.enter="onSaveSearch"
-                    @input="msg = '';showReplaceBtn = false;"
-                />
-            </div>
-            <p class="save-search-modal-content-msg font-medium">
-                {{ msg }}
-            </p>
-        </main>
-        <footer class="save-search-modal-footer">
-            <button
-                class="save-search-modal-footer-btn"
-                @click="reset"
-            >
-                Cancel
-            </button>
-            <button
-               class="save-search-modal-footer-btn save-btn"
-               :class="{ 'replace-btn': showReplaceBtn }"
-               :disabled="!search.title"
-               @click="onSaveSearch"
-            >
-                {{ showReplaceBtn ? 'Replace saved search' : 'Save' }}
-            </button>
-        </footer>
-    </aside>
+    <section>
+        <aside v-if="isLoading" class="loader-container">
+            <loader />
+        </aside>
+        <aside v-else class="save-search-modal">
+            <header class="save-search-modal-header">
+                <button
+                    class="close-btn"
+                    @click="reset"
+                >
+                    <close-icon :size="14" />
+                </button>
+            </header>
+            <main class="save-search-modal-content">
+                <p class="save-search-modal-content-txt font-medium">
+                    Please provide a name for your search
+                </p>
+                <div class="save-search-modal-content-input">
+                    <input
+                        type="text"
+                        placeholder="Patient name / Search title"
+                        v-model="search.title"
+                        @keypress.enter="onSaveSearch"
+                        @input="msg = '';showReplaceBtn = false;"
+                    />
+                </div>
+                <p class="save-search-modal-content-msg font-medium">
+                    {{ msg }}
+                </p>
+            </main>
+            <footer class="save-search-modal-footer">
+                <button
+                    class="save-search-modal-footer-btn"
+                    @click="reset"
+                >
+                    Cancel
+                </button>
+                <button
+                class="save-search-modal-footer-btn save-btn"
+                :class="{ 'replace-btn': showReplaceBtn }"
+                :disabled="!search.title"
+                @click="onSaveSearch"
+                >
+                    {{ showReplaceBtn ? 'Replace saved search' : 'Save' }}
+                </button>
+            </footer>
+        </aside>
+    </section>
 </template>
 
 <script>
 import { userService } from '@/cms/services/user.service';
 import { eventBus, EV_show_user_msg } from '@/cms/services/eventBus.service';
 
+import Loader from '@/client/cmps/common/icons/Loader';
 import CloseIcon from 'vue-material-design-icons/Close';
 
 export default {
@@ -55,7 +61,8 @@ export default {
         return {
             search: userService.getEmptySearch(),
             msg: '',
-            showReplaceBtn: false
+            showReplaceBtn: false,
+            isLoading: false
         }
     },
     computed: {
@@ -105,6 +112,7 @@ export default {
             }
         },
         async saveToAccount(user) {
+            this.isLoading = true
             await this.$store.dispatch({ type: 'updateLoggedInUser', user });
             await this.$store.dispatch('getUserSearches');
             eventBus.$emit(EV_show_user_msg, 'Your search has been saved. You can find it at your account page', 5000);
@@ -114,10 +122,12 @@ export default {
             this.search = userService.getEmptySearch();
             this.msg = '';
             this.showReplaceBtn = false;
+            this.isLoading = false
             this.$emit('close-modal');
         }
     },
     components: {
+        Loader,
         CloseIcon
     }
 }
