@@ -53,36 +53,60 @@
             <swiper
               hide-navigation
               pagination-prev-next
-              auto-play
             >
+              <!-- auto-play -->
                 <div class="about-page-slide">
                     <div class="about-page-slide-card">
-                        “I’ll admit that I’m not the most tech-savvy person.
-                        This site is so easy to navigate that I can find exactly
-                        what I need quickly and without technical know-how.
-                        Efficasafe has quickly become my go-to for all medicinal
-                        interactions and an integral part of my everyday practice as a pharmacist.”
+                        <div class="about-page-slide-card-img-container">
+                            <img
+                                src="@/client/assets/imgs/recommender1.png"
+                                class="quote-img"
+                                alt=""
+                            />
+                            <p>Keren volkomir, Naturopth.</p>
+                        </div>
+                        "Finally! One site with everything in it.
+                        Efficasafe allows me to search, cross-reference
+                        and get all the information I need, in seconds.
+                        This kind of scientifically backed information
+                        is priceless to me as a Naturopath."
                     </div>
                     <div class="about-page-slide-card">
-                        “Efficasafe allows me to search,
-                        cross-reference and get all the information I need,
-                        in seconds. It also gives me positive interactions – something
-                        I have never been able to access anywhere else.
-                        This kind of scientifically backed information is priceless to me as a physician.”
+                        <div class="about-page-slide-card-img-container">
+                            <img
+                                src="@/client/assets/imgs/recommender2.png"
+                                class="quote-img"
+                                alt=""
+                            />
+                            <p>Michal kirsh, ND, RH AHG, Head of herbalism
+                                program, Broshim School of complementary
+                                medicine.</p>
+                        </div>
+                        "This site is by far the most fully
+                        comprehensive, reliable resources I have come
+                        across for herb-drug interactions. I believe
+                        that professionals have been waiting for
+                        something like this to come along for a very
+                        long time."
                     </div>
                 </div>
                 <div class="about-page-slide">
-                    <div class="about-page-slide-card"> 
-                        “I'll admit that I'm not the most tech-savvy person. This
-                        site is so easy to use it has quickly become my go-to
-                        for all medicinal interactions and an integral part of
-                        my everyday practice as a pharmacist.”
-                    </div>
-                    <div class="about-page-slide-card"> 
-                        “...So much more than just an interaction checker. I can
-                        save my searches and even get recommendations on what to
-                        monitor. Both features enable better patient care, which
-                        at the end of the day, is what we are all aiming for.”
+                    <div class="about-page-slide-card">
+                        <div class="about-page-slide-card-img-container">
+                            <img
+                                src="@/client/assets/imgs/recommender3.png"
+                                class="quote-img"
+                                alt=""
+                            />
+                            <p>Inbale dressler, ND, RH AHG, Davidoff cancer
+                                center, Integrative Medicine Unit.</p>
+                        </div>
+                        "So much more than just an interaction checker.
+                        I can save my searches (my patients) and even
+                        get notified when the interactions I saved have
+                        been updated. That’s a game-changer that enables
+                        better patient care, which at the end of the
+                        day, is what we are all aiming for."
                     </div>
                 </div>
                 <template #pagination-prev>

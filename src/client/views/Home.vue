@@ -24,7 +24,9 @@
                     placeholder2="Add another"
                     @item-selected="goToSearch"
                 />
-                <button class="btn home-cta" @click="searchhWithBtn">Search</button>
+                <button class="btn home-cta" @click="searchhWithBtn">
+                    Search
+                </button>
                 <h2 class="home-subheader">
                     <span class="font-bold">Herb-Drug-Supplement</span>
                     Interaction platform
@@ -59,40 +61,66 @@
             </div>
             <div class="home-container">
                 <swiper class="home-swiper home-container" auto-play>
-                    <p class="home-stats-quote">
-                        Finally! One site with everything in it. I believe that
-                        professionals have been waiting for something like this
-                        to come along for a very long time.
-                        <span>Dr. Mark Epstein</span>
-                    </p>
-                    <p class="home-stats-quote">
-                        Efficasafe allows me to search, cross-reference and get
-                        all the information I need, in seconds. It also gives me
-                        positive interactions - something I have never been able
-                        to access anywhere else.
-                        <span>Daniel Miller, PHD</span>
-                    </p>
-                    <p class="home-stats-quote">
-                        This site is one of the most fully comprehensive,
-                        reliable resources I have come across for herb-drug
-                        interactions. This kind of scientifically backed
-                        information is priceless to me as a physician.
-                        <span>Dr. John Barrion</span>
-                    </p>
-                    <p class="home-stats-quote">
-                        I'll admit that I'm not the most tech-savvy person. This
-                        site is so easy to use it has quickly become my go-to
-                        for all medicinal interactions and an integral part of
-                        my everyday practice as a pharmacist.
-                        <span>Silvia Augustus, PharmD</span>
-                    </p>
-                    <p class="home-stats-quote">
-                        ...So much more than just an interaction checker. I can
-                        save my searches and even get recommendations on what to
-                        monitor. Both features enable better patient care, which
-                        at the end of the day, is what we are all aiming for.
-                        <span>Margaret Elsindor</span>
-                    </p>
+                    <div class="home-stats-quote">
+                        <img
+                            src="@/client/assets/imgs/recommender1.png"
+                            class="quote-img"
+                            alt=""
+                        />
+                        <div class="home-stats-quote-txt">
+                            <p>
+                                "Finally! One site with everything in it.
+                                Efficasafe allows me to search, cross-reference
+                                and get all the information I need, in seconds.
+                                This kind of scientifically backed information
+                                is priceless to me as a Naturopath."
+                            </p>
+                            <p>Keren volkomir, Naturopth.</p>
+                        </div>
+                    </div>
+                    <div class="home-stats-quote">
+                        <img
+                            src="@/client/assets/imgs/recommender2.png"
+                            class="quote-img"
+                            alt=""
+                        />
+                        <div class="home-stats-quote-txt">
+                            <p>
+                                "This site is by far the most fully
+                                comprehensive, reliable resources I have come
+                                across for herb-drug interactions. I believe
+                                that professionals have been waiting for
+                                something like this to come along for a very
+                                long time."
+                            </p>
+                            <p>
+                                Michal kirsh, ND, RH AHG, Head of herbalism
+                                program, Broshim School of complementary
+                                medicine.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="home-stats-quote">
+                        <img
+                            src="@/client/assets/imgs/recommender3.png"
+                            class="quote-img"
+                            alt=""
+                        />
+                        <div class="home-stats-quote-txt">
+                            <p>
+                                "So much more than just an interaction checker.
+                                I can save my searches (my patients) and even
+                                get notified when the interactions I saved have
+                                been updated. That’s a game-changer that enables
+                                better patient care, which at the end of the
+                                day, is what we are all aiming for."
+                            </p>
+                            <p>
+                                Inbale dressler, ND, RH AHG, Davidoff cancer
+                                center, Integrative Medicine Unit.
+                            </p>
+                        </div>
+                    </div>
                     <template #navigation-prev>
                         <chevron-left-icon :size="36" title="" />
                     </template>
@@ -188,7 +216,11 @@ import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
 import WelcomeModal from '../cmps/shared/modals/WelcomeModal';
 import PassChangeSuccess from '../cmps/shared/modals/PassChangeSuccess';
-import { eventBus, EV_clear_input } from '@/cms/services/eventBus.service'
+import { eventBus, EV_clear_input } from '@/cms/services/eventBus.service';
+
+// import recommenderImg1 from '@/client/assets/imgs/recommender1.png';
+// import recommenderImg2 from '@/client/assets/imgs/recommender2.png';
+// import recommenderImg3 from '@/client/assets/imgs/recommender3.png';
 
 export default {
     name: 'Home',
@@ -211,42 +243,42 @@ export default {
         loggedInUser() {
             return this.$store.getters.loggedInUser;
         },
-        freeSearchesCount(){
+        freeSearchesCount() {
             return this.$store.getters.getFreeSearchesCount;
         },
     },
     methods: {
         goToSearch(query) {
             this.searches.push(query);
-            if(!this.loggedInUser){
-                if(this.freeSearchesCount <= 0){
-                    this.$emit('showAuth')
-                    return
+            if (!this.loggedInUser) {
+                if (this.freeSearchesCount <= 0) {
+                    this.$emit('showAuth');
+                    return;
                 }
                 this.$store.commit('reduceFreeSearches');
             }
             if (this.searches.length === 2) {
                 const [q1, q2] = this.searches;
                 this.$router.push(`/search?q=${q1}&q=${q2}`);
-            }else if(this.searches.length === 1){
-                eventBus.$emit(EV_clear_input)
+            } else if (this.searches.length === 1) {
+                eventBus.$emit(EV_clear_input);
             }
         },
-        searchhWithBtn(){
-            if(!this.loggedInUser){
-                if(this.freeSearchesCount <= 0){
-                    this.$emit('showAuth')
-                    return
+        searchhWithBtn() {
+            if (!this.loggedInUser) {
+                if (this.freeSearchesCount <= 0) {
+                    this.$emit('showAuth');
+                    return;
                 }
                 this.$store.commit('reduceFreeSearches');
             }
-            if(this.searches.length === 0){
+            if (this.searches.length === 0) {
                 this.$router.push(`/search`);
             }
-            if(this.searches.length === 1){
+            if (this.searches.length === 1) {
                 this.$router.push(`/search?q=${this.searches[0]}`);
             }
-        }
+        },
     },
     async created() {
         this.stats = await this.$store.dispatch({ type: 'getStatistics' });
@@ -260,7 +292,7 @@ export default {
         ChevronRightIcon,
         ChevronLeftIcon,
         WelcomeModal,
-        PassChangeSuccess
+        PassChangeSuccess,
     },
 };
 </script>

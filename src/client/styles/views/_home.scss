@@ -221,17 +221,18 @@
         }
 
         &-quote {
-            min-height: rem(267px);
+            height: rem(210px);
             background-color: $white;
             box-shadow: 0px 3px 22px rgba($black, .85);
             border-radius: 12px;
-            color: rgba($clr-txt-dark, .85);
-            line-height: rem(20px);
+            color: black;
+            line-height: rem(23px);
+            font-size: rem(16px);
             padding: rem(35px) rem(35px) rem(30px);
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            text-align: start;
 
             @include for-mobile-layout {
                 min-height: rem(187px);
@@ -244,25 +245,65 @@
                 margin-left: -20%;
             }
 
-            &::before {
-                background-image: url("../assets/icons/quote-start.png");
-                top: 0;
-                left: 10px;
+            &-txt{
+                width: 100%;
+                font-size: rem(14px);
+                color: $clr1;
 
-                @include for-mobile-horizontal {
-                    left: calc(-20% + 10px);
+                @include for-mobile-layout {
+                    width: 70%;
+                    font-size: rem(16px);
+                }
+                
+                p:first-child{
+                    margin-bottom: 20px;
+                    color: black;
+                }
+                
+            }
+            &-no-img{
+                width: 100%;
+                font-size: rem(14px);
+
+                @include for-mobile-layout {
+                    font-size: rem(16px);
+                }
+
+                p:first-child{
+                    margin-bottom: 20px;
+                }
+                
+            }
+
+            .quote-img{
+                width: 120px;
+                height: 150px;
+                display: none;
+
+                @include for-mobile-layout {
+                    display: block;
                 }
             }
 
-            &::after {
-                background-image: url("../assets/icons/quote-end.png");
-                bottom: 0;
-                right: 10px;
+            // &::before {
+            //     background-image: url("../assets/icons/quote-start.png");
+            //     top: 0;
+            //     left: 10px;
 
-                @include for-mobile-horizontal {
-                    right: calc(-20% + 10px);
-                }
-            }
+            //     @include for-mobile-horizontal {
+            //         left: calc(-20% + 10px);
+            //     }
+            // }
+
+            // &::after {
+            //     background-image: url("../assets/icons/quote-end.png");
+            //     bottom: 0;
+            //     right: 10px;
+
+            //     @include for-mobile-horizontal {
+            //         right: calc(-20% + 10px);
+            //     }
+            // }
 
             &::before,
             &::after {
@@ -277,13 +318,6 @@
                     width: rem(35px);
                     height: rem(90px);
                 }
-            }
-
-            span {
-                display: block;
-                margin-block-start: rem(22px);
-                color: rgba($clr10, .85);
-                font-style: rem(14px);
             }
         }
     }
