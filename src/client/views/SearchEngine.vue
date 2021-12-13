@@ -57,7 +57,7 @@
                         </button>
                     </tooltip>
                 </div>
-                <template v-if="loggedInUser && (loggedInUser.type === 'subscribed' || loggedInUser.email_verified )">
+                <!-- <template v-if="loggedInUser && (loggedInUser.type === 'subscribed' || loggedInUser.email_verified )">
                     <div v-if="!isLoadingFile" class="search-engine-search-import-export-container">
                         <div class="btn-container">
                             <label class="activator padding">
@@ -95,7 +95,7 @@
                         </div>
                     </div>
                     <loader class="file-loader" v-else />
-                </template>
+                </template> -->
                 <ul
                     class="search-engine-search-materials"
                     :class="{ 'empty': !materials.length }"
@@ -393,7 +393,7 @@ import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
 import MaterialInteractionsPreview from '@/client/cmps/search-engine/MaterialInteractionsPreview';
 import Disclaimer from '@/client/cmps/search-engine/Disclaimer';
 import OnboardingTour from '@/client/cmps/search-engine/OnboardingTour';
-import Loader from '@/client/cmps/common/icons/Loader';
+// import Loader from '@/client/cmps/common/icons/Loader';
 
 import UndoIcon from '@/client/cmps/common/icons/UndoIcon';
 import RedoIcon from '@/client/cmps/common/icons/RedoIcon';
@@ -1710,7 +1710,7 @@ export default {
         OnboardingTour,
         SaveSearchModal,
         ChevronRightIcon,
-        Loader
+        // Loader
     }
 };
 </script>
