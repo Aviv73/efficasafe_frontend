@@ -57,6 +57,45 @@
                         </button>
                     </tooltip>
                 </div>
+                <template v-if="loggedInUser && (loggedInUser.type === 'subscribed' || loggedInUser.email_verified )">
+                    <div v-if="!isLoadingFile" class="search-engine-search-import-export-container">
+                        <div class="btn-container">
+                            <label class="activator padding">
+                                <input type="file" @change="onImportList" hidden/>
+                                Import list
+                            </label>
+                            <tooltip rightBottom on="focus">
+                                <template #content>
+                                    <span class="tooltip-content">
+                                        Import a list of your drug/supplements. Supports only xlsx files. Names only, one name per cell.
+                                    </span>
+                                </template>
+                                <information-outline-icon class="info-icon right"/>
+                            </tooltip>
+                        </div>
+                        <div class="btn-container">
+                            <button class="activator">
+                                <download-excel
+                                :data="materialsToExcel"
+                                :escapeCsv="false"
+                                type="csv"
+                                name="My search.xls"
+                                >
+                                Export list
+                            </download-excel>
+                            </button>
+                            <tooltip rightBottom on="focus">
+                                <template #content>
+                                    <span class="tooltip-content">
+                                        Download a csv file containing your searched list, it is recommended to save it as a xlsx file for future import.
+                                    </span>
+                                </template>
+                                <information-outline-icon class="info-icon"/>
+                            </tooltip>
+                        </div>
+                    </div>
+                    <loader class="file-loader" v-else />
+                </template>
                 <ul
                     class="search-engine-search-materials"
                     :class="{ 'empty': !materials.length }"
@@ -341,6 +380,7 @@ import { statisticsService } from '@/cms/services/statistics.service';
 import { storageService } from '@/cms/services/storage.service';
 import { eventBus, EV_show_user_msg, EV_search_results_cleared } from '@/cms/services/eventBus.service';
 import { logService } from '@/cms/services/log.service';
+import readXlsxFile from 'read-excel-file'
 
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import ShareModal from '@/client/cmps/shared/modals/ShareModal';
@@ -353,6 +393,7 @@ import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
 import MaterialInteractionsPreview from '@/client/cmps/search-engine/MaterialInteractionsPreview';
 import Disclaimer from '@/client/cmps/search-engine/Disclaimer';
 import OnboardingTour from '@/client/cmps/search-engine/OnboardingTour';
+import Loader from '@/client/cmps/common/icons/Loader';
 
 import UndoIcon from '@/client/cmps/common/icons/UndoIcon';
 import RedoIcon from '@/client/cmps/common/icons/RedoIcon';
@@ -399,7 +440,8 @@ export default {
             idsToTurnRed: [],
             arrowRightPositin: 3,
             loadingTime: 0,
-            sameQ: false
+            sameQ: false,
+            isLoadingFile: false
         }
     },
     watch: {
@@ -414,7 +456,7 @@ export default {
                         this.$tours['boosters-tour'].start();
                     });
                 }
-                const { q } = this.$route.query;
+                const { q, isImported, nonExisting } = this.$route.query;
                 if (!q || !q.length) {
                     this.$store.commit('resetPosSupp')
                     this.reset();
@@ -435,6 +477,7 @@ export default {
                 if (this.materialsLength >= 1 && !storageService.load('did-onboarding-tour1') && !this.isScreenNarrow) {
                     this.$tours['onboarding-tour'].start();
                 }
+                if(isImported) this.showImportMsg(nonExisting)
             },
             deep: true,
             immediate: true
@@ -966,9 +1009,61 @@ export default {
         },
         materialsLength() {
             return this.materials.filter(({ isIncluded }) => !isIncluded).length;
+        },
+        materialsToExcel(){
+            const materials = JSON.parse(JSON.stringify(this.materials))
+            return materials.map(mat => {
+                const res = {}
+                res['Searched list:'] = mat.userQuery
+                return res
+            })
         }
     },
     methods: {
+        showImportMsg(nonExistingNames){
+            if(nonExistingNames && nonExistingNames.length){
+                const msg = nonExistingNames.length === 1 ? `Import partially successful. The drug ${nonExistingNames[0]} is not recognizable` : `Import partially successful. The drugs ${nonExistingNames.join(', ')} are not recognizable`
+                eventBus.$emit(EV_show_user_msg, msg, 5000)
+                this.isLoadingFile = false
+                return
+            }
+            eventBus.$emit(EV_show_user_msg, 'Import successful. It is recommended to save the list.', 5000, 'success')
+            this.isLoadingFile = false
+        },
+        async onImportList(ev){
+            try{
+                this.isLoadingFile = true
+                const rows = await readXlsxFile(ev.target.files[0])
+                const allNames = rows.reduce((acc, row) => {
+                    row.forEach(cell => {
+                        if(!cell || typeof cell !== 'string') return
+                        acc.push(cell)
+                    })
+                    return acc;
+                }, []);
+                const formatedNames = allNames.map(mat => {
+                    let name = mat.toLowerCase()
+                    return name.charAt(0).toUpperCase() + name.slice(1)
+                })
+                const existingNames = []
+                const nonExistingNames = []
+                for (let i = 0; i < formatedNames.length; i++) {
+                    let name = formatedNames[i];
+                    const criteria = { autocomplete: true, q: name };
+                    const results = await this.$store.dispatch({ type: 'getMaterials', criteria });
+                    if(results.includes(name)) existingNames.push(name)
+                    else nonExistingNames.push(name)
+                }
+                if(!existingNames.length){
+                    eventBus.$emit(EV_show_user_msg, 'Import failed. File not supported (most be xlsx) or no drugs/supplements recognized.', 5000, 'error')
+                    this.isLoadingFile = false
+                }
+                else this.$router.push({ query: { q: [ ...existingNames ], isImported: true, nonExisting: [...nonExistingNames] } }).catch(() => {})
+            }catch(err){
+                eventBus.$emit(EV_show_user_msg, 'Import failed. File not supported (most be xlsx) or no drugs/supplements recognized.', 5000, 'error')
+                this.isLoadingFile = false
+            }
+        },
         countLoadingTime(){
             let loadingTimeInterval = setInterval(()=>{
                 this.loadingTime++
@@ -1615,6 +1710,7 @@ export default {
         OnboardingTour,
         SaveSearchModal,
         ChevronRightIcon,
+        Loader
     }
 };
 </script>

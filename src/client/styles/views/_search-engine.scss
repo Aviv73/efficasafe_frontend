@@ -84,7 +84,7 @@
             margin: rem(20px) 0 rem(12px);
             
             @include for-narrow-layout {
-                margin: rem(90px) 0 rem(12px);
+                margin: rem(60px) 0 rem(12px);
             }
 
             input {
@@ -105,20 +105,75 @@
                 }
             }
         }
+        &-import-export-container{
+            width: 250px;
+            display: flex;
+            margin-block-end: rem(24px);
+            justify-content: space-between;
+            align-items: center;
+            margin-right: 10px;
+
+            
+            @include for-narrow-layout {
+                width: 217px;
+                margin-block-end: rem(40px);
+                align-self: center;
+            }
+            
+            .activator{
+                font-family: roboto, sans-serif;
+                letter-spacing: 0.005rem;
+                color: #205072bf;
+                font-size: 14px;
+                border-radius: 50px;
+                border: 1px solid #205072bf;
+                transition: box-shadow 0.4s ease;
+                padding: 2px 5px 2px;
+                cursor: pointer;
+                width: 82px;
+            }
+
+            .padding{
+                padding: 1px 5px 2px 7px;
+            }
+
+            .info-icon{
+                cursor: pointer;
+                display: inline-block;
+                transform: scale(0.7);
+                position: absolute;
+                top: -18px;
+                left: 5px;
+                color: #205072bf;
+            }
+
+            .right{
+                left: 4px;
+            }
+
+            .tooltip-content{
+                box-shadow: 0px 2px 4px rgb(18 18 18 / 10%);
+                border: 1px solid #E2E2E2;
+                display: inline-block;
+                text-align: center;
+                line-height: 1.1875rem;
+                padding: 0.75rem 1.125rem;
+                max-width: 12.875rem;
+                background-color: #fff;
+            }
+            
+        }
+        .file-loader{
+            width: 50px;
+        }
         &-actions {
             line-height: rem(36px);
             letter-spacing: rem(.6px);
             opacity: .8;
             color: $clr7;
-            margin-block-end: rem(24px);
             width: 90%;
-            margin: 0 auto;
+            margin: 0 auto 12px;
             max-width: 316px;
-            
-            @include for-narrow-layout {
-                margin-block-end: rem(66px);
-            }
-
             a, button {
                 color: $clr1;
                 transition: color .3s ease;

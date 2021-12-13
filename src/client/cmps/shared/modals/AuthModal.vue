@@ -176,7 +176,7 @@ export default {
             return /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(this.cred.email)
         },
         verifyPassword(){
-            return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(this.cred.password)
+            return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d<>_+^#@$!%*?&]{8,}$/.test(this.cred.password)
         },
         resetError(type){
             if(type === 'email') {

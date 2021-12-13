@@ -10,9 +10,12 @@ import './styles/app.scss';
 import './directives';
 import '../cms/filters';
 import './validation';
+import JsonExcel from "vue-json-excel";
 
 require('vue-tour/dist/vue-tour.css');
 Vue.use(VueTour);
+
+Vue.component("downloadExcel", JsonExcel);
 
 Vue.config.productionTip = false;
 
