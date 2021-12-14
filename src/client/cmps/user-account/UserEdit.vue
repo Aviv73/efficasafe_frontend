@@ -185,8 +185,28 @@ export default {
                 this.editedDetails.phone = `+1 ${this.editedDetails.phone}`;
             }
         },
+        getUserToPrint(){
+            const user = JSON.parse(JSON.stringify(this.loggedInUser))
+            delete user._id
+            delete user.password
+            delete user.role
+            delete user.type
+            delete user.email_verified
+            delete user.approvedUse
+            delete user.trialTime
+            delete user.isSubscribe
+            user.searches.forEach(search => {
+                delete search.at
+                delete search.isEncrypted
+                delete search.materials
+                delete search.updates
+            })
+            return user
+
+        },
         downloadPersonalInfo(){
-            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.loggedInUser));
+            const user = this.getUserToPrint()
+            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(user));
             var downloadAnchorNode = document.createElement('a');
             downloadAnchorNode.setAttribute("href",     dataStr);
             downloadAnchorNode.setAttribute("download", "Efficasafe - Personal Information");

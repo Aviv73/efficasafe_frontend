@@ -57,7 +57,7 @@
                         </button>
                     </tooltip>
                 </div>
-                <!-- <template v-if="loggedInUser && (loggedInUser.type === 'subscribed' || loggedInUser.email_verified )">
+                <template v-if="loggedInUser && (loggedInUser.type === 'subscribed' || loggedInUser.email_verified )">
                     <div v-if="!isLoadingFile" class="search-engine-search-import-export-container">
                         <div class="btn-container">
                             <label class="activator padding">
@@ -95,7 +95,7 @@
                         </div>
                     </div>
                     <loader class="file-loader" v-else />
-                </template> -->
+                </template>
                 <ul
                     class="search-engine-search-materials"
                     :class="{ 'empty': !materials.length }"
@@ -380,7 +380,7 @@ import { statisticsService } from '@/cms/services/statistics.service';
 import { storageService } from '@/cms/services/storage.service';
 import { eventBus, EV_show_user_msg, EV_search_results_cleared } from '@/cms/services/eventBus.service';
 import { logService } from '@/cms/services/log.service';
-// import readXlsxFile from 'read-excel-file'
+import readXlsxFile from 'read-excel-file'
 
 import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import ShareModal from '@/client/cmps/shared/modals/ShareModal';
@@ -393,7 +393,7 @@ import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
 import MaterialInteractionsPreview from '@/client/cmps/search-engine/MaterialInteractionsPreview';
 import Disclaimer from '@/client/cmps/search-engine/Disclaimer';
 import OnboardingTour from '@/client/cmps/search-engine/OnboardingTour';
-// import Loader from '@/client/cmps/common/icons/Loader';
+import Loader from '@/client/cmps/common/icons/Loader';
 
 import UndoIcon from '@/client/cmps/common/icons/UndoIcon';
 import RedoIcon from '@/client/cmps/common/icons/RedoIcon';
@@ -1030,40 +1030,40 @@ export default {
             eventBus.$emit(EV_show_user_msg, 'Import successful. It is recommended to save the list.', 5000, 'success')
             this.isLoadingFile = false
         },
-        // async onImportList(ev){
-        //     try{
-        //         this.isLoadingFile = true
-        //         const rows = await readXlsxFile(ev.target.files[0])
-        //         const allNames = rows.reduce((acc, row) => {
-        //             row.forEach(cell => {
-        //                 if(!cell || typeof cell !== 'string') return
-        //                 acc.push(cell)
-        //             })
-        //             return acc;
-        //         }, []);
-        //         const formatedNames = allNames.map(mat => {
-        //             let name = mat.toLowerCase()
-        //             return name.charAt(0).toUpperCase() + name.slice(1)
-        //         })
-        //         const existingNames = []
-        //         const nonExistingNames = []
-        //         for (let i = 0; i < formatedNames.length; i++) {
-        //             let name = formatedNames[i];
-        //             const criteria = { autocomplete: true, q: name };
-        //             const results = await this.$store.dispatch({ type: 'getMaterials', criteria });
-        //             if(results.includes(name)) existingNames.push(name)
-        //             else nonExistingNames.push(name)
-        //         }
-        //         if(!existingNames.length){
-        //             eventBus.$emit(EV_show_user_msg, 'Import failed. File not supported (most be xlsx) or no drugs/supplements recognized.', 5000, 'error')
-        //             this.isLoadingFile = false
-        //         }
-        //         else this.$router.push({ query: { q: [ ...existingNames ], isImported: true, nonExisting: [...nonExistingNames] } }).catch(() => {})
-        //     }catch(err){
-        //         eventBus.$emit(EV_show_user_msg, 'Import failed. File not supported (most be xlsx) or no drugs/supplements recognized.', 5000, 'error')
-        //         this.isLoadingFile = false
-        //     }
-        // },
+        async onImportList(ev){
+            try{
+                this.isLoadingFile = true
+                const rows = await readXlsxFile(ev.target.files[0])
+                const allNames = rows.reduce((acc, row) => {
+                    row.forEach(cell => {
+                        if(!cell || typeof cell !== 'string') return
+                        acc.push(cell)
+                    })
+                    return acc;
+                }, []);
+                const formatedNames = allNames.map(mat => {
+                    let name = mat.toLowerCase()
+                    return name.charAt(0).toUpperCase() + name.slice(1)
+                })
+                const existingNames = []
+                const nonExistingNames = []
+                for (let i = 0; i < formatedNames.length; i++) {
+                    let name = formatedNames[i];
+                    const criteria = { autocomplete: true, q: name };
+                    const results = await this.$store.dispatch({ type: 'getMaterials', criteria });
+                    if(results.includes(name)) existingNames.push(name)
+                    else nonExistingNames.push(name)
+                }
+                if(!existingNames.length){
+                    eventBus.$emit(EV_show_user_msg, 'Import failed. File not supported (most be xlsx) or no drugs/supplements recognized.', 5000, 'error')
+                    this.isLoadingFile = false
+                }
+                else this.$router.push({ query: { q: [ ...existingNames ], isImported: true, nonExisting: [...nonExistingNames] } }).catch(() => {})
+            }catch(err){
+                eventBus.$emit(EV_show_user_msg, 'Import failed. File not supported (most be xlsx) or no drugs/supplements recognized.', 5000, 'error')
+                this.isLoadingFile = false
+            }
+        },
         countLoadingTime(){
             let loadingTimeInterval = setInterval(()=>{
                 this.loadingTime++
@@ -1710,7 +1710,7 @@ export default {
         OnboardingTour,
         SaveSearchModal,
         ChevronRightIcon,
-        // Loader
+        Loader
     }
 };
 </script>

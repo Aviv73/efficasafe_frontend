@@ -90,7 +90,11 @@ export default {
                 endpoint = strings.join('/')
             }else endpoint = this.$route.fullPath
 
-            this.search.url = `${window.location.origin}${endpoint}`;
+            const filteredEndpoint = endpoint.split('&').filter(str => {
+                return !str.includes('isImported') && !str.includes('nonExisting')
+            }).join('&')
+
+            this.search.url = `${window.location.origin}${filteredEndpoint}`;
             this.search.at = Date.now();
             this.search.materials = this.$store.getters.materials
             const search = JSON.parse(JSON.stringify(this.search));

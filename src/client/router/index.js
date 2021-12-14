@@ -4,6 +4,7 @@ import store from '@/cms/store';
 import Home from '@/client/views/Home.vue';
 import SearchEngine from '@/client/views/SearchEngine';
 import InteractionDetails from '@/client/views/InteractionDetails';
+import MaterialDetails from '@/client/views/MaterialDetails';
 import ResetPassForm from '@/client/views/auth/ResetPassForm.vue';
 import SendPassResetForm from '@/client/views/auth/SendPassResetForm.vue';
 import VerifyEmail from '@/client/views/auth/VerifyEmail.vue';
@@ -11,6 +12,7 @@ import DBankInteractionDetails from '@/client/views/DBankInteractionDetails';
 import UserAccount from '@/client/views/UserAccount';
 import Logo from '@/client/views/Logo';
 import ManageEmails from '@/client/views/ManageEmails';
+import CookiePolicy from '@/client/views/CookiePolicy';
 // import Subscribe from '@/client/views/Subscribe';
 // import Payment from '@/client/views/Payment';
 // import PaymentFailed from '@/client/views/PaymentFailed';
@@ -33,6 +35,11 @@ const routes = [
     path: '/logo',
     name: 'Logo',
     component: Logo
+  },
+  {
+    path: '/cookie-policy',
+    name: 'CookiePolicy',
+    component: CookiePolicy
   },
   // {
   //   path: '/subscribe',
@@ -115,6 +122,11 @@ const routes = [
     path: '/interaction/:id',
     name: 'InteractionDetails',
     component: InteractionDetails
+  },
+  {
+    path: '/material/:id',
+    name: 'MaterialDetails',
+    component: MaterialDetails
   },
   {
     path: '/interaction/:id/:matId',
