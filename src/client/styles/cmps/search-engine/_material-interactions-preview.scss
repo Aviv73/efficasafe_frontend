@@ -37,6 +37,7 @@
         }
     }
     &-composites {
+        margin-bottom: 15px;
         &-composite {
             max-width: rem(130px);
             display: flex;
@@ -65,7 +66,7 @@
                 }
             }
             &:not(:last-child) {
-                margin-block-end: rem(8px);
+                margin-block-end: rem(20px);
             }
 
             .under-construction-icon {
@@ -73,6 +74,12 @@
                 right: -123px;
                 bottom: -3px;
                 color: $yellow;
+            }
+
+            .details-link{
+                font-size: 12px;
+                position: absolute;
+                top: 22px;
             }
         }
     }
@@ -106,7 +113,7 @@
         }
     }
     hr {
-        margin-block-start: rem(20px);
+        margin-block-start: rem(25px);
         border-top: 1px solid rgba($clr6, .4);
     }
 

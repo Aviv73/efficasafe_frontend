@@ -308,6 +308,10 @@
               label="Is Under Construction"
               v-model="editedMaterial.isUnderStudy"
             />
+            <v-checkbox
+              label="Show Material Page"
+              v-model="editedMaterial.isShowPage"
+            />
           </div>
             <v-btn
               class="mx-auto"

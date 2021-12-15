@@ -22,7 +22,7 @@
                         to ensure you get the best browsing experience.
                         <router-link
                             class="user-msg-cookie-notice-link"
-                            to="/privacy-statement"
+                            to="/cookie-policy"
                         >
                             Learn more
                         </router-link>

@@ -38,6 +38,9 @@
                     }"
                 >
                 <span class="clip-txt">{{ material.name }}</span>
+                <router-link v-if="material.isShowPage" class="details-link" :to="`/material/${material._id}`" target="_blank">
+                    More info
+                </router-link>
                 <tooltip :hidden="!material.isUnderStudy" bottom>
                     <template #content>
                         <div class="interactions-preview under-construction">

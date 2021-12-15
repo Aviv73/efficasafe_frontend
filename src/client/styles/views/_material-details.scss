@@ -3,6 +3,11 @@
     height: fit-content;
     max-width: 100%;
     display: flex;
+    -webkit-user-select: none;  
+    -moz-user-select: none;  
+    -ms-user-select: none;  
+    -o-user-select: none;  
+    user-select: none;
 
     .line{
         margin: 30px 0;
@@ -10,8 +15,8 @@
 
     &-nav {
         background-color: #FAFAFA;
-        width: 275px;
-        height: 93vh;
+        width: 310px;
+        height: 95vh;
         position: fixed;
         overflow-y: auto;
         transition: 0.6s;
@@ -31,7 +36,7 @@
         &-logo{
             img{
                 width: 200px;
-                margin: 15px 0 15px 36px;
+                margin: 25px 0 44px 45px;
             }
         }
 
@@ -66,7 +71,7 @@
 
     &-content{
         height: 100%;
-        margin-left: 290px;
+        margin-left: 335px;
         margin-top: 23px;
         width: 60%;
         
@@ -155,6 +160,11 @@
                     font-weight: normal;
                 }
 
+            }
+
+            .item{
+                font-size: 12px;
+                font-style: unset;
             }
         }
 
