@@ -215,7 +215,9 @@ export default {
         storageService.store('isPaying', true)
         const res = await paymentService.getEndpoint(apiSignAddress)
         this.isLoading = false
-        window.location = `https://icom.yaad.net/p/?action=pay&${res.payload}`;
+        if(res.payload) window.location = `https://icom.yaad.net/p/?action=pay&${res.payload}`;
+        else eventBus.$emit(EV_show_user_msg, 'Something Went wrong, please try again', 5000, 'error');
+        
     }
   },
   watch:{

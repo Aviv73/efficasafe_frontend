@@ -198,13 +198,12 @@
                 
                 .txt-container{
                     padding: 10px 0;
-                    @media (max-width: $break-narrow) {
-                        max-width: 230px;
-                    }
+                    max-width: 88%;
                 }
                 
                 .txt{
                     color: #6A6A6A;
+                    max-width: 100%;
                 }
                 
                 .link{
@@ -219,5 +218,17 @@
 
     .show{
         transform: translateX(0%);
+    }
+
+    .loader{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .sub-font{
+        font-size: 11px;
+        bottom: -2px;
     }
 }
