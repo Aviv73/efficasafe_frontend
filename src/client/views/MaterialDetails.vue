@@ -139,47 +139,47 @@
                 </section>
                 <section v-if="material.pharmacology.pharmacodynamics" class="material-details-content-section">
                     <h3 ref="Pharmacodynamics">Pharmacodynamics</h3>
-                    <p>{{material.pharmacology.pharmacodynamics}}</p>
+                    <p v-html="material.pharmacology.pharmacodynamics"></p>
                     <hr class="line">
                 </section>
                 <section v-if="material.pharmacology.absorption" class="material-details-content-section">
                     <h3 ref="Absorption">Absorption</h3>
-                    <p>{{material.pharmacology.absorption}}</p>
+                    <p v-html="material.pharmacology.absorption"></p>
                     <hr class="line">
                 </section>
                 <section v-if="material.pharmacology.mechanismOfAction" class="material-details-content-section">
                     <h3 ref="Mechanism of action">Mechanism of action</h3>
-                    <p>{{material.pharmacology.mechanismOfAction}}</p>
+                    <p v-html="material.pharmacology.mechanismOfAction"></p>
                     <hr class="line">
                 </section>
                 <section v-if="material.pharmacology.proteinBinding" class="material-details-content-section">
                     <h3 ref="Protein binding">Protein binding</h3>
-                    <p>{{material.pharmacology.proteinBinding}}</p>
+                    <p v-html="material.pharmacology.proteinBinding"></p>
                     <hr class="line">
                 </section>
                 <section v-if="material.pharmacology.metabolism" class="material-details-content-section">
                     <h3 ref="Metabolism">Metabolism</h3>
-                    <p>{{material.pharmacology.metabolism}}</p>
+                    <p v-html="material.pharmacology.metabolism"></p>
                     <hr class="line">
                 </section>
                 <section v-if="material.pharmacology.halfLife" class="material-details-content-section">
                     <h3 ref="Half life">Half life</h3>
-                    <p>{{material.pharmacology.halfLife}}</p>
+                    <p v-html="material.pharmacology.halfLife"></p>
                     <hr class="line">
                 </section>
                 <section v-if="material.pharmacology.routeOfElimination" class="material-details-content-section">
                     <h3 ref="Route of elimination">Route of elimination</h3>
-                    <p>{{material.pharmacology.routeOfElimination}}</p>
+                    <p v-html="material.pharmacology.routeOfElimination"></p>
                     <hr class="line">
                 </section>
                 <section v-if="material.pharmacology.volumeOfDistribution" class="material-details-content-section">
                     <h3 ref="Volume of distribution">Volume of distribution</h3>
-                    <p>{{material.pharmacology.volumeOfDistribution}}</p>
+                    <p v-html="material.pharmacology.volumeOfDistribution"></p>
                     <hr class="line">
                 </section>
                 <section v-if="material.pharmacology.clearance" class="material-details-content-section">
                     <h3 ref="Clearance">Clearance</h3>
-                    <p>{{material.pharmacology.clearance}}</p>
+                    <p v-html="material.pharmacology.clearance"></p>
                     <hr class="line">
                 </section>
                 <section v-if="material.ODA" class="material-details-content-section">
@@ -240,7 +240,6 @@
                     <h4 ref="References">References</h4>
                     <template v-if="material.refs.length">
                         <div v-for="ref in refsToShow" :key="ref.draftIdx" class="ref-container">
-                        <!-- <div v-for="ref in material.refs" :key="ref.draftIdx" class="ref-container"> -->
                             <p class="ref-idx">{{ref.draftIdx}}</p>
                             <div class="txt-container">
                                 <p class="txt">{{ref.txt}}</p>
@@ -249,14 +248,22 @@
                         </div>
                     </template>
                     <template v-else-if="material.dBankRefs.length">
-                        <div v-for="ref in material.dBankRefs" :key="ref.ref_id" class="ref-container">
-                            <p class="ref-idx">{{ref.ref_id}}</p>
+                        <div v-for="ref in dBankRefsToShow" :key="ref.ref_id" class="ref-container">
+                            <p class="ref-idx dBank-ref-idx">{{ref.ref_id}}</p>
                             <div class="txt-container">
                                 <p v-if="ref.citation" class="txt">{{ref.citation}}</p>
                                 <a v-if="ref.pubmed_id" class="link clip-txt" target="_blank" :href="`https://pubmed.ncbi.nlm.nih.gov/${ref.pubmed_id}`">https://pubmed.ncbi.nlm.nih.gov/{{ref.pubmed_id}}</a>
                                 <a v-if="ref.url" class="link clip-txt" target="_blank" :href="ref.url">{{ref.url}}</a>
                             </div>
                         </div>
+                        <!-- <div v-for="ref in material.dBankRefs" :key="ref.ref_id" class="ref-container">
+                            <p class="ref-idx">{{ref.ref_id}}</p>
+                            <div class="txt-container">
+                                <p v-if="ref.citation" class="txt">{{ref.citation}}</p>
+                                <a v-if="ref.pubmed_id" class="link clip-txt" target="_blank" :href="`https://pubmed.ncbi.nlm.nih.gov/${ref.pubmed_id}`">https://pubmed.ncbi.nlm.nih.gov/{{ref.pubmed_id}}</a>
+                                <a v-if="ref.url" class="link clip-txt" target="_blank" :href="ref.url">{{ref.url}}</a>
+                            </div>
+                        </div> -->
                     </template>
                 </section>
             </main>
@@ -278,7 +285,9 @@ export default {
             material: null,
             showNav: false,
             refCountMap:{},
+            nextRefNum: 1,
             isLoading: true,
+            filedToSkip:['pathways','effectOnDrugMetabolism','detailedPharmacology'],
             refNumsToShow:[]
         }
     },
@@ -331,6 +340,18 @@ export default {
         },
         refsToShow(){
             return this.material.refs.filter(ref => this.refNumsToShow.includes(ref.draftIdx))
+        },
+        dBankRefsToShow(){
+            const refsToShow = this.material.dBankRefs.filter(ref => this.refCountMap[ref.ref_id])
+            refsToShow.forEach(ref => {
+                ref.ref_id = this.refCountMap[ref.ref_id]
+            })
+            refsToShow.sort((a,b) => {
+                if(a.ref_id > b.ref_id) return 1
+                if(a.ref_id < b.ref_id) return -1
+                return 0
+            })
+            return refsToShow
         }
     },
     async created(){
@@ -342,24 +363,83 @@ export default {
                 return typeof material[key] === 'string' && material[key].includes('<')
             })
             keysToCheck.forEach(key => {
-                if(key === 'pathways') return
+                if(this.filedToSkip.includes(key)) return
                 const regex = /\(([\d- ,\d]+)\)/g;
                 const matches = material[key].match(regex);
                 if(matches){
                     matches.forEach(match => {
                         this.setRefNumsToShow(match)
-                        material[key] = material[key].replace(match, `<sub class="sub-font">${match}</sub>`)
+                        material[key] = material[key].replaceAll(match, `<sub class="sub-font">${match}</sub>`)
                     });
                 }
             })
         }
-        // else{
-        //     const regex = /\[(.*?)\]/g;
-        //     // const regex = /\[[a-zA-Z][0-9]*]/g;
-        //     const matches = material.pharmacology.pharmacodynamics.match(regex);
-        //     // const matches = material.pharmacology.toxicity.match(regex);
-        //     console.log(matches);
-        // }
+        else{
+            material.dBankRefs.unshift({citation: 'FDA Label', url: material.fdaLabel, ref_id: 'label'}, {citation: 'FDA Label', url: material.fdaLabel, ref_id: 'FDA label'} )
+            const keysToCheck = Object.keys(material).filter((key) => {
+                return typeof material[key] === 'string' && material[key].includes('<')
+            })
+            keysToCheck.forEach(key => {
+                material[key] = material[key].replaceAll('<sub>', '')
+                material[key] = material[key].replaceAll('</sub>', '')
+                material[key] = material[key].replaceAll('<sup>', '')
+                material[key] = material[key].replaceAll('</sup>', '')
+                const regex = /\[(.*?)\]/g;
+                const matches = material[key].match(regex);
+                if(matches){
+                    matches.forEach(match => {
+                        const matchToShow = match.substring(1,match.length-1)
+                        let splited = matchToShow.split(',')
+                        const dBandRefRegex = new RegExp(/[A-Z][0-9]+/g);
+                        const isShowAsSub = splited.some(str => str === 'label' || str === 'FDA label' || dBandRefRegex.test(str))
+                        if(!isShowAsSub) material[key] = material[key].replaceAll(match, splited.join(' '))
+                        else {
+                            let strToShow = ''
+                            splited.forEach(str => {
+                                str = str.trim()
+                                if(!this.refCountMap[str]) {
+                                    this.refCountMap[str] = this.nextRefNum
+                                    this.nextRefNum++
+                                }
+                                strToShow = strToShow ? strToShow + ',' + this.refCountMap[str] : this.refCountMap[str]
+                            })
+                            // const tooltip = `<aside class="material-tooltip">popo6</aside>`
+                            // material[key] = material[key].replaceAll(match, `<sub class="sub-font">(${strToShow})${tooltip}</sub>`)
+                            material[key] = material[key].replaceAll(match, `<sub class="sub-font">(${strToShow})</sub>`)
+                        }
+                    })
+                }
+            })
+            Object.keys(material.pharmacology).forEach(key => {
+                material.pharmacology[key] = material.pharmacology[key].replaceAll('<sub>', '')
+                material.pharmacology[key] = material.pharmacology[key].replaceAll('</sub>', '')
+                material.pharmacology[key] = material.pharmacology[key].replaceAll('<sup>', '')
+                material.pharmacology[key] = material.pharmacology[key].replaceAll('</sup>', '')
+                const regex = /\[(.*?)\]/g;
+                const matches = material.pharmacology[key].match(regex);
+                if(matches){
+                    matches.forEach(match => {
+                        const matchToShow = match.substring(1,match.length-1)
+                        let splited = matchToShow.split(',')
+                        const dBandRefRegex = new RegExp(/[A-Z][0-9]+/g);
+                        const isShowAsSub = splited.some(str => str === 'label' || str === 'FDA label' || dBandRefRegex.test(str))
+                        if(!isShowAsSub) material.pharmacology[key] = material.pharmacology[key].replaceAll(match, splited.join(' '))
+                        else {
+                            let strToShow = ''
+                            splited.forEach(str => {
+                                str = str.trim()
+                                if(!this.refCountMap[str]) {
+                                    this.refCountMap[str] = this.nextRefNum
+                                    this.nextRefNum++
+                                }
+                                strToShow = strToShow ? strToShow + ',' + this.refCountMap[str] : this.refCountMap[str]
+                            })
+                            material.pharmacology[key] = material.pharmacology[key].replaceAll(match, `<sub class="sub-font">(${strToShow})</sub>`)
+                        }
+                    })
+                }
+            })
+        }
         this.material = material
         this.isLoading = false
     },

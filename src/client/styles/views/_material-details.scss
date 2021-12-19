@@ -195,6 +195,12 @@
                         margin: 5px 12.5px 5px 0;
                     }
                 }
+
+                .dBank-ref-idx {
+                    margin: 20px 20px;
+                    width: 50px;
+                    text-align: center;
+                }
                 
                 .txt-container{
                     padding: 10px 0;
@@ -228,7 +234,15 @@
     }
 
     .sub-font{
+        position: relative;
         font-size: 11px;
         bottom: -2px;
+    }
+
+    .material-tooltip{
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        background-color: red;
     }
 }
