@@ -135,15 +135,41 @@
                     :class="{ 'child': isChild  }"
                     v-else-if="interaction.side2Label && !interaction.side2Material"
                 >
-                    <label-interaction-preview
-                        :interaction="interaction"
-                        :material="materials[0]"
-                        :materialIds="materialIds"
-                        :shortRecommendation="getShortRecommendation(interaction.recommendation)"
-                        :color="getInteractionColor(interaction)"
-                        :link="link"
-                        :parent-idx="idx"
-                    />
+                    <template v-if="$route.name === 'Monitor'">
+                        <ul
+                            class="monitor-list"
+                            v-if="interaction.monitor.general || interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptoms"
+                        >
+                            <li v-if="interaction.monitor.general">
+                                <span class="monitor-list-header font-bold">General:</span>
+                                {{ interaction.monitor.general | remove-ending-dot | capitalize}}
+                            </li>
+                            <li v-if="interaction.monitor.labTests">
+                                <span class="monitor-list-header font-bold">Lab tests:</span>
+                                {{ interaction.monitor.labTests | remove-ending-dot | capitalize}}
+                            </li>
+                            <li v-if="interaction.monitor.otherTests">
+                                <span class="monitor-list-header font-bold">Other tests:</span>
+                                {{ interaction.monitor.otherTests | remove-ending-dot | capitalize}}
+                            </li>
+                            <li v-if="interaction.monitor.symptoms">
+                                <span class="monitor-list-header font-bold">Symptoms:</span>
+                                {{ interaction.monitor.symptoms | remove-ending-dot | capitalize }}
+                            </li>
+                        </ul>
+                        <p class="monitor-list" v-else>There is nothing to monitor for this interaction.</p>
+                    </template>
+                    <template v-else>
+                        <label-interaction-preview
+                            :interaction="interaction"
+                            :material="materials[0]"
+                            :materialIds="materialIds"
+                            :shortRecommendation="getShortRecommendation(interaction.recommendation)"
+                            :color="getInteractionColor(interaction)"
+                            :link="link"
+                            :parent-idx="idx"
+                        />
+                    </template>
                 </div>
                 <div v-else-if="!!interaction.isMaterialGroup">
                     <positive-interaction-preview

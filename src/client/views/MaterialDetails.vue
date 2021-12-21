@@ -256,14 +256,6 @@
                                 <a v-if="ref.url" class="link clip-txt" target="_blank" :href="ref.url">{{ref.url}}</a>
                             </div>
                         </div>
-                        <!-- <div v-for="ref in material.dBankRefs" :key="ref.ref_id" class="ref-container">
-                            <p class="ref-idx">{{ref.ref_id}}</p>
-                            <div class="txt-container">
-                                <p v-if="ref.citation" class="txt">{{ref.citation}}</p>
-                                <a v-if="ref.pubmed_id" class="link clip-txt" target="_blank" :href="`https://pubmed.ncbi.nlm.nih.gov/${ref.pubmed_id}`">https://pubmed.ncbi.nlm.nih.gov/{{ref.pubmed_id}}</a>
-                                <a v-if="ref.url" class="link clip-txt" target="_blank" :href="ref.url">{{ref.url}}</a>
-                            </div>
-                        </div> -->
                     </template>
                 </section>
             </main>
@@ -303,22 +295,225 @@ export default {
             let formattedRef = ref.substring(1, ref.length-1);
             if(!formattedRef.includes(',') && !formattedRef.includes('-')){
                 this.refNumsToShow.push(+formattedRef)
+                if(!this.refCountMap[formattedRef]) {
+                    this.refCountMap[formattedRef] = this.nextRefNum
+                    this.nextRefNum++
+                }
             }else{
                 let refs = formattedRef.split(',')
                 refs.forEach(refStr => {
                     if(!refStr.includes('-')){
                         this.refNumsToShow.push(+refStr)
+                        if(!this.refCountMap[refStr]) {
+                            this.refCountMap[refStr] = this.nextRefNum
+                            this.nextRefNum++
+                        }
                     }
                     else{
                         let firstRef = +refStr.split('-')[0]
                         let LastRef = +refStr.split('-')[1]
                         for (let i = firstRef; i <= LastRef; i++) {
                             this.refNumsToShow.push(i)
+                            if(!this.refCountMap[i+'']) {
+                                this.refCountMap[i+''] = this.nextRefNum
+                                this.nextRefNum++
+                            }
                         }
                     }
                 })
             } 
             this.refNumsToShow = [...new Set(this.refNumsToShow)]
+        },
+        addSubHeaders(object, key, isDrug = false){
+            const subHeaderRegex = /\*{2}(.*?)\*{2}/g
+            const subHeaders = object[key].match(subHeaderRegex);
+            if(subHeaders){
+                subHeaders.forEach(subHeader => {
+                    let justHeader = subHeader.substring(2, subHeader.length - 2)
+                    object[key] = object[key].replaceAll(subHeader, `<h2 class="dbank-sub-header">${justHeader}</h2>`)
+                })
+            }
+            
+            return isDrug ? object[key] : object
+        },
+        handelRefsSupp(material){
+            const keysToCheck = Object.keys(material).filter((key) => {
+                return typeof material[key] === 'string' && material[key].includes('<')
+            })
+            keysToCheck.forEach(key => {
+                if(this.filedToSkip.includes(key)) return
+                material[key] = material[key].replaceAll('<p>', '')
+                material[key] = material[key].replaceAll('</p>', '')
+                material = this.addSubHeaders(material, key)
+                const regex = /\(([\d- ,\d]+)\)/g;
+                const matches = material[key].match(regex);
+                if(matches){
+                    matches.forEach(match => {
+                        this.setRefNumsToShow(match)
+                        const strToShow = this.createStrRefs(match)
+                        const refsTooltip = this.createTooltipHtml(strToShow,material)
+                        material[key] = material[key].replaceAll(match, `<sub class="sub-font tooltip-sub">(${strToShow})${refsTooltip}</sub>`)
+                    });
+                }
+            })
+            return material
+        },
+        handelRefsDrug(material){
+            material.dBankRefs.unshift({citation: 'FDA Label', url: material.fdaLabel, ref_id: 'Label'},{citation: 'FDA Label', url: material.fdaLabel, ref_id: 'label'}, {citation: 'FDA Label', url: material.fdaLabel, ref_id: 'FDA label'} )
+            const keysToCheck = Object.keys(material).filter((key) => {
+                return typeof material[key] === 'string' && material[key].includes('<')
+            })
+            keysToCheck.forEach(key => {
+                material[key] = material[key].replaceAll('<sub>', '')
+                material[key] = material[key].replaceAll('</sub>', '')
+                material[key] = material[key].replaceAll('<sup>', '')
+                material[key] = material[key].replaceAll('</sup>', '')
+                material[key] = material[key].replaceAll('<p>', '')
+                material[key] = material[key].replaceAll('</p>', '')
+                const regex = /\[(.*?)\]/g;
+                const matches = material[key].match(regex);
+                if(matches){
+                    matches.forEach(match => {
+                        const matchToShow = match.substring(1,match.length-1)
+                        let splited = matchToShow.split(',')
+                        const dBandRefRegex = new RegExp(/[A-Z][0-9]+/g);
+                        const isShowAsSub = splited.some(str => str === 'label' || str === 'FDA label' || dBandRefRegex.test(str))
+                        if(!isShowAsSub) material[key] = material[key].replaceAll(match, splited.join(' '))
+                        else {
+                            let strToShow = ''
+                            splited.forEach(str => {
+                                str = str.trim()
+                                if(!this.refCountMap[str]) {
+                                    this.refCountMap[str] = this.nextRefNum
+                                    this.nextRefNum++
+                                }
+                                strToShow = strToShow ? strToShow + ',' + this.refCountMap[str] : this.refCountMap[str]
+                            })
+                            const refsTooltip = this.createTooltipHtmlDBank(strToShow,material)
+                            material[key] = material[key].replaceAll(match, `<sub class="sub-font">(${strToShow})${refsTooltip}</sub>`)
+                        }
+                    })
+                }
+            })
+            Object.keys(material.pharmacology).forEach(key => {
+                material.pharmacology[key] = material.pharmacology[key].replaceAll('<sub>', '')
+                material.pharmacology[key] = material.pharmacology[key].replaceAll('</sub>', '')
+                material.pharmacology[key] = material.pharmacology[key].replaceAll('<sup>', '')
+                material.pharmacology[key] = material.pharmacology[key].replaceAll('</sup>', '')
+                material.pharmacology[key] = this.addSubHeaders(material.pharmacology, key, true)
+                const regex = /\[(.*?)\]/g;
+                const matches = material.pharmacology[key].match(regex);
+                if(matches){
+                    matches.forEach(match => {
+                        const matchToShow = match.substring(1,match.length-1)
+                        let splited = matchToShow.split(',')
+                        const dBandRefRegex = new RegExp(/[A-Z][0-9]+/g);
+                        const isShowAsSub = splited.some(str => str === 'label' || str === 'FDA label' || dBandRefRegex.test(str))
+                        if(!isShowAsSub) material.pharmacology[key] = material.pharmacology[key].replaceAll(match, splited.join(' '))
+                        else {
+                            let strToShow = ''
+                            splited.forEach(str => {
+                                str = str.trim()
+                                if(!this.refCountMap[str]) {
+                                    this.refCountMap[str] = this.nextRefNum
+                                    this.nextRefNum++
+                                }
+                                strToShow = strToShow ? strToShow + ',' + this.refCountMap[str] : this.refCountMap[str]
+                            })
+                            const refsTooltip = this.createTooltipHtmlDBank(strToShow,material)
+                            material.pharmacology[key] = material.pharmacology[key].replaceAll(match, `<sub class="sub-font">(${strToShow})${refsTooltip}</sub>`)
+                        }
+                    })
+                }
+            })
+            return material
+        },
+        organizeRefs(material){
+            if(material.type !== 'drug'){
+                material = this.handelRefsSupp(material)
+            }else{
+                material = this.handelRefsDrug(material)
+            }
+            return material
+        },
+        createStrRefs(refsStr){
+            let refs = refsStr.substring(1, refsStr.length-1).split(',')
+            let strToReturn = ''
+            refs.forEach(ref => {
+                if(!ref.includes('-')){
+                    strToReturn = strToReturn ? strToReturn  + ',' + this.refCountMap[ref] : this.refCountMap[ref] + ''
+                }else{
+                    let firstRef = ref.split('-')[0]
+                    let LastRef = ref.split('-')[1]
+                    const correctStr = this.refCountMap[firstRef] + '-' + this.refCountMap[LastRef]
+                    strToReturn = strToReturn ? strToReturn  + ',' + correctStr : correctStr 
+                }
+            })
+            return strToReturn
+
+        },
+        createTooltipHtml(refString,material){
+            const refs = refString.split(',')
+            let htmlStr = `<ul class="refs-tooltip refs-tooltip-material">`
+            refs.forEach(ref => {
+                if(!ref.includes('-')){
+                    const originalRef = +Object.keys(this.refCountMap).find(key => this.refCountMap[key] === +ref);
+                    const fullRef = material.refs.find(ref => ref.draftIdx === originalRef)
+                    htmlStr += `<li class="tooltip-item">
+                        <p style="display: inline-block; font-size:11px;"><span>${ref}</span>.${fullRef.txt}</p>
+                        <a
+                            class="ref-link"
+                            target="_blank"
+                            style="word-break: break-all;"
+                            href="${fullRef.link}"
+                        >
+                            ${fullRef.link}
+                        </a>
+                    </li>`;
+                }else{
+                    let firstRef = +ref.split('-')[0]
+                    let LastRef = +ref.split('-')[1]
+                    for (let i = firstRef; i <= LastRef; i++) {
+                        const originalRef = +Object.keys(this.refCountMap).find(key => this.refCountMap[key] === i);
+                        const fullRef = material.refs.find(ref => ref.draftIdx === originalRef)
+                        htmlStr += `<li class="tooltip-item">
+                            <p style="display: inline-block; font-size:12px;"><span>${i}</span>.${fullRef.txt}</p>
+                            <a
+                                class="ref-link"
+                                target="_blank"
+                                style="word-break: break-all;"
+                                href="${fullRef.link}"
+                            >
+                                ${fullRef.link}
+                            </a>
+                        </li>`;
+                    }
+                }
+            })
+            htmlStr += `</ul>`
+            return htmlStr
+        },
+        createTooltipHtmlDBank(refString,material){
+            refString = refString + ''
+            const refs = refString.split(',')
+            let htmlStr = `<ul class="refs-tooltip refs-tooltip-material">`
+            refs.forEach(ref => {
+                const originalRef = Object.keys(this.refCountMap).find(key => this.refCountMap[key] === +ref);
+                const fullRef = material.dBankRefs.find(ref => ref.ref_id === originalRef)
+                htmlStr += `<li class="tooltip-item">
+                    <p style="display: block; font-size:11px;"><span>${ref}</span>.${fullRef.citation || fullRef.title}</p>
+                    <a
+                        class="ref-link"
+                        target="_blank"
+                        style="word-break: break-all;"
+                        href="${fullRef.pubmed_id ? `https://pubmed.ncbi.nlm.nih.gov/${fullRef.pubmed_id}` : fullRef.url}"
+                    >
+                        ${fullRef.pubmed_id ? `https://pubmed.ncbi.nlm.nih.gov/${fullRef.pubmed_id}` : fullRef.url}
+                    </a>
+                </li>`;
+            })
+            htmlStr += `</ul>`
+            return htmlStr
         }
     },
     computed:{
@@ -339,7 +534,11 @@ export default {
             return material.aliases.length ? material.aliases.sort() : material.dBankAliases.sort()
         },
         refsToShow(){
-            return this.material.refs.filter(ref => this.refNumsToShow.includes(ref.draftIdx))
+            const refsToShow = this.material.refs.filter(ref => this.refCountMap[ref.draftIdx])
+            refsToShow.forEach(ref => {
+                ref.draftIdx = this.refCountMap[ref.draftIdx]
+            })
+            return refsToShow
         },
         dBankRefsToShow(){
             const refsToShow = this.material.dBankRefs.filter(ref => this.refCountMap[ref.ref_id])
@@ -358,89 +557,8 @@ export default {
         const { id } = this.$route.params;
         const material = await this.$store.dispatch({type: 'loadMaterial',matId: id });
         if(!material.isShowPage) return this.$router.push('/404')
-        if(material.type !== 'drug'){
-            const keysToCheck = Object.keys(material).filter((key) => {
-                return typeof material[key] === 'string' && material[key].includes('<')
-            })
-            keysToCheck.forEach(key => {
-                if(this.filedToSkip.includes(key)) return
-                const regex = /\(([\d- ,\d]+)\)/g;
-                const matches = material[key].match(regex);
-                if(matches){
-                    matches.forEach(match => {
-                        this.setRefNumsToShow(match)
-                        material[key] = material[key].replaceAll(match, `<sub class="sub-font">${match}</sub>`)
-                    });
-                }
-            })
-        }
-        else{
-            material.dBankRefs.unshift({citation: 'FDA Label', url: material.fdaLabel, ref_id: 'label'}, {citation: 'FDA Label', url: material.fdaLabel, ref_id: 'FDA label'} )
-            const keysToCheck = Object.keys(material).filter((key) => {
-                return typeof material[key] === 'string' && material[key].includes('<')
-            })
-            keysToCheck.forEach(key => {
-                material[key] = material[key].replaceAll('<sub>', '')
-                material[key] = material[key].replaceAll('</sub>', '')
-                material[key] = material[key].replaceAll('<sup>', '')
-                material[key] = material[key].replaceAll('</sup>', '')
-                const regex = /\[(.*?)\]/g;
-                const matches = material[key].match(regex);
-                if(matches){
-                    matches.forEach(match => {
-                        const matchToShow = match.substring(1,match.length-1)
-                        let splited = matchToShow.split(',')
-                        const dBandRefRegex = new RegExp(/[A-Z][0-9]+/g);
-                        const isShowAsSub = splited.some(str => str === 'label' || str === 'FDA label' || dBandRefRegex.test(str))
-                        if(!isShowAsSub) material[key] = material[key].replaceAll(match, splited.join(' '))
-                        else {
-                            let strToShow = ''
-                            splited.forEach(str => {
-                                str = str.trim()
-                                if(!this.refCountMap[str]) {
-                                    this.refCountMap[str] = this.nextRefNum
-                                    this.nextRefNum++
-                                }
-                                strToShow = strToShow ? strToShow + ',' + this.refCountMap[str] : this.refCountMap[str]
-                            })
-                            // const tooltip = `<aside class="material-tooltip">popo6</aside>`
-                            // material[key] = material[key].replaceAll(match, `<sub class="sub-font">(${strToShow})${tooltip}</sub>`)
-                            material[key] = material[key].replaceAll(match, `<sub class="sub-font">(${strToShow})</sub>`)
-                        }
-                    })
-                }
-            })
-            Object.keys(material.pharmacology).forEach(key => {
-                material.pharmacology[key] = material.pharmacology[key].replaceAll('<sub>', '')
-                material.pharmacology[key] = material.pharmacology[key].replaceAll('</sub>', '')
-                material.pharmacology[key] = material.pharmacology[key].replaceAll('<sup>', '')
-                material.pharmacology[key] = material.pharmacology[key].replaceAll('</sup>', '')
-                const regex = /\[(.*?)\]/g;
-                const matches = material.pharmacology[key].match(regex);
-                if(matches){
-                    matches.forEach(match => {
-                        const matchToShow = match.substring(1,match.length-1)
-                        let splited = matchToShow.split(',')
-                        const dBandRefRegex = new RegExp(/[A-Z][0-9]+/g);
-                        const isShowAsSub = splited.some(str => str === 'label' || str === 'FDA label' || dBandRefRegex.test(str))
-                        if(!isShowAsSub) material.pharmacology[key] = material.pharmacology[key].replaceAll(match, splited.join(' '))
-                        else {
-                            let strToShow = ''
-                            splited.forEach(str => {
-                                str = str.trim()
-                                if(!this.refCountMap[str]) {
-                                    this.refCountMap[str] = this.nextRefNum
-                                    this.nextRefNum++
-                                }
-                                strToShow = strToShow ? strToShow + ',' + this.refCountMap[str] : this.refCountMap[str]
-                            })
-                            material.pharmacology[key] = material.pharmacology[key].replaceAll(match, `<sub class="sub-font">(${strToShow})</sub>`)
-                        }
-                    })
-                }
-            })
-        }
-        this.material = material
+        const materialWithRefs = this.organizeRefs(material)
+        this.material = materialWithRefs
         this.isLoading = false
     },
     components:{

@@ -40,7 +40,37 @@
     }
 }
 
+p{
+    sub {
+        position: relative;
+        line-height: unset;
+        color: $clr2;
+        cursor: help;
+    
+        @include hover-supported {
+            & > .refs-tooltip {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    }
+}
+
 sub {
+    position: relative;
+    line-height: unset;
+    color: $clr2;
+    cursor: help;
+
+    @include hover-supported {
+        & > .refs-tooltip {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+}
+
+.tooltip-sub {
     position: relative;
     line-height: unset;
     color: $clr2;

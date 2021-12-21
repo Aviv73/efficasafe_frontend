@@ -73,7 +73,7 @@
         height: 100%;
         margin-left: 335px;
         margin-top: 23px;
-        width: 60%;
+        width: 50%;
         
         @media (max-width: $break-narrow) {
             margin: 0 auto;
@@ -239,10 +239,13 @@
         bottom: -2px;
     }
 
-    .material-tooltip{
-        position: absolute;
-        width: 100px;
-        height: 100px;
-        background-color: red;
+    .dbank-sub-header{
+        font-weight: bold;
+        color: $clr1;
+        margin-top: 5px;
+    }
+
+    .refs-tooltip-material{
+        top: 10px;
     }
 }
