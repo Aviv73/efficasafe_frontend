@@ -27,4 +27,5 @@ export const EV_clear_input = 'clear-input';
 export const EV_open_singup = 'open-signup';
 export const EV_open_login = 'open-login';
 export const EV_email_exists = 'email-exists';
+export const EV_wrong_provider = 'wrong-provider';
 export const EV_update_nav = 'update-nav';

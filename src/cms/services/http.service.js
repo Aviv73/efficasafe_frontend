@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import { eventBus, EV_Unauthenticated, EV_email_exists } from '@/cms/services/eventBus.service';
+import { eventBus, EV_Unauthenticated, EV_email_exists, EV_wrong_provider } from '@/cms/services/eventBus.service';
 
 var axios = Axios.create({
     withCredentials: true
@@ -41,6 +41,9 @@ async function ajax(endpoint, method = 'get', data = null, responseType = 'json'
         return res.data;
     } catch (err) {
         if (err.response && err.response.status === 401) {
+            if(err.response.data.providerError){
+                eventBus.$emit(EV_wrong_provider , err.response.data.providerError)
+            }
             eventBus.$emit(EV_Unauthenticated, { type: 'Unauthenticated', isError: true });
             throw err.response
         }

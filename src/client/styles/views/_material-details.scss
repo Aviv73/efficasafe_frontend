@@ -65,11 +65,16 @@
                     padding-left: 35px;
                     color: $clr1;
                 }
+
+                &:last-child{
+                    margin-bottom: 13px;
+                }
             }
         }
     }
 
     &-content{
+        position: relative;
         height: 100%;
         margin-left: 335px;
         margin-top: 23px;
@@ -78,6 +83,15 @@
         @media (max-width: $break-narrow) {
             margin: 0 auto;
             width: 75%;
+        }
+
+        &-share-btn{
+            position: absolute;
+            right: 0px;
+
+            @media (max-width: $break-narrow) {
+                top: 16px;
+            }
         }
 
         .drawer-btn{
@@ -191,15 +205,11 @@
                 .ref-idx{
                     margin: 20px 45px;
                     color: #6A6A6A;
+                    text-align: center;
                     @media (max-width: $break-narrow) {
                         margin: 5px 12.5px 5px 0;
+                        width: 50px;
                     }
-                }
-
-                .dBank-ref-idx {
-                    margin: 20px 20px;
-                    width: 50px;
-                    text-align: center;
                 }
                 
                 .txt-container{

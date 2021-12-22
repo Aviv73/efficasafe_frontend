@@ -8,7 +8,7 @@
                     </button>
                     <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
                     <p style="padding: 0 10px 5px 10px; margin-block-end: 18px; font-weight: 500;">We have upgraded our registration system, if you are a returning user, please <span @click="$emit('openAuthModal')" style="text-decoration: underline; cursor: pointer;">signup</span>  again</p>
-                        <div v-if="isShowFailedMsg" class="msg failed">WRONG EMAIL OR PASSWORD.</div>
+                        <div v-if="wrongProviderMsg || isShowFailedMsg" class="msg failed">{{wrongProviderMsg || 'WRONG EMAIL OR PASSWORD.'}}</div>
                         <div v-if="isShowSuccesseMsg" class="msg successe">You are now logged in.</div>
                         <form @submit.prevent="onRegister" class="auth-modal-field">
                             <eye-icon v-if="!isShowPass" @click="isShowPass = !isShowPass" class="eye-icon"></eye-icon>
@@ -42,6 +42,9 @@
 
 <script>
 
+import { eventBus, EV_wrong_provider } from '@/cms/services/eventBus.service';
+
+
 import CloseIcon from 'vue-material-design-icons/Close';
 import EyeIcon from 'vue-material-design-icons/Eye';
 import EyeOffIcon from 'vue-material-design-icons/EyeOff';
@@ -54,6 +57,7 @@ export default {
                 password:'',
             },
             isShowFailedMsg: false,
+            wrongProviderMsg: null,
             isShowSuccesseMsg: false,
             isShowPass: false
         };
@@ -90,8 +94,15 @@ export default {
         },
         removeFailedmsg(){
             this.isShowFailedMsg = false
+            this.wrongProviderMsg = null
+        },
+        showWrongProviderMsg(msg){
+            this.wrongProviderMsg = msg.toUpperCase()
         }
         
+    },
+    created(){
+        eventBus.$on(EV_wrong_provider, this.showWrongProviderMsg);
     },
     components:{
         CloseIcon,

@@ -11,16 +11,23 @@
                     <a v-if="material.desc || material.dBankDesc" @click="goTo('Background')">Background</a>
                     <a v-if="material.plantPartUsed" @click="goTo('Plant part used')">Plant part used</a>
                     <a v-if="material.qualities && material.qualities.length" @click="goTo('Qualities')">Qualities</a>
+                    <a v-if="material.nutritionalSources" @click="goTo('Nutritional sources')">Nutritional sources</a>
+                    <a v-if="material.otherCharacteristics" @click="goTo('Other characteristics')">Other characteristics</a>
                     <a v-if="material.activeConstituents" @click="goTo('Active constituents')">Active constituents</a>
                     <a v-if="material.medicinalActions && material.medicinalActions.length" @click="goTo('Medicinal actions')">Medicinal actions</a>
                     <a v-if="(material.indications && material.indications.length) || (material.dBankIndications && material.dBankIndications.length)" @click="goTo('Medicinal uses')">Medicinal uses</a>
+                    <a v-if="material.absorptionAndExcretion" @click="goTo('Absorption and excretion')">Absorption and excretion</a>
+                    <a v-if="material.causesOfDeficiency" @click="goTo('Causes of deficiency')">Causes of deficiency</a>
+                    <a v-if="material.symptomsOfDeficiency" @click="goTo('Symptoms of deficiency')">Symptoms of deficiency</a>
                     <a v-if="material.dosage" @click="goTo('Dosage')">Dosage</a>
+                    <a v-if="material.ODA" @click="goTo('Optimal Daily Allowance')">Optimal Daily Allowance</a>
+                    <a v-if="material.RDA" @click="goTo('Recommended Daily Allowance')">Recommended Daily Allowance</a>
                     <a v-if="material.sensitivities" @click="goTo('Sensitivities')">Sensitivities</a>
                     <a v-if="material.adverseReactions" @click="goTo('Adverse reactions')">Adverse reactions</a>
                     <a v-if="material.overdosage" @click="goTo('Overdosage')">Overdosage</a>
                     <a v-if="material.precautions" @click="goTo('Warnings and precautions')">Warnings and precautions</a>
                     <a v-if="material.contraindications" @click="goTo('Contraindications')">Contraindications</a>
-                    <a v-if="material.toxicity || material.pharmacology.toxicity" @click="goTo('Toxicology')">Toxicology</a>
+                    <a v-if="material.toxicity" @click="goTo('Toxicology1')">Toxicology</a>
                     <a v-if="material.pregnancy" @click="goTo('Pregnancy')">Pregnancy</a>
                     <a v-if="material.lactation" @click="goTo('Lactation')">Lactation</a>
                     <a v-if="material.pharmacology.indication" @click="goTo('Pharmacology')">Pharmacology</a>
@@ -33,20 +40,21 @@
                     <a v-if="material.pharmacology.routeOfElimination" @click="goTo('Route of elimination')">Route of elimination</a>
                     <a v-if="material.pharmacology.volumeOfDistribution" @click="goTo('Volume of distribution')">Volume of distribution</a>
                     <a v-if="material.pharmacology.clearance" @click="goTo('Clearance')">Clearance</a>
-                    <a v-if="material.ODA" @click="goTo('Optimal Daily Allowance')">Optimal Daily Allowance</a>
-                    <a v-if="material.RDA" @click="goTo('Recommended Daily Allowance')">Recommended Daily Allowance</a>
-                    <a v-if="material.nutritionalSources" @click="goTo('Nutritional sources')">Nutritional sources</a>
-                    <a v-if="material.absorptionAndExcretion" @click="goTo('Absorption and excretion')">Absorption and excretion</a>
-                    <a v-if="material.causesOfDeficiency" @click="goTo('Causes of deficiency')">Causes of deficiency</a>
-                    <a v-if="material.symptomsOfDeficiency" @click="goTo('Symptoms of deficiency')">Symptoms of deficiency</a>
-                    <a v-if="material.otherCharacteristics" @click="goTo('Other characteristics')">Other characteristics</a>
                     <a v-if="material.structuredAdverseEffects.length" @click="goTo('Adverse effects')">Adverse effects</a>
                     <a v-if="material.structuredContraIndications.length" @click="goTo('Contraindications')">Contraindications</a>
+                    <a v-if="material.pharmacology.toxicity" @click="goTo('Toxicity')">Toxicity</a>
                     <a v-if="material.foodInteractions.length" @click="goTo('Food Interactions')">Food Interactions</a>
                     <a v-if="(material.refs && material.refs.length) || (material.dBankRefs && material.dBankRefs.length)" @click="goTo('References')">References</a>
                 </section>
             </aside>
             <main v-if="material" class="material-details-content">
+                <button
+                    class="material-details-content-share-btn"
+                    @click="isShareModalActive = true"
+                >
+                    <mobile-share-icon v-if="isScreenNarrow" title="" />
+                    <share-variant-icon v-else title="" />
+                </button>
                 <button class="drawer-btn" @click="showNav = true" v-if="isScreenNarrow"><menu-icon title="" /></button>
                 <p v-if="material.updatedAt" class="material-details-content-at">Updated on {{material.updatedAt | moment('MMMM DD YYYY')}}</p>
                 <h2 class="material-details-content-name">{{material.name}}</h2>
@@ -71,6 +79,16 @@
                     <p v-for="quality in material.qualities" :key="quality">{{quality}}</p>
                     <hr class="line">
                 </section>
+                <section v-if="material.nutritionalSources" class="material-details-content-section">
+                    <h3 ref="Nutritional sources">Nutritional sources</h3>
+                    <p v-html="material.nutritionalSources"></p>
+                    <hr class="line">
+                </section>
+                <section v-if="material.otherCharacteristics" class="material-details-content-section">
+                    <h3 ref="Other characteristics">Other characteristics</h3>
+                    <p v-html="material.otherCharacteristics"></p>
+                    <hr class="line">
+                </section>
                 <section v-if="material.activeConstituents" class="material-details-content-section">
                     <h3 ref="Active constituents">Active constituents</h3>
                     <p v-html="material.activeConstituents"></p>
@@ -87,9 +105,34 @@
                     <p v-else-if="material.dBankIndications.length">{{material.dBankIndications.join(', ')}}</p>
                     <hr class="line">
                 </section>
+                <section v-if="material.absorptionAndExcretion" class="material-details-content-section">
+                    <h3 ref="Absorption and excretion">Absorption and excretion</h3>
+                    <p v-html="material.absorptionAndExcretion"></p>
+                    <hr class="line">
+                </section>
+                <section v-if="material.causesOfDeficiency" class="material-details-content-section">
+                    <h3 ref="Causes of deficiency">Causes of deficiency</h3>
+                    <p v-html="material.causesOfDeficiency"></p>
+                    <hr class="line">
+                </section>
+                <section v-if="material.symptomsOfDeficiency" class="material-details-content-section">
+                    <h3 ref="Symptoms of deficiency">Symptoms of deficiency</h3>
+                    <p v-html="material.symptomsOfDeficiency"></p>
+                    <hr class="line">
+                </section>
                 <section v-if="material.dosage" class="material-details-content-section">
                     <h3 ref="Dosage">Dosage</h3>
                     <p v-html="material.dosage"></p>
+                    <hr class="line">
+                </section>
+                <section v-if="material.ODA" class="material-details-content-section">
+                    <h3 ref="Optimal Daily Allowance">Optimal Daily Allowance</h3>
+                    <p v-html="material.ODA"></p>
+                    <hr class="line">
+                </section>
+                <section v-if="material.RDA" class="material-details-content-section">
+                    <h3 ref="Recommended Daily Allowance">Recommended Daily Allowance</h3>
+                    <p v-html="material.RDA"></p>
                     <hr class="line">
                 </section>
                 <section v-if="material.sensitivities" class="material-details-content-section">
@@ -117,9 +160,9 @@
                     <p v-html="material.contraindications"></p>
                     <hr class="line">
                 </section>
-                <section v-if="material.toxicity || material.pharmacology.toxicity" class="material-details-content-section">
-                    <h3 ref="Toxicology">Toxicology</h3>
-                    <p v-html="material.toxicity ||  material.pharmacology.toxicity"></p>
+                <section v-if="material.toxicity" class="material-details-content-section">
+                    <h3 ref="Toxicology1">Toxicology</h3>
+                    <p v-html="material.toxicity"></p>
                     <hr class="line">
                 </section>
                 <section v-if="material.pregnancy" class="material-details-content-section">
@@ -182,41 +225,6 @@
                     <p v-html="material.pharmacology.clearance"></p>
                     <hr class="line">
                 </section>
-                <section v-if="material.ODA" class="material-details-content-section">
-                    <h3 ref="Optimal Daily Allowance">Optimal Daily Allowance</h3>
-                    <p v-html="material.ODA"></p>
-                    <hr class="line">
-                </section>
-                <section v-if="material.RDA" class="material-details-content-section">
-                    <h3 ref="Recommended Daily Allowance">Recommended Daily Allowance</h3>
-                    <p v-html="material.RDA"></p>
-                    <hr class="line">
-                </section>
-                <section v-if="material.nutritionalSources" class="material-details-content-section">
-                    <h3 ref="Nutritional sources">Nutritional sources</h3>
-                    <p v-html="material.nutritionalSources"></p>
-                    <hr class="line">
-                </section>
-                <section v-if="material.absorptionAndExcretion" class="material-details-content-section">
-                    <h3 ref="Absorption and excretion">Absorption and excretion</h3>
-                    <p v-html="material.absorptionAndExcretion"></p>
-                    <hr class="line">
-                </section>
-                <section v-if="material.causesOfDeficiency" class="material-details-content-section">
-                    <h3 ref="Causes of deficiency">Causes of deficiency</h3>
-                    <p v-html="material.causesOfDeficiency"></p>
-                    <hr class="line">
-                </section>
-                <section v-if="material.symptomsOfDeficiency" class="material-details-content-section">
-                    <h3 ref="Symptoms of deficiency">Symptoms of deficiency</h3>
-                    <p v-html="material.symptomsOfDeficiency"></p>
-                    <hr class="line">
-                </section>
-                <section v-if="material.otherCharacteristics" class="material-details-content-section">
-                    <h3 ref="Other characteristics">Other characteristics</h3>
-                    <p v-html="material.otherCharacteristics"></p>
-                    <hr class="line">
-                </section>
                 <section v-if="material.structuredAdverseEffects.length" class="material-details-content-section">
                     <h3 ref="Adverse effects">Adverse effects</h3>
                     <div class="material-details-content-aliases-container">
@@ -229,6 +237,11 @@
                     <div class="material-details-content-aliases-container">
                         <p class="item" v-for="effect in material.structuredContraIndications" :key="effect">{{effect}}</p>
                     </div>
+                    <hr class="line">
+                </section>
+                <section v-if="material.pharmacology.toxicity" class="material-details-content-section">
+                    <h3 ref="Toxicity">Toxicity</h3>
+                    <p v-html="material.pharmacology.toxicity"></p>
                     <hr class="line">
                 </section>
                 <section v-if="material.foodInteractions.length" class="material-details-content-section">
@@ -261,26 +274,40 @@
             </main>
         </template>
         <loader v-else class="loader" />
+        <modal-wrap
+            :isActive="isShareModalActive"
+            @close-modal="isShareModalActive = false"
+        >
+            <share-modal @close-modal="isShareModalActive = false" />
+        </modal-wrap>
     </section>
 </template>
 
 <script>
 
 import Loader from '@/client/cmps/common/icons/Loader';
+import ShareModal from '@/client/cmps/shared/modals/ShareModal';
+import ModalWrap from '@/client/cmps/common/ModalWrap';
 
 import MenuIcon from 'vue-material-design-icons/Menu';
 import ArrowLeftIcon from 'vue-material-design-icons/ArrowLeft';
+import MobileShareIcon from '@/client/cmps/common/icons/MobileShareIcon';
+import ShareVariantIcon from 'vue-material-design-icons/ShareVariant';
 
 export default {
     data() {
         return {
             material: null,
             showNav: false,
+            isShareModalActive: false,
             refCountMap:{},
             nextRefNum: 1,
             isLoading: true,
             filedToSkip:['pathways','effectOnDrugMetabolism','detailedPharmacology'],
-            refNumsToShow:[]
+            refNumsToShow:[],
+            fieldsToCheckSupp:['desc','activeConstituents','nutritionalSources','otherCharacteristics','absorptionAndExcretion','causesOfDeficiency','symptomsOfDeficiency','dosage','ODA','RDA','sensitivities','adverseReactions','overdosage','precautions','contraindications','toxicity','pregnancy','lactation'],
+            fieldsToCheckDrug:['dBankDesc','activeConstituents','dosage','sensitivities','adverseReactions','overdosage','precautions','contraindications','toxicity','pregnancy','lactation'],
+            fieldsToCheckPharmacology:['indication','pharmacodynamics','absorption','mechanismOfAction','proteinBinding','metabolism','halfLife','routeOfElimination','volumeOfDistribution','clearance','toxicity']
         }
     },
     methods: {
@@ -336,16 +363,24 @@ export default {
             
             return isDrug ? object[key] : object
         },
+        removeUnderLines(str){
+            const regex = /_{1}(.*?)_{1}/g
+            const matches = str.match(regex)
+            if(matches){
+                matches.forEach(match => {
+                    let strToShow = match.substring(1, match.length - 1)
+                    str = str.replaceAll(match, strToShow)
+                })
+            }
+            return str
+        },
         handelRefsSupp(material){
-            const keysToCheck = Object.keys(material).filter((key) => {
-                return typeof material[key] === 'string' && material[key].includes('<')
-            })
-            keysToCheck.forEach(key => {
+            const regex = /\(([\d- ,\d]+)\)/g;
+            this.fieldsToCheckSupp.forEach(key => {
                 if(this.filedToSkip.includes(key)) return
                 material[key] = material[key].replaceAll('<p>', '')
                 material[key] = material[key].replaceAll('</p>', '')
                 material = this.addSubHeaders(material, key)
-                const regex = /\(([\d- ,\d]+)\)/g;
                 const matches = material[key].match(regex);
                 if(matches){
                     matches.forEach(match => {
@@ -356,20 +391,31 @@ export default {
                     });
                 }
             })
+            this.fieldsToCheckPharmacology.forEach(key => {
+                material.pharmacology[key] = material.pharmacology[key].replaceAll('<p>', '')
+                material.pharmacology[key] = material.pharmacology[key].replaceAll('</p>', '')
+                const matches = material.pharmacology[key].match(regex);
+                if(matches){
+                    matches.forEach(match => {
+                        this.setRefNumsToShow(match)
+                        const strToShow = this.createStrRefs(match)
+                        const refsTooltip = this.createTooltipHtml(strToShow,material)
+                        material.pharmacology[key] = material.pharmacology[key].replaceAll(match, `<sub class="sub-font tooltip-sub">(${strToShow})${refsTooltip}</sub>`)
+                    });
+                }
+            })
             return material
         },
         handelRefsDrug(material){
             material.dBankRefs.unshift({citation: 'FDA Label', url: material.fdaLabel, ref_id: 'Label'},{citation: 'FDA Label', url: material.fdaLabel, ref_id: 'label'}, {citation: 'FDA Label', url: material.fdaLabel, ref_id: 'FDA label'} )
-            const keysToCheck = Object.keys(material).filter((key) => {
-                return typeof material[key] === 'string' && material[key].includes('<')
-            })
-            keysToCheck.forEach(key => {
+            this.fieldsToCheckDrug.forEach(key => {
                 material[key] = material[key].replaceAll('<sub>', '')
                 material[key] = material[key].replaceAll('</sub>', '')
                 material[key] = material[key].replaceAll('<sup>', '')
                 material[key] = material[key].replaceAll('</sup>', '')
                 material[key] = material[key].replaceAll('<p>', '')
                 material[key] = material[key].replaceAll('</p>', '')
+                material[key] = this.removeUnderLines(material[key])
                 const regex = /\[(.*?)\]/g;
                 const matches = material[key].match(regex);
                 if(matches){
@@ -395,11 +441,12 @@ export default {
                     })
                 }
             })
-            Object.keys(material.pharmacology).forEach(key => {
+            this.fieldsToCheckPharmacology.forEach(key => {
                 material.pharmacology[key] = material.pharmacology[key].replaceAll('<sub>', '')
                 material.pharmacology[key] = material.pharmacology[key].replaceAll('</sub>', '')
                 material.pharmacology[key] = material.pharmacology[key].replaceAll('<sup>', '')
                 material.pharmacology[key] = material.pharmacology[key].replaceAll('</sup>', '')
+                material.pharmacology[key] = this.removeUnderLines(material.pharmacology[key])
                 material.pharmacology[key] = this.addSubHeaders(material.pharmacology, key, true)
                 const regex = /\[(.*?)\]/g;
                 const matches = material.pharmacology[key].match(regex);
@@ -459,6 +506,15 @@ export default {
                 if(!ref.includes('-')){
                     const originalRef = +Object.keys(this.refCountMap).find(key => this.refCountMap[key] === +ref);
                     const fullRef = material.refs.find(ref => ref.draftIdx === originalRef)
+                    if(!fullRef) return
+                    const regex = /\(([\d- ,\d]+)\)/g;
+                    const matches = fullRef.txt.match(regex)
+                    if(matches){
+                        matches.forEach(match => {
+                            const newMatch = `[${match.substring(1, match.length - 1)}]` 
+                            fullRef.txt = fullRef.txt.replaceAll(match, newMatch)
+                        })
+                    }
                     htmlStr += `<li class="tooltip-item">
                         <p style="display: inline-block; font-size:11px;"><span>${ref}</span>.${fullRef.txt}</p>
                         <a
@@ -476,6 +532,7 @@ export default {
                     for (let i = firstRef; i <= LastRef; i++) {
                         const originalRef = +Object.keys(this.refCountMap).find(key => this.refCountMap[key] === i);
                         const fullRef = material.refs.find(ref => ref.draftIdx === originalRef)
+                        if(!fullRef) return
                         htmlStr += `<li class="tooltip-item">
                             <p style="display: inline-block; font-size:12px;"><span>${i}</span>.${fullRef.txt}</p>
                             <a
@@ -500,6 +557,7 @@ export default {
             refs.forEach(ref => {
                 const originalRef = Object.keys(this.refCountMap).find(key => this.refCountMap[key] === +ref);
                 const fullRef = material.dBankRefs.find(ref => ref.ref_id === originalRef)
+                if(!fullRef) return 
                 htmlStr += `<li class="tooltip-item">
                     <p style="display: block; font-size:11px;"><span>${ref}</span>.${fullRef.citation || fullRef.title}</p>
                     <a
@@ -538,6 +596,11 @@ export default {
             refsToShow.forEach(ref => {
                 ref.draftIdx = this.refCountMap[ref.draftIdx]
             })
+            refsToShow.sort((a,b) => {
+                if(a.draftIdx > b.draftIdx) return 1
+                if(a.draftIdx < b.draftIdx) return -1
+                return 0
+            })
             return refsToShow
         },
         dBankRefsToShow(){
@@ -564,7 +627,11 @@ export default {
     components:{
         MenuIcon,
         ArrowLeftIcon,
-        Loader
+        Loader,
+        ShareModal,
+        ModalWrap,
+        MobileShareIcon,
+        ShareVariantIcon
     }
 };
 </script>
