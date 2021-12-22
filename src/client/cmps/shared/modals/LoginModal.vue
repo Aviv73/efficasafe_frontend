@@ -44,7 +44,6 @@
 
 import { eventBus, EV_wrong_provider } from '@/cms/services/eventBus.service';
 
-
 import CloseIcon from 'vue-material-design-icons/Close';
 import EyeIcon from 'vue-material-design-icons/Eye';
 import EyeOffIcon from 'vue-material-design-icons/EyeOff';
