@@ -68,13 +68,13 @@
                                 class="quote-img"
                                 alt=""
                             />
-                            <p>Keren volkomir, Naturopth.</p>
+                            <p>Keren Volkomir, Naturopth.</p>
                         </div>
-                        "Finally! One site with everything in it.
-                        Efficasafe allows me to search, cross-reference
-                        and get all the information I need, in seconds.
-                        This kind of scientifically backed information
-                        is priceless to me as a Naturopath."
+                        "Finally! One site with everything in it. Efficasafe
+                        allows me to search, cross-reference and get all the
+                        information I need, in seconds. This kind of
+                        scientifically backed information is priceless to me as
+                        a Naturopath."
                     </div>
                     <div class="home-stats-quote">
                         <div class="home-stats-quote-img-container">
@@ -84,16 +84,15 @@
                                 alt=""
                             />
                             <p>
-                                Michal kirsh, ND, RH AHG, Head of herbalism
+                                Michal Kirsh, ND, RH AHG, Head of herbalism
                                 program, Broshim School of complementary
                                 medicine.
                             </p>
                         </div>
-                        "This site is by far the most fully
-                        comprehensive, reliable resources I have come
-                        across for herb-drug interactions. I believe
-                        that professionals have been waiting for
-                        something like this to come along for a very
+                        "This site is by far the most fully comprehensive,
+                        reliable resource I have come across for herb-drug
+                        interactions. I believe that professionals have been
+                        waiting for something like this to come along for a very
                         long time."
                     </div>
                     <div class="home-stats-quote">
@@ -104,16 +103,30 @@
                                 alt=""
                             />
                             <p>
-                                Inbale dressler, ND, RH AHG, Davidoff cancer
+                                Inbale Dressler, ND, RH AHG, Davidoff cancer
                                 center, Integrative Medicine Unit.
                             </p>
                         </div>
-                        "So much more than just an interaction checker.
-                        I can save my searches (my patients) and even
-                        get notified when the interactions I saved have
-                        been updated. That’s a game-changer that enables
-                        better patient care, which at the end of the
-                        day, is what we are all aiming for."
+                        "So much more than just an interaction checker. I can
+                        save my searches (my patients) and even get notified
+                        when the interactions I saved have been updated. That’s
+                        a game-changer that enables better patient care, which
+                        at the end of the day, is what we are all aiming for."
+                    </div>
+                    <div class="home-stats-quote">
+                        <div class="home-stats-quote-img-container">
+                            <img
+                                src="@/client/assets/imgs/recommender4.png"
+                                class="quote-img"
+                                alt=""
+                            />
+                            <p>Vardit Kalamaro, Pharm.D</p>
+                        </div>
+                        "This site is so easy to use it has quickly become an
+                        integral part of my everyday practice as a clinical
+                        pharmacist. There is no better drug-supplement
+                        interaction checker than Efficasafe. Easy to use, and
+                        good for quick decision making."
                     </div>
                     <template #navigation-prev>
                         <chevron-left-icon :size="36" title="" />
@@ -132,12 +145,14 @@
                             alt=""
                         />
                         <div class="home-stats-quote-txt-container">
-                            <p>"Finally! One site with everything in it.
-                            Efficasafe allows me to search, cross-reference
-                            and get all the information I need, in seconds.
-                            This kind of scientifically backed information
-                            is priceless to me as a Naturopath."</p>
-                            <p class="title">Keren volkomir, Naturopth.</p>
+                            <p>
+                                "Finally! One site with everything in it.
+                                Efficasafe allows me to search, cross-reference
+                                and get all the information I need, in seconds.
+                                This kind of scientifically backed information
+                                is priceless to me as a Naturopath."
+                            </p>
+                            <p class="title">Keren Volkomir, Naturopth.</p>
                         </div>
                     </div>
                     <div class="home-stats-quote-wide">
@@ -147,14 +162,16 @@
                             alt=""
                         />
                         <div class="home-stats-quote-txt-container">
-                            <p>"This site is by far the most fully
-                            comprehensive, reliable resources I have come
-                            across for herb-drug interactions. I believe
-                            that professionals have been waiting for
-                            something like this to come along for a very
-                            long time."</p>
+                            <p>
+                                "This site is by far the most fully
+                                comprehensive, reliable resource I have come
+                                across for herb-drug interactions. I believe
+                                that professionals have been waiting for
+                                something like this to come along for a very
+                                long time."
+                            </p>
                             <p class="title">
-                                Michal kirsh, ND, RH AHG, Head of herbalism
+                                Michal Kirsh, ND, RH AHG, Head of herbalism
                                 program, Broshim School of complementary
                                 medicine.
                             </p>
@@ -167,16 +184,36 @@
                             alt=""
                         />
                         <div class="home-stats-quote-txt-container">
-                            <p>"So much more than just an interaction checker.
-                            I can save my searches (my patients) and even
-                            get notified when the interactions I saved have
-                            been updated. That’s a game-changer that enables
-                            better patient care, which at the end of the
-                            day, is what we are all aiming for."</p>
+                            <p>
+                                "So much more than just an interaction checker.
+                                I can save my searches (my patients) and even
+                                get notified when the interactions I saved have
+                                been updated. That’s a game-changer that enables
+                                better patient care, which at the end of the
+                                day, is what we are all aiming for."
+                            </p>
                             <p class="title">
-                                Inbale dressler, ND, RH AHG, Davidoff cancer
+                                Inbale Dressler, ND, RH AHG, Davidoff cancer
                                 center, Integrative Medicine Unit.
                             </p>
+                        </div>
+                    </div>
+                    <div class="home-stats-quote-wide">
+                        <img
+                            src="@/client/assets/imgs/recommender4.png"
+                            class="quote-img"
+                            alt=""
+                        />
+                        <div class="home-stats-quote-txt-container">
+                            <p>
+                                "This site is so easy to use it has quickly
+                                become an integral part of my everyday practice
+                                as a clinical pharmacist. There is no better
+                                drug-supplement interaction checker than
+                                Efficasafe. Easy to use, and good for quick
+                                decision making."
+                            </p>
+                            <p class="title">Vardit Kalamaro, Pharm.D</p>
                         </div>
                     </div>
                     <template #navigation-prev>
@@ -275,10 +312,6 @@ import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
 import WelcomeModal from '../cmps/shared/modals/WelcomeModal';
 import PassChangeSuccess from '../cmps/shared/modals/PassChangeSuccess';
 import { eventBus, EV_clear_input } from '@/cms/services/eventBus.service';
-
-// import recommenderImg1 from '@/client/assets/imgs/recommender1.png';
-// import recommenderImg2 from '@/client/assets/imgs/recommender2.png';
-// import recommenderImg3 from '@/client/assets/imgs/recommender3.png';
 
 export default {
     name: 'Home',

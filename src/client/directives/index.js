@@ -38,6 +38,78 @@ Vue.directive('set-sticky-class-name', {
     }
 });
 
+Vue.directive('refs-tooltip-material', {
+    inserted(el, binding) {
+        const {material, refCountMap} = binding.value
+        const elSubs = el.querySelectorAll('sub');
+        elSubs.forEach(elSub => {
+            const refs = material.type === 'drug' ? elSub.innerText.substring(1,elSub.innerText.length -1).split(',').sort() : elSub.innerText.trim().substring(1,elSub.innerText.length -1).split(',')
+            elSub.addEventListener('mouseenter', setTooltipPos);
+            const elTooltip = document.createElement('ul');
+            elTooltip.classList.add('refs-tooltip');
+            elTooltip.classList.add('refs-tooltip-material');
+            let htmlStr = '';
+            refs.forEach(ref => {
+                if(material.type !== 'drug'){
+                    if(!ref.includes('-')){
+                        console.log(ref);
+                        const originalRef = +Object.keys(refCountMap).find(key => refCountMap[key] === +ref);
+                        const fullRef = material.refs.find(ref => ref.draftIdx === originalRef)
+                        if(!fullRef) return
+                        htmlStr += `<li class="tooltip-item">
+                            <p style="display: inline-block; font-size:11px;"><span>${ref}</span>.${fullRef.txt}</p>
+                            <a
+                                class="ref-link"
+                                target="_blank"
+                                style="word-break: break-all;"
+                                href="${fullRef.link}"
+                            >
+                                ${fullRef.link}
+                            </a>
+                        </li>`;
+                    }else{
+                        let firstRef = +ref.split('-')[0]
+                        let LastRef = +ref.split('-')[1]
+                        for (let i = firstRef; i <= LastRef; i++) {
+                            const originalRef = +Object.keys(refCountMap).find(key => refCountMap[key] === i);
+                            let fullRef = material.refs.find(ref => ref.draftIdx === originalRef)
+                            if(!fullRef) return
+                            htmlStr += `<li class="tooltip-item">
+                                <p style="display: inline-block; font-size:12px;"><span>${i}</span>.${fullRef.txt}</p>
+                                <a
+                                    class="ref-link"
+                                    target="_blank"
+                                    style="word-break: break-all;"
+                                    href="${fullRef.link}"
+                                >
+                                    ${fullRef.link}
+                                </a>
+                            </li>`;
+                        }
+                    }
+                }else{
+                    const originalRef = Object.keys(refCountMap).find(key => refCountMap[key] === +ref);
+                    const fullRef = material.dBankRefs.find(ref => ref.ref_id === originalRef)
+                    if(!fullRef) return 
+                    htmlStr += `<li class="tooltip-item">
+                        <p style="display: block; font-size:11px;"><span>${ref}</span>.${fullRef.citation || fullRef.title}</p>
+                        <a
+                            class="ref-link"
+                            target="_blank"
+                            style="word-break: break-all;"
+                            href="${fullRef.pubmed_id ? `https://pubmed.ncbi.nlm.nih.gov/${fullRef.pubmed_id}` : fullRef.url}"
+                        >
+                            ${fullRef.pubmed_id ? `https://pubmed.ncbi.nlm.nih.gov/${fullRef.pubmed_id}` : fullRef.url}
+                        </a>
+                    </li>`;
+                }
+            })
+            elTooltip.innerHTML = htmlStr;
+            elSub.appendChild(elTooltip);
+        })
+    }
+});
+
 Vue.directive('refs-tooltip', {
     inserted(el, binding) {
         const { dBank } = binding.modifiers;

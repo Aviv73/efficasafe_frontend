@@ -26,7 +26,6 @@
                             small
                         >
                         Clear all
-                            <!-- <v-icon small>mdi-close</v-icon> -->
                         </v-btn>
                         <v-chip-group column>
                             <span

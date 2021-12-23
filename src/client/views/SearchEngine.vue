@@ -62,7 +62,7 @@
                         <div class="btn-container">
                             <label class="activator padding">
                                 <input type="file" @change="onImportList" hidden/>
-                                Import list
+                                <img src="@/client/assets/icons/uploadXL.jpeg" alt="">
                             </label>
                             <tooltip rightBottom on="focus">
                                 <template #content>
@@ -81,7 +81,7 @@
                                 type="csv"
                                 name="My search.xls"
                                 >
-                                Export list
+                                <img src="@/client/assets/icons/downloadXL.jpeg" alt="">
                             </download-excel>
                             </button>
                             <tooltip rightBottom on="focus">
