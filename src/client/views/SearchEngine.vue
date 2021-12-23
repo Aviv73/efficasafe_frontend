@@ -81,7 +81,7 @@
                                 type="csv"
                                 name="My search.xls"
                                 >
-                                <img src="@/client/assets/icons/downloadXL.jpeg" alt="">
+                                <img class="download-xl-img" src="@/client/assets/icons/downloadXL.jpeg" alt="">
                             </download-excel>
                             </button>
                             <tooltip rightBottom on="focus">
