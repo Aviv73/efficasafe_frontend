@@ -1106,11 +1106,6 @@ export default {
                 await this.getPositives();
                 this.isPBLoading = false;
             }
-            if(!this.sameQ && this.materials.length){
-                const isAllSupplements = this.materials.every(material => material.type !== 'drug');
-                if(isAllSupplements) this.$store.commit({type: 'setListType', listType: 'supp'})
-                else this.$store.commit({type: 'setListType', listType: 'all'})
-            }
         },
         async getPositives() {
             const drugIds = this.materials.reduce((acc, { type, _id, labels, isIncluded }) => {
@@ -1291,11 +1286,27 @@ export default {
                 q: this.$route.query.q,
             };
             const materials = await this.$store.dispatch({ type: 'getMaterials', criteria, doCache: true });
-            this.materials = this.sortMaterials(materials);
+            const newMaterials = this.sortMaterials(materials);
+            this.handleListToShow(newMaterials)
+            this.materials = newMaterials;
             this.$store.commit({ type: 'setMaterials', materials});
             this.$store.commit({ type: 'makeMaterialNamesMap', materials});
             this.checkForIncludedMaterials();
             this.$store.commit({ type: 'makeMaterialNamesMap', materials: materials.filter(m => !m.isIncluded) });
+        },
+        handleListToShow(newMaterials){
+            if(this.materials.length){
+                const isSame = newMaterials.every((mat,idx) => this.materials[idx] && mat.name === this.materials[idx].name)
+                if(!isSame){
+                    const isAllSupplements = newMaterials.every(material => material.type !== 'drug');
+                    if(isAllSupplements) this.$store.commit({type: 'setListType', listType: 'supp'})
+                    else this.$store.commit({type: 'setListType', listType: 'all'})
+                }
+            }
+            else{
+                const isAllSupplements = newMaterials.every(material => material.type !== 'drug');
+                if(isAllSupplements) this.$store.commit({type: 'setListType', listType: 'supp'})
+            }
         },
         async removeDupNonPositives(interactions) {
             const res = [];
@@ -1389,7 +1400,14 @@ export default {
                     if(this.listType === 'all' && page == limit){
                         switch (sortBy) {
                             case 'name':
-                                return this.allInteractions.sort((a, b) => (a.name.split(' & ')[side - 1].toLowerCase().localeCompare(b.name.split(' & ')[side - 1].toLowerCase())) * (sortOrder * -1));
+                                return this.allInteractions.sort((a,b) => {
+                                    const nameA = this.materials.find(mat => mat.name === a.name.split(' & ')[side - 1]) ? this.materials.find(mat => mat.name === a.name.split(' & ')[side - 1]).userQuery.toLowerCase() : a.name.split(' & ')[side - 1].toLowerCase()
+                                    const nameB = this.materials.find(mat => mat.name === b.name.split(' & ')[side - 1]) ? this.materials.find(mat => mat.name === b.name.split(' & ')[side - 1]).userQuery.toLowerCase() : b.name.split(' & ')[side - 1].toLowerCase()
+                                    if(nameA > nameB) return sortOrder
+                                    if(nameA < nameB) return sortOrder * -1
+                                    return 0
+                                })
+                                // return this.allInteractions.sort((a, b) => (a.name.split(' & ')[side - 1].toLowerCase().localeCompare(b.name.split(' & ')[side - 1].toLowerCase())) * (sortOrder * -1));
                             case 'recommendation':
                                 return this.allInteractions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * (sortOrder * -1));
                             case 'evidenceLevel':
@@ -1420,7 +1438,14 @@ export default {
                 const sortOrder = isDesc ? -1 : 1;
                 switch (sortBy) {
                     case 'name':
-                        return interactions.sort((a, b) => (a.name.split(' & ')[side - 1].toLowerCase().localeCompare(b.name.split(' & ')[side - 1].toLowerCase())) * (sortOrder * -1));
+                        return interactions.sort((a,b) => {
+                            const nameA = this.materials.find(mat => mat.name === a.name.split(' & ')[side - 1]) ? this.materials.find(mat => mat.name === a.name.split(' & ')[side - 1]).userQuery.toLowerCase() : a.name.split(' & ')[side - 1].toLowerCase()
+                            const nameB = this.materials.find(mat => mat.name === b.name.split(' & ')[side - 1]) ? this.materials.find(mat => mat.name === b.name.split(' & ')[side - 1]).userQuery.toLowerCase() : b.name.split(' & ')[side - 1].toLowerCase()
+                            if(nameA > nameB) return sortOrder
+                            if(nameA < nameB) return sortOrder * -1
+                            return 0
+                        })
+                        // return interactions.sort((a, b) => (a.name.split(' & ')[side - 1].toLowerCase().localeCompare(b.name.split(' & ')[side - 1].toLowerCase())) * (sortOrder * -1));
                     case 'recommendation':
                         return interactions.sort((a, b) => (map[b.recommendation] - map[a.recommendation]) * sortOrder);
                     case 'evidenceLevel':

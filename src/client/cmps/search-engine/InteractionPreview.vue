@@ -294,7 +294,7 @@ export default {
     data() {
         return {
             pathwayRefCount: 0,
-            primarySideInView: 1,
+            primarySideInView: null,
             initialCollapseIsVisible: false,
             newLength: null
         }
@@ -564,6 +564,7 @@ export default {
     },
     async created() {
         this.getPathwayRefsCount();
+        this.primarySideInView = this.$store.getters.firstInteractionSide
         eventBus.$on(EV_sortby_side_swaped, this.swapSideNames);
         this.restoreCollapses();
     },

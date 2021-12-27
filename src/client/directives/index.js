@@ -52,7 +52,6 @@ Vue.directive('refs-tooltip-material', {
             refs.forEach(ref => {
                 if(material.type !== 'drug'){
                     if(!ref.includes('-')){
-                        console.log(ref);
                         const originalRef = +Object.keys(refCountMap).find(key => refCountMap[key] === +ref);
                         const fullRef = material.refs.find(ref => ref.draftIdx === originalRef)
                         if(!fullRef) return

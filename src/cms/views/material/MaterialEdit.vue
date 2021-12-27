@@ -21,25 +21,23 @@
             <v-list-item v-if="editedMaterial.dBankClinicalDesc || isShowEmptyLink" @click="goto('DrugBanks clinical description')">DrugBank's clinical description</v-list-item>
             <v-list-item v-if="editedMaterial.aliases.length || isShowEmptyLink" @click="goto('aliases')">Aliases</v-list-item>
             <v-list-item v-if="editedMaterial.dBankAliases.length || isShowEmptyLink" @click="goto('dBankAliases')">dBankAliases</v-list-item>
+            <v-list-item v-if="editedMaterial.nutritionalSources || isShowEmptyLink" @click="goto('supp Nutritional sources')">supp Nutritional sources</v-list-item>
+            <v-list-item v-if="editedMaterial.otherCharacteristics || isShowEmptyLink" @click="goto('supp Other characteristics')">supp Other characteristics</v-list-item>
+            <v-list-item v-if="editedMaterial.activeConstituents || isShowEmptyLink" @click="goto('Active Constituents')">Active Constituents</v-list-item>
+            <v-list-item v-if="editedMaterial.absorptionAndExcretion || isShowEmptyLink" @click="goto('supp Absorption and excretion')">supp Absorption and excretion</v-list-item>
+            <v-list-item v-if="editedMaterial.causesOfDeficiency || isShowEmptyLink" @click="goto('supp Causes of deficiency')">supp Causes of deficiency</v-list-item>
+            <v-list-item v-if="editedMaterial.symptomsOfDeficiency || isShowEmptyLink" @click="goto('supp Symptoms of deficiency')">supp Symptoms of deficiency</v-list-item>
             <v-list-item v-if="editedMaterial.dosage || isShowEmptyLink" @click="goto('Dosage')">Dosage</v-list-item>
+            <v-list-item v-if="editedMaterial.ODA || isShowEmptyLink" @click="goto('supp ODA (Optimal Daily Allowance)')">supp ODA (Optimal Daily Allowance)</v-list-item>
+            <v-list-item v-if="editedMaterial.RDA || isShowEmptyLink" @click="goto('supp RDA (Recommended Daily Allowance)')">supp RDA (Recommended Daily Allowance)</v-list-item>
             <v-list-item v-if="editedMaterial.sensitivities || isShowEmptyLink" @click="goto('Sensitivities')">Sensitivities</v-list-item>
             <v-list-item v-if="editedMaterial.adverseReactions || isShowEmptyLink" @click="goto('Adverse Reactions')">Adverse Reactions</v-list-item>
             <v-list-item v-if="editedMaterial.overdosage || isShowEmptyLink" @click="goto('Overdosage')">Overdosage</v-list-item>
             <v-list-item v-if="editedMaterial.precautions || isShowEmptyLink" @click="goto('Precautions')">Precautions</v-list-item>
-            <v-list-item v-if="editedMaterial.mechanismOfAction || isShowEmptyLink" @click="goto('Mechanism Of Action')">Mechanism Of Action</v-list-item>
             <v-list-item v-if="editedMaterial.contraindications || isShowEmptyLink" @click="goto('Contraindications')">Contraindications</v-list-item>
             <v-list-item v-if="editedMaterial.toxicity || isShowEmptyLink" @click="goto('Toxicity')">Toxicity</v-list-item>
             <v-list-item v-if="editedMaterial.pregnancy || isShowEmptyLink" @click="goto('Pregnancy')">Pregnancy</v-list-item>
             <v-list-item v-if="editedMaterial.lactation || isShowEmptyLink" @click="goto('Lactation')">Lactation</v-list-item>
-            <v-list-item v-if="editedMaterial.effectOnDrugMetabolism || isShowEmptyLink" @click="goto('Effect on drug metabolism')">Effect on drug metabolism</v-list-item>
-            <v-list-item v-if="editedMaterial.detailedPharmacology || isShowEmptyLink" @click="goto('Detailed Pharmacology')">Detailed Pharmacology</v-list-item>
-            <v-list-item v-if="editedMaterial.activeConstituents || isShowEmptyLink" @click="goto('Active Constituents')">Active Constituents</v-list-item>
-            <v-list-item v-if="editedMaterial.labels.length || isShowEmptyLink" @click="goto('Labels')">Labels</v-list-item>
-            <v-list-item v-if="editedMaterial.refs.length || isShowEmptyLink" @click="goto('References')">References</v-list-item>
-            <v-list-item v-if="editedMaterial.brands.length || isShowEmptyLink" @click="goto('Brands')">Brands</v-list-item>
-            <v-list-item v-if="editedMaterial.compounds.length || isShowEmptyLink" @click="goto('Compounds')">Compounds</v-list-item>
-            <v-list-item v-if="editedMaterial.structuredAdverseEffects.length || isShowEmptyLink" @click="goto('Structured Adverse Effects')">Structured Adverse Effects</v-list-item>
-            <v-list-item v-if="editedMaterial.pathways.length || isShowEmptyLink" @click="goto('Pathways')">Pathways</v-list-item>
             <v-list-group :value="false">
               <template v-slot:activator>
                 <v-list-item-title>Pharmacology</v-list-item-title>
@@ -55,14 +53,16 @@
             <v-list-item v-if="editedMaterial.pharmacology.routeOfElimination || isShowEmptyLink" @click="goto('Route Of Elimination')">Route Of Elimination</v-list-item>
             <v-list-item v-if="editedMaterial.pharmacology.volumeOfDistribution || isShowEmptyLink" @click="goto('Volume Of Distribution')">Volume Of Distribution</v-list-item>
             <v-list-item v-if="editedMaterial.pharmacology.clearance || isShowEmptyLink" @click="goto('Clearance')">Clearance</v-list-item>
-            <v-list-item v-if="editedMaterial.ODA || isShowEmptyLink" @click="goto('supp ODA (Optimal Daily Allowance)')">supp ODA (Optimal Daily Allowance)</v-list-item>
-            <v-list-item v-if="editedMaterial.RDA || isShowEmptyLink" @click="goto('supp RDA (Recommended Daily Allowance)')">supp RDA (Recommended Daily Allowance)</v-list-item>
-            <v-list-item v-if="editedMaterial.nutritionalSources || isShowEmptyLink" @click="goto('supp Nutritional sources')">supp Nutritional sources</v-list-item>
-            <v-list-item v-if="editedMaterial.otherCharacteristics || isShowEmptyLink" @click="goto('supp Other characteristics')">supp Other characteristics</v-list-item>
-            <v-list-item v-if="editedMaterial.absorptionAndExcretion || isShowEmptyLink" @click="goto('supp Absorption and excretion')">supp Absorption and excretion</v-list-item>
-            <v-list-item v-if="editedMaterial.causesOfDeficiency || isShowEmptyLink" @click="goto('supp Causes of deficiency')">supp Causes of deficiency</v-list-item>
-            <v-list-item v-if="editedMaterial.symptomsOfDeficiency || isShowEmptyLink" @click="goto('supp Symptoms of deficiency')">supp Symptoms of deficiency</v-list-item>
             </v-list-group>
+            <v-list-item v-if="editedMaterial.structuredAdverseEffects.length || isShowEmptyLink" @click="goto('Structured Adverse Effects')">Structured Adverse Effects</v-list-item>
+            <v-list-item v-if="editedMaterial.mechanismOfAction || isShowEmptyLink" @click="goto('Mechanism Of Action')">Mechanism Of Action</v-list-item>
+            <v-list-item v-if="editedMaterial.effectOnDrugMetabolism || isShowEmptyLink" @click="goto('Effect on drug metabolism')">Effect on drug metabolism</v-list-item>
+            <v-list-item v-if="editedMaterial.detailedPharmacology || isShowEmptyLink" @click="goto('Detailed Pharmacology')">Detailed Pharmacology</v-list-item>
+            <v-list-item v-if="editedMaterial.labels.length || isShowEmptyLink" @click="goto('Labels')">Labels</v-list-item>
+            <v-list-item v-if="editedMaterial.refs.length || isShowEmptyLink" @click="goto('References')">References</v-list-item>
+            <v-list-item v-if="editedMaterial.brands.length || isShowEmptyLink" @click="goto('Brands')">Brands</v-list-item>
+            <v-list-item v-if="editedMaterial.compounds.length || isShowEmptyLink" @click="goto('Compounds')">Compounds</v-list-item>
+            <v-list-item v-if="editedMaterial.pathways.length || isShowEmptyLink" @click="goto('Pathways')">Pathways</v-list-item>
           </v-list-item-group>
         </v-list>
       </v-navigation-drawer>      
@@ -427,115 +427,167 @@
               >
             </v-chip-group>
           </div>
-
-          <div class="list-chips">
-            <v-text-field
-              v-model="model.medicinalActions"
-              label="Medicinal Actions"
-              @keypress.enter.prevent="addItemToArray('medicinalActions')"
-            />
-            <v-chip-group column>
-              <v-chip
-                v-for="(action, idx) in editedMaterial.medicinalActions"
-                :key="idx"
-                close
-                @click:close="removeItem('medicinalActions', idx)"
-                >{{ action }}</v-chip
-              >
-            </v-chip-group>
-          </div>
-
-          <div class="list-chips">
-            <v-text-field
-              v-model="model.indications"
-              label="Indications"
-              @keypress.enter.prevent="addItemToArray('indications')"
-            />
-            <v-chip-group column>
-              <v-chip
-                v-for="(indication, idx) in editedMaterial.indications"
-                :key="idx"
-                close
-                @click:close="removeItem('indications', idx)"
-                >{{ indication }}</v-chip
-              >
-            </v-chip-group>
-          </div>
-
-          <div class="list-chips">
-            <v-text-field
-              v-model="model.dBankIndications"
-              label="DrugBank's Indications"
-              @keypress.enter.prevent="addItemToArray('dBankIndications')"
-            />
-            <v-chip-group column>
-              <v-chip
-                v-for="(indication, idx) in editedMaterial.dBankIndications"
-                :key="idx"
-                close
-                @click:close="removeItem('dBankIndications', idx, false)"
-                >{{ indication }}</v-chip
-              >
-            </v-chip-group>
-          </div>
-
+          <h4 ref="supp Nutritional sources">supp Nutritional sources:</h4>
+          <ckeditor
+            v-model="editedMaterial.nutritionalSources"
+            :config="CKEditorConfig"
+          />
+          <h4 ref="supp Other characteristics">supp Other characteristics:</h4>
+          <ckeditor
+            v-model="editedMaterial.otherCharacteristics"
+            :config="CKEditorConfig"
+          />
+          <h3 ref="Active Constituents">Active Constituents:</h3>
+          <ckeditor
+            v-model="editedMaterial.activeConstituents"
+            :config="CKEditorConfig"
+          ></ckeditor>
+          <h4 ref="supp Absorption and excretion">supp Absorption and excretion:</h4>
+          <ckeditor
+            v-model="editedMaterial.absorptionAndExcretion"
+            :config="CKEditorConfig"
+          />
+          <h4 ref="supp Causes of deficiency">supp Causes of deficiency:</h4>
+          <ckeditor
+            v-model="editedMaterial.causesOfDeficiency"
+            :config="CKEditorConfig"
+          />
+          <h4 ref="supp Symptoms of deficiency">supp Symptoms of deficiency:</h4>
+          <ckeditor
+            v-model="editedMaterial.symptomsOfDeficiency"
+            :config="CKEditorConfig"
+          />
           <h3 ref="Dosage">Dosage:</h3>
           <ckeditor
             v-model="editedMaterial.dosage"
             :config="CKEditorConfig"
           ></ckeditor>
-
+          <h4 ref="supp ODA (Optimal Daily Allowance)">supp ODA (Optimal Daily Allowance):</h4>
+          <ckeditor
+            v-model="editedMaterial.ODA"
+            :config="CKEditorConfig"
+          />
+          <h4 ref="supp RDA (Recommended Daily Allowance)">supp RDA (Recommended Daily Allowance):</h4>
+          <ckeditor
+            v-model="editedMaterial.RDA"
+            :config="CKEditorConfig"
+          />
           <h3 ref="Sensitivities">Sensitivities:</h3>
           <ckeditor
             v-model="editedMaterial.sensitivities"
             :config="CKEditorConfig"
           ></ckeditor>
-
           <h3 ref="Adverse Reactions">Adverse Reactions:</h3>
           <ckeditor
             v-model="editedMaterial.adverseReactions"
             :config="CKEditorConfig"
           ></ckeditor>
-
           <h3 ref="Overdosage">Overdosage:</h3>
           <ckeditor
             v-model="editedMaterial.overdosage"
             :config="CKEditorConfig"
           ></ckeditor>
-
           <h3 ref="Precautions">Precautions:</h3>
           <ckeditor
             v-model="editedMaterial.precautions"
             :config="CKEditorConfig"
           ></ckeditor>
-
-          <h3 ref="Mechanism Of Action">Mechanism Of Action:</h3>
-          <ckeditor
-            v-model="editedMaterial.mechanismOfAction"
-            :config="CKEditorConfig"
-          ></ckeditor>
-
           <h3 ref="Contraindications">Contraindications:</h3>
           <ckeditor
             v-model="editedMaterial.contraindications"
             :config="CKEditorConfig"
           ></ckeditor>
-
           <h3 ref="Toxicity">Toxicity:</h3>
           <ckeditor
             v-model="editedMaterial.toxicity"
             :config="CKEditorConfig"
           ></ckeditor>
-
           <h3 ref="Pregnancy">Pregnancy:</h3>
           <ckeditor
             v-model="editedMaterial.pregnancy"
             :config="CKEditorConfig"
           ></ckeditor>
-
           <h3 ref="Lactation">Lactation:</h3>
           <ckeditor
             v-model="editedMaterial.lactation"
+            :config="CKEditorConfig"
+          ></ckeditor><h3 ref="Pharmacology">Pharmacology:</h3>
+          <h4 ref="Indication">Indication:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.indication"
+            :config="CKEditorConfig"
+          />
+          <h4 ref="Pharmacodynamics">Pharmacodynamics:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.pharmacodynamics"
+            :config="CKEditorConfig"
+          />
+          <h4 ref="Mechanism Of Action2">Mechanism Of Action:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.mechanismOfAction"
+            :config="CKEditorConfig"
+          />
+          <h4 ref="Absorption">Absorption:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.absorption"
+            :config="CKEditorConfig"
+          />
+          <h4 ref="Toxicity2">Toxicity:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.toxicity"
+            :config="CKEditorConfig"
+          />
+          <h4 ref="Protein Binding">Protein Binding:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.proteinBinding"
+            :config="CKEditorConfig"
+          />
+          <h4 ref="Metabolism">Metabolism:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.metabolism"
+            :config="CKEditorConfig"
+          />
+          <h4 ref="Half Life">Half Life:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.halfLife"
+            :config="CKEditorConfig"
+          />
+          <h4 ref="Route Of Elimination">Route Of Elimination:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.routeOfElimination"
+            :config="CKEditorConfig"
+          />
+          <h4 ref="Volume Of Distribution">Volume Of Distribution:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.volumeOfDistribution"
+            :config="CKEditorConfig"
+          />
+          <h4 ref="Clearance">Clearance:</h4>
+          <ckeditor
+            v-model="editedMaterial.pharmacology.clearance"
+            :config="CKEditorConfig"
+          />
+          <div  ref="Structured Adverse Effects" class="list-chips">
+            <v-text-field
+              v-model="model.structuredAdverseEffects"
+              label="Structured Adverse Effects"
+              @keypress.enter.prevent="addItemToArray('structuredAdverseEffects')"
+            />
+            <v-chip-group column>
+              <v-chip
+                v-for="(effect, idx) in editedMaterial.structuredAdverseEffects"
+                :key="idx"
+                close
+                @click:close="removeItem('structuredAdverseEffects', idx, false)"
+              >
+              {{ effect }}
+              </v-chip>
+          </v-chip-group>
+          </div>
+          
+          <h3 ref="Mechanism Of Action">Mechanism Of Action:</h3>
+          <ckeditor
+            v-model="editedMaterial.mechanismOfAction"
             :config="CKEditorConfig"
           ></ckeditor>
 
@@ -550,13 +602,6 @@
             v-model="editedMaterial.detailedPharmacology"
             :config="CKEditorConfig"
           ></ckeditor>
-
-          <h3 ref="Active Constituents">Active Constituents:</h3>
-          <ckeditor
-            v-model="editedMaterial.activeConstituents"
-            :config="CKEditorConfig"
-          ></ckeditor>
-
           <div ref="Labels" class="list-chips">
             <autocomplete 
               placeholder="Search label"
@@ -651,6 +696,58 @@
             :isHerb="editedMaterial.type === 'herb'"
             @edit-pathway="openPathwayDialog"
           />
+          <div class="list-chips">
+            <v-text-field
+              v-model="model.medicinalActions"
+              label="Medicinal Actions"
+              @keypress.enter.prevent="addItemToArray('medicinalActions')"
+            />
+            <v-chip-group column>
+              <v-chip
+                v-for="(action, idx) in editedMaterial.medicinalActions"
+                :key="idx"
+                close
+                @click:close="removeItem('medicinalActions', idx)"
+                >{{ action }}</v-chip
+              >
+            </v-chip-group>
+          </div>
+
+          <div class="list-chips">
+            <v-text-field
+              v-model="model.indications"
+              label="Indications"
+              @keypress.enter.prevent="addItemToArray('indications')"
+            />
+            <v-chip-group column>
+              <v-chip
+                v-for="(indication, idx) in editedMaterial.indications"
+                :key="idx"
+                close
+                @click:close="removeItem('indications', idx)"
+                >{{ indication }}</v-chip
+              >
+            </v-chip-group>
+          </div>
+
+          <div class="list-chips">
+            <v-text-field
+              v-model="model.dBankIndications"
+              label="DrugBank's Indications"
+              @keypress.enter.prevent="addItemToArray('dBankIndications')"
+            />
+            <v-chip-group column>
+              <v-chip
+                v-for="(indication, idx) in editedMaterial.dBankIndications"
+                :key="idx"
+                close
+                @click:close="removeItem('dBankIndications', idx, false)"
+                >{{ indication }}</v-chip
+              >
+            </v-chip-group>
+          </div>
+
+
 
           <v-expansion-panels flat class="external-links mt-8">
             <v-expansion-panel>
@@ -725,114 +822,6 @@
             </v-list>
           </div>
 
-          <h3 ref="Pharmacology">Pharmacology:</h3>
-          <h4 ref="Indication">Indication:</h4>
-          <ckeditor
-            v-model="editedMaterial.pharmacology.indication"
-            :config="CKEditorConfig"
-          />
-          <h4 ref="Pharmacodynamics">Pharmacodynamics:</h4>
-          <ckeditor
-            v-model="editedMaterial.pharmacology.pharmacodynamics"
-            :config="CKEditorConfig"
-          />
-          <h4 ref="Mechanism Of Action2">Mechanism Of Action:</h4>
-          <ckeditor
-            v-model="editedMaterial.pharmacology.mechanismOfAction"
-            :config="CKEditorConfig"
-          />
-          <h4 ref="Absorption">Absorption:</h4>
-          <ckeditor
-            v-model="editedMaterial.pharmacology.absorption"
-            :config="CKEditorConfig"
-          />
-          <h4 ref="Toxicity2">Toxicity:</h4>
-          <ckeditor
-            v-model="editedMaterial.pharmacology.toxicity"
-            :config="CKEditorConfig"
-          />
-          <h4 ref="Protein Binding">Protein Binding:</h4>
-          <ckeditor
-            v-model="editedMaterial.pharmacology.proteinBinding"
-            :config="CKEditorConfig"
-          />
-          <h4 ref="Metabolism">Metabolism:</h4>
-          <ckeditor
-            v-model="editedMaterial.pharmacology.metabolism"
-            :config="CKEditorConfig"
-          />
-          <h4 ref="Half Life">Half Life:</h4>
-          <ckeditor
-            v-model="editedMaterial.pharmacology.halfLife"
-            :config="CKEditorConfig"
-          />
-          <h4 ref="Route Of Elimination">Route Of Elimination:</h4>
-          <ckeditor
-            v-model="editedMaterial.pharmacology.routeOfElimination"
-            :config="CKEditorConfig"
-          />
-          <h4 ref="Volume Of Distribution">Volume Of Distribution:</h4>
-          <ckeditor
-            v-model="editedMaterial.pharmacology.volumeOfDistribution"
-            :config="CKEditorConfig"
-          />
-          <h4 ref="Clearance">Clearance:</h4>
-          <ckeditor
-            v-model="editedMaterial.pharmacology.clearance"
-            :config="CKEditorConfig"
-          />
-          <h4 ref="supp ODA (Optimal Daily Allowance)">supp ODA (Optimal Daily Allowance):</h4>
-          <ckeditor
-            v-model="editedMaterial.ODA"
-            :config="CKEditorConfig"
-          />
-          <h4 ref="supp RDA (Recommended Daily Allowance)">supp RDA (Recommended Daily Allowance):</h4>
-          <ckeditor
-            v-model="editedMaterial.RDA"
-            :config="CKEditorConfig"
-          />
-          <h4 ref="supp Nutritional sources">supp Nutritional sources:</h4>
-          <ckeditor
-            v-model="editedMaterial.nutritionalSources"
-            :config="CKEditorConfig"
-          />
-          <h4 ref="supp Other characteristics">supp Other characteristics:</h4>
-          <ckeditor
-            v-model="editedMaterial.otherCharacteristics"
-            :config="CKEditorConfig"
-          />
-          <h4 ref="supp Absorption and excretion">supp Absorption and excretion:</h4>
-          <ckeditor
-            v-model="editedMaterial.absorptionAndExcretion"
-            :config="CKEditorConfig"
-          />
-          <h4 ref="supp Causes of deficiency">supp Causes of deficiency:</h4>
-          <ckeditor
-            v-model="editedMaterial.causesOfDeficiency"
-            :config="CKEditorConfig"
-          />
-          <h4 ref="supp Symptoms of deficiency">supp Symptoms of deficiency:</h4>
-          <ckeditor
-            v-model="editedMaterial.symptomsOfDeficiency"
-            :config="CKEditorConfig"
-          />
-          <div  ref="Structured Adverse Effects" class="list-chips">
-            <v-text-field
-              v-model="model.structuredAdverseEffects"
-              label="Structured Adverse Effects"
-              @keypress.enter.prevent="addItemToArray('structuredAdverseEffects')"
-            />
-            <v-chip-group column>
-              <v-chip
-                v-for="(effect, idx) in editedMaterial.structuredAdverseEffects"
-                :key="idx"
-                close
-                @click:close="removeItem('structuredAdverseEffects', idx, false)"
-              >
-              {{ effect }}
-              </v-chip>
-          </v-chip-group>
-          </div>
           <div class="list-chips">
             <v-text-field
               v-model="model.structuredContraIndications"

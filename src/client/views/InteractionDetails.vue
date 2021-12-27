@@ -110,7 +110,7 @@
                         Summary
                     </h2>
                     <p
-                        class="paragraph regular-pointer"
+                        class="paragraph regular-pointer summary-container"
                         v-if="interaction.summary"
                         v-html="formatRefs(interaction.summary)"
                         v-refs-tooltip="{
