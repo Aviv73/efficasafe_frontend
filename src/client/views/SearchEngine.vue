@@ -613,7 +613,6 @@ export default {
             const map = this.$options.recommendationsOrderMap;
             const formatedPositiveInteractions = this.positiveInteractions.reduce((acc, interaction) => {
                 const existing = acc.find(i => i.name === interaction.name && i.mainMaterialId === interaction.mainMaterialId);
-                // const existing = acc.find(i => i.name === interaction.name);
                 if (!existing) {
                     acc.push(interaction);
                 } else {
@@ -1255,7 +1254,7 @@ export default {
             }, 0);
             filterBy.listsCount = true
             this.interactionsColorCountMap = await this.$store.dispatch({ type: 'getInteractions', filterBy });
-            this.restoreState('Supp2Drug', searchState);
+            this.restoreState('Results', searchState);
         },
         async getDBankInteractions() {
             const isAllSupplements = this.materials.every(material => material.type !== 'drug');

@@ -8,7 +8,7 @@
                 </router-link>
                 <div class="material-details-nav-header">
                     <img :src="require(`@/client/assets/icons/types/${getTypeImgName(material.type)}.svg`)" alt="">
-                    <h3>{{material.name}}</h3>
+                    <h3 @click="goTo('Title')">{{material.name}}</h3>
                 </div>
                 <hr>
                 <section class="material-details-nav-links">
@@ -61,7 +61,7 @@
                 </button>
                 <button class="drawer-btn" @click="showNav = true" v-if="isScreenNarrow"><menu-icon title="" /></button>
                 <p v-if="material.updatedAt" class="material-details-content-at">Updated on {{material.updatedAt | moment('MMMM DD YYYY')}}</p>
-                <h2 class="material-details-content-name">{{material.name}}</h2>
+                <h2 ref="Title" class="material-details-content-name">{{material.name}}</h2>
                 <p class="material-details-content-family" v-if="material.BotanicalFamily || material.botanicalFamily">botanical family: {{material.BotanicalFamily || material.botanicalFamily || 'Not indicated'}}</p>
                 <div v-if="aliasesToShow.length" class="material-details-content-aliases-container">
                     <p v-for="alias in aliasesToShow" :key="alias">{{alias}}</p>
@@ -289,6 +289,8 @@
 
 <script>
 
+import { materialUIService } from '@/cms/services/material-ui.service'
+
 import Loader from '@/client/cmps/common/icons/Loader';
 import ShareModal from '@/client/cmps/shared/modals/ShareModal';
 import ModalWrap from '@/client/cmps/common/ModalWrap';
@@ -514,10 +516,16 @@ export default {
             return strToReturn
 
         },
+        savePageHight(){
+            materialUIService.setMaterialPageHightMap({name: this.material.name, hight: window.pageYOffset})
+        }
     },
     computed:{
         isScreenNarrow() {
             return this.$store.getters.isScreenNarrow;
+        },
+        loggedInUser() {
+            return this.$store.getters.loggedInUser;
         },
         aliasesToShow(){
             const { material } = this
@@ -566,6 +574,16 @@ export default {
         const materialWithRefs = await this.organizeRefs(material)
         this.material = materialWithRefs
         this.isLoading = false
+        document.addEventListener('scroll', this.savePageHight)
+        const nameHightMap = materialUIService.getMaterialPageHightMap()
+        if(nameHightMap && nameHightMap[this.material.name]){
+            this.$nextTick(() => {
+                window.scrollTo(0, nameHightMap[this.material.name])
+            })
+        }
+    },
+    beforeDestroy(){
+        document.removeEventListener('scroll', this.savePageHight)
     },
     components:{
         MenuIcon,

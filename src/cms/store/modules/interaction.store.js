@@ -8,7 +8,7 @@ export const interactionStore = ({
         seenRefsMap: {},
         pathwayRefCount:{},
         openCollapses: {
-            'Supp2Drug': {},
+            'Results': {},
             'Boosters': {},
             'suppBoosters': {}
         },

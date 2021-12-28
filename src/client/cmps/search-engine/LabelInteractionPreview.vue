@@ -271,7 +271,7 @@ export default {
             return this.link ? 'router-link' : 'span';
         },
         openCollapses() {
-            return this.$store.getters.openCollapses.Supp2Drug;
+            return this.$store.getters.openCollapses.Results;
         },
         isOneGroup(){
             const keys = Object.keys(this.atcGroupVinteractionMap);

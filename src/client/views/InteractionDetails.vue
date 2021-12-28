@@ -428,7 +428,7 @@ export default {
         relevantSide1Pathways() {
             return this.side1Pathways.filter(pathway => {
                 const idx = this.relevantSide2Pathways.findIndex(side2Pathway => side2Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
-                return idx !== -1;
+                return idx !== -1 && !pathway.actions.length;
             });
         },
         releventSide1PathwaysByColors(){

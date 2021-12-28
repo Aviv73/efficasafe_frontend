@@ -185,11 +185,8 @@ function getIsRed(fullRec){
 
 function getIsPositive(fullRec){
     switch (fullRec){
-        case 'Coadministration is not contraindicated and may even be advised':
-        case 'Coadministration is possible':
         case 'Coadministration is possible and may even be advised':
         case 'Coadministration is advised':
-        case 'Coadministration is possible but caution should be taken':
             return true
         default:
             return false
