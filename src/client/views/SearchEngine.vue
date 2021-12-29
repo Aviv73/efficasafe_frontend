@@ -57,45 +57,6 @@
                         </button>
                     </tooltip>
                 </div>
-                <template v-if="loggedInUser && (loggedInUser.type === 'subscribed' || loggedInUser.email_verified )">
-                    <div v-if="!isLoadingFile" class="search-engine-search-import-export-container">
-                        <div class="btn-container">
-                            <label class="activator padding">
-                                <input type="file" @change="onImportList" hidden/>
-                                <img src="@/client/assets/icons/uploadXL.jpeg" alt="">
-                            </label>
-                            <tooltip rightBottom on="focus">
-                                <template #content>
-                                    <span class="tooltip-content">
-                                        Import a list of your drug/supplements. Supports only xlsx files. Names only, one name per cell.
-                                    </span>
-                                </template>
-                                <information-outline-icon class="info-icon right"/>
-                            </tooltip>
-                        </div>
-                        <div class="btn-container">
-                            <button class="activator">
-                                <download-excel
-                                :data="materialsToExcel"
-                                :escapeCsv="false"
-                                type="csv"
-                                name="My search.xls"
-                                >
-                                <img class="download-xl-img" src="@/client/assets/icons/downloadXL.jpeg" alt="">
-                            </download-excel>
-                            </button>
-                            <tooltip rightBottom on="focus">
-                                <template #content>
-                                    <span class="tooltip-content">
-                                        Download a csv file containing your searched list, it is recommended to save it as a xlsx file for future import.
-                                    </span>
-                                </template>
-                                <information-outline-icon class="info-icon"/>
-                            </tooltip>
-                        </div>
-                    </div>
-                    <loader class="file-loader" v-else />
-                </template>
                 <ul
                     class="search-engine-search-materials"
                     :class="{ 'empty': !materials.length }"
@@ -175,7 +136,7 @@
                 :style="{ 'max-width': `calc(100vw - ${scrollBarWidth})` }"
             >
                 <header class="search-engine-results-header">
-                    <div class="flex-space-between">
+                    <div class="actions-container">
                         <span class="search-engine-results-amount font-medium">
                             <animated-integer :value="totalInteractionCount" />
                             {{ ($route.name === 'Boosters') ? 'Optimizers' : 'Interactions' }}
@@ -198,6 +159,80 @@
                                 <mobile-share-icon v-if="isScreenNarrow" title="" />
                                 <share-variant-icon v-else title="" />
                             </button>
+                            <template v-if="!isScreenNarrow">
+                                <tooltip right>
+                                    <template #content>
+                                        <div class="tooltip-content">
+                                            <span>
+                                                Import a list of your drug/supplements. Supports only xlsx files. Names only, one name per cell.
+                                            </span>
+                                        </div>
+                                    </template>
+                                    <label class="upload-btn">
+                                        <input type="file" @change="onImportList" hidden/>
+                                        <img class="upload-btn-icon" src="@/client/assets/icons/uploadXL.jpeg" alt="">
+                                    </label>
+                                </tooltip>
+                                <tooltip right>
+                                    <template #content>
+                                        <div class="tooltip-content">
+                                            <span>
+                                                Download a csv file containing your searched list, it is recommended to save it as a xlsx file for future import.
+                                            </span>
+                                        </div>
+                                    </template>
+                                    <button class="download-btn download-btn-icon">
+                                        <download-excel
+                                        :data="materialsToExcel"
+                                        :escapeCsv="false"
+                                        type="csv"
+                                        name="My search.xls"
+                                        >
+                                        <img src="@/client/assets/icons/downloadXL.jpeg" alt="">
+                                        </download-excel>
+                                    </button>
+                                </tooltip>
+                            </template>
+                            <template v-else>
+                                <div>
+                                    <label class="upload-btn">
+                                        <input type="file" @change="onImportList" hidden/>
+                                        <img class="upload-btn-icon" src="@/client/assets/icons/uploadXL.jpeg" alt="">
+                                    </label>
+                                    <tooltip bottom on="focus">
+                                        <template #content>
+                                            <div class="tooltip-content">
+                                                <span>
+                                                    Import a list of your drug/supplements. Supports only xlsx files. Names only, one name per cell.
+                                                </span>
+                                            </div>
+                                        </template>
+                                        <information-outline-icon class="info-icon right"/>
+                                    </tooltip>
+                                </div>
+                                <div>
+                                    <button class="download-btn download-btn-icon">
+                                        <download-excel
+                                        :data="materialsToExcel"
+                                        :escapeCsv="false"
+                                        type="csv"
+                                        name="My search.xls"
+                                        >
+                                        <img src="@/client/assets/icons/downloadXL.jpeg" alt="">
+                                        </download-excel>
+                                    </button>
+                                    <tooltip bottomLeft on="focus">
+                                        <template #content>
+                                            <div class="tooltip-content">
+                                                <span>
+                                                    Download a csv file containing your searched list, it is recommended to save it as a xlsx file for future import.
+                                                </span>
+                                            </div>
+                                        </template>
+                                        <information-outline-icon class="info-icon"/>
+                                    </tooltip>
+                                </div>
+                            </template>
                         </span>
                         <button class="mobile-menu-btn"></button>
                     </div>
@@ -393,7 +428,6 @@ import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
 import MaterialInteractionsPreview from '@/client/cmps/search-engine/MaterialInteractionsPreview';
 import Disclaimer from '@/client/cmps/search-engine/Disclaimer';
 import OnboardingTour from '@/client/cmps/search-engine/OnboardingTour';
-import Loader from '@/client/cmps/common/icons/Loader';
 
 import UndoIcon from '@/client/cmps/common/icons/UndoIcon';
 import RedoIcon from '@/client/cmps/common/icons/RedoIcon';
@@ -1733,8 +1767,7 @@ export default {
         RedoIcon,
         OnboardingTour,
         SaveSearchModal,
-        ChevronRightIcon,
-        Loader
+        ChevronRightIcon
     }
 };
 </script>

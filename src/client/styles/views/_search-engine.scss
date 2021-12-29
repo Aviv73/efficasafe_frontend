@@ -17,7 +17,7 @@
             left: 0;
             height: 100%;
             width: 100%;
-            background-image: linear-gradient(to bottom, $clr6 0px, $clr6 rem(157px), rgba($white, .75) rem(157px), rgba($white, .75) rem(224px), transparent rem(224px), transparent 100%);
+            background-image: linear-gradient(to bottom, $clr6 0px, $clr6 rem(111px), rgba($white, .75) rem(102px), rgba($white, .75) rem(177px), transparent rem(177px), transparent 100%);
         }
     }
     &-search {
@@ -105,53 +105,7 @@
                 }
             }
         }
-        &-import-export-container{
-            width: 125px;
-            display: flex;
-            margin-block-end: rem(24px);
-            justify-content: space-between;
-            align-items: center;
-            margin-right: 20px;
-            
-            .activator{
-                img{
-                    width: 30px;
-                }
-
-                .download-xl-img{
-                    margin-top: 1px;
-                }
-            }
-
-            .info-icon{
-                cursor: pointer;
-                display: inline-block;
-                transform: scale(0.7);
-                position: absolute;
-                top: -18px;
-                left: 5px;
-                color: #205072bf;
-            }
-
-            .right{
-                left: 4px;
-            }
-
-            .tooltip-content{
-                box-shadow: 0px 2px 4px rgb(18 18 18 / 10%);
-                border: 1px solid #E2E2E2;
-                display: inline-block;
-                text-align: center;
-                line-height: 1.1875rem;
-                padding: 0.75rem 1.125rem;
-                max-width: 12.875rem;
-                background-color: #fff;
-            }
-            
-        }
-        .file-loader{
-            width: 50px;
-        }
+        
         &-actions {
             line-height: rem(36px);
             letter-spacing: rem(.6px);
@@ -278,10 +232,10 @@
             color: $clr1;
             
             @include for-narrow-layout {
-                padding: rem(48px) 24px rem(20px) 0;
+                padding: rem(22px) 24px rem(8px) 0;
             }
             @include for-wide-layout {
-                padding: rem(48px) 0 rem(20px);
+                padding: rem(22px) 0 rem(8px);
             }
         }
         &-amount {
@@ -293,23 +247,85 @@
             
             @include for-narrow-layout {
                 padding: rem(12px) rem(56px) rem(12px) rem(20px);
-                margin-block-end: rem(20px);
+                margin-block-end: rem(12px);
                 background-color: $clr1;
                 color: $white;
             }
         }
-        &-actions {
-            order: -1;
+
+        .actions-container{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-direction: column;
 
             @include for-narrow-layout {
                 order: 0;
+                flex-direction: row;
+
+            }
+        }
+
+        &-actions {
+            order: -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            width: 50%;
+
+            @include for-narrow-layout {
+                order: 0;
+                display: unset;
+                width: unset;
             }
             
             .print-btn {
                 display: none;
-                margin-inline-end: rem(24px);
+                margin-inline-end: rem(12px);
                 @include for-narrow-layout {
                     display: initial;
+                }
+            }
+
+            .share-btn{
+                margin-inline-end: 0;
+                margin-block-end: 1px;
+
+                @include for-narrow-layout {
+                    margin-inline-end: rem(14px);
+                }
+            }
+
+            .upload-btn{
+                margin-inline-end: 0;
+                cursor: pointer;
+
+                @include for-narrow-layout {
+                    margin-inline-end: rem(14px);
+                }
+
+                &:hover{
+                    transform: scale(1.2);
+                }
+            }
+
+            .info-icon{
+                cursor: pointer;
+                display: inline-block;
+                transform: scale(0.7);
+                position: absolute;
+                top: -23px;
+                left: 0;
+                color: #205072bf;
+            }
+
+            .tooltip-content{
+                width: 350px;
+                padding: 15px;
+                border-radius: 15px;
+
+                @include for-narrow-layout {
+                    width: 300px;
                 }
             }
         }

@@ -30,6 +30,7 @@
                     'right-top': rightTop,
                     'bottom-left': bottomLeft,
                     'right-top-corner': topRightCorner,
+                    'left-bottom-corner': leftBottomCorner,
                     bottom,
                     top,
                     left,
@@ -119,6 +120,10 @@ export default {
             default: false
         },
         topRightCorner: {
+            type: Boolean,
+            default: false
+        },
+        leftBottomCorner: {
             type: Boolean,
             default: false
         },
@@ -248,6 +253,11 @@ export default {
             left: 16px;
             bottom: 18px;
         }
+
+        &.left-bottom-corner{
+            right: 31px;
+            top: 14px;
+        }
         
         &.fade {
             transition-property: opacity;
@@ -260,7 +270,7 @@ export default {
 
             &-left {
                 top: 100%;
-                left: 0;
+                right: -110px;
                 transform: none;
             }
         }
@@ -287,7 +297,7 @@ export default {
             }
         }
         &.right {
-            right: 100%;
+            right: 125%;
             top: 50%;
             transform: translateY(-50%);
 
