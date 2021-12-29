@@ -9,62 +9,6 @@
             <button class="signup-btn" @click="onOpenLogin">Login</button>
         </div>
     </div>
-    <!-- <div v-show="loggedInUser" class="form-container">
-        <form class="user-registration-form">
-            <h3 class="form-title">Please complete your registration</h3>
-            <div class="form-input">
-                <label for="">
-                    <input
-                    type="text"
-                    placeholder="Enter your phone number"
-                    v-model="user.phone"
-                    ref="phoneInput"
-                    />
-                    <span class="label">Enter your phone number</span>
-                </label>
-            </div>
-            <div class="form-input">
-                <label for="">
-                    <input
-                    type="text"
-                    placeholder="Enter your Street and house number"
-                    v-model="user.address"
-                    />
-                    <span class="label">Enter your Street and house number</span>
-                </label>
-            </div>
-            <div class="form-input">
-                <label for="">
-                    <input
-                    type="text"
-                    placeholder="Enter your City"
-                    v-model="user.city"
-                    />
-                    <span class="label">Enter your City</span>
-                </label>
-            </div>
-            <div class="form-input">
-                <label for="">
-                    <input
-                    type="text"
-                    placeholder="Enter your Country"
-                    v-model="user.country"
-                    />
-                    <span class="label">Enter your Country</span>
-                </label>
-            </div>
-            <div class="form-input">
-                <label for="">
-                    <input
-                    type="text"
-                    placeholder="Enter your Zip code"
-                    v-model="user.zipCode"
-                    />
-                    <span class="label">Enter your Zip code</span>
-                </label>
-            </div>
-        </form>
-    </div> -->
     <h3 class="headline">Choose your membership payment plan</h3>
     <div class="cards-container">
         <div v-for="(plan,idx) in plans" :key="idx" class="card" :class="{'with-stars': plan.isRecommended, 'selected':isSelected(plan._id)}">
@@ -80,7 +24,7 @@
         <input
         v-model="couponInput"
         type="text"
-        placeholder="Cupon Code"
+        placeholder="Coupon Code"
         @input="onInputCoupon"
         class="coupon-input"
         :class="{'invalid-input': isCouponInvalid}"
@@ -96,7 +40,7 @@
     </div>
     <button @click="onSubmit" :disabled="isLoading" class="payment-btn" :class="{'disabled': isLoading}">
         <div v-if="!isLoading">Continue to payment</div> 
-        <div v-else class="loader-container">
+        <div v-else class="payment-loader-container">
             <h2>Loading...</h2><loader class="loader"/>
         </div>
     </button>
@@ -198,26 +142,40 @@ export default {
             return 
         }
         this.isLoading = true
-        const key = config.yaadPayKey
-        const pass = config.yaadPayPassP
-        const masof = config.yaadPayMasof
-
-        // const address = encodeURI(user.address)
-        // const city = encodeURI(user.city)
-        // const {phone, zipCode, email} = user
-        const {email} = this.user
-        const coin = this.getReleventCoin()
         const price = this.getReleventPrice()
-        const durationTxt = this.selectedPlan.code ? encodeURI(`${this.selectedPlan.code} - ${this.selectedPlan.durationTxt}`) : encodeURI(this.selectedPlan.durationTxt)
-        const duration = +this.selectedPlan.duration
-        const apiSignAddress = `https://icom.yaad.net/p/?action=APISign&What=SIGN&KEY=${key}&PassP=${pass}&Masof=${masof}&Order=12345678910&Info=${durationTxt}&Amount=${price}&UTF8=True&UTF8out=True&email=${email}&Tash=999&FixTash=False&ShowEngTashText=True&Coin=${coin}&Postpone=False&J5=False&Sign=True&MoreData=True&sendemail=False&SendHesh=True&heshDesc=[0~${durationTxt}~1~${price}]&Pritim=True&PageLang=ENG&HK=True&freq=${duration}`
-        // const apiSignAddress = `https://icom.yaad.net/p/?action=APISign&What=SIGN&KEY=${key}&PassP=${pass}&Masof=${masof}&Order=12345678910&Info=${durationTxt}&Amount=${price}&UTF8=True&UTF8out=True&street=${address}&city=${city}&zip=${zipCode}&phone=${phone}&email=${email}&Tash=999&FixTash=False&ShowEngTashText=True&Coin=${coin}&Postpone=False&J5=False&Sign=True&MoreData=True&sendemail=False&SendHesh=True&heshDesc=[0~${durationTxt}~1~${price}]&Pritim=True&PageLang=ENG&tmp=1&HK=True&freq=${duration}`
-        storageService.store('isPaying', true)
-        const res = await paymentService.getEndpoint(apiSignAddress)
-        this.isLoading = false
-        if(res.payload) window.location = `https://icom.yaad.net/p/?action=pay&${res.payload}`;
-        else eventBus.$emit(EV_show_user_msg, 'Something Went wrong, please try again', 5000, 'error');
-        
+        if(price === 0){
+            const user = JSON.parse(JSON.stringify(this.loggedInUser))
+            user.type = 'subscribed'
+            const purchase = {
+                at: Date.now(),
+                duration: this.selectedPlan.duration,
+                price: 0,
+                plan: `${this.selectedPlan.durationTxt}`,
+                until: 'Ongoing',
+                coupon: this.selectedPlan.code
+            }
+            user.purchases.unshift(purchase)
+            await this.$store.dispatch({ type: 'updateLoggedInUser', user });
+            await this.$store.dispatch({ type: 'updateAutoPilotContact', user});
+            this.isLoading = false
+            this.$router.push('/')
+        }else{
+            const key = config.yaadPayKey
+            const pass = config.yaadPayPassP
+            const masof = config.yaadPayMasof
+    
+            const {email} = this.user
+            const coin = this.getReleventCoin()
+            const durationTxt = this.selectedPlan.code ? encodeURI(`${this.selectedPlan.code} - ${this.selectedPlan.durationTxt}`) : encodeURI(this.selectedPlan.durationTxt)
+            const duration = +this.selectedPlan.duration
+            const apiSignAddress = `https://icom.yaad.net/p/?action=APISign&What=SIGN&KEY=${key}&PassP=${pass}&Masof=${masof}&Order=12345678910&Info=${durationTxt}&Amount=${price}&UTF8=True&UTF8out=True&email=${email}&Tash=999&FixTash=False&ShowEngTashText=True&Coin=${coin}&Postpone=False&J5=False&Sign=True&MoreData=True&sendemail=False&SendHesh=True&heshDesc=[0~${durationTxt}~1~${price}]&Pritim=True&PageLang=ENG&HK=True&freq=${duration}`
+            // const apiSignAddress = `https://icom.yaad.net/p/?action=APISign&What=SIGN&KEY=${key}&PassP=${pass}&Masof=${masof}&Order=12345678910&Info=${durationTxt}&Amount=${price}&UTF8=True&UTF8out=True&street=${address}&city=${city}&zip=${zipCode}&phone=${phone}&email=${email}&Tash=999&FixTash=False&ShowEngTashText=True&Coin=${coin}&Postpone=False&J5=False&Sign=True&MoreData=True&sendemail=False&SendHesh=True&heshDesc=[0~${durationTxt}~1~${price}]&Pritim=True&PageLang=ENG&tmp=1&HK=True&freq=${duration}`
+            storageService.store('isPaying', true)
+            const res = await paymentService.getEndpoint(apiSignAddress)
+            this.isLoading = false
+            if(res.payload) window.location = `https://icom.yaad.net/p/?action=pay&${res.payload}`;
+            else eventBus.$emit(EV_show_user_msg, 'Something Went wrong, please try again', 5000, 'error');
+        }
     }
   },
   watch:{

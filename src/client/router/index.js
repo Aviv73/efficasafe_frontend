@@ -13,10 +13,10 @@ import UserAccount from '@/client/views/UserAccount';
 import Logo from '@/client/views/Logo';
 import ManageEmails from '@/client/views/ManageEmails';
 import CookiePolicy from '@/client/views/CookiePolicy';
-// import Subscribe from '@/client/views/Subscribe';
-// import Payment from '@/client/views/Payment';
-// import PaymentFailed from '@/client/views/PaymentFailed';
-// import Success from '@/client/views/Success';
+import Subscribe from '@/client/views/Subscribe';
+import Payment from '@/client/views/Payment';
+import PaymentFailed from '@/client/views/PaymentFailed';
+import Success from '@/client/views/Success';
 
 import InteractionList from '@/client/cmps/search-engine/InteractionList';
 import UserApp from '@/client/cmps/user-account/UserApp';
@@ -41,32 +41,32 @@ const routes = [
     name: 'CookiePolicy',
     component: CookiePolicy
   },
-  // {
-  //   path: '/subscribe',
-  //   name: 'Subscribe',
-  //   component: Subscribe,
-  //   meta: {
-  //     blockSubscribed: true
-  //   }
-  // },
-  // {
-  //   path: '/payment',
-  //   name: 'Payment',
-  //   component: Payment,
-  //   meta: {
-  //     blockSubscribed: true
-  //   }
-  // },
-  // {
-  //   path: '/payment-failed',
-  //   name: 'paymentFailed',
-  //   component: PaymentFailed
-  // },
-  // {
-  //   path: '/success',
-  //   name: 'Success',
-  //   component: Success
-  // },
+  {
+    path: '/subscribe',
+    name: 'Subscribe',
+    component: Subscribe,
+    // meta: {
+    //   blockSubscribed: true
+    // }
+  },
+  {
+    path: '/payment',
+    name: 'Payment',
+    component: Payment,
+    // meta: {
+    //   blockSubscribed: true
+    // }
+  },
+  {
+    path: '/payment-failed',
+    name: 'paymentFailed',
+    component: PaymentFailed
+  },
+  {
+    path: '/success',
+    name: 'Success',
+    component: Success
+  },
   {
     path: '/verifyEmail/:token',
     name: 'verifyEmail',
@@ -219,7 +219,7 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   store.dispatch('getUserSearches');
-  store.dispatch('getUserInfo');
+  await store.dispatch('getUserInfo');
   if(store.getters.loggedInUser && store.getters.loggedInUser.type === 'subscribed'){
     const user = JSON.parse(JSON.stringify(store.getters.loggedInUser))
     if(user.purchases.length && typeof user.purchases[0].until === 'number' && user.purchases[0].until < Date.now()){

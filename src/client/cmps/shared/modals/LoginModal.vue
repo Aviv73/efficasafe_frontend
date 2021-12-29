@@ -18,7 +18,7 @@
                             <div class="forgot-pass-link">
                                 <a href="/email-pass">Forgot password?</a>
                             </div>
-                            <button @click="onRegister" class="register-btn">Login</button>
+                            <button class="register-btn">Login</button>
                         </form>
                         <div class="or-container">
                             <div class="line"></div>

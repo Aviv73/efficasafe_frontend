@@ -85,7 +85,7 @@ export default {
             failMsg: '',
             validationMessages: {
                 required: 'Password is required',
-                password: 'Password must contain at list 1 digit , Uppercase letter , Lowercase letter and minimum 8 characters',
+                password: 'Password must be at least 8 characters and contain a digit, lowercase and uppercase letters',
                 confirm: 'The password confirmation does not match.'
             }
         };

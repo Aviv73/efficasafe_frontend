@@ -59,7 +59,8 @@ export default {
               coin: this.getCoinSymbol(this.$route.query.Coin),
               plan: plan.durationTxt,
               until: 'Ongoing',
-              HKId: this.$route.query.HKId
+              HKId: this.$route.query.HKId,
+              coupon: plan.code || null
           }
           user.purchases.unshift(purchase)
           await this.$store.dispatch({ type: 'updateLoggedInUser', user });

@@ -143,6 +143,14 @@
                     </v-btn>
 
                     <v-btn
+                        v-if="loggedInUser && loggedInUser.role === 'admin' && editedUser.purchases.length && editedUser.purchases[0].price === 0 && editedUser.purchases[0].until !== 'terminated'"
+                        color="error"
+                        @click="endFreeSubscription"
+                    >
+                        end free subscription
+                    </v-btn>
+
+                    <v-btn
                         class="submit-btn"
                         @click="saveUser"
                         color="success"
@@ -268,6 +276,22 @@ export default {
                     this.response.msg = null
                 },1500)
             }
+        },
+        async endFreeSubscription(){
+            this.editedUser.type = 'registered'
+            this.editedUser.purchases[0].until = 'terminated'
+            try{
+                await this.$store.dispatch({ type: 'updateUser', user: this.editedUser });
+                this.response.type = 'success'
+                this.response.msg = `${this.editedUser.username} was updated`
+            }catch(err){
+                this.response.type = 'error'
+                this.response.msg = `SOMTING WENT WRONG`
+            }
+            setTimeout(() => {
+                this.response.type = null
+                this.response.msg = null
+            },1500)
         }
     },
     computed:{
