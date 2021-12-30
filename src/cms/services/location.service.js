@@ -6,11 +6,9 @@ export const locationService = {
 
 async function getLocalCurrency() { 
     try{
-        let res = await axios.get('https://ip-api.com/json/?fields=currency')
-        console.log(res.data);
+        let res = await axios.get('http://ip-api.com/json/?fields=currency')
         return res.data.currency
     }catch(err){
-        console.log(err);
         return 'USD'
     }
 }
