@@ -9,6 +9,6 @@ async function getLocalCurrency() {
         let res = await axios.get('http://ip-api.com/json/?fields=currency')
         return res.data.currency
     }catch(err){
-        return 'USD'
+        return 'ILS'
     }
 }

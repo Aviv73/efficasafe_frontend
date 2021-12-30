@@ -56,7 +56,7 @@
 import StarIcon from 'vue-material-design-icons/Star';
 import Loader from '@/client/cmps/common/icons/Loader';
 import { manageService } from '@/cms/services/manage.service'
-import { locationService } from '@/cms/services/location.service'
+// import { locationService } from '@/cms/services/location.service'
 import { eventBus, EV_show_user_msg, EV_open_singup, EV_open_login } from '@/cms/services/eventBus.service';
 import { storageService } from '@/cms/services/storage.service';
 import { paymentService } from '@/cms/services/payment.service';
@@ -73,7 +73,7 @@ export default {
       user: {},
       isCouponInvalid: false,
       isLoading: false,
-      localCurrency: 'USD'
+      localCurrency: 'ILS'
     };
   },
   computed: {
@@ -189,8 +189,8 @@ export default {
       this.coupons = managementData.coupons
       this.selectedPlan = this.$store.getters.getSelectedPaymentPlan
       this.user = this.$store.getters.loggedInUser || {}
-      this.localCurrency = await locationService.getLocalCurrency()
-      if(this.localCurrency !== 'ILS' && this.localCurrency !== 'EUR') this.localCurrency = 'USD'
+    //   this.localCurrency = await locationService.getLocalCurrency()
+    //   if(this.localCurrency !== 'ILS' && this.localCurrency !== 'EUR') this.localCurrency = 'USD'
   },
   components:{
       StarIcon,
