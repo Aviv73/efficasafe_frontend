@@ -153,6 +153,7 @@ export default {
             if(this.isInvaliedEmail || this.isInvaliedPassword || this.isInvaliedName || !this.cred.agreedToTerm) return
             try{
                 this.isBtnDisabled = true
+                if(window.AutopilotAnywhere.sessionId) this.cred.autoPilotSessionId = window.AutopilotAnywhere.sessionId
                 await this.$store.dispatch({type: 'signup', cred: this.cred});
                 if(!this.isEmailExists){
                     if(this.$route.name !== 'Payment') this.isShowVereficationMsg = true

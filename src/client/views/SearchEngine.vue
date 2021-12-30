@@ -160,7 +160,7 @@
                                 <share-variant-icon v-else title="" />
                             </button>
                             <template v-if="!isScreenNarrow">
-                                <tooltip right>
+                                <tooltip v-if="!isLoadingFile" right>
                                     <template #content>
                                         <div class="tooltip-content">
                                             <span>
@@ -173,6 +173,7 @@
                                         <img class="upload-btn-icon" src="@/client/assets/icons/uploadXL.jpeg" alt="">
                                     </label>
                                 </tooltip>
+                                <loader class="upload-loader" v-else/>
                                 <tooltip right>
                                     <template #content>
                                         <div class="tooltip-content">
@@ -195,10 +196,11 @@
                             </template>
                             <template v-else>
                                 <div>
-                                    <label class="upload-btn">
+                                    <label v-if="!isLoadingFile" class="upload-btn">
                                         <input type="file" @change="onImportList" hidden/>
                                         <img class="upload-btn-icon" src="@/client/assets/icons/uploadXL.jpeg" alt="">
                                     </label>
+                                    <loader class="upload-loader" v-else/>
                                     <tooltip bottom on="focus">
                                         <template #content>
                                             <div class="tooltip-content">
@@ -438,6 +440,7 @@ import PrinterIcon from 'vue-material-design-icons/Printer';
 import ShareVariantIcon from 'vue-material-design-icons/ShareVariant';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
 import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
+import Loader from '@/client/cmps/common/icons/Loader';
 
 export default {
     recommendationsOrderMap: interactionUIService.getRecommendationOrderMap(),
@@ -490,7 +493,7 @@ export default {
                         this.$tours['boosters-tour'].start();
                     });
                 }
-                const { q, isImported, nonExisting } = this.$route.query;
+                const { q, isImported, nonExisting, activeTour } = this.$route.query;
                 if (!q || !q.length) {
                     this.$store.commit('resetPosSupp')
                     this.reset();
@@ -498,8 +501,8 @@ export default {
                     this.$store.commit({type: 'setListType', listType: 'all'})
                     return;
                 }
+                if(activeTour) return
                 if (!Array.isArray(q) && q) {
-                    if(q === 'tour') return
                     this.$route.query.q = [ q ];
                 }
                 this.sameQ = from && from.q && to.q.length === from.q.length && to.q.every((val, idx) => val === from.q[idx]) ? true : false
@@ -1721,9 +1724,10 @@ export default {
         this.setScrollBarWidth();
         this.showDisclaimer();
         this.showMobileMsg();
-        const { q } = this.$route.query;
-        if(q === 'tour' && !this.isScreenNarrow){
-            this.$tours['onboarding-no-searches-tour'].start();
+        const { activeTour } = this.$route.query;
+        if(activeTour && !this.isScreenNarrow){
+            if(this.$route.name === 'Results') this.$tours['onboarding-no-searches-tour'].start();
+            if(this.$route.name === 'Boosters') this.$tours['boosters-tour'].start();
             return
         } 
         await this.getMaterials();
@@ -1767,7 +1771,8 @@ export default {
         RedoIcon,
         OnboardingTour,
         SaveSearchModal,
-        ChevronRightIcon
+        ChevronRightIcon,
+        Loader
     }
 };
 </script>

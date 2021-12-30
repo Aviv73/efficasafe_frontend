@@ -309,6 +309,14 @@
                 }
             }
 
+            .upload-loader{
+                width: 25px;
+
+                @include for-narrow-layout {
+                    margin-inline-end: rem(14px);
+                }
+            }
+
             .info-icon{
                 cursor: pointer;
                 display: inline-block;

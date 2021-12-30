@@ -66,10 +66,12 @@ export default {
             return this.$store.getters.loggedInUser;
         },
         googleLink(){
-            return (process.env.NODE_ENV === 'development') ? 'http://localhost:3000/auth/google' : '/auth/google'
+            if(window.AutopilotAnywhere.sessionId) return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/google?q=${window.AutopilotAnywhere.sessionId}` : `/auth/google?q=${window.AutopilotAnywhere.sessionId}`
+            return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/google` : `/auth/google`
         },
         facebookLink(){
-            return (process.env.NODE_ENV === 'development') ? 'http://localhost:3000/auth/facebook' : '/auth/facebook'
+            if(window.AutopilotAnywhere.sessionId) return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/facebook?q=${window.AutopilotAnywhere.sessionId}` : `/auth/facebook?q=${window.AutopilotAnywhere.sessionId}`
+            return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/facebook` : `/auth/facebook`
         },
         passInputType(){
             if(!this.isShowPass) return 'password'
@@ -82,6 +84,7 @@ export default {
         },
         async onRegister(){
             try{
+                if(window.AutopilotAnywhere.sessionId) this.cred.autoPilotSessionId = window.AutopilotAnywhere.sessionId
                 await this.$store.dispatch({type: 'login', cred: this.cred});
                 this.isShowSuccesseMsg = true
                 setTimeout(() => {
