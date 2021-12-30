@@ -311,7 +311,7 @@ import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
 import WelcomeModal from '../cmps/shared/modals/WelcomeModal';
 import PassChangeSuccess from '../cmps/shared/modals/PassChangeSuccess';
-import { eventBus, EV_clear_input } from '@/cms/services/eventBus.service';
+import { eventBus, EV_clear_input, EV_show_user_msg } from '@/cms/services/eventBus.service';
 
 export default {
     name: 'Home',
@@ -375,6 +375,7 @@ export default {
         this.stats = await this.$store.dispatch({ type: 'getStatistics' });
         if (this.$route.query.congratulations) this.welcomeModal = true;
         if (this.$route.query.passwordreset) this.passwordModal = true;
+        if (this.$route.query.subscribed) eventBus.$emit(EV_show_user_msg, 'Subscription successful', 5000, 'success')
     },
     components: {
         Swiper,

@@ -218,6 +218,11 @@
 
         .selected{
             box-shadow: 0px 0px 0px 3px $clr1;
+
+            button{
+                background-color: $clr2 !important;
+                border: none !important;
+            }
         }
         
     }

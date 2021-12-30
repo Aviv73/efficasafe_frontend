@@ -64,7 +64,7 @@
                             <home-icon title="" :size="20" />
                         </router-link>
                     </li>
-                    <li v-if="!loggedInUser || loggedInUser.type !== 'subscribed'" class="navbar-nav-item">
+                    <li v-if="!loggedInUser || loggedInUser.type !== 'subscribed'" class="navbar-nav-item" >
                         <button
                             :class="{ highlight: !loggedInUser || isNavIntersecting }"
                             @click="onSubscribe"
@@ -73,18 +73,13 @@
                             Subscribe
                         </button>
                     </li>
-                    <li class="navbar-nav-item">
+                    <li v-if="!loggedInUser" class="navbar-nav-item">
                         <button
-                            v-if="!loggedInUser"
                             class="login-btn"
                             id="loginBtn"
                             @click="onLogin"
                         >
                             Login
-                        </button>
-
-                        <button v-else class="logout-btn" @click="onLogout">
-                            Log Out
                         </button>
                     </li>
                     <li class="navbar-nav-item" v-if="!loggedInUser">
@@ -136,21 +131,13 @@
                                 Subscribe
                             </button>
                         </li>
-                        <li class="navbar-side-nav-item">
+                        <li v-if="!loggedInUser" class="navbar-side-nav-item">
                             <button
-                                v-if="!loggedInUser"
                                 @click="onLogin"
                             >
                                 Login
                             </button>
-                            <button
-                                v-else
-                                @click="onLogout"
-                            >
-                                Logout
-                            </button>
                         </li>
-
                         <li class="navbar-side-nav-item">
                             <router-link to="/" @click.native="toggleNavActive">
                                 Home

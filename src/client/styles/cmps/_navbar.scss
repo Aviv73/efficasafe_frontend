@@ -126,7 +126,6 @@
             margin-block-start: 2px;
         }
         
-        
         &-item {
             margin-inline-end: rem(14px);
 
@@ -143,6 +142,7 @@
             .material-design-icon__svg {
                 margin-block-end: -6px;
             }
+
             @include for-narrow-layout {
                 &:not(.link) > button {
                     &:not(.logout-btn) {
@@ -238,11 +238,13 @@
                 transition: background-color .3s ease;
 
                 @include hover-supported {
-                    background-color: rgba($white, .1);
+                    outline: 1px solid #F8F8F8;
+                    border-radius: 0.375rem;
                 }
                 &:focus {
                     outline: none;      
-                    background-color: rgba($white, .1);         
+                    background-color: rgba($white, .1);   
+                          
                 }
             }
             button {

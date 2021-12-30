@@ -8,6 +8,7 @@
                 </v-card-title>
                 <user-filter @emit-filter="setFilter" />
                 <user-list
+                    v-if="!isUpdatingUsers"
                     :users="users"
                     :loading="isLoading"
                     :totalItems="totalItems"
@@ -16,6 +17,7 @@
                     @delete-many-users="removeMany"
                     @openEdit="openEdit"
                 />
+                <loader style="margin-left: 50%" v-else/>
             </v-card>
         </div>
         <v-card v-if="selectedUsersIds.length" class="edit-card">
@@ -57,10 +59,13 @@ import UserFilter from '@/cms/cmps/user/UserFilter';
 
 import { eventBus } from '@/cms/services/eventBus.service';
 
+import Loader from '@/client/cmps/common/icons/Loader';
+
 export default {
     data() {
         return {
             isLoading: false,
+            isUpdatingUsers: false,
             selectedUsersIds:[],
             fieldOptions: ['Type', 'End trial'],
             typeOptions: ['trial', 'subscribed', 'registered'],
@@ -127,7 +132,9 @@ export default {
                 ids: [...this.selectedUsersIds],
                 newValue: dateAsTimestamp
             }
+            this.isUpdatingUsers = true
             await this.$store.dispatch({ type: 'updatedManyUsers', data})
+            this.isUpdatingUsers = false
             this.selectedUsersIds = []
             this.loadUsers()
         },
@@ -143,6 +150,7 @@ export default {
     components: {
         UserList,
         UserFilter,
+        Loader
     },
 };
 </script>

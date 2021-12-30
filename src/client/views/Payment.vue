@@ -17,7 +17,7 @@
             </div>
             <h3 class="card-title" :class="{'margin-top': plan.isRecommended}" >{{plan.durationTxt}}</h3>
             <p class="card-price">{{localCurrency}} <span>{{getPriceByLocation(plan)}}</span> /mo</p>
-            <button class="card-btn" @click="onSelectPlan($event,plan)">select</button>
+            <button class="card-btn" @click="onSelectPlan($event,plan)">{{selectBtnTxt((plan._id))}}</button>
         </div>
     </div>
     <div class="coupon-input-container">
@@ -35,7 +35,7 @@
         <div class="card" :class="{'selected':isSelected(couponPlan._id)}">
             <h3 class="card-title">{{couponPlan.durationTxt}}</h3>
             <p class="card-price">{{localCurrency}} <span>{{getPriceByLocation(couponPlan)}}</span> /mo</p>
-            <button class="card-btn" @click="onSelectPlan($event,couponPlan)">select</button>
+            <button class="card-btn" @click="onSelectPlan($event,couponPlan)">{{selectBtnTxt((couponPlan._id))}}</button>
         </div>
     </div>
     <button @click="onSubmit" :disabled="isLoading" class="payment-btn" :class="{'disabled': isLoading}">
@@ -85,6 +85,13 @@ export default {
             if(!this.selectedPlan) return false
             if(id === this.selectedPlan._id) return true
             return false
+        }
+    },
+    selectBtnTxt(){
+        return (id) => {
+            if(!this.selectedPlan) return 'select'
+            if(id === this.selectedPlan._id) return 'selected'
+            return 'select'
         }
     },
     couponBtnTxt(){
@@ -158,7 +165,7 @@ export default {
             await this.$store.dispatch({ type: 'updateLoggedInUser', user });
             await this.$store.dispatch({ type: 'updateAutoPilotContact', user});
             this.isLoading = false
-            this.$router.push('/')
+            this.$router.push('/?subscribed=true')
         }else{
             const key = config.yaadPayKey
             const pass = config.yaadPayPassP
