@@ -1059,11 +1059,11 @@ export default {
         showImportMsg(nonExistingNames){
             if(nonExistingNames && nonExistingNames.length){
                 const msg = nonExistingNames.length === 1 ? `Import partially successful. The drug ${nonExistingNames[0]} is not recognizable` : `Import partially successful. The drugs ${nonExistingNames.join(', ')} are not recognizable`
-                eventBus.$emit(EV_show_user_msg, msg, 5000)
+                eventBus.$emit(EV_show_user_msg, msg, 25000)
                 this.isLoadingFile = false
                 return
             }
-            eventBus.$emit(EV_show_user_msg, 'Import successful. It is recommended to save the list.', 5000, 'success')
+            eventBus.$emit(EV_show_user_msg, 'Import successful. It is recommended to save the list.', 25000, 'success')
             this.isLoadingFile = false
         },
         async onImportList(ev){
@@ -1091,12 +1091,12 @@ export default {
                     else nonExistingNames.push(name)
                 }
                 if(!existingNames.length){
-                    eventBus.$emit(EV_show_user_msg, 'Import failed. File not supported (most be xlsx) or no drugs/supplements recognized.', 5000, 'error')
+                    eventBus.$emit(EV_show_user_msg, 'Import failed. File not supported (most be xlsx) or no drugs/supplements recognized.', 25000, 'error')
                     this.isLoadingFile = false
                 }
                 else this.$router.push({ query: { q: [ ...existingNames ], isImported: true, nonExisting: [...nonExistingNames] } }).catch(() => {})
             }catch(err){
-                eventBus.$emit(EV_show_user_msg, 'Import failed. File not supported (most be xlsx) or no drugs/supplements recognized.', 5000, 'error')
+                eventBus.$emit(EV_show_user_msg, 'Import failed. File not supported (most be xlsx) or no drugs/supplements recognized.', 25000, 'error')
                 this.isLoadingFile = false
             }
         },
