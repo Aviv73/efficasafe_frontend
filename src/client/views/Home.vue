@@ -376,6 +376,7 @@ export default {
         if (this.$route.query.congratulations) this.welcomeModal = true;
         if (this.$route.query.passwordreset) this.passwordModal = true;
         if (this.$route.query.subscribed) eventBus.$emit(EV_show_user_msg, 'Subscription successful', 5000, 'success')
+        if (this.$route.query.emailPrefs) eventBus.$emit(EV_show_user_msg, 'Your email preferences were successfully updated', 5000, 'success')
     },
     components: {
         Swiper,

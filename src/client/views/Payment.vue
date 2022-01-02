@@ -56,7 +56,7 @@
 import StarIcon from 'vue-material-design-icons/Star';
 import Loader from '@/client/cmps/common/icons/Loader';
 import { manageService } from '@/cms/services/manage.service'
-// import { locationService } from '@/cms/services/location.service'
+import { locationService } from '@/cms/services/location.service'
 import { eventBus, EV_show_user_msg, EV_open_singup, EV_open_login } from '@/cms/services/eventBus.service';
 import { storageService } from '@/cms/services/storage.service';
 import { paymentService } from '@/cms/services/payment.service';
@@ -73,7 +73,7 @@ export default {
       user: {},
       isCouponInvalid: false,
       isLoading: false,
-      localCurrency: 'ILS'
+      localCurrency: null
     };
   },
   computed: {
@@ -176,7 +176,6 @@ export default {
             const durationTxt = this.selectedPlan.code ? encodeURI(`${this.selectedPlan.code} - ${this.selectedPlan.durationTxt}`) : encodeURI(this.selectedPlan.durationTxt)
             const duration = +this.selectedPlan.duration
             const apiSignAddress = `https://icom.yaad.net/p/?action=APISign&What=SIGN&KEY=${key}&PassP=${pass}&Masof=${masof}&Order=12345678910&Info=${durationTxt}&Amount=${price}&UTF8=True&UTF8out=True&email=${email}&Tash=999&FixTash=False&ShowEngTashText=True&Coin=${coin}&Postpone=False&J5=False&Sign=True&MoreData=True&sendemail=False&SendHesh=True&heshDesc=[0~${durationTxt}~1~${price}]&Pritim=True&PageLang=ENG&HK=True&freq=${duration}`
-            // const apiSignAddress = `https://icom.yaad.net/p/?action=APISign&What=SIGN&KEY=${key}&PassP=${pass}&Masof=${masof}&Order=12345678910&Info=${durationTxt}&Amount=${price}&UTF8=True&UTF8out=True&street=${address}&city=${city}&zip=${zipCode}&phone=${phone}&email=${email}&Tash=999&FixTash=False&ShowEngTashText=True&Coin=${coin}&Postpone=False&J5=False&Sign=True&MoreData=True&sendemail=False&SendHesh=True&heshDesc=[0~${durationTxt}~1~${price}]&Pritim=True&PageLang=ENG&tmp=1&HK=True&freq=${duration}`
             storageService.store('isPaying', true)
             const res = await paymentService.getEndpoint(apiSignAddress)
             this.isLoading = false
@@ -191,13 +190,12 @@ export default {
       }
   },
   async created() {
+      this.localCurrency = await locationService.getLocalCurrency()
       const managementData = await manageService.list()
       this.plans = managementData.plans
       this.coupons = managementData.coupons
       this.selectedPlan = this.$store.getters.getSelectedPaymentPlan
       this.user = this.$store.getters.loggedInUser || {}
-    //   this.localCurrency = await locationService.getLocalCurrency()
-    //   if(this.localCurrency !== 'ILS' && this.localCurrency !== 'EUR') this.localCurrency = 'USD'
   },
   components:{
       StarIcon,

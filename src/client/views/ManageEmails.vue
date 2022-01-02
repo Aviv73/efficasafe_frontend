@@ -16,21 +16,21 @@
           <section class="checkboxes-container">
             <div class="checkbox-container">
               <div class="checkbox-header-container">
-                <checkbox class="checkbox" @change="checkOpt1" :isChecked="opt1"></checkbox>
+                <checkbox class="checkbox" @change="checkOpt1" :isChecked="isEducational"></checkbox>
                 <h4 class="checkbox-title">Educational</h4>
               </div>
               <p class="checkbox-disc">Learn more about interactions mechanisms, get the latest interactions updates, and explore case studies, so you can stay on top of things.</p>
             </div>
             <div class="checkbox-container">
               <div class="checkbox-header-container">
-                <checkbox class="checkbox" @change="checkOpt2" :isChecked="opt2"></checkbox>
+                <checkbox class="checkbox" @change="checkOpt2" :isChecked="isNewsAndAnnouncements"></checkbox>
                 <h4 class="checkbox-title">News and announcements</h4>
               </div>
               <p class="checkbox-disc">Stay updated on new site features we’ve developed to help improve your experience and productivity.</p>
             </div>
             <div class="checkbox-container">
               <div class="checkbox-header-container">
-                <checkbox class="checkbox" @change="checkOpt3" :isChecked="opt3"></checkbox>
+                <checkbox class="checkbox" @change="checkOpt3" :isChecked="isOffersAndPromotions"></checkbox>
                 <h4 class="checkbox-title">Offers and promotions</h4>
               </div>
               <p class="checkbox-disc">Get exclusive deals and upgrades, so you can save more on the tools you need.</p>
@@ -38,7 +38,7 @@
             <div class="line" style="margin-bottom: 32px"></div>
             <div class="checkbox-container">
               <div class="checkbox-header-container">
-                <checkbox class="checkbox" @change="onUnsubscribe" :isChecked="isUnsubscribe"></checkbox>
+                <checkbox class="checkbox" @change="onUnsubscribe" :isChecked="isUnsubscribeAll || autoCheckUnsubscribe"></checkbox>
                 <h4 class="checkbox-title">Unsubscribe from all emails</h4>
               </div>
               <p class="checkbox-disc">Note: You will always receive transactional emails related to your account.</p>
@@ -61,16 +61,20 @@ export default {
 
   data() {
     return {
-      opt1: true,
-      opt2: true,
-      opt3: true,
-      isUnsubscribe: false
+      isEducational: true,
+      isNewsAndAnnouncements: true,
+      isOffersAndPromotions: true,
+      isUnsubscribeAll: false
     };
   },
   computed:{
     loggedInUser() {
         return this.$store.getters.loggedInUser;
     },
+    autoCheckUnsubscribe(){
+      if(!this.isEducational && !this.isNewsAndAnnouncements && !this.isOffersAndPromotions) return true
+      return false
+    }
   },
   methods:{
     onOpenSignup(){
@@ -80,34 +84,38 @@ export default {
         eventBus.$emit(EV_open_login)
     },
     checkOpt1(bol){
-      this.opt1 = bol
+      this.isEducational = bol
       if(bol){
-        this.isUnsubscribe = false
+        this.isUnsubscribeAll = false
       }
     },
     checkOpt2(bol){
-      this.opt2 = bol
+      this.isNewsAndAnnouncements = bol
       if(bol){
-        this.isUnsubscribe = false
+        this.isUnsubscribeAll = false
       }
     },
     checkOpt3(bol){
-      this.opt3 = bol
+      this.isOffersAndPromotions = bol
       if(bol){
-        this.isUnsubscribe = false
+        this.isUnsubscribeAll = false
       }
     },
     onUnsubscribe(bol){
-      this.opt1 = !bol
-      this.opt2 = !bol
-      this.opt3 = !bol
-      this.isUnsubscribe = bol
+      this.isEducational = !bol
+      this.isNewsAndAnnouncements = !bol
+      this.isOffersAndPromotions = !bol
+      this.isUnsubscribeAll = bol
     },
-    onSubmit(){
-      console.log(this.opt1);
-      console.log(this.opt2);
-      console.log(this.opt3);
-      console.log(this.isUnsubscribe);
+    async onSubmit(){
+      const user = JSON.parse(JSON.stringify(this.loggedInUser))
+      user.emailPreferences = {
+        isEducational: this.isEducational,
+        isNewsAndAnnouncements: this.isNewsAndAnnouncements,
+        isOffersAndPromotions: this.isOffersAndPromotions,
+      }
+      await this.$store.dispatch({type: 'updateAutoPilotContact', user});
+      this.$router.push('/?emailPrefs=true')
     }
   },
   components: {

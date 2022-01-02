@@ -93,14 +93,14 @@
 <script>
 
 import { manageService } from '@/cms/services/manage.service'
-// import { locationService } from '@/cms/services/location.service'
+import { locationService } from '@/cms/services/location.service'
 import StarIcon from 'vue-material-design-icons/Star';
 
 export default {
   data() {
     return {
       plans: null,
-      localCurrency: 'ILS'
+      localCurrency: null
     };
   },
   computed: {
@@ -118,10 +118,9 @@ export default {
     }
   },
   async created() {
+      this.localCurrency = await locationService.getLocalCurrency()
       const managementData = await manageService.list()
       this.plans = managementData.plans
-    //   this.localCurrency = await locationService.getLocalCurrency()
-    //   if(this.localCurrency !== 'ILS' && this.localCurrency !== 'EUR') this.localCurrency = 'USD'
   },
   components:{
       StarIcon
