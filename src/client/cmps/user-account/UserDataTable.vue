@@ -69,7 +69,7 @@
                             <button
                                 class="end-subscrition-btn"
                                 @click="onEndSubscription(item)"
-                                v-if="item.until === 'Ongoing'"
+                                v-if="item.until === 'Ongoing' && item.price !== 0"
                             >
                                 End subscription
                             </button>

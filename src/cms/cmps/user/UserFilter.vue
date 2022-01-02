@@ -28,6 +28,13 @@
                     label="Search By Role"
                     v-model="filterBy.roleType"
                 ></v-select>
+                <v-select
+                    v-if="searchBy === 'Coupon'"
+                    class="small-search"
+                    :items="couponItems"
+                    label="Search By Coupon"
+                    v-model="filterBy.coupon"
+                ></v-select>
                 <v-date-picker 
                     v-if="searchBy === 'Registration Date'"
                     width="300"
@@ -64,12 +71,13 @@ export default {
                 roleType: '',
                 registrationDateFrom: '',
                 registrationDateTo: '',
-                endTrialDate: ''
+                endTrialDate: '',
+                coupon: ''
             },
             searchBy: 'Role',
-            searchOptions: ['Role', 'Type', 'Registration Date', 'End Trial Date'],
+            searchOptions: ['Role', 'Type', 'Registration Date', 'End Trial Date','Coupon'],
             typeItems: ['all', 'subscribed', 'trial', 'registered'],
-            roleItems: ['all', 'user', 'editor', 'sales', 'admin'],
+            roleItems: ['all', 'user', 'editor', 'sales', 'admin']
         };
     },
     watch: {
@@ -78,6 +86,15 @@ export default {
                 this.fetchEntriesDebounced();
             },
             deep: true,
+        },
+    },
+    computed: {
+        couponItems(){
+            const managementData = this.$store.getters.getManagementData
+            return managementData.coupons.reduce((acc, c) => {
+                acc.push(c.code)
+                return acc
+            }, [])
         },
     },
     methods: {

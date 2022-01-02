@@ -184,7 +184,7 @@
                         <span>{{ item.until | moment('DD/MM/YYYY') }}</span>
                     </template>
                     <template v-slot:[`item.price`]="{ item }">
-                        <span>${{item.price}}</span>
+                        <span>{{item.coin}}{{item.price}}</span>
                     </template>
                 </v-data-table>
             </v-card>
