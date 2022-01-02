@@ -8,8 +8,7 @@ export const interactionUIService = {
     formatRefStrs,
     getShortRecommendation,
     getIsRed,
-    getIsPositive,
-    // getPrintStyle
+    getIsPositive
 }
 
 
@@ -169,7 +168,8 @@ function getEvidenceLevelDictionary() {
         'C - 1 clinical or retrospective',
         'D - case report',
         'E - multi pre-clinical',
-        'F - 1 pre clinical'
+        'F - 1 pre clinical',
+        'Z'
     ];
 }
 
