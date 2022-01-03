@@ -1,22 +1,53 @@
 <template>
     <section class="nav-bar">
-        <v-app-bar class="nav-app" color="info" app dark>
+        <div class="nav-bar-cms">
             <v-btn class="nav-link" text tile to="/">
                 <div class="logo-container">
-                    <span color="white">Efficasafe</span>
+                    <span>Efficasafe</span>
                     <img
                         alt="Avatar"
                         :src="require(`@/cms/assets/icons/herb.svg`)"
                     />
                 </div>
             </v-btn>
-            <v-spacer></v-spacer>
-            <v-btn class="nav-link" tile color="white" text to="/search" v-if="isAdmin || isEditor">Search-Engine</v-btn>
-            <v-btn class="nav-link" :class="{ 'error': hasFailedTasks }" tile color="white" text to="/data-integrity" v-if="isAdmin || isEditor">
+            <v-btn
+                class="nav-link"
+                tile
+                color="white"
+                text
+                to="/search"
+                v-if="isAdmin || isEditor"
+                >Search-Engine</v-btn
+            >
+            <v-btn
+                class="nav-link"
+                :class="{ error: hasFailedTasks }"
+                tile
+                color="white"
+                text
+                to="/data-integrity"
+                v-if="isAdmin || isEditor"
+            >
                 Alerts
             </v-btn>
-            <v-btn class="nav-link" tile color="white" text to="/material" v-if="isAdmin || isEditor">Materials</v-btn>
-            <v-btn class="nav-link" tile color="white" text to="/label" v-if="isAdmin || isEditor || isAssistantEditor">Labels</v-btn>
+            <v-btn
+                class="nav-link"
+                tile
+                color="white"
+                text
+                to="/material"
+                v-if="isAdmin || isEditor"
+                >Materials</v-btn
+            >
+            <v-btn
+                class="nav-link"
+                tile
+                color="white"
+                text
+                to="/label"
+                v-if="isAdmin || isEditor || isAssistantEditor"
+                >Labels</v-btn
+            >
             <v-btn
                 class="nav-link"
                 tile
@@ -24,10 +55,18 @@
                 text
                 to="/featured-interaction"
                 v-if="isAdmin || isEditor || isAssistantEditor"
-                >
+            >
                 Workshop
             </v-btn>
-            <v-btn class="nav-link" tile color="white" text to="/interaction" v-if="isAdmin || isEditor">Interactions</v-btn>
+            <v-btn
+                class="nav-link"
+                tile
+                color="white"
+                text
+                to="/interaction"
+                v-if="isAdmin || isEditor"
+                >Interactions</v-btn
+            >
             <v-btn
                 class="nav-link"
                 tile
@@ -63,6 +102,16 @@
                 tile
                 color="white"
                 text
+                to="/coupon"
+                v-if="isAdmin"
+            >
+                coupons
+            </v-btn>
+            <v-btn
+                class="nav-link"
+                tile
+                color="white"
+                text
                 to="/statistics"
                 v-if="isAdmin"
             >
@@ -84,11 +133,11 @@
                 color="white"
                 text
                 v-if="loggedInUser"
-                @click="logout"
+                @click="backToSite"
             >
-                <v-icon left>mdi-logout</v-icon>Logout
+                <v-icon left>mdi-logout</v-icon>back to site
             </v-btn>
-        </v-app-bar>
+        </div>
     </section>
 </template>
 
@@ -102,32 +151,39 @@ export default {
             return this.$store.getters.loggedInUser;
         },
         isAdmin() {
-            return this.loggedInUser ? this.loggedInUser.role === 'admin' : false;
+            return this.loggedInUser
+                ? this.loggedInUser.role === 'admin'
+                : false;
         },
         isEditor() {
-            return this.loggedInUser ? this.loggedInUser.role === 'editor' : false;
+            return this.loggedInUser
+                ? this.loggedInUser.role === 'editor'
+                : false;
         },
         isSales() {
-            return this.loggedInUser ? this.loggedInUser.role === 'sales' : false;
+            return this.loggedInUser
+                ? this.loggedInUser.role === 'sales'
+                : false;
         },
         isAssistantEditor() {
-            return this.loggedInUser ? this.loggedInUser.role === 'assistantEditor' : false;
+            return this.loggedInUser
+                ? this.loggedInUser.role === 'assistantEditor'
+                : false;
         },
         hasFailedTasks() {
-          return this.$store.getters.hasFailedTasks;
-        }
+            return this.$store.getters.hasFailedTasks;
+        },
     },
     methods: {
-        logout() {
-            this.$store.commit({ type: 'logout' });
+        backToSite() {
             window.location.replace(window.location.origin);
         },
         setNotf() {
             this.$store.commit({
-              type: 'setHasFailedTasks',
-              hasTasks: true
+                type: 'setHasFailedTasks',
+                hasTasks: true,
             });
-        }
+        },
     },
     created() {
         eventBus.$on(EV_has_failed_tasks, this.setNotf);

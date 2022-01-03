@@ -35,25 +35,32 @@
                     label="Search By Coupon"
                     v-model="filterBy.coupon"
                 ></v-select>
-                <v-date-picker 
+                <v-text-field
+                    v-if="searchBy === 'Invoice'"
+                    style="max-width: 50%"
+                    class="mr-8"
+                    label="Search User By invoice number"
+                    v-model="filterBy.invoice"
+                />
+                <v-date-picker
                     v-if="searchBy === 'Registration Date'"
                     width="300"
-                    @change="handlefilterByDateFrom('registration', $event)"
+                    @change="handleFilterByDateFrom('registration', $event)"
                 ></v-date-picker>
-                <v-date-picker 
+                <v-date-picker
                     v-if="searchBy === 'Registration Date'"
                     width="300"
-                    @change="handlefilterByDateTo('registration', $event)"
+                    @change="handleFilterByDateTo('registration', $event)"
                 ></v-date-picker>
-                <v-date-picker 
+                <v-date-picker
                     v-if="searchBy === 'End Trial Date'"
                     width="300"
-                    @change="handlefilterByDateFrom('endTrial', $event)"
+                    @change="handleFilterByDateFrom('endTrial', $event)"
                 ></v-date-picker>
-                <v-date-picker 
+                <v-date-picker
                     v-if="searchBy === 'End Trial Date'"
                     width="300"
-                    @change="handlefilterByDateTo('endTrial', $event)"
+                    @change="handleFilterByDateTo('endTrial', $event)"
                 ></v-date-picker>
             </section>
         </div>
@@ -61,7 +68,6 @@
 </template>
 
 <script>
-
 export default {
     data() {
         return {
@@ -72,12 +78,20 @@ export default {
                 registrationDateFrom: '',
                 registrationDateTo: '',
                 endTrialDate: '',
-                coupon: ''
+                coupon: '',
+                invoice: '',
             },
             searchBy: 'Role',
-            searchOptions: ['Role', 'Type', 'Registration Date', 'End Trial Date','Coupon'],
+            searchOptions: [
+                'Role',
+                'Type',
+                'Registration Date',
+                'End Trial Date',
+                'Coupon',
+                'Invoice',
+            ],
             typeItems: ['all', 'subscribed', 'trial', 'registered'],
-            roleItems: ['all', 'user', 'editor', 'sales', 'admin']
+            roleItems: ['all', 'user', 'editor', 'sales', 'admin'],
         };
     },
     watch: {
@@ -89,12 +103,18 @@ export default {
         },
     },
     computed: {
-        couponItems(){
-            const managementData = this.$store.getters.getManagementData
-            return managementData.coupons.reduce((acc, c) => {
-                acc.push(c.code)
-                return acc
-            }, [])
+        couponItems() {
+            const managementData = this.$store.getters.getManagementData;
+            const couponNames = managementData.coupons.reduce((acc, c) => {
+                acc.push(c.code);
+                return acc;
+            }, []);
+            couponNames.sort((a, b) => {
+                if (a.toLowerCase() > b.toLowerCase()) return 1;
+                if (a.toLowerCase() < b.toLowerCase()) return -1;
+                return 0;
+            });
+            return couponNames;
         },
     },
     methods: {
@@ -111,18 +131,20 @@ export default {
                 JSON.parse(JSON.stringify(this.filterBy))
             );
         },
-        handlefilterByDateFrom(type, value){
-            const date = new Date(value).getTime()
-            if(type === 'registration') this.filterBy.registrationDateFrom = date
-            else this.filterBy.endTrialDateFrom = date
-            this.emitFilterBy()
+        handleFilterByDateFrom(type, value) {
+            const date = new Date(value).getTime();
+            if (type === 'registration')
+                this.filterBy.registrationDateFrom = date;
+            else this.filterBy.endTrialDateFrom = date;
+            this.emitFilterBy();
         },
-        handlefilterByDateTo(type, value){
-            const date = new Date(value).getTime()
-            if(type === 'registration') this.filterBy.registrationDateTo = date
-            else this.filterBy.endTrialDateTo = date
-            this.emitFilterBy()
-        }
+        handleFilterByDateTo(type, value) {
+            const date = new Date(value).getTime();
+            if (type === 'registration')
+                this.filterBy.registrationDateTo = date;
+            else this.filterBy.endTrialDateTo = date;
+            this.emitFilterBy();
+        },
     },
 };
 </script>

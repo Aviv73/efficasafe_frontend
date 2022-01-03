@@ -1,7 +1,6 @@
 <template>
     <section class="container">
         <template v-if="managementData">
-            <v-btn class="mb-4" @click="$router.push('/coupon')">Manage coupons</v-btn>
             <h2 class="management-title">Management Data</h2>
             <v-form @submit.prevent="uploadData">
                 <h2 class="management-subtitle">Guest mode</h2>

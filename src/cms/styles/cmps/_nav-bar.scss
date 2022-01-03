@@ -1,8 +1,12 @@
 .nav-bar {
     margin-bottom: 12px;
 
-    .nav-app {
+    .nav-bar-cms {
+        display: flex;
         z-index: 99;
+        background-color: #2196f3;
+        flex-wrap: wrap;
+        padding: 0 20px;
         
         .logo-container {
             img {
@@ -13,17 +17,12 @@
             span {
                 font-size: 22px;
                 text-transform: capitalize;
+                color: white;
             }
         }
 
         .nav-link {
-            height: 100%;
+            padding: 20px 16px;
         }
     }
-}
-
-.v-toolbar__content {
-    padding: 0 16px;
-    max-width: 100%;
-    overflow-x: auto;
 }

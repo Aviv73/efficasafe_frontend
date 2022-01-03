@@ -228,6 +228,7 @@ export default {
             isWarning: false,
             purchaseHedaers: [
                 {text: 'Purchase Date', value: 'at'},
+                {text: 'Invoice', value: 'invoiceId'},
                 {text: 'Price', value: 'price'},
                 {text: 'Plan', value: 'plan'},
                 {text: 'Valid Until', value: 'until'},

@@ -214,7 +214,7 @@
                     </div>
                 </div>
             </template>
-            <template #de-activator>
+            <template v-if="headerCmp === 'span'" #de-activator>
                 <collapse-toggle-icon />
             </template>
         </collapse>

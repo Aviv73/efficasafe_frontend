@@ -7,7 +7,7 @@
             :class="{ 'open': isContentVisible }"
         >
             <slot name="header">
-                Toggle collapse
+                <!-- Toggle collapse -->
             </slot>
         </header>
         <transition name="scale-y">
@@ -17,7 +17,7 @@
                 v-show="isContentVisible"
             >
                 <slot name="content">
-                    Collapse content here!
+                    <!-- Collapse content here! -->
                 </slot>
             </main>
         </transition>

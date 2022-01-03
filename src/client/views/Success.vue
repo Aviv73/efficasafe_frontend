@@ -59,6 +59,7 @@ export default {
               coin: this.getCoinSymbol(this.$route.query.Coin),
               plan: plan.durationTxt,
               until: 'Ongoing',
+              invoiceId: this.$route.query.Hesh,
               HKId: this.$route.query.HKId,
               coupon: plan.code || null
           }

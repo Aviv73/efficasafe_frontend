@@ -53,6 +53,7 @@
                         </div>
                         <button v-if="!isScreenNarrow && ($route.name === 'Results' || $route.name === 'Boosters' || $route.name === 'InteractionDetails' || $route.name === 'VinteractionDetails')" 
                         @click="activeReleventTour"
+                        :title="tourBtnTitle"
                         class="tour-btn">
                             Take a tour
                         </button>
@@ -66,7 +67,7 @@
                     </li>
                     <li v-if="!loggedInUser || loggedInUser.type !== 'subscribed'" class="navbar-nav-item" >
                         <button
-                            :class="{ highlight: !loggedInUser || isNavIntersecting }"
+                            class="subscribe-btn"
                             @click="onSubscribe"
                             title="Subscribe"
                         >
@@ -208,6 +209,15 @@ export default {
             const timeLeft = trialTime - Date.now();
             const daysLeft = timeLeft / (1000 * 3600 * 24);
             return  daysLeft > 0 ? Math.ceil(daysLeft) : 0
+        },
+        tourBtnTitle(){
+            if(this.$route.name === 'Results'){
+                return 'Get to know our search features'
+            }
+            if(this.$route.name === 'Boosters'){
+                return 'Get to know the Optimizers'
+            }
+            return 'Get to know the interaction structure'
         },
         freeTrialMsg(){
             if(this.isScreenNarrow){
