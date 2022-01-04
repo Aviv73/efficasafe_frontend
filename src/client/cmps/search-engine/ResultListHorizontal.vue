@@ -96,6 +96,7 @@
                     <button
                         class="tour-btn font-medium"
                         @click="$tours['boosters-tour'].start()"
+                        title="Get to know the Optimizers"
                     >
                         Click here
                     </button>

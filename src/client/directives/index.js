@@ -74,7 +74,7 @@ Vue.directive('refs-tooltip-material', {
                             let fullRef = material.refs.find(ref => ref.draftIdx === originalRef)
                             if(!fullRef) return
                             htmlStr += `<li class="tooltip-item">
-                                <p style="display: inline-block; font-size:12px;"><span>${i}</span>.${fullRef.txt}</p>
+                                <p style="display: inline-block; font-size:12px; margin: 0;"><span>${i}</span>.${fullRef.txt}</p>
                                 <a
                                     class="ref-link"
                                     target="_blank"
@@ -91,7 +91,7 @@ Vue.directive('refs-tooltip-material', {
                     const fullRef = material.dBankRefs.find(ref => ref.ref_id === originalRef)
                     if(!fullRef) return 
                     htmlStr += `<li class="tooltip-item">
-                        <p style="display: block; font-size:11px;"><span>${ref}</span>.${fullRef.citation || fullRef.title}</p>
+                        <p style="display: block; font-size:11px; margin: 0;"><span>${ref}</span>.${fullRef.citation || fullRef.title}</p>
                         <a
                             class="ref-link"
                             target="_blank"
@@ -160,7 +160,8 @@ Vue.directive('refs-tooltip', {
             
             let htmlStr = '<ul>';
             for (let j = 0; j < refs.length; j++) {
-                let draftIdx = combinedRefs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx) + 1;
+                let draftIdx = combinedRefs.findIndex(ref => ref && ref.txt === refs[j].txt) + 1;
+                // let draftIdx = combinedRefs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx) + 1;
                 if (pathwaysFirst) {
                     const sameRefs = combinedRefs.filter(ref => ref && ref.draftIdx === refs[j].draftIdx);
                     if (sameRefs.length > 1) {

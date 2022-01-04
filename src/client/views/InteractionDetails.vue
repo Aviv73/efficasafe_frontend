@@ -560,7 +560,7 @@ export default {
             return refs.filter(iterateFunc).length;
         },
         formatRefs(txt, isPathwaysRefs = false) {
-            if (!this.interactionRefs.length) return txt;
+            if (!isPathwaysRefs && !this.interactionRefs.length) return txt;
             const refsOrder = interactionUIService.getRefsOrder(txt, false, false).filter(num => txt.indexOf(num) > -1);
             let lastRefIdx = 0;
             refsOrder.forEach((refNum) => {
