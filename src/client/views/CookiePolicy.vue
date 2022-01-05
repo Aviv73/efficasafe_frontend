@@ -20,6 +20,12 @@
                         Connect.sid - Allows you to stay logged in to the
                         website after exiting/refreshing.
                     </li>
+                    <li>
+                        Autopilot - Allows us to send you emails.
+                    </li>
+                    <li>
+                        GA - We use Google Analytics to keep track of the app's statistics.
+                    </li>
                 </ol>
                 <h2 class="heading2">How do I change my cookie settings?</h2>
                 <p>

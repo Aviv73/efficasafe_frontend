@@ -174,9 +174,27 @@ export default {
             this.$emit('remove-update', idx)
         },
         refsAddedTxt(refs){
-            const refTxt = refs.join()
+            const refTxt = this.formatRefs(refs)
             if(refs.length === 1) return `Reference ${refTxt} was added`
             return `References ${refTxt} were added`
+        },
+        formatRefs(refs){
+            let refsStr = '';
+            let isSequence = false;
+            for (let i = 0; i < refs.length; i++) {
+                if (refs[i - 1] === undefined) refsStr += refs[i];
+
+                if (Math.abs(refs[i] - refs[i - 1]) > 1) {
+                    if (isSequence) refsStr += '-' + (refs[i - 1]);
+                    refsStr += ',' + refs[i];
+                    isSequence = false;
+                } else if (Math.abs(refs[i] - refs[i - 1]) === 1) isSequence = true;
+
+                if (i === (refs.length - 1) && refs[i - 1] !== undefined && isSequence) {
+                    refsStr += '-' + refs[i];
+                }
+            }
+            return refsStr
         },
         getRecColor(rec){
             return interactionUIService.getInteractionColor(rec)

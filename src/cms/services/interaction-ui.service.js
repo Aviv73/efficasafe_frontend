@@ -14,6 +14,7 @@ export const interactionUIService = {
 
 function formatRefStrs(refStr) {
     const formatedRefs = getRefsOrder(refStr);
+    formatedRefs.sort()
     let formatedRefStr = '';
     let isSequence = false;
     for (let i = 0; i < formatedRefs.length; i++) {

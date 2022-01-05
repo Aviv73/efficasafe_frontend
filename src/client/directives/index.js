@@ -56,7 +56,7 @@ Vue.directive('refs-tooltip-material', {
                         const fullRef = material.refs.find(ref => ref.draftIdx === originalRef)
                         if(!fullRef) return
                         htmlStr += `<li class="tooltip-item">
-                            <p style="display: inline-block; font-size:11px;"><span>${ref}</span>.${fullRef.txt}</p>
+                            <p style="display: inline-block; font-size:11px; margin: 0;"><span>${ref}</span>.${fullRef.txt}</p>
                             <a
                                 class="ref-link"
                                 target="_blank"
@@ -150,7 +150,7 @@ Vue.directive('refs-tooltip', {
         for (let i = 0; i < elSubs.length; i++) {
             const refIdxs = interactionUIService.getRefsOrder(elSubs[i].innerText);
             if (!refIdxs.length) continue;
-            
+            refIdxs.sort()
             elSubs[i].innerText = interactionUIService.formatRefStrs(elSubs[i].innerText);
             elSubs[i].addEventListener('mouseenter', setTooltipPos);
             
