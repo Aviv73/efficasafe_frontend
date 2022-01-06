@@ -17,7 +17,8 @@ export const interactionStore = ({
         redPositiveSupp: [],
         sortBy:['recommendation', true],
         interactionPageHeight: null,
-        listType: 'all'
+        listType: 'all',
+        interactionListHight: null
     },
     getters: {
         interactions(state) {
@@ -55,9 +56,18 @@ export const interactionStore = ({
         },
         getListType(state){
             return state.listType
+        },
+        getInteractionListHight(state){
+            return state.interactionListHight
         }
     },
     mutations: {
+        setInteractionListHight(state, { hight }){
+            state.interactionListHight = hight
+        },
+        resetInteractionListHight(state){
+            state.interactionListHight = null
+        },
         setSortBy(state, { newSort }) {
             state.sortBy = newSort
         },

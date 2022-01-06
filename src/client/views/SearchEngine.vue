@@ -478,7 +478,8 @@ export default {
             arrowRightPositin: 3,
             loadingTime: 0,
             sameQ: false,
-            isLoadingFile: false
+            isLoadingFile: false,
+            innerListEl: null
         }
     },
     watch: {
@@ -566,6 +567,9 @@ export default {
                     };
             }
             return []
+        },
+        initialListHight(){
+            return this.$store.getters.getInteractionListHight;
         },
         boostersCount(){
             return this.$store.getters.getPosBoostersCount || this.totalPositiveBoosters
@@ -1703,9 +1707,48 @@ export default {
             this.sortOptions = null;
             this.isLoading = false;
             this.$store.commit({ type: 'resetSupplementsRefs' });
+            this.$store.commit({ type: 'resetInteractionListHight' });
         },
         moveArrow({target}){
             this.arrowRightPositin = (target.scrollLeft * -1)
+        },
+        addEventBusListeners(){
+            eventBus.$on('start-tour', () =>{
+                if(this.materialsLength === 0){
+                    this.$nextTick(() => this.$tours['onboarding-no-searches-tour'].start())
+                }else{
+                    this.$nextTick(() => this.$tours['onboarding-tour'].start())  
+                }
+            })
+            eventBus.$on('start-boosters-tour', () =>{
+                this.$tours['boosters-tour'].start();
+            })
+            eventBus.$on('interaction-list-mounted', () => {
+                if(this.innerListEl) this.innerListEl.scrollTo(0,this.initialListHight)
+            })
+            eventBus.$on('scroll-to-bottom', () => {
+                if(this.innerListEl) this.innerListEl.scrollTo(0,100000)
+            })
+        },
+        removeEventBusListeners(){
+            eventBus.$off('start-tour', () =>{
+                if(this.materialsLength === 0){
+                    this.$nextTick(() => this.$tours['onboarding-no-searches-tour'].start())
+                }else{
+                    this.$nextTick(() => this.$tours['onboarding-tour'].start())  
+                }
+            })
+            eventBus.$off('start-boosters-tour', () =>{
+                this.$tours['boosters-tour'].start();
+            })
+            if(this.innerListEl){
+                eventBus.$off('interaction-list-mounted', ()=>{
+                    this.innerListEl.scrollTo(0,this.initialListHight)
+                })
+                eventBus.$off('scroll-to-bottom', () => {
+                    this.innerListEl.scrollTo(0,100000)
+                })
+            }
         }
     },
     async mounted() {
@@ -1734,22 +1777,23 @@ export default {
         if (this.materialsLength === 0 && !storageService.load('did-onboarding-no-searches-tour1') && !this.isScreenNarrow) {
             this.$tours['onboarding-no-searches-tour'].start();
         }
+        this.innerListEl = this.$el.querySelector(".inner-view")
+        if(this.innerListEl){
+            this.innerListEl.addEventListener('scroll', (ev) => {
+                this.$store.commit({type:'setInteractionListHight', hight: ev.target.scrollTop})
+            })
+        }
     },
     beforeDestroy(){
         const el = this.$refs.whatToMonitorLink.$el
         this.observer.unobserve(el);
+        this.innerListEl.removeEventListener('scroll', (ev) => {
+            this.$store.commit({type:'setInteractionListHight', hight: ev.target.scrollTop})
+        })
+        this.removeEventBusListeners()
     },
     created(){
-        eventBus.$on('start-tour', () =>{
-            if(this.materialsLength === 0){
-                this.$nextTick(() => this.$tours['onboarding-no-searches-tour'].start())
-            }else{
-                this.$nextTick(() => this.$tours['onboarding-tour'].start())  
-            }
-        })
-        eventBus.$on('start-boosters-tour', () =>{
-            this.$tours['boosters-tour'].start();
-        })
+        this.addEventBusListeners()
     },
     components: {
         Autocomplete,

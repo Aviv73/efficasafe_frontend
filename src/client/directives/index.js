@@ -150,7 +150,11 @@ Vue.directive('refs-tooltip', {
         for (let i = 0; i < elSubs.length; i++) {
             const refIdxs = interactionUIService.getRefsOrder(elSubs[i].innerText);
             if (!refIdxs.length) continue;
-            refIdxs.sort()
+            refIdxs.sort((a,b) => {
+                if(a > b) return 1
+                if(a < b) return -1
+                return 0
+            })
             elSubs[i].innerText = interactionUIService.formatRefStrs(elSubs[i].innerText);
             elSubs[i].addEventListener('mouseenter', setTooltipPos);
             

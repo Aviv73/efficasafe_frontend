@@ -1,5 +1,5 @@
 <template>
-    <section class="interaction-preview">
+    <section class="interaction-preview" @click="EmitScrollDown">
         <collapse
             @collapse-closed="onCollapseToggle"
             :initial-is-visible="initialCollapseIsVisible"
@@ -289,6 +289,10 @@ export default {
         counter: {
             type: Number,
             required: false
+        },
+        isLast: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -560,6 +564,9 @@ export default {
         },
         setIsLabelChildEmpty(isEmpty){
             this.isLabelChildEmpty = !isEmpty
+        },
+        EmitScrollDown(){
+            if(this.isGroup && this.isLast) eventBus.$emit('scroll-to-bottom')
         }
     },
     async created() {
