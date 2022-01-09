@@ -58,9 +58,9 @@ import Loader from '@/client/cmps/common/icons/Loader';
 import { manageService } from '@/cms/services/manage.service'
 import { locationService } from '@/cms/services/location.service'
 import { eventBus, EV_show_user_msg, EV_open_singup, EV_open_login } from '@/cms/services/eventBus.service';
-import { storageService } from '@/cms/services/storage.service';
+// import { storageService } from '@/cms/services/storage.service';
 import { paymentService } from '@/cms/services/payment.service';
-import config from '../config/index'
+// import config from '../config/index'
 
 export default {
   data() {
@@ -167,20 +167,18 @@ export default {
             this.isLoading = false
             this.$router.push('/?subscribed=true')
         }else{
-            const key = config.yaadPayKey
-            const pass = config.yaadPayPassP
-            const masof = config.yaadPayMasof
-    
-            const {email} = this.user
-            const coin = this.getReleventCoin()
-            const durationTxt = this.selectedPlan.code ? encodeURI(`${this.selectedPlan.code} - ${this.selectedPlan.durationTxt}`) : encodeURI(this.selectedPlan.durationTxt)
-            const duration = +this.selectedPlan.duration
-            const apiSignAddress = `https://icom.yaad.net/p/?action=APISign&What=SIGN&KEY=${key}&PassP=${pass}&Masof=${masof}&Order=12345678910&Info=${durationTxt}&Amount=${price}&UTF8=True&UTF8out=True&email=${email}&Tash=999&FixTash=False&ShowEngTashText=True&Coin=${coin}&Postpone=False&J5=False&Sign=True&MoreData=True&sendemail=False&SendHesh=True&heshDesc=[0~${durationTxt}~1~${price}]&Pritim=True&PageLang=ENG&HK=True&freq=${duration}`
-            storageService.store('isPaying', true)
+            const BASE_URL = (process.env.NODE_ENV === 'development') ? '//localhost:3000' : '';
+            const apiSignAddress = `https://secure.cardcom.solutions/Interface/LowProfile.aspx/?Operation=2&TerminalNumber=1000&UserName=barak9611&SumToBill=15&CoinId=2&Language=en&ProductName=Monthly-plano&APILevel=10&Codepage=65001&SuccessRedirectUrl=http://localhost:8080/success&ErrorRedirectUrl=http://localhost:8080/payment-failed&IndicatorUrl=${BASE_URL}/getPaymentData`
             const res = await paymentService.getEndpoint(apiSignAddress)
+            const data = res.payload.split('&')
+            const profileCode = data[2].split('=')[1]
             this.isLoading = false
-            if(res.payload) window.location = `https://icom.yaad.net/p/?action=pay&${res.payload}`;
-            else eventBus.$emit(EV_show_user_msg, 'Something Went wrong, please try again', 5000, 'error');
+            if(profileCode) window.location = `https://secure.cardcom.solutions/External/LowProfileClearing/1000.aspx?lowprofilecode=${profileCode}`;
+
+
+            // const apiSignAddress = `https://secure.cardcom.solutions/interface/RecurringPayment.aspx/?TerminalNumber=1000&RecurringPayments.ChargeInTerminal=1001&UserName=barak9611&codepage=65001&Operation=NewAndUpdate&Account.CompanyName=EfficaTest&RecurringPayments.InternalDecription=Monthly-plano&RecurringPayments.NextDateToBill=09/02/2022&RecurringPayments.TotalNumOfBills=999999&RecurringPayments.FinalDebitCoinId=2&RecurringPayments.ReturnValue=1234&RecurringPayments.DocTypeToCreate=1&RecurringPayments.FlexItem.InvoiceDescription=Effica-Invoice&RecurringPayments.FlexItem.Price=35`;
+            // this.isLoading = false
+            // window.location = apiSignAddress;
         }
     }
   },

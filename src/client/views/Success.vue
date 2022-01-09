@@ -9,8 +9,8 @@
 
 <script>
 
-import { manageService } from '@/cms/services/manage.service'
-import { storageService } from '@/cms/services/storage.service';
+// import { manageService } from '@/cms/services/manage.service'
+// import { storageService } from '@/cms/services/storage.service';
 
 export default {
   computed: {
@@ -43,31 +43,31 @@ export default {
     }
   },
   async created() {
-    const isPaying = storageService.load('isPaying')
-    if(isPaying){
-      await this.$store.dispatch({type: 'getUserInfo'})
-      storageService.remove('isPaying')
-      const user = JSON.parse(JSON.stringify(this.loggedInUser))
-      const managementData = await manageService.list()
-      const plan = this.getPlan(managementData, this.$route.query.Info)
-      if(plan){
-          user.type = 'subscribed'
-          const purchase = {
-              at: Date.now(),
-              duration: plan.duration,
-              price: this.calcAmount(plan,this.$route.query.Coin),
-              coin: this.getCoinSymbol(this.$route.query.Coin),
-              plan: plan.durationTxt,
-              until: 'Ongoing',
-              invoiceId: this.$route.query.Hesh,
-              HKId: this.$route.query.HKId,
-              coupon: plan.code || null
-          }
-          user.purchases.unshift(purchase)
-          await this.$store.dispatch({ type: 'updateLoggedInUser', user });
-          await this.$store.dispatch({ type: 'updateAutoPilotContact', user});
-      }
-    }
+    // const isPaying = storageService.load('isPaying')
+    // if(isPaying){
+    //   await this.$store.dispatch({type: 'getUserInfo'})
+    //   storageService.remove('isPaying')
+    //   const user = JSON.parse(JSON.stringify(this.loggedInUser))
+    //   const managementData = await manageService.list()
+    //   const plan = this.getPlan(managementData, this.$route.query.Info)
+    //   if(plan){
+    //       user.type = 'subscribed'
+    //       const purchase = {
+    //           at: Date.now(),
+    //           duration: plan.duration,
+    //           price: this.calcAmount(plan,this.$route.query.Coin),
+    //           coin: this.getCoinSymbol(this.$route.query.Coin),
+    //           plan: plan.durationTxt,
+    //           until: 'Ongoing',
+    //           invoiceId: this.$route.query.Hesh,
+    //           HKId: this.$route.query.HKId,
+    //           coupon: plan.code || null
+    //       }
+    //       user.purchases.unshift(purchase)
+    //       await this.$store.dispatch({ type: 'updateLoggedInUser', user });
+    //       await this.$store.dispatch({ type: 'updateAutoPilotContact', user});
+    //   }
+    // }
   },
 };
 </script>
