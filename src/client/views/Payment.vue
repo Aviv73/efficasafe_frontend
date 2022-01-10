@@ -59,8 +59,6 @@ import { manageService } from '@/cms/services/manage.service'
 import { locationService } from '@/cms/services/location.service'
 import { eventBus, EV_show_user_msg, EV_open_singup, EV_open_login } from '@/cms/services/eventBus.service';
 import { paymentService } from '@/cms/services/payment.service';
-import { userService } from '@/cms/services/user.service';
-import config from '../config/index'
 
 export default {
   data() {
@@ -105,30 +103,11 @@ export default {
         if(this.localCurrency === 'EUR') return plan.priceEUR
         return plan.priceUSD
     },
-    getRelevantCoin(){
-        if(this.localCurrency === 'ILS') return 1
-        if(this.localCurrency === 'EUR') return 978
-        return 2
-    },
     getRelevantPrice(){
         let price = this.selectedPlan.priceUSD 
         if(this.localCurrency === 'ILS') price = this.selectedPlan.priceISL 
         if(this.localCurrency === 'EUR') price = this.selectedPlan.priceEUR
         return price * this.selectedPlan.duration
-    },
-    getIndicatorUrl(){
-        let BASE_URL
-        if(process.env.NODE_ENV === 'development') BASE_URL = 'http://localhost:3000/'
-        else if(process.env.NODE_ENV === 'staging') BASE_URL = 'https://efficasafe-staging.herokuapp.com/'
-        else BASE_URL = 'https://www.efficasafe.com/'
-        return `${BASE_URL}api/payment/handle-payment`
-    },
-    getFrontUrl(){
-        let BASE_URL
-        if(process.env.NODE_ENV === 'development') BASE_URL = 'http://localhost:8080/'
-        else if(process.env.NODE_ENV === 'staging') BASE_URL = 'https://efficasafe-staging.herokuapp.com/'
-        else BASE_URL = 'https://www.efficasafe.com/'
-        return BASE_URL
     },
     onSelectPlan(ev, plan){
         this.selectedPlan = plan
@@ -181,30 +160,11 @@ export default {
             this.isLoading = false
             this.$router.push('/?subscribed=true')
         }else{
-            const planName = this.selectedPlan.code ? `${this.selectedPlan.code} - ${this.selectedPlan.durationTxt}` : this.selectedPlan.durationTxt
-            const coinId = this.getRelevantCoin()
-            const price = this.getRelevantPrice()
-            const terminalNum = config.cardComMasof //1000 for test
-            const slikaUserName = config.cardComName //barak9611 for test
-            const indicatorUrl = this.getIndicatorUrl()
-            const frontUrl = this.getFrontUrl()
-
-            console.log(indicatorUrl, frontUrl);
-
-            const apiSignAddress = `https://secure.cardcom.solutions/Interface/LowProfile.aspx/?Operation=2&TerminalNumber=${terminalNum}&UserName=${slikaUserName}&SumToBill=${price}&CoinId=${coinId}&Language=en&ProductName=${planName}&APILevel=10&Codepage=65001&SuccessRedirectUrl=${frontUrl}success&ErrorRedirectUrl=${frontUrl}payment-failed&IndicatorUrl=${indicatorUrl}`
-            const res = await paymentService.getEndpoint(apiSignAddress)
-            if(res.payload){
-                const user = JSON.parse(JSON.stringify(this.loggedInUser))
-                user.tempPlan = this.selectedPlan
-                user.tempPlan.currency = this.localCurrency
-                await userService.updateSession(user)
-                this.isLoading = false
-                window.location = `https://secure.cardcom.solutions/External/LowProfileClearing/${terminalNum}.aspx?lowprofilecode=${res.payload}`;
-            } 
-            else{ 
-                this.isLoading = false
-                eventBus.$emit(EV_show_user_msg, 'Something Went wrong, please try again', 5000, 'error');
-            }
+            const url = await paymentService.getEndpoint(this.selectedPlan, this.localCurrency)
+            this.isLoading = false
+            if(url) window.location = url
+            else eventBus.$emit(EV_show_user_msg, 'Something Went wrong, please try again', 5000, 'error');
+            
         }
     }
   },
