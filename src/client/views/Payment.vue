@@ -123,6 +123,13 @@ export default {
         else BASE_URL = 'https://www.efficasafe.com/'
         return `${BASE_URL}api/payment/handle-payment`
     },
+    getFrontUrl(){
+        let BASE_URL
+        if(process.env.NODE_ENV === 'development') BASE_URL = 'http://localhost:8080/'
+        else if(process.env.NODE_ENV === 'staging') BASE_URL = 'https://efficasafe-staging.herokuapp.com/'
+        else BASE_URL = 'https://www.efficasafe.com/'
+        return BASE_URL
+    },
     onSelectPlan(ev, plan){
         this.selectedPlan = plan
         this.$store.commit({ type: 'setSelectedPaymentPlan', SelectedPlan: plan });
@@ -180,8 +187,11 @@ export default {
             const terminalNum = config.cardComMasof //1000 for test
             const slikaUserName = config.cardComName //barak9611 for test
             const indicatorUrl = this.getIndicatorUrl()
+            const frontUrl = this.getFrontUrl()
 
-            const apiSignAddress = `https://secure.cardcom.solutions/Interface/LowProfile.aspx/?Operation=2&TerminalNumber=${terminalNum}&UserName=${slikaUserName}&SumToBill=${price}&CoinId=${coinId}&Language=en&ProductName=${planName}&APILevel=10&Codepage=65001&SuccessRedirectUrl=http://localhost:8080/success&ErrorRedirectUrl=http://localhost:8080/payment-failed&IndicatorUrl=${indicatorUrl}`
+            console.log(indicatorUrl, frontUrl);
+
+            const apiSignAddress = `https://secure.cardcom.solutions/Interface/LowProfile.aspx/?Operation=2&TerminalNumber=${terminalNum}&UserName=${slikaUserName}&SumToBill=${price}&CoinId=${coinId}&Language=en&ProductName=${planName}&APILevel=10&Codepage=65001&SuccessRedirectUrl=${frontUrl}success&ErrorRedirectUrl=${frontUrl}payment-failed&IndicatorUrl=${indicatorUrl}`
             const res = await paymentService.getEndpoint(apiSignAddress)
             if(res.payload){
                 const user = JSON.parse(JSON.stringify(this.loggedInUser))
@@ -189,7 +199,7 @@ export default {
                 user.tempPlan.currency = this.localCurrency
                 await userService.updateSession(user)
                 this.isLoading = false
-                window.location = `https://secure.cardcom.solutions/External/LowProfileClearing/${terminalNum}.aspx?lowprofilecode=${res.payload}`;
+                // window.location = `https://secure.cardcom.solutions/External/LowProfileClearing/${terminalNum}.aspx?lowprofilecode=${res.payload}`;
             } 
             else{ 
                 this.isLoading = false
