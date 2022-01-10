@@ -58,9 +58,9 @@ import Loader from '@/client/cmps/common/icons/Loader';
 import { manageService } from '@/cms/services/manage.service'
 import { locationService } from '@/cms/services/location.service'
 import { eventBus, EV_show_user_msg, EV_open_singup, EV_open_login } from '@/cms/services/eventBus.service';
-// import { storageService } from '@/cms/services/storage.service';
 import { paymentService } from '@/cms/services/payment.service';
-// import config from '../config/index'
+import { userService } from '@/cms/services/user.service';
+import config from '../config/index'
 
 export default {
   data() {
@@ -105,16 +105,23 @@ export default {
         if(this.localCurrency === 'EUR') return plan.priceEUR
         return plan.priceUSD
     },
-    getReleventCoin(){
+    getRelevantCoin(){
         if(this.localCurrency === 'ILS') return 1
-        if(this.localCurrency === 'EUR') return 3
+        if(this.localCurrency === 'EUR') return 978
         return 2
     },
-    getReleventPrice(){
+    getRelevantPrice(){
         let price = this.selectedPlan.priceUSD 
         if(this.localCurrency === 'ILS') price = this.selectedPlan.priceISL 
         if(this.localCurrency === 'EUR') price = this.selectedPlan.priceEUR
         return price * this.selectedPlan.duration
+    },
+    getIndicatorUrl(){
+        let BASE_URL
+        if(process.env.NODE_ENV === 'development') BASE_URL = 'http://localhost:3000/'
+        else if(process.env.NODE_ENV === 'staging') BASE_URL = 'https://efficasafe-staging.herokuapp.com/'
+        else BASE_URL = 'https://www.efficasafe.com/'
+        return `${BASE_URL}api/payment/handle-payment`
     },
     onSelectPlan(ev, plan){
         this.selectedPlan = plan
@@ -149,7 +156,7 @@ export default {
             return 
         }
         this.isLoading = true
-        const price = this.getReleventPrice()
+        const price = this.getRelevantPrice()
         if(price === 0){
             const user = JSON.parse(JSON.stringify(this.loggedInUser))
             user.type = 'subscribed'
@@ -167,18 +174,27 @@ export default {
             this.isLoading = false
             this.$router.push('/?subscribed=true')
         }else{
-            const BASE_URL = (process.env.NODE_ENV === 'development') ? '//localhost:3000' : '';
-            const apiSignAddress = `https://secure.cardcom.solutions/Interface/LowProfile.aspx/?Operation=2&TerminalNumber=1000&UserName=barak9611&SumToBill=15&CoinId=2&Language=en&ProductName=Monthly-plano&APILevel=10&Codepage=65001&SuccessRedirectUrl=http://localhost:8080/success&ErrorRedirectUrl=http://localhost:8080/payment-failed&IndicatorUrl=${BASE_URL}/getPaymentData`
+            const planName = this.selectedPlan.code ? `${this.selectedPlan.code} - ${this.selectedPlan.durationTxt}` : this.selectedPlan.durationTxt
+            const coinId = this.getRelevantCoin()
+            const price = this.getRelevantPrice()
+            const terminalNum = config.cardComMasof //1000 for test
+            const slikaUserName = config.cardComName //barak9611 for test
+            const indicatorUrl = this.getIndicatorUrl()
+
+            const apiSignAddress = `https://secure.cardcom.solutions/Interface/LowProfile.aspx/?Operation=2&TerminalNumber=${terminalNum}&UserName=${slikaUserName}&SumToBill=${price}&CoinId=${coinId}&Language=en&ProductName=${planName}&APILevel=10&Codepage=65001&SuccessRedirectUrl=http://localhost:8080/success&ErrorRedirectUrl=http://localhost:8080/payment-failed&IndicatorUrl=${indicatorUrl}`
             const res = await paymentService.getEndpoint(apiSignAddress)
-            const data = res.payload.split('&')
-            const profileCode = data[2].split('=')[1]
-            this.isLoading = false
-            if(profileCode) window.location = `https://secure.cardcom.solutions/External/LowProfileClearing/1000.aspx?lowprofilecode=${profileCode}`;
-
-
-            // const apiSignAddress = `https://secure.cardcom.solutions/interface/RecurringPayment.aspx/?TerminalNumber=1000&RecurringPayments.ChargeInTerminal=1001&UserName=barak9611&codepage=65001&Operation=NewAndUpdate&Account.CompanyName=EfficaTest&RecurringPayments.InternalDecription=Monthly-plano&RecurringPayments.NextDateToBill=09/02/2022&RecurringPayments.TotalNumOfBills=999999&RecurringPayments.FinalDebitCoinId=2&RecurringPayments.ReturnValue=1234&RecurringPayments.DocTypeToCreate=1&RecurringPayments.FlexItem.InvoiceDescription=Effica-Invoice&RecurringPayments.FlexItem.Price=35`;
-            // this.isLoading = false
-            // window.location = apiSignAddress;
+            if(res.payload){
+                const user = JSON.parse(JSON.stringify(this.loggedInUser))
+                user.tempPlan = this.selectedPlan
+                user.tempPlan.currency = this.localCurrency
+                await userService.updateSession(user)
+                this.isLoading = false
+                window.location = `https://secure.cardcom.solutions/External/LowProfileClearing/${terminalNum}.aspx?lowprofilecode=${res.payload}`;
+            } 
+            else{ 
+                this.isLoading = false
+                eventBus.$emit(EV_show_user_msg, 'Something Went wrong, please try again', 5000, 'error');
+            }
         }
     }
   },
