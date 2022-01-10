@@ -199,7 +199,7 @@ export default {
                 user.tempPlan.currency = this.localCurrency
                 await userService.updateSession(user)
                 this.isLoading = false
-                // window.location = `https://secure.cardcom.solutions/External/LowProfileClearing/${terminalNum}.aspx?lowprofilecode=${res.payload}`;
+                window.location = `https://secure.cardcom.solutions/External/LowProfileClearing/${terminalNum}.aspx?lowprofilecode=${res.payload}`;
             } 
             else{ 
                 this.isLoading = false
