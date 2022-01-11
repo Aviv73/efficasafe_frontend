@@ -60,7 +60,7 @@
             :isActive="isEndSubscriptionModal"
             @close-modal="closeEndSubscriptionModal"
             >
-            <end-subscription-modal :HKId="HKIdToEnd" @close-modal="closeEndSubscriptionModal" @update-user="updateEndSubscriptionUser"/>
+            <end-subscription-modal :recurringId="recurringIdToEnd" @close-modal="closeEndSubscriptionModal" @update-user="updateEndSubscriptionUser"/>
         </modal-wrap>
     </section>
 </template>
@@ -81,7 +81,7 @@ export default {
     data() {
         return {
             isEndSubscriptionModal: false,
-            HKIdToEnd: null,
+            recurringIdToEnd: null,
             filterBy: {
                 name: '',
                 page: 1,
@@ -221,11 +221,11 @@ export default {
             return today.getTime();
         },
         openEndSubscriptionModal(item){
-            this.HKIdToEnd = item.HKId
+            this.recurringIdToEnd = item.recurringId
             this.isEndSubscriptionModal = true
         },
         closeEndSubscriptionModal(){
-            this.HKIdToEnd = null
+            this.recurringIdToEnd = null
             this.isEndSubscriptionModal = false
         },
         async updateEndSubscriptionUser(){

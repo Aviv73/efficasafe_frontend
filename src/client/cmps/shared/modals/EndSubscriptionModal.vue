@@ -16,7 +16,6 @@
 
 <script>
 
-import config from '@/client/config/index'
 import { paymentService } from '@/cms/services/payment.service';
 import Loader from '@/client/cmps/common/icons/Loader';
 import { eventBus, EV_show_user_msg } from '@/cms/services/eventBus.service';
@@ -24,7 +23,7 @@ import { eventBus, EV_show_user_msg } from '@/cms/services/eventBus.service';
 
 export default {
     props: {
-        HKId: {
+        recurringId: {
             type: String
         }
     },
@@ -39,12 +38,7 @@ export default {
         },
         async onEndSubscritpion(){
             this.isLoading = true
-            const data = {
-                HKId: this.HKId,
-                massof: config.yaadPayMasof,
-                pass: config.yaadPayPassP
-            }
-            const res = await paymentService.endSubscription(data)
+            const res = await paymentService.endSubscription(this.recurringId)
             if(res.payload === false){
                 eventBus.$emit(EV_show_user_msg, 'Something went wrong, please try again or contact us', 5000, 'error')
                 this.$emit('close-modal');
@@ -52,7 +46,6 @@ export default {
                 this.$emit('update-user');
             }
             this.isLoading = false
-            //if res is positive update the logginUser, calc the 'Until' to show the date of ending subscription
         }
     },
     components:{
