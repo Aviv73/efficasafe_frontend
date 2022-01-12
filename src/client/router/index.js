@@ -45,17 +45,17 @@ const routes = [
     path: '/subscribe',
     name: 'Subscribe',
     component: Subscribe,
-    // meta: {
-    //   blockSubscribed: true
-    // }
+    meta: {
+      blockSubscribed: true
+    }
   },
   {
     path: '/payment',
     name: 'Payment',
     component: Payment,
-    // meta: {
-    //   blockSubscribed: true
-    // }
+    meta: {
+      blockSubscribed: true
+    }
   },
   {
     path: '/payment-failed',
