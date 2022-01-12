@@ -15,7 +15,7 @@ import CloseIcon from 'vue-material-design-icons/Close';
 export default {
     data() {
         return {
-            showMsg: true
+            showMsg: false
         }
     },
     methods: {

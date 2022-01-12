@@ -47,3 +47,9 @@
 .show-update-msg{
     transform: translateY(0);
 }
+
+@media (max-width: 450px) {
+    .update-msg-container{
+        display: none;
+    }
+}
