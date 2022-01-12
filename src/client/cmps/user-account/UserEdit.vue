@@ -126,7 +126,6 @@
 </template>
 
 <script>
-import config from '@/client/config/index'
 import { paymentService } from '@/cms/services/payment.service';
 import { eventBus, EV_show_user_msg } from '@/cms/services/eventBus.service';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
