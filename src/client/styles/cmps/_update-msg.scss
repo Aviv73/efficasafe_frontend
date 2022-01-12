@@ -10,9 +10,9 @@
     padding: 5px 15px;
     transition: .5s;
     transform: translateY(-100%);
+    text-align: center;
 
     h2{
-        text-align: center;
         font-weight: bold;
         color: $clr1;
         margin-bottom: 5px;
@@ -21,20 +21,12 @@
 
     p{
         font-size: 15px;
-        margin-bottom: 8px;
-    }
+        margin-bottom: 6px;
 
-    .reload-btn{
-        display: block;
-        margin: 0 auto;
-        background-color: $clr2;
-        color: $white;
-        text-transform: uppercase;
-        font-weight: bold;
-        padding: 3px 8px;
-        border-radius: 10px;
-        letter-spacing: 1.2px;
-        margin-bottom: 5px;
+        .highlight{
+            color: $clr2;
+            font-weight: bold;
+        }
     }
 
     .close-btn{
@@ -43,6 +35,12 @@
         right: 2px;
         transform: scale(0.8);
         cursor: pointer;
+    }
+
+    .note{
+        text-align: start;
+        font-size: 12px;
+        color: black;
     }
 }
 

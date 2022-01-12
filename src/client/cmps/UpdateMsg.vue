@@ -2,8 +2,8 @@
     <div class="update-msg-container" :class="{'show-update-msg': showMsg}">
         <close-icon class="close-btn" @click="onCloseMsg"/>
         <h2>New content is available!</h2>
-        <p>Click on the button to reload the page or press Ctrl+f5 at any time.</p>
-        <button @click="hardReloadPage" class="reload-btn">Reload</button>
+        <p>Press <span class="highlight">Ctrl+f5</span> to update.</p>
+        <p class="note">*Not updating will lead to a poor user experience.</p>
     </div>
 </template>
 
@@ -19,16 +19,12 @@ export default {
         }
     },
     methods: {
-        hardReloadPage(){
-            location.reload(true)
-        },
         onCloseMsg(){
             this.showMsg = false
         }
     },
     created() {
         eventBus.$on('app-updated', () => {
-            
             this.showMsg = true
         });
     },
