@@ -1,0 +1,51 @@
+.update-msg-container{
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    background-color: rgba(255, 255, 255, 0.904);
+    border-radius: 10px;
+    z-index: 9999;
+    border: 2px solid $clr1;
+    padding: 5px 15px;
+    transition: .5s;
+    transform: translateY(-100%);
+
+    h2{
+        text-align: center;
+        font-weight: bold;
+        color: $clr1;
+        margin-bottom: 5px;
+        margin-top: 5px;
+    }
+
+    p{
+        font-size: 15px;
+        margin-bottom: 8px;
+    }
+
+    .reload-btn{
+        display: block;
+        margin: 0 auto;
+        background-color: $clr2;
+        color: $white;
+        text-transform: uppercase;
+        font-weight: bold;
+        padding: 3px 8px;
+        border-radius: 10px;
+        letter-spacing: 1.2px;
+        margin-bottom: 5px;
+    }
+
+    .close-btn{
+        position: fixed;
+        top: 2px;
+        right: 2px;
+        transform: scale(0.8);
+        cursor: pointer;
+    }
+}
+
+.show-update-msg{
+    transform: translateY(0);
+}
