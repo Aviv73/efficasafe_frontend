@@ -223,12 +223,8 @@ export default {
             this.isLoading = true
             try{
                 if(user.type === 'subscribed' && user.purchases.length && user.purchases[0].until === 'Ongoing'){
-                    const data = {
-                        HKId: user.purchases[0].HKId,
-                        massof: config.yaadPayMasof,
-                        pass: config.yaadPayPassP
-                    }
-                    const res = await paymentService.endSubscription(data)
+                    const recurringId = user.purchases[0].recurringId
+                    const res = await paymentService.endSubscription(recurringId)
                     if(res.payload === false){
                         eventBus.$emit(EV_show_user_msg, 'Something went wrong, please try again or contact us', 5000, 'error')
                         this.isLoading = false
