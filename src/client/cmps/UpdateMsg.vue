@@ -2,7 +2,7 @@
     <div class="update-msg-container" :class="{'show-update-msg': showMsg}">
         <close-icon class="close-btn" @click="onCloseMsg"/>
         <h2>New content is available!</h2>
-        <p>Press <span class="highlight">Ctrl+f5</span> to update.</p>
+        <p>Press <span class="highlight">Ctrl+F5</span> or <span class="highlight">Command+Shift+R</span> on mac to update.</p>
         <p class="note">*Not updating will lead to a poor user experience.</p>
     </div>
 </template>
@@ -15,7 +15,7 @@ import CloseIcon from 'vue-material-design-icons/Close';
 export default {
     data() {
         return {
-            showMsg: false
+            showMsg: true
         }
     },
     methods: {
