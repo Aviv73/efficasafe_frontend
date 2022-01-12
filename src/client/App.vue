@@ -90,6 +90,7 @@ export default {
         eventBus.$on(EV_open_login, this.onLogin);
         eventBus.$on('app-updated', () => {
             console.log('app component got the update msg');
+            
         });
         await this.$store.dispatch('pullManagementData')
         this.$store.commit('setFreeSearchesCount');
