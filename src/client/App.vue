@@ -17,6 +17,7 @@
             @openAuthModal="switchModals"
         />
         <user-msg />
+        <update-msg />
     </div>
 </template>
 
@@ -29,6 +30,7 @@ import MainFooter from '@/client/cmps/MainFooter';
 import AuthModal from '@/client/cmps/shared/modals/AuthModal';
 import loginModal from '@/client/cmps/shared/modals/LoginModal';
 import UserMsg from '@/client/cmps/UserMsg.vue';
+import UpdateMsg from '@/client/cmps/UpdateMsg.vue';
 
 export default {
     name: 'App',
@@ -88,9 +90,6 @@ export default {
 
         eventBus.$on(EV_open_singup, this.onSignUp);
         eventBus.$on(EV_open_login, this.onLogin);
-        eventBus.$on('app-updated', () => {
-            console.log('app component got the update msg');
-        });
         await this.$store.dispatch('pullManagementData')
         this.$store.commit('setFreeSearchesCount');
         this.$store.commit('initialLoadingDone')
@@ -100,7 +99,8 @@ export default {
         MainFooter,
         AuthModal,
         loginModal,
-        UserMsg
+        UserMsg,
+        UpdateMsg
     },
 };
 </script>
