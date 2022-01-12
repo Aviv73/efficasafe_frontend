@@ -28,6 +28,7 @@ export default {
     },
     created() {
         eventBus.$on('app-updated', () => {
+            
             this.showMsg = true
         });
     },
