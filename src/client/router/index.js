@@ -242,4 +242,8 @@ router.beforeEach(async (to, from, next) => {
   next();
 });
 
+router.afterEach((to) => {
+  window.dataLayer.push({'event': 'customPage', virtualPagePath: to.fullPath})
+})
+
 export default router;
