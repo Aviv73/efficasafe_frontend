@@ -73,6 +73,7 @@
                             >
                                 End subscription
                             </button>
+                            <p v-else-if="item.canceledAt">Subscription Canceled at: {{item.canceledAt | moment('DD/MM/YYYY')}}</p>
                         </span>
                         <span
                             class="flex-space-between td-actions"

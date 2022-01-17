@@ -1,5 +1,5 @@
 <template>
-    <section class="interaction-preview" @click="EmitScrollDown">
+    <section class="interaction-preview" :id="interaction._id">
         <collapse
             @collapse-closed="onCollapseToggle"
             :initial-is-visible="initialCollapseIsVisible"
@@ -289,10 +289,6 @@ export default {
         counter: {
             type: Number,
             required: false
-        },
-        isLast: {
-            type: Boolean,
-            default: false
         }
     },
     data() {
@@ -400,12 +396,12 @@ export default {
             });
         },
         onCollapseToggle() {
-            const chacheData = {
+            const cacheData = {
                 key: this.isSupp ? `${this.$route.fullPath}/supps` : this.$route.fullPath,
                 idx: this.idx,
                 parentIdx: this.parentIdx
             };
-            interactionService.chacheSearchState(chacheData);
+            interactionService.cacheSearchState(cacheData);this.EmitScrollElementToTop()
         },
         getSide2Name(name) {
             const side2Name = name.split(' & ')[1].trim();
@@ -565,8 +561,8 @@ export default {
         setIsLabelChildEmpty(isEmpty){
             this.isLabelChildEmpty = !isEmpty
         },
-        EmitScrollDown(){
-            if(this.isGroup && this.isLast) eventBus.$emit('scroll-to-bottom')
+        EmitScrollElementToTop(){
+            eventBus.$emit('scroll-element-to-top', this.interaction._id)
         }
     },
     async created() {

@@ -286,7 +286,9 @@ export default {
             const criteria = { limit: 0, page: 0, labelId };
             const relatedMaterials = await this.$store.dispatch({
                 type: 'getMaterials',
-                criteria
+                criteria,
+                doCache: true,
+                cacheKey: `labelCache${interaction.side2Label._id}`
             });
             this.relatedMaterials = relatedMaterials;
             this.vInteractions = relatedMaterials.map(
@@ -324,12 +326,12 @@ export default {
             });
         },
         onCollapseToggle(idx) {
-            const chacheData = {
+            const cacheData = {
                 key: this.$route.fullPath,
                 idx,
                 parentIdx: this.parentIdx
             };
-            interactionService.chacheSearchState(chacheData);
+            interactionService.cacheSearchState(cacheData);
         },
         getInteractionLink(interaction) {
             const url = `/interaction/${interaction._id}/${interaction.side2Material._id}`;

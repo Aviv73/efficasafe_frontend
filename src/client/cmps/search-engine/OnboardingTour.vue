@@ -39,6 +39,7 @@ import OnboardingImg7 from '@/client/assets/imgs/onboarding7.jpg';
 import OnboardingImg8 from '@/client/assets/imgs/onboarding8.jpg';
 import OnboardingImg9 from '@/client/assets/imgs/onboarding9.png';
 import OnboardingImg10 from '@/client/assets/imgs/onboarding10.png';
+import OnboardingImg11 from '@/client/assets/imgs/onboarding11.jpg';
 import interactionImg1 from '@/client/assets/imgs/int1.png';
 import interactionImg2 from '@/client/assets/imgs/int2.png';
 import interactionImg3 from '@/client/assets/imgs/int3.png';
@@ -310,6 +311,25 @@ export default {
                 {
                     target: '.v-tour1-step-0',
                     content: `
+                        <div class="v-step-container big-container">
+                            <p class="v-step-txt">
+                                You can press the info link to see the full monograph.
+                            </p>
+                            <img
+                                class="onboarding-img"
+                                src="${OnboardingImg11}"
+                                alt="Explanatory usage image"
+                            />
+                        </div>
+                    `,
+                    params: {
+                        placement: 'right-end',
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour1-step-0',
+                    content: `
                         <div class="v-step-container v-step-wide-container">
                             <p class="v-step-txt">
                                 You can filter the category of interactions. 
@@ -514,6 +534,25 @@ export default {
                             <img
                                 class="onboarding-img"
                                 src="${OnboardingImg10}"
+                                alt="Explanatory usage image"
+                            />
+                        </div>
+                    `,
+                    params: {
+                        placement: 'right-end',
+                        enableScrolling: false
+                    }
+                },
+                {
+                    target: '.v-tour1-step-0',
+                    content: `
+                        <div class="v-step-container big-container">
+                            <p class="v-step-txt">
+                                You can press the info link to see the full monograph.
+                            </p>
+                            <img
+                                class="onboarding-img"
+                                src="${OnboardingImg11}"
                                 alt="Explanatory usage image"
                             />
                         </div>

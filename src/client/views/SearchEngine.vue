@@ -14,12 +14,12 @@
                     />
                 </router-link>
                 <autocomplete
-                    class="search-engine-search-bar v-tour1-step-0"
+                    class="search-engine-search-bar v-tour1-step-0 no-print"
                     :isOnSearchPage="true"
                     :placeholder1="isScreenNarrow ? 'Add another' : '+   Add another'"
                     @item-selected="addMaterials"
                 />
-                <div class="search-engine-search-actions flex-space-between">
+                <div class="search-engine-search-actions flex-space-between no-print">
                     <button
                         title="Undo"
                         :disabled="!$route.query.q || !$route.query.q.length"
@@ -135,7 +135,7 @@
                 class="search-engine-results"
                 :style="{ 'max-width': `calc(100vw - ${scrollBarWidth})` }"
             >
-                <header class="search-engine-results-header">
+                <header class="search-engine-results-header no-print">
                     <div class="actions-container">
                         <span class="search-engine-results-amount font-medium">
                             <animated-integer :value="totalInteractionCount" />
@@ -146,7 +146,7 @@
                                 class="print-btn print-btn-icon"
                                 :title="loggedInUser ? 'Print' : 'Subscribed users can print their search results'"
                                 :disabled="!loggedInUser"
-                                @click="isPrintModalActive = true"
+                                @click="onPrint"
                             >
                                 <printer-icon title="" />
                             </button>
@@ -247,7 +247,7 @@
                     </div>
                 </header>
                 <nav
-                    class="search-engine-nav"
+                    class="search-engine-nav no-print"
                     v-set-sticky-class-name:[`pinned`]
                     @scroll="moveArrow"
                 >
@@ -1276,7 +1276,6 @@ export default {
             if(!page) page = 1;
             const filterBy = {
                 isSearchResults: true,
-                // page: 0,
                 page: --page,
                 id: ids,
                 materialCount: this.materialsLength,
@@ -1726,8 +1725,12 @@ export default {
             eventBus.$on('interaction-list-mounted', () => {
                 if(this.innerListEl) this.innerListEl.scrollTo(0,this.initialListHight)
             })
-            eventBus.$on('scroll-to-bottom', () => {
-                if(this.innerListEl) this.innerListEl.scrollTo(0,100000)
+            eventBus.$on('scroll-element-to-top', (id) => {
+                let element = document.getElementById(id);
+                if(element) {
+                    var topPos = element.offsetTop;
+                    this.innerListEl.scrollTop = topPos - 224
+                }
             })
         },
         removeEventBusListeners(){
@@ -1749,6 +1752,10 @@ export default {
                     this.innerListEl.scrollTo(0,100000)
                 })
             }
+        },
+        onPrint(){
+            if(this.$route.name === 'Monitor') return window.print()
+            this.isPrintModalActive = true
         }
     },
     async mounted() {

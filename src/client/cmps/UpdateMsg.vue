@@ -1,5 +1,5 @@
 <template>
-    <div class="update-msg-container" :class="{'show-update-msg': showMsg}">
+    <div class="update-msg-container no-print" :class="{'show-update-msg': showMsg}">
         <close-icon class="close-btn" @click="onCloseMsg"/>
         <h2>New content is available!</h2>
         <p>Press <span class="highlight">Ctrl+F5</span> or <span class="highlight">Command+Shift+R</span> on mac to update.</p>
