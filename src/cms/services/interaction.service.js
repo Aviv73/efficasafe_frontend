@@ -12,28 +12,28 @@ export const interactionService = {
     removeMany,
     restore,
     getEmptyInteraction,
-    chacheSearchState,
+    cacheSearchState,
     getPrintPreview,
-    getChache
+    getCache
 }
 
-function getChache(key) {
+function getCache(key) {
     return cache[key];
 }
 
-function chacheSearchState({ key, parentIdx, idx }) {
-    const chached = cache[key];
-    if (chached) {
-        if (!chached.searchState) chached.searchState = {};
+function cacheSearchState({ key, parentIdx, idx }) {
+    const cached = cache[key];
+    if (cached) {
+        if (!cached.searchState) cached.searchState = {};
 
         if (parentIdx === undefined) {
-            if (!chached.searchState[idx]) chached.searchState[idx] = {};
-            else delete chached.searchState[idx];
+            if (!cached.searchState[idx]) cached.searchState[idx] = {};
+            else delete cached.searchState[idx];
         } else {
-            if (!chached.searchState[parentIdx]) chached.searchState[parentIdx] = {};
+            if (!cached.searchState[parentIdx]) cached.searchState[parentIdx] = {};
             
-            if (!chached.searchState[parentIdx][idx]) chached.searchState[parentIdx][idx] = {};
-            else delete chached.searchState[parentIdx][idx];
+            if (!cached.searchState[parentIdx][idx]) cached.searchState[parentIdx][idx] = {};
+            else delete cached.searchState[parentIdx][idx];
         }
     }
 }
@@ -47,15 +47,6 @@ async function list(filterBy, cacheKey = '') {
 
     return res;
 }
-// async function list(filterBy, cacheKey = '') {
-//     if (cacheKey && cache[cacheKey]) {
-//         return cache[cacheKey];
-//     }
-//     const res = await httpService.get(END_POINT, filterBy);
-//     if (cacheKey) cache[cacheKey] = res;
-
-//     return res;
-// }
 
 function getById(id) {
     return httpService.get(`${END_POINT}/${id}`);

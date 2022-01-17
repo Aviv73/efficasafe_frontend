@@ -16,12 +16,13 @@ export const materialService = {
     removeMany
 }
 
-async function list(filterBy = {}, doCache = false) {
+async function list(filterBy = {}, doCache = false, cacheKey = false) {
     let key = '';
     if (doCache) {
-        key = filterBy.q.toString();
-        if (cache[key]) return cache[key];
-        
+        key = filterBy.q ? filterBy.q.toString() : cacheKey
+        if (cache[key]) {
+            return cache[key];
+        }
     }
 
     const res = await httpService.get(END_POINT, filterBy);

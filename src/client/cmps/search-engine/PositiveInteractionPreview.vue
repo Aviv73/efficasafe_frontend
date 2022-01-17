@@ -176,12 +176,12 @@ export default {
             return this.openCollapses.includes(idx);
         },
         onCollapseToggle(idx, key) {
-            const chacheData = {
+            const cacheData = {
                 key,
                 idx,
                 parentIdx: this.parentIdx
             };
-            interactionService.chacheSearchState(chacheData);
+            interactionService.cacheSearchState(cacheData);
         },
         getInteractionColor(recommendation, idx) {
             if(!this.isAllowed(idx)) return '#a4b8c6'
@@ -222,7 +222,7 @@ export default {
     created() {
         this.interaction.vInteractions.forEach(({ cacheKey }) => {
             if(!cacheKey) return 
-            const res = interactionService.getChache(cacheKey);
+            const res = interactionService.getCache(cacheKey);
             if(!res?.searchState) return;
             Object.values(res.searchState).forEach(value => {
                 Object.keys(value).forEach(idx => {

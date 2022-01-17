@@ -112,7 +112,6 @@
                     :materials="materials"
                     :link="$route.name !== 'Monitor'"
                     :idx="idx"
-                    :isLast="idx === interactions.length-1"
                 />
             </li>
             <button v-if="(currSuppInteractions.length || emptySuppInteractions.length || suppRedInteractions.length) && isLoadingSuppInteractions" class="show-pos-supp-btn loading">

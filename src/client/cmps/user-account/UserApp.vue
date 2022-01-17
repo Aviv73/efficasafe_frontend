@@ -230,9 +230,10 @@ export default {
         },
         async updateEndSubscriptionUser(){
             const user = JSON.parse(JSON.stringify(this.loggedInUser))
-            const updatedUser = this.calcEndSubscription(user)
-            const updattedUser = await this.$store.dispatch({ type: 'updateLoggedInUser', user: updatedUser })
-            this.purchases = JSON.parse(JSON.stringify(updattedUser.purchases))
+            let updatedUser = this.calcEndSubscription(user)
+            updatedUser.purchases[0].canceledAt = Date.now()
+            updatedUser = await this.$store.dispatch({ type: 'updateLoggedInUser', user: updatedUser })
+            this.purchases = JSON.parse(JSON.stringify(updatedUser.purchases))
             this.closeEndSubscriptionModal()
             location.reload();
         },
