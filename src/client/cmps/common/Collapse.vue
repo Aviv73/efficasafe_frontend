@@ -40,6 +40,9 @@
 </template>
 
 <script>
+
+import { eventBus } from '@/cms/services/eventBus.service';
+
 export default {
     props: {
         isSolo: {
@@ -59,6 +62,10 @@ export default {
             default: false
         },
         initialIsVisible: {
+            type: Boolean,
+            default: false
+        },
+        isMonitorSummary: {
             type: Boolean,
             default: false
         },
@@ -85,6 +92,16 @@ export default {
         onToggleVisible(){
             if(this.disable) return
             this.isContentVisible = !this.isContentVisible
+        }
+    },
+    created(){
+        if(this.isMonitorSummary){
+            eventBus.$on('open-monitor-summary', () => this.isContentVisible = true)
+        }
+    },
+    destroyed(){
+        if(this.isMonitorSummary){
+            eventBus.$off('open-monitor-summary', () => this.isContentVisible = true)
         }
     }
 }

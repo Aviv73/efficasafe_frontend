@@ -1,8 +1,8 @@
 <template>
     <section class="monitor-summary">
-        <collapse>
+        <collapse :isMonitorSummary="true">
             <template #header>
-                <div class="interaction-preview-header table-row">
+                <div class="interaction-preview-header WTM-title table-row">
                     <span class="monitor-summary-header table-col">
                         <span class="capsule">
                             What to monitor for all interactions

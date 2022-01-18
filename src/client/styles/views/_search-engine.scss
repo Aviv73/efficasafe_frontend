@@ -507,6 +507,7 @@
     .inner-view {
         display: flex;
         flex-direction: column;
+        scroll-behavior: smooth;
         @include for-narrow-layout {
             flex: 1 1 auto;
             overflow-y: auto;
