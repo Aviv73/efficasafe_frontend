@@ -8,6 +8,7 @@
     &-header {
         padding: rem(10px) 0;
         margin-inline-start: rem(30px);
+        margin-inline-end: rem(30px);
         
         .capsule {
             display: inline-block;
@@ -20,6 +21,10 @@
                 top: calc(50% + 2px);
             }
         }
+
+    }
+    .WTM-title{
+        margin: rem(5px) 0;
     }
     &-list {
         color: rgba($clr1, .8);
@@ -27,8 +32,9 @@
         font-family: roboto, sans-serif;
         font-weight: normal;
         letter-spacing: rem(.07px);
-        margin: rem(8px) 0;
+        padding: rem(20px) 0;
         padding-inline-start: rem(30px);
+        padding-inline-end: rem(30px);
         
         @include for-narrow-layout {
             padding-inline-end: 14%;

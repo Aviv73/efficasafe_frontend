@@ -17,6 +17,7 @@ import Subscribe from '@/client/views/Subscribe';
 import Payment from '@/client/views/Payment';
 import PaymentFailed from '@/client/views/PaymentFailed';
 import Success from '@/client/views/Success';
+import BonusTrialTime from '@/client/views/BonusTrialTime';
 
 import InteractionList from '@/client/cmps/search-engine/InteractionList';
 import UserApp from '@/client/cmps/user-account/UserApp';
@@ -66,6 +67,11 @@ const routes = [
     path: '/success',
     name: 'Success',
     component: Success
+  },
+  {
+    path: '/bonus-trial-time',
+    name: 'BonusTrialTime',
+    component: BonusTrialTime
   },
   {
     path: '/verifyEmail/:token',
@@ -219,7 +225,7 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   store.dispatch('getUserSearches');
-  store.dispatch('getUserInfo');
+  await store.dispatch('getUserInfo');
   if(store.getters.loggedInUser && store.getters.loggedInUser.type === 'subscribed'){
     const user = JSON.parse(JSON.stringify(store.getters.loggedInUser))
     if(user.purchases.length && typeof user.purchases[0].until === 'number' && user.purchases[0].until < Date.now()){
@@ -228,7 +234,7 @@ router.beforeEach(async (to, from, next) => {
       user.trialTime = null
       await store.dispatch({ type: 'updateLoggedInUser', user });
       user.type = 'was subscribed'
-      await this.$store.dispatch({ type: 'updateAutoPilotContact', user});
+      await store.dispatch({ type: 'updateAutoPilotContact', user});
     }
   }
   if (to.meta.requiresAuth) {

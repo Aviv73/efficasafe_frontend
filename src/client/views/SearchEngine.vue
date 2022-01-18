@@ -1744,18 +1744,27 @@ export default {
             eventBus.$off('start-boosters-tour', () =>{
                 this.$tours['boosters-tour'].start();
             })
-            if(this.innerListEl){
-                eventBus.$off('interaction-list-mounted', ()=>{
-                    this.innerListEl.scrollTo(0,this.initialListHight)
-                })
-                eventBus.$off('scroll-to-bottom', () => {
-                    this.innerListEl.scrollTo(0,100000)
-                })
-            }
+            eventBus.$off('interaction-list-mounted', ()=>{
+                if(this.innerListEl) this.innerListEl.scrollTo(0,this.initialListHight)
+            })
+            eventBus.$off('scroll-element-to-top', (id) => {
+                let element = document.getElementById(id);
+                if(element) {
+                    var topPos = element.offsetTop;
+                    this.innerListEl.scrollTop = topPos - 224
+                }
+            })
+            
         },
         onPrint(){
-            if(this.$route.name === 'Monitor') return window.print()
+            if(this.$route.name === 'Monitor') return this.openMonitorPrint()
             this.isPrintModalActive = true
+        },
+        openMonitorPrint(){
+            eventBus.$emit('open-monitor-summary')
+            setTimeout(() => {
+                window.print()
+            }, 500)
         }
     },
     async mounted() {

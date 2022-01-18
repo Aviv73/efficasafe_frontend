@@ -30,7 +30,6 @@
                 :pageCount="listData.pageCount"
                 :total="listData.total"
                 :suppTotal="listData.suppTotal"
-                :isLoading="isLoading"
                 :evidenceLevelPopupActive="evidenceLevelPopupActive"
                 @list-sorted="$emit('list-sorted', $event)"
             />

@@ -29,13 +29,13 @@
         class="coupon-input"
         :class="{'invalid-input': isCouponInvalid}"
         />
-        <button @click="onSearchCoupon" class="coupon-input-btn" :class="{'invalid-btn': isCouponInvalid}" >{{couponBtnTxt}}</button>
+        <button @click="onSearchCoupon" ref="submitCoupon" class="coupon-input-btn" :class="{'invalid-btn': isCouponInvalid}" >{{couponBtnTxt}}</button>
     </div>
-    <div v-if="couponPlan" class="cards-container coupon">
+    <div v-if="couponPlan" ref="couponPlan" class="cards-container coupon">
         <div class="card" :class="{'selected':isSelected(couponPlan._id)}">
             <h3 class="card-title">{{couponPlan.durationTxt}}</h3>
             <p class="card-price">{{localCurrency}} <span>{{getPriceByLocation(couponPlan)}}</span> /mo</p>
-            <button class="card-btn" @click="onSelectPlan($event,couponPlan)">{{selectBtnTxt((couponPlan._id))}}</button>
+            <button ref="selectCouponBtn" class="card-btn" @click="onSelectPlan($event,couponPlan)">{{selectBtnTxt((couponPlan._id))}}</button>
         </div>
     </div>
     <button @click="onSubmit" :disabled="isLoading" class="payment-btn" :class="{'disabled': isLoading}">
@@ -56,6 +56,7 @@
 import StarIcon from 'vue-material-design-icons/Star';
 import Loader from '@/client/cmps/common/icons/Loader';
 import { manageService } from '@/cms/services/manage.service'
+import { storageService } from '@/cms/services/storage.service';
 import { locationService } from '@/cms/services/location.service'
 import { eventBus, EV_show_user_msg, EV_open_singup, EV_open_login } from '@/cms/services/eventBus.service';
 import { paymentService } from '@/cms/services/payment.service';
@@ -77,6 +78,9 @@ export default {
   computed: {
     loggedInUser(){
         return this.$store.getters.loggedInUser;
+    },
+    isScreenNarrow() {
+        return this.$store.getters.isScreenNarrow;
     },
     isSelected(){
         return (id) => {
@@ -124,7 +128,6 @@ export default {
     },
     onSearchCoupon(){
         this.couponPlan = this.coupons.find(cop => cop.code === this.couponInput)
-        this.couponInput = ''
         if(!this.couponPlan || this.couponPlan.validUntil < Date.now()){
             this.couponPlan = null
             this.isCouponInvalid = true
@@ -166,12 +169,33 @@ export default {
             else eventBus.$emit(EV_show_user_msg, 'Something Went wrong, please try again', 5000, 'error');
             
         }
+    },
+    async createAndDisplayCoupon(){
+        if(storageService.load('customCoupon')){
+            this.couponInput = storageService.load('customCoupon')
+        }else{
+            this.couponInput = await manageService.createNewCoupon()
+            if(this.couponInput) storageService.store('customCoupon', this.couponInput)
+        }
+        const managementData = await manageService.list()
+        this.coupons = managementData.coupons
+        this.$nextTick(() => {
+            this.$refs.submitCoupon.click()
+            const hight = this.isScreenNarrow ? 800 : 500;  
+            window.scrollTo(0, hight);
+            if(this.$refs.selectCouponBtn) this.$refs.selectCouponBtn.click()
+        })
     }
   },
   watch:{
       loggedInUser(newUser){
           this.user = newUser
       }
+  },
+  async mounted(){
+      if(this.$route.query.cnc){
+        await this.createAndDisplayCoupon()
+    }
   },
   async created() {
       this.localCurrency = await locationService.getLocalCurrency()

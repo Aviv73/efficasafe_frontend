@@ -47,7 +47,7 @@
                         <template v-slot:activator="{ on, attrs }">
                             <v-text-field
                                 v-model="date"
-                                label="End of subscription"
+                                label="End of trial"
                                 prepend-icon="mdi-calendar"
                                 readonly
                                 v-bind="attrs"

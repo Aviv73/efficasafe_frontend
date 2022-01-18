@@ -421,7 +421,9 @@ export default {
         }
     },
     mounted(){
-        eventBus.$emit('interaction-list-mounted')
+        setTimeout(() => {
+            eventBus.$emit('interaction-list-mounted')
+        }, 0)
     },
     created(){
         this.currSuppInteractions = JSON.parse(JSON.stringify(this.suppInteractions))
