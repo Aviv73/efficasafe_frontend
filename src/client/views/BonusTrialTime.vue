@@ -18,7 +18,6 @@
 
 import Loader from '@/client/cmps/common/icons/Loader';
 import { manageService } from '@/cms/services/manage.service'
-import { storageService } from '@/cms/services/storage.service';
 import { eventBus, EV_open_login } from '@/cms/services/eventBus.service';
 
 export default {
@@ -38,11 +37,12 @@ export default {
         eventBus.$emit(EV_open_login)
     },
     async addTrialTimeToUser(){
+        if(this.user.gotBonusTrial) return this.$router.push('/')
         const timeToAdd = 1000 * 60 * 60 * 24 * this.trialDaysToAdd
         this.user.trialTime = Date.now() + timeToAdd
+        this.user.gotBonusTrial = true
         await this.$store.dispatch({ type: 'updateLoggedInUser', user: this.user });
         await this.$store.dispatch({ type: 'updateAutoPilotContact', user: this.user});
-        storageService.store('bonusTimeAdded', true)
         this.$router.push('/?trailAdded=true')
     }
   },
@@ -53,7 +53,6 @@ export default {
       }
   },
   async created() {
-      if(storageService.load('bonusTimeAdded')) return this.$router.push('/')
       const managementData = await manageService.list()
       this.trialDaysToAdd = +managementData.freeTrailDaysNum
       if(this.loggedInUser){

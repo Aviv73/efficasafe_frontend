@@ -1726,10 +1726,12 @@ export default {
                 if(this.innerListEl) this.innerListEl.scrollTo(0,this.initialListHight)
             })
             eventBus.$on('scroll-element-to-top', (id) => {
-                let element = document.getElementById(id);
-                if(element) {
-                    var topPos = element.offsetTop;
-                    this.innerListEl.scrollTop = topPos - 224
+                if(this.$route.name === 'Results'){
+                    let element = document.getElementById(id);
+                    if(element) {
+                        var topPos = element.offsetTop;
+                        this.innerListEl.scrollTop = topPos - 224
+                    }
                 }
             })
         },
@@ -1748,10 +1750,12 @@ export default {
                 if(this.innerListEl) this.innerListEl.scrollTo(0,this.initialListHight)
             })
             eventBus.$off('scroll-element-to-top', (id) => {
-                let element = document.getElementById(id);
-                if(element) {
-                    var topPos = element.offsetTop;
-                    this.innerListEl.scrollTop = topPos - 224
+                if(this.$route.name === 'Results'){
+                    let element = document.getElementById(id);
+                    if(element) {
+                        var topPos = element.offsetTop;
+                        this.innerListEl.scrollTop = topPos - 224
+                    }
                 }
             })
             

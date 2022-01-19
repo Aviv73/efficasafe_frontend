@@ -54,3 +54,46 @@
 .spacing {
     margin: 0 6px;
 }
+
+.multiple-modal-container{
+    width: 600px;
+    height: 450px;
+    position: relative;
+
+    .multiple-material-list{
+        padding: 30px;
+        height: 266px;
+        overflow-y: scroll;
+
+        .multiple-material{
+            padding: 5px 15px;
+            border: 1px solid #1976d2;
+            width: fit-content;
+            border-radius: 10px;
+            display: flex;
+            margin-bottom: 10px;
+
+            p{
+                margin: 0;
+            }
+            button{
+                margin-left: 20px;
+            }
+        }
+
+        .count{
+            font-weight: bold;
+            font-size: 20px;
+            color: #1976d2;
+            position: absolute;
+            top: 85px;
+            right: 55px;
+        }
+    }
+
+    .multiple-btn{
+        position: absolute;
+        bottom: 10px;
+        right: 33%;
+    }
+}

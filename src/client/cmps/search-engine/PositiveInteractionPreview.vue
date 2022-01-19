@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { eventBus, EV_open_singup } from '@/cms/services/eventBus.service';
+import { eventBus, EV_open_signup } from '@/cms/services/eventBus.service';
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import { interactionService } from '@/cms/services/interaction.service';
 
@@ -142,7 +142,7 @@ export default {
     },
     methods: {
         onOpenSignUp(){
-            eventBus.$emit(EV_open_singup);
+            eventBus.$emit(EV_open_signup);
         },
         getBadgeColor({recommendation}){
             const color = interactionUIService.getInteractionColor(recommendation);

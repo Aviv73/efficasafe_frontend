@@ -48,7 +48,7 @@
                     <a v-if="material.structuredContraIndications.length" @click="goTo('Contraindications')">Contraindications</a>
                     <a v-if="material.pharmacology.toxicity" @click="goTo('Toxicity')">Toxicity</a>
                     <a v-if="material.foodInteractions.length" @click="goTo('Food Interactions')">Food Interactions</a>
-                    <a v-if="(material.refs && material.refs.length) || (material.dBankRefs && material.dBankRefs.length)" @click="goTo('References')">References</a>
+                    <a v-if="(material.type !== 'drug' && refsToShow.length) || ( material.type === 'drug' && dBankRefsToShow.length)" @click="goTo('References')">References</a>
                 </section>
             </aside>
             <main v-if="material" class="material-details-content">
@@ -253,7 +253,7 @@
                         <p v-for="effect in material.foodInteractions" :key="effect">{{effect}}</p>
                     <hr class="line">
                 </section>
-                <section v-if="(material.refs && material.refs.length) || (material.dBankRefs && material.dBankRefs.length)" class="material-details-content-refs">
+                <section v-if="(material.type !== 'drug' && refsToShow.length) || ( material.type === 'drug' && dBankRefsToShow.length)" class="material-details-content-refs">
                     <h4 ref="References">References</h4>
                     <template v-if="material.refs.length">
                         <div v-for="ref in refsToShow" :key="ref.draftIdx" class="ref-container">

@@ -14,7 +14,10 @@
             <v-icon small left>mdi-arrow-left</v-icon>Back
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="primary" v-if="!isArchive" @click="cloneInteraction">
+          <v-btn color="primary" v-if="!isArchive" @click="onMultiplyInteraction">
+            <v-icon small left>mdi-content-copy</v-icon>Multiply
+          </v-btn>
+          <v-btn color="primary" @click="cloneInteraction">
             <v-icon small left>mdi-content-copy</v-icon>Clone
           </v-btn>
           <v-btn color="primary" :to="`/interaction/edit/${interaction._id}`" v-if="!isArchive">
@@ -178,6 +181,33 @@
           />
       </v-dialog>
     </section>
+    <modal-wrap
+        :isActive="isMultipleModal"
+        @close-modal="isMultipleModal = false"
+        >
+        <v-card class="multiple-modal-container">
+           <v-card-title class="primary headline" style="color:white; font-weight:bold;">Multiple Interaction</v-card-title>
+           <autocomplete style="width: 60%; margin: 0 auto" @emitAutocomplete="addMaterial" allow-term-search/>
+           <template v-if="!isLoadingMulti">
+              <section class="multiple-material-list" v-if="materialsToMultiple.length">
+                <p class="count">{{materialsToMultiple.length}}</p>
+                <div class="multiple-material" v-for="(material, idx) in materialsToMultiple" :key="idx">
+                  <p>{{material.text}}</p><button @click="removeMultipleMaterial(idx)">X</button>
+                </div>
+              </section>
+              <v-btn @click="multipleInteraction" class="multiple-btn success">Multiple interaction</v-btn>
+           </template>
+           <loader v-else/>
+        </v-card>
+    </modal-wrap>
+    <v-alert 
+        class="management-alert"
+        v-if="isMultipleDone"
+        type="success"
+        dismissible
+    >
+        Interaction multiplied!
+    </v-alert>
     <entity-not-found v-if="isNotFound" entity="interaction" />
   </div>
 </template>
@@ -192,6 +222,9 @@ import labelPeek from '@/cms/cmps/interaction/edit/LabelPeek';
 import iconsMap from '@/cms/cmps/general/IconsMap';
 import entityNotFound from '@/cms/cmps/general/EntityNotFound'; 
 import InteractionPathways from '@/cms/cmps/interaction/InteractionPathways';
+import ModalWrap from '@/client/cmps/common/ModalWrap';
+import autocomplete from '@/cms/cmps/Autocomplete';
+import loader from '@/cms/cmps/general/LoadingCmp';
 
 export default {
   side1Refs: [],
@@ -210,7 +243,11 @@ export default {
       side2Pathways: [],
       side2Refs: [],
       isArchive: false,
-      isNotFound: false
+      isNotFound: false,
+      isMultipleModal: false,
+      materialsToMultiple: [],
+      isMultipleDone: false,
+      isLoadingMulti: false
     };
   },
   watch: {
@@ -275,6 +312,37 @@ export default {
       this.side2Refs = pathwayRefs.filter((ref, idx, refs) => {
         return refs.findIndex(currRef => currRef.link === ref.link) === idx;
       });
+    },
+    onMultiplyInteraction(){
+      this.isMultipleModal = true
+    },
+    addMaterial(miniMat){
+      if(miniMat){
+        const idx = this.materialsToMultiple.findIndex(m => m._id === miniMat._id)
+        if(idx < 0) this.materialsToMultiple.unshift(miniMat)
+      }
+    },
+    removeMultipleMaterial(idx){
+      this.materialsToMultiple.splice(idx, 1)
+    },
+    async multipleInteraction(){
+      this.isLoadingMulti = true
+      this.materialsToMultiple.forEach( async (miniMat) => {
+        const interactionCopy = JSON.parse(JSON.stringify(this.interaction));
+        delete interactionCopy._id;
+        const formattedMaterial = {
+          name: miniMat.text,
+          _id: miniMat._id,
+          type: miniMat.type
+        }
+        interactionCopy.side1Material = formattedMaterial
+        await this.$store.dispatch({ type: 'saveInteraction', interaction: interactionCopy });
+      })
+      this.isMultipleDone = true
+      setTimeout(()=> this.isMultipleDone = false, 3000)
+      this.materialsToMultiple = []
+      this.isLoadingMulti = false
+      this.isMultipleModal = false
     },
     async cloneInteraction() {
       const interactionCopy = JSON.parse(JSON.stringify(this.interaction));
@@ -459,7 +527,10 @@ export default {
     labelPeek,
     InteractionPathways,
     iconsMap,
-    entityNotFound
+    entityNotFound,
+    ModalWrap,
+    autocomplete,
+    loader
   }
 };
 </script>

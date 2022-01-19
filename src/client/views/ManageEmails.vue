@@ -54,7 +54,7 @@
 
 <script>
 
-import { eventBus, EV_open_singup, EV_open_login } from '@/cms/services/eventBus.service';
+import { eventBus, EV_open_signup, EV_open_login } from '@/cms/services/eventBus.service';
 import Checkbox from "@/client/cmps/common/Checkbox";
 
 export default {
@@ -78,7 +78,7 @@ export default {
   },
   methods:{
     onOpenSignup(){
-        eventBus.$emit(EV_open_singup)
+        eventBus.$emit(EV_open_signup)
     },
     onOpenLogin(){
         eventBus.$emit(EV_open_login)
