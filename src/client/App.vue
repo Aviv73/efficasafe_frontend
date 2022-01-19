@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { eventBus, EV_show_cookie_notice, EV_open_singup, EV_open_login, EV_show_other_login } from '@/cms/services/eventBus.service';
+import { eventBus, EV_show_cookie_notice, EV_open_signup, EV_open_login, EV_show_other_login } from '@/cms/services/eventBus.service';
 import { storageService } from '@/cms/services/storage.service';
 
 import Navbar from '@/client/cmps/Navbar';
@@ -88,7 +88,7 @@ export default {
             storageService.remove('show-other-login')
         }
 
-        eventBus.$on(EV_open_singup, this.onSignUp);
+        eventBus.$on(EV_open_signup, this.onSignUp);
         eventBus.$on(EV_open_login, this.onLogin);
         await this.$store.dispatch('pullManagementData')
         this.$store.commit('setFreeSearchesCount');

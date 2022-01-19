@@ -13,7 +13,7 @@
             <p class="searches-left-modal-content-txt font-medium">
                 Only 5 free searches left
             </p>
-            <button class="btn" @click="onOpenSingup">Register for free trial</button>
+            <button class="btn" @click="onOpenSignup">Register for free trial</button>
         </main>
         <footer class="searches-left-modal-footer">
             <button
@@ -28,7 +28,7 @@
 
 <script>
 import { userService } from '@/cms/services/user.service';
-import { eventBus, EV_open_singup } from '@/cms/services/eventBus.service';
+import { eventBus, EV_open_signup } from '@/cms/services/eventBus.service';
 
 import CloseIcon from 'vue-material-design-icons/Close';
 
@@ -49,8 +49,8 @@ export default {
         reset() {
             this.$emit('close-modal');
         },
-        onOpenSingup(){
-            eventBus.$emit(EV_open_singup)
+        onOpenSignup(){
+            eventBus.$emit(EV_open_signup)
             this.$emit('close-modal');
         }
     },

@@ -25,6 +25,56 @@
                 </template>
             </v-data-table>
         </v-card>
+        <v-card v-if="dynamicCoupon" width="600" style="margin: 0 auto" class="py-2 px-4 mt-4 text-center">
+            <p>Dynamic Coupon</p>
+            <div class="coupon-edit-content">
+                <div class="coupon-input">
+                    <h3>Duration in months:</h3>
+                    <v-select
+                        :items="durations"
+                        label="Duration in month"
+                        v-model="dynamicCoupon.duration"
+                    ></v-select>
+                </div>
+                <div class="coupon-input">
+                    <h3>Duration in words:</h3>
+                    <h3>{{dynamicCouponDurationTxtToShow}}</h3>
+                </div>
+                <div class="coupon-input">
+                    <h3>Price in USD:</h3>
+                    <v-text-field
+                        v-model="dynamicCoupon.priceUSD"
+                        placeholder="Price in USD"
+                        hide-details
+                        single-line
+                        type="number"
+                    />
+                </div>
+                <div class="coupon-input">
+                    <h3>Price in ILS:</h3>
+                    <v-text-field
+                        v-model="dynamicCoupon.priceISL"
+                        placeholder="Price in ILS"
+                        hide-details
+                        single-line
+                        type="number"
+                    />
+                </div>
+                <div class="coupon-input">
+                    <h3>Price in EUR:</h3>
+                    <v-text-field
+                        v-model="dynamicCoupon.priceEUR"
+                        placeholder="Price in EUR"
+                        hide-details
+                        single-line
+                        type="number"
+                    />
+                </div>
+            </div>
+            <div class="btn-container">
+                <v-btn color="success" @click="onSaveDynamicCoupon">Save</v-btn>
+            </div>
+        </v-card>
         <v-card v-if="couponToEdit" class="coupon-edit">
             <v-card-title class="primary headline" style="color:white; font-weight:bold;">{{editorTitle}} coupon</v-card-title>
             <div class="coupon-edit-content">
@@ -115,6 +165,7 @@ export default {
     data(){
         return {
             managementData: null,
+            dynamicCoupon: null,
             couponToEdit: null,
             isShowAlert: false,
             tableHedaers: [
@@ -123,7 +174,13 @@ export default {
                 {text: 'Price Per Month', value: 'priceUSD'},
                 {text: 'Valid Until', value: 'validUntil'},
                 {text: 'Actions'}
-            ]
+            ],
+            durations: ['1','12','24'],
+            durationTxtMap: {
+                '1': 'Monthly plan',
+                '12': 'Annual plan',
+                '24': 'Biennial plan'
+            }
         }
     },
     computed: {
@@ -131,20 +188,14 @@ export default {
             if(this.couponToEdit.id) return 'Edit'
             return 'Add'
         },
-        durations(){
-            return this.managementData.plans.map(plan => plan.duration)
-        },
-        durationTxtMap(){
-            const map = this.managementData.plans.reduce((acc, plan) => {
-                acc[plan.duration] = plan.durationTxt
-                return acc;
-            }, {});
-            return map
-        },
         durationTxtToShow(){
-            if(!this.couponToEdit.duration) return 'Enter duration in month to see the rigth text'
+            if(!this.couponToEdit.duration) return 'Enter duration in month to see the right text'
             return this.durationTxtMap[this.couponToEdit.duration]
-        }
+        },
+        dynamicCouponDurationTxtToShow(){
+            if(!this.dynamicCoupon.duration) return 'Enter duration in month to see the right text'
+            return this.durationTxtMap[this.dynamicCoupon.duration]
+        },
     },
     methods: {
         onOpenEdit(coupon){
@@ -159,6 +210,17 @@ export default {
                 priceISL: 0,
                 priceUSD: 0,
                 validUntil: null,
+            }
+        },
+        async onSaveDynamicCoupon(){
+            const manage = JSON.parse(JSON.stringify(this.managementData))
+            manage.dynamicCoupon = this.dynamicCoupon
+            try{
+                await this.$store.dispatch({type:'updateManagementData', manage})
+                this.isShowAlert = true
+                setTimeout(()=> this.isShowAlert = false, 3000)
+            }catch(err){
+                console.log(err);
             }
         },
         async onSaveEditCoupon(){
@@ -192,6 +254,7 @@ export default {
     async created() {
        const managementData = await manageService.list()
        this.managementData = managementData
+       this.dynamicCoupon = JSON.parse(JSON.stringify(this.managementData.dynamicCoupon))
     },
 };
 </script>

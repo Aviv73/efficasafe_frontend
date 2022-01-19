@@ -231,6 +231,7 @@ export default {
                 {text: 'Invoice', value: 'invoiceId'},
                 {text: 'Price', value: 'price'},
                 {text: 'Plan', value: 'plan'},
+                {text: 'Coupon', value: 'coupon'},
                 {text: 'Valid Until', value: 'until'},
             ]
         };

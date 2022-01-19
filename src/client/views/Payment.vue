@@ -58,7 +58,7 @@ import Loader from '@/client/cmps/common/icons/Loader';
 import { manageService } from '@/cms/services/manage.service'
 import { storageService } from '@/cms/services/storage.service';
 import { locationService } from '@/cms/services/location.service'
-import { eventBus, EV_show_user_msg, EV_open_singup, EV_open_login } from '@/cms/services/eventBus.service';
+import { eventBus, EV_show_user_msg, EV_open_signup, EV_open_login } from '@/cms/services/eventBus.service';
 import { paymentService } from '@/cms/services/payment.service';
 
 export default {
@@ -118,7 +118,7 @@ export default {
         this.$store.commit({ type: 'setSelectedPaymentPlan', SelectedPlan: plan });
     },
     onOpenSignup(){
-        eventBus.$emit(EV_open_singup)
+        eventBus.$emit(EV_open_signup)
     },
     onOpenLogin(){
         eventBus.$emit(EV_open_login)
@@ -137,7 +137,7 @@ export default {
     },
     async onSubmit(){
         if(!this.loggedInUser){
-            eventBus.$emit(EV_show_user_msg, 'Please Login', 3000);
+            eventBus.$emit(EV_show_user_msg, 'Please signup or login', 3000);
             return
         }
         if(!this.selectedPlan){
