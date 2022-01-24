@@ -1,5 +1,5 @@
 <template>
-    <section @copy.prevent class="material-details no-print">
+    <section class="material-details no-print" :class="{'not-allowed-select-txt': isNotAllowedSelect}">
         <template v-if="!isLoading">
             <aside v-if="material" class="material-details-nav" :class="{'show': showNav}">
                 <button class="drawer-btn" @click="showNav = false" v-if="isScreenNarrow"><arrow-left-icon/></button>
@@ -524,8 +524,9 @@ export default {
         isScreenNarrow() {
             return this.$store.getters.isScreenNarrow;
         },
-        loggedInUser() {
-            return this.$store.getters.loggedInUser;
+        isNotAllowedSelect() {
+            if(!this.$store.getters.loggedInUser) return true
+            return !this.$store.getters.loggedInUser.isAllowedToSelectTxt;
         },
         aliasesToShow(){
             const { material } = this

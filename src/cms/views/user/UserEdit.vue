@@ -112,13 +112,23 @@
                         v-model="editedUser.note"
                     ></v-textarea>
                     <div
-                        class="d-flex align-center justify-center mt-4"
+                        class="d-flex align-center justify-center"
                     >
-                        <h3 class="mr-6">email verified?</h3>
+                        <h3 class="mr-6">Email verified?</h3>
                         <v-switch
                             v-model="editedUser.email_verified"
                             inset
                             :label="`${editedUser.email_verified}`"
+                        ></v-switch>
+                    </div>
+                    <div
+                        class="d-flex align-center justify-center"
+                    >
+                        <h3 class="mr-6">Allowed to select text</h3>
+                        <v-switch
+                            v-model="editedUser.isAllowedToSelectTxt"
+                            inset
+                            :label="`${editedUser.isAllowedToSelectTxt}`"
                         ></v-switch>
                     </div>
                 </v-form>
@@ -305,7 +315,7 @@ export default {
         },
         loggedInUser() {
             return this.$store.getters.loggedInUser;
-        },
+        }
     },
     created() {
         this.loadUser();

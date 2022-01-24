@@ -151,3 +151,11 @@
 .rotate90{
     transform: rotate(90deg);
 }
+
+.not-allowed-select-txt{
+    -webkit-user-select: none;  
+    -moz-user-select: none;  
+    -ms-user-select: none;  
+    -o-user-select: none;  
+    user-select: none;
+}
