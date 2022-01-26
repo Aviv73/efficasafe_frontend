@@ -15,7 +15,7 @@
             }"
             v-if="!showDraftName && !isMaterialGroup"
         >
-            <span :title="side1NameToShow">{{ side1NameToShow }}</span>
+            <span :class="{ 'pointer' : isLink }" @click="goToMaterial(side1NameToShow)" title="Press for more info">{{ side1NameToShow }}</span>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="cap cap-left"
@@ -48,7 +48,7 @@
                 transform="translate(24.192 48.001) rotate(180)"
             />
         </svg>
-        <span :title="draftNameFullContent">
+        <span :class="{ 'pointer' : isLink }" @click="goToMaterial(draftNameContent)" title="Press for more info">
             {{ draftNameContent }}
         </span>
             <svg
@@ -129,9 +129,16 @@ export default {
         isSearcheEngin: {
             type: Boolean,
             default: false
+        },
+        isLink: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {
+        materials() {
+            return this.$store.getters.materials;
+        },
         isGroup() {
             return this.vInteractionCount > 0;
         },
@@ -188,6 +195,12 @@ export default {
         isSideSwapped(){
             if(this.$store.getters.firstInteractionSide === 1) return true
             return false
+        }
+    },
+    methods:{
+        goToMaterial(name){
+            if(!this.isLink) return
+            this.$emit('go-to-material', name)
         }
     }
 };

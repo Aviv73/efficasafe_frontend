@@ -8,6 +8,7 @@ import MaterialDetails from '@/client/views/MaterialDetails';
 import ResetPassForm from '@/client/views/auth/ResetPassForm.vue';
 import SendPassResetForm from '@/client/views/auth/SendPassResetForm.vue';
 import VerifyEmail from '@/client/views/auth/VerifyEmail.vue';
+import Failed from '@/client/views/Failed.vue';
 import DBankInteractionDetails from '@/client/views/DBankInteractionDetails';
 import UserAccount from '@/client/views/UserAccount';
 import Logo from '@/client/views/Logo';
@@ -77,6 +78,11 @@ const routes = [
     path: '/verifyEmail/:token',
     name: 'verifyEmail',
     component: VerifyEmail
+  },
+  {
+    path: '/failed',
+    name: 'failed',
+    component: Failed
   },
   {
     path: '/email-pass',

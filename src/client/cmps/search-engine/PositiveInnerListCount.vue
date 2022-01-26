@@ -16,16 +16,7 @@ export default {
         },
         length: {
             type: Number,
-            defulte: 0
-        }
-    },
-    data() {
-        return {
-            openCollapses: [],
-            currInteraction: null,
-            groupsDoneLoadingCount: 0,
-            vInteractionsOriginalLength: null,
-            innerLengths:[]
+            default: 0
         }
     },
     methods: {

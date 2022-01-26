@@ -2,7 +2,7 @@
     <section v-if="editedUser">
         <div class="container">
             <v-card class="user-edit pa-4">
-                <div class="d-flex flex-row-reverse">
+                <div class="d-flex flex-row-reverse justify-space-between">
                     <v-btn
                         class="submit-btn"
                         @click="saveUser"
@@ -11,6 +11,8 @@
                     >
                         Save User
                     </v-btn>
+
+                    <h1>Signed up through: {{editedUser.provider | capitalize}}</h1>
                 </div>
 
                 <v-form
@@ -182,7 +184,7 @@
             <v-card class="py-2 px-4 text-center">
                 <p>user purchase history</p>
                 <v-data-table
-                    :headers="purchaseHedaers"
+                    :headers="purchaseHeaders"
                     :items="tableItems"
                     :items-per-page="5"
                     class="elevation-1"
@@ -236,7 +238,7 @@ export default {
                 type: null
             },
             isWarning: false,
-            purchaseHedaers: [
+            purchaseHeaders: [
                 {text: 'Purchase Date', value: 'at'},
                 {text: 'Invoice', value: 'invoiceId'},
                 {text: 'Price', value: 'price'},
@@ -269,7 +271,7 @@ export default {
                 this.response.msg = `${this.editedUser.username} was updated`
             }catch(err){
                 this.response.type = 'error'
-                this.response.msg = `SOMTING WENT WRONG`
+                this.response.msg = `SOMETHING WENT WRONG`
             }
             setTimeout(() => {
                 this.response.type = null
@@ -282,7 +284,7 @@ export default {
                 this.$router.push('/user').catch(()=>{})
             }catch(err){
                 this.response.type = 'error'
-                this.response.msg = `SOMTING WENT WRONG`
+                this.response.msg = `SOMETHING WENT WRONG`
                 setTimeout(() => {
                     this.response.type = null
                     this.response.msg = null
@@ -298,7 +300,7 @@ export default {
                 this.response.msg = `${this.editedUser.username} was updated`
             }catch(err){
                 this.response.type = 'error'
-                this.response.msg = `SOMTING WENT WRONG`
+                this.response.msg = `SOMETHING WENT WRONG`
             }
             setTimeout(() => {
                 this.response.type = null

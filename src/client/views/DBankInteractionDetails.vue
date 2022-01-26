@@ -1,5 +1,5 @@
 <template>
-    <section class="interaction-details">
+    <section class="interaction-details" :class="{'not-allowed-select-txt': isNotAllowedSelect}">
         <header class="interaction-details-header">
             <div class="interaction-details-header-container">
                 <span class="brim-start" />
@@ -46,6 +46,8 @@
                             :vInteractionCount="0"
                             :localize="false"
                             :showDraftName="false"
+                            :isLink="true"
+                            @go-to-material="goToMaterial"
                             on-details-page
                         />
                         <span
@@ -199,12 +201,16 @@ export default {
             interaction: null,
             isLoading: false,
             isShareModalActive: false,
+            linkInfos: false
         }
     },
     watch: {
         '$route.params': {
-            handler() {
-                this.getInteraction();
+            async handler() {
+                this.isLoading = true;
+                await this.getInteraction();
+                await this.getLinks();
+                this.isLoading = false;
             },
             immediate: true
         }
@@ -248,17 +254,34 @@ export default {
         },
         loggedInUser() {
             return this.$store.getters.loggedInUser;
-        }
+        },
+        isNotAllowedSelect() {
+            if(!this.$store.getters.loggedInUser) return true
+            return !this.$store.getters.loggedInUser.isAllowedToSelectTxt;
+        },
     },
     methods: {
+        goToMaterial(name){
+            const linkInfo = this.linkInfos.find( i => i.name === name)
+            let routeData = this.$router.resolve({path: `/material/${linkInfo.id}`});
+            window.open(routeData.href, '_blank');
+        },
         printWindow(){
             window.print();
         },
         async getInteraction() {
-            this.isLoading = true;
             const { id } = this.$route.params;
             this.interaction = await drugBankService.getInteraction(id);
-            this.isLoading = false;
+        },
+        async getLinks(){
+            const criteria = {
+                isSearchResults: true,
+                q: [this.interaction.affected_drug.name, this.interaction.subject_drug.name],
+            };
+            const materials = await this.$store.dispatch({ type: 'getMaterials', criteria });
+            this.linkInfos = materials.map( m => {
+                return { name: m.userQuery, id: m._id}
+            })
         },
         getRefsToDisplay(txt) {
             // const regex = /\[[a-zA-Z][0-9]*]/g; // for matching [A12345]

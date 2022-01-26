@@ -1,5 +1,5 @@
 <template>
-    <aside class="confirm-delete share-modal">
+    <aside v-if="itemToDelete" class="confirm-delete share-modal">
         <header class="share-modal-header flex-space-between">
             <alert-circle-icon
                 class="alert-circle-icon"
@@ -17,7 +17,7 @@
         <main class="share-modal-content">
             <div class="share-modal-content-confirm-delete flex-coloumn">
                 <p>
-                    Are you sure you want to delete <span class="font-medium highlight">'{{ name }}'</span>?
+                    Are you sure you want to delete <span class="font-medium highlight">'{{ itemToDelete.title }}'</span>?
                 </p>
                 <div class="share-modal-content-confirm-delete-actions flex-space-between">
                     <button
@@ -43,9 +43,8 @@ import AlertCircleIcon from 'vue-material-design-icons/AlertCircle';
 
 export default {
     props: {
-        name: {
-            type: String,
-            default: ''
+        itemToDelete: {
+            type: Object,
         }
     },
     components: {
