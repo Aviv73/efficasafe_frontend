@@ -311,6 +311,7 @@ import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
 import WelcomeModal from '../cmps/shared/modals/WelcomeModal';
 import PassChangeSuccess from '../cmps/shared/modals/PassChangeSuccess';
+import { storageService } from '@/cms/services/storage.service';
 import { eventBus, EV_clear_input, EV_show_user_msg } from '@/cms/services/eventBus.service';
 
 export default {
@@ -378,6 +379,10 @@ export default {
         if (this.$route.query.subscribed) eventBus.$emit(EV_show_user_msg, 'Subscription successful', 5000, 'success')
         if (this.$route.query.emailPrefs) eventBus.$emit(EV_show_user_msg, 'Your email preferences were successfully updated', 5000, 'success')
         if (this.$route.query.trailAdded) eventBus.$emit(EV_show_user_msg, 'Your trial time has been updated successfully', 5000, 'success')
+        if (storageService.load('show-failed-login')){
+            eventBus.$emit(EV_show_user_msg, 'This email signed up through a different login method', 10000, 'error')
+            storageService.remove('show-failed-login')
+        } 
     },
     components: {
         Swiper,

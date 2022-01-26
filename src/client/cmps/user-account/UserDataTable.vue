@@ -86,10 +86,29 @@
                             >
                                 View
                             </router-link>
+                            <button v-if="item" class="note-btn" title="Notes">
+                                <img v-if="item.notes && item.notes.length" @click.stop="openNoteModal(item)" class="note-img" src="@/client/assets/icons/sticky-note.svg" alt="">
+                                <img v-else @click.stop="openNoteModal(item)" class="note-img" src="@/client/assets/icons/add-circle.svg" alt="">
+                                <div class="notes-container" :id="item.at">
+                                    <h3 class="notes-title">Notes</h3>
+                                    <button @click="closeNotes" class="close-notes-btn">Close</button>
+                                    <div class="note-list">
+                                        <div class="note-preview" v-for="(note, idx) in item.notes" :key="note.id">
+                                            <button class="remove-note-btn" @click="onRemoveNote(idx)">+</button>
+                                            <p class="date">{{note.date | moment('DD MMM YYYY | h:mm A')}}</p>
+                                            <p contenteditable="true" @focusout="onSaveEditedNote(idx, $event)" class="txt">{{note.txt}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="add-note-container">
+                                        <textarea @focusout="onSaveNote" class="notes-input" placeholder="Add note" v-model="newNoteTxt"></textarea>
+                                        <button class="notes-btn" :class="{'show': isShowSaveBtn}" @click="onSaveNote">Save</button>
+                                    </div>
+                                </div>
+                            </button>
                             <button
                                 class="delete-btn"
                                 title="Delete search"
-                                @click="onRemove(rowIdx, item.title)"
+                                @click="onRemove(item)"
                             >
                                 <delete-icon title="" />
                             </button>
@@ -99,13 +118,14 @@
             </thead>
         </table>
         <modal-wrap
+            v-if="isModalActive"
             :isActive="isModalActive"
             @close-modal="closeModal"
         >
             <aside class="confirm-delete">
                 <confirm-delete
                     @close-modal="closeModal"
-                    :name="itemNameToDelete"
+                    :itemToDelete="itemToDelete"
                     @delete-confirmed="emitDeleteItem"
                 />
             </aside>
@@ -118,6 +138,7 @@ import ModalWrap from '@/client/cmps/common/ModalWrap';
 import ConfirmDelete from '@/client/cmps/shared/modals/ConfirmDelete';
 import Tooltip from '@/client/cmps/common/Tooltip';
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
+import { utilService } from '@/cms/services/util.service';
 
 import SortVerticalIcon from '@/client/cmps/common/icons/SortVerticalIcon';
 import DeleteIcon from 'vue-material-design-icons/Delete';
@@ -137,24 +158,61 @@ export default {
     data() {
         return {
             isModalActive: false,
-            itemToDelete: null
+            itemToDelete: null,
+            notesToShow: null,
+            newNoteTxt: ''
         }
     },
-    computed: {
-        itemNameToDelete() {
-            return this.itemToDelete ? this.itemToDelete.name : '';
+    computed:{
+        isShowSaveBtn(){
+            if(this.newNoteTxt.split('').length) return true
+            return false
         }
     },
     methods: {
+        onSaveNote(){
+            if(this.newNoteTxt === '') return 
+            const newNote = {
+                date: Date.now(),
+                id: utilService.makeId(),
+                txt: this.newNoteTxt
+            }
+            this.notesToShow.notes.unshift(newNote)
+            this.$emit('save-note', this.notesToShow)
+            this.newNoteTxt = ''
+        },
+        onSaveEditedNote(idx,ev){
+            this.notesToShow.notes[idx].txt = ev.target.innerText
+            this.$emit('save-note', this.notesToShow)
+        },
+        onRemoveNote(idx){
+            this.notesToShow.notes.splice(idx, 1)
+            this.$emit('save-note', this.notesToShow)
+        },
+        openNoteModal(item){
+            if(this.notesToShow && this.notesToShow.at === item.at){
+                this.closeNotes()
+                return
+            }
+            if(this.notesToShow) document.getElementById(this.notesToShow.at).classList.remove('show')
+            if(!item.notes) item.notes = []
+            this.notesToShow = item
+            document.getElementById(item.at).classList.add('show')
+        },
+        closeNotes(){
+            document.getElementById(this.notesToShow.at).classList.remove('show')
+            this.notesToShow = null
+            this.newNoteTxt = ''
+        },
         emitSort(sortBy, isDesc) {
             this.$emit('header-clicked', sortBy, isDesc);
         },
         emitDeleteItem() {
-            this.$emit('item-deleted', this.itemToDelete.idx);
+            this.$emit('item-deleted', this.itemToDelete);
             this.closeModal();
         },
-        onRemove(idx, name) {
-            this.itemToDelete = { idx, name };
+        onRemove(item) {
+            this.itemToDelete = item;
             this.isModalActive = true;
         },
         closeModal() {

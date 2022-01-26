@@ -34,6 +34,7 @@
                 @header-clicked="onSort"
                 @remove-update="removeUpdate"
                 @end-subscription="openEndSubscriptionModal"
+                @save-note="onSaveNote"
             />
             <list-pagination
                 class="list-pagination flex-center"
@@ -73,7 +74,6 @@ import UserDataTable from '@/client/cmps/user-account/UserDataTable';
 import ListPagination from '@/client/cmps/common/ListPagination';
 import ModalWrap from '@/client/cmps/common/ModalWrap';
 import EndSubscriptionModal from '@/client/cmps/shared/modals/EndSubscriptionModal';
-
 import PageFirstIcon from 'vue-material-design-icons/PageFirst';
 import PageLastIcon from 'vue-material-design-icons/PageLast';
 
@@ -207,12 +207,28 @@ export default {
             this.sortBy.field = sortBy.field || sortBy.title;
             this.sortBy.isDesc = isDesc;
         },
-        removeItem(itemIdx) {
+        removeItem(item) {
             if (this.$route.name !== 'Searches') return;
             const user = JSON.parse(JSON.stringify(this.loggedInUser));
-            user.searches.splice(itemIdx, 1);
-            this.userSearches.splice(itemIdx, 1)
-            this.$store.dispatch({ type: 'updateLoggedInUser', user });
+            const idx = user.searches.findIndex( s => s.at === item.at)
+            if(idx >= 0){
+                user.searches.splice(idx, 1);
+                this.$store.dispatch({ type: 'updateLoggedInUser', user });
+                const searches = JSON.parse(JSON.stringify(this.userSearches))
+                searches.splice(idx, 1)
+                this.$store.commit({ type: 'setUserSearches', searches })
+            }
+        },
+        async onSaveNote(item){
+          const user = JSON.parse(JSON.stringify(this.loggedInUser));
+          const idx = user.searches.findIndex( s => s.at === item.at)
+          if(idx >= 0){
+              user.searches[idx] = item
+              this.$store.dispatch({ type: 'updateLoggedInUser', user });
+              const searches = JSON.parse(JSON.stringify(this.userSearches))
+              searches[idx] = item
+              this.$store.commit({ type: 'setUserSearches', searches })
+          }
         },
         getDaysAgo(days) {
             const today = new Date();
@@ -265,6 +281,7 @@ export default {
         }
     },
     async created(){
+        await this.$store.dispatch('getUserSearches');
         this.purchases = JSON.parse(JSON.stringify(this.loggedInUser.purchases))
     },
     async destroyed(){

@@ -1,5 +1,5 @@
 <template>
-    <section class="interaction-details">
+    <section class="interaction-details" :class="{'not-allowed-select-txt': isNotAllowedSelect}">
         <header class="interaction-details-header">
             <div class="interaction-details-header-container">
                 <span class="brim-start" />
@@ -47,6 +47,8 @@
                             :vInteractionCount="0"
                             :localize="false"
                             :showDraftName="false"
+                            :isLink="true"
+                            @go-to-material="goToMaterial"
                             on-details-page
                         />
                         <span
@@ -475,9 +477,21 @@ export default {
         },
         isScreenNarrow() {
             return this.$store.getters.isScreenNarrow;
-        }
+        },
+        isNotAllowedSelect() {
+            if(!this.$store.getters.loggedInUser) return true
+            return !this.$store.getters.loggedInUser.isAllowedToSelectTxt;
+        },
     },
     methods: {
+        goToMaterial(name){
+            let id
+            if(name === this.interaction.side1Material.name) id = this.interaction.side1Material._id
+            else if(this.interaction.side2Material) id = this.interaction.side2Material._id
+            else id = this.side2Material._id
+            let routeData = this.$router.resolve({path: `/material/${id}`});
+            window.open(routeData.href, '_blank');
+        },
         printWindow(){
             window.print();
         },

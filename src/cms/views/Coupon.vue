@@ -4,7 +4,7 @@
             <p>Coupons</p>
             <v-btn color="primary" @click="onAddCoupon" class="mb-4">Create coupon</v-btn>
             <v-data-table
-                :headers="tableHedaers"
+                :headers="tableHeaders"
                 :items="managementData.coupons"
                 :items-per-page="5"
                 class="elevation-1"
@@ -168,7 +168,7 @@ export default {
             dynamicCoupon: null,
             couponToEdit: null,
             isShowAlert: false,
-            tableHedaers: [
+            tableHeaders: [
                 {text: 'Code', value: 'code'},
                 {text: 'Duration', value: 'durationTxt'},
                 {text: 'Price Per Month', value: 'priceUSD'},

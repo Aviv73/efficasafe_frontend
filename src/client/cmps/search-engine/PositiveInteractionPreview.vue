@@ -153,6 +153,11 @@ export default {
             if(this.currInteraction.vInteractions[data.idx]) {
                 this.currInteraction.vInteractions[data.idx].innerLength = data.length
             }
+            // this.currInteraction.vInteractions.sort((a,b) => {
+            //     if( a.innerLength > b.innerLength ) return -1
+            //     if( a.innerLength < b.innerLength ) return 1
+            //     return 0
+            // })
             this.renderKey++
         },
         removeGroup(idx){
