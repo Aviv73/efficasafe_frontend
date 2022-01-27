@@ -134,9 +134,17 @@ export default {
                         field: ''
                     },
                     {
+                        title: 'Link',
+                        field: 'url'
+                    },
+                    {
+                        title: 'Notes',
+                        field: 'notes'
+                    },
+                    {
                         title: '',
                         field: ''
-                    }
+                    },
                 ];
             }
             return [
@@ -179,7 +187,7 @@ export default {
                 })
                 .slice(from, from + filterBy.itemsPerPage);
             }
-            let purchasesCopy = JSON.parse(JSON.stringify(this.purchases))
+            let purchasesCopy = this.purchases ? JSON.parse(JSON.stringify(this.purchases)) : JSON.parse(JSON.stringify(this.loggedInUser.purchases))
             return purchasesCopy
                     .sort((a, b) => {
                         const { field, isDesc } = this.sortBy;
