@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import { utilService } from '@/cms/services/util.service';
 import { eventBus, EV_clear_input } from '@/cms/services/eventBus.service'
 
 export default {
@@ -112,10 +113,17 @@ export default {
             }
             this.isLoading = true;
             q = q.trim()
+            q = this.transHebrew(q)
             const criteria = { autocomplete: true, q };
             const results = await this.$store.dispatch({ type: 'getMaterials', criteria });
             this.results = this.sortRes(results, q);
             this.isLoading = false;
+        },
+        transHebrew(q){
+            const chars = q.split('')
+            const isAllHebrew = chars.every( c => (c.charCodeAt() > 1487 && c.charCodeAt() < 1515) || c.charCodeAt() === 32)
+            if(isAllHebrew) q = utilService.transHebrew(q)
+            return q
         },
         sortRes(res, q){
             const idx = res.findIndex(str => str.toUpperCase() === q.toUpperCase())

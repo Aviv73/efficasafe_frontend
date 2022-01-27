@@ -6,6 +6,7 @@
                     <th
                         v-for="(header, idx) in headers"
                         :key="idx"
+                        :class="{'txt-center': header.title === 'Link'}"
                     >
                         <label
                             v-if="header.sortable"
@@ -65,32 +66,12 @@
                         <span v-else-if="header.field === 'until'">
                             {{ item[header.field] | moment('DD/MM/YYYY') }}
                         </span>
-                        <span v-else-if="!header.field && $route.name === 'Purchases'">
-                            <button
-                                class="end-subscrition-btn"
-                                @click="onEndSubscription(item)"
-                                v-if="item.until === 'Ongoing' && item.price !== 0"
-                            >
-                                End subscription
-                            </button>
-                            <p v-else-if="item.canceledAt">Subscription Canceled at: {{item.canceledAt | moment('DD/MM/YYYY')}}</p>
-                        </span>
-                        <span
-                            class="flex-space-between td-actions"
-                            v-else-if="!header.title"
-                        >
-                            <router-link
-                                class="search-link"
-                                :to="getSearchLink(item['url'])"
-                                title="View search"
-                            >
-                                View
-                            </router-link>
-                            <button v-if="item" class="note-btn" title="Notes">
-                                <img v-if="item.notes && item.notes.length" @click.stop="openNoteModal(item)" class="note-img" src="@/client/assets/icons/sticky-note.svg" alt="">
-                                <img v-else @click.stop="openNoteModal(item)" class="note-img" src="@/client/assets/icons/add-circle.svg" alt="">
+                        <span v-else-if="header.field === 'notes'" class="td-actions">
+                            <button v-if="item" class="note-btn">
+                                <img  title="Notes" v-if="item.notes && item.notes.length" @click.stop="openNoteModal(item)" class="note-img" src="@/client/assets/icons/sticky-note.svg" alt="">
+                                <img  title="Add a note" v-else @click.stop="openNoteModal(item)" class="note-img" src="@/client/assets/icons/add-circle.svg" alt="">
                                 <div class="notes-container" :id="item.at">
-                                    <h3 class="notes-title">Notes</h3>
+                                    <h3 class="notes-title">{{item.title | capitalize}}</h3>
                                     <button @click="closeNotes" class="close-notes-btn">Close</button>
                                     <div class="note-list">
                                         <div class="note-preview" v-for="(note, idx) in item.notes" :key="note.id">
@@ -105,6 +86,56 @@
                                     </div>
                                 </div>
                             </button>
+                        </span>
+                        <span v-else-if="header.field === 'url'" class="td-actions">
+                            <router-link
+                                class="search-link"
+                                :to="getSearchLink(item['url'])"
+                                title="View search"
+                            >
+                                View
+                            </router-link>
+                        </span>
+                        <span v-else-if="!header.field && $route.name === 'Purchases'">
+                            <button
+                                class="end-subscrition-btn"
+                                @click="onEndSubscription(item)"
+                                v-if="item.until === 'Ongoing' && item.price !== 0"
+                            >
+                                End subscription
+                            </button>
+                            <p v-else-if="item.canceledAt">Subscription Canceled at: {{item.canceledAt | moment('DD/MM/YYYY')}}</p>
+                        </span>
+                        <span
+                            class="flex-space-between td-actions"
+                            v-else-if="!header.title"
+                        >
+                            <!-- <router-link
+                                class="search-link"
+                                :to="getSearchLink(item['url'])"
+                                title="View search"
+                            >
+                                View
+                            </router-link> -->
+                            <!-- <button v-if="item" class="note-btn">
+                                <img  title="Notes" v-if="item.notes && item.notes.length" @click.stop="openNoteModal(item)" class="note-img" src="@/client/assets/icons/sticky-note.svg" alt="">
+                                <img  title="Add a note" v-else @click.stop="openNoteModal(item)" class="note-img" src="@/client/assets/icons/add-circle.svg" alt="">
+                                <div class="notes-container" :id="item.at">
+                                    <h3 class="notes-title">{{item.title | capitalize}}</h3>
+                                    <button @click="closeNotes" class="close-notes-btn">Close</button>
+                                    <div class="note-list">
+                                        <div class="note-preview" v-for="(note, idx) in item.notes" :key="note.id">
+                                            <button class="remove-note-btn" @click="onRemoveNote(idx)">+</button>
+                                            <p class="date">{{note.date | moment('DD MMM YYYY | h:mm A')}}</p>
+                                            <p contenteditable="true" @focusout="onSaveEditedNote(idx, $event)" class="txt">{{note.txt}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="add-note-container">
+                                        <textarea @focusout="onSaveNote" class="notes-input" placeholder="Add note" v-model="newNoteTxt"></textarea>
+                                        <button class="notes-btn" :class="{'show': isShowSaveBtn}" @click="onSaveNote">Save</button>
+                                    </div>
+                                </div>
+                            </button> -->
                             <button
                                 class="delete-btn"
                                 title="Delete search"

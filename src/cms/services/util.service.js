@@ -3,7 +3,8 @@ export const utilService = {
     escapeStrRegex,
     replaceTextContent,
     regexIndexOf,
-    checkIfInsideRef
+    checkIfInsideRef,
+    transHebrew
 }
 
 function checkIfInsideRef(txt, refIdx) {
@@ -45,6 +46,44 @@ function replaceTextContent(el, txt, newTxt, isPartOfCompound) {
             replaceTextContent(childNode, txt, newTxt, isPartOfCompound)
         });
     }
+}
+
+function transHebrew(str){
+    const hebEngMap = {
+        'ק': 'e',
+        'ר': 'r',
+        'א': 't',
+        'ט': 'y',
+        'ו': 'u',
+        'ן': 'i',
+        'ם': 'o',
+        'פ': 'p',
+        'ש': 'a',
+        'ד': 's',
+        'ג': 'd',
+        'כ': 'f',
+        'ע': 'g',
+        'י': 'h',
+        'ח': 'j',
+        'ל': 'k',
+        'ך': 'l',
+        'ף': ';',
+        'ז': 'z',
+        'ס': 'x',
+        'ב': 'c',
+        'ה': 'v',
+        'נ': 'b',
+        'מ': 'n',
+        'צ': 'm',
+        'ת': ',',
+        'ץ': '.',
+    }
+    const hebChars = str.split('')
+    const engChars = hebChars.map( c => {
+        if(c === ' ') return c
+        return hebEngMap[c]
+    })
+    return engChars.join('')
 }
 
 function makeId(length = 20) {
