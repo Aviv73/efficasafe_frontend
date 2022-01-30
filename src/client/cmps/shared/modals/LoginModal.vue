@@ -49,6 +49,12 @@ import EyeIcon from 'vue-material-design-icons/Eye';
 import EyeOffIcon from 'vue-material-design-icons/EyeOff';
 
 export default {
+    props: {
+        showNotSameProviderMsg: {
+            type: Boolean,
+            default: false
+        }
+    },
     data() {
         return {
             cred:{
@@ -105,6 +111,7 @@ export default {
     },
     created(){
         eventBus.$on(EV_wrong_provider, this.showWrongProviderMsg);
+        if(this.showNotSameProviderMsg) this.showWrongProviderMsg('This email signed up through a different login method')
     },
     components:{
         CloseIcon,

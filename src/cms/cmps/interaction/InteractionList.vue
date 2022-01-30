@@ -106,7 +106,7 @@
               <v-btn
                 small
                 color="primary"
-                :to="`/interaction/edit/${item._id}`"
+                @click="goToEdit(item._id)"
               >
                 <v-icon small>mdi-pencil</v-icon>
               </v-btn>
@@ -225,6 +225,10 @@ export default {
     goToInteraction(id){
       this.$store.commit({type:'setInteractionHeight', interactionPageHeight: window.pageYOffset})
       this.$router.push(`/interaction/${id}`)
+    },
+    goToEdit(id){
+      this.$store.commit({type:'setInteractionHeight', interactionPageHeight: window.pageYOffset})
+      this.$router.push(`/interaction/edit/${id}`)
     }
   }
 };

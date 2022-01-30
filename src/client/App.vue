@@ -13,8 +13,9 @@
         />
         <login-modal
             v-if="loginModal"
-            @closeModal="loginModal = false, showFreeSearchesMsg = false"
+            @closeModal="loginModal = false, showFreeSearchesMsg = false, showNotSameProviderMsg = false"
             @openAuthModal="switchModals"
+            :showNotSameProviderMsg="showNotSameProviderMsg"
         />
         <user-msg />
         <update-msg />
@@ -39,7 +40,8 @@ export default {
             authModal: false,
             loginModal: false,
             showFreeSearchesMsg: false,
-            showValidateMsg: false
+            showValidateMsg: false,
+            showNotSameProviderMsg: false
         };
     },
     computed: {
@@ -50,6 +52,10 @@ export default {
     methods: {
         onLogin() {
             this.loginModal = true;
+        },
+        onLoginNotSameProvider() {
+            this.loginModal = true;
+            this.showNotSameProviderMsg = true
         },
         onSignUp() {
             this.authModal = true;
@@ -90,6 +96,7 @@ export default {
 
         eventBus.$on(EV_open_signup, this.onSignUp);
         eventBus.$on(EV_open_login, this.onLogin);
+        eventBus.$on('login-not-same-provider', this.onLoginNotSameProvider);
         await this.$store.dispatch('pullManagementData')
         this.$store.commit('setFreeSearchesCount');
         this.$store.commit('initialLoadingDone')
