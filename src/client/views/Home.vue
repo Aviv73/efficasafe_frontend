@@ -64,21 +64,6 @@
                     <div class="home-stats-quote">
                         <div class="home-stats-quote-img-container">
                             <img
-                                src="@/client/assets/imgs/recommender1.png"
-                                class="quote-img"
-                                alt=""
-                            />
-                            <p>Keren Volkomir, Naturopth.</p>
-                        </div>
-                        "Finally! One site with everything in it. Efficasafe
-                        allows me to search, cross-reference and get all the
-                        information I need, in seconds. This kind of
-                        scientifically backed information is priceless to me as
-                        a Naturopath."
-                    </div>
-                    <div class="home-stats-quote">
-                        <div class="home-stats-quote-img-container">
-                            <img
                                 src="@/client/assets/imgs/recommender2.png"
                                 class="quote-img"
                                 alt=""
@@ -94,6 +79,21 @@
                         interactions. I believe that professionals have been
                         waiting for something like this to come along for a very
                         long time."
+                    </div>
+                    <div class="home-stats-quote">
+                        <div class="home-stats-quote-img-container">
+                            <img
+                                src="@/client/assets/imgs/recommender4.png"
+                                class="quote-img"
+                                alt=""
+                            />
+                            <p>Vardit Kalamaro, Pharm.D</p>
+                        </div>
+                        "This site is so easy to use it has quickly become an
+                        integral part of my everyday practice as a clinical
+                        pharmacist. There is no better drug-supplement
+                        interaction checker than Efficasafe. Easy to use, and
+                        good for quick decision making."
                     </div>
                     <div class="home-stats-quote">
                         <div class="home-stats-quote-img-container">
@@ -116,17 +116,17 @@
                     <div class="home-stats-quote">
                         <div class="home-stats-quote-img-container">
                             <img
-                                src="@/client/assets/imgs/recommender4.png"
+                                src="@/client/assets/imgs/recommender1.png"
                                 class="quote-img"
                                 alt=""
                             />
-                            <p>Vardit Kalamaro, Pharm.D</p>
+                            <p>Keren Volkomir, Naturopth.</p>
                         </div>
-                        "This site is so easy to use it has quickly become an
-                        integral part of my everyday practice as a clinical
-                        pharmacist. There is no better drug-supplement
-                        interaction checker than Efficasafe. Easy to use, and
-                        good for quick decision making."
+                        "Finally! One site with everything in it. Efficasafe
+                        allows me to search, cross-reference and get all the
+                        information I need, in seconds. This kind of
+                        scientifically backed information is priceless to me as
+                        a Naturopath."
                     </div>
                     <template #navigation-prev>
                         <chevron-left-icon :size="36" title="" />
@@ -138,23 +138,6 @@
             </div>
             <div v-else class="home-container">
                 <swiper class="home-swiper home-container" auto-play>
-                    <div class="home-stats-quote-wide">
-                        <img
-                            src="@/client/assets/imgs/recommender1.png"
-                            class="quote-img"
-                            alt=""
-                        />
-                        <div class="home-stats-quote-txt-container">
-                            <p>
-                                "Finally! One site with everything in it.
-                                Efficasafe allows me to search, cross-reference
-                                and get all the information I need, in seconds.
-                                This kind of scientifically backed information
-                                is priceless to me as a Naturopath."
-                            </p>
-                            <p class="title">Keren Volkomir, Naturopth.</p>
-                        </div>
-                    </div>
                     <div class="home-stats-quote-wide">
                         <img
                             src="@/client/assets/imgs/recommender2.png"
@@ -175,6 +158,24 @@
                                 program, Broshim School of complementary
                                 medicine.
                             </p>
+                        </div>
+                    </div>
+                    <div class="home-stats-quote-wide">
+                        <img
+                            src="@/client/assets/imgs/recommender4.png"
+                            class="quote-img"
+                            alt=""
+                        />
+                        <div class="home-stats-quote-txt-container">
+                            <p>
+                                "This site is so easy to use it has quickly
+                                become an integral part of my everyday practice
+                                as a clinical pharmacist. There is no better
+                                drug-supplement interaction checker than
+                                Efficasafe. Easy to use, and good for quick
+                                decision making."
+                            </p>
+                            <p class="title">Vardit Kalamaro, Pharm.D</p>
                         </div>
                     </div>
                     <div class="home-stats-quote-wide">
@@ -200,20 +201,19 @@
                     </div>
                     <div class="home-stats-quote-wide">
                         <img
-                            src="@/client/assets/imgs/recommender4.png"
+                            src="@/client/assets/imgs/recommender1.png"
                             class="quote-img"
                             alt=""
                         />
                         <div class="home-stats-quote-txt-container">
                             <p>
-                                "This site is so easy to use it has quickly
-                                become an integral part of my everyday practice
-                                as a clinical pharmacist. There is no better
-                                drug-supplement interaction checker than
-                                Efficasafe. Easy to use, and good for quick
-                                decision making."
+                                "Finally! One site with everything in it.
+                                Efficasafe allows me to search, cross-reference
+                                and get all the information I need, in seconds.
+                                This kind of scientifically backed information
+                                is priceless to me as a Naturopath."
                             </p>
-                            <p class="title">Vardit Kalamaro, Pharm.D</p>
+                            <p class="title">Keren Volkomir, Naturopth.</p>
                         </div>
                     </div>
                     <template #navigation-prev>
@@ -380,7 +380,7 @@ export default {
         if (this.$route.query.emailPrefs) eventBus.$emit(EV_show_user_msg, 'Your email preferences were successfully updated', 5000, 'success')
         if (this.$route.query.trailAdded) eventBus.$emit(EV_show_user_msg, 'Your trial time has been updated successfully', 5000, 'success')
         if (storageService.load('show-failed-login')){
-            eventBus.$emit(EV_show_user_msg, 'This email signed up through a different login method', 10000, 'error')
+            eventBus.$emit('login-not-same-provider')
             storageService.remove('show-failed-login')
         } 
     },

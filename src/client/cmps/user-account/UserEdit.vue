@@ -92,7 +92,7 @@
         <div class="user-edit-card">
             <h3>Manage Account</h3>
             <button
-                class="user-edit-card-btn flex-align-center"
+                class="user-edit-card-btn flex-align-center txt-start"
                 @click="downloadPersonalInfo"
             >
                 Download Your Personal Information

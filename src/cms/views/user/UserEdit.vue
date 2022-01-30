@@ -15,6 +15,7 @@
                     <h1>Signed up through: {{editedUser.provider | capitalize}}</h1>
                 </div>
 
+                <h3>Saved searches: {{editedUser.searches.length}}</h3>
                 <v-form
                     style="width: 70%;"
                     class="d-flex flex-column mx-auto"

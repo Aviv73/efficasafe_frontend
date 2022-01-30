@@ -1788,11 +1788,14 @@ export default {
         this.showDisclaimer();
         this.showMobileMsg();
         const { activeTour } = this.$route.query;
-        if(activeTour && !this.isScreenNarrow){
-            if(this.$route.name === 'Results') this.$tours['onboarding-no-searches-tour'].start();
-            if(this.$route.name === 'Boosters') this.$tours['boosters-tour'].start();
-            return
-        } 
+        if(activeTour){
+            if(!this.isScreenNarrow){
+                if(this.$route.name === 'Results') this.$tours['onboarding-no-searches-tour'].start();
+                if(this.$route.name === 'Boosters') this.$tours['boosters-tour'].start();
+                return
+            }
+            eventBus.$emit(EV_show_user_msg, 'The walkthrough and the tutorial are not available on a narrow screen. Please use this link on a computer', 10000)
+        }
         await this.getMaterials();
         if (this.materialsLength === 0 && !storageService.load('did-onboarding-no-searches-tour1') && !this.isScreenNarrow) {
             this.$tours['onboarding-no-searches-tour'].start();
