@@ -22,6 +22,14 @@
                 placeholder="Upload refs"
                 @change="handleRefsUpload"
             />
+            <v-btn v-if="references.length" color="success" class="mt-4 ml-4">
+                <download-excel
+                :data="references"
+                :name="`${name} refs.xls`"
+                >
+                    download refs
+                </download-excel>
+            </v-btn>
             <v-card-title>
                 <v-text-field
                     v-model="search"
@@ -81,6 +89,9 @@ export default {
         references: {
             type: Array,
             required: true,
+        },
+        name: {
+            type: String
         },
         isInteraction: {
             type: Boolean,

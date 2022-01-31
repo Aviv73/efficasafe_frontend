@@ -95,7 +95,7 @@
                 class="user-edit-card-btn flex-align-center txt-start"
                 @click="downloadPersonalInfo"
             >
-                Download Your Personal Information
+                Download Personal Information
                 <chevron-right-icon title="" :size="16" />
             </button>
             <button

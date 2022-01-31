@@ -5,6 +5,9 @@
         <v-card-title>
           Materials collection
           <v-spacer></v-spacer>
+          <v-btn class="mr-8" color="success" @click="onAddMultiRefs">
+            <v-icon small left>mdi-content-copy</v-icon>Add refs to multi materials
+          </v-btn>
           <v-btn color="primary" to="/material/edit/">new material</v-btn>
         </v-card-title>
 
@@ -25,6 +28,37 @@
 
       <icons-map />
     </div>
+    <modal-wrap
+        :isActive="isAddMultiRefsModal"
+        @close-modal="isAddMultiRefsModal = false"
+        >
+        <v-card class="multiple-modal-container">
+           <v-card-title class="primary headline" style="color:white; font-weight:bold;">Add refs to multiple materials</v-card-title>
+           <autocomplete style="width: 60%; margin: 0 auto" @emitAutocomplete="addMaterial" allow-term-search/>
+           <template v-if="!isLoadingAddMultiRefs">
+              <section class="multiple-material-list" style="height: 200px">
+                <p class="count">{{materialsToAddRefs.length}}</p>
+                <div class="multiple-material" v-for="(material, idx) in materialsToAddRefs" :key="idx">
+                  <p>{{material.text}}</p><button @click="removeMaterialToAddRefs(idx)">X</button>
+                </div>
+              </section>
+              <v-file-input
+                title="Upload excel file"
+                class="reference-table-file-btn"
+                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                clearable
+                hide-details
+                show-size
+                dense
+                single-line
+                placeholder="Upload refs"
+                @change="handleRefsUpload"
+              />
+              <v-btn @click="addRefsToMaterials" class="multiple-btn success">Add refs to materials</v-btn>
+           </template>
+           <loader v-else/>
+        </v-card>
+    </modal-wrap>
     <v-alert 
         class="cms-alert" 
         v-if="response.msg"
@@ -37,8 +71,14 @@
 </template>
 
 <script>
+import readXlsxFile from 'read-excel-file';
+import { materialService } from '@/cms/services/material.service';
+
 import materialFilter from '@/cms/cmps/material/MaterialFilter';
 import materialList from '@/cms/cmps/material/MaterialList';
+import ModalWrap from '@/client/cmps/common/ModalWrap';
+import autocomplete from '@/cms/cmps/Autocomplete';
+import loader from '@/cms/cmps/general/LoadingCmp';
 import iconsMap from '@/cms/cmps/general/IconsMap';
 
 export default {
@@ -48,7 +88,12 @@ export default {
       response: {
         msg: null,
         type: null
-      }
+      },
+      isAddMultiRefsModal: false,
+      materialsToAddRefs: [],
+      refsToAdd: [],
+      materialsWithRefs:[],
+      isLoadingAddMultiRefs: false
     };
   },
   watch: {
@@ -103,17 +148,115 @@ export default {
         this.response.msg = `${material.name} was updated`
       }catch(err){
         this.response.type = 'error'
-        this.response.msg = `SOMTING WHNT WRONG`
+        this.response.msg = `SOMETHING WENT WRONG`
       }
       setTimeout(() => {
         this.response.type = null
         this.response.msg = null
       },1500)
-    }
+    },
+    onAddMultiRefs(){
+      this.isAddMultiRefsModal = true
+    },
+    addMaterial(miniMat){
+      if(miniMat){
+        const idx = this.materialsToAddRefs.findIndex(m => m._id === miniMat._id)
+        if(idx < 0) this.materialsToAddRefs.unshift(miniMat)
+      }
+    },
+    removeMaterialToAddRefs(idx){
+      this.materialsToAddRefs.splice(idx, 1)
+    },
+    async addRefsToMaterials(){
+      if(!this.materialsToAddRefs.length){
+        this.response.type = 'error'
+        this.response.msg = `No materials were added`
+        setTimeout(() => {
+          this.response.type = null
+          this.response.msg = null
+        },3000)
+        return
+      }
+      if(!this.refsToAdd.length){
+        this.response.type = 'error'
+        this.response.msg = `No ref file was uploaded`
+        setTimeout(() => {
+          this.response.type = null
+          this.response.msg = null
+        },3000)
+        return
+      }
+      this.isLoadingAddMultiRefs = true
+      for (let i = 0; i < this.materialsToAddRefs.length; i++) {
+        const miniMat = this.materialsToAddRefs[i];
+        const material = await materialService.getById(miniMat._id)
+        if(material.refs.length){
+          this.materialsWithRefs.push(miniMat.text)
+          continue
+        }  
+        material.refs = JSON.parse(JSON.stringify(this.refsToAdd))
+        await materialService.save(material)
+      }
+      this.isLoadingAddMultiRefs = false
+      if(this.materialsWithRefs.length){
+        const materialsStrs = this.materialsWithRefs.join(', ')
+        this.response.type = 'warning'
+        this.response.msg = `The materials: ${materialsStrs} already have refs, check it manually`
+      }else{
+        this.response.type = 'success'
+        this.response.msg = `All the materials were updated!`
+        setTimeout(() => {
+          this.response.type = null
+          this.response.msg = null
+        },3000)
+      }
+
+      this.isAddMultiRefsModal = false
+      this.materialsToAddRefs = []
+      this.refsToAdd = []
+      this.materialsWithRefs =[]
+    },
+    async handleRefsUpload(file) {
+      const rows = await readXlsxFile(file);
+      const refs = rows.reduce((acc, row, idx) => {
+          if (idx === 0) return acc;
+          let txt = row[3];
+          let link = '';
+          let pubmedId = '';
+          let linkIdx = txt.indexOf('http://');
+          if (linkIdx === -1) linkIdx = txt.indexOf('https://');
+          if (linkIdx !== -1) {
+              link = txt.substring(linkIdx, txt.length);
+              txt = txt.substring(0, linkIdx);
+          }
+          if (link) {
+              const pubmedIdx = link.indexOf('pubmed');
+              if (pubmedIdx !== -1) {
+                  const regex = /([\d])/g;
+                  pubmedId = link.match(regex) ? link.match(regex).join('') : 0;
+              }
+          }
+
+          const ref = {
+              draftIdx: idx,
+              type: row[1] || '',
+              txt,
+              link,
+              pubmedId: +pubmedId
+          };
+
+          acc.push(ref);
+          return acc;
+      }, []);
+      this.refsToAdd = refs
+    },
   },
   components: {
     materialFilter,
     materialList,
+    ModalWrap,
+    autocomplete,
+    loader,
     iconsMap
   },
 };

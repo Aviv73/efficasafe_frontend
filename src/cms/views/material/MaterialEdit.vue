@@ -77,7 +77,7 @@
             Are you sure you want to delete this all ref?
           </v-card-title>
           <p>Deleting all refs can lead to bugs if not done carefully</p>
-          <div class="btn-container">
+          <div class="btn-container" style="margin-left: 0">
             <v-btn class="cancel-btn" @click="closeDeleteAllRefDialog" color="normal">cancel</v-btn>
             <v-btn class="cancel-btn" @click="deleteAllRef" color="error">delete all</v-btn>
           </div>
@@ -626,6 +626,7 @@
             :isEdit="true"
             @edit-ref="openRefDialog"
             :references="editedMaterial.refs"
+            :name="editedMaterial.name"
             @refs-uploaded="addRefs"
           />
 
@@ -633,6 +634,7 @@
           
           <d-bank-refs-table 
             :refs="editedMaterial.dBankRefs"
+            :name="editedMaterial.name"
             :isEdit="true"
             @edit-ref="openDBankRefDialog"
           />
