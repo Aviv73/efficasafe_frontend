@@ -8,6 +8,14 @@
         >
             mdi-plus-circle
         </v-icon>
+        <v-btn v-if="refs.length" color="success" class="mt-4 ml-4">
+            <download-excel
+            :data="refs"
+            :name="`${name} dBank refs.xls`"
+            >
+                download drug bank refs
+            </download-excel>
+        </v-btn>
       <v-data-table
         caption="DrugBank's References"
         :headers="computedHeaders"
@@ -47,6 +55,9 @@ export default {
         refs: {
             type: Array,
             required: true
+        },
+        name: {
+            type: String
         },
         isEdit: {
             type: Boolean,
