@@ -273,7 +273,18 @@
         >
           <v-icon>mdi-content-save-edit</v-icon>
         </v-btn>
-        <v-form v-model="valid" @submit.prevent="saveMaterial">
+        <v-btn
+          fab
+          elevation="5"
+          class="floating-btn up-btn"
+          color="warning"
+          title="Save Material"
+          :disabled="!valid"
+          @click="goto('top')"
+        >
+          <v-icon>mdi-chevron-up</v-icon>
+        </v-btn>
+        <v-form ref="top" v-model="valid" @submit.prevent="saveMaterial">
           <v-text-field
             type="text"
             v-model="editedMaterial.name"

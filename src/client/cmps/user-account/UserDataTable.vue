@@ -6,7 +6,7 @@
                     <th
                         v-for="(header, idx) in headers"
                         :key="idx"
-                        :class="{'link-header': header.title === 'Link'}"
+                        :class="{'link-header': header.title === 'Link', 'purchases-cell' : $route.name === 'Purchases'}"
                     >
                         <label
                             v-if="header.sortable"
@@ -31,6 +31,7 @@
                     <td
                         v-for="(header, colIdx) in headers"
                         :key="colIdx"
+                        :class="{'purchases-cell' : $route.name === 'Purchases'}"
                     >   
                         <span v-if="header.field === 'title'" class="font-medium">
                             {{ item[header.field] }}

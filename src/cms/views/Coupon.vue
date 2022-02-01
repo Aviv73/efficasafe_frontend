@@ -26,6 +26,17 @@
             </v-data-table>
         </v-card>
         <v-card v-if="dynamicCoupon" width="600" style="margin: 0 auto" class="py-2 px-4 mt-4 text-center">
+            <div class="dynamic-coupon-input" width="200">
+                <h3>Dynamic Coupon Life Time:</h3>
+                <v-text-field
+                    v-model="managementData.dynamicCouponLifeTime"
+                    placeholder="Dynamic Coupon Life Time"
+                    hide-details
+                    single-line
+                    type="number"
+                />
+                <v-btn color="success" @click="saveDynamicCouponLifeTime">Save Life Time</v-btn>
+            </div>
             <p>Dynamic Coupon</p>
             <div class="coupon-edit-content">
                 <div class="coupon-input">
@@ -212,9 +223,7 @@ export default {
                 validUntil: null,
             }
         },
-        async onSaveDynamicCoupon(){
-            const manage = JSON.parse(JSON.stringify(this.managementData))
-            manage.dynamicCoupon = this.dynamicCoupon
+        async saveManagementData(manage){
             try{
                 await this.$store.dispatch({type:'updateManagementData', manage})
                 this.isShowAlert = true
@@ -222,6 +231,15 @@ export default {
             }catch(err){
                 console.log(err);
             }
+        },
+        async saveDynamicCouponLifeTime(){
+            const manage = JSON.parse(JSON.stringify(this.managementData))
+            await this.saveManagementData(manage)
+        },
+        async onSaveDynamicCoupon(){
+            const manage = JSON.parse(JSON.stringify(this.managementData))
+            manage.dynamicCoupon = this.dynamicCoupon
+            await this.saveManagementData(manage)
         },
         async onSaveEditCoupon(){
             this.couponToEdit.validUntil = new Date(this.couponToEdit.validUntil).getTime()
@@ -235,14 +253,7 @@ export default {
                 this.managementData.coupons.push(this.couponToEdit)
             }
             const manage = JSON.parse(JSON.stringify(this.managementData))
-            try{
-                await this.$store.dispatch({type:'updateManagementData', manage})
-                this.isShowAlert = true
-                setTimeout(()=> this.isShowAlert = false, 3000)
-                this.couponToEdit = null
-            }catch(err){
-                console.log(err);
-            }
+            await this.saveManagementData(manage)
         },
         async onDeleteCoupon(id){
              const idx = this.managementData.coupons.findIndex(cop => cop.id === id)

@@ -24,7 +24,7 @@
             />
             <v-btn v-if="references.length" color="success" class="mt-4 ml-4">
                 <download-excel
-                :data="references"
+                :data="refsToDownload"
                 :name="`${name} refs.xls`"
                 >
                     download refs
@@ -144,6 +144,15 @@ export default {
     computed: {
         computedHeaders() {
             return (this.isEdit) ? this.headers : this.headers.filter(header => header.text !== 'Actions');
+        },
+        refsToDownload(){
+            return this.references.map( ref => {
+                return {
+                    order: ref.draftIdx,
+                    type: ref.type || null,
+                    data: ref.txt + ' ' + ref.link
+                }
+            })
         }
     },
     methods: {

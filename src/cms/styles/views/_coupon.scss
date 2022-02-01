@@ -31,3 +31,15 @@
 .red-txt{
     color: red;
 }
+
+.dynamic-coupon-input{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+
+    h3{
+        margin-block-start: 16px;
+        margin-right: 10px;
+    }
+}
