@@ -1,10 +1,14 @@
 .user-data-table {
     flex: 1 1 auto;
     overflow: auto;
-    height: 377px;
+    height: fit-content;
     max-width: 100%;
     font-size: rem(14px);
     line-height: rem(16px);
+
+    @include for-mobile-layout {
+        height: 377px;
+    }
     
     table {
         width: 100%;
@@ -260,5 +264,13 @@
     .link-header{
         text-align: center !important;
         width: 14%;
+    }
+
+    .purchases-cell{
+        padding: rem(8px) rem(5px) !important;
+
+        @include for-mobile-layout {
+            padding: rem(8px) rem(24px) !important;
+        }
     }
 }

@@ -10,7 +10,7 @@
         </v-icon>
         <v-btn v-if="refs.length" color="success" class="mt-4 ml-4">
             <download-excel
-            :data="refs"
+            :data="refsToDownload"
             :name="`${name} dBank refs.xls`"
             >
                 download drug bank refs
@@ -97,6 +97,17 @@ export default {
     computed: {
         computedHeaders() {
             return (this.isEdit) ? this.headers : this.headers.filter(header => header.text !== 'Actions');
+        },
+        refsToDownload(){
+            return this.refs.map( ref => {
+                const link = ref.pubmed_id ? `https://pubmed.ncbi.nlm.nih.gov/${ref.pubmed_id}` : ref.url ? ref.url : ''
+                const txt = ref.citation ? ref.citation : ref.title ? ref.title : ''
+                return {
+                    draftIdx: ref.draftIdx,
+                    ref_id: ref.ref_id,
+                    citation: link ? txt + ' ' + link : txt
+                }
+            })
         }
     }
 }
