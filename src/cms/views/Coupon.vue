@@ -13,8 +13,6 @@
                     <tbody>
                         <tr v-for="item in items" :key="item._id">
                             <td style="text-align: start">{{item.code}}</td>
-                            <td style="text-align: start">{{item.durationTxt}}</td>
-                            <td style="text-align: start">${{item.priceUSD}}</td>
                             <td style="text-align: start" :class="{'red-txt': item.validUntil < Date.now()}">{{ item.validUntil | moment('DD/MM/YYYY') }}</td>
                             <td style="text-align: start">
                                 <v-btn color="primary" @click="onOpenEdit(item)"><v-icon small>mdi-pencil</v-icon></v-btn>
@@ -38,23 +36,23 @@
                 <v-btn color="success" @click="saveDynamicCouponLifeTime">Save Life Time</v-btn>
             </div>
             <p>Dynamic Coupon</p>
-            <div class="coupon-edit-content">
+            <div v-for="(plan,idx) in dynamicCoupon" :key="idx" class="coupon-edit-content">
                 <div class="coupon-input">
                     <h3>Duration in months:</h3>
                     <v-select
                         :items="durations"
                         label="Duration in month"
-                        v-model="dynamicCoupon.duration"
+                        v-model="dynamicCoupon[idx].duration"
                     ></v-select>
                 </div>
                 <div class="coupon-input">
                     <h3>Duration in words:</h3>
-                    <h3>{{dynamicCouponDurationTxtToShow}}</h3>
+                    <h3>{{dynamicCouponDurationTxtToShow(idx)}}</h3>
                 </div>
                 <div class="coupon-input">
                     <h3>Price in USD:</h3>
                     <v-text-field
-                        v-model="dynamicCoupon.priceUSD"
+                        v-model="dynamicCoupon[idx].priceUSD"
                         placeholder="Price in USD"
                         hide-details
                         single-line
@@ -64,7 +62,7 @@
                 <div class="coupon-input">
                     <h3>Price in ILS:</h3>
                     <v-text-field
-                        v-model="dynamicCoupon.priceISL"
+                        v-model="dynamicCoupon[idx].priceISL"
                         placeholder="Price in ILS"
                         hide-details
                         single-line
@@ -74,7 +72,7 @@
                 <div class="coupon-input">
                     <h3>Price in EUR:</h3>
                     <v-text-field
-                        v-model="dynamicCoupon.priceEUR"
+                        v-model="dynamicCoupon[idx].priceEUR"
                         placeholder="Price in EUR"
                         hide-details
                         single-line
@@ -107,50 +105,55 @@
                         type="date"
                     />
                 </div>
-                <div class="coupon-input">
-                    <h3>Duration in months:</h3>
-                    <v-select
-                        :items="durations"
-                        label="Duration in month"
-                        v-model="couponToEdit.duration"
-                    ></v-select>
-                </div>
-                <div class="coupon-input">
-                    <h3>Duration in words:</h3>
-                    <h3>{{durationTxtToShow}}</h3>
-                </div>
-                <div class="coupon-input">
-                    <h3>Price in USD:</h3>
-                    <v-text-field
-                        v-model="couponToEdit.priceUSD"
-                        placeholder="Price in USD"
-                        hide-details
-                        single-line
-                        type="number"
-                    />
-                </div>
-                <div class="coupon-input">
-                    <h3>Price in ILS:</h3>
-                    <v-text-field
-                        v-model="couponToEdit.priceISL"
-                        placeholder="Price in ILS"
-                        hide-details
-                        single-line
-                        type="number"
-                    />
-                </div>
-                <div class="coupon-input">
-                    <h3>Price in EUR:</h3>
-                    <v-text-field
-                        v-model="couponToEdit.priceEUR"
-                        placeholder="Price in EUR"
-                        hide-details
-                        single-line
-                        type="number"
-                    />
+                <div class="plans-container">
+                    <v-card class="plan" v-for="(plan, idx) in couponToEdit.plans" :key="idx">
+                        <div class="coupon-input">
+                            <h3>Duration in months:</h3>
+                            <v-select
+                                :items="durations"
+                                label="Duration in month"
+                                v-model="couponToEdit.plans[idx].duration"
+                            ></v-select>
+                        </div>
+                        <div class="coupon-input">
+                            <h3>Duration in words:</h3>
+                            <h3>{{durationTxtToShow(idx)}}</h3>
+                        </div>
+                        <div class="coupon-input">
+                            <h3>Price in USD:</h3>
+                            <v-text-field
+                                v-model="couponToEdit.plans[idx].priceUSD"
+                                placeholder="Price in USD"
+                                hide-details
+                                single-line
+                                type="number"
+                            />
+                        </div>
+                        <div class="coupon-input">
+                            <h3>Price in ILS:</h3>
+                            <v-text-field
+                                v-model="couponToEdit.plans[idx].priceISL"
+                                placeholder="Price in ILS"
+                                hide-details
+                                single-line
+                                type="number"
+                            />
+                        </div>
+                        <div class="coupon-input">
+                            <h3>Price in EUR:</h3>
+                            <v-text-field
+                                v-model="couponToEdit.plans[idx].priceEUR"
+                                placeholder="Price in EUR"
+                                hide-details
+                                single-line
+                                type="number"
+                            />
+                        </div>
+                    </v-card>
                 </div>
             </div>
             <div class="btn-container">
+                <v-btn color="primary" @click="onAddPlan">Add plan</v-btn>
                 <v-btn color="success" @click="onSaveEditCoupon">Save</v-btn>
                 <v-btn @click="couponToEdit = null">Cancel</v-btn>
             </div>
@@ -181,8 +184,6 @@ export default {
             isShowAlert: false,
             tableHeaders: [
                 {text: 'Code', value: 'code'},
-                {text: 'Duration', value: 'durationTxt'},
-                {text: 'Price Per Month', value: 'priceUSD'},
                 {text: 'Valid Until', value: 'validUntil'},
                 {text: 'Actions'}
             ],
@@ -200,12 +201,16 @@ export default {
             return 'Add'
         },
         durationTxtToShow(){
-            if(!this.couponToEdit.duration) return 'Enter duration in month to see the right text'
-            return this.durationTxtMap[this.couponToEdit.duration]
+            return (idx) => {
+                if(!this.couponToEdit.plans[idx].duration) return 'Enter duration in month to see the right text'
+                return this.durationTxtMap[this.couponToEdit.plans[idx].duration]
+            }
         },
         dynamicCouponDurationTxtToShow(){
-            if(!this.dynamicCoupon.duration) return 'Enter duration in month to see the right text'
-            return this.durationTxtMap[this.dynamicCoupon.duration]
+            return (idx) => {
+                if(!this.dynamicCoupon[idx].duration) return 'Enter duration in month to see the right text'
+                return this.durationTxtMap[this.dynamicCoupon[idx].duration]
+            }
         },
     },
     methods: {
@@ -215,13 +220,24 @@ export default {
         onAddCoupon(){
             this.couponToEdit = {
                 code: '',
-                duration: '',
-                durationTxt: '',
-                priceEUR: 0,
-                priceISL: 0,
-                priceUSD: 0,
                 validUntil: null,
+                plans:[{
+                    duration: '',
+                    durationTxt: '',
+                    priceEUR: 0,
+                    priceISL: 0,
+                    priceUSD: 0,
+                }]
             }
+        },
+        onAddPlan(){
+            this.couponToEdit.plans.push({
+                    duration: '',
+                    durationTxt: '',
+                    priceEUR: 0,
+                    priceISL: 0,
+                    priceUSD: 0,
+            })
         },
         async saveManagementData(manage){
             try{
@@ -237,13 +253,18 @@ export default {
             await this.saveManagementData(manage)
         },
         async onSaveDynamicCoupon(){
+            this.dynamicCoupon.forEach((plan, idx) => {
+                plan.durationTxt = this.dynamicCouponDurationTxtToShow(idx)
+            });
             const manage = JSON.parse(JSON.stringify(this.managementData))
             manage.dynamicCoupon = this.dynamicCoupon
             await this.saveManagementData(manage)
         },
         async onSaveEditCoupon(){
             this.couponToEdit.validUntil = new Date(this.couponToEdit.validUntil).getTime()
-            this.couponToEdit.durationTxt = this.durationTxtToShow
+            this.couponToEdit.plans.forEach((plan, idx) => {
+                plan.durationTxt = this.durationTxtToShow(idx)
+            });
             if(this.couponToEdit.code.includes('-')) return
             if(this.couponToEdit.id){
                 const idx = this.managementData.coupons.findIndex(cop => cop.id === this.couponToEdit.id)
@@ -254,6 +275,7 @@ export default {
             }
             const manage = JSON.parse(JSON.stringify(this.managementData))
             await this.saveManagementData(manage)
+            this.couponToEdit = null
         },
         async onDeleteCoupon(id){
              const idx = this.managementData.coupons.findIndex(cop => cop.id === id)

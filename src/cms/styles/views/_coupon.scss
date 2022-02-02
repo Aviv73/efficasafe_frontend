@@ -3,7 +3,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 700px;
+    width: 900px;
 
     &-content{
         padding: 20px;
@@ -20,11 +20,22 @@
         }
     }
 
+    .plans-container{
+        display: flex;
+        margin-top: 20px;
+
+        .plan{
+            width: 350px;
+            padding: 10px;
+        }
+    }
+
     .btn-container{
         display: flex;
         align-items: center;
         justify-content: space-around;
         margin-block-end: 10px;
+        margin-left: unset !important;
     }
 }    
 

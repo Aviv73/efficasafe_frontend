@@ -31,11 +31,11 @@
         />
         <button @click="onSearchCoupon" ref="submitCoupon" class="coupon-input-btn" :class="{'invalid-btn': isCouponInvalid}" >{{couponBtnTxt}}</button>
     </div>
-    <div v-if="couponPlan" ref="couponPlan" class="cards-container coupon">
-        <div class="card" :class="{'selected':isSelected(couponPlan._id)}">
-            <h3 class="card-title">{{couponPlan.durationTxt}}</h3>
-            <p class="card-price">{{localCurrency}} <span>{{getPriceByLocation(couponPlan)}}</span> /mo</p>
-            <button ref="selectCouponBtn" class="card-btn" @click="onSelectPlan($event,couponPlan)">{{selectBtnTxt((couponPlan._id))}}</button>
+    <div v-if="selectedCoupon" ref="selectedCoupon" class="cards-container coupon">
+        <div v-for="(plan,idx) in selectedCoupon.plans" :key="idx" class="card" :class="{'selected':isSelectedCoupon(idx)}">
+            <h3 class="card-title">{{plan.durationTxt}}</h3>
+            <p class="card-price">{{localCurrency}} <span>{{getPriceByLocation(plan)}}</span> /mo</p>
+            <button class="card-btn" @click="onSelectCouponPlan(idx)">{{couponSelectBtnTxt((idx))}}</button>
         </div>
     </div>
     <button @click="onSubmit" :disabled="isLoading" class="payment-btn" :class="{'disabled': isLoading}">
@@ -66,7 +66,7 @@ export default {
     return {
       plans: null,
       coupons: null, 
-      couponPlan: null,
+      selectedCoupon: null,
       selectedPlan: null,
       couponInput: '',
       user: {},
@@ -89,10 +89,24 @@ export default {
             return false
         }
     },
+    isSelectedCoupon(){
+        return (idx) => {
+            if(!this.selectedPlan) return false
+            if(this.selectedCoupon.plans[idx].priceUSD === this.selectedPlan.priceUSD) return true
+            return false
+        }
+    },
     selectBtnTxt(){
         return (id) => {
             if(!this.selectedPlan) return 'select'
             if(id === this.selectedPlan._id) return 'selected'
+            return 'select'
+        }
+    },
+    couponSelectBtnTxt(){
+        return (idx) => {
+            if(!this.selectedPlan) return 'select'
+            if( this.selectedCoupon.plans[idx].priceUSD === this.selectedPlan.priceUSD ) return 'selected'
             return 'select'
         }
     },
@@ -117,6 +131,11 @@ export default {
         this.selectedPlan = plan
         this.$store.commit({ type: 'setSelectedPaymentPlan', SelectedPlan: plan });
     },
+    onSelectCouponPlan(idx){
+        const plan = JSON.parse(JSON.stringify(this.selectedCoupon.plans[idx]))
+        plan.code = this.selectedCoupon.code
+        this.selectedPlan = plan
+    },
     onOpenSignup(){
         eventBus.$emit(EV_open_signup)
     },
@@ -127,13 +146,9 @@ export default {
         if(this.isCouponInvalid) this.isCouponInvalid = false
     },
     onSearchCoupon(){
-        this.couponPlan = this.coupons.find(cop => cop.code === this.couponInput)
-        if(!this.couponPlan || this.couponPlan.validUntil < Date.now()){
-            this.couponPlan = null
-            this.isCouponInvalid = true
-            return 
-        }
-        this.selectedPlan = JSON.parse(JSON.stringify(this.couponPlan))
+        const coupon = this.coupons.find(cop => cop.code === this.couponInput)
+        if(!coupon || coupon.validUntil < Date.now()) return this.isCouponInvalid = true
+        this.selectedCoupon = coupon
     },
     async onSubmit(){
         if(!this.loggedInUser){
