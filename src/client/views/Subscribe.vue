@@ -77,16 +77,6 @@
             <p><span>Empower patients</span> with reliable, referenced information to help them better understand their medications and/or supplements while identifying any potentially dangerous interactions before they occur</p>
         </div>
     </div>
-    <div class="cards-container">
-        <div v-for="(plan,idx) in plans" :key="idx" class="card" :class="{'with-stars': plan.isRecommended}">
-            <div v-if="plan.isRecommended" class="stars">
-                <star-icon v-for="idx in 5" :key="idx" class="star-icon"></star-icon>
-            </div>
-            <h3 class="card-title" :class="{'margin-top': plan.isRecommended}" >{{plan.durationTxt}}</h3>
-            <p class="card-price">{{localCurrency}} <span>{{getPriceByLocation(plan)}}</span> /mo</p>
-            <button class="card-btn" @click="onSelectPrice($event,plan)">select</button>
-        </div>
-    </div>
   </section>
 </template>
 
