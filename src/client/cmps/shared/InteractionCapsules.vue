@@ -52,7 +52,7 @@
         <span v-if="isInteractionDetails" :class="{ 'pointer' : isLink }" @click="goToMaterial(draftNameContent)" title="Press for more info">
             {{ draftNameContent }}
         </span>
-        <span :title="draftNameContent">
+        <span v-else :title="draftNameContent">
             {{ draftNameContent }}
         </span>
             <svg
