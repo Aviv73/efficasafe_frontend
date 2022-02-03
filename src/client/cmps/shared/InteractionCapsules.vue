@@ -66,6 +66,7 @@
                 />
             </svg>
         </div>
+        
         <span v-if="isGroup || isLabel">
             <span
                 class="layer"
