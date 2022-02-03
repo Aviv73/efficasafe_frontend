@@ -15,7 +15,8 @@
             }"
             v-if="!showDraftName && !isMaterialGroup"
         >
-            <span :class="{ 'pointer' : isLink }" @click="goToMaterial(side1NameToShow)" title="Press for more info">{{ side1NameToShow }}</span>
+            <span v-if="isInteractionDetails" :class="{ 'pointer' : isLink }" @click="goToMaterial(side1NameToShow)" title="Press for more info">{{ side1NameToShow }}</span>
+            <span v-else :title="side1NameToShow">{{ side1NameToShow }}</span>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="cap cap-left"
@@ -48,7 +49,10 @@
                 transform="translate(24.192 48.001) rotate(180)"
             />
         </svg>
-        <span :class="{ 'pointer' : isLink }" @click="goToMaterial(draftNameContent)" title="Press for more info">
+        <span v-if="isInteractionDetails" :class="{ 'pointer' : isLink }" @click="goToMaterial(draftNameContent)" title="Press for more info">
+            {{ draftNameContent }}
+        </span>
+        <span :title="draftNameContent">
             {{ draftNameContent }}
         </span>
             <svg
@@ -133,6 +137,10 @@ export default {
         isLink: {
             type: Boolean,
             default: false
+        },
+        isInteractionDetails: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {
@@ -155,9 +163,9 @@ export default {
             if((this.$route.name === 'InteractionDetails' ||  this.$route.name === 'VinteractionDetails') && this.sortBySide === 2) return this.side1Name
             const nameToDisplay = (this.showDraftName && this.draftName) ? this.draftName : this.side2Name;
             if(this.$route.name === 'Boosters') return nameToDisplay
-            if (nameToDisplay.length >= 14 && this.isGroup) {
-                return `${nameToDisplay.substring(0, 12)}...(${this.vInteractionCount})`;
-            }
+            // if (nameToDisplay.length >= 14 && this.isGroup) {
+            //     return `${nameToDisplay.substring(0, 12)}...(${this.vInteractionCount})`;
+            // }
             return (this.vInteractionCount) ? `${nameToDisplay} (${this.vInteractionCount})` : nameToDisplay;
         },
         side1NameToShow(){

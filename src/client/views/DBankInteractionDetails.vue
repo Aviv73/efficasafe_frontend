@@ -47,6 +47,7 @@
                             :localize="false"
                             :showDraftName="false"
                             :isLink="true"
+                            :isInteractionDetails="true"
                             @go-to-material="goToMaterial"
                             on-details-page
                         />
