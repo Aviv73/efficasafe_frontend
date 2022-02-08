@@ -162,7 +162,7 @@ export default {
     return {
       plans: null,
       localCurrency: null,
-      isGroupSubModal: true,
+      isGroupSubModal: false,
       isLoading: false,
       groupSubData:{
           isGroupSubReq: true,
