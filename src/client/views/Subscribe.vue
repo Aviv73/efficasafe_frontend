@@ -32,14 +32,19 @@
         </div>
     </div>
     <h3 class="headline">Choose your payment plan</h3>
-    <div class="cards-container">
+    <div v-if="plans" class="cards-container">
         <div v-for="(plan,idx) in plans" :key="idx" class="card" :class="{'with-stars': plan.isRecommended}">
             <div v-if="plan.isRecommended" class="stars">
                 <star-icon v-for="idx in 5" :key="idx" class="star-icon"></star-icon>
             </div>
-            <h3 class="card-title" :class="{'margin-top': plan.isRecommended}" >{{plan.durationTxt}}</h3>
+            <h3 class="card-title" :class="{'margin-top': plan.isRecommended}" >Individual {{plan.durationTxt}}</h3>
             <p class="card-price">{{localCurrency}} <span>{{getPriceByLocation(plan)}}</span> /mo</p>
             <button class="card-btn" @click="onSelectPrice($event,plan)">select</button>
+        </div>
+        <div  class="card enterprise-card">
+            <h3 class="enterprise-card-title">Institutional</h3>
+            <p class="card-txt">Get an offer tailored to your needs</p>
+            <button @click="openGroupSubModal" class="card-btn">Get an offer</button>
         </div>
     </div>
     <div class="benefits-container">
@@ -77,6 +82,67 @@
             <p><span>Empower patients</span> with reliable, referenced information to help them better understand their medications and/or supplements while identifying any potentially dangerous interactions before they occur</p>
         </div>
     </div>
+    <modal-wrap
+            :isActive="isGroupSubModal"
+            @close-modal="closeGroupSubModal"
+            >
+            <div class="group-sub-modal-container">
+                <template v-if="isLoading">
+                    <div class="loader-rap">
+                        <loader class="loader"/>
+                    </div>
+                </template>
+                <template v-else>
+                    <img class="group-sub-modal-container-logo" src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
+                    <form @submit.prevent="onSubmit">
+                        <h3>Please fill in the details</h3>
+                        <input
+                            class="reg-input"
+                            type="text"
+                            placeholder="Institution / Company Name"
+                            v-model="groupSubData.companyName"
+                        />
+                        <input
+                            type="text"
+                            class="reg-input"
+                            placeholder="Type (e.g. Hospital, Clinic, Etc)"
+                            v-model="groupSubData.type"
+                        />
+                        <input
+                            type="text"
+                            class="reg-input"
+                            placeholder="Number Of licenses needed"
+                            v-model="groupSubData.numberOfEmployees"
+                        />
+                        <input
+                            type="text"
+                            class="reg-input"
+                            placeholder="Contact full Name"
+                            v-model="groupSubData.contactName"
+                        />
+                        <input
+                            type="text"
+                            class="reg-input"
+                            placeholder="Email"
+                            v-model="groupSubData.contactEmail"
+                        />
+                        <div class="form-input last-input-form">
+                            <label for="">
+                            <input
+                                type="text"
+                                placeholder="Phone"
+                                v-model="groupSubData.phoneNumber"
+                                ref="phoneInput"
+                                @countrychange="setPhoneDialCode"
+                            />
+                            <span class="label ml">Phone</span>
+                            </label>
+                        </div>
+                        <button>Get a tailored offer</button>
+                    </form>
+                </template>
+            </div>
+        </modal-wrap>
   </section>
 </template>
 
@@ -84,13 +150,29 @@
 
 import { manageService } from '@/cms/services/manage.service'
 import { locationService } from '@/cms/services/location.service'
+import { httpService } from "@/cms/services/http.service";
+import { eventBus, EV_show_user_msg } from '@/cms/services/eventBus.service';
+import intlTelInput from "intl-tel-input";
 import StarIcon from 'vue-material-design-icons/Star';
+import ModalWrap from '@/client/cmps/common/ModalWrap';
+import Loader from '@/client/cmps/common/icons/Loader';
 
 export default {
   data() {
     return {
       plans: null,
-      localCurrency: null
+      localCurrency: null,
+      isGroupSubModal: true,
+      isLoading: false,
+      groupSubData:{
+          isGroupSubReq: true,
+          contactName: '',
+          companyName: '',
+          numberOfEmployees: '',
+          contactEmail: '',
+          phoneNumber:'',
+          type: ''
+      }
     };
   },
   computed: {
@@ -105,7 +187,33 @@ export default {
     onSelectPrice(ev, plan){
         this.$store.commit({ type: 'setSelectedPaymentPlan', SelectedPlan: plan });
         this.$router.push('/payment')
+    },
+    openGroupSubModal(){
+        this.isGroupSubModal = true
+    },
+    closeGroupSubModal(){
+        this.isGroupSubModal = false
+    },
+    setPhoneDialCode() {
+        this.groupSubData.phoneNumber = ''
+        this.groupSubData.phoneNumber = this.$refs.phoneInput.value;
+    },
+    async onSubmit(){
+        this.isLoading = true
+        try{
+            await httpService.post('task', this.groupSubData)
+            this.closeGroupSubModal()
+            eventBus.$emit(EV_show_user_msg, 'Your request was submitted, we will reply as soon as possible', 15000, 'success')
+        }catch(err){
+            eventBus.$emit(EV_show_user_msg, 'Something went wrong', 5000, 'error')
+        }
+        this.isLoading = false
     }
+  },
+  mounted() {
+    this.iti = intlTelInput(this.$refs.phoneInput, {
+      nationalMode: false,
+    });
   },
   async created() {
       this.localCurrency = await locationService.getLocalCurrency()
@@ -113,7 +221,9 @@ export default {
       this.plans = managementData.plans
   },
   components:{
-      StarIcon
+      StarIcon,
+      ModalWrap,
+      Loader
   }
 };
 </script>

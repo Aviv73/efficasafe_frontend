@@ -15,7 +15,7 @@
             <div v-if="plan.isRecommended" class="stars">
                 <star-icon v-for="idx in 5" :key="idx" class="star-icon"></star-icon>
             </div>
-            <h3 class="card-title" :class="{'margin-top': plan.isRecommended}" >{{plan.durationTxt}}</h3>
+            <h3 class="card-title" :class="{'margin-top': plan.isRecommended}" >Individual {{plan.durationTxt}}</h3>
             <p class="card-price">{{localCurrency}} <span>{{getPriceByLocation(plan)}}</span> /mo</p>
             <button class="card-btn" @click="onSelectPlan($event,plan)">{{selectBtnTxt((plan._id))}}</button>
         </div>

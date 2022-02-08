@@ -191,7 +191,7 @@ export default {
           this.resetForm()
 
       }catch(err){
-          eventBus.$emit(EV_show_user_msg, 'Shomting went wrong', 5000, 'error')
+          eventBus.$emit(EV_show_user_msg, 'Something went wrong', 5000, 'error')
       }
     },
     setPhoneDialCode() {

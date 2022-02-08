@@ -87,5 +87,22 @@
             -webkit-text-fill-color: transparent;
         }
         
+        .sign-up-btn-container{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+
+            .sign-up-btn{
+                background-color: $clr2;
+                color: white;
+                font-weight: bold;
+                border: 1px solid white;
+                border-radius: 10px;
+                padding: 5px 20px;
+
+            }
+        }
     }
 }

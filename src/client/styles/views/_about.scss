@@ -24,6 +24,15 @@
         font-weight: 700;
         text-align: center;
     }
+    .highlight{
+        font-weight: bold;
+        background: -webkit-linear-gradient(left, $gradient-clr1, $gradient-clr2);
+        background: -o-linear-gradient(right, $gradient-clr1, $gradient-clr2);
+        background: -moz-linear-gradient(right, $gradient-clr1, $gradient-clr2);
+        background: linear-gradient(to right, $gradient-clr1, $gradient-clr2); 
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
     &-paragraph {
         margin-block-end: rem(50px);
     }
@@ -34,12 +43,17 @@
         font-size: rem(20px);
         line-height: rem(32px);
     }
+    .small-card{
+        width: 80%;
+        margin: 0 auto 40px;
+        font-size: 24px;
+    }
     &-card {
         text-align: center;
         box-shadow: 0px 2px 6px rgba($black, .16);
         border-radius: 11px;
         padding: rem(24px) rem(30px) rem(24px);
-        margin-block-end: rem(60px);
+        margin-block-end: rem(42px);
         font-size: rem(20px);
         line-height: rem(32px);
         color: $clr-txt-dark;

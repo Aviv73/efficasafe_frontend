@@ -155,6 +155,27 @@
                 }
             }
         }
+
+        .enterprise-card{
+            padding: 0px 30px;
+
+            .enterprise-card-title{
+                text-transform: uppercase;
+                font-size: 14.5px;
+                color: #56C596;
+                font-weight: bold;
+                margin-top: 21.6px;
+                margin-bottom: 13.5px;
+            }
+
+            .card-txt{
+                font-size: 13px;
+                text-align: center;
+                font-weight: 500;
+                color: #133146;
+                margin-bottom: 15.5px;
+            }
+        }
         
     }
 
@@ -186,5 +207,83 @@
         }
     }
 
-    
+    .group-sub-modal-container{
+        width: 480px;
+        height: 560px;
+        background-color: white;
+        padding: 30px 40px;
+        display: flex;
+        flex-direction: column;
+
+        @media(max-width: 580px){
+            width: 330px;
+        }
+
+        &-logo{
+            width: 200px;
+            margin: 0 100px;
+            margin-bottom: 20px;
+
+            @media(max-width: 580px){
+                margin: 0 10px;
+                margin-bottom: 20px;
+            }
+        }
+
+        h3{
+            font-weight: 400;
+            font-size: 20px;
+            color: #133146;
+            margin-bottom: 10px;
+        }
+
+        .reg-input{
+            width: 100%;
+            background-color: transparent;
+            border: none;
+            -webkit-padding-start: 0.5rem;
+            padding-inline-start: 0.5rem;
+            transition: border-color 0.3s ease-in-out;
+            font-size: 1.125rem;
+            border-bottom: 1px solid rgba(128, 128, 128, 0.205);
+            line-height: 2rem;
+            margin-bottom: 20px;
+
+            &::placeholder{
+                color: rgba(128, 128, 128, 0.397);;
+            }
+        }
+
+        .last-input-form{
+            margin-bottom: 32px;
+        }
+
+        button{
+            width: 100%;
+            height: 42px;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            background-color: #205072;
+            border: 1px solid #205072;
+            border-radius: 6px;
+            letter-spacing: 1px;
+        }
+    }
+
+    .loader-rap{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .loader{
+            width: 200px;
+        }
+    }
+
+    .ml{
+        margin-left: 7.5px;
+    }
 }

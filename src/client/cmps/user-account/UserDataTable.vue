@@ -6,7 +6,7 @@
                     <th
                         v-for="(header, idx) in headers"
                         :key="idx"
-                        :class="{'link-header': header.title === 'Link', 'purchases-cell' : $route.name === 'Purchases'}"
+                        :class="{'link-header': header.title === 'Link', 'purchases-cell' : $route.name === 'Purchases', 'mobile-updates-header' : isSearchesMobile && header.title === 'Updates'}"
                     >
                         <label
                             v-if="header.sortable"
@@ -37,9 +37,9 @@
                             {{ item[header.field] }}
                         </span>
                         <span v-if="header.title === 'Updates'" class="font-medium">
-                            <tooltip class="bell-container" v-if="item.updates && item.updates.length" on="focus" bottom>
+                            <tooltip class="bell-container" v-if="item.updates && item.updates.length" on="focus" :bottom="!isSearchesMobile" :left="isSearchesMobile">
                                 <template #content>
-                                    <div class="notification-container">
+                                    <div class="notification-container" :class="{'narrow' : isSearchesMobile}">
                                         <div class="rapper" v-for="(update, idx) in item.updates" :key="idx">
                                             <h3>The <span>{{update.interactionName}}</span> interaction has been updated:</h3>
                                             <ul>
@@ -109,6 +109,37 @@
                         </span>
                         <span
                             class="flex-space-between td-actions"
+                            v-else-if="!header.title && isSearchesMobile"
+                            style="position:relative;"
+                        >
+                            <tooltip right on="focus">
+                                <template #content>
+                                    <div class="mini-menu">
+                                        <router-link class="mini-menu-btn" :to="getSearchLink(item['url'])">View</router-link>
+                                        <button :id="`minimenu${item.at}`" class="mini-menu-btn" @click="openNoteModal(item)">Add/view notes</button>
+                                        <button class="mini-menu-btn" @click="onRemove(item)">Delete</button>
+                                    </div>
+                                </template>
+                                <img src="@/client/assets/icons/three-dots.svg" alt="">
+                            </tooltip>
+                            <div class="notes-container" :id="item.at">
+                                <h3 class="notes-title">{{item.title | capitalize}}</h3>
+                                <button @click.stop="closeNotes" class="close-notes-btn">Close</button>
+                                <div class="note-list">
+                                    <div class="note-preview" v-for="(note, idx) in item.notes" :key="note.id">
+                                        <button class="remove-note-btn" @click="onRemoveNote(idx)">+</button>
+                                        <p class="date">{{note.date | moment('DD MMM YYYY | h:mm A')}}</p>
+                                        <p contenteditable="true" @focusout="onSaveEditedNote(idx, $event)" class="txt">{{note.txt}}</p>
+                                    </div>
+                                </div>
+                                <div class="add-note-container">
+                                    <textarea @focusout="onSaveNote" class="notes-input" placeholder="Add note" v-model="newNoteTxt"></textarea>
+                                    <button class="notes-btn" :class="{'show': isShowSaveBtn}" @click="onSaveNote">Save</button>
+                                </div>
+                            </div>
+                        </span>
+                        <span
+                            class="flex-space-between td-actions"
                             v-else-if="!header.title"
                         >
                             <button
@@ -173,6 +204,12 @@ export default {
         isShowSaveBtn(){
             if(this.newNoteTxt.split('').length) return true
             return false
+        },
+        isScreenMobile() {
+            return this.$store.getters.isScreenMobile;
+        },
+        isSearchesMobile(){
+            return this.isScreenMobile && this.$route.name === 'Searches'
         }
     },
     methods: {
@@ -203,9 +240,11 @@ export default {
             if(this.notesToShow) document.getElementById(this.notesToShow.at).classList.remove('show')
             if(!item.notes) item.notes = []
             this.notesToShow = item
+            if(this.isSearchesMobile) document.getElementById(`minimenu${this.notesToShow.at}`).click
             document.getElementById(item.at).classList.add('show')
         },
         closeNotes(){
+            if(this.isSearchesMobile) document.getElementById(`minimenu${this.notesToShow.at}`).click
             document.getElementById(this.notesToShow.at).classList.remove('show')
             this.notesToShow = null
             this.newNoteTxt = ''

@@ -18,6 +18,7 @@ export default new Vuex.Store({
   state: {
     materialNamesMap: null,
     isScreenNarrow: null,
+    isScreenMobile: null,
     hasFailedTasks: false,
     posSuppIds: [],
     posBoostersCountMap:{},
@@ -35,6 +36,9 @@ export default new Vuex.Store({
     },
     isScreenNarrow(state) {
       return state.isScreenNarrow;
+    },
+    isScreenMobile(state) {
+      return state.isScreenMobile;
     },
     materialNamesMap(state) {
       return state.materialNamesMap;
@@ -82,6 +86,9 @@ export default new Vuex.Store({
     },
     setIsScreenNarrow(state) {
       state.isScreenNarrow = window.innerWidth < 900;
+    },
+    setIsScreenMobile(state) {
+      state.isScreenMobile = window.innerWidth < 600;
     },
     setHasFailedTasks(state, { hasTasks }) {
       state.hasFailedTasks = hasTasks;
@@ -148,8 +155,10 @@ export default new Vuex.Store({
   plugins: [
     (store) => {
       store.commit({ type: 'setIsScreenNarrow' });
+      store.commit({ type: 'setIsScreenMobile' });
       window.addEventListener('resize', () => {
         store.commit({ type: 'setIsScreenNarrow' });
+        store.commit({ type: 'setIsScreenMobile' });
       });
     }
   ],

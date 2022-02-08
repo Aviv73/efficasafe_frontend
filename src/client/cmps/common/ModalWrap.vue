@@ -52,7 +52,7 @@ export default {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 98;
+    z-index: 1000;
     height: 100%;
     width: 100%;
     background-color: rgba(#000000, 0.6);
