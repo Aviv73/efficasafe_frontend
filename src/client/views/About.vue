@@ -33,6 +33,10 @@
                 <span class="marked">increased efficacy</span>.
                 <span class="marked">That’s revolutionary!</span>
             </div>
+            <div class="about-page-card small-card">
+                <span class="highlight">Efficasafe</span> is the best interaction platform in the world!
+                <a style="font-size: 20px" href="/we-are-better" target="_blank" class="marked">Click to see why</a>
+            </div>
             <h2 class="heading2">Our editorial philosophy</h2>
             <ul class="styled-ul">
                 <li>

@@ -118,34 +118,57 @@ export default {
         },
         tableHeaders() {
             if (this.$route.name === 'Searches') {
-                return [
-                    {
-                        title: this.isScreenNarrow ? 'Name' : 'Patient name',
-                        field: 'title',
-                        sortable: true
-                    },
-                    {
-                        title: 'Created',
-                        field: 'at',
-                        sortable: true
-                    },
-                    {
-                        title: 'Updates',
-                        field: ''
-                    },
-                    {
-                        title: 'Link',
-                        field: 'url'
-                    },
-                    {
-                        title: 'Notes',
-                        field: 'notes'
-                    },
-                    {
-                        title: '',
-                        field: ''
-                    },
-                ];
+                if(!this.isScreenMobile){
+                    return [
+                        {
+                            title: this.isScreenNarrow ? 'Name' : 'Patient name',
+                            field: 'title',
+                            sortable: true
+                        },
+                        {
+                            title: 'Created',
+                            field: 'at',
+                            sortable: true
+                        },
+                        {
+                            title: 'Updates',
+                            field: ''
+                        },
+                        {
+                            title: 'Link',
+                            field: 'url'
+                        },
+                        {
+                            title: 'Notes',
+                            field: 'notes'
+                        },
+                        {
+                            title: '',
+                            field: ''
+                        },
+                    ];
+                }else{
+                    return [
+                        {
+                            title: 'Updates',
+                            field: ''
+                        },
+                        {
+                            title: 'Name',
+                            field: 'title',
+                            sortable: true
+                        },
+                        {
+                            title: 'Created',
+                            field: 'at',
+                            sortable: true
+                        },
+                        {
+                            title: '',
+                            field: ''
+                        },
+                    ]
+                }
             }
             return [
                 {
@@ -208,6 +231,9 @@ export default {
         },
         isScreenNarrow() {
             return this.$store.getters.isScreenNarrow;
+        },
+        isScreenMobile() {
+            return this.$store.getters.isScreenMobile;
         }
     },
     methods: {

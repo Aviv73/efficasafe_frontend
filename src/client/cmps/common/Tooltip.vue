@@ -289,12 +289,12 @@ export default {
                 right: 100%;
                 transform: translateY(-50%);
             }
-            &.exceed-x {
-                top: 100%;
-                right: unset;
-                left: 50%;
-                transform: translateX(-50%);
-            }
+            // &.exceed-x {
+            //     top: 100%;
+            //     right: unset;
+            //     left: 50%;
+            //     transform: translateX(-50%);
+            // }
         }
         &.right {
             right: 125%;
