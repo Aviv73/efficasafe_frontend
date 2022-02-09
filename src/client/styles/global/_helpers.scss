@@ -162,3 +162,8 @@
     -o-user-select: none;  
     user-select: none;
 }
+
+.invisible-header{
+    position: absolute;
+    opacity: 0;
+}

@@ -252,6 +252,10 @@
             &::placeholder{
                 color: rgba(128, 128, 128, 0.397);;
             }
+
+            &:focus{
+                outline: none;
+            }
         }
 
         .last-input-form{

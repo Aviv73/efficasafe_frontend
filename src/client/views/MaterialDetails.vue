@@ -61,7 +61,7 @@
                 </button>
                 <button class="drawer-btn" @click="showNav = true" v-if="isScreenNarrow"><menu-icon title="" /></button>
                 <p v-if="material.updatedAt" class="material-details-content-at">Updated on {{material.updatedAt | moment('MMMM DD YYYY')}}</p>
-                <h2 ref="Title" class="material-details-content-name">{{material.name}}</h2>
+                <h1 ref="Title" class="material-details-content-name">{{material.name}}</h1>
                 <p class="material-details-content-family" v-if="material.BotanicalFamily || material.botanicalFamily">botanical family: {{material.BotanicalFamily || material.botanicalFamily || 'Not indicated'}}</p>
                 <div v-if="aliasesToShow.length" class="material-details-content-aliases-container">
                     <p v-for="alias in aliasesToShow" :key="alias">{{alias}}</p>
@@ -274,6 +274,30 @@
                             </div>
                         </div>
                     </template>
+                    <section class="links-container" v-if="interactions.length">
+                        <div class="link" v-for="interaction in interactions" :key="interaction._id">
+                            <a  v-if="!interaction.side2Material" :href="`/interaction/${interaction._id}/${material._id}`" target="_blank">
+                                <interaction-capsules
+                                    :name="interaction.name"
+                                    :color="getInteractionColor(interaction)"
+                                    :vInteractionCount="0"
+                                    :localize="false"
+                                    :showDraftName="false"
+                                    dense
+                                 />
+                            </a>
+                            <a  v-else-if="interaction.side2Material" :href="`/interaction/${interaction._id}`" target="_blank">
+                                <interaction-capsules
+                                    :name="interaction.name"
+                                    :color="getInteractionColor(interaction)"
+                                    :vInteractionCount="0"
+                                    :localize="false"
+                                    :showDraftName="false"
+                                    dense
+                                 />
+                            </a>
+                        </div>
+                    </section>
                 </section>
             </main>
         </template>
@@ -290,7 +314,9 @@
 <script>
 
 import { materialUIService } from '@/cms/services/material-ui.service'
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
 
+import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 import Loader from '@/client/cmps/common/icons/Loader';
 import ShareModal from '@/client/cmps/shared/modals/ShareModal';
 import ModalWrap from '@/client/cmps/common/ModalWrap';
@@ -304,6 +330,7 @@ export default {
     data() {
         return {
             material: null,
+            interactions: [],
             showNav: false,
             isShareModalActive: false,
             refCountMap:{},
@@ -323,6 +350,9 @@ export default {
 
             window.scrollTo(0, top - 60);
             this.showNav = false
+        },
+        getInteractionColor({recommendation}) { 
+            return interactionUIService.getInteractionColor(recommendation);
         },
         getTypeImgName(type) {
             switch (type) {
@@ -518,6 +548,25 @@ export default {
         },
         savePageHight(){
             materialUIService.setMaterialPageHightMap({name: this.material.name, hight: window.pageYOffset})
+        },
+        async getInteractions(mat){
+            const material = [mat]
+            const ids = material.reduce((acc, { _id, labels }) => {
+                if (!acc.includes(_id)) acc.push(_id);
+                labels.forEach(label => {
+                    if (!acc.includes(label._id)) acc.push(label._id);
+                });
+                return acc;
+            }, []);
+            const filterBy = {
+                isSearchResults: true,
+                isMaterialPage: true,
+                page: 0,
+                id: ids,
+                materialCount: 1,
+            };
+            const {interactions} = await this.$store.dispatch({ type: 'getInteractions', filterBy});
+            return interactions
         }
     },
     computed:{
@@ -572,6 +621,7 @@ export default {
         const { id } = this.$route.params;
         const material = await this.$store.dispatch({type: 'loadMaterial',matId: id });
         if(!material.isShowPage) return this.$router.push('/404')
+        this.interactions = await this.getInteractions(material)
         const materialWithRefs = await this.organizeRefs(material)
         this.material = materialWithRefs
         this.isLoading = false
@@ -590,6 +640,7 @@ export default {
         MenuIcon,
         ArrowLeftIcon,
         Loader,
+        InteractionCapsules,
         ShareModal,
         ModalWrap,
         MobileShareIcon,

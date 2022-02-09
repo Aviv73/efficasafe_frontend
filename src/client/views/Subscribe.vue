@@ -95,36 +95,42 @@
                 <template v-else>
                     <img class="group-sub-modal-container-logo" src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
                     <form @submit.prevent="onSubmit">
-                        <h3>Please fill in the details</h3>
+                        <h3 v-if="!isShowError">Please fill in the details</h3>
+                        <h3 v-else style="color: red">Please fill all the fields</h3>
                         <input
                             class="reg-input"
                             type="text"
                             placeholder="Institution / Company Name"
                             v-model="groupSubData.companyName"
+                            @change="isShowError = false"
                         />
                         <input
                             type="text"
                             class="reg-input"
                             placeholder="Type (e.g. Hospital, Clinic, Etc)"
                             v-model="groupSubData.type"
+                            @change="isShowError = false"
                         />
                         <input
                             type="text"
                             class="reg-input"
                             placeholder="Number Of licenses needed"
                             v-model="groupSubData.numberOfEmployees"
+                            @change="isShowError = false"
                         />
                         <input
                             type="text"
                             class="reg-input"
                             placeholder="Contact full Name"
                             v-model="groupSubData.contactName"
+                            @change="isShowError = false"
                         />
                         <input
                             type="text"
                             class="reg-input"
                             placeholder="Email"
                             v-model="groupSubData.contactEmail"
+                            @change="isShowError = false"
                         />
                         <div class="form-input last-input-form">
                             <label for="">
@@ -134,6 +140,7 @@
                                 v-model="groupSubData.phoneNumber"
                                 ref="phoneInput"
                                 @countrychange="setPhoneDialCode"
+                                @change="isShowError = false"
                             />
                             <span class="label ml">Phone</span>
                             </label>
@@ -164,6 +171,7 @@ export default {
       localCurrency: null,
       isGroupSubModal: false,
       isLoading: false,
+      isShowError: false,
       groupSubData:{
           isGroupSubReq: true,
           contactName: '',
@@ -199,6 +207,11 @@ export default {
         this.groupSubData.phoneNumber = this.$refs.phoneInput.value;
     },
     async onSubmit(){
+        const isAllField = Object.values(this.groupSubData).every(v => v)
+        if(!isAllField){
+            this.isShowError = true
+            return
+        }
         this.isLoading = true
         try{
             await httpService.post('task', this.groupSubData)

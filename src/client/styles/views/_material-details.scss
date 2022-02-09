@@ -273,4 +273,17 @@
         top: 10px;
         z-index: 20;
     }
+
+    .links-container{
+        margin-top: 30px;
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        align-items: center;
+        justify-content: space-around;
+
+        .link{
+            margin: 5px;
+        }
+    }
 }

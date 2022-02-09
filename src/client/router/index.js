@@ -109,11 +109,6 @@ const routes = [
         component: InteractionList
       },
       {
-        path: 'drug2drug',
-        name: 'Drug2Drug',
-        component: InteractionList
-      },
-      {
         path: 'positive-boosters',
         name: 'Boosters',
         component: InteractionList
