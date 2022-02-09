@@ -97,8 +97,14 @@ export default {
   components:{
       PageHeader
   },
+  computed:{
+      loggedInUser() {
+            return this.$store.getters.loggedInUser;
+        }
+  },
   methods:{
       openSignup(){
+          if(this.loggedInUser) return
           this.$emit('signup');
       }
   }
