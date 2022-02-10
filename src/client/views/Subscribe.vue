@@ -96,7 +96,7 @@
                     <img class="group-sub-modal-container-logo" src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
                     <form @submit.prevent="onSubmit">
                         <h3 v-if="!isShowError">Please fill in the details</h3>
-                        <h3 v-else style="color: red">Please fill all the fields</h3>
+                        <h3 v-else style="color: red">Please fill in all the fields</h3>
                         <input
                             class="reg-input"
                             type="text"
