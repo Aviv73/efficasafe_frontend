@@ -216,6 +216,7 @@
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import { utilService } from '@/cms/services/util.service';
 import { eventBus, EV_addInteraction } from '@/cms/services/eventBus.service';
+// import { materialService } from '@/cms/services/material.service';
 import confirmDelete from '@/cms/cmps/general/ConfirmDelete';
 import referenceTable from '@/cms/cmps/common/ReferenceTable';
 import labelPeek from '@/cms/cmps/interaction/edit/LabelPeek';
@@ -226,10 +227,12 @@ import ModalWrap from '@/client/cmps/common/ModalWrap';
 import autocomplete from '@/cms/cmps/Autocomplete';
 import loader from '@/cms/cmps/general/LoadingCmp';
 
+
 export default {
   side1Refs: [],
   data() {
     return {
+      relatedMaterials:[],
       interaction: null,
       dialog: false,
       labelDialog: false,
@@ -336,6 +339,24 @@ export default {
           type: miniMat.type
         }
         interactionCopy.side1Material = formattedMaterial
+        if(!this.interaction.side2Material) {
+          const labelCopy = JSON.parse(JSON.stringify(this.interaction.side2Label))
+          delete labelCopy._id
+          const labelNames =  labelCopy.name.split('&')
+          labelNames[0] = miniMat.text
+          labelCopy.name = labelNames.join(' &')
+          const newLabel = await this.$store.dispatch({type: 'saveLabel',label: labelCopy})
+          interactionCopy.side2Label = newLabel
+          const relatedMaterials = await this.getRelatedMaterials()
+          const relatedMaterialIds = relatedMaterials.map(mat => mat._id);
+          const data = {
+            ids: relatedMaterialIds,
+            label: newLabel
+          }
+          await this.$store.dispatch({ type: 'updateMaterials', data });
+          // const material = await materialService.getById(miniMat._id)
+          // material.labels.push(newLabel)
+        }
         await this.$store.dispatch({ type: 'saveInteraction', interaction: interactionCopy });
       })
       this.isMultipleDone = true
@@ -343,6 +364,13 @@ export default {
       this.materialsToMultiple = []
       this.isLoadingMulti = false
       this.isMultipleModal = false
+    },
+    async getRelatedMaterials() {
+      if (this.interaction.side2Label) {
+        const criteria = { labelId: this.interaction.side2Label._id };
+        const materials = await this.$store.dispatch({ type: 'getMaterials', criteria });
+        return materials
+      }
     },
     async cloneInteraction() {
       const interactionCopy = JSON.parse(JSON.stringify(this.interaction));
@@ -430,6 +458,7 @@ export default {
           this.isNotFound = true;
         }
       }
+
     },
     async removeInteraction() {
       const interaction = JSON.parse(JSON.stringify(this.interaction));
@@ -515,11 +544,12 @@ export default {
         return fullRefTxt;
     }
   },
-  created() {
+   created() {
     if (this.$route.name === 'ArchiveInteractionDetails') {
       this.isArchive = true;
     }
     this.loadInteraction();
+
   },
   components: {
     confirmDelete,

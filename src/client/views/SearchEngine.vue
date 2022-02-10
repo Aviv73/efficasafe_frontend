@@ -851,6 +851,7 @@ export default {
                     } else acc.push(interaction);
                 return acc;
             }, []);
+            
             formatedInteractions = formatedInteractions.reduce((acc, interaction) => {
                 const { side1Name, side2Name } = this.getInteractionSidesNames(interaction);
                 const userQueries = this.$store.getters.materialNamesMap[side2Name];
