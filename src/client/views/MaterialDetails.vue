@@ -274,30 +274,30 @@
                             </div>
                         </div>
                     </template>
-                    <section class="links-container" v-if="interactions.length">
-                        <div class="link" v-for="interaction in interactions" :key="interaction._id">
-                            <a  v-if="!interaction.side2Material" :href="`/interaction/${interaction._id}/${material._id}`" target="_blank">
-                                <interaction-capsules
-                                    :name="interaction.name"
-                                    :color="getInteractionColor(interaction)"
-                                    :vInteractionCount="0"
-                                    :localize="false"
-                                    :showDraftName="false"
-                                    dense
-                                 />
-                            </a>
-                            <a  v-else-if="interaction.side2Material" :href="`/interaction/${interaction._id}`" target="_blank">
-                                <interaction-capsules
-                                    :name="interaction.name"
-                                    :color="getInteractionColor(interaction)"
-                                    :vInteractionCount="0"
-                                    :localize="false"
-                                    :showDraftName="false"
-                                    dense
-                                 />
-                            </a>
-                        </div>
-                    </section>
+                </section>
+                <section class="links-container" v-if="interactions.length" v-show="false">
+                    <div class="link" v-for="(interaction , idx) in interactions" :key="`${interaction._id}${idx}`">
+                        <a  v-if="interaction.isVirtual" :href="`/interaction/${interaction._id}/${interaction.side2Material._id}`" target="_blank">
+                            <interaction-capsules
+                                :name="interaction.name"
+                                :color="getInteractionColor(interaction)"
+                                :vInteractionCount="0"
+                                :localize="false"
+                                :showDraftName="false"
+                                dense
+                                />
+                        </a>
+                        <a  v-else :href="`/interaction/${interaction._id}`" target="_blank">
+                            <interaction-capsules
+                                :name="interaction.name"
+                                :color="getInteractionColor(interaction)"
+                                :vInteractionCount="0"
+                                :localize="false"
+                                :showDraftName="false"
+                                dense
+                                />
+                        </a>
+                    </div>
                 </section>
             </main>
         </template>
@@ -565,8 +565,31 @@ export default {
                 id: ids,
                 materialCount: 1,
             };
-            const {interactions} = await this.$store.dispatch({ type: 'getInteractions', filterBy});
-            return interactions
+            const { interactions } = await this.$store.dispatch({ type: 'getInteractions', filterBy});
+            const interactionsToShow = []
+            interactions.forEach(async(int) => {
+                if(int.side2Label){
+                    const criteria = { labelId: int.side2Label._id };
+                    const relatedMaterials = await this.$store.dispatch({ type: 'getMaterials', criteria });
+                    relatedMaterials.forEach( relatedMaterial => {
+                        const vInteraction = this.createVInteraction(int, relatedMaterial)
+                        interactionsToShow.push(vInteraction)
+                    })
+                }else interactionsToShow.push(int)
+            })
+            return interactionsToShow
+        },
+        createVInteraction(originalInteraction, material){
+            const vInteraction = JSON.parse(JSON.stringify(originalInteraction))
+            vInteraction.isVirtual = true
+            vInteraction.side2Material = {
+                name: material.name,
+                type: material.type,
+                _id: material._id
+            }
+            vInteraction.name = `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}`
+            delete vInteraction.side2Label
+            return vInteraction
         }
     },
     computed:{
@@ -621,7 +644,6 @@ export default {
         const { id } = this.$route.params;
         const material = await this.$store.dispatch({type: 'loadMaterial',matId: id });
         if(!material.isShowPage) return this.$router.push('/404')
-        this.interactions = await this.getInteractions(material)
         const materialWithRefs = await this.organizeRefs(material)
         this.material = materialWithRefs
         this.isLoading = false
@@ -632,6 +654,7 @@ export default {
                 window.scrollTo(0, nameHightMap[this.material.name])
             })
         }
+        this.interactions = await this.getInteractions(material)
     },
     beforeDestroy(){
         document.removeEventListener('scroll', this.savePageHight)
