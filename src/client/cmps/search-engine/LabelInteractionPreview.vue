@@ -343,7 +343,7 @@ export default {
         },
         getGroupName(groupNameWithId) {
             let noIdGroupName = groupNameWithId.split(' ').splice(1).join(' ')
-            noIdGroupName = noIdGroupName.replace(/\[(.*?)\]/g, '')
+            if(!noIdGroupName) noIdGroupName = noIdGroupName.replace(/\[(.*?)\]/g, '')
             return `${this.interaction.side1Material.name} & ${noIdGroupName}`;
         },
         getPathwayRefCount(materialId) {
