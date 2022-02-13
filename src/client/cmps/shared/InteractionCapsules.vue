@@ -13,10 +13,11 @@
                 'wide': onDetailsPage,
                 'serach-engin-capsule': isSearcheEngin
             }"
+            @mouseenter="showTitle($event)" @mouseleave="showTitle(null)"
             v-if="!showDraftName && !isMaterialGroup"
         >
-            <span v-if="isInteractionDetails" :class="{ 'pointer' : isLink }" @click="goToMaterial(side1NameToShow)" title="Press for more info">{{ side1NameToShow }}</span>
-            <span v-else :title="side1NameToShow">{{ side1NameToShow }}</span>
+            <span v-if="isInteractionDetails" :class="{ 'pointer' : isLink }" @click="goToMaterial(side1NameToShow)" >{{ side1NameToShow }}</span>
+            <span v-else :title="side1NameToShow" >{{ side1NameToShow }}</span>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="cap cap-left"
@@ -36,6 +37,7 @@
                 'wide': onDetailsPage,
                 'serach-engin-capsule': isSearcheEngin
             }"
+            @mouseenter="showTitle($event)" @mouseleave="showTitle(null)"
         >
         <svg
             v-if="showDraftName || isMaterialGroup"
@@ -49,7 +51,7 @@
                 transform="translate(24.192 48.001) rotate(180)"
             />
         </svg>
-        <span v-if="isInteractionDetails" :class="{ 'pointer' : isLink }" @click="goToMaterial(draftNameContent)" title="Press for more info">
+        <span v-if="isInteractionDetails" :class="{ 'pointer' : isLink }" @click="goToMaterial(draftNameContent)">
             {{ draftNameContent }}
         </span>
         <span v-else :title="draftNameContent">
@@ -144,6 +146,11 @@ export default {
             default: false
         }
     },
+    data(){
+        return{
+           testEl:null, 
+        }
+    },
     computed: {
         materials() {
             return this.$store.getters.materials;
@@ -206,11 +213,22 @@ export default {
             return false
         }
     },
-    methods:{
+    methods:{  
         goToMaterial(name){
             if(!this.isLink) return
             this.$emit('go-to-material', name)
+        },
+        showTitle(ev) {
+            if(!ev){
+                this.$emit('openModal',null)
+                return
+            } 
+            const page = {
+                pageX: ev.pageX,
+                offset:ev.offsetY
+            }
+            this.$emit('openModal',page)
         }
-    }
+    },
 };
 </script> 

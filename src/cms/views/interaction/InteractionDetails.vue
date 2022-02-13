@@ -354,8 +354,6 @@ export default {
             label: newLabel
           }
           await this.$store.dispatch({ type: 'updateMaterials', data });
-          // const material = await materialService.getById(miniMat._id)
-          // material.labels.push(newLabel)
         }
         await this.$store.dispatch({ type: 'saveInteraction', interaction: interactionCopy });
       })
@@ -367,7 +365,7 @@ export default {
     },
     async getRelatedMaterials() {
       if (this.interaction.side2Label) {
-        const criteria = { labelId: this.interaction.side2Label._id };
+        const criteria = { labelId: this.interaction.side2Label._id, limit:0 };
         const materials = await this.$store.dispatch({ type: 'getMaterials', criteria });
         return materials
       }
