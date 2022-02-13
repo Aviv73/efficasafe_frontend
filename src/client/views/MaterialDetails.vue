@@ -1,6 +1,16 @@
 <template>
     <section class="material-details no-print" :class="{'not-allowed-select-txt': isNotAllowedSelect}">
         <template v-if="!isLoading">
+            <div v-if="showSignUpMsg" class="login-wrapper">
+                <div class="login-container">
+                    <h3 class="login-req">You must be logged in to see more material pages</h3>
+                    <div>
+                        <button class="signup-btn" @click="onOpenSignup">Sign Up</button>
+                        or
+                        <button class="signup-btn" @click="onOpenLogin">Login</button>
+                    </div>
+                </div>
+            </div>
             <aside v-if="material" class="material-details-nav" :class="{'show': showNav}">
                 <button class="drawer-btn" @click="showNav = false" v-if="isScreenNarrow"><arrow-left-icon/></button>
                 <router-link to="/" class="material-details-nav-logo">
@@ -315,6 +325,8 @@
 
 import { materialUIService } from '@/cms/services/material-ui.service'
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
+import {storageService} from '@/cms/services/storage.service';
+import { eventBus, EV_open_signup, EV_open_login } from '@/cms/services/eventBus.service';
 
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 import Loader from '@/client/cmps/common/icons/Loader';
@@ -329,6 +341,7 @@ import ShareVariantIcon from 'vue-material-design-icons/ShareVariant';
 export default {
     data() {
         return {
+            showSignUpMsg:false,
             material: null,
             interactions: [],
             showNav: false,
@@ -344,6 +357,12 @@ export default {
         }
     },
     methods: {
+         onOpenSignup(){
+            eventBus.$emit(EV_open_signup)
+        },
+        onOpenLogin(){
+            eventBus.$emit(EV_open_login)
+        },
         goTo(refName) {
             const element = this.$refs[refName];
             const top = element.offsetTop;
@@ -638,9 +657,23 @@ export default {
                 return 0
             })
             return refsToShow
-        }
+        },
+         loggedInUser() {
+            return this.$store.getters.loggedInUser;
+        },
     },
     async created(){
+        if(!this.loggedInUser){
+            let remaindVisits = storageService.load('visitCount') || 0
+            if(remaindVisits === 2){
+                this.showSignUpMsg = true
+                this.isLoading = false
+                return
+            } else {
+                remaindVisits++
+                storageService.store('visitCount',remaindVisits)
+            }
+        } 
         const { id } = this.$route.params;
         const material = await this.$store.dispatch({type: 'loadMaterial',matId: id });
         if(!material.isShowPage) return this.$router.push('/404')
