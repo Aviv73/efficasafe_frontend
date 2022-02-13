@@ -50,8 +50,15 @@
                             :isLink="true"
                             :isInteractionDetails="true"
                             @go-to-material="goToMaterial"
+                            @openModal="(ev) => this.pageLoc = ev"
                             on-details-page
                         />
+                        <template v-if="pageLoc">
+                        <div class="capsule-title" :style="{'top':(pageLoc.offset+5)+'px','left':(pageLoc.pageX-20)+'px'}">Press for more info
+                        <div class="arrow-down"></div>
+                        </div>
+                        </template>
+
                         <span
                             class="recommendation-capsule"
                             :class="{ 'txt-dark': interactionColor === '#F6D55C' }"
@@ -200,6 +207,7 @@ export default {
     wrongRefsMap: drugBankService.getWrongRefsMap(),
     data() {
         return {
+            pageLoc:null,
             interaction: null,
             isLoading: false,
             isShareModalActive: false,
