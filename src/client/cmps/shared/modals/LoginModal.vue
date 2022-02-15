@@ -7,7 +7,6 @@
                         <close-icon :size="14" />
                     </button>
                     <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
-                    <p style="padding: 0 10px 5px 10px; margin-block-end: 18px; font-weight: 500;">We have upgraded our registration system, if you are a returning user, please <span @click="$emit('openAuthModal')" style="text-decoration: underline; cursor: pointer;">signup</span>  again</p>
                         <div v-if="wrongProviderMsg || isShowFailedMsg" class="msg failed">{{wrongProviderMsg || 'WRONG EMAIL OR PASSWORD.'}}</div>
                         <div v-if="isShowSuccesseMsg" class="msg successe">You are now logged in.</div>
                         <form @submit.prevent="onRegister" class="auth-modal-field">

@@ -5,7 +5,8 @@
                 v-if="isLoading || ($route.name === 'Boosters' && isPBLoading)"
                 class="flex-center flex-coloumn"
             >
-                <loader />
+                <img v-if="$route.name === 'Boosters'" src="@/client/assets/icons/formulating.gif">
+                <loader v-else/>
                 <template v-if="$route.name === 'Boosters'">
                     <h3 v-if="listData.loadingTime < 20">Loading may take a few seconds</h3>
                     <template v-else class="loading-err-container flex-center flex-coloumn">

@@ -112,7 +112,7 @@
                             v-else-if="!header.title && isSearchesMobile"
                             style="position:relative;"
                         >
-                            <tooltip right on="focus">
+                            <tooltip :ref="`tooltip-${item.at}`" right on="focus">
                                 <template #content>
                                     <div class="mini-menu">
                                         <router-link class="mini-menu-btn" :to="getSearchLink(item['url'])">View</router-link>
@@ -233,6 +233,8 @@ export default {
             this.$emit('save-note', this.notesToShow)
         },
         openNoteModal(item){
+            const [elItem] = this.$refs[`tooltip-${item.at}`];
+            elItem.onToggle(false)
             if(this.notesToShow && this.notesToShow.at === item.at){
                 this.closeNotes()
                 return
