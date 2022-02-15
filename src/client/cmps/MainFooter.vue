@@ -15,7 +15,14 @@
 <script>
 export default {
     computed: {
+        manageData(){
+            return this.$store.getters.getManagementData
+        },
         lastSiteUpdate() {
+            if(this.manageData && this.manageData.lastDataUpdate){
+                const dateToShow = Math.max(+new Date(document.lastModified), this.manageData.lastDataUpdate)
+                return new Date(dateToShow)
+            }
             return new Date(document.lastModified);
         }
     }

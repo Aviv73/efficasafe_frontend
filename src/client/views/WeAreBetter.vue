@@ -55,13 +55,14 @@
             <section>
                 <p class="space-bottom">And it's not just the large pool of data that <span class="highlight">Efficasafe's</span> platform has to offer. It also:</p>
                 <ul>
-                    <li>Allows unlimited search of medications and supplements </li>
-                    <li>Includes Drug-Drug Interactions and Herb-Supplement-Drug Interactions </li>
-                    <li>Provides ratings on the quality of the supporting evidence</li>
-                    <li>Offers a short and clear summary for those looking for a quick answer, but also provides a full breakdown of the evidence</li>
-                    <li>Includes positive and negative recommendations</li>
-                    <li>Suggests what interactions require monitoring</li>
-                    <li>Provides pharmacokinetic analysis for each interaction</li>
+                    <li>Unlimited search of medications and supplements</li>
+                    <li>Drug-Drug and Herb-Supplement-Drug Interactions</li>
+                    <li>Ratings of the level of evidence per interaction</li>
+                    <li>Short and clear recommendation and summary</li>
+                    <li>Detailed breakdown of the evidence</li>
+                    <li>Both positive and negative interactions</li>
+                    <li>Monitoring guidance per interaction</li>
+                    <li>Pharmacokinetic analysis for each interaction</li>
                 </ul>
             </section>
             <section>

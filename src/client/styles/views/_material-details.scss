@@ -7,6 +7,10 @@
     .login-wrapper{
         width: 100%;
         height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
         
         .login-container{
             display: flex;
@@ -29,6 +33,34 @@
                 
                 @include hover-supported {
                     box-shadow: none;
+                }
+            }
+        }
+
+        .benefits-container{
+            margin: 30px 0;
+            width: 60%;
+            .benefits-title{
+                font-size: 14.5px;
+                color: #133146;
+                font-weight: bold;
+                margin-bottom: 15px;
+            }
+    
+            .benefit{
+                display: flex;
+                margin-bottom: 9.6px;
+                img{
+                    width: 20px;
+                    height: 22px;
+                    margin-right: 7.2px;
+                }
+                p{
+                    font-size: 12px;
+                    color: #536979;
+                    span{
+                        font-weight: bold;
+                    }
                 }
             }
         }

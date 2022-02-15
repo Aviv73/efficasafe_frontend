@@ -202,7 +202,7 @@ export default {
             const queries = this.$store.getters.materialNamesMap ? this.$store.getters.materialNamesMap[side2Name] : null;
             const count = queries ? this.$store.getters.queryApearanceCount(queries[0]) : 0;
             if(this.isPositive && count > 1) return side2Name
-            if (!this.localize && this.isSideSwapped) return side2Name;
+            if (!this.isInteractionDetails && !this.localize && this.isSideSwapped) return side2Name;
             if (queries) {
                 return queries[0];
             }

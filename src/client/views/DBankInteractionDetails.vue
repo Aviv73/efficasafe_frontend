@@ -232,6 +232,9 @@ export default {
         interactionColor() {
             return interactionUIService.getInteractionColor(this.interaction.recommendation);
         },
+        searchedMaterials(){
+            return this.$store.getters.materials
+        },
         interactionRefs() {
             let refIdx = 1;
             return Object.keys(this.interaction.references).reduce((acc, key) => {
@@ -290,6 +293,10 @@ export default {
             };
             const materials = await this.$store.dispatch({ type: 'getMaterials', criteria });
             this.linkInfos = materials.map( m => {
+                if(this.searchedMaterials){
+                    const originalMaterial = this.searchedMaterials.find( mat => mat.name === m.userQuery)
+                    if(originalMaterial) return { name: originalMaterial.userQuery, id: originalMaterial._id}
+                }
                 return { name: m.userQuery, id: m._id}
             })
         },
