@@ -44,6 +44,11 @@
                 <p v-for="alias in aliasesToShow" :key="alias">{{alias}}</p>
             </div>
             <hr class="line">
+            <section v-if="material.fdaLabel" class="material-details-content-section">
+                <h3>FDA Label</h3>
+                <a class="fda-link" :href="material.fdaLabel" target="_blank">{{material.fdaLabel}}</a>
+                <hr class="line">
+            </section>
             <section v-if="material.dBankDesc" class="material-details-content-section">
                 <h3 ref="Background">Background</h3>
                 <p v-if="material.dBankDesc" v-html="material.dBankDesc" v-refs-tooltip-material="{material,refCountMap}"></p>

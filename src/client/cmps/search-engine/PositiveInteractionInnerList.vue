@@ -91,6 +91,7 @@ export default {
             };
             let { interactions } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
             this.interactions = this.formatInteractions(interactions);
+            this.$emit('doneDrugGroup')
         },
         async getSuppInteractions() {
             const ids = {
