@@ -8,9 +8,9 @@
                 <img v-if="$route.name === 'Boosters'" src="@/client/assets/icons/formulating.gif">
                 <loader v-else/>
                 <template v-if="$route.name === 'Boosters'">
-                    <h3 v-if="listData.loadingTime < 20">Loading may take a few seconds</h3>
+                    <h3 v-if="listData.loadingTime < 20">Formulating your protocol...</h3>
                     <template v-else class="loading-err-container flex-center flex-coloumn">
-                        <h3>Loading is taking more time than expected.</h3>
+                        <h3>Formulating is taking more time than expected.</h3>
                         <h3>This could happen if the network connection is poor</h3>
                         <h3>Or a problem has occurred</h3>
                         <h3>Please allow a few more seconds,</h3>

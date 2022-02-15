@@ -53,16 +53,16 @@
                 </button>
             </div>
             <section>
-                <p class="space-bottom">And it's not just the large pool of data that <span class="highlight">Efficasafe's</span> platform has to offer. It also:</p>
+                <p class="space-bottom">And it's not just the large pool of data that <span class="highlight">Efficasafe's</span> platform has to offer:</p>
                 <ul>
-                    <li>Unlimited search of medications and supplements</li>
+                    <li>Unlimited search of drugs and supplements</li>
                     <li>Drug-Drug and Herb-Supplement-Drug Interactions</li>
                     <li>Ratings of the level of evidence per interaction</li>
                     <li>Short and clear recommendation and summary</li>
                     <li>Detailed breakdown of the evidence</li>
                     <li>Both positive and negative interactions</li>
                     <li>Monitoring guidance per interaction</li>
-                    <li>Pharmacokinetic analysis for each interaction</li>
+                    <li>Pharmacokinetics of each interaction</li>
                 </ul>
             </section>
             <section>

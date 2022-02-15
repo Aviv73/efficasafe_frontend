@@ -61,6 +61,7 @@
                         @remove="removeGroup"
                         @groupDone="groupDone"
                         @setInnerInteractionsLength="setInnerInteractionsLength"
+                        @doneDrugGroup="doneDrugGroup"
                     />
                 </div>
             </template>
@@ -141,6 +142,15 @@ export default {
         },
     },
     methods: {
+        doneDrugGroup() {
+            const map = interactionUIService.getRecommendationOrderMap()
+            this.currInteraction.vInteractions.sort((a, b) => {
+                return(a.innerLength - b.innerLength) * -1 || 
+                (map[b.recommendation] - map[a.recommendation]) * -1 ||
+                (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
+                (a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+            })
+        },
         onOpenSignUp(){
             eventBus.$emit(EV_open_signup);
         },
@@ -153,11 +163,6 @@ export default {
             if(this.currInteraction.vInteractions[data.idx]) {
                 this.currInteraction.vInteractions[data.idx].innerLength = data.length
             }
-            // this.currInteraction.vInteractions.sort((a,b) => {
-            //     if( a.innerLength > b.innerLength ) return -1
-            //     if( a.innerLength < b.innerLength ) return 1
-            //     return 0
-            // })
             this.renderKey++
         },
         removeGroup(idx){
@@ -173,6 +178,13 @@ export default {
             this.$nextTick(() => {
                 this.$store.commit('setPosSuppIds', { ids })
                 if(this.groupsDoneLoadingCount === this.vInteractionsOriginalLength){
+                    const map =  interactionUIService.getRecommendationOrderMap()
+                    this.currInteraction.vInteractions.sort((a, b) => {
+                        return(a.innerLength - b.innerLength) * -1 || 
+                            (map[b.recommendation] - map[a.recommendation]) * -1 ||
+                            (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
+                            (a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+                    })
                     this.$emit('interactionDone')
                 }
             })
@@ -237,6 +249,14 @@ export default {
         });
          this.currInteraction = JSON.parse(JSON.stringify(this.interaction))
          this.vInteractionsOriginalLength = this.currInteraction.vInteractions.length
+
+        const map = interactionUIService.getRecommendationOrderMap()
+        this.currInteraction.vInteractions.sort((a, b) => {
+                return(a.innerLength - b.innerLength) * -1 || 
+                (map[b.recommendation] - map[a.recommendation]) * -1 ||
+                (a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase())) ||
+                (a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+        })
     },
     components: {
         Collapse,

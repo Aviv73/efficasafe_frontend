@@ -190,7 +190,7 @@
             line-height: 37px;
             text-transform: capitalize;
             color: #133146;
-            margin-bottom: 5px;
+            margin-bottom: 20px;
         }
         &-family{
             font-size: 20px;
@@ -216,6 +216,11 @@
             }
         }
         &-section{
+
+            .fda-link{
+                color:$clr2;
+                text-decoration: underline;
+            }
             
             h3{
                 font-weight: bold;
