@@ -206,8 +206,15 @@ export default {
                 const [ mainInteraction ] = interactions.splice(mainInteractionIdx, 1);
                 interactions.unshift(mainInteraction);
             }
-            this.$emit('setInnerInteractionsLength', { length: interactions.length, idx: this.groupIdx })
+            this.$emit('setInnerInteractionsLength', { length: interactions.length, idx: this.groupIdx, innerRecSum: this.getSumRecommendation(interactions)})
             return interactions;
+        },
+        getSumRecommendation(interactions){
+            const { recommendationMap: map } = this.$options;
+            return interactions.reduce((sum, int) => {
+                sum += map[int.recommendation]
+                return sum
+            }, 0)
         },
         getMoreSeverInteraction(interactions) {
             const map = interactionUIService.getRecommendationOrderMap();
