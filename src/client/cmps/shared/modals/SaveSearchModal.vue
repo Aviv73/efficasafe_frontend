@@ -2,6 +2,9 @@
     <section>
         <aside v-if="isLoading" class="loader-container">
             <loader />
+            <p class="loader-txt">
+                Saving takes a few seconds, please be patient
+            </p>
         </aside>
         <aside v-else class="save-search-modal">
             <header class="save-search-modal-header">
