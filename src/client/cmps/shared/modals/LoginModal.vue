@@ -7,6 +7,7 @@
                         <close-icon :size="14" />
                     </button>
                     <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
+                        <p @click="openSignupModal" class="signup-link">don't have an account? signup now</p>
                         <div v-if="wrongProviderMsg || isShowFailedMsg" class="msg failed">{{wrongProviderMsg || 'WRONG EMAIL OR PASSWORD.'}}</div>
                         <div v-if="isShowSuccesseMsg" class="msg successe">You are now logged in.</div>
                         <form @submit.prevent="onRegister" class="auth-modal-field">
@@ -26,11 +27,11 @@
                         </div>
                         <div class="auth-modal-content-media-btns">
                             <a :href="googleLink" class="blue" role="button">
-                                <img src="@/client/assets/imgs/google.jpeg" alt="Logo" />
+                                <img src="@/client/assets/imgs/google.svg" alt="Logo" />
                                 Login with google
                             </a>
                             <a :href="facebookLink" class="blue" role="button">
-                                <img class="facebook-img" src="@/client/assets/imgs/facebook.png" alt="Logo" />
+                                <img class="facebook-img" src="@/client/assets/imgs/facebook.svg" alt="Logo" />
                                 Login with facebook 
                             </a>
                         </div>
@@ -41,7 +42,7 @@
 
 <script>
 
-import { eventBus, EV_wrong_provider } from '@/cms/services/eventBus.service';
+import { eventBus, EV_wrong_provider, EV_open_signup } from '@/cms/services/eventBus.service';
 
 import CloseIcon from 'vue-material-design-icons/Close';
 import EyeIcon from 'vue-material-design-icons/Eye';
@@ -85,6 +86,10 @@ export default {
     },
     methods: {
         closeModal() {
+            this.$emit('closeModal');
+        },
+        openSignupModal(){
+            eventBus.$emit(EV_open_signup);
             this.$emit('closeModal');
         },
         async onRegister(){

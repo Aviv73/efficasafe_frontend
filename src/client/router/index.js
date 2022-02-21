@@ -15,7 +15,6 @@ import Logo from '@/client/views/Logo';
 import ManageEmails from '@/client/views/ManageEmails';
 import CookiePolicy from '@/client/views/CookiePolicy';
 import Subscribe from '@/client/views/Subscribe';
-import Payment from '@/client/views/Payment';
 import PaymentFailed from '@/client/views/PaymentFailed';
 import Success from '@/client/views/Success';
 import BonusTrialTime from '@/client/views/BonusTrialTime';
@@ -47,14 +46,6 @@ const routes = [
     path: '/subscribe',
     name: 'Subscribe',
     component: Subscribe,
-    meta: {
-      blockSubscribed: true
-    }
-  },
-  {
-    path: '/payment',
-    name: 'Payment',
-    component: Payment,
     meta: {
       blockSubscribed: true
     }
