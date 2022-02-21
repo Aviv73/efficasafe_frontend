@@ -34,11 +34,11 @@
                         </div>
                         <div class="auth-modal-content-media-btns">
                             <a :href="googleLink" class="blue" role="button">
-                                <img src="@/client/assets/imgs/google.jpeg" alt="Logo" />
+                                <img src="@/client/assets/imgs/google.svg" alt="Logo" />
                                 Signup with google 
                             </a>
                             <a :href="facebookLink" class="blue" role="button">
-                                <img class="facebook-img" src="@/client/assets/imgs/facebook.png" alt="Logo" />
+                                <img class="facebook-img" src="@/client/assets/imgs/facebook.svg" alt="Logo" />
                                 Signup with facebook 
                             </a>
                         </div>

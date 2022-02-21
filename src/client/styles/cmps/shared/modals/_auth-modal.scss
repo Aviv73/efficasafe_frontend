@@ -62,13 +62,21 @@
             position: absolute;
             right: 17px;
             top: 12px;
-            // color: #b1b1b1;
         }
 
         img{
             margin-top: rem(40px);
-            margin-bottom: rem(15px);
+            margin-bottom: rem(5px);
         }
+
+        .signup-link{
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 13px;
+            color: rgba(0, 0, 0, 0.87);
+            margin-bottom: 7px;
+        }
+        
         &-media-btns{
             display: flex;
             flex-direction: column;
