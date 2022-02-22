@@ -298,8 +298,8 @@ export default {
         }
         this.isLoadingPayment = true
         const price = this.getRelevantPrice()
+        const user = JSON.parse(JSON.stringify(this.loggedInUser))
         if(price === 0){
-            const user = JSON.parse(JSON.stringify(this.loggedInUser))
             user.type = 'subscribed'
             const purchase = {
                 at: Date.now(),
@@ -316,6 +316,8 @@ export default {
             this.$router.push('/?subscribed=true')
         }else{
             const url = await paymentService.getEndpoint(this.selectedPlan, this.localCurrency)
+            user.pressPayment = true
+            await this.$store.dispatch({type: 'updateAutoPilotContact', user});
             this.isLoadingPayment = false
             if(url) window.location = url
             else eventBus.$emit(EV_show_user_msg, 'Something Went wrong, please try again', 5000, 'error');
