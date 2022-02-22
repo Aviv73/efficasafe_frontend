@@ -34,7 +34,7 @@
     <h3 class="headline">Choose your payment plan</h3>
     <div v-if="selectedCoupon || plans" class="cards-container" :class="{'justify-center': isCouponZero}">
         <template v-if="!selectedCoupon">
-            <div v-for="(plan,idx) in plans" :key="idx" class="card" :class="{'selected':isSelected(plan._id)}">
+            <div v-for="(plan,idx) in plans" :key="idx" class="card" :class="{'selected':isSelected(plan._id)}" @click="onSelectPlan($event,plan)">
                 <div v-if="idx === 1" class="ribbon-container">
                     <img src="@/client/assets/icons/ribbon.svg" alt="">
                     <p class="ribbon-txt">{{percentageSave}}%</p>
@@ -43,11 +43,11 @@
                 <h3 class="card-title">Individual {{plan.durationTxt}}</h3>
                 <p class="card-price">{{localCurrency}} <span>{{getPriceByLocation(plan)}}</span> /mo</p>
                 <p class="card-billing-txt">{{billingTxt(plan)}}</p>
-                <button class="card-btn" @click="onSelectPlan($event,plan)">select</button>
+                <button class="card-btn">select</button>
             </div>
         </template>
         <template v-if="selectedCoupon">
-            <div v-for="(plan,idx) in selectedCoupon.plans" :key="idx" class="card" :class="{'selected':isSelectedCoupon(idx)}">
+            <div v-for="(plan,idx) in selectedCoupon.plans" :key="idx" class="card" :class="{'selected':isSelectedCoupon(idx)}" @click="onSelectCouponPlan(idx)">
                 <div class="ribbon-container">
                     <img src="@/client/assets/icons/ribbon.svg" alt="">
                     <p class="ribbon-txt ribbon-coupon">COUPON</p>
@@ -56,13 +56,13 @@
                 <h3 class="card-title">Individual {{plan.durationTxt}}</h3>
                 <p class="card-price">{{localCurrency}} <span>{{getPriceByLocation(plan)}}</span> /mo</p>
                 <p class="card-billing-txt">{{billingTxt(plan)}}</p>
-                <button class="card-btn" @click="onSelectCouponPlan(idx)">{{couponSelectBtnTxt((idx))}}</button>
+                <button class="card-btn">{{couponSelectBtnTxt((idx))}}</button>
             </div>
         </template>
-        <div class="card enterprise-card" :class="{'hide': isCouponZero }">
+        <div class="card enterprise-card" :class="{'hide': isCouponZero }" @click="openGroupSubModal">
             <h3 class="enterprise-card-title">Institutional</h3>
             <p class="card-txt">Get an offer tailored to your needs</p>
-            <button @click="openGroupSubModal" class="card-btn">Get an offer</button>
+            <button class="card-btn">Get an offer</button>
         </div>
     </div>
      <div class="coupon-input-container">

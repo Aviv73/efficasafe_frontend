@@ -126,6 +126,12 @@
             height: 240px;
             border-radius: 22px;
             box-shadow: 0px 3px 22px #00000029;
+            -webkit-user-select: none;  
+            -moz-user-select: none;  
+            -ms-user-select: none;  
+            -o-user-select: none;  
+            user-select: none;
+            cursor: pointer;
             @media (max-width: $break-narrow) {
                 margin-bottom: 20px;
             }
