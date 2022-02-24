@@ -321,7 +321,6 @@ export default {
             this.isLoadingPayment = false
             if(url) window.location = url
             else eventBus.$emit(EV_show_user_msg, 'Something Went wrong, please try again', 5000, 'error');
-            
         }
     },
     onInputCoupon(){
