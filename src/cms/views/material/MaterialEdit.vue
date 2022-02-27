@@ -729,7 +729,7 @@
           <div class="list-chips">
             <v-text-field
               v-model="model.indications"
-              label="Indications"
+              label="Indications (medicinal uses array)"
               @keypress.enter.prevent="addItemToArray('indications')"
             />
             <v-chip-group column>
@@ -742,6 +742,12 @@
               >
             </v-chip-group>
           </div>
+
+          <h3>Medicinal uses TEXT:</h3>
+          <ckeditor
+            v-model="editedMaterial.medicinalUsesTxt"
+            :config="CKEditorConfig"
+          ></ckeditor>
 
           <div class="list-chips">
             <v-text-field

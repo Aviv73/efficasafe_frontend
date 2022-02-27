@@ -72,6 +72,7 @@ function getEmptyMaterial() {
         precautions: '',
         adverseReactions: '',
         activeConstituents: '',
+        medicinalUsesTxt: '',
         brands: [],
         aliases: [],
         dBankAliases: [],

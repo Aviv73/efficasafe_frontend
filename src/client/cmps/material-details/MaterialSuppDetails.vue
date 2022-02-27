@@ -14,7 +14,8 @@
                 <a v-if="material.desc" @click="goTo('Background')">Background</a>
                 <a v-if="material.nutritionalSources" @click="goTo('Nutritional sources')">Nutritional sources</a>
                 <a v-if="material.medicinalActions && material.medicinalActions.length" @click="goTo('Medicinal actions')">Medicinal actions</a>
-                <a v-if="(material.indications && material.indications.length) || (material.dBankIndications && material.dBankIndications.length)" @click="goTo('Medicinal uses')">Medicinal uses</a>
+                <a v-if="(material.indications && material.indications.length) || material.medicinalUsesTxt" @click="goTo('Medicinal uses')">Medicinal uses</a>
+                <!-- <a v-if="(material.indications && material.indications.length) || (material.dBankIndications && material.dBankIndications.length)" @click="goTo('Medicinal uses')">Medicinal uses</a> -->
                 <a v-if="material.absorptionAndExcretion" @click="goTo('Absorption and excretion')">Absorption and excretion</a>
                 <a v-if="material.causesOfDeficiency" @click="goTo('Causes of deficiency')">Causes of deficiency</a>
                 <a v-if="material.symptomsOfDeficiency" @click="goTo('Symptoms of deficiency')">Symptoms of deficiency</a>
@@ -64,6 +65,11 @@
             <section v-if="material.indications && material.indications.length" class="material-details-content-section">
                 <h3 ref="Medicinal uses">Medicinal uses</h3>
                 <p>{{material.indications.join(', ')}}</p>
+                <hr class="line">
+            </section>
+            <section v-else-if="material.medicinalUsesTxt" class="material-details-content-section">
+                <h3 ref="Medicinal uses">Medicinal uses</h3>
+                <p v-html="material.medicinalUsesTxt" v-refs-tooltip-material="{material,refCountMap}"></p>
                 <hr class="line">
             </section>
             <section v-if="material.absorptionAndExcretion" class="material-details-content-section">
@@ -174,7 +180,7 @@ export default {
             nextRefNum: 1,
             filedToSkip:['pathways','effectOnDrugMetabolism','detailedPharmacology'],
             refNumsToShow:[],
-            fieldsToCheckSupp:['desc','nutritionalSources','absorptionAndExcretion','causesOfDeficiency','symptomsOfDeficiency','RDA','dosage','sensitivities','adverseReactions','overdosage','precautions','contraindications','toxicity','pregnancy','lactation', 'mechanismOfAction']
+            fieldsToCheckSupp:['desc','nutritionalSources','medicinalUsesTxt','absorptionAndExcretion','causesOfDeficiency','symptomsOfDeficiency','RDA','dosage','sensitivities','adverseReactions','overdosage','precautions','contraindications','toxicity','pregnancy','lactation', 'mechanismOfAction']
         }
     },
     methods: {
@@ -260,6 +266,7 @@ export default {
         addSubRefsSupp(material){
             const regex = /\(([\d- ,\d]+)\)/g;
             this.fieldsToCheckSupp.forEach(key => {
+                if(!material[key]) return
                 if(this.filedToSkip.includes(key)) return
                 material = this.addSubHeaders(material, key)
                 const matches = material[key].match(regex);
