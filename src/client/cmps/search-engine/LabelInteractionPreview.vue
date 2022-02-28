@@ -372,7 +372,7 @@ export default {
                 return acc;
             }, []);
             const side1PathwayRefs = this.material.pathways.reduce((acc, pathway) => {
-                const idx = side2Pathways.findIndex(side2Pathway => side2Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
+                const idx = side2Pathways.findIndex(side2Pathway => side2Pathway.name?.replace('CYP', '').toUpperCase() === pathway.name?.replace('CYP', '').toUpperCase());
                 if (idx !== -1) {
                     const refs = interactionUIService.getRefsOrder(pathway.influence);
                     refs.forEach(ref => {
