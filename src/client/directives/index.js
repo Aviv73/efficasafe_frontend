@@ -149,7 +149,10 @@ Vue.directive('refs-tooltip', {
         const elSubs = el.querySelectorAll('sub');
         for (let i = 0; i < elSubs.length; i++) {
             const refIdxs = interactionUIService.getRefsOrder(elSubs[i].innerText);
-            if (!refIdxs.length) continue;
+            if (!refIdxs.length){
+                elSubs[i].classList.add('regular-sub')
+                continue;
+            } 
             refIdxs.sort((a,b) => {
                 if(a > b) return 1
                 if(a < b) return -1

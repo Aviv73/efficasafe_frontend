@@ -233,8 +233,10 @@ export default {
             this.$emit('save-note', this.notesToShow)
         },
         openNoteModal(item){
-            const [elItem] = this.$refs[`tooltip-${item.at}`];
-            elItem.onToggle(false)
+            if(this.isScreenMobile){
+                const [elItem] = this.$refs[`tooltip-${item.at}`];
+                if(elItem) elItem.onToggle(false)
+            }
             if(this.notesToShow && this.notesToShow.at === item.at){
                 this.closeNotes()
                 return
