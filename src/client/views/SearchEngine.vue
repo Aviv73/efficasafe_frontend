@@ -488,6 +488,7 @@ export default {
                 this.loadingTime = 0
                 this.countLoadingTime()
                 this.$store.commit('resetRedPositiveSupp')
+                this.$store.commit({ type: 'resetSuppRefs' });
                 this.isArrowShown = true
                 if (this.$route.name === 'Boosters' && !this.isScreenNarrow && !storageService.load('did-p-boosters-tour1')) {
                     this.$nextTick(() => {
@@ -639,7 +640,7 @@ export default {
                 group.isMaterialGroup = true;
                 group.vInteractions.forEach(vInteraction => {
                     if (vInteraction.side2Label) {
-                        const { _id, name, type } = this.materials.find(m => m.labels.some(l => l._id === vInteraction.side2Label._id));
+                        const { _id, name, type } = this.materials.find(m => m.labels.some(l => l?._id === vInteraction.side2Label?._id));
                         vInteraction.side2Material = {
                             _id,
                             name,
@@ -939,6 +940,14 @@ export default {
             }, []);
         },
         totalRefsCount() {
+            const dBankRefsCount = this.dBankInteractions.reduce((acc, { references }) => {
+                acc += Object.values(references).reduce((innerAcc, refsArr) => {
+                    innerAcc += refsArr.length;
+                    return innerAcc;
+                }, 0);
+                return acc;
+            }, 0);
+            if (!this.total) return dBankRefsCount;
             const seenRefsMap = {};
             const refsCount = this.interactions.reduce((acc, { side1Material, refs }) => {
                 refs.forEach(ref => {
@@ -951,14 +960,6 @@ export default {
                 });
                 return acc;
             }, 0);
-            const dBankRefsCount = this.dBankInteractions.reduce((acc, { references }) => {
-                acc += Object.values(references).reduce((innerAcc, refsArr) => {
-                    innerAcc += refsArr.length;
-                    return innerAcc;
-                }, 0);
-                return acc;
-            }, 0);
-            if (!this.total) return dBankRefsCount;
             const pathwayRefsCount = this.materials.reduce((acc, { _id, pathways }) => {
                 pathways.forEach(pathway => {
                     if (
@@ -979,9 +980,8 @@ export default {
 
                 return acc;
             }, 0);
-            
-            
-            return refsCount + dBankRefsCount + pathwayRefsCount + this.$store.getters.supplementsRefs.length;
+
+            return refsCount + dBankRefsCount + pathwayRefsCount + this.$store.getters.supplementsRefsNonDups.length;
         },
         totalInteractionCount(){
             if (this.$route.name === 'Boosters') {
@@ -1705,7 +1705,7 @@ export default {
             this.dBankTotal = 0;
             this.sortOptions = null;
             this.isLoading = false;
-            this.$store.commit({ type: 'resetSupplementsRefs' });
+            this.$store.commit({ type: 'resetSuppRefs' });
             this.$store.commit({ type: 'resetInteractionListHight' });
         },
         moveArrow({target}){

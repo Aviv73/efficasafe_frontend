@@ -411,13 +411,15 @@ export default {
             return side2Name;
         },
         getRefsCount(interaction) {
+            let refCount
             if (interaction.refs) {
                 if(this.totalPathwaysRefsCount[`${interaction.side1Material.name}-${interaction.side2Material.name}`]){
-                    return `(${interaction.refs.length + this.totalPathwaysRefsCount[`${interaction.side1Material.name}-${interaction.side2Material.name}`]})`;
+                    refCount = interaction.refs.length + this.totalPathwaysRefsCount[`${interaction.side1Material.name}-${interaction.side2Material.name}`]
+                }else{
+                    refCount = interaction.refs.length + this.pathwayRefCount
                 }
-                return `(${interaction.refs.length + this.pathwayRefCount})`;
             }
-            return '';
+            return refCount ? `(${refCount})` : '';
         },
         getRefsCountTxt(interaction) {
             if (interaction.refs) {
@@ -494,7 +496,7 @@ export default {
                 }
             });
             this.$store.commit({ type: 'setPathwayRefCount', data: {id:`${side1Material.name}-${side2Material.name}`, count: side1PathwayRefs.length + side2Refs.length} });
-            this.$store.commit({ type: 'updateSupplementsRefs', refs: side1PathwayRefs });
+            this.$store.commit({ type: 'updateSupplementsRefsNonDups', refs: side1PathwayRefs });
             this.pathwayRefCount = side1PathwayRefs.length + side2Refs.length;
         },
         getVinteractionsCount(interaction) {

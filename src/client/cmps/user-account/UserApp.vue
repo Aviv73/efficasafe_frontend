@@ -241,17 +241,18 @@ export default {
             this.sortBy.field = sortBy.field || sortBy.title;
             this.sortBy.isDesc = isDesc;
         },
-        removeItem(item) {
+        async removeItem(item) {
             if (this.$route.name !== 'Searches') return;
             const user = JSON.parse(JSON.stringify(this.loggedInUser));
             const idx = user.searches.findIndex( s => s.at === item.at)
             if(idx >= 0){
                 user.searches.splice(idx, 1);
-                this.$store.dispatch({ type: 'updateLoggedInUser', user });
+                await this.$store.dispatch({ type: 'updateLoggedInUser', user });
                 const searches = JSON.parse(JSON.stringify(this.userSearches))
                 searches.splice(idx, 1)
                 this.$store.commit({ type: 'setUserSearches', searches })
             }
+            eventBus.$emit('close-confirm-delete')
         },
         async onSaveNote(item){
           const user = JSON.parse(JSON.stringify(this.loggedInUser));

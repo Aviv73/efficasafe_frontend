@@ -438,7 +438,7 @@ export default {
         },
         relevantSide1Pathways() {
             return this.side1Pathways.filter(pathway => {
-                const idx = this.relevantSide2Pathways.findIndex(side2Pathway => side2Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
+                const idx = this.relevantSide2Pathways.findIndex(side2Pathway => side2Pathway.name?.replace('CYP', '').toUpperCase() === pathway.name?.replace('CYP', '').toUpperCase());
                 return idx !== -1 && !pathway.actions.length;
             });
         },
@@ -461,7 +461,7 @@ export default {
         },
         unRelevantSide2Pathways() {
             return this.relevantSide2Pathways.filter(pathway => {
-                const idx = this.side1Pathways.findIndex(side1Pathway => side1Pathway.name.replace('CYP', '').toUpperCase() === pathway.name.replace('CYP', '').toUpperCase());
+                const idx = this.side1Pathways.findIndex(side1Pathway => side1Pathway.name?.replace('CYP', '').toUpperCase() === pathway.name?.replace('CYP', '').toUpperCase());
                 return idx === -1;
             });
         },

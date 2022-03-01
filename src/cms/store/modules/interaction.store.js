@@ -4,7 +4,7 @@ export const interactionStore = ({
     state: {
         interactions: null,
         interactionCount: 0,
-        supplementsRefs: [],
+        supplementsRefsNonDups: [],
         seenRefsMap: {},
         pathwayRefCount:{},
         openCollapses: {
@@ -30,8 +30,8 @@ export const interactionStore = ({
         interactionCount(state) {
             return state.interactionCount;
         },
-        supplementsRefs(state) {
-            return state.supplementsRefs;
+        supplementsRefsNonDups(state) {
+            return state.supplementsRefsNonDups;
         },
         openCollapses(state) {
             return state.openCollapses;
@@ -104,16 +104,17 @@ export const interactionStore = ({
         setInteractionCount(state, { total }) {
             state.interactionCount = total;
         },
-        updateSupplementsRefs(state, { refs }) {
+        updateSupplementsRefsNonDups(state, { refs }) {
             refs.forEach(ref => {
                 if (!state.seenRefsMap[ref + '']) {
-                    state.supplementsRefs.push(ref);
+                    state.supplementsRefsNonDups.push(ref);
                     state.seenRefsMap[ref + ''] = true;
                 }
             });
         },
-        resetSupplementsRefs(state) {
-            state.supplementsRefs = [];
+        resetSuppRefs(state){
+            state.supplementsRefsNonDups = [];
+            state.seenRefsMap = {}
         },
         resetRedPositiveSupp(state) {
             state.redPositiveSupp = [];

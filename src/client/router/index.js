@@ -140,7 +140,8 @@ const routes = [
         name: 'Searches',
         component: UserApp,
         meta: {
-          requiresAuth: true
+          requiresAuth: true,
+          isGetUser: true
         }
       },
       {
@@ -148,7 +149,8 @@ const routes = [
         name: 'Purchases',
         component: UserApp,
         meta: {
-          requiresAuth: true
+          requiresAuth: true,
+          isGetUser: true
         }
       },
       {
@@ -156,7 +158,8 @@ const routes = [
         name: 'UserEdit',
         component: UserEdit,
         meta: {
-          requiresAuth: true
+          requiresAuth: true,
+          isGetUser: true
         }
       }
     ]
@@ -221,18 +224,9 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  store.dispatch('getUserSearches');
-  await store.dispatch('getUserInfo');
-  if(store.getters.loggedInUser && store.getters.loggedInUser.type === 'subscribed'){
-    const user = JSON.parse(JSON.stringify(store.getters.loggedInUser))
-    if(user.purchases.length && typeof user.purchases[0].until === 'number' && user.purchases[0].until < Date.now()){
-      user.purchases[0].until = 'Done'
-      user.type = 'registered'
-      user.trialTime = null
-      await store.dispatch({ type: 'updateLoggedInUser', user });
-      user.type = 'was subscribed'
-      await store.dispatch({ type: 'updateAutoPilotContact', user});
-    }
+  if (to.meta.isGetUser) {
+    await store.dispatch('getUserInfo');
+    next();
   }
   if (to.meta.requiresAuth) {
     if (store.getters.loggedInUser) next();
