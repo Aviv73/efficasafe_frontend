@@ -16,28 +16,36 @@
         </header>
         <main class="share-modal-content">
             <div class="share-modal-content-confirm-delete flex-coloumn">
-                <p>
-                    Are you sure you want to delete <span class="font-medium highlight">'{{ itemToDelete.title }}'</span>?
-                </p>
-                <div class="share-modal-content-confirm-delete-actions flex-space-between">
-                    <button
-                        @click="$emit('close-modal')"
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        class="delete-btn"
-                        @click="$emit('delete-confirmed')"
-                    >
-                        Delete
-                    </button>
-                </div>
+                <template v-if="!isLoading">
+                    <p>
+                        Are you sure you want to delete <span class="font-medium highlight">'{{ itemToDelete.title }}'</span>?
+                    </p>
+                    <div class="share-modal-content-confirm-delete-actions flex-space-between">
+                        <button
+                            @click="$emit('close-modal')"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            class="delete-btn"
+                            @click="onDelete"
+                        >
+                            Delete
+                        </button>
+                    </div>
+                </template>
+                <template v-else>
+                    <loader/>
+                </template>
             </div>
         </main>
     </aside>
 </template>
 
 <script>
+import { eventBus } from '@/cms/services/eventBus.service';
+import Loader from '@/client/cmps/common/icons/Loader';
+
 import CloseIcon from 'vue-material-design-icons/Close';
 import AlertCircleIcon from 'vue-material-design-icons/AlertCircle';
 
@@ -47,9 +55,27 @@ export default {
             type: Object,
         }
     },
+    data(){
+        return {
+            isLoading: false
+        }
+    },
+    methods:{
+        onDelete(){
+            this.isLoading = true
+            this.$emit('delete-confirmed')
+        }
+    },
+    created(){
+        eventBus.$on('close-confirm-delete', () => {
+            this.isLoading = false
+            this.$emit('close-modal')
+        })
+    },
     components: {
         CloseIcon,
-        AlertCircleIcon
+        AlertCircleIcon,
+        Loader
     }
 }
 </script>

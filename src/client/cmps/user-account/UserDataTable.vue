@@ -258,7 +258,6 @@ export default {
         },
         emitDeleteItem() {
             this.$emit('item-deleted', this.itemToDelete);
-            this.closeModal();
         },
         onRemove(item) {
             this.itemToDelete = item;

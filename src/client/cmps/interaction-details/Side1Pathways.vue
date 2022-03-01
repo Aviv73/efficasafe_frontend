@@ -123,7 +123,7 @@ export default {
     },
     computed: {
         unrelevantPathwayNames() {
-            return this.unrelevantPathways.map(p => p.name.toUpperCase()).join(', ');
+            return this.unrelevantPathways.map(p => p.name?.toUpperCase()).join(', ');
         },
         activeTabTxt() {
             const pathway = this.pathways.find(p => p.name === this.activeTab);

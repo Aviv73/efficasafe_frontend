@@ -71,6 +71,21 @@ export default {
         switchModals(){
             this.loginModal = false;
             this.authModal = true;
+        },
+        async connectUser(){
+            await this.$store.dispatch('getUserInfo');
+            await this.$store.dispatch('getUserSearches');
+            if(this.$store.getters.loggedInUser && this.$store.getters.loggedInUser.type === 'subscribed'){
+                const user = JSON.parse(JSON.stringify(this.$store.getters.loggedInUser))
+                if(user.purchases.length && typeof user.purchases[0].until === 'number' && user.purchases[0].until < Date.now()){
+                user.purchases[0].until = 'Done'
+                user.type = 'registered'
+                user.trialTime = null
+                await this.$store.dispatch({ type: 'updateLoggedInUser', user });
+                user.type = 'was subscribed'
+                await this.$store.dispatch({ type: 'updateAutoPilotContact', user});
+                }
+            }
         }
     },
     mounted() {
@@ -87,6 +102,10 @@ export default {
             storageService.store('show-other-login', true);
             location.reload()
         };
+
+        await this.connectUser()
+
+        setInterval(this.connectUser, 30000);
 
         if(storageService.load('show-other-login')){
             await this.$store.dispatch('logout')
