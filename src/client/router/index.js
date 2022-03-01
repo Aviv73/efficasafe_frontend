@@ -124,7 +124,10 @@ const routes = [
   {
     path: '/material/:id',
     name: 'MaterialDetails',
-    component: MaterialDetails
+    component: MaterialDetails,
+    meta: {
+      isGetUser: true
+    }
   },
   {
     path: '/interaction/:id/:matId',
