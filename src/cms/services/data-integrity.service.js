@@ -1,5 +1,5 @@
 import { httpService } from './http.service';
-import { eventBus, EV_has_failed_tasks } from './eventBus.service';
+import { eventBus, EV_has_failed_tasks, EV_has_failed_logs } from './eventBus.service';
 
 const END_POINT = 'data-integrity';
 
@@ -24,9 +24,11 @@ function updateTask(task) {
 
 async function _poll() {
     const tasks = await list({ type: 'get-failed-tasks' });
-    if (tasks.length) {
-        eventBus.$emit(EV_has_failed_tasks);
-    } else {
+    const paymentErrors = await list({ type: 'payment-errors' });
+    if(tasks.length || paymentErrors.length){
+        if(tasks.length) eventBus.$emit(EV_has_failed_tasks);
+        if(paymentErrors.length) eventBus.$emit(EV_has_failed_logs);
+    }else{
         setTimeout(_poll, 12 * 60 * 60 * 1000);
     }
 }

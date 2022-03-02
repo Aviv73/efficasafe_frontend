@@ -20,6 +20,7 @@ export default new Vuex.Store({
     isScreenNarrow: null,
     isScreenMobile: null,
     hasFailedTasks: false,
+    hasFailedLogs: false,
     posSuppIds: [],
     posBoostersCountMap:{},
     posBoostersCount: 0,
@@ -33,6 +34,9 @@ export default new Vuex.Store({
   getters: {
     hasFailedTasks(state) {
       return state.hasFailedTasks;
+    },
+    hasFailedLogs(state){
+      return state.hasFailedLogs
     },
     isScreenNarrow(state) {
       return state.isScreenNarrow;
@@ -92,6 +96,9 @@ export default new Vuex.Store({
     },
     setHasFailedTasks(state, { hasTasks }) {
       state.hasFailedTasks = hasTasks;
+    },
+    setHasFailedLogs(state, { hasLogs }) {
+      state.hasFailedLogs = hasLogs;
     },
     setPosSuppIds(state, { ids }){
       ids.forEach(id => {

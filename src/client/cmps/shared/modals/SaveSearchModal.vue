@@ -118,11 +118,16 @@ export default {
         },
         async saveToAccount(user) {
             this.isLoading = true
-            await this.$store.dispatch({ type: 'updateLoggedInUser', user });
-            await this.$store.dispatch({ type: 'updateAutoPilotContact', user }),
-            await this.$store.dispatch('getUserSearches');
-            eventBus.$emit(EV_show_user_msg, 'Your search has been saved. You can find it at your account page', 5000);
-            this.reset();
+            try{
+                await this.$store.dispatch({ type: 'updateLoggedInUser', user });
+                await this.$store.dispatch({ type: 'updateAutoPilotContact', user }),
+                await this.$store.dispatch('getUserSearches');
+                eventBus.$emit(EV_show_user_msg, 'Your search has been saved. You can find it at your account page', 5000);
+                this.reset();
+            }catch(err){
+                eventBus.$emit(EV_show_user_msg, 'Something went wrong, please try again', 5000, 'error');
+                this.reset();
+            }
         },
         reset() {
             this.search = userService.getEmptySearch();

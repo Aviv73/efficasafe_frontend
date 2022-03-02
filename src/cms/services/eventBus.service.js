@@ -21,6 +21,7 @@ export const EV_show_user_msg = 'show-user-msg';
 export const EV_show_cookie_notice = 'show-cookie-notice';
 export const EV_show_other_login = 'show-other-login';
 export const EV_has_failed_tasks = 'has-failed-tasks';
+export const EV_has_failed_logs = 'has-failed-logs';
 export const EV_search_results_cleared = 'search-results-cleared';
 export const EV_focus_on_input = 'focus-on-input';
 export const EV_clear_input = 'clear-input';
