@@ -7,8 +7,8 @@ export const paymentService = {
     endSubscription
 }
 
-async function getEndpoint(plan, currency){
-    const data = {plan, currency}
+async function getEndpoint(plan, currency, user){
+    const data = {plan, currency, user}
     const res = await httpService.get(`${END_POINT}/get-end-point`, data);
     return res
 }

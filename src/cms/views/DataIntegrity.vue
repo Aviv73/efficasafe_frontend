@@ -42,7 +42,7 @@
           <template v-slot:default>
             <thead>
               <tr>
-                <th>{{ isTasks ? 'Type' : 'Entity' }}</th>
+                <th>{{ isShowType ? 'Type' : 'Entity' }}</th>
                 <th>Alerts</th>
                 <th>Actions</th>
               </tr>
@@ -85,13 +85,13 @@
                 <td>
                   <v-btn
                     class="mr-2"
-                    v-if="isTasks"
+                    v-if="isShowType"
                     elevation="0"
                     small
                     outlined
                     color="success"
                     title="Set as fixed"
-                    @click="setTaskAsDone(alert.entity)"
+                    @click="setAsDone(alert.entity)"
                   >
                     <v-icon small>mdi-check</v-icon>
                   </v-btn>
@@ -131,7 +131,7 @@
               <v-list-item-icon>
                 <v-icon x-small class="mr-2">mdi-scan-helper</v-icon>
                 <v-list-item-content>
-                  <v-list-item-title :class="{ 'red--text': hasFailedTasks && !idx }" v-text="type.text" />
+                  <v-list-item-title :class="{ 'red--text': hasFailedTasks && !idx || hasFailedLogs && idx === 1 }" v-text="type.text" />
                 </v-list-item-content>
               </v-list-item-icon>
             </v-list-item>
@@ -148,10 +148,12 @@ import LoadingCmp from '@/cms/cmps/general/LoadingCmp';
 import autocomplete from '@/cms/cmps/Autocomplete';
 import iconsMap from '@/cms/cmps/general/IconsMap';
 import { dataIntegrityService } from '@/cms/services/data-integrity.service';
+import { logService } from '@/cms/services/log.service';
 
 export default {
   checkTypes: [
     { text: 'Failed worker tasks', value: 'get-failed-tasks' },
+    { text: 'Payment errors', value: 'payment-errors' },
     { text: 'Duplicate references (all materials)', value: 'ref-dups' },
     { text: 'Duplicate references (single material)', value: 'material-ref-dups' },
     { text: 'Bad reference (interaction)', value: 'ref-broken' },
@@ -176,11 +178,14 @@ export default {
       if (this.checkType !== 'material-ref-dups' && this.checkType !== 'v-interaction-dups') return '';
       return this.materialId;
     },
-    isTasks() {
-      return this.checkType === 'get-failed-tasks';
+    isShowType() {
+      return this.checkType === 'get-failed-tasks' || this.checkType === 'payment-errors';
     },
     hasFailedTasks() {
       return this.$store.getters.hasFailedTasks;
+    },
+    hasFailedLogs() {
+      return this.$store.getters.hasFailedLogs;
     }
   },
   methods: {
@@ -189,21 +194,34 @@ export default {
     },
     entityName(entity) {
       if (entity.name) return entity.name;
+      if (entity.action) return entity.action
       if (entity.errors) return `${entity.type} (${entity.data.name})`;
       if (entity.side2Label) return entity.side2Label.name;
       if (entity.side2Material) return `${entity.side1Material.name} & ${entity.side2Material.name}`;
       return `${entity.side1Material.name} & ${entity.side2DraftName}`;
     },
-    async setTaskAsDone(task) {
-      task.succeeded = true;
-      await dataIntegrityService.updateTask(task);
-      await this.getResults();
-      if (!this.alerts.length) this.$store.commit({
-          type: 'setHasFailedTasks',
+    async setAsDone(entity) {
+      if(entity.action){
+        entity.resolved = true
+        await logService.update(entity)
+        await this.getResults();
+        if (!this.alerts.length) this.$store.commit({
+          type: 'setHasFailedLogs',
           hasTasks: false
       });
+      }else{
+        entity.succeeded = true;
+        await dataIntegrityService.updateTask(entity);
+        await this.getResults();
+        if (!this.alerts.length) this.$store.commit({
+            type: 'setHasFailedTasks',
+            hasTasks: false
+        });
+      }
     },
     editEntityLink(entity) {
+      if(entity.action) return `/user/edit/${entity.userId}`
+
       let entityName = '';
       let entityId = entity._id;
 

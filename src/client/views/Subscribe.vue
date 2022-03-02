@@ -315,12 +315,12 @@ export default {
             this.isLoadingPayment = false
             this.$router.push('/?subscribed=true')
         }else{
-            const url = await paymentService.getEndpoint(this.selectedPlan, this.localCurrency)
+            const url = await paymentService.getEndpoint(this.selectedPlan, this.localCurrency, user)
             user.pressPayment = true
             await this.$store.dispatch({type: 'updateAutoPilotContact', user});
             this.isLoadingPayment = false
             if(url) window.location = url
-            else eventBus.$emit(EV_show_user_msg, 'Something Went wrong, please try again', 5000, 'error');
+            else eventBus.$emit(EV_show_user_msg, 'Something Went wrong, please contact us', 5000, 'error');
         }
     },
     onInputCoupon(){

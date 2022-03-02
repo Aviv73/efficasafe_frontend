@@ -21,7 +21,7 @@
             >
             <v-btn
                 class="nav-link"
-                :class="{ error: hasFailedTasks }"
+                :class="{ error: hasFailedTasks || hasFailedLogs }"
                 tile
                 color="white"
                 text
@@ -142,7 +142,7 @@
 </template>
 
 <script>
-import { eventBus, EV_has_failed_tasks } from '@/cms/services/eventBus.service';
+import { eventBus, EV_has_failed_tasks, EV_has_failed_logs } from '@/cms/services/eventBus.service';
 
 export default {
     name: 'NavBar',
@@ -173,6 +173,9 @@ export default {
         hasFailedTasks() {
             return this.$store.getters.hasFailedTasks;
         },
+        hasFailedLogs() {
+            return this.$store.getters.hasFailedLogs;
+        },
     },
     methods: {
         backToSite() {
@@ -184,12 +187,20 @@ export default {
                 hasTasks: true,
             });
         },
+        setFailedLogs(){
+            this.$store.commit({
+                type: 'setHasFailedLogs',
+                hasLogs: true,
+            });
+        }
     },
     created() {
         eventBus.$on(EV_has_failed_tasks, this.setNotf);
+        eventBus.$on(EV_has_failed_logs, this.setFailedLogs);
     },
     beforeDestroy() {
         eventBus.$off(EV_has_failed_tasks, this.setNotf);
+        eventBus.$off(EV_has_failed_logs, this.setFailedLogs);
     },
 };
 </script>
