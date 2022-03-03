@@ -315,7 +315,7 @@ export default {
             this.isLoadingPayment = false
             this.$router.push('/?subscribed=true')
         }else{
-            const url = await paymentService.getEndpoint(this.selectedPlan, this.localCurrency, user)
+            const url = await paymentService.getEndpoint(this.selectedPlan, this.localCurrency)
             user.pressPayment = true
             await this.$store.dispatch({type: 'updateAutoPilotContact', user});
             this.isLoadingPayment = false
