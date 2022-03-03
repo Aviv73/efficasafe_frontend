@@ -105,7 +105,7 @@ export default {
 
         await this.connectUser()
 
-        setInterval(this.connectUser, 30000);
+        setInterval(this.connectUser, 300000);
 
         if(storageService.load('show-other-login')){
             await this.$store.dispatch('logout')
