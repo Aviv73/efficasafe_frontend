@@ -5,7 +5,7 @@
             <v-btn color="primary" @click="onAddCoupon" class="mb-4">Create coupon</v-btn>
             <v-data-table
                 :headers="tableHeaders"
-                :items="managementData.coupons"
+                :items="couponsToShow"
                 :items-per-page="5"
                 class="elevation-1"
             >
@@ -83,6 +83,28 @@
             <div class="btn-container">
                 <v-btn color="success" @click="onSaveDynamicCoupon">Save</v-btn>
             </div>
+        </v-card>
+        <v-card v-if="managementData && managementData.coupons" class="py-2 px-4 text-center mt-4">
+            <p>Dynamic Coupons</p>
+            <v-data-table
+                :headers="tableHeaders"
+                :items="dynamicCouponsToShow"
+                :items-per-page="20"
+                class="elevation-1"
+            >
+                <template  v-slot:body="{ items }">
+                    <tbody>
+                        <tr v-for="item in items" :key="item._id">
+                            <td style="text-align: start">{{item.code}}</td>
+                            <td style="text-align: start" :class="{'red-txt': item.validUntil < Date.now()}">{{ item.validUntil | moment('DD/MM/YYYY') }}</td>
+                            <td style="text-align: start">
+                                <v-btn color="primary" @click="onOpenEdit(item)"><v-icon small>mdi-pencil</v-icon></v-btn>
+                                <v-btn color="error" @click="onDeleteCoupon(item.id)" class="ml-4"><v-icon small>mdi-delete</v-icon></v-btn>
+                            </td>
+                        </tr>
+                    </tbody>
+                </template>
+            </v-data-table>
         </v-card>
         <v-card v-if="couponToEdit" class="coupon-edit">
             <v-card-title class="primary headline" style="color:white; font-weight:bold;">{{editorTitle}} coupon</v-card-title>
@@ -212,6 +234,12 @@ export default {
                 return this.durationTxtMap[this.dynamicCoupon[idx].duration]
             }
         },
+        couponsToShow(){
+            return this.managementData.coupons.filter( c => !c.isDynamic)
+        },
+        dynamicCouponsToShow(){
+            return this.managementData.coupons.filter( c => c.isDynamic)
+        }
     },
     methods: {
         onOpenEdit(coupon){
@@ -282,10 +310,20 @@ export default {
              this.managementData.coupons.splice(idx, 1)
              const manage = JSON.parse(JSON.stringify(this.managementData))
              await this.$store.dispatch({type:'updateManagementData', manage})
+        },
+        async deleteExpiredDynamicCoupons(managementData){
+            const isDynamicExpired = managementData.coupons.some(c => c.validUntil < Date.now() && c.isDynamic)
+            if(isDynamicExpired){
+                managementData.coupons = managementData.coupons.filter(c => {
+                    return !c.isDynamic || (c.isDynamic && c.validUntil > Date.now())
+                })
+                await this.$store.dispatch({type:'updateManagementData', manage: managementData})
+            }
         }
     },
     async created() {
-       const managementData = await manageService.list()
+       let managementData = await manageService.list()
+       await this.deleteExpiredDynamicCoupons(managementData)
        this.managementData = managementData
        this.dynamicCoupon = JSON.parse(JSON.stringify(this.managementData.dynamicCoupon))
     },
