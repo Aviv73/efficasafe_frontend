@@ -147,11 +147,14 @@ export default {
         },
         refsToDownload(){
             return this.references.map( ref => {
-                return {
-                    order: ref.draftIdx,
-                    type: ref.type || null,
-                    data: ref.txt + ' ' + ref.link
+                if(ref){
+                    return {
+                        order: ref.draftIdx,
+                        type: ref.type || null,
+                        data: ref.txt + ' ' + ref.link
+                    }
                 }
+                return {}
             })
         }
     },
