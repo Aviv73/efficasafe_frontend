@@ -95,6 +95,7 @@ export default {
         }
     },
     async created(){
+        await this.$store.dispatch('pullManagementData')
         const BASE_URL = (process.env.NODE_ENV === 'development') ? '//localhost:3000' : '';
         const events = new EventSource(`${BASE_URL}/events`, { withCredentials: true });
 
@@ -116,7 +117,6 @@ export default {
         eventBus.$on(EV_open_signup, this.onSignUp);
         eventBus.$on(EV_open_login, this.onLogin);
         eventBus.$on('login-not-same-provider', this.onLoginNotSameProvider);
-        await this.$store.dispatch('pullManagementData')
         this.$store.commit('setFreeSearchesCount');
         this.$store.commit('initialLoadingDone')
     },
