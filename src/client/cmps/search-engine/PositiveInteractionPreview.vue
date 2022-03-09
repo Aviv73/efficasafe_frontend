@@ -120,6 +120,7 @@ export default {
     computed:{
         isAllowed(){
             return (idx) => {
+                if(this.isShareTokenValid) return true
                 if(this.loggedInUser && this.loggedInUser.type === 'subscribed') return true
                 if(this.loggedInUser && !this.loggedInUser.email_verified){
                     if(idx > 0 || this.freeSearchesCount <= 0) return false
@@ -130,6 +131,9 @@ export default {
                 if(!this.loggedInUser && idx > 0)  return false
                 return true
             }
+        },
+        isShareTokenValid(){
+            return this.$store.getters.getIsSharedToken;
         },
         loggedInUser(){
             return this.$store.getters.loggedInUser;

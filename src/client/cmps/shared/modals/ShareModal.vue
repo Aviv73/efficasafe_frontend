@@ -17,7 +17,7 @@
                     'copy-success': linkCopySuccess,
                     'copy-fail': linkCopyFail
                 }"
-                v-clipboard:copy="shareURL"
+                v-clipboard:copy=" newTokenCode ?  shareURLWithToken : shareURL"
                 v-clipboard:success="onCopy"
                 v-clipboard:error="onCopyFail"
             >
@@ -61,6 +61,7 @@
 
 <script>
 import { storageService } from '@/cms/services/storage.service';
+import { tokenService } from '@/cms/services/token.service';
 
 import Radio from '@/client/cmps/common/Radio';
 
@@ -73,12 +74,16 @@ export default {
         return {
             mailWith: storageService.load('prefferd-mail-service') || 'default',
             linkCopySuccess: false,
-            linkCopyFail: false
+            linkCopyFail: false,
+            newTokenCode: null
         }
     },
     computed: {
         shareURL() {
             return `${window.location.origin}${this.$route.fullPath}`;
+        },
+        shareURLWithToken(){
+            return `${window.location.origin}${this.$route.fullPath}&share=${this.newTokenCode}`
         },
         loggedInUser() {
             return this.$store.getters.loggedInUser;
@@ -91,8 +96,8 @@ export default {
         }
     },
     methods: {
-        onShare() {
-            const linkToShare = encodeURIComponent(this.shareURL)
+        async onShare() {
+            const linkToShare = this.newTokenCode ? encodeURIComponent(this.shareURLWithToken) : encodeURIComponent(this.shareURL)
             if (this.hasShareSupport) {
                 const shareData = {
                     title: 'Efficasafe',
@@ -120,6 +125,12 @@ export default {
         },
         onCopyFail() {
             this.linkCopyFail = true;
+        }
+    },
+    async created(){
+        if(this.$route.path === "/search" || this.$route.path === "/search/positive-boosters"){
+            const newTokenCode = await tokenService.add()
+            this.newTokenCode = newTokenCode
         }
     },
     components: {
