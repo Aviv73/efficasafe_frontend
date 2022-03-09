@@ -342,6 +342,9 @@ export default {
         managementData(){
             return this.$store.getters.getManagementData;
         },
+        isShareTokenValid(){
+            return this.$store.getters.getIsSharedToken;
+        },
         freeTrialTime() {
             const { loggedInUser: { trialTime }} = this.$store.getters;
             const timeLeft = trialTime - Date.now();
@@ -349,6 +352,7 @@ export default {
             return  daysLeft > 0 ? Math.ceil(daysLeft) : 0
         },
         isAllowed(){
+            if(this.isShareTokenValid) return true
             let idxToShow = this.$route.name === 'Boosters' ? this.managementData.showPositiveInteractionsNum - 1 : this.managementData.showInteractionsNum - 1
             if(this.loggedInUser && this.loggedInUser.type === 'subscribed') return true
             if(this.loggedInUser && !this.loggedInUser.email_verified){

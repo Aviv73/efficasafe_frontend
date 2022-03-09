@@ -379,7 +379,7 @@
             :isActive="isShareModalActive"
             @close-modal="isShareModalActive = false"
         >
-            <share-modal @close-modal="isShareModalActive = false" />
+            <share-modal v-if="isShareModalActive" @close-modal="isShareModalActive = false" />
         </modal-wrap>
         <modal-wrap
             :isActive="isPrintModalActive"
@@ -495,7 +495,7 @@ export default {
                         this.$tours['boosters-tour'].start();
                     });
                 }
-                const { q, isImported, nonExisting, activeTour } = this.$route.query;
+                const { q, isImported, nonExisting, activeTour, share } = this.$route.query;
                 if (!q || !q.length) {
                     this.$store.commit('resetPosSupp')
                     this.reset();
@@ -503,6 +503,8 @@ export default {
                     this.$store.commit({type: 'setListType', listType: 'all'})
                     return;
                 }
+                if(share) this.$store.dispatch({type: 'checkIfValidToken', tokenCode: share})
+                else this.$store.commit({type: 'setIsSharedToken', isValid: false})
                 if(activeTour) return
                 if (!Array.isArray(q) && q) {
                     this.$route.query.q = [ q ];

@@ -11,6 +11,7 @@ import { drugBankStore } from './modules/drug-bank.store';
 import { featuredInteractionStore } from './modules/featured-interaction.store';
 
 import { manageService } from '@/cms/services/manage.service'
+import { tokenService } from '@/cms/services/token.service'
 
 Vue.use(Vuex)
 
@@ -29,7 +30,8 @@ export default new Vuex.Store({
     freeSearchesCount: null,
     selectedPaymentPlan: null,
     managementData: null,
-    initialLoading: false
+    initialLoading: false,
+    isSharedToken: false
   },
   getters: {
     hasFailedTasks(state) {
@@ -78,6 +80,9 @@ export default new Vuex.Store({
     },
     getPosSuppBoostersCount(state){
       return state.posSuppBoostersCount
+    },
+    getIsSharedToken(state){
+      return state.isSharedToken
     }
   },
   mutations: {
@@ -145,6 +150,9 @@ export default new Vuex.Store({
     setManagementData(state, { manage }){
       state.managementData = manage
     },
+    setIsSharedToken(state, { isValid }){
+      state.isSharedToken = isValid
+    },
     initialLoadingDone(state){
       state.initialLoading = true
     }
@@ -158,6 +166,10 @@ export default new Vuex.Store({
       const newManage = await manageService.update(manage);
       commit({ type: 'setManagementData', newManage });
     },
+    async checkIfValidToken({ commit }, { tokenCode }){
+      const isValid = await tokenService.checkIfValidToken(tokenCode)
+      commit({ type: 'setIsSharedToken', isValid})
+    }
   },
   plugins: [
     (store) => {
