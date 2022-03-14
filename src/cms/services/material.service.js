@@ -6,6 +6,7 @@ const cache = {};
 export const materialService = {
     list,
     getById,
+    getByDBId,
     save,
     remove,
     restore,
@@ -32,6 +33,10 @@ async function list(filterBy = {}, doCache = false, cacheKey = false) {
 
 function getById(id) {
     return httpService.get(`${END_POINT}/${id}`);
+}
+
+function getByDBId(DBId) {
+    return httpService.get(`${END_POINT}/byDB/${DBId}`);
 }
 
 function save(material) {
@@ -99,6 +104,12 @@ function getEmptyMaterial() {
         detailedPharmacology: '',
         externalLinks: [],
         isNarrowTherapeutic: false,
+        isG6pd: false,
+        isSalicylate: false,
+        isComposite: false,
+        isTannin: false,
+        isPhototoxicity: false,
+        isSulfa: false,
         isUnderStudy: false,
         fdaLabel: '',
         pharmacology: {

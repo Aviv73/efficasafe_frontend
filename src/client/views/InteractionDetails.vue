@@ -93,14 +93,7 @@
                         <component :is="recommendationIconName" :size="14" />
                         {{ interaction.recommendation }}
                     </span>
-                    <div
-                        class="narrow-therapuetic-warnning"
-                        v-if="side2Material.isNarrowTherapeutic"
-                    >
-                        Attention: {{ side2Material.name }} has a narrow therapeutic range. Differences
-                        in dose or blood concentration may lead to serious therapeutic failures and/or adverse
-                        drug reactions.
-                    </div>
+                    <warnings v-if="side1Material && side2Material" :side1Material="side1Material" :side2Material="side2Material"/>
                     <div
                         class="note-container flex-center"
                         v-if="!isPrimaryMaterial && interaction.note"
@@ -295,6 +288,7 @@ import { eventBus } from '@/cms/services/eventBus.service';
 import Side2Pathways from '@/client/cmps/interaction-details/Side2Pathways';
 import Side1Pathways from '@/client/cmps/interaction-details/Side1Pathways';
 import ReferenceList from '@/client/cmps/interaction-details/ReferenceList';
+import Warnings from '@/client/cmps/interaction-details/Warnings';
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 import Tooltip from '@/client/cmps/common/Tooltip';
 import Collapse from '@/client/cmps/common/Collapse';
@@ -318,6 +312,7 @@ export default {
             pageLoc:null,
             interaction: null,
             side2Material: null,
+            side1Material: null,
             side1Pathways: [],
             interactionRefs: [],
             isLoading: false,
@@ -513,16 +508,17 @@ export default {
                     this.isLoading = false;
                     return;
                 }
-                const [ side2Material, { refs, pathways, effectOnDrugMetabolism } ] = await Promise.all([
+                const [ side2Material, side1Material ] = await Promise.all([
                     this.$store.dispatch({ type: 'loadMaterial', matId: interaction.side2Material._id }),
                     this.$store.dispatch({ type: 'loadMaterial', matId: interaction.side1Material._id })
                 ]);
-                this.interaction = interaction;
+                this.side1Material = side1Material
                 this.side2Material = side2Material;
-                this.side1Pathways = pathways;
-                this.$options.side1Refs = refs;
-                this.effectOnDrugMetabolism = effectOnDrugMetabolism;
-                this.interactionRefs = refs.filter(ref => this.interaction.refs.includes(ref.draftIdx));
+                this.interaction = interaction;
+                this.side1Pathways = side1Material.pathways;
+                this.$options.side1Refs = side1Material.refs;
+                this.effectOnDrugMetabolism = side1Material.effectOnDrugMetabolism;
+                this.interactionRefs = side1Material.refs.filter(ref => this.interaction.refs.includes(ref.draftIdx));
             } else {
                 const [ interaction, material ] = await Promise.all([
                     this.$store.dispatch({ type: 'loadInteraction', id }),
@@ -532,16 +528,17 @@ export default {
                     this.isLoading = false;
                     return;
                 }
-                const { refs, pathways, effectOnDrugMetabolism } = await this.$store.dispatch({
+                const side1Material = await this.$store.dispatch({
                     type: 'loadMaterial',
                     matId: interaction.side1Material._id
                 });
                 this.interaction = interaction;
                 this.side2Material = material;
-                this.side1Pathways = pathways;
-                this.$options.side1Refs = refs;
-                this.effectOnDrugMetabolism = effectOnDrugMetabolism;
-                this.interactionRefs = refs.filter(ref => this.interaction.refs.includes(ref.draftIdx));
+                this.side1Material = side1Material
+                this.side1Pathways = side1Material.pathways;
+                this.$options.side1Refs = side1Material.refs;
+                this.effectOnDrugMetabolism = side1Material.effectOnDrugMetabolism;
+                this.interactionRefs = side1Material.refs.filter(ref => this.interaction.refs.includes(ref.draftIdx));
             }
             this.isLoading = false;
             if (!storageService.load('did-onboarding-interaction-tour1') && !this.isScreenNarrow) {
@@ -633,6 +630,7 @@ export default {
         Side2Pathways,
         Side1Pathways,
         ReferenceList,
+        Warnings,
         Error404,
         Loader,
         ModalWrap,

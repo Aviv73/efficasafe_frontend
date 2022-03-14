@@ -107,11 +107,12 @@ export default {
                 navigator.share(shareData);
             } else {
                 storageService.store('prefferd-mail-service', this.mailWith);
+                const emailEnding = this.newTokenCode ? '%0D%0A%0D%0APlease note, this link will only be valid for a week.' : ''
                 if (this.mailWith === 'gmail') {
-                    const url = `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=&su=I want to share something important with you&body=I found this at efficasafe.com, the herb-drug interaction platform.%0D%0A${linkToShare}`;
+                    const url = `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=&su=I want to share something important with you&body=I found this at efficasafe.com, the herb-drug interaction platform.%0D%0A${linkToShare}${emailEnding}`;
                     window.open(url, '_blank').focus();
                 } else {
-                    window.open(`mailto:?to=&subject=I want to share something important with you&body=I found this at efficasafe.com, the best herb-drug interaction platform.%0D%0A${linkToShare}`);
+                    window.open(`mailto:?to=&subject=I want to share something important with you&body=I found this at efficasafe.com, the best herb-drug interaction platform.%0D%0A${linkToShare}${emailEnding}`);
                 }
             }
         },
