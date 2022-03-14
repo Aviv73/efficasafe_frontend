@@ -110,6 +110,7 @@
                         <img :src="require(`@/cms/assets/drugbank.png`)" alt="DrugBank logo" />
                         <figcaption class="caption">powered by</figcaption>
                     </figure>
+                    <warnings v-if="side1Material && side2Material" :side1Material="side1Material" :side2Material="side2Material" :isDb="true"/>
                     <h2
                         v-if="interaction.summary"
                         class="subheader"
@@ -188,10 +189,12 @@
 
 <script>
 import { drugBankService } from '@/cms/services/drug-bank.service';
+import { materialService } from '@/cms/services/material.service';
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 
 import InteractionCapsules from '@/client/cmps/shared/InteractionCapsules';
 import Tooltip from '@/client/cmps/common/Tooltip';
+import Warnings from '@/client/cmps/interaction-details/Warnings';
 import ReferenceList from '@/client/cmps/interaction-details/ReferenceList';
 import Error404 from '@/client/cmps/shared/Error404';
 import ModalWrap from '@/client/cmps/common/ModalWrap';
@@ -211,7 +214,9 @@ export default {
             interaction: null,
             isLoading: false,
             isShareModalActive: false,
-            linkInfos: false
+            linkInfos: false,
+            side1Material: false,
+            side2Material: false
         }
     },
     watch: {
@@ -285,6 +290,12 @@ export default {
         async getInteraction() {
             const { id } = this.$route.params;
             this.interaction = await drugBankService.getInteraction(id);
+            const [ side1Material, side2Material ] = await Promise.all([
+                    materialService.getByDBId(this.interaction.affected_drug.drugbank_id),
+                    materialService.getByDBId(this.interaction.subject_drug.drugbank_id)
+                ]);
+            this.side1Material = side1Material
+            this.side2Material = side2Material
         },
         async getLinks(){
             const criteria = {
@@ -346,6 +357,7 @@ export default {
         InteractionCapsules,
         InformationOutlineIcon,
         Tooltip,
+        Warnings,
         ReferenceList,
         Error404,
         Loader,

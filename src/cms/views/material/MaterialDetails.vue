@@ -51,6 +51,30 @@
                         <v-icon>mdi-pill</v-icon>
                         Narrow therapeutic drug.
                     </div>
+                    <div class="info-title narrow-therapeutic" v-if="material.isG6pd">
+                        <v-icon>mdi-pill</v-icon>
+                        G6PD drug.
+                    </div>
+                    <div class="info-title narrow-therapeutic" v-if="material.isSalicylate">
+                        <v-icon>mdi-pill</v-icon>
+                        Salicylate drug.
+                    </div>
+                    <div class="info-title narrow-therapeutic" v-if="material.isComposite">
+                        <v-icon>mdi-pill</v-icon>
+                        Composite drug.
+                    </div>
+                    <div class="info-title narrow-therapeutic" v-if="material.isTannin">
+                        <v-icon>mdi-pill</v-icon>
+                        Tannin drug.
+                    </div>
+                    <div class="info-title narrow-therapeutic" v-if="material.isPhototoxicity">
+                        <v-icon>mdi-pill</v-icon>
+                        Phototoxicity drug.
+                    </div>
+                    <div class="info-title narrow-therapeutic" v-if="material.isSulfa">
+                        <v-icon>mdi-pill</v-icon>
+                        Sulfa drug.
+                    </div>
 
                     <h3 class="info-title">Type:</h3>
                     <div class="info-value">{{ material.type }}</div>

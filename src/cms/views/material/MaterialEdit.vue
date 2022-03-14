@@ -63,6 +63,7 @@
             <v-list-item v-if="editedMaterial.brands.length || isShowEmptyLink" @click="goto('Brands')">Brands</v-list-item>
             <v-list-item v-if="editedMaterial.compounds.length || isShowEmptyLink" @click="goto('Compounds')">Compounds</v-list-item>
             <v-list-item v-if="editedMaterial.pathways.length || isShowEmptyLink" @click="goto('Pathways')">Pathways</v-list-item>
+            <v-list-item @click="goto('Alerts')">Alerts</v-list-item>
           </v-list-item-group>
         </v-list>
       </v-navigation-drawer>      
@@ -309,12 +310,6 @@
               label="DrugBank ID"
             />
           
-
-            <v-checkbox
-              class="mx-auto"
-              label="Is Narrow Therapeutic"
-              v-model="editedMaterial.isNarrowTherapeutic"
-            />
             <v-checkbox
               label="Is Under Construction"
               v-model="editedMaterial.isUnderStudy"
@@ -883,6 +878,44 @@
             </v-list>
           </div>
         </v-form>
+        <div class="ml-4">
+          <h3 ref="Alerts">Alerts:</h3>
+          <v-checkbox
+            class="mx-auto"
+            label="Is Narrow Therapeutic"
+            v-model="editedMaterial.isNarrowTherapeutic"
+          />
+          <v-checkbox
+            class="mx-auto"
+            label="Is G6PD"
+            v-model="editedMaterial.isG6pd"
+          />
+          <v-checkbox
+            class="mx-auto"
+            label="Is Salicylate"
+            v-model="editedMaterial.isSalicylate"
+          />
+          <v-checkbox
+            class="mx-auto"
+            label="Is Composite"
+            v-model="editedMaterial.isComposite"
+          />
+          <v-checkbox
+            class="mx-auto"
+            label="Is Tannin"
+            v-model="editedMaterial.isTannin"
+          />
+          <v-checkbox
+            class="mx-auto"
+            label="Is Phototoxicity"
+            v-model="editedMaterial.isPhototoxicity"
+          />
+          <v-checkbox
+            class="mx-auto"
+            label="Is Sulfa"
+            v-model="editedMaterial.isSulfa"
+          />
+        </div>
         <div class="form-actions">
           <v-btn class="cancel-btn" to="/material/" color="normal">cancel</v-btn>
           <v-btn
