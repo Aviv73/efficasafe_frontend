@@ -1308,7 +1308,9 @@ export default {
             if(!page) page = 1
             const drugBankIds = this.materials.filter(m => !m.isIncluded).map(mat => mat.drugBankId);
             const drugBankId = (drugBankIds.length === 1) ? drugBankIds[0] : drugBankIds;
-            const criteria = { drugBankId, page: --page };
+            const criteria = { drugBankId, page: --page, showAll: this.$route.query.filter ? false : true }; // for gil to check
+            // const criteria = { drugBankId, page: --page, showAll: true }; // before change
+            // const criteria = { drugBankId, page: --page, showAll: this.$route.query.showAll ? true : false }; // end game
             const { dBankInteractions, pageCount, total } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria, cacheKey: `/search/drug2drug?${this.$route.fullPath.split('?')[1]}` });
             this.dBankInteractions = dBankInteractions;
             this.dBankPageCount = pageCount;
