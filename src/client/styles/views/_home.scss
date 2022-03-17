@@ -10,19 +10,23 @@
         padding-block-start: 55px;
 
         @include for-mobile-layout {
-            padding-block-start: 50px;
+            padding-block-start: 35px;
             background-image: url('../assets/imgs/home-bg.jpg');
         }
 
         @include for-mobile-horizontal {
             padding-block-start: 30px;
         }
+
+        .header{
+            margin-top: 15px;
+        }
     }
 
 
 
     h1 {
-        margin-block-end: rem(36px);
+        margin-block-end: rem(32px);
         align-items: center;
         font-size: rem(18px);
         line-height: rem(28px);
@@ -50,19 +54,19 @@
             }
         }
 
-        .keyword1,
-        .keyword2 {
-            font-family: roboto-bold, sans-serif;
-            font-weight: 700;
-        }
+    }
+    .keyword1,
+    .keyword2 {
+        font-family: roboto-bold, sans-serif;
+        font-weight: 700;
+    }
 
-        .keyword1 {
-            color: $gradient-clr1;
-        }
+    .keyword1 {
+        color: $gradient-clr1;
+    }
 
-        .keyword2 {
-            color: $gradient-clr2;
-        }
+    .keyword2 {
+        color: $gradient-clr2;
     }
 
     &-container {
@@ -106,13 +110,15 @@
     &-cta{
         margin-block-end: rem(60px);
         margin-block-start: rem(28px);
-        height: 48px;
-        width: 160px;
+        height: 44px;
+        width: 285px;
         left: 640px;
         top: 374px;
         border-radius: 45px;
         padding: 11px 20px 11px 20px;
-        font-size: 17px;
+        font-size: 16px;
+        background-color: $clr1;
+        text-transform: uppercase;
 
         
         @include hover-supported {
