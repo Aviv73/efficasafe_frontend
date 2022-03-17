@@ -8,9 +8,9 @@
                         alt="Efficasafe Logo"
                     />
                 </a>
-                <span>
-                    Optimizing <span class="keyword1">efficacy</span> and
-                    <span class="keyword2">safety</span>
+                <span class="header">
+                    <span class="font-bold">Herb-Drug-Supplement</span>
+                    Interaction platform
                 </span>
             </h1>
             <div class="home-container">
@@ -25,11 +25,11 @@
                     @item-selected="goToSearch"
                 />
                 <button class="btn home-cta" @click="searchhWithBtn">
-                    Search
+                    Get interactions
                 </button>
                 <h2 class="home-subheader">
-                    <span class="font-bold">Herb-Drug-Supplement</span>
-                    Interaction platform
+                    Optimizing <span class="keyword1">efficacy</span> and
+                    <span class="keyword2">safety</span>
                 </h2>
             </div>
         </header>
