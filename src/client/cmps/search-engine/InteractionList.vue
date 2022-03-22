@@ -33,6 +33,7 @@
                 :suppTotal="listData.suppTotal"
                 :evidenceLevelPopupActive="evidenceLevelPopupActive"
                 @list-sorted="$emit('list-sorted', $event)"
+                @handle-DBI-filter="$emit('handle-DBI-filter', $event)"
             />
             <result-list-vertical
                 v-else-if="!isLoading && isVertical"

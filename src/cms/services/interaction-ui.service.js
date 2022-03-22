@@ -16,7 +16,7 @@ function createWarnings(mat1, mat2){
     const warnings = []
 
     if(mat1.isNarrowTherapeutic && mat2.isNarrowTherapeutic){
-        warnings.push({title: 'Narrow Therapeutic', text: `Attention: ${mat1.name} and ${mat2.name} has a narrow therapeutic range. Differences
+        warnings.push({title: 'Narrow Therapeutic', text: `Attention: both ${mat1.name} and ${mat2.name} has a narrow therapeutic range. Differences
         in dose or blood concentration may lead to serious therapeutic failures and/or adverse
         drug reactions.`})
     }else if(mat1.isNarrowTherapeutic){
@@ -27,27 +27,27 @@ function createWarnings(mat1, mat2){
     in dose or blood concentration may lead to serious therapeutic failures and/or adverse
     drug reactions.`})
 
-    if(mat1.isG6pd && mat2.isG6pd) warnings.push({title: 'G6PD', text: `Attention: People with G6PD deficiency should avoid ${mat1.name} and ${mat2.name}.`})
+    if(mat1.isG6pd && mat2.isG6pd) warnings.push({title: 'G6PD', text: `Attention: People with G6PD deficiency should avoid both ${mat1.name} and ${mat2.name}.`})
     else if(mat1.isG6pd) warnings.push({title: 'G6PD', text: `Attention: People with G6PD deficiency should avoid ${mat1.name}.`})
     else if(mat2.isG6pd) warnings.push({title: 'G6PD', text: `Attention: People with G6PD deficiency should avoid ${mat2.name}.`})
 
-    if(mat1.isSalicylate && mat2.isSalicylate) warnings.push({title: 'Salicylates', text: `Attention: ${mat1.name} and ${mat2.name} contains salicylates. People with known sensitivity to salicylates should avoid this agent.`})
+    if(mat1.isSalicylate && mat2.isSalicylate) warnings.push({title: 'Salicylates', text: `Attention: both ${mat1.name} and ${mat2.name} contains salicylates. People with known sensitivity to salicylates should avoid this agent.`})
     else if(mat1.isSalicylate) warnings.push({title: 'Salicylates', text: `Attention: ${mat1.name} contains salicylates. People with known sensitivity to salicylates should avoid this agent.`})
     else if(mat2.isSalicylate) warnings.push({title: 'Salicylates', text: `Attention: ${mat2.name} contains salicylates. People with known sensitivity to salicylates should avoid this agent.`})
     
-    if(mat1.isComposite && mat2.isComposite) warnings.push({title: 'Composites', text: `Attention: ${mat1.name} and ${mat2.name} belongs to the composite family. People with known sensitivity to herbs belonging to this family should avoid this agent.`})
+    if(mat1.isComposite && mat2.isComposite) warnings.push({title: 'Composites', text: `Attention: both ${mat1.name} and ${mat2.name} belongs to the composite family. People with known sensitivity to herbs belonging to this family should avoid this agent.`})
     else if(mat1.isComposite) warnings.push({title: 'Composites', text: `Attention: ${mat1.name} belongs to the composite family. People with known sensitivity to herbs belonging to this family should avoid this agent.`})
     else if(mat2.isComposite) warnings.push({title: 'Composites', text: `Attention: ${mat2.name} belongs to the composite family. People with known sensitivity to herbs belonging to this family should avoid this agent.`})
     
-    if(mat1.isTannin && mat2.isTannin) warnings.push({title: 'Tannins', text: `Attention: ${mat1.name} and ${mat2.name} has high tannin content, which might reduce the absorption of drugs and minerals such as iron, zinc and to a lesser extent calcium. When coadministration is required a minimum of 2-hours separation is advised.`})
+    if(mat1.isTannin && mat2.isTannin) warnings.push({title: 'Tannins', text: `Attention: both ${mat1.name} and ${mat2.name} has high tannin content, which might reduce the absorption of drugs and minerals such as iron, zinc and to a lesser extent calcium. When coadministration is required a minimum of 2-hours separation is advised.`})
     else if(mat1.isTannin) warnings.push({title: 'Tannins', text: `Attention: ${mat1.name} has high tannin content, which might reduce the absorption of drugs and minerals such as iron, zinc and to a lesser extent calcium. When coadministration is required a minimum of 2-hours separation is advised.`})
     else if(mat2.isTannin) warnings.push({title: 'Tannins', text: `Attention: ${mat2.name} has high tannin content, which might reduce the absorption of drugs and minerals such as iron, zinc and to a lesser extent calcium. When coadministration is required a minimum of 2-hours separation is advised.`})
 
-    if(mat1.isPhototoxicity && mat2.isPhototoxicity) warnings.push({title: 'Phototoxicity', text: `Attention: ${mat1.name} and ${mat2.name} might enhance skin vulnerability to sunlight. When consuming this agent, direct exposure to sunlight should be limited and precautions against sun damage should be taken.`})
+    if(mat1.isPhototoxicity && mat2.isPhototoxicity) warnings.push({title: 'Phototoxicity', text: `Attention: both ${mat1.name} and ${mat2.name} might enhance skin vulnerability to sunlight. When consuming this agent, direct exposure to sunlight should be limited and precautions against sun damage should be taken.`})
     else if(mat1.isPhototoxicity) warnings.push({title: 'Phototoxicity', text: `Attention: ${mat1.name} might enhance skin vulnerability to sunlight. When consuming this agent, direct exposure to sunlight should be limited and precautions against sun damage should be taken.`})
     else if(mat2.isPhototoxicity) warnings.push({title: 'Phototoxicity', text: `Attention: ${mat2.name} might enhance skin vulnerability to sunlight. When consuming this agent, direct exposure to sunlight should be limited and precautions against sun damage should be taken.`})
     
-    if(mat1.isSulfa && mat2.isSulfa) warnings.push({title: 'Sulfa', text: `Attention: ${mat1.name} and ${mat2.name} contains sulfa. People with known sensitivity to sulfa should avoid this agent.`})
+    if(mat1.isSulfa && mat2.isSulfa) warnings.push({title: 'Sulfa', text: `Attention: both ${mat1.name} and ${mat2.name} contains sulfa. People with known sensitivity to sulfa should avoid this agent.`})
     if(mat1.isSulfa) warnings.push({title: 'Sulfa', text: `Attention: ${mat1.name} contains sulfa. People with known sensitivity to sulfa should avoid this agent.`})
     if(mat2.isSulfa) warnings.push({title: 'Sulfa', text: `Attention: ${mat2.name} contains sulfa. People with known sensitivity to sulfa should avoid this agent.`})
 

@@ -11,7 +11,8 @@
             :class="{
                 'dense': dense,
                 'wide': onDetailsPage,
-                'serach-engin-capsule': isSearcheEngin
+                'serach-engin-capsule': isSearcheEngin,
+                'light-gray': isLowLevelInteraction
             }"
             @mouseenter="showTitle($event)" @mouseleave="showTitle(null)"
             v-if="!showDraftName && !isMaterialGroup"
@@ -35,7 +36,8 @@
             :class="{
                 'dense': dense,
                 'wide': onDetailsPage,
-                'serach-engin-capsule': isSearcheEngin
+                'serach-engin-capsule': isSearcheEngin,
+                'light-gray': isLowLevelInteraction
             }"
             @mouseenter="showTitle($event)" @mouseleave="showTitle(null)"
         >
@@ -144,6 +146,10 @@ export default {
         isInteractionDetails: {
             type: Boolean,
             default: false
+        },
+        isLowLevelInteraction: {
+            type: Boolean,
+            default: false
         }
     },
     data(){
@@ -229,6 +235,6 @@ export default {
             }
             this.$emit('openModal',page)
         }
-    },
+    }
 };
 </script> 

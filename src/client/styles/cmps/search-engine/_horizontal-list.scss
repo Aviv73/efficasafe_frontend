@@ -19,11 +19,18 @@
     }
 
     .results-header{
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
         height: 40px;
         box-shadow: 0px 1px 1px 0 rgb(95 95 95 / 17%);
+
+        @media (max-width: 1300px){
+            flex-direction: column;
+            height: 70px;
+            padding-bottom: 8px;
+        }
         .btn-container{
             width: 275px;
             display: flex;
@@ -39,6 +46,41 @@
                 background: #205072;
                 color: $white;
                 font-weight: bold;
+            }
+        }
+        .checkbox-container{
+            display: flex;
+            position: absolute;
+            right: 0;
+            margin: 0 25px;
+
+            @media (max-width: 1300px){
+                position: unset;
+                margin-left: 8.5px;
+            }
+
+            @media (max-width: 900px){
+                position: unset;
+                margin-left: 31.5px;
+            }
+
+            .checkbox-title{
+                font-size: 14px;
+                margin-left: 4px;
+                color: $clr1;
+                margin-top: 1px;
+            }
+
+            .tooltip-content{
+                width: 300px;
+                padding: 10px;
+            }
+
+            .tooltip-trigger{
+                position: absolute;
+                top: 5px;
+                right: -22px;
+                color: $clr1
             }
         }
     }

@@ -6,7 +6,7 @@
             @change="$emit('change', $event.target.checked)"
             hidden
         />
-        <span class="custom-checkbox-checkbox" />
+        <span class="custom-checkbox-checkbox" :class="{'bigger-radius': biggerRadius}"/>
         <slot name="label" />
     </label>
 </template>
@@ -21,6 +21,10 @@ export default {
         isChecked: {
             type: Boolean,
             required: true
+        },
+        biggerRadius: {
+            type: Boolean,
+            default: false
         }
     }
 }
@@ -78,7 +82,12 @@ export default {
             &::after, &::before {
                 visibility: visible;
                 opacity: 1;
+                margin-left: 1px;
             }
         }
+    }
+
+    .bigger-radius{
+        border-radius: 7px;
     }
 </style>
