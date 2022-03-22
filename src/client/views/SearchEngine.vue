@@ -364,6 +364,7 @@
                         :isPBLoading="isPBLoading"
                         @page-changed="handlePaging"
                         @list-sorted="handleSort"
+                        @handle-DBI-filter="handleDBIFilter"
                     />
                 </transition>
             </div>
@@ -576,6 +577,9 @@ export default {
         },
         boostersCount(){
             return this.$store.getters.getPosBoostersCount || this.totalPositiveBoosters
+        },
+        isShowAllDBI(){
+            return this.$store.getters.isShowAllDBI
         },
         getRelevetInteractions(){
             if(this.listType === 'supp') return this.formatedInteractions
@@ -1308,10 +1312,8 @@ export default {
             if(!page) page = 1
             const drugBankIds = this.materials.filter(m => !m.isIncluded).map(mat => mat.drugBankId);
             const drugBankId = (drugBankIds.length === 1) ? drugBankIds[0] : drugBankIds;
-            const criteria = { drugBankId, page: --page, showAll: this.$route.query.filter ? false : true }; // for gil to check
-            // const criteria = { drugBankId, page: --page, showAll: true }; // before change
-            // const criteria = { drugBankId, page: --page, showAll: this.$route.query.showAll ? true : false }; // end game
-            const { dBankInteractions, pageCount, total } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria, cacheKey: `/search/drug2drug?${this.$route.fullPath.split('?')[1]}` });
+            const criteria = { drugBankId, page: --page, showAll: this.isShowAllDBI };
+            const { dBankInteractions, pageCount, total } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria, cacheKey: `/search/drug2drug?${this.$route.fullPath.split('?')[1]}&filter=${this.isShowAllDBI}` });
             this.dBankInteractions = dBankInteractions;
             this.dBankPageCount = pageCount;
             this.dBankTotal = total;
@@ -1473,6 +1475,10 @@ export default {
                     this.interactions.splice(0, 0);
                 return;
             }
+        },
+        async handleDBIFilter(isChecked){
+            this.$store.commit({ type: 'setIsShowAll', isChecked})
+            await this.getResults();
         },
         sortInteractions(interactions, isPosSupp = false) {
             const { recommendationsOrderMap: map } = this.$options;

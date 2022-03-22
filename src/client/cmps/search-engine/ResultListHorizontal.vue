@@ -1,6 +1,22 @@
 <template>
     <section class="horizontal-list">
         <div v-if="$route.name === 'Results'" class="results-header" >
+            <div class="checkbox-container">
+                <checkbox class="checkbox" @change="handleCheckbox" :isChecked="isChecked" :biggerRadius="true"></checkbox>
+                <h4 class="checkbox-title">Theoretical interactions</h4>
+                <tooltip v-if="!isScreenNarrow" on="hover" right right-bottom>
+                    <template #content>
+                        <div class="tooltip-content">
+                            <p>There are additional theoretical interactions. Check the box to view them. They are presented with a gray background.</p>
+                        </div>
+                    </template>
+                    <information-outline-icon
+                        class="tooltip-trigger"
+                        :size="18"
+                        title=""
+                    />
+                </tooltip>
+            </div>
             <div class="btn-container">
                 <button @click="showResults('all')" :class="{selected: isSelected('all')}">All Results</button>
                 <button @click="showResults('supp')" :class="{selected: isSelected('supp')}">{{suppDrugBtnTxt}}</button>
@@ -248,6 +264,7 @@ import MonitorSummary from '@/client/cmps/search-engine/MonitorSummary';
 import Loader from '@/client/cmps/common/icons/Loader';
 import ModalWrap from '@/client/cmps/common/ModalWrap';
 import AllRecommendationsModal from '@/client/cmps/shared/modals/AllRecommendationsModal';
+import Checkbox from "@/client/cmps/common/Checkbox";
 
 import SortVerticalIcon from '@/client/cmps/common/icons/SortVerticalIcon';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
@@ -299,10 +316,14 @@ export default {
             emptySuppInteractions: [],
             currSuppInteractions: null,
             isAllRecommendationsModalActive: false,
-            renderKey: 101
+            renderKey: 101,
+            isChecked: false
         }
     },
     computed: {
+        isShowAllDBI(){
+            return this.$store.getters.isShowAllDBI
+        },
         side1Name() {
             if (this.listType === 'drug') return 'Drug';
             return (this.sortBySide === 1) ? 'Supplement' : 'Drug';
@@ -345,6 +366,10 @@ export default {
         },
     },
     methods: {
+        handleCheckbox(isChecked){
+            this.isChecked = isChecked
+            this.$emit('handle-DBI-filter', isChecked)
+        },
         showResults(type){
             this.$store.commit({type: 'setListType', listType: type})
             this.$router.push({ query: { q: [ ...this.$route.query.q ], page: 1 } }).catch(() => {})
@@ -435,6 +460,7 @@ export default {
         this.emptySuppInteractions = JSON.parse(JSON.stringify(this.suppEmptyInteractions))
         this.restoreCollapses();
         this.restoreSort();
+        this.isChecked = this.isShowAllDBI
         this.$nextTick(()=>{
             eventBus.$emit(EV_sortby_side_swaped, this.sortBySide);
         })
@@ -450,7 +476,8 @@ export default {
         MonitorSummary,
         ChevronDownIcon,
         ChevronUpIcon,
-        Loader
+        Loader,
+        Checkbox
     }
 };
 </script>

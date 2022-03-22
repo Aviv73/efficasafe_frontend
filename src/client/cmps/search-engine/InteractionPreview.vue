@@ -36,6 +36,7 @@
                                 :exactName="exactName"
                                 :isPositive="isPositive"
                                 :isSearcheEngin="true"
+                                :isLowLevelInteraction="isLowLevelInteraction(interaction)"
                             />
                         </span>
                         <span v-if="isAllowed" class="table-col" :title="interaction.recommendation">
@@ -368,6 +369,10 @@ export default {
         }
     },
     methods: {
+        isLowLevelInteraction(interaction){
+            if(!interaction.interactionLevel || interaction.interactionLevel === 1) return false
+            return true
+        },
         onOpenSignUp(){
             eventBus.$emit(EV_open_signup);
         },
