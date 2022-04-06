@@ -80,6 +80,7 @@
 
 <script>
 import { userService } from '@/cms/services/user.service';
+import { locationService } from '@/cms/services/location.service'
 import { eventBus, EV_email_exists, EV_show_user_msg } from '@/cms/services/eventBus.service';
 import CloseIcon from 'vue-material-design-icons/Close';
 import EyeIcon from 'vue-material-design-icons/Eye';
@@ -102,9 +103,7 @@ export default {
                 email:'',
                 password:'',
                 username:'',
-                agreedToTerm: false,
-                // agreedToMarketing: false
-                
+                agreedToTerm: false
             },
             isShowVereficationMsg: false,
             isInvaliedEmail: false,
@@ -154,6 +153,8 @@ export default {
             try{
                 this.isBtnDisabled = true
                 if(window.AutopilotAnywhere.sessionId) this.cred.autoPilotSessionId = window.AutopilotAnywhere.sessionId
+                this.cred.email = this.cred.email.trim()
+                this.cred.country = await locationService.getCountryName()
                 await this.$store.dispatch({type: 'signup', cred: this.cred});
                 if(!this.isEmailExists){
                     if(this.$route.name !== 'Payment') this.isShowVereficationMsg = true

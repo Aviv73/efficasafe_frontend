@@ -188,6 +188,7 @@
         <v-card class="multiple-modal-container">
            <v-card-title class="primary headline" style="color:white; font-weight:bold;">Multiple Interaction</v-card-title>
            <autocomplete style="width: 60%; margin: 0 auto" @emitAutocomplete="addMaterial" allow-term-search/>
+           <v-select style="width: 60%; margin: 0 auto" :items="groupNames" label="Groups" @change="handleSelectGroup"></v-select>
            <template v-if="!isLoadingMulti">
               <section class="multiple-material-list" v-if="materialsToMultiple.length">
                 <p class="count">{{materialsToMultiple.length}}</p>
@@ -216,7 +217,7 @@
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 import { utilService } from '@/cms/services/util.service';
 import { eventBus, EV_addInteraction } from '@/cms/services/eventBus.service';
-// import { materialService } from '@/cms/services/material.service';
+import { materialService } from '@/cms/services/material.service';
 import confirmDelete from '@/cms/cmps/general/ConfirmDelete';
 import referenceTable from '@/cms/cmps/common/ReferenceTable';
 import labelPeek from '@/cms/cmps/interaction/edit/LabelPeek';
@@ -250,7 +251,13 @@ export default {
       isMultipleModal: false,
       materialsToMultiple: [],
       isMultipleDone: false,
-      isLoadingMulti: false
+      isLoadingMulti: false,
+      groupNames: ['mag-supplements', 'mag-antacid', 'mag-laxatives', 'Inorganic mag comp', 'Organic mag comp'],
+      magSupplements:['Magnesium sulfate', 'Magnesium glycinate', 'Magnesium phosphate', 'Magnesium oxide', 'Magnesium orotate', 'Magnesium malate', 'Magnesium levulinate', 'Magnesium lactate', 'Magnesium gluconate', 'Magnesium citrate', 'Magnesium chloride', 'Magnesium aspartate', 'Magnesium acetate tetrahydrate', 'Magnesium ascorbate', 'Magnesium Fumarate'],
+      magAntacid:['Magnesium trisilicate', 'Magnesium silicate', 'Magnesium peroxide', 'Magnesium oxide', 'Magnesium hydroxide', 'Magnesium carbonate', 'Magnesium Aluminum Silicate'],
+      magLaxatives:['Magnesium sulfate', 'Magnesium peroxide', 'Magnesium oxide', 'Magnesium hydroxide', 'Magnesium citrate',' Magnesium cation', 'Magnesium carbonate', 'Magnesium acetate'],
+      inorganicMagComp:['Magnesium Bicarbonate', 'Magnesium Carbonate', 'Magnesium Chloride', 'Magnesium Hydroxide', 'Magnesium Oxide', 'Magnesium Phosphate', 'Magnesium Sulfate', 'Magnesium silicate', 'Magnesium peroxide', 'Magnesium Aluminum Silicate'],
+      organicMagComp:['Magnesium malate', 'Magnesium lactate', 'Magnesium gluconate', 'Magnesium citrate', 'Magnesium acetate tetrahydrate', 'Magnesium pidolate', 'Magnesium orotate', 'Magnesium glycinate', 'Magnesium ascorbate', 'Magnesium Fumarate', 'Magnesium gluconate']
     };
   },
   watch: {
@@ -318,6 +325,25 @@ export default {
     },
     onMultiplyInteraction(){
       this.isMultipleModal = true
+    },
+    async handleSelectGroup(groupName){
+      let materialNames
+      if(groupName === 'mag-supplements') materialNames = this.magSupplements
+      else if(groupName === 'mag-antacid') materialNames = this.magAntacid
+      else if(groupName === 'mag-laxatives') materialNames = this.magLaxatives
+      else if(groupName === 'Inorganic mag comp') materialNames = this.inorganicMagComp
+      else if(groupName === 'Organic mag comp') materialNames = this.organicMagComp
+      else return
+
+      const res = await materialService.list({isSearchResults: true, q: materialNames});
+      const miniMaterials = res.materials.map( ({name,_id,type}) => {
+        return {
+          text: name,
+          _id,
+          type
+        }
+      })
+      miniMaterials.forEach( m => this.addMaterial(m))
     },
     addMaterial(miniMat){
       if(miniMat){
