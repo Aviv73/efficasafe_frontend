@@ -72,7 +72,7 @@
 
 import { materialUIService } from '@/cms/services/material-ui.service'
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
-import {storageService} from '@/cms/services/storage.service';
+// import {storageService} from '@/cms/services/storage.service';
 import { eventBus, EV_open_signup, EV_open_login } from '@/cms/services/eventBus.service';
 
 import Loader from '@/client/cmps/common/icons/Loader';
@@ -161,17 +161,17 @@ export default {
         },
     },
     async created(){
-        if(!this.loggedInUser){
-            let remainedVisits = storageService.load('visitCount') || 0
-            if(remainedVisits === 2){
-                this.showSignUpMsg = true
-                this.isLoading = false
-                return
-            } else {
-                remainedVisits++
-                storageService.store('visitCount',remainedVisits)
-            }
-        }
+        // if(!this.loggedInUser){
+        //     let remainedVisits = storageService.load('visitCount') || 0
+        //     if(remainedVisits === 2){
+        //         this.showSignUpMsg = true
+        //         this.isLoading = false
+        //         return
+        //     } else {
+        //         remainedVisits++
+        //         storageService.store('visitCount',remainedVisits)
+        //     }
+        // }
         const { id } = this.$route.params;
         const material = await this.$store.dispatch({type: 'loadMaterial',matId: id });
         if(!material.isShowPage) return this.$router.push('/404')

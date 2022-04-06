@@ -116,13 +116,15 @@ export default {
             const regex = new RegExp(", (?![^(]*\\))");
             const strs = str.split(regex).map(str =>str.trim())
             const noCaps = strs.filter(str => {
-                if(str !== 'aPTT' && str !== 'hbA1c' && str !== str.toUpperCase()) return str
+                if(str !== 'aPTT' && str !== 'hbA1c' && str !== 'Hct' && str !== 'HgB' && str !== str.toUpperCase()) return str
             }).sort()
             let caps = strs.filter(str => {
-                if(str === str.toUpperCase() || str === 'aPTT' || str === 'hbA1c') return str
+                if(str === str.toUpperCase() || str === 'aPTT' || str === 'hbA1c' || str === 'Hct' || str === 'HgB') return str
             })
             caps = caps.map(c => {
                 if(c === 'hbA1c') return 'HbA1c'
+                if(c === 'hct') return 'Hct'
+                if(c === 'hgB') return 'HgB'
                 return c
             }).sort()
             const all = caps.concat(noCaps)

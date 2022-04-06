@@ -37,6 +37,16 @@
                         label="Email*"
                         required
                     />
+                    <v-text-field
+                        type="text"
+                        v-model="editedUser.phone"
+                        label="Phone"
+                    />
+                    <v-text-field
+                        type="text"
+                        v-model="editedUser.country"
+                        label="Country"
+                    />
 
                     <v-menu
                         ref="menu"
@@ -258,8 +268,7 @@ export default {
         async loadUser() {
             const userId = this.$route.params.id;
             let user = null;
-            if (userId)
-                user = await this.$store.dispatch({ type: 'loadUser', userId });
+            if (userId) user = await this.$store.dispatch({ type: 'loadUser', userId });
             else user = userService.getEmptyUser();
             this.editedUser = JSON.parse(JSON.stringify(user));
             this.date = new Date(user.trialTime).toISOString().substr(0, 10);

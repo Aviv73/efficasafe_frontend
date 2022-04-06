@@ -95,6 +95,7 @@ export default {
         async onRegister(){
             try{
                 if(window.AutopilotAnywhere.sessionId) this.cred.autoPilotSessionId = window.AutopilotAnywhere.sessionId
+                this.cred.email = this.cred.email.trim()
                 await this.$store.dispatch({type: 'login', cred: this.cred});
                 this.isShowSuccesseMsg = true
                 setTimeout(() => {
