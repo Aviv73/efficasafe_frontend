@@ -436,4 +436,13 @@
             }
         }
     }
+
+    .bottom-btn{
+        display: none;
+        @include for-narrow-layout {
+            display: inline-block;
+            margin: 0;
+            transform: translateY(82px);
+        }
+    }
 }

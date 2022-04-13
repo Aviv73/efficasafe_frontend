@@ -18,7 +18,7 @@
             v-if="!showDraftName && !isMaterialGroup"
         >
             <span v-if="isInteractionDetails" :class="{ 'pointer' : isLink }" @click="goToMaterial(side1NameToShow)" >{{ side1NameToShow }}</span>
-            <span v-else :title="side1NameToShow" >{{ side1NameToShow }}</span>
+            <span v-else :title="titleSide1" >{{ side1NameToShow }}</span>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="cap cap-left"
@@ -56,7 +56,7 @@
         <span v-if="isInteractionDetails" :class="{ 'pointer' : isLink }" @click="goToMaterial(draftNameContent)">
             {{ draftNameContent }}
         </span>
-        <span v-else :title="draftNameContent">
+        <span v-else :title="titleSide2">
             {{ draftNameContent }}
         </span>
             <svg
@@ -174,7 +174,10 @@ export default {
             return (this.vInteractionCount) ? `${nameToDisplay} (${this.vInteractionCount})` : nameToDisplay;
         },
         draftNameContent() {
-            if((this.$route.name === 'InteractionDetails' ||  this.$route.name === 'VinteractionDetails') && this.sortBySide === 2) return this.side1Name
+            if((this.$route.name === 'InteractionDetails' ||  this.$route.name === 'VinteractionDetails') && this.sortBySide === 2){
+                const side1Name = this.name.split('&')[0].trim();
+                return side1Name
+            } 
             const nameToDisplay = (this.showDraftName && this.draftName) ? this.draftName : this.side2Name;
             if(this.$route.name === 'Boosters') return nameToDisplay
             // if (nameToDisplay.length >= 14 && this.isGroup) {
@@ -186,7 +189,7 @@ export default {
             if (!this.name || this.isMaterialGroup) return '';
             if((this.$route.name === 'InteractionDetails' ||  this.$route.name === 'VinteractionDetails') && this.sortBySide === 2) return this.side2Name
             const side1Name = this.name.split('&')[0].trim();
-            // if (this.onDetailsPage || !this.isSideSwapped) return side1Name;
+            if (this.onDetailsPage || !this.isSideSwapped) return side1Name;
             if (this.$store.getters.materialNamesMap && this.$store.getters.materialNamesMap[side1Name]) {
                 return this.$store.getters.materialNamesMap[side1Name][0];
             }
@@ -217,7 +220,21 @@ export default {
         isSideSwapped(){
             if(this.$store.getters.firstInteractionSide === 1) return true
             return false
-        }
+        },
+        titleSide1(){
+            if(this.name.includes('&')){
+                const side1Name = this.name.split('&')[0].trim();
+                return side1Name
+            }
+            return this.side1NameToShow
+        },
+        titleSide2(){
+            if(this.name.includes('&')){
+                const side1Name = this.name.split('&')[1].trim();
+                return side1Name
+            }
+            return this.draftNameContent
+        },
     },
     methods:{  
         goToMaterial(name){
