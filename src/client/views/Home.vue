@@ -24,7 +24,7 @@
                     placeholder2="Add another"
                     @item-selected="goToSearch"
                 />
-                <button class="btn home-cta" @click="searchhWithBtn">
+                <button class="btn home-cta" @click="searchWithBtn">
                     Get interactions
                 </button>
                 <h2 class="home-subheader">
@@ -294,6 +294,9 @@
                     </article>
                 </li>
             </ul>
+            <button class="btn home-cta bottom-btn" @click="searchWithBtn">
+                Get interactions
+            </button>
         </section>
         <welcome-modal v-if="welcomeModal" @closeModal="welcomeModal = false" />
         <pass-change-success
@@ -356,7 +359,7 @@ export default {
                 eventBus.$emit(EV_clear_input);
             }
         },
-        searchhWithBtn() {
+        searchWithBtn() {
             if (!this.loggedInUser) {
                 if (this.freeSearchesCount <= 0) {
                     this.$emit('showAuth');
