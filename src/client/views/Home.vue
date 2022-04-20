@@ -344,7 +344,11 @@ export default {
     },
     methods: {
         goToSearch(query) {
-            this.searches.push(query);
+            if(query.nestedMaterials.length){
+                this.searches = [...this.searches, ...query.nestedMaterials]
+            }else{
+                this.searches.push(query.txt);
+            }
             if (!this.loggedInUser) {
                 if (this.freeSearchesCount <= 0) {
                     this.$emit('showAuth');
@@ -352,9 +356,12 @@ export default {
                 }
                 this.$store.commit('reduceFreeSearches');
             }
-            if (this.searches.length === 2) {
-                const [q1, q2] = this.searches;
-                this.$router.push(`/search?q=${q1}&q=${q2}`);
+            if (this.searches.length >= 2) {
+                const searchQuery = this.searches.map( (q, idx) => {
+                    const firstChar = idx === 0 ? '?' : '&'
+                    return `${firstChar}q=${q}`
+                }).join('')
+                this.$router.push(`/search${searchQuery}`);
             } else if (this.searches.length === 1) {
                 eventBus.$emit(EV_clear_input);
             }
