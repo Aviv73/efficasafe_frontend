@@ -42,17 +42,17 @@
               <template v-slot:activator>
                 <v-list-item-title>Pharmacology</v-list-item-title>
               </template>
-            <v-list-item v-if="editedMaterial.pharmacology.indication || isShowEmptyLink" @click="goto('Indication')">Indication</v-list-item>
-            <v-list-item v-if="editedMaterial.pharmacology.pharmacodynamics || isShowEmptyLink" @click="goto('Pharmacodynamics')">Pharmacodynamics</v-list-item>
-            <v-list-item v-if="editedMaterial.pharmacology.mechanismOfAction || isShowEmptyLink" @click="goto('Mechanism Of Action2')">Mechanism Of Action</v-list-item>
-            <v-list-item v-if="editedMaterial.pharmacology.absorption || isShowEmptyLink" @click="goto('Absorption')">Absorption</v-list-item>
-            <v-list-item v-if="editedMaterial.pharmacology.toxicity || isShowEmptyLink" @click="goto('Toxicity2')">Toxicity</v-list-item>
-            <v-list-item v-if="editedMaterial.pharmacology.proteinBinding || isShowEmptyLink" @click="goto('Protein Binding')">Protein Binding</v-list-item>
-            <v-list-item v-if="editedMaterial.pharmacology.metabolism || isShowEmptyLink" @click="goto('Metabolism')">Metabolism</v-list-item>
-            <v-list-item v-if="editedMaterial.pharmacology.halfLife || isShowEmptyLink" @click="goto('Half Life')">Half Life</v-list-item>
-            <v-list-item v-if="editedMaterial.pharmacology.routeOfElimination || isShowEmptyLink" @click="goto('Route Of Elimination')">Route Of Elimination</v-list-item>
-            <v-list-item v-if="editedMaterial.pharmacology.volumeOfDistribution || isShowEmptyLink" @click="goto('Volume Of Distribution')">Volume Of Distribution</v-list-item>
-            <v-list-item v-if="editedMaterial.pharmacology.clearance || isShowEmptyLink" @click="goto('Clearance')">Clearance</v-list-item>
+              <v-list-item v-if="editedMaterial.pharmacology.indication || isShowEmptyLink" @click="goto('Indication')">Indication</v-list-item>
+              <v-list-item v-if="editedMaterial.pharmacology.pharmacodynamics || isShowEmptyLink" @click="goto('Pharmacodynamics')">Pharmacodynamics</v-list-item>
+              <v-list-item v-if="editedMaterial.pharmacology.mechanismOfAction || isShowEmptyLink" @click="goto('Mechanism Of Action2')">Mechanism Of Action</v-list-item>
+              <v-list-item v-if="editedMaterial.pharmacology.absorption || isShowEmptyLink" @click="goto('Absorption')">Absorption</v-list-item>
+              <v-list-item v-if="editedMaterial.pharmacology.toxicity || isShowEmptyLink" @click="goto('Toxicity2')">Toxicity</v-list-item>
+              <v-list-item v-if="editedMaterial.pharmacology.proteinBinding || isShowEmptyLink" @click="goto('Protein Binding')">Protein Binding</v-list-item>
+              <v-list-item v-if="editedMaterial.pharmacology.metabolism || isShowEmptyLink" @click="goto('Metabolism')">Metabolism</v-list-item>
+              <v-list-item v-if="editedMaterial.pharmacology.halfLife || isShowEmptyLink" @click="goto('Half Life')">Half Life</v-list-item>
+              <v-list-item v-if="editedMaterial.pharmacology.routeOfElimination || isShowEmptyLink" @click="goto('Route Of Elimination')">Route Of Elimination</v-list-item>
+              <v-list-item v-if="editedMaterial.pharmacology.volumeOfDistribution || isShowEmptyLink" @click="goto('Volume Of Distribution')">Volume Of Distribution</v-list-item>
+              <v-list-item v-if="editedMaterial.pharmacology.clearance || isShowEmptyLink" @click="goto('Clearance')">Clearance</v-list-item>
             </v-list-group>
             <v-list-item v-if="editedMaterial.structuredAdverseEffects.length || isShowEmptyLink" @click="goto('Structured Adverse Effects')">Structured Adverse Effects</v-list-item>
             <v-list-item v-if="editedMaterial.mechanismOfAction || isShowEmptyLink" @click="goto('Mechanism Of Action')">Mechanism Of Action</v-list-item>
@@ -62,6 +62,7 @@
             <v-list-item v-if="editedMaterial.refs.length || isShowEmptyLink" @click="goto('References')">References</v-list-item>
             <v-list-item v-if="editedMaterial.brands.length || isShowEmptyLink" @click="goto('Brands')">Brands</v-list-item>
             <v-list-item v-if="editedMaterial.compounds.length || isShowEmptyLink" @click="goto('Compounds')">Compounds</v-list-item>
+            <v-list-item v-if="editedMaterial.formulas.length || isShowEmptyLink" @click="goto('Formulas')">Formulas</v-list-item>
             <v-list-item v-if="editedMaterial.pathways.length || isShowEmptyLink" @click="goto('Pathways')">Pathways</v-list-item>
             <v-list-item @click="goto('Alerts')">Alerts</v-list-item>
           </v-list-item-group>
@@ -688,6 +689,33 @@
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
+          <h3 ref="Formulas" class="text-center mb-2">Formulas</h3>
+          <v-expansion-panels flat>
+            <v-expansion-panel>
+              <v-expansion-panel-header class="pa-0 my-6">
+                <h5 class="text-lg-left font-weight-bold">Formulas:</h5>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <div class="list-chips">
+                  <v-text-field
+                    v-model="model.formulas"
+                    label="Formulas"
+                    @keypress.enter.prevent="addItemToArray('formulas')"
+                  />
+                  <v-chip-group column>
+                      <v-chip
+                        v-for="(formula, idx) in editedMaterial.formulas"
+                        :key="idx"
+                        close
+                        @click:close="removeItem('formulas', idx, false)"
+                      >
+                      {{ formula }}
+                      </v-chip>
+                  </v-chip-group>
+                </div>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
 
           <div>
             <label for="mat-regions">Regions:</label>
@@ -987,6 +1015,7 @@ export default {
         dBankAliases: '',
         brands: '',
         compounds: '',
+        formulas: '',
         medicinalActions: '',
         indications: '',
         dBankIndications: '',

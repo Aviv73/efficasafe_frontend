@@ -92,6 +92,7 @@ function getEmptyMaterial() {
         dBankRefs: [],
         qualities: [],
         compounds: [],
+        formulas: [],
         pathways: [],
         pathwayRefs: [],
         sensitivities: '',

@@ -542,7 +542,13 @@ export default {
             }
             this.isLoading = false;
             if (!storageService.load('did-onboarding-interaction-tour1') && !this.isScreenNarrow) {
-                this.$nextTick(() => this.$tours['onboarding-interaction-tour'].start())
+                this.$nextTick(() => {
+                    setTimeout(() => {
+                        if(this.$route.name === 'InteractionDetails' && !storageService.load('did-onboarding-interaction-tour1') && !this.isScreenNarrow){
+                            this.$tours['onboarding-interaction-tour'].start()
+                        }
+                    }, 40000)
+                })
             }
         },
         sortInteractionRefs() {
@@ -613,6 +619,11 @@ export default {
     },
     created(){
         eventBus.$on('start-interaction-tour', ()=>{
+            this.$tours['onboarding-interaction-tour'].start();
+        })
+    },
+    beforeDestroy(){
+        eventBus.$off('start-interaction-tour', ()=>{
             this.$tours['onboarding-interaction-tour'].start();
         })
     },

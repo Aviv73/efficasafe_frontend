@@ -44,7 +44,7 @@
                     @keydown.up.prevent="shiftFocus(idx - 1)"
                     @keydown.down.prevent="shiftFocus(idx + 1)"
                 >
-                    {{ result }}
+                    {{ result.txt }}
                 </li>
             </ul>
         </div>
@@ -126,7 +126,7 @@ export default {
             return q
         },
         sortRes(res, q){
-            const idx = res.findIndex(str => str.toUpperCase() === q.toUpperCase())
+            const idx = res.findIndex(r => r.txt.toUpperCase() === q.toUpperCase())
             if(idx >=0){
                 const first = res[idx]
                 res.splice(idx, 1)
@@ -143,7 +143,7 @@ export default {
                 this.search2 = '';
                 this.$refs.searchInput1.focus();
             } else {
-                this.search1 = item;
+                this.search1 = item.txt;
                 this.$refs.searchInput2.focus();
             }
         },

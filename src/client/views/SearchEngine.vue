@@ -15,7 +15,7 @@
                 </router-link>
                 <autocomplete
                     class="search-engine-search-bar v-tour1-step-0 no-print"
-                    :isOnSearchPage="true"
+                    isOnSearchPage
                     :placeholder1="isScreenNarrow ? 'Add another' : '+   Add another'"
                     @item-selected="addMaterials"
                 />
@@ -493,7 +493,7 @@ export default {
                 this.isArrowShown = true
                 if (this.$route.name === 'Boosters' && !this.isScreenNarrow && !storageService.load('did-p-boosters-tour1')) {
                     this.$nextTick(() => {
-                        this.$tours['boosters-tour'].start();
+                        this.handelStartDelayedTour('boosters-tour','did-p-boosters-tour1',  'Boosters')
                     });
                 }
                 const { q, isImported, nonExisting, activeTour, share } = this.$route.query;
@@ -517,7 +517,7 @@ export default {
                     await this.getResults();
                 }
                 if (this.materialsLength >= 1 && !storageService.load('did-onboarding-tour1') && !this.isScreenNarrow) {
-                    this.$tours['onboarding-tour'].start();
+                    this.handelStartDelayedTour('onboarding-tour','did-onboarding-tour1',  'Results')
                 }
                 if(isImported) this.showImportMsg(nonExisting)
             },
@@ -1603,7 +1603,7 @@ export default {
                 }
             });
         },
-        addMaterials(query) {
+        addMaterials(item) {
             if(!this.loggedInUser || !this.loggedInUser.email_verified){
                 if(this.freeSearchesCount === 6){
                     this.isSearchesLeftModalActive = true
@@ -1613,14 +1613,24 @@ export default {
                 }
                 this.$store.commit('reduceFreeSearches');
             }
-            statisticsService.addSearch(query)
+            statisticsService.addSearch(item.txt)
             if (this.$route.query.q) {
-                if (!this.isQueryExists(query)) {
-                    const queries = [ ...this.$route.query.q, query ];
+                if(item.nestedMaterials.length){
+                    const filtered = item.nestedMaterials.filter( m => !this.isQueryExists(m))
+                    const queries = [ ...this.$route.query.q, ...filtered ];
+                    this.$router.replace({ query: { q: queries } });
+                    return
+                }
+                if (!this.isQueryExists(item.txt)) {
+                    const queries = [ ...this.$route.query.q, item.txt ];
                     this.$router.replace({ query: { q: queries } });
                 }
             } else {
-                this.$router.push({ query: { q: [ query ] } });
+                if(item.nestedMaterials.length){
+                    this.$router.push({ query: { q: item.nestedMaterials } });
+                    return
+                }
+                this.$router.push({ query: { q: [ item.txt ] } });
             }
         },
         removeMaterials(query) {
@@ -1770,6 +1780,13 @@ export default {
             })
             
         },
+        handelStartDelayedTour(tourType, storageName, routeName){
+            setTimeout(() => {
+                if(this.$route.name === routeName && !storageService.load(storageName) && !this.isScreenNarrow){
+                    this.$tours[tourType].start();
+                }
+            }, 40000)
+        },
         onPrint(){
             if(this.$route.name === 'Monitor') return this.openMonitorPrint()
             this.isPrintModalActive = true
@@ -1808,7 +1825,7 @@ export default {
         }
         await this.getMaterials();
         if (this.materialsLength === 0 && !storageService.load('did-onboarding-no-searches-tour1') && !this.isScreenNarrow) {
-            this.$tours['onboarding-no-searches-tour'].start();
+            this.handelStartDelayedTour('onboarding-no-searches-tour', 'did-onboarding-no-searches-tour1', 'Results')
         }
         this.innerListEl = this.$el.querySelector(".inner-view")
         if(this.innerListEl){

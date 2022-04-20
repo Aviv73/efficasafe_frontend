@@ -61,6 +61,21 @@
                     >
                 </label>
             </template>
+            <template v-slot:[`header.country`]="{ header }">
+                <label class="list-header">
+                    <input
+                        type="checkbox"
+                        hidden
+                        @change="onSort(header.value, $event.target.checked)"
+                    />
+                    {{ header.text }}
+                    <v-icon
+                        class="icon"
+                        :class="{ 'icon-active': isSortedBy(header.value) }"
+                        >mdi-arrow-down</v-icon
+                    >
+                </label>
+            </template>
             <template v-slot:[`header.registeredTime`]="{ header }">
                 <label class="list-header">
                     <input
@@ -122,6 +137,9 @@
 
                         <td class="centered text-center">
                             {{ item.email }}
+                        </td>
+                        <td class="centered text-center">
+                            {{ item.country }}
                         </td>
                         <td class="centered text-center">
                             {{
@@ -215,6 +233,12 @@ export default {
                 {
                     text: 'Email',
                     value: 'email',
+                    align: 'center',
+                    sortable: false,
+                },
+                {
+                    text: 'Country',
+                    value: 'country',
                     align: 'center',
                     sortable: false,
                 },
