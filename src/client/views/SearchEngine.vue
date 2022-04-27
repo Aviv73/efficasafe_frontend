@@ -1789,6 +1789,7 @@ export default {
         },
         onPrint(){
             if(this.$route.name === 'Monitor') return this.openMonitorPrint()
+            else if(this.$route.name === 'Boosters') return window.print()
             this.isPrintModalActive = true
         },
         openMonitorPrint(){
