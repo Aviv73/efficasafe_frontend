@@ -54,7 +54,7 @@
                             on-details-page
                         />
                         <template v-if="pageLoc">
-                        <div class="capsule-title" :style="{'top':(pageLoc.offset+5)+'px','left':(pageLoc.pageX-20)+'px'}">Press for more info
+                        <div v-if="!isScreenNarrow" class="capsule-title" :style="{'top':(pageLoc.offset+5)+'px','left':(pageLoc.pageX-20)+'px'}">Press for more info
                         <div class="arrow-down"></div>
                         </div>
                         </template>
@@ -283,6 +283,9 @@ export default {
         levelOfEvidenceTxt(){
             if(this.interaction.evidence_level === 1) return 'Information formally provided in official prescribing documentation'
             return 'Based on scientific research'
+        },
+        isScreenNarrow() {
+            return this.$store.getters.isScreenNarrow;
         }
     },
     methods: {
