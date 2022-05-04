@@ -374,7 +374,7 @@
             position: absolute;
             right: 50%;
             top: rem(48px);
-            transform: translateX(50%);
+            transform: translateX(70%);
             
             @include for-narrow-layout {
                 top: 0;

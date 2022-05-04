@@ -111,6 +111,9 @@
                         <figcaption class="caption">powered by</figcaption>
                     </figure>
                     <warnings v-if="side1Material && side2Material" :side1Material="side1Material" :side2Material="side2Material" :isDb="true"/>
+                    <div class="evidence-level-mobile">
+                        <span class="font-bold">Level of evidence:</span> {{ interaction.evidence_level }} - {{levelOfEvidenceTxt}}
+                    </div>
                     <h2
                         v-if="interaction.summary"
                         class="subheader"
@@ -277,6 +280,10 @@ export default {
             if(!this.$store.getters.loggedInUser) return true
             return !this.$store.getters.loggedInUser.isAllowedToSelectTxt;
         },
+        levelOfEvidenceTxt(){
+            if(this.interaction.evidence_level === 1) return 'Information formally provided in official prescribing documentation'
+            return 'Based on scientific research'
+        }
     },
     methods: {
         goToMaterial(name){
