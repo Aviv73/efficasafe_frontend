@@ -4,6 +4,7 @@
             <div class="checkbox-container">
                 <checkbox class="checkbox" @change="handleCheckbox" :isChecked="isChecked" :biggerRadius="true"></checkbox>
                 <h4 class="checkbox-title">Theoretical interactions</h4>
+                <span v-if="theoreticalDiff" class="badge diff-badge">{{theoreticalDiff}}</span>
                 <tooltip v-if="!isScreenNarrow" on="hover" right right-bottom>
                     <template #content>
                         <div class="tooltip-content">
@@ -97,6 +98,7 @@
             </span>
         </header>
         <ul class="horizontal-list-list">
+            <li v-if="$route.name === 'Monitor' && isDBankInteractions" class="horizontal-list-list-item boosters-opener flex-center txt-center">Monitoring guidance for Drug-Drug interactions can be found inside each interaction page.</li>
             <li
                 class="horizontal-list-list-item"
                 v-if="$route.name === 'Monitor' && total"
@@ -304,6 +306,10 @@ export default {
         evidenceLevelPopupActive: {
             type: Boolean,
             default: false
+        },
+        isDBankInteractions: {
+            type: Boolean,
+            default: false
         }
     },
     data(){
@@ -364,6 +370,9 @@ export default {
         isScreenNarrow() {
             return this.$store.getters.isScreenNarrow;
         },
+        theoreticalDiff(){
+            return this.$store.getters.theoreticalDiff
+        }
     },
     methods: {
         handleCheckbox(isChecked){

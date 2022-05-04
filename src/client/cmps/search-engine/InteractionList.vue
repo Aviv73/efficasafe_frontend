@@ -31,6 +31,7 @@
                 :pageCount="listData.pageCount"
                 :total="listData.total"
                 :suppTotal="listData.suppTotal"
+                :isDBankInteractions="listData.isDBankInteractions"
                 :evidenceLevelPopupActive="evidenceLevelPopupActive"
                 @list-sorted="$emit('list-sorted', $event)"
                 @handle-DBI-filter="$emit('handle-DBI-filter', $event)"

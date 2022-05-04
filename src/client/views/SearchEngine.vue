@@ -568,7 +568,8 @@ export default {
                     return {
                         interactions: this.formatedInteractions,
                         pageCount: this.pageCount,
-                        total: this.total
+                        total: this.total,
+                        isDBankInteractions: !!this.dBankInteractions.length
                     };
             }
             return []
@@ -1314,10 +1315,11 @@ export default {
             const drugBankIds = this.materials.filter(m => !m.isIncluded).map(mat => mat.drugBankId);
             const drugBankId = (drugBankIds.length === 1) ? drugBankIds[0] : drugBankIds;
             const criteria = { drugBankId, page: --page, showAll: this.isShowAllDBI };
-            const { dBankInteractions, pageCount, total } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria, cacheKey: `/search/drug2drug?${this.$route.fullPath.split('?')[1]}&filter=${this.isShowAllDBI}` });
+            const { dBankInteractions, pageCount, total, diff } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria, cacheKey: `/search/drug2drug?${this.$route.fullPath.split('?')[1]}&filter=${this.isShowAllDBI}` });
             this.dBankInteractions = dBankInteractions;
             this.dBankPageCount = pageCount;
             this.dBankTotal = total;
+            this.$store.commit({ type: 'setTheoreticalDiff', diff })
             criteria.listsCount = true
             this.dBankInteractionsColorCountMap = await this.$store.dispatch({ type: 'getDBankInteractions', criteria });
         },

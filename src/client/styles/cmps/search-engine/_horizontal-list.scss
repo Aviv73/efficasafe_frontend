@@ -82,6 +82,13 @@
                 right: -22px;
                 color: $clr1
             }
+            .diff-badge{
+                height: 18px;
+                margin-left: 5px;
+                transform: translateY(9px);
+                color: blue;
+                background-color: $yellow;
+            }
         }
     }
 
