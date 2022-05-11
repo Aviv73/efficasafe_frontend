@@ -45,11 +45,13 @@
                             class="flex-center"
                             v-if="loggedInUser && loggedInUser.type !== 'subscribed'"
                         >
-                            <p v-if="!loggedInUser.email_verified">Verifiy your email for a free trial</p>
-                            <p v-else-if="freeTrialTime > 0">
-                                {{freeTrialMsg}}
-                            </p>
-                            <p v-else>| Your free trial has ended - Subscribe Now</p>
+                            <template v-if="loggedInUser.type === 'trial'">
+                                <p v-if="freeTrialTime > 0">
+                                    {{freeTrialMsg}}
+                                </p>
+                                <p v-else>| Your free trial has ended - Subscribe Now</p>
+                            </template>
+                            <p v-else-if="!loggedInUser.email_verified">Verify your email for a free trial</p>
                         </div>
                         <button v-if="!isScreenNarrow && ($route.name === 'Results' || $route.name === 'Boosters' || $route.name === 'InteractionDetails' || $route.name === 'VinteractionDetails')" 
                         @click="activeReleventTour"

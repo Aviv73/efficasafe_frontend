@@ -6,6 +6,7 @@ const cache = {};
 export const materialService = {
     list,
     getById,
+    getByName,
     getByDBId,
     save,
     remove,
@@ -33,6 +34,10 @@ async function list(filterBy = {}, doCache = false, cacheKey = false) {
 
 function getById(id) {
     return httpService.get(`${END_POINT}/${id}`);
+}
+
+function getByName(name) {
+    return httpService.get(`${END_POINT}/name/${name}`);
 }
 
 function getByDBId(DBId) {

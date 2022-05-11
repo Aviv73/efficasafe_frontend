@@ -127,6 +127,15 @@
                         type="date"
                     />
                 </div>
+                <div class="coupon-input">
+                    <h3>End trial time (only for free coupons):</h3>
+                    <v-text-field
+                        v-model="couponToEdit.endTrialDate"
+                        hide-details
+                        single-line
+                        type="date"
+                    />
+                </div>
                 <div class="plans-container">
                     <v-card class="plan" v-for="(plan, idx) in couponToEdit.plans" :key="idx">
                         <div class="coupon-input">
@@ -249,6 +258,7 @@ export default {
             this.couponToEdit = {
                 code: '',
                 validUntil: null,
+                endTrialDate: null,
                 plans:[{
                     duration: '',
                     durationTxt: '',

@@ -6,7 +6,7 @@
             style="margin-bottom: 30px"
         >
             <h1 class="title" style="letter-spacing: -0.1px; margin-top: 40px">
-                באי כנס Inspiration ברוכים הבאים
+                {{title}}
             </h1>
             <section>
                 <p>
@@ -22,9 +22,9 @@
                         href="/we-are-better-hebrew"
                         >הנה הסבר</a
                     >
-                    מדוע <span class="highlight">Efficasafe</span> הוא מנוע
-                    האיטרקציות הטוב ביותר בעולם.
+                    מדוע <span class="highlight">Efficasafe</span> 
                 </p>
+                <p>הוא מנוע האינטרקציות הטוב ביותר בעולם.</p>
             </section>
             <section>
                 <p>
@@ -36,17 +36,19 @@
                     >
                     תוכלו לצפות בהדרכה
                 </p>
-                <p>שתלמד אתכם כיצד להשתמש באתר באופן מיטבי</p>
+                <p>שתלמד אתכם כיצד להשתמש באתר באופן מיטבי.</p>
             </section>
             <section>
                 <p>האתר שמיש כמובן גם במובייל,</p>
                 <p>אולם מומלץ להשתמש דרך המחשב</p>
-                <p>על מנת למקסם את כל היישומים והאפשרויות</p>
+                <p>על מנת למקסם את כל היישומים והאפשרויות.</p>
             </section>
             <section>
-                <p>ההרשמה (sign up) מעניקה רישיון חופשי לשימוש למשך שבועיים.</p>
+                <p>ההרשמה (sign up) מעניקה שימוש חופשי למשך שבועיים.</p>
+            </section>
+            <section>
                 <p>לאחר מכן תוכלו לרכוש מנוי מתחדש חודשי או שנתי</p>
-                <p>ולקבל הנחה של למעלה מ20% על ידי שימוש בקופון discount22</p>
+                <p>ולקבל הנחה של למעלה מ20% על ידי שימוש בקופון {{couponName}}</p>
             </section>
             <section>
                 <p>שמחים לשדרג את יכולות הטיפול שלכם,</p>
@@ -64,5 +66,15 @@ export default {
     components: {
         PageHeader,
     },
+    computed:{
+        title(){
+            if(this.$route.name === 'Broshim') return 'ברוכים הבאים בוגרי קמפוס ברושים'
+            return 'באי כנס Inspiration ברוכים הבאים'
+        },
+        couponName(){
+            if(this.$route.name === 'Broshim') return 'NATUBROSHIM22'
+            return 'discount22'
+        }
+    }
 };
 </script>
