@@ -25,6 +25,7 @@ import dBankInteractionDetails from '@/cms/views/DBankInteractionDetails';
 import UploadData from '@/cms/views/UploadData';
 import Management from '@/cms/views/Management';
 import Statistics from '@/cms/views/Statistics';
+import Formulas from '@/cms/views/Formulas';
 import Coupon from '@/cms/views/Coupon';
 
 
@@ -204,7 +205,13 @@ const routes = [
     name: 'UploadData',
     component: UploadData,
     meta: { allowed: ['admin', 'editor'] }
-  }
+  },
+  {
+    path: '/formulas',
+    name: 'Formulas',
+    component: Formulas,
+    meta: { allowed: ['admin', 'editor'] }
+  },
 ]
 
 const router = new VueRouter({

@@ -1099,16 +1099,19 @@ export default {
                     let name = formatedNames[i];
                     const criteria = { autocomplete: true, q: name };
                     const results = await this.$store.dispatch({ type: 'getMaterials', criteria });
-                    if(results.includes(name)) existingNames.push(name)
+                    const idx = results.findIndex( r => {
+                        return r.txt === name
+                    })
+                    if(idx !== -1) existingNames.push(name)
                     else nonExistingNames.push(name)
                 }
                 if(!existingNames.length){
-                    eventBus.$emit(EV_show_user_msg, 'Import failed. File not supported (most be xlsx) or no drugs/supplements recognized.', 25000, 'error')
+                    eventBus.$emit(EV_show_user_msg, 'Import failed. File not supported (must be xlsx) or no drugs/supplements recognized.', 25000, 'error')
                     this.isLoadingFile = false
                 }
                 else this.$router.push({ query: { q: [ ...existingNames ], isImported: true, nonExisting: [...nonExistingNames] } }).catch(() => {})
             }catch(err){
-                eventBus.$emit(EV_show_user_msg, 'Import failed. File not supported (most be xlsx) or no drugs/supplements recognized.', 25000, 'error')
+                eventBus.$emit(EV_show_user_msg, 'Import failed. File not supported (must be xlsx) or no drugs/supplements recognized.', 25000, 'error')
                 this.isLoadingFile = false
             }
         },
@@ -1650,6 +1653,7 @@ export default {
         },
         clearSearch() {
             this.undoneQueries = [];
+            this.$store.commit({ type: 'setTheoreticalDiff', diff: 0 })
             eventBus.$emit(EV_search_results_cleared);
             this.$router.push({ name: this.$route.name }).catch(()=>{});
         },
@@ -1728,6 +1732,7 @@ export default {
             this.dBankTotal = 0;
             this.sortOptions = null;
             this.isLoading = false;
+            this.$store.commit({ type: 'setTheoreticalDiff', diff: 0 })
             this.$store.commit({ type: 'resetSuppRefs' });
             this.$store.commit({ type: 'resetInteractionListHight' });
         },

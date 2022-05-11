@@ -15,7 +15,8 @@
                     <h1>Signed up through: {{editedUser.provider | capitalize}}</h1>
                 </div>
 
-                <h3>Saved searches: {{editedUser.searches.length}}</h3>
+                <h3 class="mb-3">Saved searches: {{editedUser.searches.length}}</h3>
+                <h3 v-if="editedUser.trialCoupon">Used trial coupon "{{editedUser.trialCoupon}}"</h3>
                 <v-form
                     style="width: 70%;"
                     class="d-flex flex-column mx-auto"

@@ -53,10 +53,11 @@
                     <p class="ribbon-txt ribbon-coupon">COUPON</p>
                     <p class="ribbon-txt-save ribbon-deal">DEAL!</p>
                 </div>
-                <h3 class="card-title">Individual {{plan.durationTxt}}</h3>
+                <h3 class="card-title" v-if="!selectedCoupon.endTrialDate">Individual {{plan.durationTxt}}</h3>
+                <h3 class="card-title" v-else>Free trial until {{ selectedCoupon.endTrialDate | moment('DD/MM/YYYY') }}</h3>
                 <p class="card-price">{{localCurrency}} <span>{{getPriceByLocation(plan)}}</span> /mo</p>
-                <p class="card-billing-txt">{{billingTxt(plan)}}</p>
-                <button class="card-btn">{{couponSelectBtnTxt((idx))}}</button>
+                <p class="card-billing-txt" v-if="!selectedCoupon.endTrialDate">{{billingTxt(plan)}}</p>
+                <button class="card-btn" :class="{'margin-top': selectedCoupon.endTrialDate}">{{couponSelectBtnTxt((idx))}}</button>
             </div>
         </template>
         <div class="card enterprise-card" :class="{'hide': isCouponZero }" @click="openGroupSubModal">
@@ -300,16 +301,24 @@ export default {
         const price = this.getRelevantPrice()
         const user = JSON.parse(JSON.stringify(this.loggedInUser))
         if(price === 0){
-            user.type = 'subscribed'
-            const purchase = {
-                at: Date.now(),
-                duration: this.selectedPlan.duration,
-                price: 0,
-                plan: `${this.selectedPlan.durationTxt}`,
-                until: 'Ongoing',
-                coupon: this.selectedPlan.code
+            if(this.selectedCoupon.endTrialDate){
+                const dateInfo = this.selectedCoupon.endTrialDate.split('-')
+                const timeStamp = new Date( dateInfo[0], dateInfo[1] - 1, dateInfo[2]).getTime()
+                user.type = 'trial'
+                user.trialTime = timeStamp
+                user.trialCoupon = this.selectedCoupon.code
+            }else{
+                user.type = 'subscribed'
+                const purchase = {
+                    at: Date.now(),
+                    duration: this.selectedPlan.duration,
+                    price: 0,
+                    plan: `${this.selectedPlan.durationTxt}`,
+                    until: 'Ongoing',
+                    coupon: this.selectedPlan.code
+                }
+                user.purchases.unshift(purchase)
             }
-            user.purchases.unshift(purchase)
             await this.$store.dispatch({ type: 'updateLoggedInUser', user });
             await this.$store.dispatch({ type: 'updateAutoPilotContact', user});
             this.isLoadingPayment = false

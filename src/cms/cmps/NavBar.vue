@@ -132,6 +132,16 @@
                 tile
                 color="white"
                 text
+                to="/formulas"
+                v-if="isAdmin || isEditor"
+            >
+                Formulas
+            </v-btn>
+            <v-btn
+                class="nav-link"
+                tile
+                color="white"
+                text
                 v-if="loggedInUser"
                 @click="backToSite"
             >

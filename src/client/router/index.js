@@ -185,6 +185,11 @@ const routes = [
     component: () => import(/* webpackChunkName: 'we-are-better-hebrew' */ '../views/inspiration')
   },
   {
+    path: '/broshim',
+    name: 'Broshim',
+    component: () => import(/* webpackChunkName: 'we-are-better-hebrew' */ '../views/inspiration')
+  },
+  {
     path: '/we-are-better',
     name: 'WeAreBetter',
     component: () => import(/* webpackChunkName: 'we-are-better-hebrew' */ '../views/WeAreBetter')
