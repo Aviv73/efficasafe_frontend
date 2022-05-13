@@ -18,6 +18,7 @@ export const labelStore = ({
             state.labels = labels;
         },
         addLabel(state, { label }) {
+            if(!state.labels) state.labels = []
             state.labels.unshift(label);
         },
         removeLabel(state, { labelId }) {
