@@ -1,7 +1,17 @@
 <template>
     <section class="container">
         <h1 class="mb-4">Formulas</h1>
-        <input type="file" @change="onUpload"/>
+        <input class="mb-4" type="file" @change="onUpload"/>
+        <h3 v-if="rowsLength">{{currRowNum}}/{{rowsLength}}</h3>
+        <v-card v-if="showResults" class="mt-8">
+            <v-card-title class="primary headline text-capitalize" style="color:white; font-weight:bold;">
+                Done! look below if there are and problems
+                <v-spacer />
+            </v-card-title>
+            <main class="py-6">
+                <h2 class="mb-4" v-for="(error, idx) in nonExistingToShow" :key="idx"> <span style="font-weight:bold;">{{error.formula}}:</span> {{error.errors}}.</h2>
+            </main>
+        </v-card>
         <v-alert 
             class="upload-data-alert" 
             v-if="response"
@@ -22,15 +32,24 @@ export default {
     name: 'Formulas',
     data(){
         return {
-            response: null
+            response: null,
+            nonExisting: {},
+            showResults: false,
+            rowsLength: 0,
+            currRowNum: 0
         }
     },
     methods: {
         async onUpload(ev){
-            const nonExisting = []
+            this.nonExisting = {}
+            this.showResults = false
+            this.rowsLength = 0
+            this.currRowNum = 0
             try{
                 const rows = await readXlsxFile(ev.target.files[0])
+                this.rowsLength = rows.length
                 for (let j = 0; j < rows.length; j++) {
+                    this.currRowNum++
                     const row = rows[j];
                     if(!row[0] || !row[1]) return 
                     const formula = row[0]
@@ -44,7 +63,8 @@ export default {
                         const name = formulatedMaterialNames[i];
                         const material = await materialService.getByName(name)
                         if(!material){
-                            if(!nonExisting.includes(formula)) nonExisting.push(formula)
+                            if(!this.nonExisting[formula]) this.nonExisting[formula] = [name]
+                            else this.nonExisting[formula].push(name)
                             continue
                         } 
                         if(material.formulas.includes(formula)) continue
@@ -52,18 +72,7 @@ export default {
                         await materialService.save(material)
                     }   
                 }
-                if(!nonExisting.length){
-                    this.response = {
-                        type: 'success',
-                        msg: 'Everything went awesome!'
-                    }
-                }else{
-                    const formulas = nonExisting.join(', ')
-                    this.response = {
-                        type: 'warning',
-                        msg: `Some materials could not be recognized, check the formulas: ${formulas}`
-                    }
-                }
+                this.showResults = true
             }catch(err){
                 this.response = {
                     type: 'error',
@@ -76,6 +85,17 @@ export default {
         alertType(){
             return this.response.type
         },
+        nonExistingToShow(){
+            const formatted = []
+            for(const formulaName in this.nonExisting){
+                const obj = {
+                    formula: formulaName,
+                    errors: this.nonExisting[formulaName].join(', ')
+                }
+                formatted.push(obj)
+            }
+            return formatted
+        }
     }
 };
 </script>

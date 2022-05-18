@@ -42,7 +42,7 @@ export default {
     },
     isDisabled: {
       type: Boolean,
-      defualt: false
+      default: false
     },
     isDark: {
       type: Boolean,
@@ -113,7 +113,7 @@ export default {
   methods: {
     async getResults(name) {
       this.isLoading = true;
-      const criteria = { name: name || '' };
+      const criteria = { name: name || '', limit: 50 };
       if (this.isSuperLabelImport) {
         criteria.isSuper = true;
         criteria.limit = 0;

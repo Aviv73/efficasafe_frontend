@@ -189,7 +189,7 @@ export default {
             if (!this.name || this.isMaterialGroup) return '';
             if((this.$route.name === 'InteractionDetails' ||  this.$route.name === 'VinteractionDetails') && this.sortBySide === 2) return this.side2Name
             const side1Name = this.name.split('&')[0].trim();
-            if (this.onDetailsPage || !this.isSideSwapped) return side1Name;
+            // if (this.onDetailsPage || !this.isSideSwapped) return side1Name;
             if (this.$store.getters.materialNamesMap && this.$store.getters.materialNamesMap[side1Name]) {
                 return this.$store.getters.materialNamesMap[side1Name][0];
             }

@@ -210,6 +210,9 @@
                     <template v-slot:[`item.price`]="{ item }">
                         <span>{{item.coin}}{{item.price}}</span>
                     </template>
+                    <template v-slot:[`item.btn`]="{ item }">
+                        <span><v-btn @click="setAsRefunded(item)">refunded</v-btn></span>
+                    </template>
                 </v-data-table>
             </v-card>
         </div>
@@ -257,6 +260,7 @@ export default {
                 {text: 'Plan', value: 'plan'},
                 {text: 'Coupon', value: 'coupon'},
                 {text: 'Valid Until', value: 'until'},
+                {text: 'Mark as refunded', value: 'btn'},
             ]
         };
     },
@@ -305,6 +309,22 @@ export default {
         async endFreeSubscription(){
             this.editedUser.type = 'registered'
             this.editedUser.purchases[0].until = 'terminated'
+            try{
+                await this.$store.dispatch({ type: 'updateUser', user: this.editedUser });
+                this.response.type = 'success'
+                this.response.msg = `${this.editedUser.username} was updated`
+            }catch(err){
+                this.response.type = 'error'
+                this.response.msg = `SOMETHING WENT WRONG`
+            }
+            setTimeout(() => {
+                this.response.type = null
+                this.response.msg = null
+            },1500)
+        },
+        async setAsRefunded(item){
+            const idx = this.editedUser.purchases.findIndex( p => p.at === item.at)
+            this.editedUser.purchases[idx].until = 'refunded'
             try{
                 await this.$store.dispatch({ type: 'updateUser', user: this.editedUser });
                 this.response.type = 'success'
