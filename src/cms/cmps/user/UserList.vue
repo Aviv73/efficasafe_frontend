@@ -81,7 +81,7 @@
                     <input
                         type="checkbox"
                         hidden
-                        @change="onSort(header.value, $event.target.checked)"
+                        @change="onSort(header.value, !$event.target.checked)"
                     />
                     {{ header.text }}
                     <v-icon
