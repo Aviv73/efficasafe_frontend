@@ -99,8 +99,7 @@ export const userStore = {
             await userService.updateMany(data)
         },
         async updateLoggedInUser(context, { user }) {
-            const savedUser = await userService.update(user);
-            await userService.updateSession(savedUser)
+            const savedUser = await userService.update(user, true);
             context.commit({
                 type: 'setLoggedInUser',
                 user: savedUser
