@@ -39,8 +39,8 @@ function removeMany(ids) {
     return httpService.delete(`${ACCOUNT_END_POINT}`, ids);
 }
 
-function update(user) {
-    return httpService.put(`${ACCOUNT_END_POINT}/${user._id}`, user);
+function update(user, isUpdateSession = false) {
+    return httpService.put(`${ACCOUNT_END_POINT}/${user._id}`, { user, isUpdateSession });
 }
 
 function updateMany(data) {
