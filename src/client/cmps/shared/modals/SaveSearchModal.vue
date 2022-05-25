@@ -104,23 +104,22 @@ export default {
             const searchIdx = this.userSearches.findIndex(search => search.title === this.search.title);
             
             if (searchIdx === -1) {
-                user.searches.push(search);
-                await this.saveToAccount(user);
-            } else {
+                await this.saveToAccount(user._id, search, searchIdx);
+            } 
+            else {
                 if (this.showReplaceBtn) {
-                    user.searches.splice(searchIdx, 1, search);
-                    await this.saveToAccount(user);
+                    await this.saveToAccount(user._id, search, searchIdx);
                     return;
                 }
                 this.msg = `Search '${this.search.title}' allready exists...`;
                 this.showReplaceBtn = true;
             }
         },
-        async saveToAccount(user) {
+        async saveToAccount(userId, newSearch, searchIdx) {
             this.isLoading = true
             try{
-                await this.$store.dispatch({ type: 'updateLoggedInUser', user });
-                await this.$store.dispatch({ type: 'updateAutoPilotContact', user }),
+                const data = { userId , newSearch, searchIdx}
+                await this.$store.dispatch({ type: 'saveNewSearch', data });
                 this.reset();
                 await this.$store.dispatch('getUserSearches');
                 eventBus.$emit(EV_show_user_msg, 'Your search has been saved. You can find it at your account page', 5000);
