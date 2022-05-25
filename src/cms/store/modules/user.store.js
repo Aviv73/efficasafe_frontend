@@ -106,6 +106,20 @@ export const userStore = {
             });
             return savedUser;
         },
+        async saveNewSearch(context, { data }) {
+            const updatedUser = await userService.addSavedSearch(data.newSearch, data.userId, data.searchIdx);
+            context.commit({
+                type: 'setLoggedInUser',
+                user: updatedUser
+            });
+        },
+        async removeSavedSearch(context, { data }) {
+            const updatedUser = await userService.removeSavedSearch(data.searchAt, data.userId);
+            context.commit({
+                type: 'setLoggedInUser',
+                user: updatedUser
+            });
+        },
         async updateAutoPilotContact(context, { user }) {
             return await userService.updateAutoPilotContact(user);
         },

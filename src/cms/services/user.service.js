@@ -11,6 +11,8 @@ export const userService = {
     getById,
     getEmptyUser,
     update,
+    addSavedSearch,
+    removeSavedSearch,
     removeMany,
     sendResetPass,
     resetPassword,
@@ -49,6 +51,14 @@ function updateMany(data) {
 
 function updateAutoPilotContact(user) {
     return httpService.post(`${ACCOUNT_END_POINT}/autopilot-contact`, user);
+}
+
+function addSavedSearch(newSearch, userId, searchIdx) {
+    return httpService.put(`${ACCOUNT_END_POINT}/addSavedSearch/${userId}`, { newSearch, searchIdx });
+}
+
+function removeSavedSearch(searchAt, userId) {
+    return httpService.delete(`${ACCOUNT_END_POINT}/removeSavedSearch/${userId}`, { searchAt });
 }
 
 function loadUsers(filterBy) {

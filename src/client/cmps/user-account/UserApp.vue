@@ -245,13 +245,13 @@ export default {
             if (this.$route.name !== 'Searches') return;
             const user = JSON.parse(JSON.stringify(this.loggedInUser));
             const idx = user.searches.findIndex( s => s.at === item.at)
-            if(idx >= 0){
-                user.searches.splice(idx, 1);
-                await this.$store.dispatch({ type: 'updateLoggedInUser', user });
-                const searches = JSON.parse(JSON.stringify(this.userSearches))
-                searches.splice(idx, 1)
-                this.$store.commit({ type: 'setUserSearches', searches })
-            }
+
+            const data = { userId: user._id , searchAt: item.at }
+            await this.$store.dispatch({ type: 'removeSavedSearch', data });
+
+            const searches = JSON.parse(JSON.stringify(this.userSearches))
+            searches.splice(idx, 1)
+            this.$store.commit({ type: 'setUserSearches', searches })
             eventBus.$emit('close-confirm-delete')
         },
         async onSaveNote(item){
