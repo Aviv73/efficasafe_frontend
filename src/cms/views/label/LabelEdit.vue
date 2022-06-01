@@ -51,17 +51,22 @@
           >
             Browse categories
           </v-btn>
-          <v-file-input
-                title="Upload excel file"
-                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                clearable
-                hide-details
-                show-size
-                dense
-                single-line
-                placeholder="Upload materials"
-                @change="handleMaterialsUpload"
-            />
+          <v-btn
+            color="success"
+            class="upload-btn"
+          >
+            <v-file-input
+                  title="Upload excel file"
+                  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                  clearable
+                  hide-details
+                  show-size
+                  dense
+                  single-line
+                  placeholder="Upload materials"
+                  @change="handleMaterialsUpload"
+              />
+          </v-btn>
         </div>
         <span class="text--secondary">
           {{ relatedMaterials.length }} Materials are picked.

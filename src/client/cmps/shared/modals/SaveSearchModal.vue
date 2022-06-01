@@ -17,7 +17,7 @@
                 <p class="save-search-modal-content-txt font-medium">
                     Please provide a name for your search
                 </p>
-                <div class="save-search-modal-content-input">
+                <div class="save-search-modal-content-input mid">
                     <input
                         type="text"
                         placeholder="Patient name / Search title"
@@ -26,7 +26,14 @@
                         @input="msg = '';showReplaceBtn = false;"
                     />
                 </div>
-                <p class="save-search-modal-content-msg font-medium">
+                <p class="save-search-modal-content-txt font-medium mid">or</p>
+                <div class="save-search-modal-content-input">
+                    <select class="gray" name="" id="" @change="updateSearchTitle">
+                        <option class="gray" value="" disabled selected hidden>Select an existing search</option>
+                        <option style="color: black;" v-for="name in userSearchesNames" :key="name" :value="name">{{name}}</option>
+                    </select>
+                </div>
+                <p class="save-search-modal-content-msg font-medium padding-lr">
                     {{ msg }}
                 </p>
             </main>
@@ -72,6 +79,9 @@ export default {
         },
         userSearches() {
             return this.$store.getters.userSearches;
+        },
+        userSearchesNames(){
+            return this.userSearches.map(s => s.title)
         }
     },
     methods: {
@@ -111,7 +121,7 @@ export default {
                     await this.saveToAccount(user._id, search, searchIdx);
                     return;
                 }
-                this.msg = `Search '${this.search.title}' allready exists...`;
+                this.msg = `Search '${this.search.title}' already exists, sure you want to replace it?`;
                 this.showReplaceBtn = true;
             }
         },
@@ -127,6 +137,9 @@ export default {
                 eventBus.$emit(EV_show_user_msg, 'Something went wrong, please try again', 5000, 'error');
                 this.reset();
             }
+        },
+        updateSearchTitle(ev){
+            this.search.title = ev.target.value
         },
         reset() {
             this.search = userService.getEmptySearch();
