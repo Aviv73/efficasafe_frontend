@@ -1199,7 +1199,6 @@ export default {
             this.$store.commit('setRedPositiveSupp', { redIds: idsToTurnRed })
             this.idsToTurnRed = idsToTurnRed
             this.positiveInteractions = await this.removeDupNonPositives(interactions);
-            console.log(this.positiveInteractions);
             this.suppPositiveInteractions = this.addCacheKey(suppInteractions)
             this.suppPositiveInteractions.forEach(int => {
                 int.vInteractions.forEach(vInt => {

@@ -29,8 +29,17 @@
             <section>
                 <p>
                     בלינק
+                    <a  
+                        v-if="routeName === 'Broshim'"
+                        href="https://broshim.unicko.com/meetings/300057100"
+                        target="_blank"
+                        style="text-decoration: underline"
+                        >כאן</a
+                    >
                     <a
+                        v-else
                         href="https://youtu.be/mS8SAxD72ro"
+                        target="_blank"
                         style="text-decoration: underline"
                         >כאן</a
                     >
@@ -51,6 +60,7 @@
                 <p>לקבלת ההטבה יש לצפות בהדרכה, <a
                         href="https://broshim.unicko.com/meetings/300057100"
                         style="text-decoration: underline"
+                        target="_blank"
                         >כאן.</a
                     ></p>
             </section>
