@@ -256,8 +256,8 @@ export default {
       magSupplements:['Magnesium sulfate', 'Magnesium glycinate', 'Magnesium phosphate', 'Magnesium oxide', 'Magnesium orotate', 'Magnesium malate', 'Magnesium levulinate', 'Magnesium lactate', 'Magnesium gluconate', 'Magnesium citrate', 'Magnesium chloride', 'Magnesium aspartate', 'Magnesium acetate tetrahydrate', 'Magnesium ascorbate', 'Magnesium Fumarate'],
       magAntacid:['Magnesium trisilicate', 'Magnesium silicate', 'Magnesium peroxide', 'Magnesium oxide', 'Magnesium hydroxide', 'Magnesium carbonate', 'Magnesium Aluminum Silicate'],
       magLaxatives:['Magnesium sulfate', 'Magnesium peroxide', 'Magnesium oxide', 'Magnesium hydroxide', 'Magnesium citrate',' Magnesium cation', 'Magnesium carbonate', 'Magnesium acetate'],
-      inorganicMagComp:['Magnesium Bicarbonate', 'Magnesium Carbonate', 'Magnesium Chloride', 'Magnesium Hydroxide', 'Magnesium Oxide', 'Magnesium Phosphate', 'Magnesium Sulfate', 'Magnesium silicate', 'Magnesium peroxide', 'Magnesium Aluminum Silicate'],
-      organicMagComp:['Magnesium malate', 'Magnesium lactate', 'Magnesium gluconate', 'Magnesium citrate', 'Magnesium acetate tetrahydrate', 'Magnesium pidolate', 'Magnesium orotate', 'Magnesium glycinate', 'Magnesium ascorbate', 'Magnesium Fumarate', 'Magnesium gluconate']
+      inorganicMagComp:['Magnesium trisilicate', 'Magnesium silicate', 'Magnesium peroxide', 'Magnesium oxide', 'Magnesium hydroxide', 'Magnesium carbonate', 'Magnesium Aluminum Silicate', 'Magnesium sulfate', 'Magnesium phosphate', 'Magnesium chloride'],
+      organicMagComp:['Magnesium malate', 'Magnesium lactate', 'Magnesium gluconate', 'Magnesium citrate', 'Magnesium acetate tetrahydrate', 'Magnesium pidolate', 'Magnesium orotate', 'Magnesium glycinate', 'Magnesium ascorbate', 'Magnesium Fumarate', 'Magnesium gluconate', 'Magnesium acetate']
     };
   },
   watch: {

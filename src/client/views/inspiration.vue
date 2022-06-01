@@ -46,9 +46,17 @@
             <section>
                 <p>ההרשמה (sign up) מעניקה שימוש חופשי למשך שבועיים.</p>
             </section>
-            <section>
+            <section v-if="routeName === 'Broshim'">
+                <p>השימוש לבוגרי קמפוס ברושים הוא חינמי עד סוף השנה,</p>
+                <p>לקבלת ההטבה יש לצפות בהדרכה, <a
+                        href="https://broshim.unicko.com/meetings/300057100"
+                        style="text-decoration: underline"
+                        >כאן.</a
+                    ></p>
+            </section>
+            <section v-else>
                 <p>לאחר מכן תוכלו לרכוש מנוי מתחדש חודשי או שנתי</p>
-                <p>ולקבל הנחה של למעלה מ20% על ידי שימוש בקופון {{couponName}}</p>
+                <p>ולקבל הנחה של למעלה מ20% על ידי שימוש בקופון discount22</p>
             </section>
             <section>
                 <p>שמחים לשדרג את יכולות הטיפול שלכם,</p>
@@ -68,12 +76,11 @@ export default {
     },
     computed:{
         title(){
-            if(this.$route.name === 'Broshim') return 'ברוכים הבאים בוגרי קמפוס ברושים'
+            if(this.routeName === 'Broshim') return 'ברוכים הבאים בוגרי קמפוס ברושים'
             return 'באי כנס Inspiration ברוכים הבאים'
         },
-        couponName(){
-            if(this.$route.name === 'Broshim') return 'NATUBROSHIM22'
-            return 'discount22'
+        routeName(){
+            return this.$route.name
         }
     }
 };
