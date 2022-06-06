@@ -91,6 +91,7 @@ export default {
         openSignupModal(){
             eventBus.$emit(EV_open_signup);
             this.$emit('closeModal');
+            
         },
         async onRegister(){
             try{
