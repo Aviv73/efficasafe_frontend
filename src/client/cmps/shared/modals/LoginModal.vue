@@ -72,11 +72,11 @@ export default {
             return this.$store.getters.loggedInUser;
         },
         googleLink(){
-            if(window.AutopilotAnywhere.sessionId) return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/google?q=${window.AutopilotAnywhere.sessionId}` : `/auth/google?q=${window.AutopilotAnywhere.sessionId}`
+            if(window.AutopilotAnywhere && window.AutopilotAnywhere.sessionId) return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/google?q=${window.AutopilotAnywhere.sessionId}` : `/auth/google?q=${window.AutopilotAnywhere.sessionId}`
             return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/google` : `/auth/google`
         },
         facebookLink(){
-            if(window.AutopilotAnywhere.sessionId) return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/facebook?q=${window.AutopilotAnywhere.sessionId}` : `/auth/facebook?q=${window.AutopilotAnywhere.sessionId}`
+            if(window.AutopilotAnywhere && window.AutopilotAnywhere.sessionId) return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/facebook?q=${window.AutopilotAnywhere.sessionId}` : `/auth/facebook?q=${window.AutopilotAnywhere.sessionId}`
             return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/facebook` : `/auth/facebook`
         },
         passInputType(){
@@ -94,7 +94,7 @@ export default {
         },
         async onRegister(){
             try{
-                if(window.AutopilotAnywhere.sessionId) this.cred.autoPilotSessionId = window.AutopilotAnywhere.sessionId
+                if(window.AutopilotAnywhere && window.AutopilotAnywhere.sessionId) this.cred.autoPilotSessionId = window.AutopilotAnywhere.sessionId
                 this.cred.email = this.cred.email.trim()
                 await this.$store.dispatch({type: 'login', cred: this.cred});
                 this.isShowSuccesseMsg = true
