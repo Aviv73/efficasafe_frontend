@@ -31,7 +31,7 @@
                     בלינק
                     <a  
                         v-if="routeName === 'Broshim'"
-                        href="https://broshim.unicko.com/meetings/300057100"
+                        href="https://vimeo.com/717438994/8b7ded4242"
                         target="_blank"
                         style="text-decoration: underline"
                         >כאן</a
@@ -58,7 +58,7 @@
             <section v-if="routeName === 'Broshim'">
                 <p>השימוש לבוגרי קמפוס ברושים הוא חינמי עד סוף השנה,</p>
                 <p>לקבלת ההטבה יש לצפות בהדרכה, <a
-                        href="https://broshim.unicko.com/meetings/300057100"
+                        href="https://vimeo.com/717438994/8b7ded4242"
                         style="text-decoration: underline"
                         target="_blank"
                         >כאן.</a

@@ -47,7 +47,7 @@ function restore(label) {
 }
 
 function remove(id) {
-    httpService.delete(`${END_POINT}/${id}`);
+    httpService.get(`${END_POINT}/delete/${id}`);
 }
 
 function removeMany(ids) {

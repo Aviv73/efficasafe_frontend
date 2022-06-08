@@ -54,7 +54,10 @@
                 placeholder="Upload refs"
                 @change="handleRefsUpload"
               />
-              <v-btn @click="addRefsToMaterials" class="multiple-btn success">Add refs to materials</v-btn>
+              <section class="btns-container">
+                <v-btn @click="addRefsToMaterials" class="success">Add refs to materials</v-btn>
+                <v-btn @click="removeRefsToMaterials" class="error">Remove refs to materials</v-btn>
+              </section>
            </template>
            <loader v-else/>
         </v-card>
@@ -64,6 +67,7 @@
         v-if="response.msg"
         :type="response.type"
         dismissible
+        style="z-index: 1001;"
     >
         {{response.msg}}
     </v-alert>
@@ -166,6 +170,31 @@ export default {
     },
     removeMaterialToAddRefs(idx){
       this.materialsToAddRefs.splice(idx, 1)
+    },
+    async removeRefsToMaterials(){
+      if(!this.materialsToAddRefs.length){
+        this.response.type = 'error'
+        this.response.msg = `No materials were added`
+        setTimeout(() => {
+          this.response.type = null
+          this.response.msg = null
+        },3000)
+        return
+      }
+      this.isLoadingAddMultiRefs = true
+      for (let i = 0; i < this.materialsToAddRefs.length; i++) {
+        const miniMat = this.materialsToAddRefs[i];
+        const material = await materialService.getById(miniMat._id)
+        material.refs = []
+        await materialService.save(material)
+      }
+      this.isLoadingAddMultiRefs = false
+      this.response.type = 'success'
+      this.response.msg = `All refs were deleted!`
+      setTimeout(() => {
+        this.response.type = null
+        this.response.msg = null
+      },3000)
     },
     async addRefsToMaterials(){
       if(!this.materialsToAddRefs.length){
