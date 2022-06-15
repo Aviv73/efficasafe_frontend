@@ -30,6 +30,7 @@
                 <a v-if="material.pregnancy" @click="goTo('Pregnancy')">Pregnancy</a>
                 <a v-if="material.lactation" @click="goTo('Lactation')">Lactation</a>
                 <a v-if="material.mechanismOfAction" @click="goTo('Mechanism Of Action')">Mechanism Of Action</a>
+                <a @click="goTo('Interactions')">Interactions</a>
                 <a v-if="refsToShow.length" @click="goTo('References')">References</a>
             </section>
         </aside>
@@ -140,6 +141,13 @@
             <section v-if="material.mechanismOfAction" class="material-details-content-section">
                 <h3 ref="Mechanism Of Action">Mechanism Of Action</h3>
                 <p v-html="material.mechanismOfAction" v-refs-tooltip-material="{material,refCountMap}"></p>
+                <hr class="line">
+            </section>
+            <section class="material-details-content-section">
+                <h3 ref="Interactions">Interactions</h3>
+                    <router-link :to="`/search?q=${originalMaterial.name}`" target="_blank" class="fda-link font14">
+                        click here to see all of the interactions
+                    </router-link>
                 <hr class="line">
             </section>
             <section v-if="refsToShow.length" class="material-details-content-refs">
