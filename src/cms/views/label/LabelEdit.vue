@@ -67,6 +67,14 @@
                   @change="handleMaterialsUpload"
               />
           </v-btn>
+          <v-btn color="primary" class="download-btn">
+                <download-excel
+                :data="relatedMaterialNames"
+                :name="`materialList.xls`"
+                >
+                    download materials
+                </download-excel>
+            </v-btn>
         </div>
         <span class="text--secondary">
           {{ relatedMaterials.length }} Materials are picked.
@@ -151,6 +159,13 @@ export default {
     primaryMaterialIds() {
       if (!this.editedLabel) return [];
       return this.editedLabel.primaryMaterialIds;
+    },
+    relatedMaterialNames(){
+      return this.relatedMaterials.map(m =>{
+        return {
+          name: m.name
+        }
+      })
     }
   },
   methods: {
