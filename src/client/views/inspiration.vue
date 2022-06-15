@@ -1,6 +1,7 @@
 <template>
     <section class="about-hebrew-page">
         <page-header />
+        
         <!--------------------- Inspiration ---------------------------->
         <article
             class="about-hebrew-page-container"
