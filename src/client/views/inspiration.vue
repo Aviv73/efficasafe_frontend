@@ -29,6 +29,17 @@
                 <p>הוא מנוע האינטרקציות הטוב ביותר בעולם.</p>
             </section>
             <section>
+                <p>ביום ראשון הקרוב תיערך הדרכה,</p>
+                <p>בין משתתפיה יוגרל מנוי שנתי חינם!</p>
+                <p>הרשמה להדרכה ניתן לבצע <a
+                        href="https://lp.vp4.me/q3mz"
+                        target="_blank"
+                        style="text-decoration: underline"
+                        >כאן</a
+                    >.</p>
+            </section>
+            <section>
+                <p>פספסתם? לא יכולים להגיע?</p>
                 <p>
                     בלינק
                     <a
@@ -59,7 +70,7 @@
             </section>
         </article>
         <!--------------------- Inspiration ---------------------------->
-        
+
         <!----------------------- Broshim ------------------------------>
         <article
             class="about-hebrew-page-container"
