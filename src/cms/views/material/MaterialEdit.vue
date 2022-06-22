@@ -700,7 +700,7 @@
                   <v-text-field
                     v-model="model.formulas"
                     label="Formulas"
-                    @keypress.enter.prevent="addItemToArray('formulas')"
+                    @keypress.enter.prevent="addFormula($event)"
                   />
                   <v-chip-group column>
                       <v-chip
@@ -709,7 +709,7 @@
                         close
                         @click:close="removeItem('formulas', idx, false)"
                       >
-                      {{ formula }}
+                      {{ formula.as ===  editedMaterial.name ? formula.formulaName : `${formula.formulaName} : ${formula.as}`}}
                       </v-chip>
                   </v-chip-group>
                 </div>
@@ -1309,6 +1309,23 @@ export default {
     },
     removeItemFromArray(itemIdx, arrName) {
       this.editedMaterial[arrName].splice(itemIdx, 1);
+    },
+    addFormula(ev){
+      const formula = ev.target.value
+      let formulaObj
+      if(!formula.includes(':')){
+        formulaObj = {
+          formulaName: formula,
+          as: this.editedMaterial.name
+        }
+      }else{
+        const strs = formula.split(':')
+        formulaObj = {
+          formulaName: strs[0].trim(),
+          as: strs[1].trim()
+        }
+      }
+      this.editedMaterial.formulas.push(formulaObj)
     },
     addItemToArray(arrName) {
       if (!this.model[arrName]) return;

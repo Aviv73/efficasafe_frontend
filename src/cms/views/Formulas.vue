@@ -67,8 +67,11 @@ export default {
                             else this.nonExisting[formula].push(name)
                             continue
                         } 
-                        if(material.formulas.includes(formula)) continue
-                        material.formulas.push(formula)
+                        const idx = material.formulas.findIndex(f => f.formulaName === formula )
+                        if(idx !== -1){
+                            material.formulas.splice(idx, 1)
+                        }
+                        material.formulas.push({formulaName:formula, as: name})
                         await materialService.save(material)
                     }   
                 }
