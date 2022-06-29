@@ -1372,3 +1372,10 @@ export default {
   },
 };
 </script>
+
+<style>
+  .v-chip--clickable {
+      user-select: unset !important;
+      cursor: text;
+  }
+</style>

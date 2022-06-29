@@ -490,11 +490,18 @@ export default {
     methods: {
         goToMaterial(name){
             let id
-            if(name === this.interaction.side1Material.name) id = this.interaction.side1Material._id
+            if(name === this.interaction.side1Material.name || this.checkIsPartOfSide1(name)) id = this.interaction.side1Material._id
             else if(this.interaction.side2Material) id = this.interaction.side2Material._id
             else id = this.side2Material._id
             let routeData = this.$router.resolve({path: `/material/${id}`});
             window.open(routeData.href, '_blank');
+        },
+        checkIsPartOfSide1(name){
+            const material = this.side1Material
+            if(material.aliases.includes(name) || material.brands.includes(name) || material.dBankAliases.includes(name)){
+                return true
+            }
+            return false
         },
         printWindow(){
             window.print();
