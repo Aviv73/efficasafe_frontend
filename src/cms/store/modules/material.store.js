@@ -61,7 +61,10 @@ export const materialStore = {
             return materials;
         },
         async getMaterials(context, { criteria, doCache, cacheKey }) {
-            const { materials } = await materialService.list(criteria, doCache, cacheKey);
+            const { materials, originalQ } = await materialService.list(criteria, doCache, cacheKey);
+            if(criteria.autocomplete){
+                return { materials, originalQ }
+            }
             return materials;
         },
         async getStatistics() {

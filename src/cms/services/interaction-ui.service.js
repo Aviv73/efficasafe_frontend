@@ -1,5 +1,6 @@
 export const interactionUIService = {
     getInteractionColor,
+    getInteractionColorName,
     getRecommendationOrderMap,
     getEvidenceLevelDictionary,
     calculateEvidenceLevel,
@@ -168,6 +169,25 @@ function getInteractionColor(recommendation) {
             return '#56C596'; // $green 
         default:
             return '#a4b8c6';
+    }
+}
+function getInteractionColorName(recommendation) {
+    switch (recommendation.toLowerCase()) {
+        case 'avoid coadministration':
+        case 'coadministration is not advised':
+            return 'red'; // $red
+        case 'caution should be taken':
+        case 'coadministration is not contraindicated but caution should be taken':
+        case 'coadministration is possible but caution should be taken':
+            return 'yellow'; // $yellow
+        case 'coadministration is not contraindicated':
+        case 'coadministration is not contraindicated and may even be advised':
+        case 'coadministration is possible':
+        case 'coadministration is possible and may even be advised':
+        case 'coadministration is advised':
+            return 'green'; // $green 
+        default:
+            return 'null';
     }
 }
 
