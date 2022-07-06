@@ -46,7 +46,7 @@ export default {
             this.isLoading = true;
             const criteria = { autocomplete: true, q: q || '' };
             const results = await this.$store.dispatch({ type: 'getMaterials', criteria });
-            this.results = results;
+            this.results = results.materials;
             this.isLoading = false;
         },
         emitSelected(select) {

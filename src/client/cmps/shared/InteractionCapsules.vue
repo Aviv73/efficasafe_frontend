@@ -18,7 +18,8 @@
             v-if="!showDraftName && !isMaterialGroup"
         >
             <span v-if="isInteractionDetails" :class="{ 'pointer' : isLink }" @click="goToMaterial(side1NameToShow)" >{{ side1NameToShow }}</span>
-            <span v-else :title="titleSide1" >{{ side1NameToShow }}</span>
+            <span v-else :title="side1NameToShow" >{{ side1NameToShow }}</span>
+            <!-- old title - "titleSide1" -->
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="cap cap-left"

@@ -102,7 +102,8 @@ export default {
             search2: '',
             results: [],
             isLoading: false,
-            isSecondaryFocused: false
+            isSecondaryFocused: false,
+            lastQ: ''
         }
     },
     methods: {
@@ -114,10 +115,16 @@ export default {
             this.isLoading = true;
             q = q.trim()
             q = this.transHebrew(q)
+            this.lastQ = q
             const criteria = { autocomplete: true, q };
             const results = await this.$store.dispatch({ type: 'getMaterials', criteria });
-            this.results = this.sortRes(results, q);
-            this.isLoading = false;
+            if(results.originalQ === this.lastQ || this.transHebrew(results.originalQ) === this.lastQ){
+                this.results = this.sortRes(results.materials, q);
+                this.isLoading = false;
+            }else{
+                this.isLoading = false;
+                return
+            }
         },
         transHebrew(q){
             const chars = q.split('')

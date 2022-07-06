@@ -515,6 +515,15 @@ export default {
                 if (!isSameSearch) {
                     this.$store.commit('resetPosSupp')
                     await this.getResults();
+                }else{
+                    //Search positive if there are non in the front already
+                    if(!this.positiveInteractions.length && !this.suppPositiveInteractions.length){
+                        this.isLoading = true;
+                        this.isPBLoading = true;
+                        await this.getPositives();
+                        this.isLoading = false;
+                        this.isPBLoading = false;
+                    }
                 }
                 if (this.materialsLength >= 1 && !storageService.load('did-onboarding-tour1') && !this.isScreenNarrow) {
                     this.handelStartDelayedTour('onboarding-tour','did-onboarding-tour1',  'Results')
@@ -614,20 +623,38 @@ export default {
         },
         allInteractionsColorCount(){
             if(!this.interactionsColorCountMap && !this.dBankInteractionsColorCountMap) return null
-            if(this.listType === 'supp') return this.interactionsColorCountMap
+            if(this.listType === 'supp') return this.interactionsColorCountSupp
             if(this.listType === 'drug') return this.dBankInteractionsColorCountMap
             if(this.listType === 'all'){
                 return {
-                    red: this.interactionsColorCountMap.red + this.dBankInteractionsColorCountMap.red,
-                    yellow: this.interactionsColorCountMap.yellow + this.dBankInteractionsColorCountMap.yellow,
-                    green: this.interactionsColorCountMap.green + this.dBankInteractionsColorCountMap.green
+                    red: this.interactionsColorCountSupp.red + this.dBankInteractionsColorCountMap.red,
+                    yellow: this.interactionsColorCountSupp.yellow + this.dBankInteractionsColorCountMap.yellow,
+                    green: this.interactionsColorCountSupp.green + this.dBankInteractionsColorCountMap.green
                 }
             }
             return null
         },
+        interactionsColorCountSupp(){
+            if(!this.interactionsColorCountMap) return null
+            if(this.formatedInteractions.length === 50 || this.pageCount > 1){
+                return this.interactionsColorCountMap
+            }else{
+                const map = {red: 0, yellow: 0, green: 0}
+                this.formatedInteractions.forEach(int => {
+                    if(int.vInteractions){
+                        int.vInteractions.forEach(vint => {
+                            map[interactionUIService.getInteractionColorName(vint.recommendation)]++
+                        })
+                    }else{
+                        map[interactionUIService.getInteractionColorName(int.recommendation)]++
+                    }
+                })
+                return map
+            }
+        },
         resultsCount(){
             if(this.listType === 'all') return this.totalInteractionCountNoBoosters
-            if(this.listType === 'supp') return this.interactionsColorCountMap.red + this.interactionsColorCountMap.yellow + this.interactionsColorCountMap.green
+            if(this.listType === 'supp') return this.interactionsColorCountSupp.red + this.interactionsColorCountSupp.yellow + this.interactionsColorCountSupp.green
             if(this.listType === 'drug') return this.dBankInteractionsColorCountMap.red + this.dBankInteractionsColorCountMap.yellow + this.dBankInteractionsColorCountMap.green
             return ''
         },
@@ -1008,8 +1035,8 @@ export default {
         totalInteractionCountNoBoosters(){
             let interactionsSum
             let dBankInteractionsSum
-            if(! this.interactionsColorCountMap) interactionsSum = 0
-            else interactionsSum = this.interactionsColorCountMap.red + this.interactionsColorCountMap.yellow + this.interactionsColorCountMap.green
+            if(!this.interactionsColorCountSupp) interactionsSum = 0
+            else interactionsSum = this.interactionsColorCountSupp.red + this.interactionsColorCountSupp.yellow + this.interactionsColorCountSupp.green
             if(!this.dBankInteractionsColorCountMap) dBankInteractionsSum = 0
             else dBankInteractionsSum = this.dBankInteractionsColorCountMap.red + this.dBankInteractionsColorCountMap.yellow + this.dBankInteractionsColorCountMap.green
             return interactionsSum + dBankInteractionsSum
@@ -1099,7 +1126,7 @@ export default {
                     let name = formatedNames[i];
                     const criteria = { autocomplete: true, q: name };
                     const results = await this.$store.dispatch({ type: 'getMaterials', criteria });
-                    const idx = results.findIndex( r => {
+                    const idx = results.materials.findIndex( r => {
                         return r.txt === name
                     })
                     if(idx !== -1) existingNames.push(name)
@@ -1135,7 +1162,6 @@ export default {
         },
         async getResults() {
             this.isLoading = true;
-            this.isPBLoading = true;
             await this.getMaterials();
             if (this.$route.query.q && this.$route.query.q.length === 1 && this.materialsLength > 1) {
                 eventBus.$emit(EV_show_user_msg, 'Compound as a single result isn\'t supported, Please insert more material/s', 15000);
@@ -1144,19 +1170,36 @@ export default {
                 return;
             }
             if (this.$route.name === 'Boosters') {
+                this.isPBLoading = true;
                 await this.getPositives();
                 this.isLoading = false;
                 this.isPBLoading = false;
                 const prms = [ this.getInteractions(), this.getDBankInteractions() ];
                 await Promise.all(prms);
+                this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions)
             } else {
                 const prms = [ this.getInteractions(), this.getDBankInteractions() ];
                 await Promise.all(prms);
                 this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions)
                 this.isLoading = false;
-                await this.getPositives();
-                this.isPBLoading = false;
             }
+
+            // Old why, getting all info at once
+
+            // if (this.$route.name === 'Boosters') {
+            //     await this.getPositives();
+            //     this.isLoading = false;
+            //     this.isPBLoading = false;
+            //     const prms = [ this.getInteractions(), this.getDBankInteractions() ];
+            //     await Promise.all(prms);
+            // } else {
+            //     const prms = [ this.getInteractions(), this.getDBankInteractions() ];
+            //     await Promise.all(prms);
+            //     this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions)
+            //     this.isLoading = false;
+            //     await this.getPositives();
+            //     this.isPBLoading = false;
+            // }
         },
         async getPositives() {
             const drugIds = this.materials.reduce((acc, { type, _id, labels, isIncluded }) => {
