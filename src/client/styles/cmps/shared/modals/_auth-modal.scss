@@ -232,6 +232,16 @@
             color: $gray;
         }
 
+        .reset-pass-toggle{
+            z-index: 9999;
+            top: -50px;
+            right: 0;
+
+            .eye-icon{
+                transform: scale(1.5);
+            }
+        }
+
         .eye-icon{
             position: absolute;
             top: 65px;
