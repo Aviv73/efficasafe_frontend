@@ -1352,6 +1352,7 @@ export default {
       var top = element.offsetTop;
 
       window.scrollTo(0, top);
+      this.drawer = false
     }
   },
   async created() {

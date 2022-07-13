@@ -28,10 +28,11 @@
                                 <button
                                     type="button"
                                     tabindex="-1"
-                                    class="auth-modal-field-pass-toggle"
+                                    class="auth-modal-field-pass-toggle reset-pass-toggle"
                                     @click="toggleInputType()"
                                 >
-                                    <eye-icon title="" :size="16" />
+                                    <eye-icon v-if="inputType === 'password'" class="eye-icon" title="" :size="16" />
+                                    <eye-off-icon v-else class="eye-icon" title="" :size="16" />
                                 </button>
                             </div>
                             <p class="auth-modal-user-msg font-bold is-error" v-if="errors.length">
@@ -49,9 +50,18 @@
                                 <input
                                     :class="{ 'is-invalid': !!errors.length }"
                                     v-model="checkPass"
-                                    type="password"
+                                    :type="inputType2"
                                     placeholder="Repeat Password"
                                 />
+                                <button
+                                    type="button"
+                                    tabindex="-1"
+                                    class="auth-modal-field-pass-toggle reset-pass-toggle"
+                                    @click="toggleInputType2()"
+                                >
+                                    <eye-icon v-if="inputType2 === 'password'" class="eye-icon" title="" :size="16" />
+                                    <eye-off-icon v-else class="eye-icon" title="" :size="16" />
+                                </button>
                             </div>
                             <p class="auth-modal-user-msg font-bold is-error" v-if="errors.length">
                                 {{ errors[0] }}
@@ -75,11 +85,13 @@ import { userService } from '@/cms/services/user.service';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 
 import EyeIcon from 'vue-material-design-icons/Eye';
+import EyeOffIcon from 'vue-material-design-icons/EyeOff';
 
 export default {
     data() {
         return {
             inputType: 'password',
+            inputType2: 'password',
             newPass: '',
             checkPass: '',
             failMsg: '',
@@ -108,12 +120,16 @@ export default {
         },
         toggleInputType() {
             this.inputType = (this.inputType === 'password') ? 'text' : 'password';
+        },
+        toggleInputType2() {
+            this.inputType2 = (this.inputType2 === 'password') ? 'text' : 'password';
         }
     },
     components: {
         ValidationObserver,
         ValidationProvider,
-        EyeIcon
+        EyeIcon,
+        EyeOffIcon
     }
 };
 </script>

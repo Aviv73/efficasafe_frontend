@@ -754,7 +754,7 @@ export default {
                 const isHaveInteractions = formatedPositiveInteractions.some(posInt => material._id === posInt.mainMaterialId)
                 if(!isHaveInteractions){
                     const emptyInteraction = {
-                        name: queryCount > 1 ? `${material.name} (0)`: `${material.userQuery} (0)`,
+                        name: queryCount > 1 ? `${material.name}`: `${material.userQuery}`,
                         recommendation: '',
                         vInteractions: [],
                         evidenceLevel: '',

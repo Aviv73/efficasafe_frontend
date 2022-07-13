@@ -70,7 +70,7 @@
                         </span>
                         <span class="evidence-level">
                             {{ interaction.evidenceLevel }}
-                            <tooltip on="hover" right-top>
+                            <tooltip on="hover" right>
                                 <template #content>
                                     <div class="evidence-level-tooltip-content" v-html="refsDetailsTxt" />
                                 </template>
