@@ -349,7 +349,7 @@
                             </tooltip>
                         </li>
                     </ul>
-                    <div class="arrow-container" :style="{ right: arrowRightPositin + 'px'}">
+                    <div class="arrow-container" :style="{ right: arrowRightPosition + 'px'}">
                         <chevron-right-icon v-if="isArrowShown && isScreenNarrow" class="chevron-right-icon"/>
                     </div>
                 </nav>
@@ -476,7 +476,7 @@ export default {
             undoneQueries: [],
             isArrowShown: true,
             idsToTurnRed: [],
-            arrowRightPositin: 3,
+            arrowRightPosition: 3,
             loadingTime: 0,
             sameQ: false,
             isLoadingFile: false,
@@ -1767,6 +1767,8 @@ export default {
             this.dBankInteractions = [];
             this.positiveInteractions = [];
             this.suppPositiveInteractions = []
+            this.idsToTurnRed = []
+            this.emptySuppPositiveInteractions = []
             this.interactionsColorCountMap = {red: 0, yellow: 0, green: 0}
             this.dBankInteractionsColorCountMap = {red: 0, yellow: 0, green: 0}
             this.pageCount = 0;
@@ -1780,7 +1782,7 @@ export default {
             this.$store.commit({ type: 'resetInteractionListHight' });
         },
         moveArrow({target}){
-            this.arrowRightPositin = (target.scrollLeft * -1)
+            this.arrowRightPosition = (target.scrollLeft * -1)
         },
         addEventBusListeners(){
             eventBus.$on('start-tour', () =>{

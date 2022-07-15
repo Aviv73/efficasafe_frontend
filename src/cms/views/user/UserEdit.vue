@@ -159,7 +159,7 @@
                     </v-btn>
 
                     <v-btn
-                        v-if="loggedInUser && loggedInUser.role === 'admin'"
+                        v-if="loggedInUser && (loggedInUser.role === 'admin' || loggedInUser.role === 'sales')"
                         color="error"
                         @click="isWarning = true"
                     >
