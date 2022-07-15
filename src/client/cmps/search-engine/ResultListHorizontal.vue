@@ -466,13 +466,26 @@ export default {
             this.renderKey++
             }
         this.suppInteractionsOriginalLength = this.suppInteractions.length
-        this.emptySuppInteractions = JSON.parse(JSON.stringify(this.suppEmptyInteractions))
         this.restoreCollapses();
         this.restoreSort();
         this.isChecked = this.isShowAllDBI
         this.$nextTick(()=>{
             eventBus.$emit(EV_sortby_side_swaped, this.sortBySide);
         })
+    },
+    watch: {
+        suppEmptyInteractions:{
+            handler(){
+                this.emptySuppInteractions = JSON.parse(JSON.stringify(this.suppEmptyInteractions))
+            },
+            immediate: true
+        },
+        suppInteractions:{
+            handler(){
+                this.currSuppInteractions = JSON.parse(JSON.stringify(this.suppInteractions))
+            },
+            immediate: true
+        },
     },
     components: {
         InteractionPreview,
