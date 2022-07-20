@@ -659,7 +659,7 @@ export default {
             return ''
         },
         ctaBtnTxt(){
-            if(!this.loggedInUser) return 'Register for free trial'
+            if(!this.loggedInUser) return 'Start a free trial'
             else return 'Verify your email'
         },
         formatedPositiveInteractions() {

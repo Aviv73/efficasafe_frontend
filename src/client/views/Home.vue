@@ -31,10 +31,20 @@
                     Optimizing <span class="keyword1">efficacy</span> and
                     <span class="keyword2">safety</span>
                 </h2>
+                <!-- <h2 class="home-subheader home-trial">
+                    <h3 class="first"> <span class="white">Get a free X day</span> trial of unlimited searches and features!</h3>
+                    <h4 class="second">No credit card required.</h4>
+                    <button class="btn home-cta">Start a free trial now</button>
+                </h2> -->
+                <!-- <h2 class="home-subheader home-first">
+                    <h3 class="first">Try our platform - Get X free searches</h3>
+                    <h3>No credit card required.</h3>
+                </h2> -->
             </div>
         </header>
         <section class="home-stats">
             <div class="home-container">
+                <h3 class="stats-header">Our database is based on:</h3>
                 <ul class="flex-space-between">
                     <li class="flex-coloumn">
                         <animated-integer
