@@ -168,12 +168,12 @@ export default {
         sortBySide() {
             return this.$store.getters.firstInteractionSide;
         },
-        draftNameFullContent() {
-            if((this.$route.name === 'InteractionDetails' ||  this.$route.name === 'VinteractionDetails') && this.sortBySide === 2) return this.side1Name
-            const nameToDisplay = (this.showDraftName && this.draftName) ? this.draftName : this.side2Name;
-            if(this.$route.name === 'Boosters') return nameToDisplay
-            return (this.vInteractionCount) ? `${nameToDisplay} (${this.vInteractionCount})` : nameToDisplay;
-        },
+        // draftNameFullContent() {
+        //     if((this.$route.name === 'InteractionDetails' ||  this.$route.name === 'VinteractionDetails') && this.sortBySide === 2) return this.side1Name
+        //     const nameToDisplay = (this.showDraftName && this.draftName) ? this.draftName : this.side2Name;
+        //     if(this.$route.name === 'Boosters') return nameToDisplay
+        //     return (this.vInteractionCount) ? `${nameToDisplay} (${this.vInteractionCount})` : nameToDisplay;
+        // },
         draftNameContent() {
             if((this.$route.name === 'InteractionDetails' ||  this.$route.name === 'VinteractionDetails') && this.sortBySide === 2){
                 const side1Name = this.name.split('&')[0].trim();
@@ -192,29 +192,63 @@ export default {
             const side1Name = this.name.split('&')[0].trim();
             // if (this.onDetailsPage || !this.isSideSwapped) return side1Name;
             if (this.$store.getters.materialNamesMap && this.$store.getters.materialNamesMap[side1Name]) {
-                return this.$store.getters.materialNamesMap[side1Name][0];
+                const queryName = this.$store.getters.materialNamesMap[side1Name][0]
+                const count = this.materials.reduce( (acc, m) => {
+                    if(m.userQuery === queryName){
+                        acc++
+                    }
+                    return acc
+                }, 0)
+                if(count > 1){
+                    return `${queryName} - ${side1Name}`;
+                }else{
+                    return queryName;
+                }
             }
             return side1Name;
         },
-        side1Name() {
-            if (!this.name || this.isMaterialGroup) return '';
-            const side1Name = this.name.split('&')[0].trim();
-            // if (this.onDetailsPage || !this.isSideSwapped) return side1Name;
-            if (this.$store.getters.materialNamesMap && this.$store.getters.materialNamesMap[side1Name]) {
-                return this.$store.getters.materialNamesMap[side1Name][0];
-            }
-            return side1Name;
-        },
+        // side1Name() {
+        //     if (!this.name || this.isMaterialGroup) return '';
+        //     const side1Name = this.name.split('&')[0].trim();
+        //     // if (this.onDetailsPage || !this.isSideSwapped) return side1Name;
+        //     if (this.$store.getters.materialNamesMap && this.$store.getters.materialNamesMap[side1Name]) {
+        //         return this.$store.getters.materialNamesMap[side1Name][0];
+        //     }
+        //     return side1Name;
+        // },
         side2Name() {
+            // if (!this.name) return '';
+            // if (this.isMaterialGroup) return this.$store.getters.materialNamesMap[this.name] ? this.$store.getters.materialNamesMap[this.name][0] : this.name
+            // const side2Name = this.name.split('&')[1].trim();
+            // const queries = this.$store.getters.materialNamesMap ? this.$store.getters.materialNamesMap[side2Name] : null;
+            // const count = queries ? this.$store.getters.queryApearanceCount(queries[0]) : 0;
+            // if(this.isPositive && count > 1) return side2Name
+            // if (!this.isInteractionDetails && !this.localize && this.isSideSwapped) return side2Name;
+            // if (queries) {
+            //     return queries[0];
+            // }
+            // return side2Name;
+
+
+            // if (!this.name || this.isMaterialGroup) return '';
+            // if((this.$route.name === 'InteractionDetails' ||  this.$route.name === 'VinteractionDetails') && this.sortBySide === 2) return this.side2Name
             if (!this.name) return '';
             if (this.isMaterialGroup) return this.$store.getters.materialNamesMap[this.name] ? this.$store.getters.materialNamesMap[this.name][0] : this.name
             const side2Name = this.name.split('&')[1].trim();
-            const queries = this.$store.getters.materialNamesMap ? this.$store.getters.materialNamesMap[side2Name] : null;
-            const count = queries ? this.$store.getters.queryApearanceCount(queries[0]) : 0;
-            if(this.isPositive && count > 1) return side2Name
-            if (!this.isInteractionDetails && !this.localize && this.isSideSwapped) return side2Name;
-            if (queries) {
-                return queries[0];
+            // if (this.onDetailsPage || !this.isSideSwapped) return side1Name;
+            if (this.$store.getters.materialNamesMap && this.$store.getters.materialNamesMap[side2Name]) {
+                const queryName = this.$store.getters.materialNamesMap[side2Name][0]
+                const count = this.materials.reduce( (acc, m) => {
+                    if(m.userQuery === queryName){
+                        acc++
+                    }
+                    return acc
+                }, 0)
+                if(count > 1){
+                    return `${queryName} - ${side2Name}`;
+                }else{
+                    return queryName;
+                }
             }
             return side2Name;
         },
@@ -240,6 +274,9 @@ export default {
     methods:{  
         goToMaterial(name){
             if(!this.isLink) return
+            if(name.includes('-')){
+                this.$emit('go-to-material', name.split('-')[0].trim())
+            }
             this.$emit('go-to-material', name)
         },
         showTitle(ev) {
