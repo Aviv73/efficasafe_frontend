@@ -147,7 +147,7 @@
                             }}
                         </td>
                         <td class="centered text-center">
-                            {{ item.type ? item.type : 'T' }}
+                            {{ item.type ? typeToShow(item) : 'T' }}
                         </td>
                         <td class="centered text-center" :class="{'red-txt': item.trialTime < Date.now()}">
                             {{
@@ -303,6 +303,12 @@ export default {
         },
         selectAll(){
             this.selected = this.users.map(user => user._id)
+        },
+        typeToShow(item){
+            if(item.type !== 'subscribed' && !item.purchases.length){
+                return item.type
+            }
+            return item.purchases[0].duration === '1' ? `${item.type}-M` : `${item.type}-Y`
         }
     },
     computed:{
@@ -312,6 +318,7 @@ export default {
                 const user = users.find( user => user._id === id)
                 user.registeredTime = new Date(user.registeredTime).toLocaleDateString("he-IL")
                 user.trialTime = new Date(user.trialTime).toLocaleDateString("he-IL")
+                user.subType = (user.type === 'subscribed' && user.purchases.length) ? user.purchases[0].duration === '1' ? 'Monthly' : 'Yearly' : ''
                 delete user._id
                 delete user.password
                 delete user.isSubscribe

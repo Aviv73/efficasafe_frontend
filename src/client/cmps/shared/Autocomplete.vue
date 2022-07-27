@@ -13,6 +13,7 @@
                 @keyup.down="shiftFocus(0)"
                 v-debounce="getResults"
             />
+            <loader v-if="isOnSearchPage && isLoading" class="input-loader"/>
             <svg
                 v-if="!isOnSearchPage"
                 xmlns="http://www.w3.org/2000/svg"
@@ -77,11 +78,13 @@
 </template>
 
 <script>
+import Loader from '@/client/cmps/common/icons/Loader';
 import { utilService } from '@/cms/services/util.service';
 import { eventBus, EV_clear_input } from '@/cms/services/eventBus.service'
 
 export default {
     timerId: null,
+    components: { Loader },
     props: {
         placeholder1: {
             type: String,
