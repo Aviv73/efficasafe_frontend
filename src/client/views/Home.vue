@@ -13,7 +13,7 @@
                     Interaction platform
                 </span>
             </h1>
-            <div class="home-container">
+            <div class="home-container flex-coloumn">
                 <autocomplete
                     class="home-search"
                     :placeholder1="
@@ -31,15 +31,15 @@
                     Optimizing <span class="keyword1">efficacy</span> and
                     <span class="keyword2">safety</span>
                 </h2>
-                <!-- <h2 class="home-subheader home-trial">
-                    <h3 class="first"> <span class="white">Get a free X day</span> trial of unlimited searches and features!</h3>
-                    <h4 class="second">No credit card required.</h4>
-                    <button class="btn home-cta">Start a free trial now</button>
-                </h2> -->
-                <!-- <h2 class="home-subheader home-first">
-                    <h3 class="first">Try our platform - Get X free searches</h3>
-                    <h3>No credit card required.</h3>
-                </h2> -->
+                <div v-if="isFirstTime" class="home-ftu-container">
+                    <h3 class="first">Try our platform - Get {{managementData.freeSearchesNum}} free searches</h3>
+                    <h3 class="card">No credit card required.</h3>
+                </div>
+                <div v-else-if="!loggedInUser" class="home-ftu-container">
+                    <h3 class="first">Get a free {{managementData.freeTrailDaysNum}} day trial of unlimited searches and features!</h3>
+                    <h3 class="card">No credit card required.</h3>
+                    <button class="trial-btn" @click="$emit('signup');">Start a free trial now</button>
+                </div>
             </div>
         </header>
         <section class="home-stats">
@@ -339,6 +339,7 @@ export default {
             searches: [],
             welcomeModal: false,
             passwordModal: false,
+            isFirstTime: false
         };
     },
     computed: {
@@ -350,6 +351,9 @@ export default {
         },
         freeSearchesCount() {
             return this.$store.getters.getFreeSearchesCount;
+        },
+        managementData(){
+            return this.$store.getters.getManagementData;
         },
     },
     methods: {
@@ -394,6 +398,11 @@ export default {
     },
     async created() {
         this.stats = await this.$store.dispatch({ type: 'getStatistics' });
+        const isFirstTime = storageService.load('first')
+        if(!isFirstTime){
+            this.isFirstTime = true
+            storageService.store('first', true)
+        }
         if (this.$route.query.congratulations) this.welcomeModal = true;
         if (this.$route.query.passwordreset) this.passwordModal = true;
         if (this.$route.query.subscribed) eventBus.$emit(EV_show_user_msg, 'Subscription successful', 5000, 'success')

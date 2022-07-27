@@ -24,4 +24,24 @@
         margin-bottom: 50px;
         line-height: 30px;
     }
+
+    .failed-btns{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        button, span{
+            margin-block-end: 8px;
+        }
+
+        span{
+            font-weight: bold;
+        }
+        
+        @include for-narrow-layout {
+            flex-direction: row;
+            button, span{
+                margin-inline-end: 8px;
+            }
+        }
+    }
 }

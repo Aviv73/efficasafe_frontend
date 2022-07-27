@@ -1,7 +1,7 @@
 <template>
     <section class="interaction-details" :class="{'not-allowed-select-txt': isNotAllowedSelect}">
-        <h1 class="invisible-header" v-if="interaction">Interaction between {{interaction.subject_drug.name}} and {{interaction.affected_drug.name}}</h1>
         <header class="interaction-details-header">
+            <h1 class="invisible-header" v-if="interaction">Interaction between {{interaction.subject_drug.name}} and {{interaction.affected_drug.name}}</h1>
             <div class="interaction-details-header-container">
                 <span class="brim-start" />
                 <div class="flex-space-between">

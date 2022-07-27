@@ -151,6 +151,7 @@ export default {
                     return {
                         order: ref.draftIdx,
                         type: ref.type || null,
+                        space: '',
                         data: ref.txt + ' ' + ref.link
                     }
                 }

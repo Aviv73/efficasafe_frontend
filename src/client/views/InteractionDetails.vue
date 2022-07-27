@@ -1,8 +1,8 @@
 <template>
     <section class="interaction-details" :class="{'not-allowed-select-txt': isNotAllowedSelect}">
-        <h1 v-if="interaction && interaction.side2Material" class="invisible-header">Interaction between {{interaction.side1Material.name}} and {{interaction.side2Material.name}}</h1>
-        <h1 v-if="interaction && !interaction.side2Material" class="invisible-header">Interaction between {{interaction.side1Material.name}} and {{interaction.side2DraftName}}</h1>
         <header class="interaction-details-header">
+            <h1 v-if="interaction && interaction.side2Material" class="invisible-header">Interaction between {{interaction.side1Material.name}} and {{interaction.side2Material.name}}</h1>
+            <h1 v-if="interaction && !interaction.side2Material" class="invisible-header">Interaction between {{interaction.side1Material.name}} and {{interaction.side2DraftName}}</h1>
             <div class="interaction-details-header-container">
                 <span class="brim-start" />
                 <div class="flex-space-between">

@@ -67,6 +67,13 @@
                 fill: $gray;
             }
         }
+
+        .input-loader{
+            position: absolute;
+            width: 25px;
+            top: 8.5px;
+            right: 8.5px;
+        }
         .cap {
             position: absolute;
             height: 100%;

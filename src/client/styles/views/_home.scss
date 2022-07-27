@@ -3,7 +3,7 @@
     text-align: center;
 
     header {
-        height: 560px;
+        min-height: 560px;
         background-image: url('../assets/imgs/home-bg-mobile.jpg');
         background-repeat: no-repeat;
         background-size: cover;
@@ -13,7 +13,7 @@
         @include for-mobile-layout {
             padding-block-start: 35px;
             background-image: url('../assets/imgs/home-bg.jpg');
-            height: 650px;
+            min-height: 650px;
         }
 
         @include for-mobile-horizontal {
@@ -84,10 +84,65 @@
     &-subheader {
         font-size: rem(18px);
         line-height: rem(28px);
-        margin-block-end: rem(250px);
-
+        margin-block-end: rem(16px);
+        
         @include for-narrow-layout {
             font-size: rem(24px);
+            margin-block-end: rem(42px);
+        }
+    }
+
+    &-ftu-container{
+        width: 80%;
+        border-radius: 16px;
+        background-color: #FFFFFF66;
+        align-self: center;
+        color: #133146;
+        padding: 0 8px;
+        margin-block-end: 16px;
+        @include for-narrow-layout {
+            width: 500px;
+        }
+
+        .first{
+            font-weight: 400;
+            font-size: 12px;
+            margin-block-start: 8px;
+            margin-block-end: 2.5px;
+            line-height: 16px;
+            
+            @include for-narrow-layout {
+                margin-block-start: 16px;
+                margin-block-end: 8px;
+                font-size: 24px;
+                line-height: 28px;
+            }
+        }
+
+        .card{
+            font-size: 10px;
+            margin-block-end: 8px;
+            @include for-narrow-layout {
+                font-size: 18px;
+                margin-block-end: 16px;
+            }
+        }
+
+        .trial-btn{
+            background-color: white;
+            border-radius: 50px;
+            color: #205072;
+            border: 2px solid #205072;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 12px;
+            padding: 6.6px 37px;
+            margin-block-end: 16px;
+            @include for-narrow-layout {
+                margin-block-start: 8px;
+                font-size: 17px;
+                padding: 11px 62px;
+            }
         }
     }
 
