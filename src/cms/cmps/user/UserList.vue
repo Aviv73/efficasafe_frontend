@@ -305,10 +305,19 @@ export default {
             this.selected = this.users.map(user => user._id)
         },
         typeToShow(item){
-            if(item.type !== 'subscribed' && !item.purchases.length){
-                return item.type
+            if(item.type === 'subscribed' && item.purchases.length){
+                return item.purchases[0].duration === '1' ? `${item.type}-M` : `${item.type}-Y`
             }
-            return item.purchases[0].duration === '1' ? `${item.type}-M` : `${item.type}-Y`
+
+            return item.type
+            // if(item.type !== 'subscribed' && !item.purchases.length){
+            //     return item.type
+            // }
+            // if(item.type === 'subscribed' && item.purchases.length){
+            //     return item.purchases[0].duration === '1' ? `${item.type}-M` : `${item.type}-Y`
+            // }else{
+            //     return item.type
+            // }
         }
     },
     computed:{
