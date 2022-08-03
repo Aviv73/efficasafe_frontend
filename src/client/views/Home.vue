@@ -412,6 +412,7 @@ export default {
             eventBus.$emit('login-not-same-provider')
             storageService.remove('show-failed-login')
         } 
+        
     },
     components: {
         Swiper,
