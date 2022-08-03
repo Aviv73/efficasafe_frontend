@@ -463,10 +463,10 @@ export default {
                 }
             ],
             onboardingNoSearchesTourCallbacks: {
-                onStop: () => {
-                    storageService.store('did-onboarding-tour1', true);
-                    storageService.store('did-onboarding-no-searches-tour1', true);
-                }
+                // onStop: () => {
+                //     storageService.store('did-onboarding-tour1', true);
+                //     storageService.store('did-onboarding-no-searches-tour1', true);
+                // }
             },
             onboardingTourSteps: [
                 {
@@ -698,10 +698,10 @@ export default {
                 }
             ],
             onboardingTourCallbacks: {
-                onStop: () => {
-                    storageService.store('did-onboarding-tour1', true);
-                    storageService.store('did-onboarding-no-searches-tour1', true);
-                }
+                // onStop: () => {
+                //     storageService.store('did-onboarding-tour1', true);
+                //     storageService.store('did-onboarding-no-searches-tour1', true);
+                // }
             },
             boostersTourSteps: [
                 {
@@ -761,9 +761,9 @@ export default {
                 }
             ],
             boostersTourCallbacks: {
-                onStop: () => {
-                    storageService.store('did-p-boosters-tour1', true);
-                }
+                // onStop: () => {
+                //     storageService.store('did-p-boosters-tour1', true);
+                // }
             }
         }
     }

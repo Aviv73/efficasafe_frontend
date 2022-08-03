@@ -59,6 +59,9 @@
                         class="tour-btn">
                             Take a tour
                         </button>
+                        <button class="video-btn" @click="openVideoModal">
+                            <video-icon/>
+                        </button>
                     </div>
                 </div>
                 <ul class="navbar-nav">
@@ -188,6 +191,7 @@ import CloseIcon from 'vue-material-design-icons/Close';
 import MenuIcon from 'vue-material-design-icons/Menu';
 import MenuDownIcon from 'vue-material-design-icons/MenuDown';
 import HomeIcon from 'vue-material-design-icons/Home';
+import VideoIcon from 'vue-material-design-icons/Youtube';
 
 export default {
     name: 'Navbar',
@@ -223,8 +227,8 @@ export default {
         },
         freeTrialMsg(){
             if(this.isScreenNarrow){
-                if(this.freeTrialTime === 1) return `| Free Trial -  ${this.freeTrialTime} day left`
-                return `| Free Trial -  ${this.freeTrialTime} days left`
+                if(this.freeTrialTime === 1) return `| Free Trial -  ${this.freeTrialTime} day`
+                return `| Free Trial -  ${this.freeTrialTime} days`
             }
             if(this.freeTrialTime === 1) return `| Free Trial - you have ${this.freeTrialTime} day left`
             return `| Free Trial - you have ${this.freeTrialTime} days left`
@@ -254,6 +258,9 @@ export default {
             if(this.$route.name === 'InteractionDetails' || this.$route.name === 'VinteractionDetails'){
                 eventBus.$emit('start-interaction-tour')
             }
+        },
+        openVideoModal(){
+            eventBus.$emit('open-video')
         },
         toggleNavActive() {
             this.isNavActive = !this.isNavActive;
@@ -299,7 +306,8 @@ export default {
         MenuIcon,
         Dropdown,
         MenuDownIcon,
-        HomeIcon
+        HomeIcon,
+        VideoIcon
     },
 };
 </script>

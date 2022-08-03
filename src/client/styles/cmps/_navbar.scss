@@ -76,6 +76,11 @@
             border-radius: 100px;
             margin-inline-start: 10px;
         }
+        
+        .video-btn{
+            margin-inline-start: 10px;
+            transform: translateY(2px);
+        }
     }
     &-user-dropdown {
         display: flex;

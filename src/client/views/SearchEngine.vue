@@ -491,11 +491,7 @@ export default {
                 this.$store.commit('resetRedPositiveSupp')
                 this.$store.commit({ type: 'resetSuppRefs' });
                 this.isArrowShown = true
-                if (this.$route.name === 'Boosters' && !this.isScreenNarrow && !storageService.load('did-p-boosters-tour1')) {
-                    this.$nextTick(() => {
-                        this.handelStartDelayedTour('boosters-tour','did-p-boosters-tour1',  'Boosters')
-                    });
-                }
+                this.handleVideoTutorial()
                 const { q, isImported, nonExisting, activeTour, share } = this.$route.query;
                 if (!q || !q.length) {
                     this.$store.commit('resetPosSupp')
@@ -524,9 +520,6 @@ export default {
                         this.isLoading = false;
                         this.isPBLoading = false;
                     }
-                }
-                if (this.materialsLength >= 1 && !storageService.load('did-onboarding-tour1') && !this.isScreenNarrow) {
-                    this.handelStartDelayedTour('onboarding-tour','did-onboarding-tour1',  'Results')
                 }
                 if(isImported) this.showImportMsg(nonExisting)
                 
@@ -1833,12 +1826,20 @@ export default {
             })
             
         },
-        handelStartDelayedTour(tourType, storageName, routeName){
-            setTimeout(() => {
-                if(this.$route.name === routeName && !storageService.load(storageName) && !this.isScreenNarrow){
-                    this.$tours[tourType].start();
-                }
-            }, 40000)
+        // handelStartDelayedTour(tourType, storageName, routeName){
+        //     setTimeout(() => {
+        //         if(this.$route.name === routeName && !storageService.load(storageName) && !this.isScreenNarrow){
+        //             this.$tours[tourType].start();
+        //         }
+        //     }, 40000)
+        // },
+        handleVideoTutorial(){
+            if(!storageService.load('seen-tutorial')){
+                storageService.store('seen-tutorial', true)
+                setTimeout(() => {
+                    eventBus.$emit('open-video')
+                }, 5000)
+            }
         },
         onPrint(){
             if(this.$route.name === 'Monitor') return this.openMonitorPrint()
@@ -1878,9 +1879,6 @@ export default {
             eventBus.$emit(EV_show_user_msg, 'The walkthrough and the tutorial are not available on a narrow screen. Please use this link on a computer', 10000)
         }
         await this.getMaterials();
-        if (this.materialsLength === 0 && !storageService.load('did-onboarding-no-searches-tour1') && !this.isScreenNarrow) {
-            this.handelStartDelayedTour('onboarding-no-searches-tour', 'did-onboarding-no-searches-tour1', 'Results')
-        }
         this.innerListEl = this.$el.querySelector(".inner-view")
         if(this.innerListEl){
             this.innerListEl.addEventListener('scroll', (ev) => {
