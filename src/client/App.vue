@@ -17,6 +17,7 @@
             @openAuthModal="switchModals"
             :showNotSameProviderMsg="showNotSameProviderMsg"
         />
+        <video-modal v-if="videoModal" @closeVideo="videoModal = false"/>
         <user-msg />
         <update-msg />
     </div>
@@ -30,6 +31,7 @@ import Navbar from '@/client/cmps/Navbar';
 import MainFooter from '@/client/cmps/MainFooter';
 import AuthModal from '@/client/cmps/shared/modals/AuthModal';
 import loginModal from '@/client/cmps/shared/modals/LoginModal';
+import videoModal from '@/client/cmps/shared/modals/VideoModal';
 import UserMsg from '@/client/cmps/UserMsg.vue';
 import UpdateMsg from '@/client/cmps/UpdateMsg.vue';
 
@@ -41,7 +43,8 @@ export default {
             loginModal: false,
             showFreeSearchesMsg: false,
             showValidateMsg: false,
-            showNotSameProviderMsg: false
+            showNotSameProviderMsg: false,
+            videoModal: false
         };
     },
     computed: {
@@ -117,8 +120,19 @@ export default {
         eventBus.$on(EV_open_signup, this.onSignUp);
         eventBus.$on(EV_open_login, this.onLogin);
         eventBus.$on('login-not-same-provider', this.onLoginNotSameProvider);
+        eventBus.$on('open-video', () => {
+            this.videoModal = true
+        });
         this.$store.commit('setFreeSearchesCount');
         this.$store.commit('initialLoadingDone')
+    },
+    destroyed(){
+        eventBus.$off(EV_open_signup, this.onSignUp);
+        eventBus.$off(EV_open_login, this.onLogin);
+        eventBus.$off('login-not-same-provider', this.onLoginNotSameProvider);
+        eventBus.$off('open-video', () => {
+            this.videoModal = true
+        });
     },
     components: {
         Navbar,
@@ -126,7 +140,8 @@ export default {
         AuthModal,
         loginModal,
         UserMsg,
-        UpdateMsg
+        UpdateMsg,
+        videoModal
     },
 };
 </script>

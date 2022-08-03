@@ -211,7 +211,7 @@
                         <span>{{item.coin}}{{item.price}}</span>
                     </template>
                     <template v-slot:[`item.btn`]="{ item }">
-                        <span><v-btn @click="setAsRefunded(item)">refunded</v-btn></span>
+                        <span><v-btn @click="setItemToRefund(item)">refunded</v-btn></span>
                     </template>
                 </v-data-table>
             </v-card>
@@ -227,6 +227,24 @@
                         <p>{{warningTxt}}</p>
                         <v-btn @click="onDeleteUser">Delete</v-btn>
                         <v-btn class="ml-2" color="primary" @click="isWarning = false">cancel</v-btn>
+                    </v-col>
+                </v-row>
+            </v-alert>
+        </div>
+        <div v-if="itemToRefund" class="warning-container">
+            <v-alert
+            prominent
+            type="error"
+            class="alert"
+            >
+                <v-row align="center" class="row">
+                    <v-col v-if="!isLoadingRefund">
+                        <p>Please make sure that the money is returned to the user and change the type to trial.</p>
+                        <v-btn @click="setAsRefunded">Refund</v-btn>
+                        <v-btn class="ml-2" color="primary" @click="setItemToRefund(null)">cancel</v-btn>
+                    </v-col>
+                    <v-col v-else>
+                        <p>marking as refunded....</p>
                     </v-col>
                 </v-row>
             </v-alert>
@@ -261,7 +279,9 @@ export default {
                 {text: 'Coupon', value: 'coupon'},
                 {text: 'Valid Until', value: 'until'},
                 {text: 'Mark as refunded', value: 'btn'},
-            ]
+            ],
+            itemToRefund: null,
+            isLoadingRefund: false
         };
     },
     methods: {
@@ -322,16 +342,23 @@ export default {
                 this.response.msg = null
             },1500)
         },
-        async setAsRefunded(item){
-            const idx = this.editedUser.purchases.findIndex( p => p.at === item.at)
+        setItemToRefund(item){
+            this.itemToRefund = item
+        },
+        async setAsRefunded(){
+            const idx = this.editedUser.purchases.findIndex( p => p.at === this.itemToRefund.at)
             this.editedUser.purchases[idx].until = 'refunded'
             try{
+                this.isLoadingRefund = true
                 await this.$store.dispatch({ type: 'updateUser', user: this.editedUser });
                 this.response.type = 'success'
                 this.response.msg = `${this.editedUser.username} was updated`
             }catch(err){
                 this.response.type = 'error'
                 this.response.msg = `SOMETHING WENT WRONG`
+            }finally{
+                this.setItemToRefund(null)
+                this.isLoadingRefund = false
             }
             setTimeout(() => {
                 this.response.type = null

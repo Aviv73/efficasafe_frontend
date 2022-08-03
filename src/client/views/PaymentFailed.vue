@@ -13,6 +13,8 @@
 
 <script>
 
+import { httpService } from "@/cms/services/http.service";
+
 export default {
   computed: {
     loggedInUser(){
@@ -21,7 +23,11 @@ export default {
   },
   async created() {
       await this.$store.dispatch({type: 'getUserInfo'})
-    // update the user autopilot profile and transfer him to a "failed to pay" list 
+      const task = {
+        isFailedPayment: true,
+        user: JSON.parse(JSON.stringify(this.loggedInUser))
+      }
+      await httpService.post('task', task)
   },
 };
 </script>

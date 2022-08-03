@@ -82,6 +82,11 @@
         <div v-else class="payment-loader-container">
             <h2>Loading...</h2><loader class="loader"/>
         </div>
+        <div @click.stop="" class="card-imgs-container">
+            <img src="@/client/assets/imgs/card-logos/visa.png" alt="">
+            <img src="@/client/assets/imgs/card-logos/master-card.png" alt="">
+            <img src="@/client/assets/imgs/card-logos/isracard.png" alt="">
+        </div>
     </button>
     <div class="benefits-container">
         <h4 class="benefits-title">Benefits and Features </h4>
