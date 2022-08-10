@@ -314,7 +314,7 @@
                 <p class="sub-sec">
                     b. By emailing contact@efficasafe.com and providing your
                     email address, date of birth, billing date, postcode/ZIP and
-                    the first 4 digits from payment card used to purchase the
+                    the last 4 digits from payment card used to purchase the
                     Services.
                 </p>
                 <p class="bottom-gap sub-sec">

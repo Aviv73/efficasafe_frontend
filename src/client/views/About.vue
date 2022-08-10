@@ -24,7 +24,7 @@
                 Efficasafe encourages doctors to
                 <span class="marked">inquire</span> what herbs, drugs and
                 supplements the patient is taking and the
-                <span class="marked">reliable data</span> to know, in real-time
+                <span class="marked">reliable data</span> to know in real-time
                 whether or not negative or synergistic
                 <span class="marked">interactions</span> may occur. They can
                 utilize the data to

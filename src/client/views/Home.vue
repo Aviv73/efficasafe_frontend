@@ -31,15 +31,17 @@
                     Optimizing <span class="keyword1">efficacy</span> and
                     <span class="keyword2">safety</span>
                 </h2>
-                <div v-if="isFirstTime" class="home-ftu-container">
-                    <h3 class="first">Try our platform - Get {{managementData.freeSearchesNum}} free searches</h3>
-                    <h3 class="card">No credit card required.</h3>
-                </div>
-                <div v-else-if="!loggedInUser" class="home-ftu-container">
-                    <h3 class="first">Get a free {{managementData.freeTrailDaysNum}} day trial of unlimited searches and features!</h3>
-                    <h3 class="card">No credit card required.</h3>
-                    <button class="trial-btn" @click="$emit('signup');">Start a free trial now</button>
-                </div>
+                <template v-if="managementData">
+                    <div v-if="isFirstTime" class="home-ftu-container">
+                        <h3 class="first">Try our platform - Get {{managementData.freeSearchesNum}} free searches</h3>
+                        <h3 class="card">No credit card required.</h3>
+                    </div>
+                    <div v-else-if="!loggedInUser" class="home-ftu-container">
+                        <h3 class="first">Get a free {{managementData.freeTrailDaysNum}} day trial of unlimited searches and features!</h3>
+                        <h3 class="card">No credit card required.</h3>
+                        <button class="trial-btn" @click="$emit('signup');">Start a free trial now</button>
+                    </div>
+                </template>
             </div>
         </header>
         <section class="home-stats">
