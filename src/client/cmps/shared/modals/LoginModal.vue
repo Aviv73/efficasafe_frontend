@@ -18,7 +18,10 @@
                             <div class="forgot-pass-link">
                                 <a href="/email-pass">Forgot password?</a>
                             </div>
-                            <button class="register-btn">Login</button>
+                            <button v-if="!isLoading" class="register-btn">Login</button>
+                            <button v-else class="register-btn disabled">
+                                <loader class="loader"/>
+                            </button>
                         </form>
                         <div class="or-container">
                             <div class="line"></div>
@@ -43,7 +46,7 @@
 <script>
 
 import { eventBus, EV_wrong_provider, EV_open_signup } from '@/cms/services/eventBus.service';
-
+import Loader from '@/client/cmps/common/icons/Loader';
 import CloseIcon from 'vue-material-design-icons/Close';
 import EyeIcon from 'vue-material-design-icons/Eye';
 import EyeOffIcon from 'vue-material-design-icons/EyeOff';
@@ -57,6 +60,7 @@ export default {
     },
     data() {
         return {
+            isLoading: false,
             cred:{
                 email:'',
                 password:'',
@@ -94,6 +98,10 @@ export default {
             
         },
         async onRegister(){
+            if(this.isLoading){
+                return
+            }
+            this.isLoading = true
             try{
                 if(window.AutopilotAnywhere && window.AutopilotAnywhere.sessionId) this.cred.autoPilotSessionId = window.AutopilotAnywhere.sessionId
                 this.cred.email = this.cred.email.trim()
@@ -104,6 +112,8 @@ export default {
                 },1500)
             }catch(err){
                  this.isShowFailedMsg = true
+            }finally{
+                this.isLoading = false
             }
         },
         removeFailedmsg(){
@@ -122,7 +132,8 @@ export default {
     components:{
         CloseIcon,
         EyeIcon,
-        EyeOffIcon
+        EyeOffIcon,
+        Loader
     }
 };
 </script>

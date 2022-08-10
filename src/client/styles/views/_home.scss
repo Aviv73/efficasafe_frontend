@@ -146,43 +146,14 @@
         }
     }
 
-    // &-first {
-    //     margin-top: 12px;
-    //     opacity: 0.85;
-        
-    //     .first{
-    //         margin-bottom: 6px;
-    //         font-weight: bold;
-    //     }
-    // }
-    // &-trial {
-    //     margin-top: 12px;
-        
-    //     h3,h4{
-    //         margin-bottom: 16px;
-    //         opacity: 0.85;
-    //     }
-
-    //     h4{
-    //         font-size: 20px;
-    //     }
-        
-    //     .first{
-    //         font-weight: bold;
-    //         opacity: 0.85;
-    //     }
-
-    //     .home-cta{
-    //         opacity: 1;
-    //         margin-top: 0;
-    //     }
-    // }
-
     &-search {
         width: 100%;
-        padding: rem(6px);
-        background-color: rgba($clr7, .5);
         margin-block-end: rem(24px);
+
+        .autocomplete-field{
+            border-radius: 50px;
+            box-shadow: 0 0 20px 6px #d2caca;
+        }
 
         input {
             padding: rem(12px) 0;

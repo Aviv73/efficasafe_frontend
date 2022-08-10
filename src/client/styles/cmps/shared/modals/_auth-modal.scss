@@ -181,6 +181,16 @@
             // }
         }
 
+        .loader{
+            width: 24px;
+            margin: 0;
+            transform: translateY(2px);
+        }
+
+        .disabled{
+            cursor: default;
+        }
+
         .invalid-btn{
             background-color: red;
             font-size: 12px;

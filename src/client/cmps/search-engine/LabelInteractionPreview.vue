@@ -210,7 +210,7 @@ export default {
             const map = this.vInteractions.reduce((acc, vinteraction) => {
                 vinteraction.atcParentGroups.forEach((atcGroup) => {
                     const atcGroupName = atcGroup.split(' ').splice(0).join(' ');
-                    if (atcGroupName.toLowerCase().includes('combination') || atcGroupName.toLowerCase().includes('and')) return acc;
+                    if (atcGroupName.toLowerCase().includes('combination') || atcGroupName.toLowerCase().includes('combinations') || atcGroupName.toLowerCase().includes('and')) return acc;
                     if (!acc[atcGroupName]) {
                         acc[atcGroupName] = [];
                     }

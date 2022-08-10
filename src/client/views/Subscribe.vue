@@ -253,7 +253,7 @@ export default {
     },
     billingTxt(){
         return (plan) => {
-            if(plan.duration === '1') return 'Billed Monthly'
+            if(plan.duration == '1') return 'Billed Monthly'
             return 'Billed Annually'
         }
     },
