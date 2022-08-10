@@ -31,6 +31,7 @@
                     Optimizing <span class="keyword1">efficacy</span> and
                     <span class="keyword2">safety</span>
                 </h2>
+
                 <template v-if="managementData">
                     <div v-if="isFirstTime" class="home-ftu-container">
                         <h3 class="first">Try our platform - Get {{managementData.freeSearchesNum}} free searches</h3>
@@ -42,6 +43,7 @@
                         <button class="trial-btn" @click="$emit('signup');">Start a free trial now</button>
                     </div>
                 </template>
+                
             </div>
         </header>
         <section class="home-stats">
