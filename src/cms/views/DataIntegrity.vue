@@ -242,6 +242,7 @@ export default {
         };
         const alerts = await dataIntegrityService.list(criteria);
         this.alerts = alerts;
+        
       } else {
         if (this.checkType === 'v-interaction-dups') {
           const criteria = { type: this.checkType, side1Id: this.selectedMaterialId };
