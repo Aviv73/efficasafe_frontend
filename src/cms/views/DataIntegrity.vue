@@ -194,6 +194,7 @@ export default {
     },
     entityName(entity) {
       if (entity.name) return entity.name;
+      if (entity.type) return entity.type
       if (entity.action) return entity.action
       if (entity.errors) return `${entity.type} (${entity.data.name})`;
       if (entity.side2Label) return entity.side2Label.name;
@@ -224,7 +225,7 @@ export default {
 
       let entityName = '';
       let entityId = entity._id;
-
+      if (entity.type) return ''
       if (entity.name) entityName = 'material';
       else if (entity.errors) {
         entityName = 'user';
