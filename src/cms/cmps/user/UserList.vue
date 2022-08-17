@@ -322,6 +322,7 @@ export default {
                 user.subType = (user.type === 'subscribed' && user.purchases.length) ? user.purchases[0].duration === '1' ? 'Monthly' : 'Yearly' : ''
                 user.country = user.country || ''
                 user.latestCoupon = user.purchases.length ? user.purchases[0].coupon : ''
+                user.trialCoupon = user.trialCoupon ? user.trialCoupon : '' 
                 delete user._id
                 delete user.password
                 delete user.isSubscribe
