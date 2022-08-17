@@ -26,11 +26,16 @@ export const userService = {
     getUserSearches,
     updateSession,
     completeEmailVerification,
-    updateMany
+    updateMany,
+    checkFailedPayments
 }
 
 function verifyEmail(token) {
     return httpService.get(`${ACCOUNT_END_POINT}/verifyEmail?token=${token}`);
+}
+
+async function checkFailedPayments(costumers) {
+    return await httpService.post(`${ACCOUNT_END_POINT}/checkFailedPayments`, { costumers: costumers });
 }
 
 function resnedVerifcationMail(user) {
