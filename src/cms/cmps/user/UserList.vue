@@ -310,14 +310,6 @@ export default {
             }
 
             return item.type
-            // if(item.type !== 'subscribed' && !item.purchases.length){
-            //     return item.type
-            // }
-            // if(item.type === 'subscribed' && item.purchases.length){
-            //     return item.purchases[0].duration === '1' ? `${item.type}-M` : `${item.type}-Y`
-            // }else{
-            //     return item.type
-            // }
         }
     },
     computed:{
@@ -328,6 +320,8 @@ export default {
                 user.registeredTime = new Date(user.registeredTime).toLocaleDateString("he-IL")
                 user.trialTime = new Date(user.trialTime).toLocaleDateString("he-IL")
                 user.subType = (user.type === 'subscribed' && user.purchases.length) ? user.purchases[0].duration === '1' ? 'Monthly' : 'Yearly' : ''
+                user.country = user.country || ''
+                user.latestCoupon = user.purchases.length ? user.purchases[0].coupon : ''
                 delete user._id
                 delete user.password
                 delete user.isSubscribe

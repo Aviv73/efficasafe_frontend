@@ -14,6 +14,30 @@
     right: 85px;
 }
 
+.payment-check-btn{
+    left: 16px;
+}
+
+.payment-check{
+    min-height: 300px;
+    input{
+        width: 220px;
+    }
+    
+    .checkLoader{
+        width: 30px;
+        transform: translateY(9px);
+    }
+    ul{
+        max-height: 220px;
+        overflow-y: scroll;
+    }
+
+    li{
+        list-style: initial;
+    }
+}
+
 .edit-card{
     position: fixed;
     z-index: 999;
