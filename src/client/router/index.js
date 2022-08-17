@@ -18,6 +18,7 @@ import Subscribe from '@/client/views/Subscribe';
 import PaymentFailed from '@/client/views/PaymentFailed';
 import Success from '@/client/views/Success';
 import BonusTrialTime from '@/client/views/BonusTrialTime';
+import Whiteboard from '@/client/views/Whiteboard'
 
 import InteractionList from '@/client/cmps/search-engine/InteractionList';
 import UserApp from '@/client/cmps/user-account/UserApp';
@@ -64,6 +65,11 @@ const routes = [
     path: '/bonus-trial-time',
     name: 'BonusTrialTime',
     component: BonusTrialTime
+  },
+  {
+    path: '/whiteboard',
+    name: 'Whiteboard',
+    component: Whiteboard
   },
   {
     path: '/verifyEmail/:token',
