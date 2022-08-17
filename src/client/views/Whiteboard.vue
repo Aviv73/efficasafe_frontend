@@ -1,5 +1,5 @@
 <template>
     <section>
-        Cache test!
+        Cache test! 2!
     </section>
 </template>
