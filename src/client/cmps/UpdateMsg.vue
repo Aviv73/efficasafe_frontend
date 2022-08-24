@@ -27,7 +27,7 @@ export default {
             this.showMsg = false
         },
         reloadPage(){
-            location.reload()
+            location.reload(true)
         }
     },
     created() {
