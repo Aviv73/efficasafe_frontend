@@ -62,14 +62,27 @@ export default {
         isScreenMobile() {
             return this.$store.getters.isScreenMobile;
         },
+        isScreenNarrow() {
+            return this.$store.getters.isScreenNarrow;
+        },
+        isScreenWide(){
+            return !this.isScreenNarrow && !this.isScreenMobile
+        },
         iframeSize() {
-            if (!this.isScreenMobile) {
+            if(this.isScreenWide){
                 return {
-                    width: '420',
+                    width: '900',
+                    height: '450',
+                };
+
+            }
+            if(this.isScreenNarrow){
+                return {
+                    width: '600',
                     height: '315',
                 };
-            }
 
+            }
             return { width: '330', height: '250' };
         },
     },

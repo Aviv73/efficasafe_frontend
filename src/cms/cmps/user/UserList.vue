@@ -179,7 +179,7 @@
         <v-fab-transition>
             <v-btn
                 class="edit-btn"
-                v-if="selected.length"
+                v-if="isAdmin && selected.length"
                 @click="$emit('openEdit', [...selected])"
                 :title="`Edit ${selected.length} users`"
                 color="primary"
@@ -331,6 +331,12 @@ export default {
                 return user
             })
             return convertedUsers
+        },
+        loggedInUser() {
+            return this.$store.getters.loggedInUser;
+        },
+        isAdmin(){
+            return this.loggedInUser.role === 'admin'
         }
     },
     created(){

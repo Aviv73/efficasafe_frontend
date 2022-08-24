@@ -19,7 +19,7 @@
   &-content {
     position: fixed;
     z-index: 999;
-    top: 10%;
+    top: 4%;
     left: 50%;
     width: fit-content;
     transform: translateX(-50%);
@@ -36,10 +36,6 @@
     justify-content: center;
     gap: 16px;
     font-family: roboto-medium, sans-serif;
-
-    @media (max-width: 1150px) {
-      width: 80%;
-    }
 
     @media (max-width: 580px) {
       width: 100%;
