@@ -26,6 +26,7 @@
                 <a v-if="material.toxicity" @click="goTo('Toxicology1')">Toxicology</a>
                 <a v-if="material.pregnancy" @click="goTo('Pregnancy')">Pregnancy</a>
                 <a v-if="material.lactation" @click="goTo('Lactation')">Lactation</a>
+                <!-- <a v-if="material.effectOnDrugMetabolism" @click="goTo('Effect On Drug Metabolism')">Effect on drug metabolism</a> -->
                 <a @click="goTo('Interactions')">Interactions</a>
                 <a v-if="refsToShow.length" @click="goTo('References')">References</a>
             </section>
@@ -120,6 +121,11 @@
                 <p v-html="material.lactation" v-refs-tooltip-material="{material,refCountMap}"></p>
                 <hr class="line">
             </section>
+            <!-- <section v-if="material.effectOnDrugMetabolism" class="material-details-content-section">
+                <h3 ref="Effect On Drug Metabolism">Effect On Drug Metabolism</h3>
+                <p v-html="material.effectOnDrugMetabolism" v-refs-tooltip-material="{material,refCountMap}"></p>
+                <hr class="line">
+            </section> -->
             <section class="material-details-content-section">
                 <h3 ref="Interactions">Interactions</h3>
                     <router-link :to="`/search?q=${originalMaterial.name}`" target="_blank" class="fda-link font14">
@@ -163,8 +169,10 @@ export default {
             refCountMap:{},
             nextRefNum: 1,
             filedToSkip:['pathways','effectOnDrugMetabolism','detailedPharmacology'],
+            // filedToSkip:['pathways','detailedPharmacology'],
             refNumsToShow:[],
             fieldsToCheckSupp:['desc','activeConstituents','dosage','sensitivities','adverseReactions','overdosage','precautions','contraindications','toxicity','pregnancy','lactation'],
+            // fieldsToCheckSupp:['desc','activeConstituents','dosage','sensitivities','adverseReactions','overdosage','precautions','contraindications','toxicity','pregnancy','lactation', 'effectOnDrugMetabolism'],
         }
     },
     methods: {
@@ -270,7 +278,6 @@ export default {
                 }
             })
             return strToReturn
-
         },
     },
     computed:{
