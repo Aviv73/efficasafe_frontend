@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
 import { register } from 'register-service-worker';
-// import { eventBus } from '@/cms/services/eventBus.service';
+import { eventBus } from '@/cms/services/eventBus.service';
 
 if (process.env.NODE_ENV === 'production') {
   register(`${process.env.BASE_URL}service-worker.js`, {
@@ -22,9 +22,7 @@ if (process.env.NODE_ENV === 'production') {
     },
     updated() {
       console.log('New content is available; please refresh.');
-      // eventBus.$emit('app-updated')
-      console.log('Reloading page');
-      location.reload()
+      eventBus.$emit('app-updated')
     },
     offline() {
       console.log(

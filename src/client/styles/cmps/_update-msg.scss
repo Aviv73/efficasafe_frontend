@@ -29,6 +29,15 @@
         }
     }
 
+    .reload-btn{
+        background-color: $clr1;
+        color: white;
+        width: 120px;
+        height: 30px;
+        border-radius: 16px;
+        margin-bottom: 6px;
+    }
+
     .close-btn{
         position: fixed;
         top: 2px;
