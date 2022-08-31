@@ -255,8 +255,8 @@ export default {
         }
 
         &.left-bottom-corner{
-            right: 31px;
-            top: 14px;
+            top: 70%;
+            right: 50%;
         }
         
         &.fade {
@@ -302,8 +302,8 @@ export default {
             transform: translateY(-50%);
 
             &-bottom {
-                top: 0;
-                transform: translateY(0);
+                top: 70%;
+                left: 50%;
             }
             &-top {
                 right: 0;

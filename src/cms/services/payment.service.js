@@ -13,7 +13,11 @@ async function getEndpoint(plan, currency){
     return res
 }
 
-async function endSubscription(recurringId){
-    const res = await httpService.get(`${END_POINT}/end`, recurringId);
+async function endSubscription(recurringId, formData){
+    const data = {
+        recurringId,
+        formData
+    }
+    const res = await httpService.post(`${END_POINT}/end`, data);
     return res
 }
