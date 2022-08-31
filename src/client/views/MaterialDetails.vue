@@ -160,18 +160,8 @@ export default {
             return !this.$store.getters.loggedInUser.isAllowedToSelectTxt;
         },
     },
-    async created(){
-        // if(!this.loggedInUser){
-        //     let remainedVisits = storageService.load('visitCount') || 0
-        //     if(remainedVisits === 2){
-        //         this.showSignUpMsg = true
-        //         this.isLoading = false
-        //         return
-        //     } else {
-        //         remainedVisits++
-        //         storageService.store('visitCount',remainedVisits)
-        //     }
-        // }
+    async mounted(){
+        // In mounted because the loader is not showing until the function is done
         const { id } = this.$route.params;
         const material = await this.$store.dispatch({type: 'loadMaterial',matId: id });
         if(!material.isShowPage) return this.$router.push('/404')

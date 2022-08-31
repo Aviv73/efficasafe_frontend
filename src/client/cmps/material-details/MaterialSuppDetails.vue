@@ -30,6 +30,7 @@
                 <a v-if="material.pregnancy" @click="goTo('Pregnancy')">Pregnancy</a>
                 <a v-if="material.lactation" @click="goTo('Lactation')">Lactation</a>
                 <a v-if="material.mechanismOfAction" @click="goTo('Mechanism Of Action')">Mechanism Of Action</a>
+                <a v-if="material.effectOnDrugMetabolism" @click="goTo('Effect On Drug Metabolism')">Effect on drug metabolism</a>
                 <a @click="goTo('Interactions')">Interactions</a>
                 <a v-if="refsToShow.length" @click="goTo('References')">References</a>
             </section>
@@ -143,6 +144,31 @@
                 <p v-html="material.mechanismOfAction" v-refs-tooltip-material="{material,refCountMap}"></p>
                 <hr class="line">
             </section>
+            <section v-if="material.effectOnDrugMetabolism" class="material-details-content-section">
+                <h3 ref="Effect On Drug Metabolism">Effect On Drug Metabolism</h3>
+                <p v-html="material.effectOnDrugMetabolism" v-refs-tooltip-material="{material,refCountMap}"></p>
+                <ul class="side1-pathways-nav flex-align-center chip-list">
+                    <li
+                        class="side1-pathways-nav-item material-details-item"
+                        v-for="pathway in material.pathways"
+                        :key="pathway.name"
+                    >
+                        <tooltip on="hover" bottom>
+                            <template #content>
+                                <section class="pathways-tooltip" v-html="pathway.influence">
+                                </section>
+                            </template>
+                            <div
+                                    class="chip material-details-chip"
+                                    :class="setPathwayClassName(pathway.influence)"
+                                >
+                                    {{ pathway.name }}
+                                </div>
+                        </tooltip>
+                    </li>
+                </ul>
+                <hr class="line">
+            </section>
             <section class="material-details-content-section">
                 <h3 ref="Interactions">Interactions</h3>
                     <router-link :to="`/search?q=${originalMaterial.name}`" target="_blank" class="fda-link font14">
@@ -172,6 +198,8 @@ import MenuIcon from 'vue-material-design-icons/Menu';
 import ArrowLeftIcon from 'vue-material-design-icons/ArrowLeft';
 import MobileShareIcon from '@/client/cmps/common/icons/MobileShareIcon';
 import ShareVariantIcon from 'vue-material-design-icons/ShareVariant';
+import Tooltip from '@/client/cmps/common/Tooltip';
+
 
 export default {
     props: {
@@ -186,9 +214,10 @@ export default {
             showNav: false,
             refCountMap:{},
             nextRefNum: 1,
-            filedToSkip:['pathways','effectOnDrugMetabolism','detailedPharmacology'],
+            // filedToSkip:['pathways','effectOnDrugMetabolism','detailedPharmacology'],
+            filedToSkip:['pathways','detailedPharmacology'],
             refNumsToShow:[],
-            fieldsToCheckSupp:['desc','nutritionalSources','medicinalUsesTxt','absorptionAndExcretion','causesOfDeficiency','symptomsOfDeficiency','RDA','dosage','sensitivities','adverseReactions','overdosage','precautions','contraindications','toxicity','pregnancy','lactation', 'mechanismOfAction']
+            fieldsToCheckSupp:['desc','nutritionalSources','medicinalUsesTxt','absorptionAndExcretion','causesOfDeficiency','symptomsOfDeficiency','RDA','dosage','sensitivities','adverseReactions','overdosage','precautions','contraindications','toxicity','pregnancy','lactation', 'mechanismOfAction', 'effectOnDrugMetabolism']
         }
     },
     methods: {
@@ -281,7 +310,11 @@ export default {
                 if(matches){
                     matches.forEach(match => {
                         this.setRefNumsToShow(match)
-                        const strToShow = this.createStrRefs(match)
+                        let strToShow = this.createStrRefs(match)
+                        if(key === 'effectOnDrugMetabolism'){
+                            const refArr = strToShow.split(',')
+                            strToShow = this.minimizeRefs(refArr)
+                        }
                         material[key] = material[key].replaceAll(match,`<sub class="sub-font tooltip-sub">(${strToShow})</sub>`)
                     });
                 }
@@ -307,6 +340,39 @@ export default {
             })
             return strToReturn
 
+        },
+        minimizeRefs(refs){
+            let refsStr = '';
+            let isSequence = false;
+            for (let i = 0; i < refs.length; i++) {
+                if (refs[i - 1] === undefined) refsStr += refs[i];
+
+                if (Math.abs(refs[i] - refs[i - 1]) > 1) {
+                    if (isSequence) refsStr += '-' + (refs[i - 1]);
+                    refsStr += ',' + refs[i];
+                    isSequence = false;
+                } else if (Math.abs(refs[i] - refs[i - 1]) === 1) isSequence = true;
+
+                if (i === (refs.length - 1) && refs[i - 1] !== undefined && isSequence) {
+                    refsStr += '-' + refs[i];
+                }
+            }
+            return refsStr
+        },
+        setPathwayClassName(influence) {
+            let firstLine = influence.split('</p>')[0];
+            if (!firstLine) return '';
+            firstLine = firstLine.toLowerCase();
+
+            if (firstLine.includes('may induce') || firstLine.includes('may inhibit') || firstLine.includes('may bind')) {
+                return 'chip-red';
+            } else if (firstLine.includes('is unclear')) {
+                return 'chip-yellow';
+            } else if (firstLine.includes('not likely to affect')) {
+                return 'chip-green';
+            }
+
+            return 'default';
         },
         savePageHight(){
             materialUIService.setMaterialPageHightMap({name: this.material.name, hight: window.pageYOffset})
@@ -361,7 +427,8 @@ export default {
         MenuIcon,
         ArrowLeftIcon,
         MobileShareIcon,
-        ShareVariantIcon
+        ShareVariantIcon,
+        Tooltip
     }
 };
 </script>
