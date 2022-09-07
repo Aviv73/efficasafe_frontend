@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-// import store from '@/cms/store';
+import store from '@/cms/store';
 import Home from '../views/Home';
 import materialApp from '../views/material/MaterialApp';
 import materialEdit from '../views/material/MaterialEdit';
@@ -220,27 +220,26 @@ const router = new VueRouter({
   routes
 })
 
-// router.beforeEach(async (to, from, next) => {
-//   if(!store.state.userStore.loggedInUser){
-//     console.log('getting user');
-//     await store.dispatch('getUserInfo');
-//   }
-//   const { loggedInUser } = store.state.userStore;
-//   console.log('user', loggedInUser);
-//   if (loggedInUser && (loggedInUser.role === 'admin' || loggedInUser.role === 'editor' || loggedInUser.role === 'sales' || loggedInUser.role === 'assistantEditor')) {
-//     if (to.meta.allowed) {
-//       if(!to.meta.allowed.includes(loggedInUser.role)){
-//         next({ name: 'Home' });
-//       }else{
-//         next();
-//       }
-//     } else {
-//       next();
-//     }
-//   } else {
-//     // window.location.replace(`${window.location.origin}/404`);
-//     console.log('NO!!!!!');
-//   }
-// });
+router.beforeEach(async (to, from, next) => {
+  if(!store.state.userStore.loggedInUser){
+    console.log('getting user');
+    await store.dispatch('getUserInfo');
+  }
+  const { loggedInUser } = store.state.userStore;
+  console.log('user', loggedInUser);
+  if (loggedInUser && (loggedInUser.role === 'admin' || loggedInUser.role === 'editor' || loggedInUser.role === 'sales' || loggedInUser.role === 'assistantEditor')) {
+    if (to.meta.allowed) {
+      if(!to.meta.allowed.includes(loggedInUser.role)){
+        next({ name: 'Home' });
+      }else{
+        next();
+      }
+    } else {
+      next();
+    }
+  } else {
+    window.location.replace(`${window.location.origin}/404`);
+  }
+});
 
 export default router;
