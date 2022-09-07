@@ -221,7 +221,9 @@ const router = new VueRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  await store.dispatch('getUserInfo');
+  if(!store.state.userStore.loggedInUser){
+    await store.dispatch('getUserInfo');
+  }
   const { loggedInUser } = store.state.userStore;
   if (loggedInUser && (loggedInUser.role === 'admin' || loggedInUser.role === 'editor' || loggedInUser.role === 'sales' || loggedInUser.role === 'assistantEditor')) {
     if (to.meta.allowed) {
