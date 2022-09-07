@@ -89,7 +89,12 @@ export default {
             isLoading: true,
             showSignUpMsg: false,
             isShareModalActive: false,
-            interactions: [],
+            interactions: []
+        }
+    },
+    metaInfo () {
+        return {
+            title: this.pageTitle
         }
     },
     methods:{
@@ -159,6 +164,13 @@ export default {
             if(!this.$store.getters.loggedInUser) return true
             return !this.$store.getters.loggedInUser.isAllowedToSelectTxt;
         },
+        pageTitle(){
+            if(this.material){
+                return this.material.name
+            }
+
+            return ''
+        }
     },
     async mounted(){
         // In mounted because the loader is not showing until the function is done

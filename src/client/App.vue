@@ -47,6 +47,14 @@ export default {
             videoModal: false
         };
     },
+    metaInfo() {
+        return {
+            titleTemplate(titleChunk) {
+                const suffix = "Efficasafe";
+                return titleChunk ? `${titleChunk} | ${suffix}` : suffix;
+            }
+        }
+    },
     computed: {
         loggedInUser() {
             return this.$store.getters.loggedInUser;

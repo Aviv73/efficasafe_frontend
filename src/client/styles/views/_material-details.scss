@@ -358,6 +358,61 @@
         }
     }
 
+    .details-container{
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+
+        h3{
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: #484848e6;
+            font-weight: 400;
+        }
+
+        .info-icon{
+            margin-inline-start: 5px;
+            color: #484848;
+            cursor: help;
+        }
+
+        .pathways-tooltip-container{
+            margin: 10px;
+            width: 230px;
+
+            @include for-narrow-layout {
+                width: unset;
+            }
+
+            .tip{
+                margin-block-start: 10px;
+
+                .bold{
+                    font-weight: bold;
+                }
+
+                .green{
+                    color: $green;
+                }
+                .red{
+                    color: $red;
+                }
+                .yellow{
+                    color: $yellow;
+                }
+
+                .underline{
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    .pathway-exp-txt{
+        margin-top: 12px;
+        font-size: 12px;
+    }
+
     .chip-list{
         border-bottom: none;
         margin-block-end: unset;

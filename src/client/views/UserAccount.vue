@@ -36,6 +36,10 @@
 
 <script>
 export default {
-    
+    metaInfo () {
+        return {
+            title: 'Account'
+        }
+    },
 }
 </script>

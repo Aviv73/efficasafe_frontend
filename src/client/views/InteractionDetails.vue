@@ -1,8 +1,6 @@
 <template>
     <section class="interaction-details" :class="{'not-allowed-select-txt': isNotAllowedSelect}">
         <header class="interaction-details-header">
-            <h1 v-if="interaction && interaction.side2Material" class="invisible-header">Interaction between {{interaction.side1Material.name}} and {{interaction.side2Material.name}}</h1>
-            <h1 v-if="interaction && !interaction.side2Material" class="invisible-header">Interaction between {{interaction.side1Material.name}} and {{interaction.side2DraftName}}</h1>
             <div class="interaction-details-header-container">
                 <span class="brim-start" />
                 <div class="flex-space-between">
@@ -320,6 +318,11 @@ export default {
             isShareModalActive: false,
         }
     },
+    metaInfo () {
+        return {
+            title: this.pageTitle
+        }
+    },
     watch: {
         '$route.params': {
             async handler() {
@@ -330,6 +333,17 @@ export default {
         }
     },
     computed: {
+        pageTitle(){
+            if(!this.interaction){
+                return ''
+            }
+
+            if(this.interaction.side2Material){
+                return `${this.interaction.side1Material.name} & ${this.interaction.side2Material.name}`
+            }else{
+                return `${this.interaction.side1Material.name} & ${this.interaction.side2DraftName}`
+            }
+        },
         combinedRefs() {
             return this.interactionRefs.concat(this.relevantSide2Refs, this.side1PathwayRefs);
         },
