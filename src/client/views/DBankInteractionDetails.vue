@@ -222,6 +222,11 @@ export default {
             side2Material: false
         }
     },
+    metaInfo () {
+        return {
+        title: this.pageTitle
+        }
+    },
     watch: {
         '$route.params': {
             async handler() {
@@ -234,6 +239,13 @@ export default {
         }
     },
     computed: {
+        pageTitle(){
+            if(this.interaction){
+                return `${this.interaction.subject_drug.name} & ${this.interaction.affected_drug.name}`
+            }
+
+            return ''
+        },
         interactionName() {
             return `${this.interaction.subject_drug.name} & ${this.interaction.affected_drug.name}`;
         },

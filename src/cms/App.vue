@@ -39,7 +39,7 @@ export default {
         },
     },
     async created() {
-        // await this.removeServiceWorker();
+        await this.removeServiceWorker();
         await this.$store.dispatch('pullManagementData')
         if (this.loggedInUser) this.loadData();
     },

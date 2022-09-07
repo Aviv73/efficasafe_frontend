@@ -483,6 +483,11 @@ export default {
             innerListEl: null
         }
     },
+    metaInfo () {
+        return {
+            title: 'Search'
+        }
+    },
     watch: {
         '$route.query': {
             async handler(to, from) {

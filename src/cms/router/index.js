@@ -226,7 +226,6 @@ router.beforeEach(async (to, from, next) => {
     await store.dispatch('getUserInfo');
   }
   const { loggedInUser } = store.state.userStore;
-  console.log('user', loggedInUser);
   if (loggedInUser && (loggedInUser.role === 'admin' || loggedInUser.role === 'editor' || loggedInUser.role === 'sales' || loggedInUser.role === 'assistantEditor')) {
     if (to.meta.allowed) {
       if(!to.meta.allowed.includes(loggedInUser.role)){

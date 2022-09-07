@@ -124,6 +124,34 @@
             <section v-if="material.effectOnDrugMetabolism" class="material-details-content-section">
                 <h3 ref="Effect On Drug Metabolism">Effect On Drug Metabolism</h3>
                 <p v-html="material.effectOnDrugMetabolism" v-refs-tooltip-material="{material,refCountMap}"></p>
+
+                <div class="details-container">
+                    <h3 class="font-medium regular-pointer">Details</h3>
+                    <tooltip on="hover" topRightCorner>
+                        <template #content>
+                            <section class="pathways-tooltip-container">
+                                <div class="tip">
+                                    <p>A <span class="green bold">green</span> marking means that <span class="underline">clinical studies</span> have shown no effect</p>
+                                    <p>of the supplement on the pathway.</p>
+                                </div>
+                                <div class="tip">
+                                    <p>A <span class="red bold">red</span> marking means that <span class="underline">clinical studies</span> have shown that the </p>
+                                    <p>supplement inhibits or induces the pathway.</p>
+                                </div>
+                                <div class="tip">
+                                    <p>A <span class="yellow bold">yellow</span> marking means that there are only <span class="underline">pre-clinical</span> studies</p>
+                                    <p>and the effect of the supplement on the pathway is unclear.</p>
+                                </div>
+                            </section>
+                        </template>
+                        <information-outline-icon
+                            class="info-icon"
+                            :size="16"
+                            title=""
+                        />
+                    </tooltip>
+                </div>
+
                 <ul class="side1-pathways-nav flex-align-center chip-list">
                     <li
                         class="side1-pathways-nav-item material-details-item"
@@ -144,6 +172,7 @@
                         </tooltip>
                     </li>
                 </ul>
+                <p class="pathway-exp-txt">{{pathwayExpTxt}}</p>
                 <hr class="line">
             </section>
             <section class="material-details-content-section">
@@ -175,6 +204,7 @@ import ArrowLeftIcon from 'vue-material-design-icons/ArrowLeft';
 import MobileShareIcon from '@/client/cmps/common/icons/MobileShareIcon';
 import ShareVariantIcon from 'vue-material-design-icons/ShareVariant';
 import Tooltip from '@/client/cmps/common/Tooltip';
+import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
 
 export default {
     props: {
@@ -340,6 +370,12 @@ export default {
         isScreenNarrow() {
             return this.$store.getters.isScreenNarrow;
         },
+        isScreenMobile() {
+            return this.$store.getters.isScreenNarrow;
+        },
+        pathwayExpTxt(){
+            return `* ${this.isScreenMobile ? 'Click' : 'Hover'} on each capsule to see more info.`
+        },
         isNotAllowedSelect() {
             if(!this.$store.getters.loggedInUser) return true
             return !this.$store.getters.loggedInUser.isAllowedToSelectTxt;
@@ -386,7 +422,8 @@ export default {
         ArrowLeftIcon,
         MobileShareIcon,
         ShareVariantIcon,
-        Tooltip
+        Tooltip,
+        InformationOutlineIcon
     }
 };
 </script>
