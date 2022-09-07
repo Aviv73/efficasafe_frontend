@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import App from './App.vue';
-import './registerServiceWorker';
+// import './registerServiceWorker'; //TEMP
 import router from './router';
 import store from '../cms/store';
 import VueTour from 'vue-tour';

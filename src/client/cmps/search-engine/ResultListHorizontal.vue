@@ -5,7 +5,7 @@
                 <checkbox class="checkbox" @change="handleCheckbox" :isChecked="isChecked" :biggerRadius="true"></checkbox>
                 <h4 class="checkbox-title">Theoretical interactions</h4>
                 <span v-if="theoreticalDiff" class="badge diff-badge">{{theoreticalDiff}}</span>
-                <tooltip v-if="!isScreenNarrow" on="hover" right right-bottom>
+                <tooltip v-if="!isScreenNarrow" on="hover" leftBottomCorner>
                     <template #content>
                         <div class="tooltip-content">
                             <p>There are additional theoretical interactions. Check the box to view them. They are presented with a gray background.</p>
@@ -71,7 +71,7 @@
                 >
                     <span>Level of Evidence</span>
                 </div>
-                <tooltip on="hover" right right-bottom>
+                <tooltip on="hover" leftBottomCorner>
                     <template #content>
                         <div class="tooltip-content">
                             <ul>
