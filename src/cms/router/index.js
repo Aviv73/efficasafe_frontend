@@ -238,7 +238,8 @@ router.beforeEach(async (to, from, next) => {
       next();
     }
   } else {
-    window.location.replace(`${window.location.origin}/404`);
+    // window.location.replace(`${window.location.origin}/404`);
+    console.log('NO!!!!!');
   }
 });
 
