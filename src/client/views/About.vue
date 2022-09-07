@@ -147,7 +147,7 @@
                     />
                 </template>
             </swiper>
-            <!-- <h2 class="heading2 txt-center">Powered by:</h2> -->
+            <h2 class="heading2 txt-center">Powered by:</h2>
             <div class="flex-center">
                 <img
                     class="about-page-drugbank-logo"

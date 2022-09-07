@@ -89,6 +89,14 @@ export default {
                 await this.$store.dispatch({ type: 'updateAutoPilotContact', user});
                 }
             }
+        },
+        async removeServiceWorker(){
+            const registrations = await navigator.serviceWorker.getRegistrations()
+            if (registrations.length) {
+                for (let registration of registrations) {
+                    registration.unregister();
+                }
+            }
         }
     },
     mounted() {
@@ -98,6 +106,8 @@ export default {
         }
     },
     async created(){
+        await this.removeServiceWorker()
+
         await this.$store.dispatch('pullManagementData')
         const BASE_URL = (process.env.NODE_ENV === 'development') ? '//localhost:3000' : '';
         const events = new EventSource(`${BASE_URL}/events`, { withCredentials: true });

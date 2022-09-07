@@ -29,9 +29,17 @@ export default {
             const filterBy = {};
             this.$store.dispatch({ type: 'loadLabels', filterBy });
         },
-        
+        async removeServiceWorker() {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            if (registrations.length) {
+                for (let registration of registrations) {
+                    registration.unregister();
+                }
+            }
+        },
     },
     async created() {
+        await this.removeServiceWorker();
         await this.$store.dispatch('pullManagementData')
         if (this.loggedInUser) this.loadData();
     },
