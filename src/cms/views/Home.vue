@@ -23,7 +23,6 @@
             </v-avatar>
             {{ module.name }}
           </v-chip>
-        
         </v-chip-group>
       </v-card-actions>
     </v-card>
