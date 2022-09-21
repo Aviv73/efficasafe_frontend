@@ -54,11 +54,7 @@ export default {
                     if(!row[0] || !row[1]) return 
                     const formula = row[0]
                     const materialNames = row[1].split(',')
-                    const formulatedMaterialNames = materialNames.map( n => {
-                        let newName = n.trim()
-                        newName = newName.toLowerCase()
-                        return newName.charAt(0).toUpperCase() + newName.slice(1)
-                    })
+                    const formulatedMaterialNames = materialNames.map( n => n.trim());
                     for (let i = 0; i < formulatedMaterialNames.length; i++) {
                         const name = formulatedMaterialNames[i];
                         const material = await materialService.getByName(name)
