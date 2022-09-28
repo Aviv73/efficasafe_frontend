@@ -125,7 +125,6 @@ export const userStore = {
         },
         async loadUser(context, { userId }) {
             let user = await userService.getById(userId);
-            if (user.type === 'trial') user = await userService.checkTrial(user)
             return user
         },
         async logout(context) {

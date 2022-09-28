@@ -18,7 +18,7 @@ export const userService = {
     resetPassword,
     resnedVerifcationMail,
     updateAutoPilotContact,
-    checkTrial,
+    // checkTrial,
     getEmptySearch,
     verifyEmail,
     signup,
@@ -74,19 +74,17 @@ function getById(id) {
     return httpService.get(`${ACCOUNT_END_POINT}/${id}`);
 }
 
-async function checkTrial(user) {
-    const now = Date.now()
-    if (now - user.start_trial < 0) {
-        try {
-            await httpService.put(`${ACCOUNT_END_POINT}/endTrial`, { user })
-        } catch (err) {
-            console.log('problem with updated user', err)
-        } finally {
-            user.type = 'registered'
-        }
-    }
-    return user
-}
+// async function checkTrial(user) {
+//     const now = Date.now()
+//     if (now - user.trialTime < 0) {  // .start_trial
+//         try {
+//             await httpService.put(`${ACCOUNT_END_POINT}/endTrial`, { user })
+//         } catch (err) {
+//             console.log('problem with updated user', err)
+//         }
+//     }
+//     return user
+// }
 
 async function getUserInfo() {
     return await httpService.get(`${AUTH_END_POINT}/userInfo`);
