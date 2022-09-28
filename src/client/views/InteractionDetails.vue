@@ -215,7 +215,7 @@
                                 </template>
                                 <template #content>
                                     <side2-pathways
-                                        v-if="relevantSide2Pathways.length"
+                                        v-if="relevantSide2Pathways.length && showParmaSide2"
                                         :side2Pathways="relevantSide2Pathways"
                                         :combinedRefs="combinedRefs"
                                         :side2Refs="side2Refs"
@@ -279,7 +279,7 @@
 
 <script>
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
-import { utilService } from '@/cms/services/util.service';
+// import { utilService } from '@/cms/services/util.service';
 import { storageService } from '@/cms/services/storage.service';
 import { eventBus } from '@/cms/services/eventBus.service';
 
@@ -316,6 +316,7 @@ export default {
             isLoading: false,
             effectOnDrugMetabolism: '',
             isShareModalActive: false,
+            showParmaSide2: false
         }
     },
     metaInfo () {
@@ -578,6 +579,7 @@ export default {
                 this.interactionRefs
             );
             this.interactionRefs = sortedRefs;
+            this.showParmaSide2 = true;
         },
         getRefsCountByType(refs, type) {
             let iterateFunc = null;
@@ -605,35 +607,34 @@ export default {
             return refs.filter(iterateFunc).length;
         },
         formatRefs(txt, isPathwaysRefs = false) {
+            const openTag = '<sub>(';
+            const closeTag = ')</sub>';
+
             if (!isPathwaysRefs && !this.interactionRefs.length) return txt;
-            const refsOrder = interactionUIService.getRefsOrder(txt, false, false).filter(num => txt.indexOf(num) > -1);
-            let lastRefIdx = 0;
-            refsOrder.forEach((refNum) => {
-                let draftIdx = this.combinedRefs.findIndex(ref => ref && ref.draftIdx === refNum) + 1;
-                if (isPathwaysRefs) {
-                    const sameRefs = this.combinedRefs.filter(ref => ref && ref.draftIdx === refNum);
-                    if (sameRefs.length > 1) {
-                        const ref = sameRefs.find(ref => this.side2Refs.findIndex(currRef => currRef.link === ref.link) === -1);
-                        draftIdx = this.combinedRefs.indexOf(ref) + 1;
-                    }
-                }
-                let refIdx = txt.indexOf(refNum, lastRefIdx + draftIdx.toString().length);
-                if (!utilService.checkIfInsideRef(txt, refIdx) || lastRefIdx === refIdx) {
-                    let cnt = 0;
-                    while (txt.charAt(refIdx) === txt.charAt(refIdx + cnt)) {
-                        cnt++;
-                    }
-                    refIdx = txt.indexOf(refNum, refIdx + cnt);
-                }
-                if (lastRefIdx + draftIdx.toString().length > refIdx) lastRefIdx = refIdx + draftIdx.toString().length;
-                else lastRefIdx = refIdx;
-                if (refIdx > -1) {
-                    txt = txt.slice(0, lastRefIdx) +
-                    txt.slice(lastRefIdx, (lastRefIdx + refNum.toString().length)).replace(refNum, draftIdx) +
-                    txt.slice(lastRefIdx + refNum.toString().length);
-                }
-            });
-            return txt;
+
+            const parts = txt.split(openTag);
+            const fixedTxt = parts.map(part => {
+                if (!part.includes(closeTag)) return part;
+
+                const [numsBetweenTxt, info] = part.split(closeTag);
+
+                const numsBetween = numsBetweenTxt.split(',').filter(Boolean);
+                const fixedNumsBetween = numsBetween.reduce((acc, c) => {
+                    const fixedCurr = (c.split('-').filter(Boolean)
+                            .map(draftIdxStr => {
+                                const draftIdx = +draftIdxStr;
+                                return this.combinedRefs.findIndex(ref => ref && ref.draftIdx === draftIdx) + 1;
+                            })
+                        .join('-'));
+                    return [...acc, fixedCurr];
+                }, []);
+                const fixedStr = fixedNumsBetween.join(',');
+
+                return fixedStr + closeTag +  info;
+            }).join(openTag);
+            
+
+            return fixedTxt;
         }
     },
     created(){

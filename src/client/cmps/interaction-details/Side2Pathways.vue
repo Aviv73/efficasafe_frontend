@@ -103,8 +103,28 @@ export default {
                 const idx = this.combinedRefs.findIndex(ref => pubmedIds[i] === ref[field]);
                 refsStr += (idx + 1) + ', ';
             }
-            return `(${refsStr.split(', ').filter(str => str).sort((a, b) => a - b).join(', ')})`;
-        }
+            const sortedRefs = refsStr.split(', ').filter(str => str).sort((a, b) => a - b).join(', ')
+            const str = this.minimizeRefs(sortedRefs.split(', '))
+            return `(${str})`;
+        },
+        minimizeRefs(refs){
+            let refsStr = '';
+            let isSequence = false;
+            for (let i = 0; i < refs.length; i++) {
+                if (refs[i - 1] === undefined) refsStr += refs[i];
+
+                if (Math.abs(refs[i] - refs[i - 1]) > 1) {
+                    if (isSequence) refsStr += '-' + (refs[i - 1]);
+                    refsStr += ',' + refs[i];
+                    isSequence = false;
+                } else if (Math.abs(refs[i] - refs[i - 1]) === 1) isSequence = true;
+
+                if (i === (refs.length - 1) && refs[i - 1] !== undefined && isSequence) {
+                    refsStr += '-' + refs[i];
+                }
+            }
+            return refsStr
+        },
     },
     components: {
         Tooltip
