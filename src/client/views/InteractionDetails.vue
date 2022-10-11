@@ -339,11 +339,13 @@ export default {
                 return ''
             }
 
+            let title = 'Interaction of ';
             if(this.interaction.side2Material){
-                return `${this.interaction.side1Material.name} & ${this.interaction.side2Material.name}`
+                title += `${this.interaction.side1Material.name} & ${this.interaction.side2Material.name}`
             }else{
-                return `${this.interaction.side1Material.name} & ${this.interaction.side2DraftName}`
+                title += `${this.interaction.side1Material.name} & ${this.interaction.side2DraftName}`
             }
+            return title;
         },
         combinedRefs() {
             return this.interactionRefs.concat(this.relevantSide2Refs, this.side1PathwayRefs);

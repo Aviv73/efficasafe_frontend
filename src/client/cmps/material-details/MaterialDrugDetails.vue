@@ -12,6 +12,7 @@
             <hr>
             <section class="material-details-nav-links">
                 <a v-if="material.dBankDesc" @click="goTo('Background')">Background</a>
+                <a @click="goTo('Interactions')">Interactions</a>
                 <a v-if="material.dBankIndications && material.dBankIndications.length" @click="goTo('Medicinal uses')">Medicinal uses</a>
                 <a v-if="material.pharmacology.indication" @click="goTo('Pharmacology')">Pharmacology</a>
                 <a v-if="material.pharmacology.pharmacodynamics" @click="goTo('Pharmacodynamics')">Pharmacodynamics</a>
@@ -27,7 +28,6 @@
                 <a v-if="material.structuredContraIndications.length" @click="goTo('Contraindications')">Contraindications</a>
                 <a v-if="material.pharmacology.toxicity" @click="goTo('Toxicity')">Toxicity</a>
                 <a v-if="material.foodInteractions.length" @click="goTo('Food Interactions')">Food Interactions</a>
-                <a @click="goTo('Interactions')">Interactions</a>
                 <a v-if="dBankRefsToShow.length" @click="goTo('References')">References</a>
             </section>
         </aside>
@@ -53,6 +53,13 @@
             <section v-if="material.dBankDesc" class="material-details-content-section">
                 <h3 ref="Background">Background</h3>
                 <p v-if="material.dBankDesc" v-html="material.dBankDesc" v-refs-tooltip-material="{material,refCountMap}"></p>
+                <hr class="line">
+            </section>
+            <section class="material-details-content-section">
+                <h3 ref="Interactions">Interactions</h3>
+                    <router-link :to="`/search?q=${originalMaterial.name}`" target="_blank" class="fda-link font14">
+                        click here to see all of the interactions
+                    </router-link>
                 <hr class="line">
             </section>
             <section v-if="material.dBankIndications && material.dBankIndications.length" class="material-details-content-section">
@@ -132,13 +139,6 @@
             <section v-if="material.foodInteractions.length" class="material-details-content-section">
                 <h3 ref="Food Interactions">Food Interactions</h3>
                     <p v-for="effect in material.foodInteractions" :key="effect">{{effect}}</p>
-                <hr class="line">
-            </section>
-            <section class="material-details-content-section">
-                <h3 ref="Interactions">Interactions</h3>
-                    <router-link :to="`/search?q=${originalMaterial.name}`" target="_blank" class="fda-link font14">
-                        click here to see all of the interactions
-                    </router-link>
                 <hr class="line">
             </section>
             <section v-if="dBankRefsToShow.length" class="material-details-content-refs">

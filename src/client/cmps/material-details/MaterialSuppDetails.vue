@@ -12,8 +12,12 @@
             <hr>
             <section class="material-details-nav-links">
                 <a v-if="material.desc" @click="goTo('Background')">Background</a>
+                <a @click="goTo('Interactions')">Interactions</a>
                 <a v-if="material.nutritionalSources" @click="goTo('Nutritional sources')">Nutritional sources</a>
                 <a v-if="material.medicinalActions && material.medicinalActions.length" @click="goTo('Medicinal actions')">Medicinal actions</a>
+                
+                <a v-if="material.otherCharacteristics" @click="goTo('Other characteristics')">Other characteristics</a>
+                
                 <a v-if="(material.indications && material.indications.length) || material.medicinalUsesTxt" @click="goTo('Medicinal uses')">Medicinal uses</a>
                 <!-- <a v-if="(material.indications && material.indications.length) || (material.dBankIndications && material.dBankIndications.length)" @click="goTo('Medicinal uses')">Medicinal uses</a> -->
                 <a v-if="material.absorptionAndExcretion" @click="goTo('Absorption and excretion')">Absorption and excretion</a>
@@ -31,7 +35,6 @@
                 <a v-if="material.lactation" @click="goTo('Lactation')">Lactation</a>
                 <a v-if="material.mechanismOfAction" @click="goTo('Mechanism Of Action')">Mechanism Of Action</a>
                 <a v-if="material.effectOnDrugMetabolism" @click="goTo('Effect On Drug Metabolism')">Effect on drug metabolism</a>
-                <a @click="goTo('Interactions')">Interactions</a>
                 <a v-if="refsToShow.length" @click="goTo('References')">References</a>
             </section>
         </aside>
@@ -54,6 +57,13 @@
                 <p v-html="material.desc" v-refs-tooltip-material="{material,refCountMap}"></p>
                 <hr class="line">
             </section>
+            <section class="material-details-content-section">
+                <h3 ref="Interactions">Interactions</h3>
+                    <router-link :to="`/search?q=${originalMaterial.name}`" target="_blank" class="fda-link font14">
+                        click here to see all of the interactions
+                    </router-link>
+                <hr class="line">
+            </section>
             <section v-if="material.nutritionalSources" class="material-details-content-section">
                 <h3 ref="Nutritional sources">Nutritional sources</h3>
                 <p v-html="material.nutritionalSources" v-refs-tooltip-material="{material,refCountMap}"></p>
@@ -64,14 +74,16 @@
                 <p>{{material.medicinalActions.join(', ')}}</p>
                 <hr class="line">
             </section>
-            <section v-if="material.indications && material.indications.length" class="material-details-content-section">
-                <h3 ref="Medicinal uses">Medicinal uses</h3>
-                <p>{{material.indications.join(', ')}}</p>
+            <section v-if="material.otherCharacteristics" class="material-details-content-section">
+                <h3 ref="Other characteristics">Other characteristics</h3>
+                <p v-html="material.otherCharacteristics" v-refs-tooltip-material="{material,refCountMap}"></p>
                 <hr class="line">
             </section>
-            <section v-else-if="material.medicinalUsesTxt" class="material-details-content-section">
+            <section v-if="(material.indications && material.indications.length) || material.medicinalUsesTxt" class="material-details-content-section">
                 <h3 ref="Medicinal uses">Medicinal uses</h3>
-                <p v-html="material.medicinalUsesTxt" v-refs-tooltip-material="{material,refCountMap}"></p>
+                <p v-if="material.indications && material.indications.length">{{material.indications.join(', ')}}</p>
+                <br/>
+                <p v-if="material.medicinalUsesTxt" v-html="material.medicinalUsesTxt" v-refs-tooltip-material="{material,refCountMap}"></p>
                 <hr class="line">
             </section>
             <section v-if="material.absorptionAndExcretion" class="material-details-content-section">
@@ -198,13 +210,6 @@
                 <p class="pathway-exp-txt">{{pathwayExpTxt}}</p>
                 <hr class="line">
             </section>
-            <section class="material-details-content-section">
-                <h3 ref="Interactions">Interactions</h3>
-                    <router-link :to="`/search?q=${originalMaterial.name}`" target="_blank" class="fda-link font14">
-                        click here to see all of the interactions
-                    </router-link>
-                <hr class="line">
-            </section>
             <section v-if="refsToShow.length" class="material-details-content-refs">
                 <h4 ref="References">References</h4>
                 <div v-for="ref in refsToShow" :key="ref.draftIdx" class="ref-container">
@@ -247,7 +252,7 @@ export default {
             // filedToSkip:['pathways','effectOnDrugMetabolism','detailedPharmacology'],
             filedToSkip:['pathways','detailedPharmacology'],
             refNumsToShow:[],
-            fieldsToCheckSupp:['desc','nutritionalSources','medicinalUsesTxt','absorptionAndExcretion','causesOfDeficiency','symptomsOfDeficiency','RDA','dosage','sensitivities','adverseReactions','overdosage','precautions','contraindications','toxicity','pregnancy','lactation', 'mechanismOfAction', 'effectOnDrugMetabolism']
+            fieldsToCheckSupp:['desc','nutritionalSources','otherCharacteristics','medicinalUsesTxt','absorptionAndExcretion','causesOfDeficiency','symptomsOfDeficiency','RDA','dosage','sensitivities','adverseReactions','overdosage','precautions','contraindications','toxicity','pregnancy','lactation', 'mechanismOfAction', 'effectOnDrugMetabolism']
         }
     },
     methods: {

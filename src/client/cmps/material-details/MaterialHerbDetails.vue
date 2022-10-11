@@ -12,11 +12,12 @@
             <hr>
             <section class="material-details-nav-links">
                 <a v-if="material.desc" @click="goTo('Background')">Background</a>
+                <a @click="goTo('Interactions')">Interactions</a>
                 <a v-if="material.plantPartUsed" @click="goTo('Plant part used')">Plant part used</a>
                 <a v-if="material.qualities && material.qualities.length" @click="goTo('Qualities')">Qualities</a>
                 <a v-if="material.activeConstituents" @click="goTo('Active constituents')">Active constituents</a>
                 <a v-if="material.medicinalActions && material.medicinalActions.length" @click="goTo('Medicinal actions')">Medicinal actions</a>
-                <a v-if="material.indications && material.indications.length" @click="goTo('Medicinal uses')">Medicinal uses</a>
+                <a v-if="(material.indications && material.indications.length) || material.medicinalUsesTxt" @click="goTo('Medicinal uses')">Medicinal uses</a>
                 <a v-if="material.dosage" @click="goTo('Dosage')">Dosage</a>
                 <a v-if="material.sensitivities" @click="goTo('Sensitivities')">Sensitivities</a>
                 <a v-if="material.adverseReactions" @click="goTo('Adverse reactions')">Adverse reactions</a>
@@ -27,7 +28,6 @@
                 <a v-if="material.pregnancy" @click="goTo('Pregnancy')">Pregnancy</a>
                 <a v-if="material.lactation" @click="goTo('Lactation')">Lactation</a>
                 <a v-if="material.effectOnDrugMetabolism" @click="goTo('Effect On Drug Metabolism')">Effect on drug metabolism</a>
-                <a @click="goTo('Interactions')">Interactions</a>
                 <a v-if="refsToShow.length" @click="goTo('References')">References</a>
             </section>
         </aside>
@@ -51,6 +51,13 @@
                 <p v-html="material.desc" v-refs-tooltip-material="{material,refCountMap}"></p>
                 <hr class="line">
             </section>
+            <section class="material-details-content-section">
+                <h3 ref="Interactions">Interactions</h3>
+                    <router-link :to="`/search?q=${originalMaterial.name}`" target="_blank" class="fda-link font14">
+                        click here to see all of the interactions
+                    </router-link>
+                <hr class="line">
+            </section>
             <section v-if="material.plantPartUsed" class="material-details-content-section">
                 <h3 ref="Plant part used">Plant part used</h3>
                 <p>{{material.plantPartUsed}}</p>
@@ -71,9 +78,11 @@
                 <p>{{material.medicinalActions.join(', ')}}</p>
                 <hr class="line">
             </section>
-            <section v-if="material.indications && material.indications.length" class="material-details-content-section">
+            <section v-if="(material.indications && material.indications.length) || material.medicinalUsesTxt" class="material-details-content-section">
                 <h3 ref="Medicinal uses">Medicinal uses</h3>
-                <p>{{material.indications.join(', ')}}</p>
+                <p v-if="material.indications && material.indications.length">{{material.indications.join(', ')}}</p>
+                <br/>
+                <p v-if="material.medicinalUsesTxt" v-html="material.medicinalUsesTxt" v-refs-tooltip-material="{material,refCountMap}"></p>
                 <hr class="line">
             </section>
             <section v-if="material.dosage" class="material-details-content-section">
@@ -175,13 +184,6 @@
                 <p class="pathway-exp-txt">{{pathwayExpTxt}}</p>
                 <hr class="line">
             </section>
-            <section class="material-details-content-section">
-                <h3 ref="Interactions">Interactions</h3>
-                    <router-link :to="`/search?q=${originalMaterial.name}`" target="_blank" class="fda-link font14">
-                        click here to see all of the interactions
-                    </router-link>
-                <hr class="line">
-            </section>
             <section v-if="refsToShow.length" class="material-details-content-refs">
                 <h4 ref="References">References</h4>
                 <div v-for="ref in refsToShow" :key="ref.draftIdx" class="ref-container">
@@ -221,7 +223,7 @@ export default {
             nextRefNum: 1,
             filedToSkip:['pathways','detailedPharmacology'],
             refNumsToShow:[],
-            fieldsToCheckSupp:['desc','activeConstituents','dosage','sensitivities','adverseReactions','overdosage','precautions','contraindications','toxicity','pregnancy','lactation', 'effectOnDrugMetabolism'],
+            fieldsToCheckSupp:['desc','activeConstituents','medicinalUsesTxt','dosage','sensitivities','adverseReactions','overdosage','precautions','contraindications','toxicity','pregnancy','lactation', 'effectOnDrugMetabolism'],
         }
     },
     methods: {
