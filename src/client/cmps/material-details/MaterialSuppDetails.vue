@@ -14,6 +14,9 @@
                 <a v-if="material.desc" @click="goTo('Background')">Background</a>
                 <a v-if="material.nutritionalSources" @click="goTo('Nutritional sources')">Nutritional sources</a>
                 <a v-if="material.medicinalActions && material.medicinalActions.length" @click="goTo('Medicinal actions')">Medicinal actions</a>
+                
+                <a v-if="material.otherCharacteristics" @click="goTo('Other characteristics')">Other characteristics</a>
+                
                 <a v-if="(material.indications && material.indications.length) || material.medicinalUsesTxt" @click="goTo('Medicinal uses')">Medicinal uses</a>
                 <!-- <a v-if="(material.indications && material.indications.length) || (material.dBankIndications && material.dBankIndications.length)" @click="goTo('Medicinal uses')">Medicinal uses</a> -->
                 <a v-if="material.absorptionAndExcretion" @click="goTo('Absorption and excretion')">Absorption and excretion</a>
@@ -62,6 +65,11 @@
             <section v-if="material.medicinalActions && material.medicinalActions.length" class="material-details-content-section">
                 <h3 ref="Medicinal actions">Medicinal actions</h3>
                 <p>{{material.medicinalActions.join(', ')}}</p>
+                <hr class="line">
+            </section>
+            <section v-if="material.otherCharacteristics" class="material-details-content-section">
+                <h3 ref="Other characteristics">Other characteristics</h3>
+                <p v-html="material.otherCharacteristics" v-refs-tooltip-material="{material,refCountMap}"></p>
                 <hr class="line">
             </section>
             <section v-if="material.indications && material.indications.length" class="material-details-content-section">
@@ -247,7 +255,7 @@ export default {
             // filedToSkip:['pathways','effectOnDrugMetabolism','detailedPharmacology'],
             filedToSkip:['pathways','detailedPharmacology'],
             refNumsToShow:[],
-            fieldsToCheckSupp:['desc','nutritionalSources','medicinalUsesTxt','absorptionAndExcretion','causesOfDeficiency','symptomsOfDeficiency','RDA','dosage','sensitivities','adverseReactions','overdosage','precautions','contraindications','toxicity','pregnancy','lactation', 'mechanismOfAction', 'effectOnDrugMetabolism']
+            fieldsToCheckSupp:['desc','nutritionalSources','otherCharacteristics','medicinalUsesTxt','absorptionAndExcretion','causesOfDeficiency','symptomsOfDeficiency','RDA','dosage','sensitivities','adverseReactions','overdosage','precautions','contraindications','toxicity','pregnancy','lactation', 'mechanismOfAction', 'effectOnDrugMetabolism']
         }
     },
     methods: {
