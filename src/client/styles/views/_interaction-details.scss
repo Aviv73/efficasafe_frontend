@@ -3,6 +3,11 @@
     font-size: rem(14px);
     line-height: rem(16px);
 
+    a {
+        color: #5757fb;
+        text-decoration: underline;
+    }
+
     .subheader {
         text-transform: uppercase;
         color: $clr1;
