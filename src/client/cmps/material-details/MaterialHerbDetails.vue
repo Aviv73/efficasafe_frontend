@@ -258,6 +258,7 @@ export default {
             const regex = /\(([\d- ,\d]+)\)/g;
             this.fieldsToCheckSupp.forEach(key => {
                 if(this.filedToSkip.includes(key)) return
+                if (!material[key]) return;
                 material = this.addSubHeaders(material, key)
                 const matches = material[key].match(regex);
                 if(matches){
