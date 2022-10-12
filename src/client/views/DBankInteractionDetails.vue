@@ -241,7 +241,7 @@ export default {
     computed: {
         pageTitle(){
             if(this.interaction){
-                return `Interaction of ${this.interaction.subject_drug.name} & ${this.interaction.affected_drug.name}`
+                return `Interaction of ${this.interaction.subject_drug.name} and ${this.interaction.affected_drug.name}`
             }
 
             return ''
