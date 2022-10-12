@@ -42,7 +42,7 @@ export default {
     },
     data() {
         return {
-            links: ['XNA1wpuINRU', '0xSOsMCkURw'],
+            links: ['SmuEDcWPGH8', 'kBgZNJxR6ZA', '-8GzFTaoDAw'],
             currVideoIdx: 0,
         };
     },

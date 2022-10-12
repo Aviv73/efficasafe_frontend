@@ -215,7 +215,7 @@
                                 </template>
                                 <template #content>
                                     <side2-pathways
-                                        v-if="relevantSide2Pathways.length && showParmaSide2"
+                                        v-if="relevantSide2Pathways.length"
                                         :side2Pathways="relevantSide2Pathways"
                                         :combinedRefs="combinedRefs"
                                         :side2Refs="side2Refs"
@@ -341,9 +341,9 @@ export default {
 
             let title = 'Interaction of ';
             if(this.interaction.side2Material){
-                title += `${this.interaction.side1Material.name} & ${this.interaction.side2Material.name}`
+                title += `${this.interaction.side1Material.name} and ${this.interaction.side2Material.name}`
             }else{
-                title += `${this.interaction.side1Material.name} & ${this.interaction.side2DraftName}`
+                title += `${this.interaction.side1Material.name} and ${this.interaction.side2DraftName}`
             }
             return title;
         },

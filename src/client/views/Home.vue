@@ -311,6 +311,17 @@
             <button class="btn home-cta bottom-btn" @click="searchWithBtn">
                 Get interactions
             </button>
+             <template v-if="managementData">
+                    <div v-if="isFirstTime" class="home-ftu-container bottom">
+                        <h3 class="first">Try our platform - Get {{managementData.freeSearchesNum}} free searches</h3>
+                        <h3 class="card">No credit card required.</h3>
+                    </div>
+                    <div v-else-if="!loggedInUser" class="home-ftu-container bottom">
+                        <h3 class="first">Get a free {{managementData.freeTrailDaysNum}} day trial of unlimited searches and features!</h3>
+                        <h3 class="card">No credit card required.</h3>
+                        <button class="trial-btn" @click="$emit('signup');">Start a free trial now</button>
+                    </div>
+            </template>
         </section>
         <welcome-modal v-if="welcomeModal" @closeModal="welcomeModal = false" />
         <pass-change-success
