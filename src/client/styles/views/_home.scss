@@ -92,7 +92,7 @@
         }
     }
 
-    &-ftu-container{
+    .home-ftu-container{
         width: 80%;
         border-radius: 16px;
         background-color: #FFFFFF66;
@@ -102,6 +102,15 @@
         margin-block-end: 16px;
         @include for-narrow-layout {
             width: 500px;
+        }
+
+        &.bottom {
+            display: none;
+            @include for-narrow-layout {
+                display: block;
+            }
+            margin: 0 auto;
+            padding-top: 5px;
         }
 
         .first{
@@ -387,8 +396,9 @@
         background-image: linear-gradient(90deg, $gradient-clr1, $gradient-clr2);
         padding-block-start: 294px;
 
+        padding-block-end: 160px;
         @include for-narrow-layout {
-            padding-block-end: 160px;
+            padding-block-end: 80px;
         }
 
         &-list {
@@ -509,8 +519,10 @@
         display: none;
         @include for-narrow-layout {
             display: inline-block;
-            margin: 0;
-            transform: translateY(82px);
+            // margin: 0;
+            margin: 80px 0 40px 0;
+            // transform: translateY(82px);
         }
     }
+
 }
