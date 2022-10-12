@@ -215,7 +215,7 @@
                                 </template>
                                 <template #content>
                                     <side2-pathways
-                                        v-if="relevantSide2Pathways.length && showParmaSide2"
+                                        v-if="relevantSide2Pathways.length"
                                         :side2Pathways="relevantSide2Pathways"
                                         :combinedRefs="combinedRefs"
                                         :side2Refs="side2Refs"
