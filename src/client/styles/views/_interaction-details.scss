@@ -5,7 +5,10 @@
 
     a {
         color: $clr1;
-        font-weight: bold;
+        font-weight: 400;
+        &:hover {
+            text-decoration: underline;
+        }
     }
 
     .subheader {
