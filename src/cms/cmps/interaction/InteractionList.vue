@@ -83,6 +83,11 @@
                 </div>
               </div>
             </td>
+            <td class="td-side">
+              <div class="rec-level-ball" :title="item.recommendation || 'No recommendation'" :style="{ 'background-color': getInteractionColor(item.recommendation) }">
+                <span>{{recsMap[item.recommendation.toLowerCase()]}}</span>
+              </div>
+            </td>
             <td
               class="td-active"
               align="center"
@@ -150,6 +155,9 @@
 </template>
 
 <script>
+
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
+
 export default {
   name: 'interactionList',
   props: {
@@ -182,6 +190,13 @@ export default {
           value: 'side2Material.name' || 'side2Label.name',
         },
         {
+          text: 'Recommendation',
+          name: 'Recommendation',
+          value: 'recommendation',
+          sortable: false,
+          align: 'center',
+        },
+        {
           text: 'Active',
           value: 'isActive',
           align: 'center',
@@ -194,6 +209,18 @@ export default {
           align: 'center',
         },
       ],
+      recsMap: {
+        'coadministration is advised': 1,
+        'coadministration is possible and may even be advised': 2,
+        'coadministration is possible': 3,
+        'coadministration is not contraindicated and may even be advised': 4,
+        'coadministration is not contraindicated': 5,
+        'coadministration is possible but caution should be taken': 6,
+        'coadministration is not contraindicated but caution should be taken': 7,
+        'caution should be taken': 8,
+        'coadministration is not advised': 9,
+        'avoid coadministration': 10,
+      }
     };
   },
   watch: {
@@ -229,7 +256,9 @@ export default {
     goToEdit(id){
       this.$store.commit({type:'setInteractionHeight', interactionPageHeight: window.pageYOffset})
       this.$router.push(`/interaction/edit/${id}`)
-    }
+    },
+
+    getInteractionColor: interactionUIService.getInteractionColor
   }
 };
 </script>

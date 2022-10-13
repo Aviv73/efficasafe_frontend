@@ -7,6 +7,9 @@
             min-width: 400px;
         }
     }
+
+
+    
 }
 
 .tr-interaction {
@@ -36,6 +39,18 @@
             .side-name-img {
                 display: flex;
                 align-items: center;
+            }
+
+            &.rec-level-ball {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                color: white;
+                text-align: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto;
             }
         }
     }

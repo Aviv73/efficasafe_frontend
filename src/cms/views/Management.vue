@@ -34,12 +34,12 @@
                         type="number"
                     />
                 </div>
-                <h2 class="management-subtitle">Trail mode</h2>
+                <h2 class="management-subtitle">Trial mode</h2>
                 <div class="management-input">
-                    <h3>Number of free trail days:</h3>
+                    <h3>Number of free trial days:</h3>
                     <v-text-field
                         v-model="managementData.freeTrailDaysNum"
-                        placeholder="Number of free trail days"
+                        placeholder="Number of free trial days"
                         hide-details
                         single-line
                         type="number"
