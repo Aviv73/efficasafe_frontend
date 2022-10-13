@@ -121,7 +121,7 @@
                 </div>
                 <div v-if="initialLoadingDone && loggedInUser && loggedInUser.type !== 'subscribed' && loggedInUser.email_verified" class="search-engine-search-cta">
                     <span class="search-engine-search-msg">
-                        <span class="font-medium">{{ freeTrialTime }}</span> Free Trail days left</span>
+                        <span class="font-medium">{{ freeTrialTime }}</span> Free Trial days left</span>
                     <button
                         class="btn"
                         id="searchPageSignup"
