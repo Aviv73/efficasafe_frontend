@@ -6,6 +6,18 @@
         allow-term-search
       />
     </div>
+
+    <div class="">
+      <v-text-field
+        type="text"
+        label="Search with free text"
+        placeholder="Search with free text"
+        v-model="filterBy.name"
+        @change="emitFilter"
+        clearable
+      />
+    </div>
+
     <div class="filter-type">
       <v-select
         id="mat-filter-type"
@@ -28,6 +40,7 @@ export default {
   },
   data() {
     return {
+      freeTextFilter: '',
       filterBy: {
         name: '',
         type: 'all',
