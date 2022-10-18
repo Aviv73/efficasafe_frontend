@@ -6,6 +6,17 @@
       />
     </div>
 
+    <div class="">
+      <v-text-field
+        type="text"
+        label="Search with free text"
+        placeholder="Search with free text"
+        v-model="filterBy.q"
+        @change="emitFilter"
+        clearable
+      />
+    </div>
+
     <div class="filter-status">
       <v-select
         :items="interaction.isActive"
