@@ -94,7 +94,7 @@ export default {
                 eventBus.$emit(EV_show_user_msg, 'Something went wrong, please try again or contact us', 5000, 'error')
                 this.$emit('close-modal');
             }else{
-                this.$emit('update-user');
+                this.$emit('update-user', { user: res.updatedUser });
             }
             this.isLoading = false
         }
