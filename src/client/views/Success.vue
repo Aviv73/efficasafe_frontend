@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { userService } from '@/cms/services/user.service';
+// import { userService } from '@/cms/services/user.service';
 import Loader from '@/client/cmps/common/icons/Loader';
 
 export default {
@@ -32,9 +32,9 @@ export default {
     },
     async created() {
         await this.$store.dispatch('getUserInfo');
-        const user = await userService.getById(this.loggedInUser._id);
-        this.$store.commit({ type: 'setLoggedInUser', user });
-        await userService.updateSession(user)
+        // const user = await userService.getById(this.loggedInUser._id);
+        // this.$store.commit({ type: 'setLoggedInUser', user });
+        // await userService.updateSession(user)
         this.isLoading = false
     },
     components:{
