@@ -28,6 +28,12 @@
                 >
                 </li>
             </ul>
+            <!-- <ul v-if="material.isUnderStudy" class="interactions-preview under-construction">
+                <li>
+                    This material is still under construction. The results you may see are only partial.
+                    Because you searched this material, it will get higher priority.
+                </li>
+            </ul> -->
             <ul>
                 <li
                     class="interactions-preview-composites-composite"
@@ -41,9 +47,9 @@
                 <router-link v-if="material.isShowPage" class="details-link" :to="`/material/${material._id}`" target="_blank">
                     {{material.type | capitalize}} info
                 </router-link>
-                <tooltip :hidden="!material.isUnderStudy" bottom>
+                <!-- <tooltip :hidden="!material.isUnderStudy" bottom>
                     <template #content>
-                        <div class="interactions-preview under-construction">
+                        <div v-if="material.isUnderStudy" class="interactions-preview under-construction">
                             This material is still under construction. The results you may see are only partial.
                             Because you searched this material, it will get higher priority.
                         </div>
@@ -54,7 +60,7 @@
                             title=""
                             :size="14"
                         />
-                </tooltip>
+                </tooltip> -->
                 </li>
             </ul>
             <hr v-if="interactions.length || (materials.length === 1 && !isOneMaterial)" />
@@ -81,6 +87,11 @@
                     </span>
                 </li>
             </ul>
+            <hr v-if="materials.length === 1 && !isOneMaterial || materials[0].isUnderStudy" />
+        </div>
+        <div v-if="materials[0].isUnderStudy" class="text-center under-construction">
+            This material is still under construction. The results you may see are only partial.
+            Because you searched this material, it will get higher priority.
             <hr v-if="materials.length === 1 && !isOneMaterial" />
         </div>
         <div v-if="materials.length === 1 && !isOneMaterial" class="interactions-preview-actions">
@@ -94,11 +105,11 @@
 <script>
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 
-import Tooltip from '@/client/cmps/common/Tooltip';
+// import Tooltip from '@/client/cmps/common/Tooltip';
 
 import AlertCircleOutlineIcon from 'vue-material-design-icons/AlertCircleOutline';
 import InteractionIcon from '@/client/cmps/common/icons/InteractionIcon';
-import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
+// import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
 
 export default {
     props: {
@@ -171,8 +182,8 @@ export default {
     components: {
         AlertCircleOutlineIcon,
         InteractionIcon,
-        InformationOutlineIcon,
-        Tooltip
+        // InformationOutlineIcon,
+        // Tooltip
     }
 }
 </script>
