@@ -7,7 +7,7 @@
       />
     </div>
 
-    <!-- <div class="">
+    <div class="">
       <v-text-field
         type="text"
         label="Search with free text"
@@ -16,7 +16,7 @@
         @change="emitFilter"
         clearable
       />
-    </div> -->
+    </div>
 
     <div class="filter-type">
       <v-select
