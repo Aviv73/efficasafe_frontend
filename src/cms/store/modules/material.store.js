@@ -54,10 +54,12 @@ export const materialStore = {
         }
     },
     actions: {
-        async loadMaterials(context, { criteria }) {
+        async loadMaterials(context, { criteria, dontSet = false }) {
             const { materials, total } = await materialService.list(criteria);
-            context.commit({ type: 'setMaterials', materials });
-            context.commit({ type: 'setMaterialCount', total });
+            if (!dontSet) {
+                context.commit({ type: 'setMaterials', materials });
+                context.commit({ type: 'setMaterialCount', total });
+            }
             return materials;
         },
         async getMaterials(context, { criteria, doCache, cacheKey }) {

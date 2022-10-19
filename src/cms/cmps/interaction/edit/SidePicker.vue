@@ -204,30 +204,55 @@ export default {
     },
     async infiScrollHandler($state) {
       this.$options.currPage++;
-      await this.loadMaterials(this.sortBy);
 
-      if (this.materials.length < 20) $state.complete();
+
+      const currSearch = this.search;
+      const oldMatireals = JSON.parse(JSON.stringify(this.materials));
+      const newMaterials = await this.loadMaterials(this.sortBy);
+      if (currSearch === this.search) {
+        const combinedMaterials = [...oldMatireals, ...newMaterials];
+        this.$store.commit('setMaterials', { materials: combinedMaterials });
+        this.$store.commit('setMaterialCount', { total: combinedMaterials.length });
+      }
+
+
+      if (newMaterials.length < 20) {
+        $state.complete();
+        
+        this.reloadItems = () => {
+          $state.reset();
+        }
+      }
       else {
+        this.reloadItems = null;
         setTimeout(() => {
           $state.loaded();
         }, 100);
       }
     },
     async loadMaterials(sortBy = {}) {
-      const currPage = this.search ? 0 : this.$options.currPage;
+      // const currPage = this.search ? 0 : this.$options.currPage;
+      const currPage = this.$options.currPage;
       const criteria = {
         ...sortBy,
         page: currPage,
-        q: this.search
+        q: this.search,
       };
 
-      await this.$store.dispatch({ type: 'loadMaterials', criteria });
+      return await this.$store.dispatch({ type: 'loadMaterials', criteria, dontSet: true });
     },
     handleNavigation(activeTab) {
       this.activeTab = activeTab;
     },
     filterMaterials(val) {
       this.search = val;
+
+      this.$options.currPage = 0;
+      this.$store.commit('setMaterials', { materials: [] });
+      this.$store.commit('setMaterialCount', { total: 0 });
+
+      if (this.reloadItems) this.reloadItems();
+
       this.loadMaterials(this.sortBy);
     },
     toggleFromSelection(material) {
