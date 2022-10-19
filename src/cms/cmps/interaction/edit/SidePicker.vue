@@ -42,6 +42,7 @@
         :primaryMaterialIds="primaryMaterialIds"
       ></material-tree-view>
       
+            <!-- v-debounce="filterMaterials" -->
       <section v-show="activeTab === 'materials'">
         <v-sheet class="pa-4 primary lighten-2" dark>
           <v-text-field
@@ -49,7 +50,7 @@
             label="Search Material..."
             filled
             append-icon="mdi-magnify"
-            v-debounce="filterMaterials"
+            @change="filterMaterials"
             dark
             flat
             solo-inverted
@@ -205,6 +206,9 @@ export default {
     async infiScrollHandler($state) {
       this.$options.currPage++;
 
+      // if (!this.reloadItems) this.reloadItems = () => {
+      //   $state.reset();
+      // }
 
       const currSearch = this.search;
       const oldMatireals = JSON.parse(JSON.stringify(this.materials));
@@ -218,13 +222,13 @@ export default {
 
       if (newMaterials.length < 20) {
         $state.complete();
-        
         this.reloadItems = () => {
           $state.reset();
+          // this.reloadItems = null;
         }
       }
       else {
-        this.reloadItems = null;
+        // this.reloadItems = null;
         setTimeout(() => {
           $state.loaded();
         }, 100);
@@ -251,7 +255,9 @@ export default {
       this.$store.commit('setMaterials', { materials: [] });
       this.$store.commit('setMaterialCount', { total: 0 });
 
-      if (this.reloadItems) this.reloadItems();
+      if (this.reloadItems) {
+        this.reloadItems();
+      }
 
       this.loadMaterials(this.sortBy);
     },
