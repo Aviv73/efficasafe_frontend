@@ -7,6 +7,18 @@
         @emitAutocomplete="updateFilter"  
       />
     </div>
+
+    <div class="">
+      <v-text-field
+        type="text"
+        label="Search with free text"
+        placeholder="Search with free text"
+        v-model="filterBy.q"
+        @change="updateFilter()"
+        clearable
+      />
+    </div>
+
       <v-select
         :items="isSuperOpts"
         class="label-filter-select"
@@ -49,7 +61,7 @@ export default {
       if (label) {
         this.filterBy.q = label.text;
       } else {
-        this.filterBy.q = '';
+        // this.filterBy.q = '';
       }
       this.emitFilterBy();
     },
