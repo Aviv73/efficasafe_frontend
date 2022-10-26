@@ -81,14 +81,14 @@
                         </li>
                         <li class="navbar-nav-item" @click="toggleNavActive">
                             <router-link
-                                to="/pricing"
+                                to="/subscribe"
                             >
                                 Pricing
                             </router-link>
                         </li>
                         <li class="navbar-nav-item" @click="toggleNavActive">
                             <router-link
-                                to="/introduction"
+                                to="/search"
                             >
                                 Interaction hub
                             </router-link>
