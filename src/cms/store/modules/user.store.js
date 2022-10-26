@@ -1,5 +1,7 @@
 import { userService } from '@/cms/services/user.service'
 import { storageService } from '../../services/storage.service'
+import { alertService } from '../../services/alert.service'
+import router from '../../../client/router'
 
 export const userStore = {
     state: {
@@ -74,6 +76,20 @@ export const userStore = {
                 await dispatch({ type: 'updateLoggedInUser', user });
             }else{
                 commit({ type: 'setLoggedInUser', user });
+            }
+            if ((user.type !== 'subscribed' && user.trialTime && Date.now() > new Date(user.trialTime).getTime())) {
+                const timePts = new Date(user.trialTime).toString().split(' ');
+                const trialEndTime = `${timePts[0]} ${timePts[1]} ${timePts[2]}`;
+                let onClose
+                window.__goToSubscribtionPage__ = () => {
+                    onClose();
+                    router.push('/subscribe');
+                    delete window.__goToSubscribtionPage__;
+                }
+                onClose = alertService.toast({type: 'error', html: `
+                    <p class="prime-msg">Your trial has ended on ${trialEndTime}</p>
+                    <p>Interaction results will not be available. <a onclick="__goToSubscribtionPage__()">Subscribe now!</a></p>
+                `});
             }
             return user
         },
