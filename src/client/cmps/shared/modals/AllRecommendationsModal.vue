@@ -24,7 +24,7 @@
             </div>
             <div class="line">
                 <div class="icon-container yellow">!</div>
-                <p class="txt">Coadministration is not contraindicated but Caution should be taken</p>
+                <p class="txt">Coadministration is not contraindicated but caution should be taken</p>
             </div>
             <div class="line">
                 <div class="icon-container yellow">!</div>
