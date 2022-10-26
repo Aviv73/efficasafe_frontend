@@ -187,14 +187,14 @@
                             class="flex-center trial-msg"
                             v-if="isTrialMode"
                         >
-                            <template v-if="loggedInUser.type === 'trial' ||false">
+                            <template v-if="loggedInUser.type === 'trial'">
                                 <p v-if="freeTrialTime > 0">
                                     <!-- {{freeTrialMsg}} -->
                                     Trial ends on {{trialEndTime}}
                                 </p>
                                 <router-link class="end-msg" v-else to="/subscribe">Trial ended on {{trialEndTime}}</router-link>
                             </template>
-                            <p v-else-if="!loggedInUser.email_verified ||true">Verify your email for a free trial</p>
+                            <p v-else-if="!loggedInUser.email_verified">Verify your email for a free trial</p>
                         </div>
                     </div>
                     <button
@@ -234,8 +234,8 @@ export default {
     }),
     computed: {
         isTrialMode() {
-            return true;
-            // return this.loggedInUser && this.loggedInUser.type !== 'subscribed';
+            // return true;
+            return this.loggedInUser && this.loggedInUser.type !== 'subscribed';
         },
         isScreenNarrow() {
             return this.$store.getters.isScreenNarrow;
