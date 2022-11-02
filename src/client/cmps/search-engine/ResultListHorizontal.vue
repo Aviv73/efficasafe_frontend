@@ -8,7 +8,7 @@
                 <tooltip v-if="!isScreenNarrow" on="hover" leftBottomCorner>
                     <template #content>
                         <div class="tooltip-content">
-                            <p>There are additional theoretical interactions. Check the box to view them. They are presented with a gray background.</p>
+                            <p>Check the box to see Theoretical Drug-Drug interactions. They are presented with a gray background.</p>
                         </div>
                     </template>
                     <information-outline-icon
