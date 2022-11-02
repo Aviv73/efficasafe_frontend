@@ -73,7 +73,8 @@ export default {
 
     &-content:not(.no-hover) {
         position: absolute;
-        top: calc(100% + 30px);
+        // top: calc(100% + 30px);
+        top: calc(100% + 17px);
         left: 0;
         &.to-the-left {
             left: unset;
