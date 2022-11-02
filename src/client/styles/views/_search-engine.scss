@@ -464,6 +464,10 @@
             
             &.boosters {
                 flex-wrap: wrap;
+                align-items: center;
+                img {
+                    height: rem(30px);
+                }
             }
             &::after {
                 content: "";

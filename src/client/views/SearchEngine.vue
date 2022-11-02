@@ -293,7 +293,10 @@
                                 :to="{ name: 'Boosters', query: this.$route.query }"
                             >
                                 Optimizers
-                                <span v-if="boostersCount">
+                                <span v-if="isPBLoading">
+                                    <img src="@/client/assets/imgs/dot-green-loader.gif"/>
+                                </span>
+                                <span v-else-if="boostersCount">
                                     {{'\xa0'}}
                                     <span
                                         class="badge"
@@ -1167,21 +1170,29 @@ export default {
                 this.isLoading = false;
                 return;
             }
-            if (this.$route.name === 'Boosters') {
-                this.isPBLoading = true;
-                await this.getPositives();
-                this.isLoading = false;
-                this.isPBLoading = false;
-                const prms = [ this.getInteractions(), this.getDBankInteractions() ];
-                await Promise.all(prms);
-                this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions)
-            } else {
-                const prms = [ this.getInteractions(), this.getDBankInteractions() ];
-                await Promise.all(prms);
-                this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions)
-                this.isLoading = false;
-            }
-
+            // if (this.$route.name === 'Boosters') {
+            //     this.isPBLoading = true;
+            //     await this.getPositives();
+            //     this.isLoading = false;
+            //     this.isPBLoading = false;
+            //     const prms = [ this.getInteractions(), this.getDBankInteractions() ];
+            //     await Promise.all(prms);
+            //     this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions)
+            // } else {
+            //     const prms = [ this.getInteractions(), this.getDBankInteractions() ];
+            //     await Promise.all(prms);
+            //     this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions)
+            //     this.isLoading = false;
+            // }
+            this.isPBLoading = true;
+            this.isLoading = true;
+            const prms = [ this.getInteractions(), this.getDBankInteractions() ];
+            await Promise.all(prms);
+            this.isLoading = false;
+            this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions)
+            await  this.getPositives();
+            this.isPBLoading = false;
+            
             // Old why, getting all info at once
 
             // if (this.$route.name === 'Boosters') {
