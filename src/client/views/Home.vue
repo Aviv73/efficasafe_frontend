@@ -227,7 +227,7 @@
                                 This kind of scientifically backed information
                                 is priceless to me as a Naturopath."
                             </p>
-                            <p class="title">Keren Volkomir, Naturopth.</p>
+                            <p class="title">Keren Volkomir, Naturopath.</p>
                         </div>
                     </div>
                     <template #navigation-prev>

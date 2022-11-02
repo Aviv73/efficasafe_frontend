@@ -54,6 +54,25 @@
             right: 0;
             margin: 0 25px;
 
+            .custom-checkbox-checkbox {
+                height: 12px;
+                width: 12px;
+
+                &::before {
+                    width: 2px;
+                    height: 6px;
+                    left: 47%;
+                }
+                &::after {
+                    width: 2px;
+                    height: 3px;
+                    left: 58%;
+                }
+            }
+            .bigger-radius {
+                border-radius: 3.5px;
+            }
+
             @media (max-width: 1300px){
                 position: unset;
                 margin-left: 8.5px;
