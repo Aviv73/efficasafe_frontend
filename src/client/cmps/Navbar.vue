@@ -26,12 +26,19 @@
                         :class="{ active: isNavActive }"
                         @click="toggleNavActive"
                     ></div>
-                    <ul class="navbar-nav nav-part" :class="{active: isNavActive}" v-hammer:swipe.right="toggleNavActive">
-                        <li @click="toggleNavActive">
+                    <ul class="navbar-nav nav-part" :class="{active: isNavActive}" v-hammer:swipe.left="toggleNavActive">
+                        <li @click="toggleNavActive" class="list-logo-container">
                             <router-link to="/" title="Home" class="logo">
                                 <img src="@/client/assets/imgs/efficasafe-logo.svg" alt="Efficasafe" />
                                 <img class="logo-name" src="@/client/assets/imgs/efficasafe.svg" alt="Efficasafe" />
                             </router-link>
+                            <button
+                                v-if="isScreenNarrow"
+                                class="navbar-side-nav-close-btn"
+                                @click.stop="toggleNavActive(false)"
+                            >
+                                <close-icon title="" />
+                            </button>
                         </li>
                         <li>
                             <button v-if="!isScreenNarrow && ($route.name === 'Results' || $route.name === 'Boosters' || $route.name === 'InteractionDetails' || $route.name === 'VinteractionDetails')" 
@@ -46,7 +53,7 @@
                                     <template #activator>
                                         <div class="flex-align-center">
                                             <span>
-                                                Company
+                                                About
                                             </span>
                                         </div>
                                     </template>
@@ -79,18 +86,18 @@
                                     </template>
                             </dropdown>
                         </li>
-                        <li class="navbar-nav-item" @click="toggleNavActive">
+                        <li class="navbar-nav-item" @click="toggleNavActive" v-if="!loggedInUser || loggedInUser.type !== 'subscribed'">
                             <router-link
-                                to="/pricing"
+                                to="/subscribe"
                             >
                                 Pricing
                             </router-link>
                         </li>
                         <li class="navbar-nav-item" @click="toggleNavActive">
                             <router-link
-                                to="/introduction"
+                                to="/search"
                             >
-                                Interaction hub
+                                Interaction-checker
                             </router-link>
                         </li>
                         <li class="navbar-nav-item" v-if="false">
@@ -219,7 +226,7 @@ import { eventBus, EV_update_nav } from '@/cms/services/eventBus.service';
 
 import Dropdown from '@/client/cmps/common/Dropdown';
 
-// import CloseIcon from 'vue-material-design-icons/Close';
+import CloseIcon from 'vue-material-design-icons/Close';
 import MenuIcon from 'vue-material-design-icons/Menu';
 // import MenuDownIcon from 'vue-material-design-icons/MenuDown';
 // import HomeIcon from 'vue-material-design-icons/Home';
@@ -302,9 +309,9 @@ export default {
         openVideoModal(){
             eventBus.$emit('open-video')
         },
-        toggleNavActive() {
+        toggleNavActive(val) {
             if (!this.isScreenNarrow) return;
-            this.isNavActive = !this.isNavActive;
+            this.isNavActive = typeof val === 'boolean' ? val : !this.isNavActive;
         },
         onSubscribe() {
             this.$router.push('/subscribe')
@@ -343,7 +350,7 @@ export default {
         })
     },
     components: {
-        // CloseIcon,
+        CloseIcon,
         MenuIcon,
         Dropdown,
         // MenuDownIcon,
