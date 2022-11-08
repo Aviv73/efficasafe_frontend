@@ -7,8 +7,12 @@
             <slot name="activator">
                 Click me!
             </slot>
-            <img
+            <!-- <img
                 src="@/client/assets/imgs/dropdown-icon.svg"
+                :class="{toggled: isActive}"
+                class="dropdown-img"
+            /> -->
+            <div
                 :class="{toggled: isActive}"
                 class="dropdown-img"
             />
@@ -97,6 +101,7 @@ export default {
         align-items: center;
         gap: 5px;
         .dropdown-img {
+            content: url("../../../client/assets/imgs/dropdown-icon.svg");
             width: 7px;
             transition: .3s;
             &.toggled {

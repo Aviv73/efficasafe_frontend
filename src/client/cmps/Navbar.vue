@@ -4,7 +4,7 @@
         :class="{ 'light': isNavIntersecting }"
         ref="navbar"
     >
-        <div class="main-container">
+        <div class="main-containerr">
             <div class="actual-nav">
                 <div class="navbar-msgs flex-center nav-part">
                     <div class="flex-center">
@@ -40,14 +40,14 @@
                                 <close-icon title="" />
                             </button>
                         </li>
-                        <li>
+                        <!-- <li>
                             <button v-if="!isScreenNarrow && ($route.name === 'Results' || $route.name === 'Boosters' || $route.name === 'InteractionDetails' || $route.name === 'VinteractionDetails')" 
                                 @click="activeReleventTour"
                                 :title="tourBtnTitle"
                                 class="tour-btn">
                                     Take a tour
                             </button>
-                        </li>
+                        </li> -->
                         <li class="navbar-nav-item">
                             <dropdown :dontHover="isScreenNarrow">
                                     <template #activator>
@@ -97,7 +97,7 @@
                             <router-link
                                 to="/search"
                             >
-                                Interaction-checker
+                                Interaction checker
                             </router-link>
                         </li>
                         <li class="navbar-nav-item" v-if="false">
