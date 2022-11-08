@@ -71,9 +71,21 @@
                                 <chevron-down-icon class="closed" title="" />
                             </span>
                         </span>
-                        <span v-else class="table-col sign-up-tabel flex-start" @click="onOpenSignUp">
+                        <!-- <span v-else class="table-col sign-up-tabel flex-start" @click="onOpenSignUp">
                             <p>
                                 Sign up
+                            </p>
+                            <chevron-right-icon class="chevron-right-icon"/>
+                        </span> -->
+                        <span v-else-if="!loggedInUser" class="table-col sign-up-tabel flex-start" @click="onOpenSignUp">
+                            <p>
+                                Sign up
+                            </p>
+                            <chevron-right-icon class="chevron-right-icon"/>
+                        </span>
+                        <span v-else class="table-col sign-up-tabel flex-start" @click="onOpenSubscribe">
+                            <p>
+                                Subscribe
                             </p>
                             <chevron-right-icon class="chevron-right-icon"/>
                         </span>
@@ -375,6 +387,9 @@ export default {
         },
         onOpenSignUp(){
             eventBus.$emit(EV_open_signup);
+        },
+        onOpenSubscribe(){
+            this.$router.push('/subscribe');
         },
         removeInteraction(idx){
             this.$emit('removeInteraction', idx)

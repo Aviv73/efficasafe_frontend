@@ -6,13 +6,20 @@
                 <div class="flex-space-between">
                     <span class="interaction-details-header-link no-print">
                         <button class="flex-align-center" @click="$router.go(-1)">
-                            <chevron-left-icon title="" />
-                            Back to search
+                            <template v-if="!isScreenNarrow">
+                                <chevron-left-icon title="" />
+                                Back to search
+                            </template>
+                            <template v-else>
+                                <img :src="require('@/client/assets/imgs/back-arrow.svg')"/>
+                            </template>
                         </button>
                     </span>
-                    <router-link to="/" class="interaction-details-header-logo v-tour-interaction-step-4">
+                    <!-- <router-link to="/" class="interaction-details-header-logo v-tour-interaction-step-4">
                         <img :src="require('@/client/assets/imgs/logo-vector.svg')" alt="Logo" />
-                    </router-link>
+                    </router-link> -->
+                    <h1 v-if="side1Material && side2Material">Ineraction of {{side1Material && side1Material.name}} & {{side2Material && side2Material.name}}</h1>
+                    <h1 v-else>Ineraction</h1>
                     <span class="interaction-details-header-actions">
                         <button
                             class="print-btn print-btn-icon no-print"
@@ -37,7 +44,7 @@
         </header>
         <article class="interaction-details-content" v-if="!isLoading && ((!isVirtual && interaction) || (isVirtual && interaction && side2Material))">
             <header class="interaction-details-content-header">
-                <div class="main-container">
+                <div class="main-container" :class="{narrowHeader:isScreenNarrow}">
                     <div class="flex-center p-relative">
                         <interaction-capsules
                             class="capsules"
@@ -67,7 +74,7 @@
                             <span class="clip-txt">{{ interaction.recommendation }}</span>
                         </span>
                         <span class="evidence-level">
-                            {{ interaction.evidenceLevel }}
+                            Level of evidenc {{ interaction.evidenceLevel }}
                             <tooltip on="hover" right>
                                 <template #content>
                                     <div class="evidence-level-tooltip-content" v-html="refsDetailsTxt" />
@@ -79,6 +86,18 @@
                             </tooltip>
                         </span>
                     </div>
+                
+                    <template v-if="isScreenNarrow">
+                        <div class="mobile-data-show-btns">
+                            <button @click="toggleMobileLevelOfEvedence">
+                                {{ interaction.evidenceLevel }}
+                                <span class="refs-count">({{ combinedRefs.length }})</span> 
+                            </button>
+                            <button v-if="warnings.length" @click="toggleMobileAlerts">
+                                <img :src="require('@/client/assets/imgs/alert.svg')"/>
+                            </button>
+                        </div>
+                    </template>
                 </div>
             </header>
             <main class="interaction-details-details">
@@ -91,7 +110,7 @@
                         <component :is="recommendationIconName" :size="14" />
                         {{ interaction.recommendation }}
                     </span>
-                    <warnings v-if="side1Material && side2Material" :side1Material="side1Material" :side2Material="side2Material"/>
+                    <warnings v-if="!isScreenNarrow && side1Material && side2Material" :side1Material="side1Material" :side2Material="side2Material"/>
                     <div
                         class="note-container flex-center"
                         v-if="!isPrimaryMaterial && interaction.note"
@@ -100,9 +119,28 @@
                             <span class="font-bold">Note:</span> {{ interaction.note }}
                         </span>
                     </div>
-                    <div class="evidence-level-mobile">
-                        <span class="font-bold">Level of evidence:</span> {{ interaction.evidenceLevel }}
-                        <div class="sub-txt" v-html="refsDetailsTxt" />
+                    <div class="mobile-data-modal evidence-level-mobile" v-if="showMobileEvedence && isScreenNarrow">
+                        <button class="close-btn" @click.stop="toggleMobileLevelOfEvedence">
+                            <img :src="require('@/client/assets/imgs/close-btn.svg')"/>
+                        </button>
+                        <div class="modal-content">
+                            <span class="font-bold">Level of evidence:</span> {{ interaction.evidenceLevel }}
+                            <div class="sub-txt" v-html="refsDetailsTxt" />
+                        </div>
+                    </div>
+                    <div class="mobile-data-modal alerts-mobile" v-if="showMobileAlerts && isScreenNarrow">
+                        <button class="close-btn" @click.stop="toggleMobileAlerts">
+                            <img :src="require('@/client/assets/imgs/close-btn.svg')"/>
+                        </button>
+                        <div class="modal-content">
+                            <h3>Alerts</h3>
+                            <div v-for="warning in warnings" :key="warning.title">
+                                <h4>
+                                    {{warning.title}}
+                                </h4>
+                                <p>{{warning.text}}</p>
+                            </div>
+                        </div>
                     </div>
                     <h2
                         v-if="interaction.summary"
@@ -316,7 +354,10 @@ export default {
             isLoading: false,
             effectOnDrugMetabolism: '',
             isShareModalActive: false,
-            showParmaSide2: false
+            showParmaSide2: false,
+
+            showMobileAlerts:false,
+            showMobileEvedence:false,
         }
     },
     metaInfo () {
@@ -334,6 +375,10 @@ export default {
         }
     },
     computed: {
+        warnings() {
+            if (!this.side1Material || !this.side2Material) return [];
+            return interactionUIService.createWarnings(this.side1Material, this.side2Material);
+        },
         pageTitle(){
             if(!this.interaction){
                 return ''
@@ -370,7 +415,7 @@ export default {
             
             let txt = `<span class="font-medium">The interaction is based on:</span>`
             if (metaCount1) txt += `
-                &bull; ${metaCount1} meta analysis${metaCount1 > 1 ? 'es' : ''}`;
+                &bull; ${metaCount1} meta ${metaCount1 > 1 ? 'analyses' : 'analysis'}`;
             if (systematicCount1) txt += `
                 &bull; ${systematicCount1} systematic review${systematicCount1 > 1 ? 's' : ''}`;
             if (clinicalCount1) txt += `
@@ -505,6 +550,13 @@ export default {
         },
     },
     methods: {
+        toggleMobileLevelOfEvedence() {
+            this.showMobileEvedence = !this.showMobileEvedence;
+        },
+        toggleMobileAlerts() {
+            this.showMobileAlerts = !this.showMobileAlerts;
+        },
+
         goToMaterial(name){
             let id
             if(name === this.interaction.side1Material.name || this.checkIsPartOfSide1(name)) id = this.interaction.side1Material._id

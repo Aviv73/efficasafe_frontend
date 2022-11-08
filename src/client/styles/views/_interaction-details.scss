@@ -3,6 +3,110 @@
     font-size: rem(14px);
     line-height: rem(16px);
 
+    h1 {
+        font-size: rem(36px);
+        font-weight: 500;
+        text-align: center;
+        line-height: initial;
+        @media (max-width: 800px) {
+            font-size: rem(20px);
+        }
+        @media (max-width: 500px) {
+            font-size: rem(16px);
+        }
+    }
+
+    @media (max-width: $break-narrow) {
+        .interaction-details-content-header {
+            background-color: #EFEFEF;
+            .narrowHeader {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 10px;
+                // padding: unset;
+                .capsules {
+                    position: static;
+                    transform: unset;
+                }
+            }
+            .mobile-data-show-btns {
+                display: flex;
+                align-items: center;
+                gap: rem(20px);
+                >* {
+                    width: rem(42px);
+                    height: rem(42px);
+                    background-color: white;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 2px;
+
+                    .refs-count {
+                        font-size: rem(8px);
+                        color: #7D8E99;
+                        padding-top: 3px;
+                        // align-self: flex-start;
+                    }
+                }
+            }
+        }
+        .mobile-data-modal {
+            white-space: pre-line;
+            line-height: rem(20px);
+            margin-block-end: rem(24px);
+            order: -2;
+            
+            position: fixed;
+            background-color: #fff;
+            height: fit-content;
+            width: 80vw;
+            top: 140px;
+            right: 50%;
+            transform: translateX(50%);
+            border-radius: 12px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
+            z-index: 30;
+
+            h3 {
+                font-weight: 500;
+                color: black;
+            }
+
+            .modal-content {
+                padding: 30px;
+            }
+
+            .close-btn {
+                position: absolute;
+                top: 30px;
+                right: 30px;
+            }
+
+            &.alerts-mobile {
+                background-color: #FFF5F5;
+                border: 1px solid #E63946;
+                .modal-content {
+                    padding: 0;
+                    >* {
+                        padding: 20px;
+                        h4 {
+                            font-size: rem(14px);
+                            color: #C55555;
+                        }
+                        &:not(:last-child) {
+                            border-bottom: 1px solid #D1D1D1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
     a {
         color: $clr1;
         font-weight: 400;
