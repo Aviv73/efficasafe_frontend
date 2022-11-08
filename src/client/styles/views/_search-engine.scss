@@ -380,6 +380,30 @@
         @include for-wide-layout {
             padding: 0 0 0 rem(16px);
         }
+        
+        &::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
+        &::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            
+        }
+        &::-webkit-scrollbar-button {
+        }
+        .scroll-img {
+            display: none;
+        }
+        @media (max-width: $break-narrow) {
+            .scroll-img {
+                display: block;
+                width: rem(25px);
+                height: rem(25px);
+                position: relative;
+                right: 10px;
+                opacity: 0.4;
+            }
+        }
 
         &.pinned {
             background-color: $white;
@@ -499,6 +523,7 @@
         .arrow-container{
             position: absolute;
             top: 50%;
+            transform: translateY(-50%);
 
                 .chevron-right-icon{
                     position: absolute;

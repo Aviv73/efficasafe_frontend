@@ -246,6 +246,8 @@
                         scientific articles
                     </div>
                 </header>
+                <!-- <div class="nav-container">
+                </div> -->
                 <nav
                     class="search-engine-nav no-print"
                     v-set-sticky-class-name:[`pinned`]
@@ -354,6 +356,7 @@
                     </ul>
                     <div class="arrow-container" :style="{ right: arrowRightPosition + 'px'}">
                         <chevron-right-icon v-if="isArrowShown && isScreenNarrow" class="chevron-right-icon"/>
+                        <img class="scroll-img" v-else src="@/client/assets/imgs/Hand-TwoFinger-Scroll-Horizontal.svg"/>
                     </div>
                 </nav>
                 <transition :name="routerTransitionName" mode="out-in">
