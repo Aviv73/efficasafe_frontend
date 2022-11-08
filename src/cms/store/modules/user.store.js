@@ -77,7 +77,7 @@ export const userStore = {
             }else{
                 commit({ type: 'setLoggedInUser', user });
             }
-            if ((user.type !== 'subscribed' && user.trialTime && Date.now() > new Date(user.trialTime).getTime())) {
+            if ((user.type !== 'subscribed') && user.trialTime && (Date.now() > new Date(user.trialTime).getTime())) {
                 const timePts = new Date(user.trialTime).toString().split(' ');
                 const trialEndTime = `${timePts[0]} ${timePts[1]} ${timePts[2]}`;
                 let onClose

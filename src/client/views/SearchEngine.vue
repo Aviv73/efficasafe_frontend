@@ -246,6 +246,8 @@
                         scientific articles
                     </div>
                 </header>
+                <!-- <div class="nav-container">
+                </div> -->
                 <nav
                     class="search-engine-nav no-print"
                     v-set-sticky-class-name:[`pinned`]
@@ -354,6 +356,7 @@
                     </ul>
                     <div class="arrow-container" :style="{ right: arrowRightPosition + 'px'}">
                         <chevron-right-icon v-if="isArrowShown && isScreenNarrow" class="chevron-right-icon"/>
+                        <img class="scroll-img" v-else src="@/client/assets/imgs/Hand-TwoFinger-Scroll-Horizontal.svg"/>
                     </div>
                 </nav>
                 <transition :name="routerTransitionName" mode="out-in">
@@ -494,6 +497,8 @@ export default {
     watch: {
         '$route.query': {
             async handler(to, from) {
+                if (from && !from.page) from.page = 1;
+                if (to && !to.page) to.page = 1;
                 this.loadingTime = 0
                 this.countLoadingTime()
                 this.$store.commit('resetRedPositiveSupp')
@@ -514,8 +519,8 @@ export default {
                 if (!Array.isArray(q) && q) {
                     this.$route.query.q = [ q ];
                 }
-                this.sameQ = from && from.q && to.q.length === from.q.length && to.q.every((val, idx) => val === from.q[idx]) ? true : false
-                const isSameSearch = from && from.q && to.q.length === from.q.length && to.q.every((val, idx) => val === from.q[idx]) && from.page === to.page;
+                this.sameQ = from && from.q && (to.q.length === from.q.length) && to.q.every((val, idx) => val === from.q[idx]) ? true : false
+                const isSameSearch = from && from.q && (to.q.length === from.q.length) && to.q.every((val, idx) => val === from.q[idx]) && from.page === to.page;
                 if (!isSameSearch) {
                     this.$store.commit('resetPosSupp')
                     await this.getResults();
