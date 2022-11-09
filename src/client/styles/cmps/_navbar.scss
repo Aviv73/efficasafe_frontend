@@ -410,14 +410,17 @@
             // border-radius: rem(3px);
             // background-color: #B8F1D9;
             // color: #FB8E76;
-            color: rgb(230, 57, 70);
+            // color: #6A6A6A(230, 57, 70);
+            color: white;
             font-weight: bold;
-            // font-style: italic;
+            font-style: italic;
             font-size: rem(13px);
             padding: rem(2px) rem(5px);
 
             .end-msg {
-                color: #E63946;
+                // color: #E63946;
+                // color: rgb(230, 57, 70);
+                color: rgb(246, 213, 92);
             }
         }
     }

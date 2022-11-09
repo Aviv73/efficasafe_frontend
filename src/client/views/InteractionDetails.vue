@@ -45,7 +45,7 @@
         <article class="interaction-details-content" v-if="!isLoading && ((!isVirtual && interaction) || (isVirtual && interaction && side2Material))">
             <header class="interaction-details-content-header">
                 <div class="main-container" :class="{narrowHeader:isScreenNarrow}">
-                    <div class="flex-center p-relative">
+                    <div class="flex-center p-relative capsules-container">
                         <interaction-capsules
                             class="capsules"
                             :name="interactionName"
@@ -693,6 +693,7 @@ export default {
         }
     },
     created(){
+        this.$store.dispatch('notifyEndTrial');
         eventBus.$on('start-interaction-tour', ()=>{
             this.$tours['onboarding-interaction-tour'].start();
         })
