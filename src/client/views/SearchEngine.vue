@@ -355,8 +355,9 @@
                         </li>
                     </ul>
                     <div class="arrow-container" :style="{ right: arrowRightPosition + 'px'}">
-                        <chevron-right-icon v-if="isArrowShown && isScreenNarrow" class="chevron-right-icon"/>
-                        <img class="scroll-img" v-else src="@/client/assets/imgs/Hand-TwoFinger-Scroll-Horizontal.svg"/>
+                        <!-- <chevron-right-icon v-if="isArrowShown && isScreenNarrow" class="chevron-right-icon"/>
+                        <img class="scroll-img" v-else src="@/client/assets/imgs/Hand-TwoFinger-Scroll-Horizontal.svg"/> -->
+                        <img class="scroll-img" src="@/client/assets/imgs/Hand-TwoFinger-Scroll-Horizontal.svg"/>
                     </div>
                 </nav>
                 <transition :name="routerTransitionName" mode="out-in">
@@ -446,7 +447,7 @@ import CloseIcon from 'vue-material-design-icons/Close';
 import PrinterIcon from 'vue-material-design-icons/Printer';
 import ShareVariantIcon from 'vue-material-design-icons/ShareVariant';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
-import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
+// import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 import Loader from '@/client/cmps/common/icons/Loader';
 
 export default {
@@ -1938,7 +1939,7 @@ export default {
         RedoIcon,
         OnboardingTour,
         SaveSearchModal,
-        ChevronRightIcon,
+        // ChevronRightIcon,
         Loader
     }
 };
