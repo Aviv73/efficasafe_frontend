@@ -162,7 +162,7 @@
                         <dropdown>
                             <template #activator>
                                 <div class="flex-align-center">
-                                    <span v-if="updatedCount" class="updated" title="Updated interactions">{{updatedCount}}</span>
+                                    
                                     <span class="flex">
                                         {{ loggedInUser.username }}
                                     </span>
@@ -173,9 +173,10 @@
                                     <div class="navbar-user-dropdown-links">
                                         <router-link
                                             to="/account"
-                                            class="navbar-user-dropdown-item"
+                                            class="navbar-user-dropdown-item account-col"
                                         >
-                                            Account
+                                            <span>Account</span>
+                                            <span v-if="updatedCount" class="updated" title="Updated interactions">{{updatedCount}}</span>
                                         </router-link>
                                         <!-- <router-link
                                             to="/contact"

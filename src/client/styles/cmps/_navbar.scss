@@ -79,10 +79,10 @@
         height: 15px;
         border-radius: 50%;
         background-color: red;
-        position: absolute;
-        top: 5px;
-        left: -18px;
-        display: flex;
+        // position: absolute;
+        // top: 5px;
+        // left: -18px;
+        display: inline-flex;
         align-items: center;
         justify-content: center;
         font-weight: bold;
@@ -172,6 +172,7 @@
             // }
         }
         .navbar-user-dropdown-item {
+            text-align: inherit;
             width: 100%;
             &:hover:not(.router-link-active) {
                 background-color: #A9DBDC;
@@ -180,6 +181,11 @@
             &.router-link-active {
                 background-color: #225474;
                 color: white;
+            }
+            &.account-col {
+                display: flex;
+                align-items: center;
+                gap: 5px;
             }
         }
 
@@ -406,7 +412,7 @@
             // color: #FB8E76;
             color: rgb(230, 57, 70);
             font-weight: bold;
-            font-style: italic;
+            // font-style: italic;
             font-size: rem(13px);
             padding: rem(2px) rem(5px);
 
