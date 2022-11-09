@@ -21,6 +21,7 @@
                     <h1 v-if="side1Material && side2Material">Ineraction of {{side1Material && side1Material.name}} & {{side2Material && side2Material.name}}</h1>
                     <h1 v-else>Ineraction</h1>
                     <span class="interaction-details-header-actions">
+                        <span class="play-tour-btn" @click="startTour"/>
                         <button
                             class="print-btn print-btn-icon no-print"
                             title="Print"
@@ -320,7 +321,7 @@
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 // import { utilService } from '@/cms/services/util.service';
 import { storageService } from '@/cms/services/storage.service';
-import { eventBus } from '@/cms/services/eventBus.service';
+// import { eventBus } from '@/cms/services/eventBus.service';
 
 import Side2Pathways from '@/client/cmps/interaction-details/Side2Pathways';
 import Side1Pathways from '@/client/cmps/interaction-details/Side1Pathways';
@@ -551,6 +552,9 @@ export default {
         },
     },
     methods: {
+        startTour() {
+            this.$tours['onboarding-interaction-tour'].start();
+        },
         toggleMobileLevelOfEvedence() {
             this.showMobileEvedence = !this.showMobileEvedence;
         },
@@ -692,16 +696,16 @@ export default {
             return fixedTxt;
         }
     },
-    created(){
-        eventBus.$on('start-interaction-tour', ()=>{
-            this.$tours['onboarding-interaction-tour'].start();
-        })
-    },
-    beforeDestroy(){
-        eventBus.$off('start-interaction-tour', ()=>{
-            this.$tours['onboarding-interaction-tour'].start();
-        })
-    },
+    // created(){
+    //     eventBus.$on('start-interaction-tour', ()=>{
+    //         this.$tours['onboarding-interaction-tour'].start();
+    //     })
+    // },
+    // beforeDestroy(){
+    //     eventBus.$off('start-interaction-tour', ()=>{
+    //         this.$tours['onboarding-interaction-tour'].start();
+    //     })
+    // },
     components: {
         ChevronLeftIcon,
         PrinterIcon,
@@ -724,7 +728,7 @@ export default {
         CancelIcon: () => import('vue-material-design-icons/Cancel'),
         AlertCircleOutlineIcon: () => import('vue-material-design-icons/AlertCircleOutline'),
         CheckIcon: () => import('vue-material-design-icons/Check'),
-        CircleOutlineIcon: () => import('vue-material-design-icons/CircleOutline')
+        CircleOutlineIcon: () => import('vue-material-design-icons/CircleOutline'),
     }
 }
 </script>
