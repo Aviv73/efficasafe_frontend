@@ -84,12 +84,12 @@ export const userStore = {
                 window.__goToSubscribtionPage__ = () => {
                     onClose();
                     router.push('/subscribe');
-                    delete window.__goToSubscribtionPage__;
+                    // delete window.__goToSubscribtionPage__;
                 }
                 onClose = alertService.toast({type: 'error', html: `
                     <p class="prime-msg">Your trial has ended on ${trialEndTime}</p>
                     <p>Interaction results will not be available. <a onclick="__goToSubscribtionPage__()">Subscribe now!</a></p>
-                `});
+                `}, () => delete window.__goToSubscribtionPage__);
             }
             return user
         },

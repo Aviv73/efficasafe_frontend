@@ -1,6 +1,7 @@
 const errorImg = require('@/client/assets/imgs/error.svg')
+const closeImg = require('@/client/assets/imgs/close-btn.svg')
 
-function toast({type = 'error', msg = '', html = '', time = 5000} = {}) {
+function toast({type = 'error', msg = '', html = '', timeout = null} = {}, olCloseCb) {
   const styleStr =`<style>
     ${_StyleEl('.toast-alert', {
       position: 'fixed',
@@ -47,31 +48,45 @@ function toast({type = 'error', msg = '', html = '', time = 5000} = {}) {
       '&.fade': {
         animationName: 'fadeaway',
         animationDuration: '1s'
+      },
+      '.close-btn': {
+        position: 'absolute',
+        top: '3px',
+        right: '3px',
+        backgroundImage: `url(${closeImg})`,
+        backgroundSize: `10px 10px`,
+        width: '10px',
+        height: '10px',
+        content: '""'
       }
     })}
   </style>`
-  const toastEl = _El(`<div class="toast-alert ${type}">
-    ${styleStr}
-    ${msg? `<p class="prime-msg">${msg}</p>` : ''}
-    ${html || ''}
-  </div>`);
+
+  let toastEl;
 
   let isClosed = false;
   const onClose = () => {
     if (isClosed) return;
     isClosed = true;
     document.body.removeChild(toastEl);
+    olCloseCb?.();
   }
 
+  toastEl = _El(`<div class="toast-alert ${type}">
+    ${styleStr}
+    ${msg? `<p class="prime-msg">${msg}</p>` : ''}
+    ${html || ''}
+  </div>`, {}, [_El(`<button class="close-btn"></button>`, {onclick: onClose})]);
 
-  document.body.appendChild(toastEl)
-  setTimeout(() => {
+  document.body.appendChild(toastEl);
+
+  if (timeout) setTimeout(() => {
     if (isClosed) return;
     toastEl.classList.add('fade')
     setTimeout(() => {
       onClose();
-    }, time - 1000);
-  }, time);
+    }, timeout - 1000);
+  }, timeout);
 
   return onClose;
 }
