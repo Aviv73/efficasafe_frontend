@@ -1,7 +1,7 @@
 <template>
     <section class="interaction-details" :class="{'not-allowed-select-txt': isNotAllowedSelect}">
         <header class="interaction-details-header">
-            <div class="interaction-details-header-container">
+            <div class="main-container interaction-details-header-container">
                 <span class="brim-start" />
                 <div class="flex-space-between">
                     <span class="interaction-details-header-link no-print">
@@ -102,14 +102,14 @@
             </header>
             <main class="interaction-details-details">
                 <div class="main-container p-relative mobile-coloumn">
-                    <span
+                    <h2
                         class="recommendation-capsule mobile"
                         :class="{ 'txt-dark': interactionColor === '#F6D55C' }"
                         :style="{ 'background-color': interactionColor }"
                     >
                         <component :is="recommendationIconName" :size="14" />
                         {{ interaction.recommendation }}
-                    </span>
+                    </h2>
                     <warnings v-if="!isScreenNarrow && side1Material && side2Material" :side1Material="side1Material" :side2Material="side2Material"/>
                     <div
                         class="note-container flex-center"
@@ -119,6 +119,7 @@
                             <span class="font-bold">Note:</span> {{ interaction.note }}
                         </span>
                     </div>
+                    <div class="mobile-blure" v-if="isScreenNarrow && (showMobileAlerts || showMobileEvedence)" @click="showMobileAlerts = showMobileEvedence = false"></div>
                     <div class="mobile-data-modal evidence-level-mobile" v-if="showMobileEvedence && isScreenNarrow">
                         <button class="close-btn" @click.stop="toggleMobileLevelOfEvedence">
                             <img :src="require('@/client/assets/imgs/close-btn.svg')"/>
@@ -142,12 +143,12 @@
                             </div>
                         </div>
                     </div>
-                    <h2
+                    <h3
                         v-if="interaction.summary"
                         class="subheader regular-pointer"
                     >
                         Summary
-                    </h2>
+                    </h3>
                     <p
                         class="paragraph regular-pointer summary-container"
                         v-if="interaction.summary"
@@ -161,7 +162,7 @@
                         class="monitor"
                         v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptoms || interaction.monitor.general"
                     >
-                        <h2 class="subheader">What to monitor</h2>
+                        <h3 class="subheader">What to monitor</h3>
                         <div v-if="interaction.monitor.general">
                             <span class="font-medium">General: </span>
                             {{ interaction.monitor.general | remove-ending-dot | capitalize}}
@@ -186,13 +187,13 @@
                         allow-overflow
                     >
                         <template #header>
-                            <h2 class="subheader flex-align-center">
+                            <h3 class="subheader flex-align-center">
                                 Review of studies
                                 <span class="de-activator">
                                     <chevron-up-icon class="opened" title="" />
                                     <chevron-down-icon class="closed" title="" />
                                 </span>
-                            </h2>
+                            </h3>
                         </template>
                         <template #content>
                             <p
@@ -211,7 +212,7 @@
                         allow-overflow
                     >
                         <template #header>
-                            <h2 class="subheader flex-align-center">
+                            <h3 class="subheader flex-align-center">
                                 Pharmacokinetics
                                 <span
                                     class="badge badge-red"
@@ -235,7 +236,7 @@
                                     <chevron-up-icon class="opened" title="" />
                                     <chevron-down-icon class="closed" title="" />
                                 </span>
-                            </h2>
+                            </h3>
                         </template>
                         <template #content>
                             <collapse
@@ -293,7 +294,7 @@
             </main>
             <footer class="interaction-details-refs">
                 <div class="main-container">
-                    <h2 class="subheader">References</h2>
+                    <h3 class="subheader">References</h3>
                     <reference-list
                         :refs="combinedRefs"
                     />
