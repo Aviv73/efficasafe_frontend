@@ -70,11 +70,23 @@
         }
 
         .signup-link{
-            text-decoration: underline;
+            // text-decoration: underline;
+            align-self: center;
+            // height: rem(30px);
+            border: 1.5px solid #EAEAEA;
+            border-radius: 7px;
             cursor: pointer;
             font-size: 13px;
-            color: rgba(0, 0, 0, 0.87);
-            margin-bottom: 7px;
+            color: #225474;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+            margin: 20px auto;
+            margin-top: 10px;
+            // margin-bottom: 15px;
+            padding: 7px 10px;
         }
         
         &-media-btns{

@@ -7,6 +7,7 @@
                         <close-icon :size="14" />
                     </button>
                     <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
+                    <p @click="openLoginModal" class="signup-link">Already have an account? login now</p>
                     <div v-if="showFreeSearchesMsg" class="searches-msg">
                         <h3>No free searches left</h3>
                         <h4>Want to enjoy efficasafe free trial for</h4>
@@ -79,9 +80,10 @@
 </template>
 
 <script>
+
 import { userService } from '@/cms/services/user.service';
 import { locationService } from '@/cms/services/location.service'
-import { eventBus, EV_email_exists, EV_show_user_msg } from '@/cms/services/eventBus.service';
+import { eventBus, EV_email_exists, EV_show_user_msg, EV_open_login } from '@/cms/services/eventBus.service';
 import CloseIcon from 'vue-material-design-icons/Close';
 import EyeIcon from 'vue-material-design-icons/Eye';
 import EyeOffIcon from 'vue-material-design-icons/EyeOff';
@@ -141,6 +143,11 @@ export default {
         },
     },
     methods: {
+        openLoginModal(){
+            eventBus.$emit(EV_open_login);
+            this.$emit('closeModal');
+            
+        },
         closeModal() {
             this.$emit('closeModal');
         },
