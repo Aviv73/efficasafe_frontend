@@ -13,12 +13,15 @@
                         alt="Efficasafe"
                     />
                 </router-link>
-                <autocomplete
-                    class="search-engine-search-bar v-tour1-step-0 no-print"
-                    isOnSearchPage
-                    :placeholder1="isScreenNarrow ? 'Add another' : '+   Add another'"
-                    @item-selected="addMaterials"
-                />
+                <div class="form-container">
+                    <span class="play-tour-btn" @click="startSearchTour"/>
+                    <autocomplete
+                        class="search-engine-search-bar v-tour1-step-0 no-print"
+                        isOnSearchPage
+                        :placeholder1="isScreenNarrow ? 'Add another' : '+   Add another'"
+                        @item-selected="addMaterials"
+                    />
+                </div>
                 <div class="search-engine-search-actions flex-space-between no-print">
                     <button
                         title="Undo"
@@ -289,7 +292,8 @@
                                 </span>
                             </router-link>
                         </li>
-                        <li class="search-engine-nav-link">
+                        <li class="search-engine-nav-link boosters-link">
+                            <span class="play-tour-btn" @click="startBoostTour"/>
                             <router-link
                                 class="link boosters pb-tour-step-0"
                                 :to="{ name: 'Boosters', query: this.$route.query }"
@@ -1102,6 +1106,12 @@ export default {
         }
     },
     methods: {
+        startBoostTour() {
+            this.$tours['start-boosters-tour'].start();
+        },
+        startSearchTour() {
+            this.$tours['start-tour'].start();
+        },
         showImportMsg(nonExistingNames){
             if(nonExistingNames && nonExistingNames.length){
                 const msg = nonExistingNames.length === 1 ? `Import partially successful. The drug ${nonExistingNames[0]} is not recognizable` : `Import partially successful. The drugs ${nonExistingNames.join(', ')} are not recognizable`

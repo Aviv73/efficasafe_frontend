@@ -80,29 +80,32 @@
                 padding: rem(6px) rem(12px);
             }
         }
-        &-bar {
-            width: 100%;
+        .form-container {
             margin: rem(20px) 0 rem(12px);
-            
             @include for-narrow-layout {
                 margin: rem(60px) 0 rem(12px);
             }
-
-            input {
-                border: 2px solid $clr6;
-
-                &.primary {
-                    padding-inline-start: rem(24px);
-                    text-align: left;
-                    border-width: 0;
-                    
-                    &::placeholder {
-                        color: $clr1;
+            width: 100%;
+            .search-engine-search-bar {
+                width: 100%;
+                
+    
+                input {
+                    border: 2px solid $clr6;
+    
+                    &.primary {
+                        padding-inline-start: rem(24px);
+                        text-align: left;
+                        border-width: 0;
+                        
+                        &::placeholder {
+                            color: $clr1;
+                        }
                     }
-                }
-                &.secondary {
-                    font-family: roboto-bold, sans-serif;
-                    font-weight: 700;
+                    &.secondary {
+                        font-family: roboto-bold, sans-serif;
+                        font-weight: 700;
+                    }
                 }
             }
         }
@@ -417,6 +420,15 @@
         &-link {
             flex-grow: 1;
             position: relative;
+
+            &.boosters-link {
+                position: relative;
+                .play-tour-btn {
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                }
+            }
 
             &:last-child {
                 display: none;

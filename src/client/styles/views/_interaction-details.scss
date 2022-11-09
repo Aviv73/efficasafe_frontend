@@ -232,9 +232,11 @@
             }
         }
         &-actions {
+            display: flex;
+            gap: rem(16px);
             .print-btn {
                 display: none;
-                margin-inline-end: rem(24px);
+                // margin-inline-end: rem(24px);
 
                 @include for-narrow-layout {
                     display: unset;
