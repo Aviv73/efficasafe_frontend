@@ -85,7 +85,7 @@
                         </span>
                         <span v-else class="table-col sign-up-tabel flex-start" @click="onOpenSubscribe">
                             <p>
-                                Subscribe
+                                Choose plan
                             </p>
                             <chevron-right-icon class="chevron-right-icon"/>
                         </span>
