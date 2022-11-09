@@ -13,7 +13,7 @@ function toast({type = 'error', msg = '', html = '', timeout = null} = {}, olClo
       borderRadius: '4px',
       fontStyle: 'italic',
       color: '#6F818E',
-      fontSize: '0.8rem',
+      fontSize: '0.875rem',
       '&.success': {
         backgroundColor: 'green',
         '.prime-msg': {
