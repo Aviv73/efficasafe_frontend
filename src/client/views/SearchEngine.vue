@@ -14,7 +14,7 @@
                     />
                 </router-link>
                 <div class="form-container">
-                    <span class="play-tour-btn" @click="startSearchTour"/>
+                    <PlayTourBtn :dontOpen="isScreenNarrow" @click.native="startSearchTour"/>
                     <autocomplete
                         class="search-engine-search-bar v-tour1-step-0 no-print"
                         isOnSearchPage
@@ -293,7 +293,7 @@
                             </router-link>
                         </li>
                         <li class="search-engine-nav-link boosters-link">
-                            <span class="play-tour-btn" @click="startBoostTour"/>
+                            <PlayTourBtn :dontOpen="isScreenNarrow" @click.native="startBoostTour"/>
                             <router-link
                                 class="link boosters pb-tour-step-0"
                                 :to="{ name: 'Boosters', query: this.$route.query }"
@@ -453,6 +453,7 @@ import ShareVariantIcon from 'vue-material-design-icons/ShareVariant';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
 // import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 import Loader from '@/client/cmps/common/icons/Loader';
+import PlayTourBtn from '@/client/cmps/common/PlayTourBtn';
 
 export default {
     recommendationsOrderMap: interactionUIService.getRecommendationOrderMap(),
@@ -1107,10 +1108,12 @@ export default {
     },
     methods: {
         startBoostTour() {
-            this.$tours['start-boosters-tour'].start();
+            // console.log(this.$tours);
+            this.$tours['boosters-tour'].start();
         },
         startSearchTour() {
-            this.$tours['start-tour'].start();
+            // this.$tours['start-tour'].start();
+            this.$tours['onboarding-no-searches-tour'].start();
         },
         showImportMsg(nonExistingNames){
             if(nonExistingNames && nonExistingNames.length){
@@ -1951,7 +1954,8 @@ export default {
         OnboardingTour,
         SaveSearchModal,
         // ChevronRightIcon,
-        Loader
+        Loader,
+        PlayTourBtn
     }
 };
 </script>

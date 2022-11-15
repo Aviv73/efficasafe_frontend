@@ -21,7 +21,7 @@
                     <h1 v-if="side1Material && side2Material">Ineraction of {{side1Material && side1Material.name}} & {{side2Material && side2Material.name}}</h1>
                     <h1 v-else>Ineraction</h1>
                     <span class="interaction-details-header-actions">
-                        <span class="play-tour-btn" @click="startTour"/>
+                        <PlayTourBtn :dontOpen="isScreenNarrow" @click.native="startTour" align="right"/>
                         <button
                             class="print-btn print-btn-icon no-print"
                             title="Print"
@@ -343,6 +343,8 @@ import PrinterIcon from 'vue-material-design-icons/Printer';
 import ShareVariantIcon from 'vue-material-design-icons/ShareVariant';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
 
+import PlayTourBtn from '@/client/cmps/common/PlayTourBtn';
+
 export default {
   side1Refs: [],
     data() {
@@ -553,7 +555,9 @@ export default {
     },
     methods: {
         startTour() {
+            console.log(this.$tours);
             this.$tours['onboarding-interaction-tour'].start();
+            // this.$tours['boosters-tour'].start();
         },
         toggleMobileLevelOfEvedence() {
             this.showMobileEvedence = !this.showMobileEvedence;
@@ -730,6 +734,7 @@ export default {
         AlertCircleOutlineIcon: () => import('vue-material-design-icons/AlertCircleOutline'),
         CheckIcon: () => import('vue-material-design-icons/Check'),
         CircleOutlineIcon: () => import('vue-material-design-icons/CircleOutline'),
+        PlayTourBtn
     }
 }
 </script>

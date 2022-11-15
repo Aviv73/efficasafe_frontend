@@ -108,6 +108,15 @@
                     }
                 }
             }
+            position: relative;
+            .play-tour-btn {
+                position: absolute;
+                // top: calc(-100% - 5px);
+                top: -100%;
+                transform: translateY(50%);
+                left: 76px;
+
+            }
         }
         
         &-actions {
@@ -425,8 +434,8 @@
                 position: relative;
                 .play-tour-btn {
                     position: absolute;
-                    top: 10px;
-                    left: 10px;
+                    top: 2px;
+                    left: 86px;
                 }
             }
 

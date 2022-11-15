@@ -273,6 +273,7 @@ import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 
+
 export default {
     props: {
         interactions: {
@@ -499,7 +500,7 @@ export default {
         ChevronDownIcon,
         ChevronUpIcon,
         Loader,
-        Checkbox
+        Checkbox,
     }
 };
 </script>
