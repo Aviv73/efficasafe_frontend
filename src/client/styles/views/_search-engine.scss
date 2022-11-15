@@ -114,8 +114,10 @@
                 // top: calc(-100% - 5px);
                 top: -100%;
                 transform: translateY(50%);
-                left: 76px;
-
+                left: 65px;
+                @media (max-width: $break-narrow) {
+                    left: 0;
+                }
             }
         }
         
@@ -435,7 +437,10 @@
                 .play-tour-btn {
                     position: absolute;
                     top: 2px;
-                    left: 86px;
+                    left: 58px;
+                    @media (max-width: $break-narrow) {
+                        left: 0;
+                    }
                 }
             }
 

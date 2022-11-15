@@ -39,56 +39,58 @@
                                 :isLowLevelInteraction="isLowLevelInteraction(interaction)"
                             />
                         </span>
-                        <span v-if="isAllowed" class="table-col" :title="interaction.recommendation">
+                        <span v-if="!isAllowed" class="table-col flex-start off-interaction-col-2" title="Open only for registered subscribers">
+                            <lock-icon class="lock-icon" :size="18"/> <p class="clip-txtt"> open only for registered subscribers</p>
+                        </span>
+                        <span v-else-if="!isScreenNarrow && isChild" class="table-col" :title="interaction.recommendation">
                             {{ getShortRecommendation(interaction.recommendation) }}
                         </span>
-                        <span v-else class="table-col flex-start off-interaction-col-2" title="Open only for registered subscribers">
-                            <lock-icon class="lock-icon" :size="18"/> <p class="clip-txt"> open only for registered subscribers</p>
-                        </span>
-                        <span v-if="isAllowed" class="table-col">
-                            <tooltip right :txt="getLongEvidenceLevel(interaction.evidenceLevel || interaction.evidence_level)">
-                                <template #content>
-                                    <ul class="loe-tooltip">
-                                        <li>{{getLongEvidenceLevel(interaction.evidenceLevel || interaction.evidence_level)}}</li>
-                                        <li v-if="interaction.refs && !interaction.side2Label">{{getRefsCountTxt(interaction)}} scientific articles</li>
-                                    </ul>
-                                </template>
-                                <span class="evidence-level">
-                                    {{ interaction.evidenceLevel || interaction.evidence_level }}
-                                </span>
+                        <template v-if="!isScreenNarrow || isChild">
+                            <span v-if="isAllowed" class="table-col">
+                                <tooltip right :txt="getLongEvidenceLevel(interaction.evidenceLevel || interaction.evidence_level)">
+                                    <template #content>
+                                        <ul class="loe-tooltip">
+                                            <li>{{getLongEvidenceLevel(interaction.evidenceLevel || interaction.evidence_level)}}</li>
+                                            <li v-if="interaction.refs && !interaction.side2Label">{{getRefsCountTxt(interaction)}} scientific articles</li>
+                                        </ul>
+                                    </template>
+                                    <span class="evidence-level" v-if="!isScreenNarrow && isChild">
+                                        {{ interaction.evidenceLevel || interaction.evidence_level }}
+                                    </span>
+                                    <span
+                                        class="refs" 
+                                        v-if="interaction.refs && !interaction.side2Label"
+                                    >
+                                        {{ getRefsCount(interaction) }}
+                                    </span>
+                                </tooltip>
                                 <span
-                                    class="refs" 
-                                    v-if="interaction.refs && !interaction.side2Label"
+                                    v-if="((!interaction.refs && !interaction.severity) || interaction.side2Label) && !interaction.isEmpty"
+                                    class="de-activator"
                                 >
-                                    {{ getRefsCount(interaction) }}
+                                    <chevron-up-icon class="opened" title="" />
+                                    <chevron-down-icon class="closed" title="" />
                                 </span>
-                            </tooltip>
-                            <span
-                                v-if="((!interaction.refs && !interaction.severity) || interaction.side2Label) && !interaction.isEmpty"
-                                class="de-activator"
-                            >
-                                <chevron-up-icon class="opened" title="" />
-                                <chevron-down-icon class="closed" title="" />
                             </span>
-                        </span>
-                        <!-- <span v-else class="table-col sign-up-tabel flex-start" @click="onOpenSignUp">
-                            <p>
-                                Sign up
-                            </p>
-                            <chevron-right-icon class="chevron-right-icon"/>
-                        </span> -->
-                        <span v-else-if="!loggedInUser" class="table-col sign-up-tabel flex-start" @click="onOpenSignUp">
-                            <p>
-                                Sign up
-                            </p>
-                            <chevron-right-icon class="chevron-right-icon"/>
-                        </span>
-                        <span v-else class="table-col sign-up-tabel flex-start" @click="onOpenSubscribe">
-                            <p>
-                                Choose plan
-                            </p>
-                            <chevron-right-icon class="chevron-right-icon"/>
-                        </span>
+                            <!-- <span v-else class="table-col sign-up-tabel flex-start" @click="onOpenSignUp">
+                                <p>
+                                    Sign up
+                                </p>
+                                <chevron-right-icon class="chevron-right-icon"/>
+                            </span> -->
+                            <span v-if="!loggedInUser" class="table-col sign-up-tabel flex-start" @click="onOpenSignUp">
+                                <p>
+                                    Sign up
+                                </p>
+                                <chevron-right-icon class="chevron-right-icon"/>
+                            </span>
+                            <span v-else class="table-col sign-up-tabel flex-start" @click="onOpenSubscribe">
+                                <p>
+                                    Choose plan
+                                </p>
+                                <chevron-right-icon class="chevron-right-icon"/>
+                            </span>
+                        </template>
                     </div>
                 </component>
             </template>
@@ -313,6 +315,9 @@ export default {
         }
     },
     computed: {
+        isScreenNarrow() {
+            return this.$store.getters.isScreenNarrow;
+        },
         collapsesState() {
             return this.$store.getters.openCollapses;
         },

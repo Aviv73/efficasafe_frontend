@@ -147,8 +147,11 @@
         }
 
     }
-    .user-dropdown {
-        padding-inline-end: 5px;
+    .user-dropdown, .login-btn {
+        padding-inline-end: 24px;
+        @media (max-width: $break-narrow) {
+            padding-inline-end: 12px;
+        }
     }
     .navbar-user-dropdown {
         display: flex;

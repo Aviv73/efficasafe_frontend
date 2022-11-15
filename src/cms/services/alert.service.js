@@ -14,6 +14,7 @@ function toast({type = 'error', msg = '', html = '', timeout = null} = {}, olClo
       fontStyle: 'italic',
       color: '#6F818E',
       fontSize: '0.875rem',
+      width: '370px',
       '&.success': {
         backgroundColor: 'green',
         '.prime-msg': {
@@ -58,6 +59,9 @@ function toast({type = 'error', msg = '', html = '', timeout = null} = {}, olClo
         width: '10px',
         height: '10px',
         content: '""'
+      },
+      '@media (max-width: 420px)': {
+        width: '90vw'
       }
     })}
   </style>`

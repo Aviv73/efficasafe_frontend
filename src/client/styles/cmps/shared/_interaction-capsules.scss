@@ -2,10 +2,13 @@
     min-width: max-content;
     max-width: 100%;
     z-index: 0;
-    margin-block-end: rem(12px);
+    // margin-block-end: rem(12px);
     position: relative;
     
-    @include for-narrow-layout {
+    // @include for-narrow-layout {
+    //     margin-block-end: 0;
+    // }
+    @media (min-width: $break-narrow) {
         margin-block-end: 0;
     }
 

@@ -18,8 +18,8 @@
                     <!-- <router-link to="/" class="interaction-details-header-logo v-tour-interaction-step-4">
                         <img :src="require('@/client/assets/imgs/logo-vector.svg')" alt="Logo" />
                     </router-link> -->
-                    <h1 v-if="side1Material && side2Material">Ineraction of {{side1Material && side1Material.name}} & {{side2Material && side2Material.name}}</h1>
-                    <h1 v-else>Ineraction</h1>
+                    <h1 v-if="side1Material && side2Material">Interaction of {{side1Material && side1Material.name}} & {{side2Material && side2Material.name}}</h1>
+                    <h1 v-else>Interaction</h1>
                     <span class="interaction-details-header-actions">
                         <PlayTourBtn :dontOpen="isScreenNarrow" @click.native="startTour" align="right"/>
                         <button

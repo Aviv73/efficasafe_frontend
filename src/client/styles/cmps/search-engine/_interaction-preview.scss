@@ -175,6 +175,7 @@
         color: $clr1;
         font-weight: normal;
         padding-inline-start: 0px !important;
+        white-space: nowrap;
         
         @include for-narrow-layout {
             padding-inline-start: 2% !important;
