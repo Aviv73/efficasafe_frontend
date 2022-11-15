@@ -24,7 +24,7 @@
                 <button @click="showResults('drug')" :class="{selected: isSelected('drug')}">Drug - Drug</button>
             </div>
         </div>
-        <header class="horizontal-list-header">
+        <header class="horizontal-list-header" v-if="$route.name !== 'Boosters'">
             <span class="horizontal-list-header-item">
                 <label
                     class="flex-align-center"
@@ -105,7 +105,7 @@
             >
                 <monitor-summary :interactions="interactions" />
             </li>
-            <li
+            <!-- <li
                 class="horizontal-list-list-item boosters-opener flex-center"
                 v-else-if="$route.name === 'Boosters' && !isScreenNarrow"
             >
@@ -119,7 +119,7 @@
                         Click here
                     </button>
                 </span>
-            </li>
+            </li> -->
             <li
                 class="horizontal-list-list-item"
                 v-for="(interaction, idx) in interactions"
