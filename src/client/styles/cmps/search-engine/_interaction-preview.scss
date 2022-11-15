@@ -6,6 +6,7 @@
     color: $clr-txt-darker;
     padding-bottom: 15px;
 
+
     @include for-narrow-layout {
         padding-bottom: 0px;
     }
@@ -201,6 +202,33 @@
             font-size: .875rem;
             line-height: 1;
             color: #484848;
+        }
+    }
+}
+
+
+
+@media (max-width: $break-narrow) {
+    .optimizers-view {
+        .interaction-capsules {
+            margin-block-end: 0;
+        }
+        .interaction-preview {
+            .recomendation, .evidence-level {
+                display: none !important;
+            }
+            .interaction-preview {
+                .recomendation, .evidence-level {
+                    display: none !important;
+                }
+                
+                .interaction-preview {
+                    .recomendation, .evidence-level {
+                        display: block !important;
+                    }
+        
+                }
+            }
         }
     }
 }

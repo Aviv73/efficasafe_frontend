@@ -181,10 +181,10 @@ sub {
         &:nth-child(2) {
             text-transform: capitalize;
             overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
+            // white-space: nowrap;
+            // text-overflow: ellipsis;
             flex-basis: 55%;
-            margin-left: 11px;
+            margin-left: 15px;
             margin-right: 8px;
 
             @include for-narrow-layout {

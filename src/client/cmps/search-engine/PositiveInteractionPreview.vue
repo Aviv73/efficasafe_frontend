@@ -20,7 +20,7 @@
                             :localize="true"
                         />
                     </span>
-                    <span v-if="isAllowed(idx)" class="table-col" :title="group.recommendation">
+                    <span v-if="isAllowed(idx)" class="table-col recomendation" :title="group.recommendation">
                         {{ getShortRecommendation(group.recommendation) }}
                     </span>
                     <span v-else class="table-col flex-start" title="Open only for registered subscribers">
