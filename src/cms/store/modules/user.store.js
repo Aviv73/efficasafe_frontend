@@ -3,6 +3,10 @@ import { storageService } from '../../services/storage.service'
 import { alertService } from '../../services/alert.service'
 import router from '../../../client/router'
 
+// import { useRoute } from 'vue-router'
+
+// // const route = useRoute()
+
 export const userStore = {
     state: {
         loggedInUser: null,
@@ -77,6 +81,15 @@ export const userStore = {
             }else{
                 commit({ type: 'setLoggedInUser', user });
             }
+            if (['InteractionDetails', 'VinteractionDetails', 'Results'].includes(router.history.current.name)) {
+                dispatch('notifyEndTrial');
+            }
+            return user
+        },
+        notifyEndTrial({ getters }) {
+            if (window.__goToSubscribtionPage__) return;
+            const user = getters.loggedInUser;
+            if (!user) return;
             if ((user.type !== 'subscribed') && user.trialTime && (Date.now() > new Date(user.trialTime).getTime())) {
                 const timePts = new Date(user.trialTime).toString().split(' ');
                 const trialEndTime = `${timePts[0]} ${timePts[1]} ${timePts[2]}`;
@@ -91,7 +104,6 @@ export const userStore = {
                     <p>Interaction results will not be available. <a onclick="__goToSubscribtionPage__()">Subscribe now!</a></p>
                 `}, () => delete window.__goToSubscribtionPage__);
             }
-            return user
         },
         async getUserSearches({commit, state}) {
             if(!state.loggedInUser) return

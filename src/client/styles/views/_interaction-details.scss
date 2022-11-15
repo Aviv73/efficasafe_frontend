@@ -9,39 +9,61 @@
         text-align: center;
         line-height: initial;
         @media (max-width: $break-narrow) {
-            font-size: rem(20px);
+            font-size: rem(14px);
         }
     }
 
     @media (max-width: $break-narrow) {
+        .interaction-details-header-link {
+            height: 22px;
+            width: 22px;
+            button {
+                height: 100%;
+                width: 100%;
+                img {
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+        }
         .main-container {
-            padding: 0 12px;
+            padding: 0 6px;
         }
         .interaction-details-content-header {
             background-color: #EFEFEF;
             .narrowHeader {
                 display: flex;
-                align-items: center;
+                // align-items: center;
                 justify-content: space-between;
                 flex-wrap: wrap;
                 gap: 10px;
                 // padding: unset;
-                .capsules {
-                    position: static;
-                    transform: unset;
-                    .interaction-capsules-side {
-                        width: rem(100px);
-                        font-size: rem(10px);
+                .capsules-container {
+                    justify-content: flex-start;
+                    align-items: center;
+                    flex-grow: 1;
+                    .capsules {
+                        width: 100%;
+                        max-width: 300px;
+                        position: static;
+                        transform: unset;
+                        display: flex;
+                        .interaction-capsules-side {
+                            // flex-grow: 1;
+                            // width: rem(100px);
+                            width: 50%;
+                            font-size: rem(12px);
+                        }
                     }
                 }
             }
             .mobile-data-show-btns {
                 display: flex;
                 align-items: center;
-                gap: rem(20px);
+                gap: rem(6px);
                 >* {
-                    width: rem(42px);
-                    height: rem(42px);
+                    width: rem(36px);
+                    height: rem(36px);
                     background-color: white;
                     border-radius: 50%;
                     display: flex;

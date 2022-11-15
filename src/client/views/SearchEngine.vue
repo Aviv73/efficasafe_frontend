@@ -1927,6 +1927,7 @@ export default {
         this.removeEventBusListeners()
     },
     created(){
+        this.$store.dispatch('notifyEndTrial');
         this.addEventBusListeners()
     },
     components: {

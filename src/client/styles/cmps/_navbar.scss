@@ -147,7 +147,10 @@
         }
 
     }
-    &-user-dropdown {
+    .user-dropdown {
+        padding-inline-end: 5px;
+    }
+    .navbar-user-dropdown {
         display: flex;
         flex-direction: column;
         background-color: #E2F0F0;
@@ -396,29 +399,37 @@
     }
 
 
-    .username-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 5px;
-        padding-inline-end: rem(10px);
-        position: relative;
-        .trial-msg {
-            // position: absolute;
-            // top: 5px;
-            height: rem(10px);
-            // border-radius: rem(3px);
-            // background-color: #B8F1D9;
-            // color: #FB8E76;
+    // .username-container {
+    //     display: flex;
+    //     flex-direction: column;
+    //     align-items: center;
+    //     gap: 5px;
+    //     padding-inline-end: rem(10px);
+    //     position: relative;
+    // }
+    .trial-msg {
+        // position: absolute;
+        // top: 5px;
+        // height: rem(10px);
+        // border-radius: rem(3px);
+        // background-color: #B8F1D9;
+        // color: #FB8E76;
+        color: #6A6A6A(230, 57, 70);
+        // color: white;
+        font-weight: bold;
+        font-style: italic;
+        font-size: rem(13px);
+        // padding: rem(2px) rem(5px);
+        padding-inline-start: rem(20px);
+        padding-bottom: 10px;
+        
+        .warn {
+            color: rgb(246, 213, 92);
+        }
+        .err {
+            // color: #E63946;
             color: rgb(230, 57, 70);
-            font-weight: bold;
-            // font-style: italic;
-            font-size: rem(13px);
-            padding: rem(2px) rem(5px);
-
-            .end-msg {
-                color: #E63946;
-            }
+            // color: rgb(246, 213, 92);
         }
     }
 

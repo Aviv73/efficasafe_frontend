@@ -158,53 +158,55 @@
                         />
                     </button>
                     
-                    <div v-if="loggedInUser" class="username-container">
-                        <dropdown>
-                            <template #activator>
-                                <div class="flex-align-center">
-                                    
-                                    <span class="flex">
-                                        {{ loggedInUser.username }}
-                                    </span>
+                    <dropdown v-if="loggedInUser" class="user-dropdown">
+                        <template #activator>
+                            <div class="flex-align-center">
+                                
+                                <span class="flex">
+                                    {{ loggedInUser.username }}
+                                </span>
+                            </div>
+                        </template>
+                        <template #content>
+                            <div class="navbar-user-dropdown">
+                                <div
+                                    class="trial-msg"
+                                    v-if="isTrialMode"
+                                >
+                                    <template v-if="loggedInUser.type === 'trial' || true">
+                                        <p v-if="freeTrialTime > 5">
+                                            <!-- {{freeTrialMsg}} -->
+                                            Trial ends on {{trialEndTime}}
+                                        </p>
+                                        <p v-else-if="freeTrialTime > 0" class="warn">
+                                            <!-- {{freeTrialMsg}} -->
+                                            Trial ends on {{trialEndTime}}
+                                        </p>
+                                        <router-link class="err" v-else to="/subscribe">Trial ended on {{trialEndTime}}</router-link>
+                                    </template>
+                                    <p v-else-if="!loggedInUser.email_verified">Verify your email for a free trial</p>
                                 </div>
-                            </template>
-                            <template #content>
-                                <div class="navbar-user-dropdown">
-                                    <div class="navbar-user-dropdown-links">
-                                        <router-link
-                                            to="/account"
-                                            class="navbar-user-dropdown-item account-col"
-                                        >
-                                            <span>Account</span>
-                                            <span v-if="updatedCount" class="updated" title="Updated interactions">{{updatedCount}}</span>
-                                        </router-link>
-                                        <!-- <router-link
-                                            to="/contact"
-                                            class="navbar-user-dropdown-item"
-                                        >
-                                            Contact us
-                                        </router-link> -->
-                                    </div>
-                                    <button class="navbar-user-dropdown-item" @click="onLogout">
-                                        Logout
-                                    </button>
+                                <div class="navbar-user-dropdown-links">
+                                    <router-link
+                                        to="/account"
+                                        class="navbar-user-dropdown-item account-col"
+                                    >
+                                        <span>Account</span>
+                                        <span v-if="updatedCount" class="updated" title="Updated interactions">{{updatedCount}}</span>
+                                    </router-link>
+                                    <!-- <router-link
+                                        to="/contact"
+                                        class="navbar-user-dropdown-item"
+                                    >
+                                        Contact us
+                                    </router-link> -->
                                 </div>
-                            </template>
-                        </dropdown>
-                        <div
-                            class="flex-center trial-msg"
-                            v-if="isTrialMode"
-                        >
-                            <template v-if="loggedInUser.type === 'trial'">
-                                <p v-if="freeTrialTime > 0">
-                                    <!-- {{freeTrialMsg}} -->
-                                    Trial ends on {{trialEndTime}}
-                                </p>
-                                <router-link class="end-msg" v-else to="/subscribe">Trial ended on {{trialEndTime}}</router-link>
-                            </template>
-                            <p v-else-if="!loggedInUser.email_verified">Verify your email for a free trial</p>
-                        </div>
-                    </div>
+                                <button class="navbar-user-dropdown-item" @click="onLogout">
+                                    Logout
+                                </button>
+                            </div>
+                        </template>
+                    </dropdown>
                     <button
                         v-else
                         class="login-btn username-container"
@@ -293,7 +295,10 @@ export default {
         trialEndTime() {
             const timePts = new Date(this.loggedInUser.trialTime).toString().split(' ');
             return `${timePts[1]} ${timePts[2]}`;
-        }
+        },
+        // daysTime5() {
+        //     return 1000 * 60 * 60 * 24 * 5;
+        // }
     },
     methods: {
         activeReleventTour(){
