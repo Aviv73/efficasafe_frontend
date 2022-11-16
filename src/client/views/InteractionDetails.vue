@@ -21,7 +21,7 @@
                     <h1 v-if="side1Material && side2Material">Interaction of {{side1Material && side1Material.name}} & {{side2Material && side2Material.name}}</h1>
                     <h1 v-else>Interaction</h1>
                     <span class="interaction-details-header-actions">
-                        <PlayTourBtn :dontOpen="isScreenNarrow" @click.native="startTour" align="right"/>
+                        <!-- <PlayTourBtn :dontOpen="isScreenNarrow" @click.native="startTour" align="right"/> -->
                         <button
                             class="print-btn print-btn-icon no-print"
                             title="Print"
@@ -321,7 +321,7 @@
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
 // import { utilService } from '@/cms/services/util.service';
 import { storageService } from '@/cms/services/storage.service';
-// import { eventBus } from '@/cms/services/eventBus.service';
+import { eventBus } from '@/cms/services/eventBus.service';
 
 import Side2Pathways from '@/client/cmps/interaction-details/Side2Pathways';
 import Side1Pathways from '@/client/cmps/interaction-details/Side1Pathways';
@@ -702,15 +702,15 @@ export default {
     },
     created(){
         this.$store.dispatch('notifyEndTrial');        
-        // eventBus.$on('start-interaction-tour', ()=>{
-        //     this.$tours['onboarding-interaction-tour'].start();
-        // })
+        eventBus.$on('start-interaction-tour', ()=>{
+            this.$tours['onboarding-interaction-tour'].start();
+        })
     },
-    // beforeDestroy(){
-    //     eventBus.$off('start-interaction-tour', ()=>{
-    //         this.$tours['onboarding-interaction-tour'].start();
-    //     })
-    // },
+    beforeDestroy(){
+        eventBus.$off('start-interaction-tour', ()=>{
+            this.$tours['onboarding-interaction-tour'].start();
+        })
+    },
     components: {
         ChevronLeftIcon,
         PrinterIcon,

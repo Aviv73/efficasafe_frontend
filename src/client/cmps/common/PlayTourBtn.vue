@@ -29,7 +29,7 @@
 <script>
 // import { eventBus } from '@/cms/services/eventBus.service';
 export default {
-  name: 'PlayTour',
+  name: 'PlayTourBtn',
   props: {
     align: {
       type: String,
@@ -114,6 +114,10 @@ export default {
     &.left {
       left: 0;
     }
+  }
+
+  @media (max-width: 900px) {
+    display: none;
   }
 }
 </style>>

@@ -625,6 +625,15 @@
             width: 30rem;
         }
     }
+
+    .v-tour {
+        .v-step {
+            position: fixed !important;
+            right: 50% !important;
+            top: 50% !important;
+            transform: translate(50%, -50%) !important;
+        }
+    }
     
     .slide-left-leave-active,
     .slide-left-enter-active,

@@ -279,20 +279,41 @@
       }
     }
   }
-  .interaction-preview-header {
-    // .interaction-capsules {
-    //     width: 100%;
-    // }
-    .interaction-capsules-side:not(:only-child) {
-        width: 50%;
+  .interaction-preview {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    .interaction-capsules {
+        margin-bottom: 0;
+        .interaction-capsules-side {
+            margin-bottom: 0;
+            // padding-bottom: 0;
+        }
     }
-    // flex-direction: column;
-    padding: 0 20px;
-    justify-content: space-between;
-    // justify-content: center;
-    gap: 7px;
-    .evidence-level {
-      margin-inline-start: 20px;
+    .interaction-capsules.group:only-child {
+        transform: translateX(-7px);
+    }
+    .interaction-preview-header {
+      // .interaction-capsules {
+      //     width: 100%;
+      // }
+      .interaction-capsules-side:not(:only-of-type) {
+          width: 50%;
+      }
+      // flex-direction: column;
+      padding: 0 10px;
+      .recomendation {
+      padding-inline-start: 10px;
+      }
+      .evidence-level {
+          padding-inline-end: 10px;
+      }
+      margin-bottom: 10px;
+      justify-content: space-between;
+      // justify-content: center;
+      gap: 7px;
+      .evidence-level {
+        margin-inline-start: 20px;
+      }
     }
   }
 }

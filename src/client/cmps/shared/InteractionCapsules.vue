@@ -17,7 +17,7 @@
             @mouseenter="showTitle($event)" @mouseleave="showTitle(null)"
             v-if="!showDraftName && !isMaterialGroup"
         >
-            <span v-if="isInteractionDetails" :class="{ 'pointer' : isLink }" @click="goToMaterial(side1NameToShow)" >{{ side1NameToShow }}</span>
+            <span v-if="isInteractionDetails" :class="{ 'pointer' : isLink, 'clip-text': isScreenNarrow }" @click="goToMaterial(side1NameToShow)" >{{ side1NameToShow }}</span>
             <span v-else :title="side1NameToShow" >{{ side1NameToShow }}</span>
             <!-- old title - "titleSide1" -->
             <svg
@@ -54,22 +54,22 @@
                 transform="translate(24.192 48.001) rotate(180)"
             />
         </svg>
-        <span v-if="isInteractionDetails" :class="{ 'pointer' : isLink }" @click="goToMaterial(draftNameContent)">
+        <span v-if="isInteractionDetails" :class="{ 'pointer' : isLink, 'clip-text': isScreenNarrow }" @click="goToMaterial(draftNameContent)">
             {{ draftNameContent }}
         </span>
         <span v-else :title="titleSide2">
             {{ draftNameContent }}
         </span>
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="cap cap-right"
-                viewBox="0 0 24.192 48.001"
-            >
-                <path
-                    :fill="color"
-                    d="M24.192,0h-.221A23.973,23.973,0,0,0,0,24,23.96,23.96,0,0,0,23.971,48h.221V43.869a21.046,21.046,0,0,1-6.841-1.532A20.58,20.58,0,0,1,10.8,38.072a19.82,19.82,0,0,1-4.414-6.326,19.338,19.338,0,0,1,0-15.492A19.81,19.81,0,0,1,10.8,9.93a20.585,20.585,0,0,1,6.548-4.265,21.042,21.042,0,0,1,6.841-1.532V0Z"
-                />
-            </svg>
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="cap cap-right"
+            viewBox="0 0 24.192 48.001"
+        >
+            <path
+                :fill="color"
+                d="M24.192,0h-.221A23.973,23.973,0,0,0,0,24,23.96,23.96,0,0,0,23.971,48h.221V43.869a21.046,21.046,0,0,1-6.841-1.532A20.58,20.58,0,0,1,10.8,38.072a19.82,19.82,0,0,1-4.414-6.326,19.338,19.338,0,0,1,0-15.492A19.81,19.81,0,0,1,10.8,9.93a20.585,20.585,0,0,1,6.548-4.265,21.042,21.042,0,0,1,6.841-1.532V0Z"
+            />
+        </svg>
         </div>
         
         <span v-if="isGroup || isLabel">
@@ -159,6 +159,9 @@ export default {
         }
     },
     computed: {
+        isScreenNarrow() {
+            return this.$store.getters.isScreenNarrow;
+        },
         materials() {
             return this.$store.getters.materials;
         },

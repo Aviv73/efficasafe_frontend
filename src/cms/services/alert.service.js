@@ -73,8 +73,6 @@ function toast({type = 'error', msg = '', html = '', timeout = null} = {}, olClo
     })}
   </style>`
 
-  console.log(styleStr);
-
   let toastEl;
 
   let isClosed = false;
