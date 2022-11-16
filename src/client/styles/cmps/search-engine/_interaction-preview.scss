@@ -314,10 +314,17 @@
           padding-inline-end: 20px;
       }
       .de-activator {
-        right: 0;
+        // right: 16px;
+        right: 0 !important;
+        position: static !important;
+        transform: translate(4px, 1px) !important;
+
       }
-      .evidence-level:only-child {
-        margin-inline-end: 10px;
+    //   .evidence-level:only-child {
+    //     margin-inline-end: 10px;
+    //   }
+      .evidence-level {
+        margin-inline-end: 7px;
       }
       margin-bottom: 10px;
       justify-content: space-between;
@@ -329,3 +336,6 @@
     }
   }
 }
+
+
+translate(4px, 1px)
