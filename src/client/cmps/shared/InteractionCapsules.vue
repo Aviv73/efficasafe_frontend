@@ -18,7 +18,7 @@
             v-if="!showDraftName && !isMaterialGroup"
         >
             <span v-if="isInteractionDetails" :class="{ 'pointer' : isLink, 'clip-txt': isScreenNarrow }" @click="goToMaterial(side1NameToShow)" >{{ isScreenNarrow? side1NameToShow.slice(0, 15) : side1NameToShow }}</span>
-            <span v-else :title="side1NameToShow" >{{ side1NameToShow }}</span>
+            <span v-else :title="side1NameToShow" :class="{'clip-txt': isScreenNarrow}">{{ isScreenNarrow? side1NameToShow.slice(0, 16) : side1NameToShow }}</span>
             <!-- old title - "titleSide1" -->
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -57,8 +57,8 @@
         <span v-if="isInteractionDetails" :class="{ 'pointer' : isLink, 'clip-txt': isScreenNarrow }" @click="goToMaterial(draftNameContent)">
             {{ isScreenNarrow? draftNameContent.slice(0, 15) : draftNameContent }}
         </span>
-        <span v-else :title="titleSide2">
-            {{ draftNameContent }}
+        <span v-else :title="titleSide2" :class="{'clip-txt': isScreenNarrow}">
+            {{ isScreenNarrow? draftNameContent.slice(0, 16) : draftNameContent }}
         </span>
         <svg
             xmlns="http://www.w3.org/2000/svg"

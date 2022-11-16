@@ -300,7 +300,8 @@
           &:not(:only-of-type) {
               width: 50%;
               &.group {
-                  width: 40%;
+                //   width: 40%;
+                  width: unset;
               }
           }
       }
