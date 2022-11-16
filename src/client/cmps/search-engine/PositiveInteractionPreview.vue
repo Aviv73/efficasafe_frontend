@@ -8,7 +8,7 @@
             :disable="!isAllowed(idx)"
         >
             <template #header>
-                <div class="interaction-preview-header table-row child" @click="onCollapseToggle(idx, group.cacheKey)">
+                <div class="interaction-preview-header table-row child" :class="{'interaction-column': !isAllowed(idx)}" @click="onCollapseToggle(idx, group.cacheKey)">
                     <span class="table-col">
                         <!-- <positive-inner-list-count :key="renderKey" :group="group" :length="group.innerLength"/> -->
                         <interaction-capsules
@@ -23,8 +23,8 @@
                     <span v-if="isAllowed(idx)" class="table-col recomendation" :title="group.recommendation">
                         {{ getShortRecommendation(group.recommendation) }}
                     </span>
-                    <span v-else class="table-col flex-start" title="Open only for registered subscribers">
-                        <lock-icon class="lock-icon" :size="18"/> <p class="clip-txt"> open only for registered subscribers</p>
+                    <span v-else class="table-col flex-start" title="Open only for subscribers">
+                        <lock-icon class="lock-icon" :size="18"/> <p class="clip-txt"> open only for subscribers</p>
                     </span>
                     <span v-if="isAllowed(idx)" class="table-col">
                         <tooltip
@@ -124,6 +124,9 @@ export default {
         }
     },
     computed:{
+        isScreenNarrow() {
+            return this.$store.getters.isScreenNarrow;
+        },
         isAllowed(){
             return (idx) => {
                 if(this.isShareTokenValid) return true
