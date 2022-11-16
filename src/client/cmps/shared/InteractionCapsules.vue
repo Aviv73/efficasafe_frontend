@@ -17,7 +17,7 @@
             @mouseenter="showTitle($event)" @mouseleave="showTitle(null)"
             v-if="!showDraftName && !isMaterialGroup"
         >
-            <span v-if="isInteractionDetails" :class="{ 'pointer' : isLink, 'clip-text': isScreenNarrow }" @click="goToMaterial(side1NameToShow)" >{{ side1NameToShow }}</span>
+            <span v-if="isInteractionDetails" :class="{ 'pointer' : isLink, 'clip-txt': isScreenNarrow }" @click="goToMaterial(side1NameToShow)" >{{ side1NameToShow }}</span>
             <span v-else :title="side1NameToShow" >{{ side1NameToShow }}</span>
             <!-- old title - "titleSide1" -->
             <svg
@@ -54,7 +54,7 @@
                 transform="translate(24.192 48.001) rotate(180)"
             />
         </svg>
-        <span v-if="isInteractionDetails" :class="{ 'pointer' : isLink, 'clip-text': isScreenNarrow }" @click="goToMaterial(draftNameContent)">
+        <span v-if="isInteractionDetails" :class="{ 'pointer' : isLink, 'clip-txt': isScreenNarrow }" @click="goToMaterial(draftNameContent)">
             {{ draftNameContent }}
         </span>
         <span v-else :title="titleSide2">

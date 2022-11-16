@@ -296,16 +296,21 @@
       // .interaction-capsules {
       //     width: 100%;
       // }
-      .interaction-capsules-side:not(:only-of-type) {
-          width: 50%;
+      .interaction-capsules-side {
+          &:not(:only-of-type) {
+              width: 50%;
+              &.group {
+                  width: 40%;
+              }
+          }
       }
       // flex-direction: column;
       padding: 0 10px;
       .recomendation {
-      padding-inline-start: 10px;
+      padding-inline-start: 20px;
       }
       .evidence-level {
-          padding-inline-end: 10px;
+          padding-inline-end: 20px;
       }
       margin-bottom: 10px;
       justify-content: space-between;
