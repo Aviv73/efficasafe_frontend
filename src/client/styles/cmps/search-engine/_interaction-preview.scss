@@ -310,14 +310,20 @@
       .recomendation {
       padding-inline-start: 20px;
       }
-      .evidence-level {
+      .small-data {
           padding-inline-end: 20px;
+      }
+      .de-activator {
+        right: 0;
+      }
+      .evidence-level:only-child {
+        margin-inline-end: 10px;
       }
       margin-bottom: 10px;
       justify-content: space-between;
       // justify-content: center;
       gap: 7px;
-      .evidence-level {
+      .small-data {
         margin-inline-start: 20px;
       }
     }

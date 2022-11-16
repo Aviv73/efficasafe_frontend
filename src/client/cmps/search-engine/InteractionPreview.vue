@@ -46,7 +46,7 @@
                         <span v-else class="table-col flex-start off-interaction-col-2" title="Open only for subscribers">
                             <lock-icon class="lock-icon" :size="18"/> <p class="clip-txt"> open only for subscribers</p>
                         </span>
-                        <span v-if="isAllowed" class="table-col">
+                        <span v-if="isAllowed" class="table-col small-data">
                             <tooltip right :txt="getLongEvidenceLevel(interaction.evidenceLevel || interaction.evidence_level)">
                                 <template #content>
                                     <ul class="loe-tooltip">

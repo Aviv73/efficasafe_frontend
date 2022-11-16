@@ -26,7 +26,7 @@
                     <span v-else class="table-col flex-start" title="Open only for subscribers">
                         <lock-icon class="lock-icon" :size="18"/> <p class="clip-txt"> open only for subscribers</p>
                     </span>
-                    <span v-if="isAllowed(idx)" class="table-col">
+                    <span v-if="isAllowed(idx)" class="table-col small-data">
                         <tooltip
                             :txt="getLongEvidenceLevel(group.evidenceLevel)"
                             right
