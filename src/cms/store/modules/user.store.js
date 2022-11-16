@@ -81,7 +81,7 @@ export const userStore = {
             }else{
                 commit({ type: 'setLoggedInUser', user });
             }
-            if (['InteractionDetails', 'VinteractionDetails', 'Results'].includes(router.history.current.name)) {
+            if (['InteractionDetails', 'VinteractionDetails', 'Results', 'Boosters'].includes(router.history.current.name)) {
                 dispatch('notifyEndTrial');
             }
             return user
@@ -101,7 +101,7 @@ export const userStore = {
                 }
                 onClose = alertService.toast({type: 'error', html: `
                     <p class="prime-msg">Your trial has ended on ${trialEndTime}</p>
-                    <p>Interaction results will not be available. <a onclick="__goToSubscribtionPage__()">Subscribe now!</a></p>
+                    <p class="sec-msg">Interaction results will not be available. <a onclick="__goToSubscribtionPage__()">Subscribe now!</a></p>
                 `}, () => delete window.__goToSubscribtionPage__);
             }
         },

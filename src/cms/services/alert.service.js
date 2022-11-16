@@ -40,7 +40,8 @@ function toast({type = 'error', msg = '', html = '', timeout = null} = {}, olClo
       a: {
         color: 'black',
         fontWeight: 'bold',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        textDecoration: 'underline'
       },
       '@keyframes fadeaway': {
         '0%': {opacity: '100%'},
@@ -61,10 +62,18 @@ function toast({type = 'error', msg = '', html = '', timeout = null} = {}, olClo
         content: '""'
       },
       '@media (max-width: 420px)': {
-        width: '90vw'
+        width: '90vw',
+        textAlign: 'center',
+        '.sec-msg': {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }
       }
     })}
   </style>`
+
+  console.log(styleStr);
 
   let toastEl;
 

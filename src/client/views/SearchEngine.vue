@@ -391,7 +391,7 @@
             :isActive="isShareModalActive"
             @close-modal="isShareModalActive = false"
         >
-            <share-modal v-if="isShareModalActive" @close-modal="isShareModalActive = false" />
+            <share-modal v-if="isShareModalActive || true" @close-modal="isShareModalActive = false" />
         </modal-wrap>
         <modal-wrap
             :isActive="isPrintModalActive"

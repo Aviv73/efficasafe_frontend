@@ -189,6 +189,7 @@
   .lock-icon {
     position: relative;
     top: 1px;
+    margin-inline-end: 10px;
   }
   .chevron-right-icon {
     position: relative;
@@ -215,27 +216,43 @@
     flex-direction: column;
   }
   .optimizers-view {
+      
     .interaction-capsules {
-      margin-block-end: 0;
+        margin-block-end: 0;
     }
     .interaction-preview {
+        .interaction-preview-header {
+            position: relative;
+            .table-col {
+                position: static;
+                // display: flex;
+            }
+            .tooltip-box {
+                position: static;
+                .de-activator {
+                    right: 10px;
+                }
+            }
+        }
       .recomendation,
       .evidence-level {
         display: none !important;
       }
-      .table-row {
-        flex-wrap: nowrap;
-      }
       .interaction-preview {
-        .interaction-preview-header {
-          // flex-direction: column;
-          // justify-content: space-around;
-          gap: 7px;
-          .recomendation,
-          .evidence-level {
-            display: none !important;
-          }
-        }
+       
+        // .interaction-preview-header {
+        //   // flex-direction: column;
+        // //   justify-content: space-around;
+        //   justify-content: center;
+        //   gap: 7px;
+        //   .recomendation,
+        //   .evidence-level {
+        //     display: none !important;
+        //   }
+        //   .evidence-level {
+        //     margin-inline-start: 20px;
+        //   }
+        // }
         .collapse {
           &:not(:last-child) {
             // .interaction-preview-header {
@@ -260,6 +277,22 @@
           }
         }
       }
+    }
+  }
+  .interaction-preview-header {
+    // .interaction-capsules {
+    //     width: 100%;
+    // }
+    .interaction-capsules-side:not(:only-child) {
+        width: 50%;
+    }
+    // flex-direction: column;
+    padding: 0 20px;
+    justify-content: space-between;
+    // justify-content: center;
+    gap: 7px;
+    .evidence-level {
+      margin-inline-start: 20px;
     }
   }
 }

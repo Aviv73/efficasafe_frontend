@@ -18,7 +18,7 @@
                             'child': isChild,
                             'dups-list': isDuplicate,
                             'empty-group': interaction.isEmpty,
-                            'interaction-column': !interaction.isEmpty && isChild
+                            'interaction-column': !isAllowed
                         }"
                     >
                         <span
