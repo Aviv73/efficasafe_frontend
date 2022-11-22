@@ -35,7 +35,7 @@
                             </button>
                         </li> -->
             <li class="navbar-nav-item">
-              <dropdown :dontHover="isScreenNarrow">
+              <dropdown :linksToKeepOpen="['About', 'PrinciplesAndProcesses', 'ContactUs']" :dontHover="isScreenNarrow">
                 <template #activator>
                   <div class="flex-align-center">
                     <span> About </span>
@@ -90,7 +90,7 @@
             <template #activator>
               <div class="flex-align-center">
                 <span class="flex">
-                  {{ loggedInUser.username }}    
+                  {{ loggedInUser.username }}
                 </span>
               </div>
             </template>
