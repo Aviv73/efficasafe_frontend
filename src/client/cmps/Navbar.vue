@@ -90,7 +90,7 @@
             <template #activator>
               <div class="flex-align-center">
                 <span class="flex">
-                  {{ loggedInUser.username }}
+                  {{ loggedInUser.username }}    
                 </span>
               </div>
             </template>
