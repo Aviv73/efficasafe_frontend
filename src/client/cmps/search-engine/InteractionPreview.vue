@@ -54,8 +54,9 @@
                                         <li v-if="interaction.refs && !interaction.side2Label">{{getRefsCountTxt(interaction)}} scientific articles</li>
                                     </ul>
                                 </template>
-                                <span class="evidence-level">
+                                <span class="evidence-level" :class="{only: (interaction.evidence_level) && true}">
                                     {{ interaction.evidenceLevel || interaction.evidence_level }}
+                                    
                                 </span>
                                 <span
                                     class="refs" 

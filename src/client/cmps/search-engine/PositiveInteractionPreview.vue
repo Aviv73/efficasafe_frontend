@@ -31,7 +31,7 @@
                             :txt="getLongEvidenceLevel(group.evidenceLevel)"
                             right
                         >
-                            <span class="evidence-level">
+                            <span class="evidence-level" :class="{only: (group.evidence_level) && true}">
                                 {{ group.evidenceLevel }}
                             </span>
                         </tooltip>
