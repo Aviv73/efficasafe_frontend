@@ -965,11 +965,10 @@ export default {
       await Promise.all(prms);
       this.isLoading = false;
       this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions);
+      this.$refs.interactionHeaderRef.scrollIntoView();
       await this.getPositives();
       this.isPBLoading = false;
       console.log('allInteractions', this.allInteractions);
-
-      this.$refs.interactionHeaderRef.scrollIntoView();
 
       // Old why, getting all info at once
 
