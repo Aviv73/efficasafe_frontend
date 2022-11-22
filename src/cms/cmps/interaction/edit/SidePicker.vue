@@ -90,10 +90,14 @@
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <infinite-loading
+              <div class="loader-container">
+                <Loader class="loader" v-if="isLoadingChunk"/>
+                <p class="loader" v-else>No more materials...</p>
+              </div>
+              <!-- <infinite-loading
                 @infinite="infiScrollHandler"
                 force-use-infinite-wrapper=".infinite-wrapper"
-              ></infinite-loading>
+              ></infinite-loading> -->
             </v-list-item-group>
           </v-list>
         </v-card>
@@ -117,7 +121,8 @@
 import { eventBus, EV_material_unselected, EV_cleanSelection, EV_primary_material_changed, EV_refresh_root_tree_view } from '@/cms/services/eventBus.service';
 import materialTreeView from '@/cms/cmps/common/MaterialTreeView';
 import autocomplete from '@/cms/cmps/Autocomplete';
-import InfiniteLoading from 'vue-infinite-loading';
+// import InfiniteLoading from 'vue-infinite-loading';
+import Loader from '@/client/cmps/common/icons/Loader';
 
 export default {
   currPage: 0,
@@ -149,7 +154,8 @@ export default {
         sortBy: [ 'type', 'name' ],
         isDesc: [ true, false ]
       },
-      primaryMaterialIds: []
+      primaryMaterialIds: [],
+      isLoadingChunk: false
     };
   },
   computed: {
@@ -234,6 +240,22 @@ export default {
         }, 100);
       }
     },
+    async loadChunk() {
+      console.log('WOWOWOW');
+      this.isLoadingChunk = true;
+      this.$options.currPage++;
+      const currSearch = this.search; // for case of change of async
+      const oldMatireals = JSON.parse(JSON.stringify(this.materials));
+      const newMaterials = await this.loadMaterials({...this.sortBy, page: this.$options.page});
+      let combinedMaterials = []
+      if (currSearch === this.search) combinedMaterials = [...oldMatireals, ...newMaterials];
+      else this.$options.currPage = 0;
+      this.$store.commit('setMaterials', { materials: combinedMaterials });
+      this.$store.commit('setMaterialCount', { total: combinedMaterials.length });
+      if (newMaterials.length < 20) {
+        this.isLoadingChunk = false;
+      } else if (this.activeTab === 'materials') setTimeout(() => this.loadChunk(), 2000);
+    },
     async loadMaterials(sortBy = {}) {
       // const currPage = this.search ? 0 : this.$options.currPage;
       const currPage = this.$options.currPage;
@@ -247,6 +269,7 @@ export default {
     },
     handleNavigation(activeTab) {
       this.activeTab = activeTab;
+      if (activeTab === 'materials') this.loadChunk();
     },
     filterMaterials(val) {
       this.search = val;
@@ -297,7 +320,8 @@ export default {
     }
   },
   created() {
-    this.loadMaterials(this.sortBy);
+    // this.loadMaterials(this.sortBy);
+    // this.loadChunk();
     eventBus.$on(EV_material_unselected, async ({ materialIds }) => {
       if (materialIds && materialIds.length) {
         const criteria = { materialId: materialIds };
@@ -326,10 +350,19 @@ export default {
     eventBus.$off(EV_primary_material_changed);
     eventBus.$off(EV_cleanSelection);
   },
+  watch: {
+    search() {
+      if (!this.isLoadingChunk) this.loadChunk()
+    },
+    // activeTab(val) {
+    //   if ((val === 'materials') && !this.isLoadingChunk) this.loadChunk()
+    // }
+  },
   components: {
     materialTreeView,
     autocomplete,
-    InfiniteLoading
+    // InfiniteLoading,
+    Loader
   }
 };
 </script>
