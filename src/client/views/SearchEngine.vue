@@ -273,12 +273,12 @@ export default {
       loadingTime: 0,
       sameQ: false,
       isLoadingFile: false,
-      innerListEl: null,
+      innerListEl: null
     };
   },
   metaInfo() {
     return {
-      title: 'Search',
+      title: 'Search'
     };
   },
   watch: {
@@ -324,7 +324,7 @@ export default {
         if (isImported) this.showImportMsg(nonExisting);
       },
       deep: true,
-      immediate: true,
+      immediate: true
     },
     $route(to, from) {
       //for paging
@@ -336,7 +336,7 @@ export default {
       const routesOrder = {
         Results: 1,
         Boosters: 2,
-        Monitor: 3,
+        Monitor: 3
       };
       if (to.name === 'Boosters' || to.name === 'Monitor') {
         this.isViewVertical = false;
@@ -344,7 +344,7 @@ export default {
         this.isViewVertical = storageService.load('view', true) === 'vertical';
       }
       this.routerTransitionName = routesOrder[to.name] < routesOrder[from.name] ? 'slide-right' : 'slide-left';
-    },
+    }
   },
   computed: {
     routableListData() {
@@ -353,7 +353,7 @@ export default {
           return {
             interactions: this.getRelevetInteractions,
             pageCount: this.getReleventPageCount,
-            total: this.total,
+            total: this.total
           };
         case 'Boosters':
           return {
@@ -363,14 +363,14 @@ export default {
             suppEmptyInteractions: this.emptySuppPositiveInteractions,
             loadingTime: this.loadingTime,
             pageCount: 0,
-            total: 0,
+            total: 0
           };
         case 'Monitor':
           return {
             interactions: this.formatedInteractions,
             pageCount: this.pageCount,
             total: this.total,
-            isDBankInteractions: !!this.dBankInteractions.length,
+            isDBankInteractions: !!this.dBankInteractions.length
           };
       }
       return [];
@@ -420,7 +420,7 @@ export default {
         return {
           red: this.interactionsColorCountSupp.red + this.dBankInteractionsColorCountMap.red,
           yellow: this.interactionsColorCountSupp.yellow + this.dBankInteractionsColorCountMap.yellow,
-          green: this.interactionsColorCountSupp.green + this.dBankInteractionsColorCountMap.green,
+          green: this.interactionsColorCountSupp.green + this.dBankInteractionsColorCountMap.green
         };
       }
       return null;
@@ -470,7 +470,7 @@ export default {
             vInteraction.side2Material = {
               _id,
               name,
-              type,
+              type
             };
             vInteraction.side2Label = null;
           }
@@ -546,7 +546,7 @@ export default {
             evidenceLevel: '',
             isMaterialGroup: true,
             isEmpty: true,
-            total: 0,
+            total: 0
           };
           formatedPositiveInteractions.push(emptyInteraction);
         }
@@ -571,7 +571,7 @@ export default {
             vInteraction.side2Material = {
               _id,
               name,
-              type,
+              type
             };
             vInteraction.side2Label = null;
           }
@@ -618,7 +618,7 @@ export default {
           evidenceLevel: '',
           isMaterialGroup: true,
           isNegative: true,
-          total: 0,
+          total: 0
         };
         formatedSuppPositiveReds.push(redInteraction);
       });
@@ -638,7 +638,7 @@ export default {
               side2Material: {
                 _id,
                 name,
-                type,
+                type
               },
               side2Label: null,
               name: `${interaction.side1Material.name} & ${name}`,
@@ -648,7 +648,7 @@ export default {
               side2DraftName: interaction.side2DraftName,
               summary: interaction.summary,
               refs: interaction.refs,
-              monitor: interaction.monitor,
+              monitor: interaction.monitor
             };
             this.insertInteraction(acc, vInteraction);
           });
@@ -685,7 +685,7 @@ export default {
                 recommendation: interaction.recommendation,
                 evidenceLevel: interaction.evidenceLevel,
                 vInteractions: [interaction],
-                isCompoundGroup: true,
+                isCompoundGroup: true
               };
               acc.push(compoundGroup);
             }
@@ -698,7 +698,7 @@ export default {
                 recommendation: this.getMoreSeverRecomm(false, ...queryApearanceMap[`${side1Name}-${userQuery}`].map((i) => i.recommendation), interaction.recommendation),
                 evidenceLevel: this.getMoreSeverEvidenceLevel(...queryApearanceMap[`${side1Name}-${userQuery}`].map((i) => i.evidenceLevel), interaction.evidenceLevel),
                 vInteractions: [...queryApearanceMap[`${side1Name}-${userQuery}`]],
-                isCompoundGroup: true,
+                isCompoundGroup: true
               };
               if (compoundGroup.vInteractions.findIndex((i) => i._id === interaction._id) === -1) {
                 if (!interaction.vInteractions || interaction.vInteractions.length > 1) compoundGroup.vInteractions.push(interaction);
@@ -741,7 +741,7 @@ export default {
           const newResult = {
             txt: material.userQuery,
             materials: [material],
-            isIncluded: material.isIncluded || false,
+            isIncluded: material.isIncluded || false
           };
           acc.push(newResult);
         }
@@ -827,7 +827,7 @@ export default {
     },
     freeTrialTime() {
       const {
-        loggedInUser: { trialTime },
+        loggedInUser: { trialTime }
       } = this.$store.getters;
       const timeLeft = trialTime - Date.now();
       const daysLeft = timeLeft / (1000 * 3600 * 24);
@@ -861,7 +861,7 @@ export default {
         res['Searched list:'] = mat.userQuery;
         return res;
       });
-    },
+    }
   },
   methods: {
     startBoostTour() {
@@ -1000,7 +1000,7 @@ export default {
       const drugFilterBy = {
         isSearchResults: true,
         isPositives: true,
-        id: drugIds,
+        id: drugIds
       };
       const allIds = this.materials.reduce((acc, { _id, labels, isIncluded }) => {
         if (isIncluded) return acc;
@@ -1020,11 +1020,11 @@ export default {
         isPositives: true,
         id: allIds,
         suppIds,
-        isSupp: true,
+        isSupp: true
       };
       const [{ interactions, searchState }, { interactions: suppInteractions, idsToTurnRed, searchState: searchStateSupp }] = await Promise.all([
         this.$store.dispatch({ type: 'getInteractions', filterBy: drugFilterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}` }),
-        this.$store.dispatch({ type: 'getInteractions', filterBy: suppFilterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}/supps` }),
+        this.$store.dispatch({ type: 'getInteractions', filterBy: suppFilterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}/supps` })
       ]);
       this.$store.commit('setRedPositiveSupp', { redIds: idsToTurnRed });
       this.idsToTurnRed = idsToTurnRed;
@@ -1066,7 +1066,7 @@ export default {
             isMaterialGroup: true,
             isEmpty: true,
             isNotToShow: true,
-            total: 0,
+            total: 0
           };
           acc.push(emptyInteraction);
         }
@@ -1080,7 +1080,7 @@ export default {
           const ids = {
             side1Id: vInt.side1Material._id,
             side2Id: vInt.side2Material._id,
-            mainSide2MaterialId: int.mainSide2MaterialId,
+            mainSide2MaterialId: int.mainSide2MaterialId
           };
           const idCountMap = Object.values(ids).reduce((acc, id) => {
             if (!acc[id]) acc[id] = 0;
@@ -1096,7 +1096,7 @@ export default {
             id: [...idsToSerch, idToCompare],
             page: 0,
             limit: Number.MAX_SAFE_INTEGER,
-            materialCount: this.materialIds.length + 1,
+            materialCount: this.materialIds.length + 1
           };
           vInt.cacheKey = `/search/positive-boosters/${filterBy.id}/supps`;
           this.$nextTick(() => (vInt.mainMaterialName = int.name));
@@ -1119,7 +1119,7 @@ export default {
         isSearchResults: true,
         page: --page,
         id: ids,
-        materialCount: this.materialsLength,
+        materialCount: this.materialsLength
       };
 
       const { interactions, pageCount, total, searchState } = await this.$store.dispatch({ type: 'getInteractions', filterBy, cacheKey: `/search?${this.$route.fullPath.split('?')[1]}` });
@@ -1170,7 +1170,7 @@ export default {
       }
       const criteria = {
         isSearchResults: true,
-        q: this.$route.query.q,
+        q: this.$route.query.q
       };
       const materials = await this.$store.dispatch({ type: 'getMaterials', criteria, doCache: true });
       const newMaterials = this.sortMaterials(materials);
@@ -1210,7 +1210,7 @@ export default {
             page: 0,
             limit: Number.MAX_SAFE_INTEGER,
             materialCount: ids.length + 1,
-            recommendation: 'non-positives',
+            recommendation: 'non-positives'
           };
           vInteraction.cacheKey = `/search/positive-boosters/${filterBy.id}`;
           const { total } = await this.$store.dispatch({ type: 'getInteractions', filterBy, cacheKey: `/search/positive-boosters/${filterBy.id}` });
@@ -1237,7 +1237,7 @@ export default {
             _id,
             name,
             recommendation,
-            evidenceLevel,
+            evidenceLevel
           });
         }
         return acc;
@@ -1249,7 +1249,7 @@ export default {
             _id,
             name,
             recommendation,
-            evidenceLevel: 'A',
+            evidenceLevel: 'A'
           });
         }
         return acc;
@@ -1361,7 +1361,7 @@ export default {
           recommendation: this.getMoreSeverRecomm(false, acc[idx].recommendation, interaction.recommendation),
           evidenceLevel: this.getMoreSeverEvidenceLevel(acc[idx].evidenceLevel, interaction.evidenceLevel),
           vInteractions: acc[idx]._id === interaction._id ? [acc[idx]] : [acc[idx], interaction],
-          isCompoundGroup: false,
+          isCompoundGroup: false
         };
         acc.splice(idx, 1, vInteractionGroup);
       } else {
@@ -1520,7 +1520,7 @@ export default {
         this.$store.commit({ type: 'setUseApproval' });
         this.$store.dispatch({
           type: 'updateLoggedInUser',
-          user: { ...this.$store.getters.loggedInUser },
+          user: { ...this.$store.getters.loggedInUser }
         });
         logService.add({ action: 'Approved use' });
       }
@@ -1642,13 +1642,13 @@ export default {
       setTimeout(() => {
         window.print();
       }, 500);
-    },
+    }
   },
   async mounted() {
     const el = this.$refs.whatToMonitorLink.$el;
     let options = {
       rootMargin: '0px 0px 0px 0px',
-      threshold: 1,
+      threshold: 1
     };
     this.observer = new IntersectionObserver(([e]) => {
       if (e.isIntersecting) {
@@ -1711,7 +1711,7 @@ export default {
     SaveSearchModal,
     // ChevronRightIcon,
     Loader,
-    PlayTourBtn,
-  },
+    PlayTourBtn
+  }
 };
 </script>
