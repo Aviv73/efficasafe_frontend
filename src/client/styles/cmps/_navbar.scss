@@ -42,6 +42,7 @@
     padding-inline-end: rem(15px);
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
+    padding-inline-start: rem(20px);
     .logo-name {
       position: relative;
       bottom: rem(0.5px);
@@ -236,7 +237,7 @@
       visibility: visible;
     }
   }
-  &-nav {
+  .navbar-nav {
     .logo {
       display: none;
       @media (max-width: $break-narrow) {
@@ -271,9 +272,10 @@
       height: 100vh;
       width: 85%;
       max-width: rem(300px);
-      background-color: #e2f0f0;
+      background-color: #fafafa;
       z-index: 9;
       font-size: rem(20px);
+      font-weight: 500;
       // font-family: segoe-ui, sans-serif;
       // color: $white;
       overflow-y: auto;
@@ -420,14 +422,14 @@
     // padding: rem(2px) rem(5px);
     padding: 7px 0;
     padding-inline-start: rem(20px);
-    
+
     .warn {
-        color: #FF844F;
+      color: #ff844f;
     }
     .err {
-        // color: #E63946;
-        color: #e63946;
-        // color: rgb(246, 213, 92);
+      // color: #E63946;
+      color: #e63946;
+      // color: rgb(246, 213, 92);
     }
   }
 }
