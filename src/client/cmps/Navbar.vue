@@ -15,6 +15,10 @@
           <button class="navbar-toggle" @click="toggleNavActive" title="Side menu">
             <menu-icon title="" />
           </button>
+          <router-link v-if="isScreenNarrow" to="/" title="Home" class="logo-mobile">
+            <img src="@/client/assets/imgs/efficasafe-logo-light.svg" alt="Efficasafe" />
+            <img class="logo-name" src="@/client/assets/imgs/efficasafe-light.svg" alt="Efficasafe" />
+          </router-link>
           <div class="navbar-overlay" :class="{ active: isNavActive }" @click="toggleNavActive"></div>
           <ul class="navbar-nav nav-part" :class="{ active: isNavActive }" v-hammer:swipe.left="toggleNavActive">
             <li @click="toggleNavActive" class="list-logo-container">
@@ -149,7 +153,7 @@ export default {
   data: () => ({
     isNavActive: false,
     isNavIntersecting: false,
-    updatedUserSearches: null,
+    updatedUserSearches: null
   }),
   computed: {
     isTrialMode() {
@@ -167,7 +171,7 @@ export default {
     },
     freeTrialTime() {
       const {
-        loggedInUser: { trialTime },
+        loggedInUser: { trialTime }
       } = this.$store.getters
       const timeLeft = trialTime - Date.now()
       const daysLeft = timeLeft / (1000 * 3600 * 24)
@@ -206,7 +210,7 @@ export default {
     trialEndTime() {
       const timePts = new Date(this.loggedInUser.trialTime).toString().split(' ')
       return `${timePts[1]} ${timePts[2]}`
-    },
+    }
     // daysTime5() {
     //     return 1000 * 60 * 60 * 24 * 5;
     // }
@@ -253,7 +257,7 @@ export default {
       const intersectingEl = document.querySelector('section.home-content')
       const elNav = this.$refs.navbar
       this.isNavIntersecting = window.scrollY >= intersectingEl.offsetTop - elNav.offsetHeight
-    },
+    }
   },
   mounted() {
     document.addEventListener('scroll', this.setNavClassName)
@@ -269,10 +273,10 @@ export default {
   components: {
     CloseIcon,
     MenuIcon,
-    Dropdown,
+    Dropdown
     // MenuDownIcon,
     // HomeIcon,
     // VideoIcon
-  },
+  }
 }
 </script>
