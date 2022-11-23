@@ -1,627 +1,627 @@
 .interaction-details {
-    flex-grow: 1;
-    font-size: rem(14px);
-    line-height: rem(16px);
+  flex-grow: 1;
+  font-size: rem(14px);
+  line-height: rem(16px);
+  position: relative;
+
+  h1 {
+    font-size: rem(30px);
+    font-weight: 500;
+    text-align: center;
+    line-height: initial;
+    // justify-self: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    @media (max-width: $break-narrow) {
+      font-size: rem(14px);
+      transform: unset;
+      position: static;
+    }
+  }
+
+  @media (max-width: $break-narrow) {
+    .interaction-details-header-link {
+      height: 22px;
+      width: 22px;
+      button {
+        height: 100%;
+        width: 100%;
+        img {
+          height: 100%;
+          width: 100%;
+        }
+      }
+    }
+    .main-container {
+      padding: 0 6px;
+    }
+    .interaction-details-content-header {
+      background-color: #efefef;
+      .narrowHeader {
+        display: flex;
+        // align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+        // padding: unset;
+        .capsules-container {
+          justify-content: flex-start;
+          align-items: center;
+          flex-grow: 1;
+          .capsules {
+            width: 100%;
+            max-width: 300px;
+            position: static;
+            transform: unset;
+            display: flex;
+            .interaction-capsules-side {
+              // flex-grow: 1;
+              // width: rem(100px);
+              width: 50%;
+              font-size: rem(12px);
+            }
+          }
+        }
+      }
+      .mobile-data-show-btns {
+        display: flex;
+        align-items: center;
+        gap: rem(6px);
+        > * {
+          width: rem(36px);
+          height: rem(36px);
+          background-color: white;
+          box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.12);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 2px;
+
+          .refs-count {
+            font-size: rem(8px);
+            color: #7d8e99;
+            padding-top: 3px;
+            // align-self: flex-start;
+          }
+        }
+      }
+    }
+    .mobile-data-modal {
+      white-space: pre-line;
+      line-height: rem(20px);
+      margin-block-end: rem(24px);
+      order: -2;
+
+      position: fixed;
+      background-color: #fff;
+      height: fit-content;
+      width: 80vw;
+      top: 140px;
+      right: 50%;
+      transform: translateX(50%);
+      border-radius: 12px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
+      z-index: 30;
+
+      h3 {
+        font-weight: 500;
+        color: black;
+      }
+
+      .modal-content {
+        padding: 30px;
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+      }
+
+      &.alerts-mobile {
+        background-color: #fff5f5;
+        border: 1px solid #e63946;
+        .modal-content {
+          padding: 0;
+          > * {
+            padding: 20px;
+            h4 {
+              font-size: rem(14px);
+              color: #c55555;
+            }
+            &:not(:last-child) {
+              border-bottom: 1px solid #d1d1d1;
+            }
+          }
+        }
+      }
+    }
+    .mobile-blure {
+      position: fixed;
+      z-index: 12;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100%;
+      background-color: rgba(18, 18, 18, 0.6);
+    }
+  }
+
+  a {
+    color: $clr1;
+    font-weight: 400;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .subheader {
+    text-transform: uppercase;
+    color: $clr1;
+    margin-block-end: rem(20px);
+    width: fit-content;
+  }
+  .subheader2 {
+    color: $clr-txt-dark;
+    pointer-events: all;
+    margin-block-end: rem(20px);
+  }
+  .paragraph {
+    margin-block-end: rem(22px);
+
+    @include for-narrow-layout {
+      padding-inline-end: 30%;
+    }
+  }
+  &-header {
+    background-color: $clr6;
+    padding: rem(12px) 5px;
     position: relative;
 
-    h1 {
-        font-size: rem(30px);
-        font-weight: 500;
-        text-align: center;
-        line-height: initial;
-        // justify-self: center;
+    @include for-narrow-layout {
+      padding: rem(31.5px) 0;
+    }
+
+    &-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-columns: auto minmax(0, 1440px) auto;
+      padding: 0 24px;
+
+      @include for-wide-layout {
+        padding: 0;
+      }
+
+      .brim-start {
+        background-color: $clr1;
+      }
+    }
+
+    &-link {
+      color: $clr1;
+      font-size: rem(12px);
+      line-height: rem(14px);
+      font-family: roboto-medium, sans-serif;
+      font-weight: 500;
+      position: relative;
+
+      &::before {
+        content: '';
         position: absolute;
-        top: 50%;
+        top: 0;
+        right: 100%;
+        height: 100%;
+        width: 24px;
+        background-color: $clr1;
+        display: none;
+
+        @include for-narrow-layout {
+          display: initial;
+        }
+        @include for-wide-layout {
+          display: none;
+        }
+      }
+
+      @include for-narrow-layout {
+        background-color: $clr1;
+        color: $white;
+        border-radius: 0 100px 100px 0;
+        padding: rem(12px) rem(42px) rem(12px) 0;
+        font-size: rem(21px);
+        line-height: rem(24px);
+      }
+      @include for-wide-layout {
+        padding: rem(12px) rem(42px) rem(12px) 0;
+      }
+
+      .chevron-left-icon {
+        height: rem(24px);
+      }
+    }
+    &-logo {
+      position: absolute;
+      top: 50%;
+      left: 100%;
+      transform: translate(calc(-100% - 60px), -50%);
+      user-select: none;
+
+      @include for-narrow-layout {
         left: 50%;
         transform: translate(-50%, -50%);
-        @media (max-width: $break-narrow) {
-            font-size: rem(14px);
-            transform: unset;
-            position: static;
-        }
-    }
+      }
 
-    @media (max-width: $break-narrow) {
-        .interaction-details-header-link {
-            height: 22px;
-            width: 22px;
-            button {
-                height: 100%;
-                width: 100%;
-                img {
-                    height: 100%;
-                    width: 100%;
-                }
-            }
-        }
-        .main-container {
-            padding: 0 6px;
-        }
-        .interaction-details-content-header {
-            background-color: #EFEFEF;
-            .narrowHeader {
-                display: flex;
-                // align-items: center;
-                justify-content: space-between;
-                flex-wrap: wrap;
-                gap: 10px;
-                // padding: unset;
-                .capsules-container {
-                    justify-content: flex-start;
-                    align-items: center;
-                    flex-grow: 1;
-                    .capsules {
-                        width: 100%;
-                        max-width: 300px;
-                        position: static;
-                        transform: unset;
-                        display: flex;
-                        .interaction-capsules-side {
-                            // flex-grow: 1;
-                            // width: rem(100px);
-                            width: 50%;
-                            font-size: rem(12px);
-                        }
-                    }
-                }
-            }
-            .mobile-data-show-btns {
-                display: flex;
-                align-items: center;
-                gap: rem(6px);
-                >* {
-                    width: rem(36px);
-                    height: rem(36px);
-                    background-color: white;
-                    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.12);
-                    border-radius: 50%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 2px;
-
-                    .refs-count {
-                        font-size: rem(8px);
-                        color: #7D8E99;
-                        padding-top: 3px;
-                        // align-self: flex-start;
-                    }
-                }
-            }
-        }
-        .mobile-data-modal {
-            white-space: pre-line;
-            line-height: rem(20px);
-            margin-block-end: rem(24px);
-            order: -2;
-            
-            position: fixed;
-            background-color: #fff;
-            height: fit-content;
-            width: 80vw;
-            top: 140px;
-            right: 50%;
-            transform: translateX(50%);
-            border-radius: 12px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
-            z-index: 30;
-
-            h3 {
-                font-weight: 500;
-                color: black;
-            }
-
-            .modal-content {
-                padding: 30px;
-            }
-
-            .close-btn {
-                position: absolute;
-                top: 30px;
-                right: 30px;
-            }
-
-            &.alerts-mobile {
-                background-color: #FFF5F5;
-                border: 1px solid #E63946;
-                .modal-content {
-                    padding: 0;
-                    >* {
-                        padding: 20px;
-                        h4 {
-                            font-size: rem(14px);
-                            color: #C55555;
-                        }
-                        &:not(:last-child) {
-                            border-bottom: 1px solid #D1D1D1;
-                        }
-                    }
-                }
-            }
-        }
-        .mobile-blure {
-            position: fixed;
-            z-index: 12;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: 100%;
-            background-color: rgba(18, 18, 18, 0.6);
-        }
-    }
-
-
-    a {
-        color: $clr1;
-        font-weight: 400;
-        &:hover {
-            text-decoration: underline;
-        }
-    }
-
-    .subheader {
-        text-transform: uppercase;
-        color: $clr1;
-        margin-block-end: rem(20px);
-        width: fit-content;
-    }
-    .subheader2 {
-        color: $clr-txt-dark;
-        pointer-events: all;
-        margin-block-end: rem(20px);
-    }
-    .paragraph {
-        margin-block-end: rem(22px);
-        
+      img {
+        width: 120px;
         @include for-narrow-layout {
-            padding-inline-end: 30%;
+          width: 221px;
         }
+      }
     }
+    &-actions {
+      display: flex;
+      gap: rem(16px);
+      .print-btn {
+        display: none;
+        // margin-inline-end: rem(24px);
+
+        @include for-narrow-layout {
+          display: unset;
+        }
+      }
+      .share-btn .material-design-icon__svg {
+        margin-block-end: -4px;
+
+        @include for-narrow-layout {
+          margin-block-end: 0;
+        }
+      }
+    }
+  }
+  &-content {
     &-header {
-        background-color: $clr6;
-        padding: rem(12px) 0;
-        position: relative;
+      background-color: $white;
+      padding: rem(24px) 0;
+      border-color: rgba($clr12, 0.35);
+      border-style: solid;
+      border-width: 1px 0;
+
+      @include for-narrow-layout {
+        padding: rem(14px) 0;
+      }
+    }
+    .recommendation-capsule {
+      color: $white;
+      border-radius: 100px;
+      padding: rem(10px) rem(22px);
+      display: flex;
+      align-items: center;
+      width: fit-content;
+      max-width: unset;
+
+      @include for-narrow-layout {
+        max-width: 280px;
+      }
+      @media (min-width: 1024px) {
+        max-width: 360px;
+      }
+      @include for-middle-layout {
+        max-width: 420px;
+      }
+      @media (min-width: 1260px) {
+        max-width: unset;
+      }
+
+      &:not(.mobile) {
+        display: none;
+        @include for-narrow-layout {
+          display: flex;
+        }
+      }
+      &.mobile {
+        order: -2;
+        align-self: center;
+        text-align: center;
+        margin-block-end: rem(24px);
 
         @include for-narrow-layout {
-            padding: rem(31.5px) 0;
+          display: none;
         }
-
-        &-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-template-columns: auto minmax(0, 1440px) auto;
-            padding: 0 24px;
-
-            @include for-wide-layout {
-                padding: 0;
-            }
-
-            .brim-start {
-                background-color: $clr1;
-            }
-        }
-
-        &-link {
-            color: $clr1;
-            font-size: rem(12px);
-            line-height: rem(14px);
-            font-family: roboto-medium, sans-serif;
-            font-weight: 500;
-            position: relative;
-
-            &::before {
-                content: "";
-                position: absolute;
-                top: 0;
-                right: 100%;
-                height: 100%;
-                width: 24px;
-                background-color: $clr1;
-                display: none;
-
-                @include for-narrow-layout {
-                    display: initial;
-                }
-                @include for-wide-layout {
-                    display: none;
-                }
-            }
-
-            @include for-narrow-layout {
-                background-color: $clr1;
-                color: $white;
-                border-radius: 0 100px 100px 0;
-                padding: rem(12px) rem(42px) rem(12px) 0;
-                font-size: rem(21px);
-                line-height: rem(24px);
-            }
-            @include for-wide-layout {
-                padding: rem(12px) rem(42px) rem(12px) 0;
-            }
-
-            .chevron-left-icon {
-                height: rem(24px);
-            }
-        }
-        &-logo {
-            position: absolute;
-            top: 50%;
-            left: 100%;
-            transform: translate(calc(-100% - 60px), -50%);
-            user-select: none;
-            
-            @include for-narrow-layout {
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
-
-            img {
-                width: 120px;
-                @include for-narrow-layout {
-                    width: 221px;
-                }
-            }
-        }
-        &-actions {
-            display: flex;
-            gap: rem(16px);
-            .print-btn {
-                display: none;
-                // margin-inline-end: rem(24px);
-
-                @include for-narrow-layout {
-                    display: unset;
-                }
-            }
-            .share-btn .material-design-icon__svg {
-                margin-block-end: -4px;
-
-                @include for-narrow-layout {
-                    margin-block-end: 0;
-                }
-            }
-        }
+      }
+      &.drugbank {
+        margin-block-end: rem(72px);
+      }
+      &.txt-dark {
+        color: $clr1;
+      }
+      .material-design-icon {
+        height: 14px;
+        margin-inline-end: 4px;
+      }
     }
-    &-content {
-        &-header {
-            background-color: $white;
-            padding: rem(24px) 0;
-            border-color: rgba($clr12, .35);
-            border-style: solid;
-            border-width: 1px 0;
-
-            @include for-narrow-layout {
-                padding: rem(14px) 0;
-            }
-        }
-        .recommendation-capsule {
-            color: $white;
-            border-radius: 100px;
-            padding: rem(10px) rem(22px);
-            display: flex;
-            align-items: center;
-            width: fit-content;
-            max-width: unset;
-            
-            @include for-narrow-layout {
-                max-width: 280px;
-            }
-            @media (min-width: 1024px) {
-                max-width: 360px;
-            }
-            @include for-middle-layout {
-                max-width: 420px;
-            }
-            @media (min-width: 1260px) {
-                max-width: unset;
-            }
-
-            &:not(.mobile) {
-                display: none;
-                @include for-narrow-layout {
-                    display: flex;
-                }
-            }
-            &.mobile {
-                order: -2;
-                align-self: center;
-                text-align: center;
-                margin-block-end: rem(24px);
-
-                @include for-narrow-layout {
-                    display: none;
-                }
-            }
-            &.drugbank {
-                margin-block-end: rem(72px);
-            }
-            &.txt-dark {
-                color: $clr1;
-            }
-            .material-design-icon {
-                height: 14px;
-                margin-inline-end: 4px;
-            }
-        }
-        .capsule-title{
-            position: absolute;
-            color:$clr5;
-            background-color: #FFFFFF;
-            box-shadow: 0px 2px 4px rgb(18 18 18 / 10%);
-            border: 1px solid #E2E2E2;
-            font-size: 0.875rem;
-            line-height: 1.375rem;
-            padding: 5px 8px;
-        }
-        .capsules {
-           position: absolute;
-           left: 50%;
-           transform: translateX(-50%);
-           margin-block-end: 0;
-
-           @include for-narrow-layout {
-               left: 0;
-               transform: none;
-           }
-        }
-        .evidence-level {
-            font-family: roboto-medium, sans-serif;
-            font-weight: 500;
-            position: absolute;
-            right: 0;
-            display: none;
-
-            @include for-narrow-layout {
-                display: inline;
-            }
-
-            &-mobile {
-                white-space: pre-line;
-                line-height: rem(20px);
-                margin-block-end: rem(24px);
-                order: -2;
-
-                @include for-narrow-layout {
-                    display: none;
-                }
-            }
-            
-            &-tooltip-content {
-                white-space: pre-line;
-                color: $clr-txt-dark;
-                font-family: roboto, sans-serif;
-                font-weight: 400;
-                line-height: rem(16px);
-                padding: rem(16px) rem(14px);
-            }
-
-            .information-outline-icon {
-                height: 12px;
-            }
-        }
-        .refs {
-            display: inline-flex;
-            align-items: center;
-            font-family: mulish, sans-serif;
-            font-weight: 300;
-            font-size: rem(11px);
-            line-height: rem(14px);
-            cursor: help;
-
-            &-count {
-                margin-inline-end: 2px;
-            }
-        }
+    .capsule-title {
+      position: absolute;
+      color: $clr5;
+      background-color: #ffffff;
+      box-shadow: 0px 2px 4px rgb(18 18 18 / 10%);
+      border: 1px solid #e2e2e2;
+      font-size: 0.875rem;
+      line-height: 1.375rem;
+      padding: 5px 8px;
     }
-    &-details {
-        padding-block-start: rem(14px);
-        padding-block-end: rem(48px);
-        color: rgba($clr-txt-darker, .9);
-        background-color: $clr3;
-        border-bottom: 1px solid rgba($gray, .6);
-        
-        .note-container {
-            color: $clr1;
-            font-family: roboto-medium, sans-serif;
-            font-weight: 500;
-            margin-block-end: rem(14px);
-            order: -1;
+    .capsules {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-block-end: 0;
 
-            @include for-narrow-layout {
-                justify-content: center;
-                align-items: center;
-                order: unset;
-            }
-
-            & > .note {
-                width: 100%;
-                padding: rem(8px) rem(14px);
-                background-color: $clr14;
-                border-radius: 2px;
-                border: 1px solid rgba($clr1, .26);
-                opacity: .75;
-                text-align: center;
-
-                @include for-narrow-layout {
-                    text-align: unset;
-                    width: unset;
-                }
-            }
-        }
-        .monitor {
-            margin-block-end: rem(22px);
-
-            & > div {
-                line-height: rem(20px);
-            }
-        }
-        .summary-container p {
-            margin-block-end: rem(12px);
-        }
-        .review-of-studies p {
-            margin-block-end: rem(12px);
-        }
-        .review-of-studies, .pharmacokinetics {
-            .subheader {
-                pointer-events: all;
-            }
-            .de-activator {
-                position: static;
-                transform: none;
-            }
-            .badge {
-                margin-inline-start: rem(8px);
-                font-family: roboto-medium, sans-serif;
-                font-weight: 500;
-
-                &-red {
-                    background-color: $red;
-                }
-                &-yellow {
-                    background-color: $yellow;
-                }
-                &-green {
-                    background-color: $green;
-                }
-            }
-        }
-        .warnings-container{
-            @include for-narrow-layout {
-                position: absolute;
-                top: 0;
-                right: 24px;
-                left: unset;
-                width: fit-content;
-                display: flex;
-                flex-direction: column;
-                margin-right: 1px;
-            }
-
-            .tooltip-content{
-                width: rem(250px);
-                padding: rem(16px) rem(20px);
-                border: 1px solid $red;
-                background-color: $clr15;
-            }
-
-            .warning{
-                background-color: $clr15;
-                border: 1px solid $red;
-                color: $clr-txt-darker;
-                margin-block-end: rem(24px);
-                padding: rem(20px) rem(22px);
-                
-                @include for-narrow-layout {
-                    line-height: rem(14px);
-                    padding: rem(5px) rem(8px);
-                    width: fit-content;
-                    border-radius: 50px;
-                    margin-block-end: rem(8px);
-                    cursor: help;
-                    min-width: 174px;
-                }
-            }
-        }
-
-        .down{
-            @include for-narrow-layout {
-                top: 40px;
-            }
-        }
-        .drugbank-logo {
-            position: absolute;
-            right: 50%;
-            top: rem(48px);
-            transform: translateX(70%);
-            
-            @include for-narrow-layout {
-                top: 0;
-                right: 24px;
-                transform: none;
-            }
-            @include for-wide-layout {
-                right: 0;
-            }
-
-            img {
-                width: 200px;
-                filter: grayscale(100%);
-                opacity: .6;
-                transition: filter .3s ease-in-out;
-
-                @include hover-supported {
-                    filter: grayscale(0);
-                }
-            }
-            figcaption {
-                opacity: .8;
-                position: absolute;
-                bottom: 5px;
-                left: 0;
-                transform: translateX(-105%);
-                user-select: none;
-            }
-        }
+      @include for-narrow-layout {
+        left: 0;
+        transform: none;
+      }
     }
-    .v-tour .v-step {
-        background-color: #349f88;
-        border-radius: 15px;
-        box-shadow: 0px 3px 8px rgba($black, .15);
-        padding: rem(16px) rem(24px);
+    .evidence-level {
+      font-family: roboto-medium, sans-serif;
+      font-weight: 500;
+      position: absolute;
+      right: 0;
+      display: none;
+
+      @include for-narrow-layout {
+        display: inline;
+      }
+
+      &-mobile {
+        white-space: pre-line;
+        line-height: rem(20px);
+        margin-block-end: rem(24px);
+        order: -2;
+
+        @include for-narrow-layout {
+          display: none;
+        }
+      }
+
+      &-tooltip-content {
+        white-space: pre-line;
+        color: $clr-txt-dark;
+        font-family: roboto, sans-serif;
+        font-weight: 400;
+        line-height: rem(16px);
+        padding: rem(16px) rem(14px);
+      }
+
+      .information-outline-icon {
+        height: 12px;
+      }
+    }
+    .refs {
+      display: inline-flex;
+      align-items: center;
+      font-family: mulish, sans-serif;
+      font-weight: 300;
+      font-size: rem(11px);
+      line-height: rem(14px);
+      cursor: help;
+
+      &-count {
+        margin-inline-end: 2px;
+      }
+    }
+  }
+  &-details {
+    padding-block-start: rem(14px);
+    padding-block-end: rem(48px);
+    color: rgba($clr-txt-darker, 0.9);
+    background-color: $clr3;
+    border-bottom: 1px solid rgba($gray, 0.6);
+
+    .note-container {
+      color: $clr1;
+      font-family: roboto-medium, sans-serif;
+      font-weight: 500;
+      margin-block-end: rem(14px);
+      order: -1;
+
+      @include for-narrow-layout {
+        justify-content: center;
+        align-items: center;
+        order: unset;
+      }
+
+      & > .note {
+        width: 100%;
+        padding: rem(8px) rem(14px);
+        background-color: $clr14;
+        border-radius: 2px;
+        border: 1px solid rgba($clr1, 0.26);
+        opacity: 0.75;
+        text-align: center;
+
+        @include for-narrow-layout {
+          text-align: unset;
+          width: unset;
+        }
+      }
+    }
+    .monitor {
+      margin-block-end: rem(22px);
+
+      & > div {
+        line-height: rem(20px);
+      }
+    }
+    .summary-container p {
+      margin-block-end: rem(12px);
+    }
+    .review-of-studies p {
+      margin-block-end: rem(12px);
+    }
+    .review-of-studies,
+    .pharmacokinetics {
+      .subheader {
+        pointer-events: all;
+      }
+      .de-activator {
+        position: static;
+        transform: none;
+      }
+      .badge {
+        margin-inline-start: rem(8px);
         font-family: roboto-medium, sans-serif;
         font-weight: 500;
-        font-size: rem(15px);
-        line-height: rem(17px);
-        max-width: 700px;
-        z-index: 80;
 
-        &-container {
-            width: rem(400px);
+        &-red {
+          background-color: $red;
         }
-
-        &-wide-container{
-            width: rem(650px);
+        &-yellow {
+          background-color: $yellow;
         }
-
-        &__buttons{
-            text-align: end;
+        &-green {
+          background-color: $green;
         }
-
-        &-txt {
-            width: 100%;
-            margin-top: 10px;
-            margin-bottom: 10px;
-            font-size: rem(18px);
-            line-height: rem(24px);
-            text-align: start;
-        }
-        .boosters-img  {
-            border-radius: 15px;
-            width: 100%;
-            margin: rem(12px) 0;
-        }
-        .onboarding-img {
-            border-radius: 15px;
-            width: 100%;
-            margin: rem(12px) 0;
-        }
+      }
     }
-    &-refs {
-        padding-block-start: rem(14px);
-        font-size: rem(12px);
-        line-height: rem(14px);
-        color: rgba($clr12, .9);
-
-        .subheader {
-            color: inherit;
-        }
-    }
-    .mobile-coloumn {
+    .warnings-container {
+      @include for-narrow-layout {
+        position: absolute;
+        top: 0;
+        right: 24px;
+        left: unset;
+        width: fit-content;
         display: flex;
         flex-direction: column;
+        margin-right: 1px;
+      }
+
+      .tooltip-content {
+        width: rem(250px);
+        padding: rem(16px) rem(20px);
+        border: 1px solid $red;
+        background-color: $clr15;
+      }
+
+      .warning {
+        background-color: $clr15;
+        border: 1px solid $red;
+        color: $clr-txt-darker;
+        margin-block-end: rem(24px);
+        padding: rem(20px) rem(22px);
+
+        @include for-narrow-layout {
+          line-height: rem(14px);
+          padding: rem(5px) rem(8px);
+          width: fit-content;
+          border-radius: 50px;
+          margin-block-end: rem(8px);
+          cursor: help;
+          min-width: 174px;
+        }
+      }
     }
-    .loader {
-        display: block;
-        margin: 20vh auto;
+
+    .down {
+      @include for-narrow-layout {
+        top: 40px;
+      }
     }
+    .drugbank-logo {
+      position: absolute;
+      right: 50%;
+      top: rem(48px);
+      transform: translateX(70%);
+
+      @include for-narrow-layout {
+        top: 0;
+        right: 24px;
+        transform: none;
+      }
+      @include for-wide-layout {
+        right: 0;
+      }
+
+      img {
+        width: 200px;
+        filter: grayscale(100%);
+        opacity: 0.6;
+        transition: filter 0.3s ease-in-out;
+
+        @include hover-supported {
+          filter: grayscale(0);
+        }
+      }
+      figcaption {
+        opacity: 0.8;
+        position: absolute;
+        bottom: 5px;
+        left: 0;
+        transform: translateX(-105%);
+        user-select: none;
+      }
+    }
+  }
+  .v-tour .v-step {
+    background-color: #349f88;
+    border-radius: 15px;
+    box-shadow: 0px 3px 8px rgba($black, 0.15);
+    padding: rem(16px) rem(24px);
+    font-family: roboto-medium, sans-serif;
+    font-weight: 500;
+    font-size: rem(15px);
+    line-height: rem(17px);
+    max-width: 700px;
+    z-index: 80;
+
+    &-container {
+      width: rem(400px);
+    }
+
+    &-wide-container {
+      width: rem(650px);
+    }
+
+    &__buttons {
+      text-align: end;
+    }
+
+    &-txt {
+      width: 100%;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-size: rem(18px);
+      line-height: rem(24px);
+      text-align: start;
+    }
+    .boosters-img {
+      border-radius: 15px;
+      width: 100%;
+      margin: rem(12px) 0;
+    }
+    .onboarding-img {
+      border-radius: 15px;
+      width: 100%;
+      margin: rem(12px) 0;
+    }
+  }
+  &-refs {
+    padding-block-start: rem(14px);
+    font-size: rem(12px);
+    line-height: rem(14px);
+    color: rgba($clr12, 0.9);
+
+    .subheader {
+      color: inherit;
+    }
+  }
+  .mobile-coloumn {
+    display: flex;
+    flex-direction: column;
+  }
+  .loader {
+    display: block;
+    margin: 20vh auto;
+  }
 }

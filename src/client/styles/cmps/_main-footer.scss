@@ -1,19 +1,20 @@
 .main-footer {
-    font-size: rem(12px);
-    line-height: rem(18px);
-    color: $clr10;
-    padding: 26px 26px 62px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  font-size: rem(12px);
+  line-height: rem(18px);
+  color: $clr10;
+  // padding: 26px 26px 62px;
+  padding: 15px 26px 15px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-    .link {
-        color: $clr11;
-    }
+  .link {
+    color: $clr11;
+  }
 
-    &-logo {
-        width: 23px;
-        margin-block-end: rem(20px);
-    }
+  &-logo {
+    width: 23px;
+    margin-block-end: rem(20px);
+  }
 }

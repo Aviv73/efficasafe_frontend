@@ -79,7 +79,7 @@
                 <share-variant-icon title="" />
               </button>
               <template v-if="!isScreenNarrow">
-                <tooltip v-if="!isLoadingFile" right>
+                <tooltip v-if="!isLoadingFile" bottomCornerLeft>
                   <template #content>
                     <div class="tooltip-content">
                       <span> Import a list of your drug/supplements. Supports only xlsx files. Names only, one name per cell. </span>
@@ -91,7 +91,7 @@
                   </label>
                 </tooltip>
                 <loader class="upload-loader" v-else />
-                <tooltip right>
+                <tooltip bottomCornerLeft>
                   <template #content>
                     <div class="tooltip-content">
                       <span> Download a csv file containing your searched list, it is recommended to save it as a xlsx file for future import. </span>
@@ -162,7 +162,7 @@
                 <input type="radio" name="isVertical" v-model="isViewVertical" :value="false" hidden @input="savePrefs('view', 'horizontal')" />
                 <mobile-menu-icon class="rotate90" title="" />
               </label>
-              <tooltip :hidden="loggedInUser && loggedInUser.email_verified && (freeTrialTime > 0 || loggedInUser.type === 'subscribed')" topLeftCorner>
+              <tooltip :hidden="loggedInUser && loggedInUser.email_verified && (freeTrialTime > 0 || loggedInUser.type === 'subscribed')" leftBottomCorner>
                 <template #content>
                   <span class="vertical-msg"> Vertical view is available for registered users </span>
                 </template>
@@ -388,7 +388,7 @@ export default {
       if (this.listType === 'supp') return this.formatedInteractions;
       else if (this.listType === 'drug') return this.dBankInteractions;
       else {
-        const isAllSupplements = this.materials.every((material) => material.type !== 'drug');
+        const isAllSupplements = this.materials.every(material => material.type !== 'drug');
         if (isAllSupplements) return this.formatedInteractions;
         let { page } = this.$route.query;
         if (!page) page = 1;
@@ -431,9 +431,9 @@ export default {
         return this.interactionsColorCountMap;
       } else {
         const map = { red: 0, yellow: 0, green: 0 };
-        this.formatedInteractions.forEach((int) => {
+        this.formatedInteractions.forEach(int => {
           if (int.vInteractions) {
-            int.vInteractions.forEach((vint) => {
+            int.vInteractions.forEach(vint => {
               map[interactionUIService.getInteractionColorName(vint.recommendation)]++;
             });
           } else {
@@ -454,19 +454,19 @@ export default {
       else return 'Verify your email';
     },
     formatedPositiveInteractions() {
-      this.positiveInteractions.forEach((group) => {
-        group.recommendation = this.getMoreSeverRecomm(true, ...group.vInteractions.map((i) => i.recommendation));
-        group.evidenceLevel = this.getMoreSeverEvidenceLevel(...group.vInteractions.map((i) => i.evidenceLevel));
-        const matchingMaterial = this.materials.find((m) => m._id === group.side2Id || m.labels.some((l) => l._id === group.side2Id));
+      this.positiveInteractions.forEach(group => {
+        group.recommendation = this.getMoreSeverRecomm(true, ...group.vInteractions.map(i => i.recommendation));
+        group.evidenceLevel = this.getMoreSeverEvidenceLevel(...group.vInteractions.map(i => i.evidenceLevel));
+        const matchingMaterial = this.materials.find(m => m._id === group.side2Id || m.labels.some(l => l._id === group.side2Id));
         const materialName = matchingMaterial ? matchingMaterial.name : '';
         const materialId = matchingMaterial ? matchingMaterial._id : '';
         const userQuery = this.$store.getters.materialNamesMap[materialName];
         group.name = userQuery ? userQuery[0] : materialName;
         group.mainMaterialId = materialId;
         group.isMaterialGroup = true;
-        group.vInteractions.forEach((vInteraction) => {
+        group.vInteractions.forEach(vInteraction => {
           if (vInteraction.side2Label) {
-            const { _id, name, type } = this.materials.find((m) => m.labels.some((l) => l?._id === vInteraction.side2Label?._id));
+            const { _id, name, type } = this.materials.find(m => m.labels.some(l => l?._id === vInteraction.side2Label?._id));
             vInteraction.side2Material = {
               _id,
               name,
@@ -480,14 +480,14 @@ export default {
       });
       const map = this.$options.recommendationsOrderMap;
       const formatedPositiveInteractions = this.positiveInteractions.reduce((acc, interaction) => {
-        const existing = acc.find((i) => i.name === interaction.name && i.mainMaterialId === interaction.mainMaterialId);
+        const existing = acc.find(i => i.name === interaction.name && i.mainMaterialId === interaction.mainMaterialId);
         if (!existing) {
           acc.push(interaction);
         } else {
           existing.evidenceLevel = this.getMoreSeverEvidenceLevel(existing.evidenceLevel, interaction.evidenceLevel);
           existing.recommendation = this.getMoreSeverRecomm(true, existing.recommendation, interaction.recommendation);
-          interaction.vInteractions.forEach((vInteraction) => {
-            const isIncluded = existing.vInteractions.some((v) => v._id === vInteraction._id);
+          interaction.vInteractions.forEach(vInteraction => {
+            const isIncluded = existing.vInteractions.some(v => v._id === vInteraction._id);
             if (!isIncluded) {
               existing.vInteractions.push(vInteraction);
               existing.total++;
@@ -500,15 +500,15 @@ export default {
         return acc;
       }, []);
       const nameCountMap = {};
-      formatedPositiveInteractions.forEach((group) => {
+      formatedPositiveInteractions.forEach(group => {
         if (!nameCountMap[group.name]) nameCountMap[group.name] = 0;
         nameCountMap[group.name]++;
       });
-      Object.keys(nameCountMap).forEach((key) => {
+      Object.keys(nameCountMap).forEach(key => {
         if (nameCountMap[key] > 1) {
-          const dups = formatedPositiveInteractions.filter((i) => i.name === key);
-          dups.forEach((dup) => {
-            const materialName = this.materials.find((m) => m._id === dup.mainMaterialId && !m.isIncluded).name;
+          const dups = formatedPositiveInteractions.filter(i => i.name === key);
+          dups.forEach(dup => {
+            const materialName = this.materials.find(m => m._id === dup.mainMaterialId && !m.isIncluded).name;
             dup.name = `${materialName} (${dup.name})`;
             dup.exactName = `${materialName}`;
           });
@@ -534,10 +534,10 @@ export default {
           return (map[b.recommendation] - map[a.recommendation]) * -1 || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) || b.vInteractions.length - a.vInteractions.length || a.name.toLowerCase().localeCompare(b.name.toLowerCase());
         });
       }
-      const nonSuppDrugs = this.materials.filter((m) => m.type === 'drug' && !m.isIncluded);
-      nonSuppDrugs.forEach((material) => {
+      const nonSuppDrugs = this.materials.filter(m => m.type === 'drug' && !m.isIncluded);
+      nonSuppDrugs.forEach(material => {
         const queryCount = this.$store.getters.queryApearanceCount(material.userQuery);
-        const isHaveInteractions = formatedPositiveInteractions.some((posInt) => material._id === posInt.mainMaterialId);
+        const isHaveInteractions = formatedPositiveInteractions.some(posInt => material._id === posInt.mainMaterialId);
         if (!isHaveInteractions) {
           const emptyInteraction = {
             name: queryCount > 1 ? `${material.name}` : `${material.userQuery}`,
@@ -554,20 +554,20 @@ export default {
       return formatedPositiveInteractions;
     },
     formatedSuppPositiveInteractions() {
-      let formatedSuppPositiveInteractions = this.suppPositiveInteractions.map((group) => {
-        group.recommendation = this.getMoreSeverRecomm(true, ...group.vInteractions.map((i) => i.recommendation));
-        group.evidenceLevel = this.getMoreSeverEvidenceLevel(...group.vInteractions.map((i) => i.evidenceLevel));
-        const matchingMaterial = this.materials.find((m) => m._id === group.side2Id || m.labels.some((l) => l._id === group.side2Id));
+      let formatedSuppPositiveInteractions = this.suppPositiveInteractions.map(group => {
+        group.recommendation = this.getMoreSeverRecomm(true, ...group.vInteractions.map(i => i.recommendation));
+        group.evidenceLevel = this.getMoreSeverEvidenceLevel(...group.vInteractions.map(i => i.evidenceLevel));
+        const matchingMaterial = this.materials.find(m => m._id === group.side2Id || m.labels.some(l => l._id === group.side2Id));
         const materialName = matchingMaterial ? matchingMaterial.name : '';
         const materialId = matchingMaterial ? matchingMaterial._id : '';
         const userQuery = this.$store.getters.materialNamesMap[materialName];
         group.name = userQuery ? userQuery[0] : materialName;
         group.mainMaterialId = materialId;
         group.isMaterialGroup = true;
-        group.vInteractions.forEach((vInteraction) => {
+        group.vInteractions.forEach(vInteraction => {
           vInteraction.isSupp = true;
           if (vInteraction.side2Label) {
-            const { _id, name, type } = this.materials.find((m) => m.labels.some((l) => l._id === vInteraction.side2Label._id));
+            const { _id, name, type } = this.materials.find(m => m.labels.some(l => l._id === vInteraction.side2Label._id));
             vInteraction.side2Material = {
               _id,
               name,
@@ -588,8 +588,8 @@ export default {
     },
     materialSuppIds() {
       let materialsIds = this.materials.reduce((acc, material) => {
-        const ids = [material._id, ...material.labels.map((l) => l._id)];
-        ids.forEach((id) => {
+        const ids = [material._id, ...material.labels.map(l => l._id)];
+        ids.forEach(id => {
           if (!acc.includes(id)) acc.push(id);
         });
         return acc;
@@ -600,8 +600,8 @@ export default {
     materialIds() {
       return this.materials.reduce((acc, material) => {
         if (material.type !== 'drug') return acc;
-        const ids = [material._id, ...material.labels.map((l) => l._id)];
-        ids.forEach((id) => {
+        const ids = [material._id, ...material.labels.map(l => l._id)];
+        ids.forEach(id => {
           if (!acc.includes(id)) acc.push(id);
         });
         return acc;
@@ -609,8 +609,8 @@ export default {
     },
     formatedSuppPositiveRed() {
       const formatedSuppPositiveReds = [];
-      this.idsToTurnRed.forEach((id) => {
-        const material = this.materials.find((m) => m._id === id);
+      this.idsToTurnRed.forEach(id => {
+        const material = this.materials.find(m => m._id === id);
         const redInteraction = {
           name: material.userQuery,
           recommendation: '',
@@ -630,7 +630,7 @@ export default {
         else if (!interaction.side2Label) {
           this.insertInteraction(acc, interaction);
         } else {
-          const materials = this.materials.filter((material) => !material.isIncluded && material.labels.findIndex((label) => label._id === interaction.side2Label._id) !== -1);
+          const materials = this.materials.filter(material => !material.isIncluded && material.labels.findIndex(label => label._id === interaction.side2Label._id) !== -1);
           materials.forEach(({ _id, name, type }) => {
             const vInteraction = {
               _id: interaction._id,
@@ -669,7 +669,7 @@ export default {
         const { side1Name, side2Name } = this.getInteractionSidesNames(interaction);
         const userQueries = this.$store.getters.materialNamesMap[side2Name];
         if (!userQueries) return acc;
-        userQueries.forEach((userQuery) => {
+        userQueries.forEach(userQuery => {
           const queryApearanceCount = this.$store.getters.queryApearanceCount(userQuery);
           if (!queryApearanceMap[`${side1Name}-${userQuery}`]) {
             queryApearanceMap[`${side1Name}-${userQuery}`] = [interaction];
@@ -690,38 +690,38 @@ export default {
               acc.push(compoundGroup);
             }
           } else {
-            const groupIdx = acc.findIndex((item) => item._id === `${queryApearanceMap[`${side1Name}-${userQuery}`].map((i) => i._id).join('-')}-${interaction._id}`);
+            const groupIdx = acc.findIndex(item => item._id === `${queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i._id).join('-')}-${interaction._id}`);
             if (groupIdx === -1) {
               const compoundGroup = {
-                _id: `${queryApearanceMap[`${side1Name}-${userQuery}`].map((i) => i._id).join('-')}-${interaction._id}`,
+                _id: `${queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i._id).join('-')}-${interaction._id}`,
                 name: `${side1Name} & ${userQuery}`,
-                recommendation: this.getMoreSeverRecomm(false, ...queryApearanceMap[`${side1Name}-${userQuery}`].map((i) => i.recommendation), interaction.recommendation),
-                evidenceLevel: this.getMoreSeverEvidenceLevel(...queryApearanceMap[`${side1Name}-${userQuery}`].map((i) => i.evidenceLevel), interaction.evidenceLevel),
+                recommendation: this.getMoreSeverRecomm(false, ...queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i.recommendation), interaction.recommendation),
+                evidenceLevel: this.getMoreSeverEvidenceLevel(...queryApearanceMap[`${side1Name}-${userQuery}`].map(i => i.evidenceLevel), interaction.evidenceLevel),
                 vInteractions: [...queryApearanceMap[`${side1Name}-${userQuery}`]],
                 isCompoundGroup: true
               };
-              if (compoundGroup.vInteractions.findIndex((i) => i._id === interaction._id) === -1) {
+              if (compoundGroup.vInteractions.findIndex(i => i._id === interaction._id) === -1) {
                 if (!interaction.vInteractions || interaction.vInteractions.length > 1) compoundGroup.vInteractions.push(interaction);
                 else if (interaction.vInteractions.length === 1) {
                   const vInteraction = JSON.parse(JSON.stringify(interaction.vInteractions[0]));
-                  if (compoundGroup.vInteractions.findIndex((vi) => vi._id === vInteraction._id) === -1) {
+                  if (compoundGroup.vInteractions.findIndex(vi => vi._id === vInteraction._id) === -1) {
                     compoundGroup.vInteractions.push(vInteraction);
                   }
                 }
               }
-              queryApearanceMap[`${side1Name}-${userQuery}`].forEach((currInteraction) => {
-                acc = acc.filter((i) => i._id !== currInteraction._id && i._id !== `${currInteraction._id}-${currInteraction._id}`);
+              queryApearanceMap[`${side1Name}-${userQuery}`].forEach(currInteraction => {
+                acc = acc.filter(i => i._id !== currInteraction._id && i._id !== `${currInteraction._id}-${currInteraction._id}`);
                 acc.push(compoundGroup);
               });
             } else {
-              if (acc[groupIdx].vInteractions.findIndex((i) => i._id === interaction._id) === -1) {
+              if (acc[groupIdx].vInteractions.findIndex(i => i._id === interaction._id) === -1) {
                 if (!interaction.vInteractions || interaction.vInteractions.length > 1) {
                   acc[groupIdx].vInteractions.push(interaction);
                   acc[groupIdx].recommendation = this.getMoreSeverRecomm(false, acc[groupIdx].recommendation, interaction.recommendation);
                   acc[groupIdx].evidenceLevel = this.getMoreSeverEvidenceLevel(acc[groupIdx].evidenceLevel, interaction.evidenceLevel);
                 } else if (interaction.vInteractions.length === 1) {
                   const vInteraction = JSON.parse(JSON.stringify(interaction.vInteractions[0]));
-                  if (acc[groupIdx].vInteractions.findIndex((vi) => vi._id === vInteraction._id) === -1) {
+                  if (acc[groupIdx].vInteractions.findIndex(vi => vi._id === vInteraction._id) === -1) {
                     acc[groupIdx].vInteractions.push(vInteraction);
                   }
                 }
@@ -735,7 +735,7 @@ export default {
     },
     formatedMaterials() {
       return this.materials.reduce((acc, material) => {
-        const result = acc.find((res) => res.txt === material.userQuery);
+        const result = acc.find(res => res.txt === material.userQuery);
         if (result) result.materials.push(material);
         else {
           const newResult = {
@@ -759,7 +759,7 @@ export default {
       if (!this.total) return dBankRefsCount;
       const seenRefsMap = {};
       const refsCount = this.interactions.reduce((acc, { side1Material, refs }) => {
-        refs.forEach((ref) => {
+        refs.forEach(ref => {
           if (!seenRefsMap[side1Material._id]) seenRefsMap[side1Material._id] = {};
 
           if (!seenRefsMap[side1Material._id][ref + '']) {
@@ -770,10 +770,10 @@ export default {
         return acc;
       }, 0);
       const pathwayRefsCount = this.materials.reduce((acc, { _id, pathways }) => {
-        pathways.forEach((pathway) => {
+        pathways.forEach(pathway => {
           if (((pathway.type === 'enzyme' || pathway.type === 'transporter') && !pathway.actions.includes('substrate') && !pathway.actions.includes('binder')) || (pathway.type === 'carrier' && (pathway.actions.includes('inducer') || pathway.actions.includes('inhibitor')))) return;
           if (!seenRefsMap[_id]) seenRefsMap[_id] = {};
-          pathway.references.forEach((ref) => {
+          pathway.references.forEach(ref => {
             if (!seenRefsMap[_id][ref + '']) {
               acc++;
               seenRefsMap[_id][ref + ''] = true;
@@ -845,7 +845,7 @@ export default {
     },
     positivesBadgeColor() {
       if (!this.positiveInteractions.length) return { 'background-color': '#56C596', color: 'white' };
-      const worstRecomm = this.getMoreSeverRecomm(true, ...this.positiveInteractions.map((i) => i.recommendation));
+      const worstRecomm = this.getMoreSeverRecomm(true, ...this.positiveInteractions.map(i => i.recommendation));
       if (!worstRecomm) return { 'background-color': '#56C596', color: 'white' };
       var bgc = interactionUIService.getInteractionColor(worstRecomm);
       if (bgc === '#F6D55C') return { 'background-color': bgc, color: 'blue' };
@@ -856,7 +856,7 @@ export default {
     },
     materialsToExcel() {
       const materials = JSON.parse(JSON.stringify(this.materials));
-      return materials.map((mat) => {
+      return materials.map(mat => {
         const res = {};
         res['Searched list:'] = mat.userQuery;
         return res;
@@ -887,13 +887,13 @@ export default {
         this.isLoadingFile = true;
         const rows = await readXlsxFile(ev.target.files[0]);
         const allNames = rows.reduce((acc, row) => {
-          row.forEach((cell) => {
+          row.forEach(cell => {
             if (!cell || typeof cell !== 'string') return;
             acc.push(cell);
           });
           return acc;
         }, []);
-        const formatedNames = allNames.map((mat) => {
+        const formatedNames = allNames.map(mat => {
           let name = mat.toLowerCase();
           return name.charAt(0).toUpperCase() + name.slice(1);
         });
@@ -903,7 +903,7 @@ export default {
           let name = formatedNames[i];
           const criteria = { autocomplete: true, q: name };
           const results = await this.$store.dispatch({ type: 'getMaterials', criteria });
-          const idx = results.materials.findIndex((r) => {
+          const idx = results.materials.findIndex(r => {
             return r.txt === name;
           });
           if (idx !== -1) existingNames.push(name);
@@ -962,13 +962,14 @@ export default {
       this.isPBLoading = true;
       this.isLoading = true;
       const prms = [this.getInteractions(), this.getDBankInteractions()];
+
       await Promise.all(prms);
+      window.scrollTo(0, this.$refs.interactionHeaderRef.offsetTop - 50);
       this.isLoading = false;
+
       this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions);
-      this.$refs.interactionHeaderRef.scrollIntoView();
       await this.getPositives();
       this.isPBLoading = false;
-      console.log('allInteractions', this.allInteractions);
 
       // Old why, getting all info at once
 
@@ -991,7 +992,7 @@ export default {
       const drugIds = this.materials.reduce((acc, { type, _id, labels, isIncluded }) => {
         if (type !== 'drug' || isIncluded) return acc;
         if (!acc.includes(_id)) acc.push(_id);
-        labels.forEach((label) => {
+        labels.forEach(label => {
           if (!acc.includes(label._id)) acc.push(label._id);
         });
         return acc;
@@ -1004,7 +1005,7 @@ export default {
       const allIds = this.materials.reduce((acc, { _id, labels, isIncluded }) => {
         if (isIncluded) return acc;
         if (!acc.includes(_id)) acc.push(_id);
-        labels.forEach((label) => {
+        labels.forEach(label => {
           if (!acc.includes(label._id)) acc.push(label._id);
         });
         return acc;
@@ -1029,8 +1030,8 @@ export default {
       this.idsToTurnRed = idsToTurnRed;
       this.positiveInteractions = await this.removeDupNonPositives(interactions);
       this.suppPositiveInteractions = this.addCacheKey(suppInteractions);
-      this.suppPositiveInteractions.forEach((int) => {
-        int.vInteractions.forEach((vInt) => {
+      this.suppPositiveInteractions.forEach(int => {
+        int.vInteractions.forEach(vInt => {
           const interactionName = vInt.side1Material._id === int.side2Id ? `${vInt.side2Material.name} & ${vInt.side1Material.name}` : `${vInt.side1Material.name} & ${vInt.side2Material.name}`;
           vInt.name = interactionName;
         });
@@ -1041,16 +1042,16 @@ export default {
       this.restoreState('suppBoosters', searchStateSupp);
     },
     getEmptyPositiveSupp() {
-      const suppMaterials = this.materials.filter((m) => m.type !== 'drug');
+      const suppMaterials = this.materials.filter(m => m.type !== 'drug');
       const emptySupps = suppMaterials.reduce((acc, suppMatiral) => {
         let isIncluded = false;
-        this.suppPositiveInteractions.forEach((suppPositve) => {
+        this.suppPositiveInteractions.forEach(suppPositve => {
           if (suppMatiral._id === suppPositve.side2Id) {
             isIncluded = true;
             return;
           }
         });
-        this.idsToTurnRed.forEach((redId) => {
+        this.idsToTurnRed.forEach(redId => {
           if (suppMatiral._id === redId) {
             isIncluded = true;
             return;
@@ -1074,8 +1075,8 @@ export default {
       return emptySupps;
     },
     addCacheKey(interactions) {
-      interactions.forEach((int) => {
-        int.vInteractions.forEach((vInt) => {
+      interactions.forEach(int => {
+        int.vInteractions.forEach(vInt => {
           const ids = {
             side1Id: vInt.side1Material._id,
             side2Id: vInt.side2Material._id,
@@ -1086,8 +1087,8 @@ export default {
             acc[id]++;
             return acc;
           }, {});
-          const idToCompare = Object.keys(idCountMap).find((key) => idCountMap[key] === 1);
-          const idsToSerch = this.materialSuppIds.filter((suppId) => {
+          const idToCompare = Object.keys(idCountMap).find(key => idCountMap[key] === 1);
+          const idsToSerch = this.materialSuppIds.filter(suppId => {
             return !this.idsToTurnRed.includes(suppId);
           });
           const filterBy = {
@@ -1107,7 +1108,7 @@ export default {
     async getInteractions() {
       const ids = this.materials.reduce((acc, { _id, labels }) => {
         if (!acc.includes(_id)) acc.push(_id);
-        labels.forEach((label) => {
+        labels.forEach(label => {
           if (!acc.includes(label._id)) acc.push(label._id);
         });
         return acc;
@@ -1122,7 +1123,7 @@ export default {
       };
 
       const { interactions, pageCount, total, searchState } = await this.$store.dispatch({ type: 'getInteractions', filterBy, cacheKey: `/search?${this.$route.fullPath.split('?')[1]}` });
-      console.log('interactions', interactions);
+      // console.log('interactions', interactions);
 
       this.pageCount = pageCount;
       this.interactions = interactions;
@@ -1133,7 +1134,7 @@ export default {
               if (i.side2Material) acc++;
               else {
                 const { _id } = i.side2Label;
-                const materials = this.materials.filter((material) => !material.isIncluded && material.labels.some((label) => label._id === _id));
+                const materials = this.materials.filter(material => !material.isIncluded && material.labels.some(label => label._id === _id));
                 acc += materials.length;
               }
               return acc;
@@ -1143,14 +1144,14 @@ export default {
       this.restoreState('Results', searchState);
     },
     async getDBankInteractions() {
-      const isAllSupplements = this.materials.every((material) => material.type !== 'drug');
+      const isAllSupplements = this.materials.every(material => material.type !== 'drug');
       if (!this.materialsLength || isAllSupplements) {
         this.dBankInteractions = [];
         return;
       }
       let { page } = this.$route.query;
       if (!page) page = 1;
-      const drugBankIds = this.materials.filter((m) => !m.isIncluded).map((mat) => mat.drugBankId);
+      const drugBankIds = this.materials.filter(m => !m.isIncluded).map(mat => mat.drugBankId);
       const drugBankId = drugBankIds.length === 1 ? drugBankIds[0] : drugBankIds;
       const criteria = { drugBankId, page: --page, showAll: this.isShowAllDBI };
       const { dBankInteractions, pageCount, total, diff } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria, cacheKey: `/search/drug2drug?${this.$route.fullPath.split('?')[1]}&filter=${this.isShowAllDBI}` });
@@ -1178,18 +1179,18 @@ export default {
       this.$store.commit({ type: 'setMaterials', materials });
       this.$store.commit({ type: 'makeMaterialNamesMap', materials });
       this.checkForIncludedMaterials();
-      this.$store.commit({ type: 'makeMaterialNamesMap', materials: materials.filter((m) => !m.isIncluded) });
+      this.$store.commit({ type: 'makeMaterialNamesMap', materials: materials.filter(m => !m.isIncluded) });
     },
     handleListToShow(newMaterials) {
       if (this.materials.length) {
         const isSame = newMaterials.every((mat, idx) => this.materials[idx] && mat.name === this.materials[idx].name);
         if (!isSame) {
-          const isAllSupplements = newMaterials.every((material) => material.type !== 'drug');
+          const isAllSupplements = newMaterials.every(material => material.type !== 'drug');
           if (isAllSupplements) this.$store.commit({ type: 'setListType', listType: 'supp' });
           else this.$store.commit({ type: 'setListType', listType: 'all' });
         }
       } else {
-        const isAllSupplements = newMaterials.every((material) => material.type !== 'drug');
+        const isAllSupplements = newMaterials.every(material => material.type !== 'drug');
         if (isAllSupplements) this.$store.commit({ type: 'setListType', listType: 'supp' });
       }
     },
@@ -1197,9 +1198,9 @@ export default {
       const res = [];
       for (let i = 0; i < interactions.length; i++) {
         const group = interactions[i];
-        const matchingMaterial = this.materials.find((m) => m._id === group.side2Id || m.labels.some((l) => l._id === group.side2Id));
+        const matchingMaterial = this.materials.find(m => m._id === group.side2Id || m.labels.some(l => l._id === group.side2Id));
         if (!matchingMaterial) continue;
-        const side2Ids = [matchingMaterial._id, ...matchingMaterial.labels.map((l) => l._id)];
+        const side2Ids = [matchingMaterial._id, ...matchingMaterial.labels.map(l => l._id)];
         for (let j = 0; j < group.vInteractions.length; j++) {
           const vInteraction = group.vInteractions[j];
           const ids = [vInteraction.side1Material._id, ...side2Ids];
@@ -1287,8 +1288,8 @@ export default {
               switch (sortBy) {
                 case 'name':
                   return this.allInteractions.sort((a, b) => {
-                    const nameA = this.materials.find((mat) => mat.name === a.name.split(' & ')[side - 1]) ? this.materials.find((mat) => mat.name === a.name.split(' & ')[side - 1]).userQuery.toLowerCase() : a.name.split(' & ')[side - 1].toLowerCase();
-                    const nameB = this.materials.find((mat) => mat.name === b.name.split(' & ')[side - 1]) ? this.materials.find((mat) => mat.name === b.name.split(' & ')[side - 1]).userQuery.toLowerCase() : b.name.split(' & ')[side - 1].toLowerCase();
+                    const nameA = this.materials.find(mat => mat.name === a.name.split(' & ')[side - 1]) ? this.materials.find(mat => mat.name === a.name.split(' & ')[side - 1]).userQuery.toLowerCase() : a.name.split(' & ')[side - 1].toLowerCase();
+                    const nameB = this.materials.find(mat => mat.name === b.name.split(' & ')[side - 1]) ? this.materials.find(mat => mat.name === b.name.split(' & ')[side - 1]).userQuery.toLowerCase() : b.name.split(' & ')[side - 1].toLowerCase();
                     if (nameA > nameB) return sortOrder;
                     if (nameA < nameB) return sortOrder * -1;
                     return 0;
@@ -1329,8 +1330,8 @@ export default {
         switch (sortBy) {
           case 'name':
             return interactions.sort((a, b) => {
-              const nameA = this.materials.find((mat) => mat.name === a.name.split(' & ')[side - 1]) ? this.materials.find((mat) => mat.name === a.name.split(' & ')[side - 1]).userQuery.toLowerCase() : a.name.split(' & ')[side - 1].toLowerCase();
-              const nameB = this.materials.find((mat) => mat.name === b.name.split(' & ')[side - 1]) ? this.materials.find((mat) => mat.name === b.name.split(' & ')[side - 1]).userQuery.toLowerCase() : b.name.split(' & ')[side - 1].toLowerCase();
+              const nameA = this.materials.find(mat => mat.name === a.name.split(' & ')[side - 1]) ? this.materials.find(mat => mat.name === a.name.split(' & ')[side - 1]).userQuery.toLowerCase() : a.name.split(' & ')[side - 1].toLowerCase();
+              const nameB = this.materials.find(mat => mat.name === b.name.split(' & ')[side - 1]) ? this.materials.find(mat => mat.name === b.name.split(' & ')[side - 1]).userQuery.toLowerCase() : b.name.split(' & ')[side - 1].toLowerCase();
               if (nameA > nameB) return sortOrder;
               if (nameA < nameB) return sortOrder * -1;
               return 0;
@@ -1348,8 +1349,8 @@ export default {
       });
     },
     insertInteraction(acc, interaction) {
-      const idx = acc.findIndex((vin) => vin.side2Material && vin.side2Material._id === interaction.side2Material._id && vin.side1Material._id === interaction.side1Material._id);
-      const groupIdx = acc.findIndex((vin) => vin._id === `${interaction.side1Material._id}-${interaction.side2Material._id}`);
+      const idx = acc.findIndex(vin => vin.side2Material && vin.side2Material._id === interaction.side2Material._id && vin.side1Material._id === interaction.side1Material._id);
+      const groupIdx = acc.findIndex(vin => vin._id === `${interaction.side1Material._id}-${interaction.side2Material._id}`);
       // vInteraction & v-group not found
       if (idx === -1 && groupIdx === -1) acc.push(interaction);
       // found 1 v-interaction - make it a group
@@ -1365,7 +1366,7 @@ export default {
         acc.splice(idx, 1, vInteractionGroup);
       } else {
         // Allready grouped v-interaction found - just add the new one
-        if (acc[groupIdx].vInteractions.findIndex((i) => i._id === interaction._id) === -1) {
+        if (acc[groupIdx].vInteractions.findIndex(i => i._id === interaction._id) === -1) {
           acc[groupIdx].vInteractions.push(interaction);
           acc[groupIdx].recommendation = this.getMoreSeverRecomm(false, acc[groupIdx].recommendation, interaction.recommendation);
           acc[groupIdx].evidenceLevel = this.getMoreSeverEvidenceLevel(acc[groupIdx].evidenceLevel, interaction.evidenceLevel);
@@ -1384,10 +1385,10 @@ export default {
       }
     },
     isOneUnderStudy({ materials, isIncluded }) {
-      return materials.some((m) => m.isUnderStudy) && !isIncluded;
+      return materials.some(m => m.isUnderStudy) && !isIncluded;
     },
     isAllUnderStudy({ materials, isIncluded }) {
-      return materials.every((m) => m.isUnderStudy) && !isIncluded;
+      return materials.every(m => m.isUnderStudy) && !isIncluded;
     },
     getMoreSeverRecomm(isDesc, ...recommendations) {
       const { recommendationsOrderMap } = this.$options;
@@ -1403,7 +1404,7 @@ export default {
       let side1Name = '';
       let side2Name = '';
       if (interaction.name) {
-        [side1Name, side2Name] = interaction.name.split('&').map((str) => str.trim());
+        [side1Name, side2Name] = interaction.name.split('&').map(str => str.trim());
       } else {
         side1Name = interaction.side1Material.name;
         side2Name = interaction.side2Material.name;
@@ -1420,17 +1421,17 @@ export default {
         }
         return acc;
       }, []);
-      dups.forEach((material) => {
+      dups.forEach(material => {
         const queries = this.$store.getters.materialNamesMap[material.name];
-        const materialDups = this.materials.filter((m) => m._id === material._id);
+        const materialDups = this.materials.filter(m => m._id === material._id);
         for (let i = queries.length - 1; i >= 0; i--) {
           const query = queries[i];
           if (this.$store.getters.queryApearanceCount(query) < 2) {
-            const includedMaterial = this.materials.find((m) => m._id === material._id && m.userQuery === query);
+            const includedMaterial = this.materials.find(m => m._id === material._id && m.userQuery === query);
             includedMaterial.isIncluded = true;
           }
         }
-        const isAllIncluded = materialDups.every((m) => m.isIncluded);
+        const isAllIncluded = materialDups.every(m => m.isIncluded);
         if (isAllIncluded) {
           materialDups[0].isIncluded = false;
         }
@@ -1449,7 +1450,7 @@ export default {
       statisticsService.addSearch(item.txt);
       if (this.$route.query.q) {
         if (item.nestedMaterials.length) {
-          const filtered = item.nestedMaterials.filter((m) => !this.isQueryExists(m));
+          const filtered = item.nestedMaterials.filter(m => !this.isQueryExists(m));
           const queries = [...this.$route.query.q, ...filtered];
           this.$router.replace({ query: { q: queries } });
           return;
@@ -1467,7 +1468,7 @@ export default {
       }
     },
     removeMaterials(query) {
-      const queries = this.$route.query.q.filter((q) => q !== query);
+      const queries = this.$route.query.q.filter(q => q !== query);
       this.undoneQueries.push(query);
       this.$router.replace({ query: { q: queries } });
     },
@@ -1582,7 +1583,7 @@ export default {
       eventBus.$on('interaction-list-mounted', () => {
         if (this.innerListEl) this.innerListEl.scrollTo(0, this.initialListHight);
       });
-      eventBus.$on('scroll-element-to-top', (id) => {
+      eventBus.$on('scroll-element-to-top', id => {
         if (this.$route.name === 'Results') {
           let element = document.getElementById(id);
           if (element) {
@@ -1606,7 +1607,7 @@ export default {
       eventBus.$off('interaction-list-mounted', () => {
         if (this.innerListEl) this.innerListEl.scrollTo(0, this.initialListHight);
       });
-      eventBus.$off('scroll-element-to-top', (id) => {
+      eventBus.$off('scroll-element-to-top', id => {
         if (this.$route.name === 'Results') {
           let element = document.getElementById(id);
           if (element) {
@@ -1671,7 +1672,7 @@ export default {
     await this.getMaterials();
     this.innerListEl = this.$el.querySelector('.inner-view');
     if (this.innerListEl) {
-      this.innerListEl.addEventListener('scroll', (ev) => {
+      this.innerListEl.addEventListener('scroll', ev => {
         this.$store.commit({ type: 'setInteractionListHight', hight: ev.target.scrollTop });
       });
     }
@@ -1679,7 +1680,7 @@ export default {
   beforeDestroy() {
     const el = this.$refs.whatToMonitorLink.$el;
     this.observer.unobserve(el);
-    this.innerListEl.removeEventListener('scroll', (ev) => {
+    this.innerListEl.removeEventListener('scroll', ev => {
       this.$store.commit({ type: 'setInteractionListHight', hight: ev.target.scrollTop });
     });
     this.removeEventBusListeners();

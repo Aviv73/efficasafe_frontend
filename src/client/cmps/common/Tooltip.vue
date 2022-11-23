@@ -33,6 +33,7 @@
           'left-bottom-corner': leftBottomCorner,
           'left-top-corner': topLeftCorner,
           'center-bottom': centerBottom,
+          'bottom-corner-left': bottomCornerLeft,
           bottom,
           top,
           left,
@@ -91,6 +92,10 @@ export default {
       default: false
     },
     bottomLeft: {
+      type: Boolean,
+      default: false
+    },
+    bottomCornerLeft: {
       type: Boolean,
       default: false
     },
@@ -163,7 +168,7 @@ export default {
     },
     toggleIsActive(ev) {
       if (this.hidden || this.on !== 'focus') return;
-      const isClosing = ev.path.some((el) => el.dataset && el.dataset.closeBtn);
+      const isClosing = ev.path.some(el => el.dataset && el.dataset.closeBtn);
       if (isClosing) return;
       this.isActive = !this.isActive;
     },
@@ -257,8 +262,12 @@ export default {
   }
 
   &.left-bottom-corner {
-    top: 70%;
+    top: 100%;
     right: 50%;
+  }
+  &.bottom-corner-left {
+    top: 100%;
+    right: 0px;
   }
   &.left-top-corner {
     transform: translate(-194px, -70px);
