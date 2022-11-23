@@ -72,10 +72,10 @@
               {{ $route.name === 'Boosters' ? 'Optimizers' : 'Interactions' }}
             </span>
             <span class="search-engine-results-actions">
-              <button class="print-btn print-btn-icon" :title="loggedInUser ? 'Print' : 'Subscribed users can print their search results'" :disabled="!loggedInUser" @click="onPrint">
+              <button class="print-btn print-btn-icon" :title="loggedInUser ? 'Print' : 'Subscribed users can print their search results'" @click="onPrint">
                 <printer-icon title="" />
               </button>
-              <button class="share-btn share-btn-icon" :disabled="!loggedInUser" :title="loggedInUser ? 'Share' : 'Subscribed users can share their search results'" @click="isShareModalActive = true">
+              <button class="share-btn share-btn-icon" :title="loggedInUser ? 'Share' : 'Subscribed users can share their search results'" @click="isShareModalActive = true">
                 <share-variant-icon title="" />
               </button>
               <template v-if="!isScreenNarrow">
