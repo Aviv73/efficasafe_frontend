@@ -17,16 +17,10 @@ function createWarnings(mat1, mat2){
     const warnings = []
 
     if(mat1.isNarrowTherapeutic && mat2.isNarrowTherapeutic){
-        warnings.push({title: 'Narrow Therapeutic', text: `Attention: both ${mat1.name} and ${mat2.name} has a narrow therapeutic range. Differences
-        in dose or blood concentration may lead to serious therapeutic failures and/or adverse
-        drug reactions.`})
+        warnings.push({title: 'Narrow Therapeutic', text: `Attention: both ${mat1.name} and ${mat2.name} has a narrow therapeutic range. Differences in dose or blood concentration may lead to serious therapeutic failures and/or adverse drug reactions.`})
     }else if(mat1.isNarrowTherapeutic){
-        warnings.push({title: 'Narrow Therapeutic', text: `Attention: ${mat1.name} has a narrow therapeutic range. Differences
-        in dose or blood concentration may lead to serious therapeutic failures and/or adverse
-        drug reactions.`})
-    }else if(mat2.isNarrowTherapeutic) warnings.push({title: 'Narrow Therapeutic', text: `Attention: ${mat2.name} has a narrow therapeutic range. Differences
-    in dose or blood concentration may lead to serious therapeutic failures and/or adverse
-    drug reactions.`})
+        warnings.push({title: 'Narrow Therapeutic', text: `Attention: ${mat1.name} has a narrow therapeutic range. Differences in dose or blood concentration may lead to serious therapeutic failures and/or adverse drug reactions.`})
+    }else if(mat2.isNarrowTherapeutic) warnings.push({title: 'Narrow Therapeutic Range', text: `Attention: ${mat2.name} has a narrow therapeutic range. Differences in dose or blood concentration may lead to serious therapeutic failures and/or adversev drug reactions.`})
 
     if(mat1.isG6pd && mat2.isG6pd) warnings.push({title: 'G6PD', text: `Attention: People with G6PD deficiency should avoid both ${mat1.name} and ${mat2.name}.`})
     else if(mat1.isG6pd) warnings.push({title: 'G6PD', text: `Attention: People with G6PD deficiency should avoid ${mat1.name}.`})

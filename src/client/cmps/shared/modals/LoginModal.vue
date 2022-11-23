@@ -7,37 +7,37 @@
                         <close-icon :size="14" />
                     </button>
                     <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
-                        <p @click="openSignupModal" class="signup-link">don't have an account? signup now</p>
-                        <div v-if="wrongProviderMsg || isShowFailedMsg" class="msg failed">{{wrongProviderMsg || 'WRONG EMAIL OR PASSWORD.'}}</div>
-                        <div v-if="isShowSuccesseMsg" class="msg successe">You are now logged in.</div>
-                        <form @submit.prevent="onRegister" class="auth-modal-field">
-                            <eye-icon v-if="!isShowPass" @click="isShowPass = !isShowPass" class="eye-icon"></eye-icon>
-                            <eye-off-icon v-else @click="isShowPass = !isShowPass" class="eye-icon"></eye-off-icon>
-                            <input @input="removeFailedmsg" type="text" placeholder="Email" v-model="cred.email">
-                            <input @input="removeFailedmsg" :type="passInputType" placeholder="Password" v-model="cred.password">
-                            <div class="forgot-pass-link">
-                                <a href="/email-pass">Forgot password?</a>
-                            </div>
-                            <button v-if="!isLoading" class="register-btn">Login</button>
-                            <button v-else class="register-btn disabled">
-                                <loader class="loader"/>
-                            </button>
-                        </form>
-                        <div class="or-container">
-                            <div class="line"></div>
-                            <p style="margin-bottom: 10px">or Login with</p>
-                            <div class="line"></div>
+                    <p @click="openSignupModal" class="signup-link">Don't have an account? signup now</p>
+                    <div v-if="wrongProviderMsg || isShowFailedMsg" class="msg failed">{{wrongProviderMsg || 'WRONG EMAIL OR PASSWORD.'}}</div>
+                    <div v-if="isShowSuccesseMsg" class="msg successe">You are now logged in.</div>
+                    <form @submit.prevent="onRegister" class="auth-modal-field">
+                        <eye-icon v-if="!isShowPass" @click="isShowPass = !isShowPass" class="eye-icon"></eye-icon>
+                        <eye-off-icon v-else @click="isShowPass = !isShowPass" class="eye-icon"></eye-off-icon>
+                        <input @input="removeFailedmsg" type="text" placeholder="Email" v-model="cred.email">
+                        <input @input="removeFailedmsg" :type="passInputType" placeholder="Password" v-model="cred.password">
+                        <div class="forgot-pass-link">
+                            <a href="/email-pass">Forgot password?</a>
                         </div>
-                        <div class="auth-modal-content-media-btns">
-                            <a :href="googleLink" class="blue" role="button">
-                                <img src="@/client/assets/imgs/google.svg" alt="Logo" />
-                                Login with google
-                            </a>
-                            <a :href="facebookLink" class="blue" role="button">
-                                <img class="facebook-img" src="@/client/assets/imgs/facebook.svg" alt="Logo" />
-                                Login with facebook 
-                            </a>
-                        </div>
+                        <button v-if="!isLoading" class="register-btn">Login</button>
+                        <button v-else class="register-btn disabled">
+                            <loader class="loader"/>
+                        </button>
+                    </form>
+                    <div class="or-container">
+                        <div class="line"></div>
+                        <p style="margin-bottom: 10px">or Login with</p>
+                        <div class="line"></div>
+                    </div>
+                    <div class="auth-modal-content-media-btns">
+                        <a :href="googleLink" class="blue" role="button">
+                            <img src="@/client/assets/imgs/google.svg" alt="Logo" />
+                            Login with google
+                        </a>
+                        <a :href="facebookLink" class="blue" role="button">
+                            <img class="facebook-img" src="@/client/assets/imgs/facebook.svg" alt="Logo" />
+                            Login with facebook 
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

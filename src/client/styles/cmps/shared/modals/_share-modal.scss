@@ -144,4 +144,13 @@
             color: $clr1;
         }
     }
+
+
+    @media (max-width: $break-narrow) {
+        .close-btn {
+            position: absolute;
+            top: 7px;
+            right: 7px;
+        }
+    }
 }

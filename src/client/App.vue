@@ -8,6 +8,7 @@
         <auth-modal
             v-if="authModal"
             @closeModal="authModal = false, showFreeSearchesMsg = false, showValidateMsg = false"
+            @openLoginModal="switchModals"
             :showFreeSearchesMsg = showFreeSearchesMsg
             :showValidateMsg = showValidateMsg
         />
@@ -62,6 +63,7 @@ export default {
     },
     methods: {
         onLogin() {
+            this.authModal = false;
             this.loginModal = true;
         },
         onLoginNotSameProvider() {
@@ -69,6 +71,7 @@ export default {
             this.showNotSameProviderMsg = true
         },
         onSignUp() {
+            this.loginModal = false
             this.authModal = true;
         },
         onShowAuth(){
@@ -80,8 +83,10 @@ export default {
             this.authModal = true;
         },
         switchModals(){
-            this.loginModal = false;
-            this.authModal = true;
+            // this.loginModal = false;
+            // this.authModal = true;
+            this.loginModal = !this.loginModal;
+            this.authModal = !this.authModal;
         },
         async connectUser(){
             await this.$store.dispatch('getUserInfo');

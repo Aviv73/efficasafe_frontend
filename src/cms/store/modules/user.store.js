@@ -1,5 +1,11 @@
 import { userService } from '@/cms/services/user.service'
 import { storageService } from '../../services/storage.service'
+import { alertService } from '../../services/alert.service'
+import router from '../../../client/router'
+
+// import { useRoute } from 'vue-router'
+
+// // const route = useRoute()
 
 export const userStore = {
     state: {
@@ -75,7 +81,29 @@ export const userStore = {
             }else{
                 commit({ type: 'setLoggedInUser', user });
             }
+            if (['InteractionDetails', 'VinteractionDetails', 'Results', 'Boosters'].includes(router.history.current.name)) {
+                dispatch('notifyEndTrial');
+            }
             return user
+        },
+        notifyEndTrial({ getters }) {
+            if (window.__goToSubscribtionPage__) return;
+            const user = getters.loggedInUser;
+            if (!user) return;
+            if ((user.type !== 'subscribed') && user.trialTime && (Date.now() > new Date(user.trialTime).getTime())) {
+                const timePts = new Date(user.trialTime).toString().split(' ');
+                const trialEndTime = `${timePts[0]} ${timePts[1]} ${timePts[2]}`;
+                let onClose
+                window.__goToSubscribtionPage__ = () => {
+                    onClose();
+                    router.push('/subscribe');
+                    // delete window.__goToSubscribtionPage__;
+                }
+                onClose = alertService.toast({type: 'error', html: `
+                    <p class="prime-msg">Your trial has ended on ${trialEndTime}</p>
+                    <p class="sec-msg">Interaction results will not be available. <a onclick="__goToSubscribtionPage__()">Subscribe now!</a></p>
+                `}, () => delete window.__goToSubscribtionPage__);
+            }
         },
         async getUserSearches({commit, state}) {
             if(!state.loggedInUser) return

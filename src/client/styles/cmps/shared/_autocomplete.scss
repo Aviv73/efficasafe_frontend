@@ -1,147 +1,145 @@
 .autocomplete {
-    border-radius: rem(100px);
-    display: flex;
-    
-    &-field {
-        display: inline-block;
-        flex-basis: 50%;
-        position: relative;
-        
-        
-        &.inset {
-            flex-basis: 90%;
-            margin: 0 auto;
-            max-width: rem(364px);
-            border-radius: 100px;
-            border: 1px solid $clr1;
-            box-shadow: 0px 0px 4px rgba($black, .35);
-            position: relative;
+  border-radius: rem(100px);
+  display: flex;
 
-            &::after {
-                content: "";
-                box-sizing: content-box;
-                position: absolute;
-                top: -6px;
-                left: -6px;
-                z-index: -1;
-                width: 100%;
-                height: 100%;
-                border-radius: 100px;
-                border: 6px solid $clr13;
-            }
-        }
-        
-        input {
-            height: 100%;
-            width: 100%;
-            background-color: $white;
-            border-radius: rem(100px);
-            border-width: 0;
-            padding: rem(12px) 0;
-            font-size: rem(14px);
-            font-family: roboto-medium, sans-serif;
-            text-align: center;
-            caret-color: $clr2;
-            
-            &:focus {
-                outline: none;
-                box-shadow: inset 0px 0px 2px 0 $clr9;
+  &-field {
+    display: inline-block;
+    flex-basis: 50%;
+    position: relative;
 
-                & + svg path {
-                    fill: $green;
-                }
-                &::placeholder {
-                    opacity: 0;
-                }
-            }
-            &::placeholder {
-                font-family: roboto, sans-serif;
-            }
-            &.primary {
-                &::placeholder {
-                    color: inherit;
-                    font-family: roboto-medium, sans-serif;
-                }
-            }
-            &.un-focus + svg path {
-                fill: $gray;
-            }
-        }
+    &.inset {
+      flex-basis: 90%;
+      margin: 0 auto;
+      max-width: rem(364px);
+      border-radius: 100px;
+      border: 1px solid $clr1;
+      box-shadow: 0px 0px 4px rgba($black, 0.35);
+      position: relative;
 
-        .input-loader{
-            position: absolute;
-            width: 25px;
-            top: 8.5px;
-            right: 8.5px;
-        }
-        .cap {
-            position: absolute;
-            height: 100%;
-            top: 0;
-            
-            &-left {
-                right: 0;
-            }
-            &-right {
-                left: 0;
-            }
-        }
-    }
-    &-results {
+      &::after {
+        content: '';
+        box-sizing: content-box;
         position: absolute;
-        top: calc(100% + 6px);
-        left: rem(12px);
-        width: calc(100% - 24px);
-        z-index: 4;
-        max-height: rem(304px);
-        overflow-y: auto;
-        background-color: $white;
-        border-radius: 0 0 4px 4px;
-        box-shadow: 0 4px 6px 0px rgba($black, .3);
-        opacity: 0;
-        padding-block-start: rem(8px);
-        transform: scaleY(0);
-        transform-origin: top;
-        transition: transform .3s ease, opacity .3s ease;
-        text-align: left;
-        
-        &.active {
-            opacity: 1;
-            transform: scaleY(1);
-        }
-        &.on-primary {
-            left: rem(24px);
-        }
-        &.on-secondary {
-            left: calc(100% + 24px);
-        }
-        &.on-hero {
-            left: rem(24px);
-            width: calc(200% - 48px);
-            max-height: rem(230px);
-
-            @include for-narrow-layout {
-                width: calc(100% - 48px);
-            }
-        }
-        &.on-hero.on-secondary {
-
-            @include for-narrow-layout {
-                left: calc(100% + 24px);
-            }
-        }
-        &-result {
-            padding: rem(12px) rem(0px) rem(12px) rem(16px);
-            transition: background-color .3s linear;
-            cursor: pointer;
-
-            &:focus {
-                outline: none;
-                background-color: rgba($black, .25);             
-            }
-            @include hover-supported {
-                background-color: rgba($black, .25);             
-            }
-        }
+        top: -6px;
+        left: -6px;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        border-radius: 100px;
+        border: 6px solid $clr13;
+      }
     }
+
+    input {
+      height: 100%;
+      width: 100%;
+      background-color: $white;
+      border-radius: rem(100px);
+      border-width: 0;
+      padding: rem(12px) 0;
+      font-size: rem(14px);
+      font-family: roboto-medium, sans-serif;
+      text-align: center;
+      caret-color: $clr2;
+
+      &:focus {
+        outline: none;
+        box-shadow: inset 0px 0px 2px 0 $clr9;
+
+        & + svg path {
+          fill: $green;
+        }
+        &::placeholder {
+          opacity: 0;
+        }
+      }
+      &::placeholder {
+        font-family: roboto, sans-serif;
+      }
+      &.primary {
+        &::placeholder {
+          color: inherit;
+          font-family: roboto-medium, sans-serif;
+        }
+      }
+      &.un-focus + svg path {
+        fill: $gray;
+      }
+    }
+
+    .input-loader {
+      position: absolute;
+      width: 25px;
+      top: 8.5px;
+      right: 8.5px;
+    }
+    .cap {
+      position: absolute;
+      height: 100%;
+      top: 0;
+
+      &-left {
+        right: 0;
+      }
+      &-right {
+        left: 0;
+      }
+    }
+  }
+  &-results {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: rem(12px);
+    width: calc(100% - 24px);
+    z-index: 4;
+    max-height: rem(304px);
+    overflow-y: auto;
+    background-color: $white;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 4px 6px 0px rgba($black, 0.3);
+    opacity: 0;
+    padding-block-start: rem(8px);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    text-align: left;
+
+    &.active {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+    &.on-primary {
+      left: rem(24px);
+    }
+    &.on-secondary {
+      left: calc(100% + 24px);
+    }
+    &.on-hero {
+      left: rem(24px);
+      width: calc(200% - 48px);
+      max-height: rem(230px);
+
+      @include for-narrow-layout {
+        width: calc(100% - 48px);
+      }
+    }
+    &.on-hero.on-secondary {
+      @include for-narrow-layout {
+        left: calc(100% + 24px);
+      }
+    }
+    &-result {
+      padding: rem(12px) rem(0px) rem(12px) rem(16px);
+      transition: background-color 0.3s linear;
+      cursor: pointer;
+
+      &:focus {
+        outline: none;
+        background-color: rgba($black, 0.25);
+      }
+      @include hover-supported {
+        background-color: rgba($black, 0.25);
+      }
+    }
+  }
 }

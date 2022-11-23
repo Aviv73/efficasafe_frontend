@@ -5,29 +5,29 @@
         <div class="positive">
             <img src="@/client/assets/icons/arrow-up.svg" alt="">
             <div class="positive-txt-container">
-                <h4>improve</h4>
-                <h3>clinical outcomes</h3>
+                <h4>Optimize</h4>
+                <h3>treatment</h3>
             </div>
         </div>
         <div class="positive">
             <img src="@/client/assets/icons/arrow-down.svg" alt="">
             <div class="positive-txt-container">
-                <h4>reduce</h4>
-                <h3>medical errors</h3>
+                <h4>Improve</h4>
+                <h3>clinical outcomes</h3>
             </div>
         </div>
         <div class="positive">
             <img src="@/client/assets/icons/minimize.svg" alt="">
             <div class="positive-txt-container">
                 <h4>minimize</h4>
-                <h3>risk</h3>
+                <h3>errors & risk</h3>
             </div>
         </div>
         <div class="positive">
             <img src="@/client/assets/icons/discover.svg" alt="">
             <div class="positive-txt-container">
-                <h4>discover</h4>
-                <h3>synergistics</h3>
+                <h4>stay updated</h4>
+                <h3>effortlessly</h3>
             </div>
         </div>
     </div>
