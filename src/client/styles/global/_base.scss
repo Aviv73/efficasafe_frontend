@@ -1,31 +1,32 @@
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 *::selection {
-    background: $clr2;
-    color: $white;
+  background: $clr2;
+  color: $white;
 }
 
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 body {
-    font-size: rem(16px);
-    font-weight: normal;
-    font-family: roboto, sans-serif;
-    color: $clr-txt-dark;
-    letter-spacing: 0;
-    line-height: rem(20px);
+  font-size: rem(16px);
+  font-weight: normal;
+  font-family: roboto, sans-serif;
+  color: $clr-txt-dark;
+  letter-spacing: 0;
+  line-height: rem(20px);
 }
 
-#app>main {
-    min-height: calc(100vh - 2.6875rem);
-    display: flex;
-    flex-direction: column;
+#app > main {
+  // min-height: calc(100vh - 2.6875rem);
+  min-height: calc(100vh - rem(178px));
+  display: flex;
+  flex-direction: column;
 }
 
 input,
@@ -33,12 +34,31 @@ button,
 a,
 textarea,
 .swiper {
-    &:focus {
-        outline: none;
-    }
+  &:focus {
+    outline: none;
+  }
 
-    &:focus-visible {
-        outline: 1px solid $clr1;
-        outline-offset: 2px;
-    }
+  &:focus-visible {
+    outline: 1px solid $clr1;
+    outline-offset: 2px;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background-color: rgba(0, 0, 0, 0);
+  -webkit-border-radius: 100px;
+}
+
+::-webkit-scrollbar:hover {
+  background-color: rgba(0, 0, 0, 0.09);
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  background: rgba(0, 0, 0, 0.5);
+  -webkit-border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb:vertical:active {
+  -webkit-border-radius: 100px;
 }

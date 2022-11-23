@@ -283,7 +283,7 @@ export default {
       return this.$store.getters.getListType;
     },
     suppInteractionsToShow() {
-      const toShow = this.currSuppInteractions.filter((i) => !i.isNotToShow);
+      const toShow = this.currSuppInteractions.filter(i => !i.isNotToShow);
       return toShow;
     },
     suppCount() {

@@ -248,6 +248,7 @@
 
       @include for-narrow-layout {
         padding: rem(22px) 24px rem(8px) 0;
+        overflow: unset;
       }
       @include for-wide-layout {
         padding: rem(22px) 0 rem(8px);

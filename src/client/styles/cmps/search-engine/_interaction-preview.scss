@@ -218,29 +218,27 @@
 
   .horizontal-list-list {
     &.optimizers-view {
-        
       .interaction-capsules {
-          margin-block-end: 0;
+        margin-block-end: 0;
       }
       .interaction-preview {
-          .interaction-preview-header {
-              position: relative;
-              .table-col {
-                  position: static;
-              }
-              .tooltip-box {
-                  // position: static;
-                  .de-activator {
-                      right: 10px;
-                  }
-              }
+        .interaction-preview-header {
+          position: relative;
+          .table-col {
+            position: static;
           }
+          .tooltip-box {
+            // position: static;
+            .de-activator {
+              right: 10px;
+            }
+          }
+        }
         .recomendation,
         .evidence-level {
           display: none !important;
         }
         .interaction-preview {
-         
           .collapse {
             &:not(:last-child) {
               box-shadow: 0px 0px 1px 0.5px rgb(95 95 95 / 17%);
@@ -266,38 +264,38 @@
       margin-bottom: 0;
       padding-bottom: 0;
       .interaction-capsules {
+        margin-bottom: 0;
+        .interaction-capsules-side {
           margin-bottom: 0;
-          .interaction-capsules-side {
-              margin-bottom: 0;
-              // padding-bottom: 0;
-          }
+          // padding-bottom: 0;
+        }
       }
       .interaction-capsules.group:only-child {
-          transform: translateX(-7px);
+        transform: translateX(-7px);
       }
       .interaction-preview-header {
         .interaction-capsules-side {
-            &:not(:only-of-type) {
-                width: 50%;
-                &.group {
-                    width: unset;
-                }
+          &:not(:only-of-type) {
+            width: 50%;
+            &.group {
+              width: unset;
             }
+          }
         }
-        justify-content: space-between;
+        // justify-content: space-between;
         padding: 0 10px;
         .recomendation {
-        padding-inline-start: 20px;
+          padding-inline-start: 20px;
         }
         .small-data {
-            padding-inline-end: 20px;
+          padding-inline-end: 20px;
         }
         // .interaction-preview {
         //   .de-activator {
         //     right: 0 !important;
         //     position: static !important;
         //     transform: translate(4px, 1px) !important;
-    
+
         //   }
 
         // }
@@ -305,7 +303,7 @@
           margin-inline-end: 7px;
         }
         margin-bottom: 10px;
-        justify-content: space-between;
+        justify-content: space-around;
         gap: 7px;
         .small-data {
           margin-inline-start: 20px;
@@ -317,7 +315,6 @@
         right: 0 !important;
         position: static !important;
         transform: translate(4px, 1px) !important;
-
       }
       .interaction-capsules.dup:only-of-type {
         transform: translateX(100%);
