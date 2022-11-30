@@ -29,14 +29,14 @@
                 :isLowLevelInteraction="isLowLevelInteraction(interaction)"
               />
             </span>
-            <span v-if="isAllowed" class="recomendation table-col" :title="interaction.recommendation">
+            <span v-if="isAllowed" class="recomendation table-col" :class="{ 'recomendation-not-advised': interaction.recommendation === 'Coadministration is not advised' }" :title="interaction.recommendation">
               {{ getShortRecommendation(interaction.recommendation) }}
             </span>
             <span v-else class="table-col flex-start off-interaction-col-2" title="Open only for subscribers">
               <lock-icon class="lock-icon" :size="18" />
               <p class="clip-txt">open only for subscribers</p>
             </span>
-            <span v-if="isAllowed" class="table-col small-data">
+            <span v-if="isAllowed" class="table-col small-data" :class="{ 'small-data-not-advised': interaction.recommendation === 'Coadministration is not advised' }">
               <tooltip right :txt="getLongEvidenceLevel(interaction.evidenceLevel || interaction.evidence_level)">
                 <template #content>
                   <ul class="loe-tooltip">

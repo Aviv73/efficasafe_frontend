@@ -28,7 +28,7 @@
           </tooltip>
         </div>
         <ul class="search-engine-search-materials" :class="{ empty: !materials.length }">
-          <tooltip v-for="(result, idx) in formatedMaterials" :key="idx" on="focus" wrap-el="li" closable left>
+          <tooltip v-for="(result, idx) in formatedMaterials" :key="idx" on="focus" wrap-el="li" closable bottomLeft>
             <template #close-icon>
               <close-icon :size="16" title="" />
             </template>
@@ -945,13 +945,20 @@ export default {
       }
 
       this.isLoading = true;
+
       const prms = [this.getInteractions(), this.getDBankInteractions()];
       await Promise.all(prms);
       this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions);
-      window.scrollTo(0, this.$refs.interactionHeaderRef.offsetTop - 50);
       this.isLoading = false;
 
-      await this.getPositives();
+      this.getPositives();
+
+      // window.scrollTo(0, this.$refs.interactionHeaderRef.offsetTop - 50);
+      window.scrollTo({
+        top: this.$refs.interactionHeaderRef.offsetTop - 50,
+        left: 0,
+        behavior: 'smooth'
+      });
     },
     async getPositives() {
       this.isPBLoading = true;

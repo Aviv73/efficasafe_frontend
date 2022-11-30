@@ -27,7 +27,8 @@
               <printer-icon title="" />
             </button>
             <button class="share-btn share-btn-icon no-print" title="Share" @click="isShareModalActive = true">
-              <share-variant-icon title="" :size="isScreenNarrow ? 18 : 24" />
+              <!-- <share-variant-icon title="" :size="isScreenNarrow ? 18 : 24" /> -->
+              <share-variant-icon title="" />
             </button>
           </span>
         </div>
@@ -253,6 +254,7 @@ import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
 import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 import PrinterIcon from 'vue-material-design-icons/Printer';
 import ShareVariantIcon from 'vue-material-design-icons/ShareVariant';
+
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
 
 import PlayTourBtn from '@/client/cmps/common/PlayTourBtn';
@@ -496,12 +498,15 @@ export default {
       this.showMobileAlerts = !this.showMobileAlerts;
     },
 
-    goToMaterial(name) {
-      let id;
-      if (name === this.interaction.side1Material.name || this.checkIsPartOfSide1(name)) id = this.interaction.side1Material._id;
-      else if (this.interaction.side2Material) id = this.interaction.side2Material._id;
-      else id = this.side2Material._id;
-      let routeData = this.$router.resolve({ path: `/material/${id}` });
+    async goToMaterial(name) {
+      let material;
+      if (name === this.interaction.side1Material.name || this.checkIsPartOfSide1(name)) material = this.side1Material;
+      else if (this.interaction.side2Material) material = this.side2Material;
+      else material = this.side2Material;
+
+      if (material.isUnderStudy) return;
+
+      let routeData = this.$router.resolve({ path: `/material/${material._id}` });
       window.open(routeData.href, '_blank');
     },
     checkIsPartOfSide1(name) {

@@ -253,6 +253,11 @@
       @include for-wide-layout {
         padding: rem(22px) 0 rem(8px);
       }
+      @media only screen and (max-width: 900px) {
+        // display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+      }
     }
     &-amount {
       display: inline-block;
@@ -329,6 +334,10 @@
       .share-btn {
         margin-inline-end: 0;
         margin-block-end: 1px;
+        @media (max-width: $break-narrow) {
+          position: relative;
+          top: rem(9px);
+        }
 
         @include for-narrow-layout {
           margin-inline-end: rem(14px);

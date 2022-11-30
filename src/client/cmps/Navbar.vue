@@ -22,10 +22,10 @@
           <div class="navbar-overlay" :class="{ active: isNavActive }" @click="toggleNavActive"></div>
           <ul class="navbar-nav nav-part" :class="{ active: isNavActive }" v-hammer:swipe.left="toggleNavActive">
             <li @click="toggleNavActive" class="list-logo-container">
-              <router-link to="/" title="Home" class="logo">
+              <!-- <router-link to="/" title="Home" class="logo">
                 <img src="@/client/assets/imgs/efficasafe-logo.svg" alt="Efficasafe" />
                 <img class="logo-name" src="@/client/assets/imgs/efficasafe.svg" alt="Efficasafe" />
-              </router-link>
+              </router-link> -->
               <button v-if="isScreenNarrow" class="navbar-side-nav-close-btn" @click.stop="toggleNavActive(false)">
                 <close-icon title="" />
               </button>
@@ -84,6 +84,12 @@
           </ul>
         </template>
 
+        <div class="nav-search">
+          <router-link to="/search">
+            <img src="@/client/assets/imgs/search-icon-header.png" alt="Search" />
+          </router-link>
+        </div>
+
         <div class="nav-part last-part">
           <button class="video-btn" @click="openVideoModal">
             <span>Introduction</span>
@@ -93,6 +99,9 @@
           <dropdown v-if="loggedInUser" class="user-dropdown">
             <template #activator>
               <div class="flex-align-center">
+                <span v-if="true" class="updated user-updated" title="Updated interactions">{{ updatedCount || 5 }}</span>
+                <!-- <span v-if="updatedCount" class="updated user-updated" title="Updated interactions">{{ updatedCount }}</span> -->
+
                 <span class="flex">
                   {{ loggedInUser.username }}
                 </span>
@@ -117,7 +126,9 @@
                 <div class="navbar-user-dropdown-links">
                   <router-link to="/account" class="navbar-user-dropdown-item account-col">
                     <span>Account</span>
-                    <span v-if="updatedCount" class="updated" title="Updated interactions">{{ updatedCount }}</span>
+                    <span v-if="true" class="updated" title="Updated interactions">{{ updatedCount || 5 }}</span>
+
+                    <!-- <span v-if="updatedCount" class="updated" title="Updated interactions">{{ updatedCount }}</span> -->
                   </router-link>
                   <!-- <router-link
                                         to="/contact"
@@ -138,12 +149,12 @@
 </template>
 
 <script>
-import { eventBus, EV_update_nav } from '@/cms/services/eventBus.service'
+import { eventBus, EV_update_nav } from '@/cms/services/eventBus.service';
 
-import Dropdown from '@/client/cmps/common/Dropdown'
+import Dropdown from '@/client/cmps/common/Dropdown';
 
-import CloseIcon from 'vue-material-design-icons/Close'
-import MenuIcon from 'vue-material-design-icons/Menu'
+import CloseIcon from 'vue-material-design-icons/Close';
+import MenuIcon from 'vue-material-design-icons/Menu';
 // import MenuDownIcon from 'vue-material-design-icons/MenuDown';
 // import HomeIcon from 'vue-material-design-icons/Home';
 // import VideoIcon from 'vue-material-design-icons/Youtube';
@@ -158,58 +169,58 @@ export default {
   computed: {
     isTrialMode() {
       // return true;
-      return this.loggedInUser && this.loggedInUser.type !== 'subscribed'
+      return this.loggedInUser && this.loggedInUser.type !== 'subscribed';
     },
     isScreenNarrow() {
-      return this.$store.getters.isScreenNarrow
+      return this.$store.getters.isScreenNarrow;
     },
     loggedInUser() {
-      return this.$store.getters.loggedInUser
+      return this.$store.getters.loggedInUser;
     },
     userSearches() {
-      return this.$store.getters.userSearches
+      return this.$store.getters.userSearches;
     },
     freeTrialTime() {
       const {
         loggedInUser: { trialTime }
-      } = this.$store.getters
-      const timeLeft = trialTime - Date.now()
-      const daysLeft = timeLeft / (1000 * 3600 * 24)
-      return daysLeft > 0 ? Math.ceil(daysLeft) : 0
+      } = this.$store.getters;
+      const timeLeft = trialTime - Date.now();
+      const daysLeft = timeLeft / (1000 * 3600 * 24);
+      return daysLeft > 0 ? Math.ceil(daysLeft) : 0;
     },
     tourBtnTitle() {
       if (this.$route.name === 'Results') {
-        return 'Get to know our search features'
+        return 'Get to know our search features';
       }
       if (this.$route.name === 'Boosters') {
-        return 'Get to know the Optimizers'
+        return 'Get to know the Optimizers';
       }
-      return 'Get to know the interaction structure'
+      return 'Get to know the interaction structure';
     },
     freeTrialMsg() {
       if (this.isScreenNarrow) {
-        if (this.freeTrialTime === 1) return `Free Trial -  ${this.freeTrialTime} day`
-        return `Free Trial -  ${this.freeTrialTime} days`
+        if (this.freeTrialTime === 1) return `Free Trial -  ${this.freeTrialTime} day`;
+        return `Free Trial -  ${this.freeTrialTime} days`;
       }
-      if (this.freeTrialTime === 1) return `Free Trial - you have ${this.freeTrialTime} day left`
-      return `Free Trial - you have ${this.freeTrialTime} days left`
+      if (this.freeTrialTime === 1) return `Free Trial - you have ${this.freeTrialTime} day left`;
+      return `Free Trial - you have ${this.freeTrialTime} days left`;
     },
     updatedCount() {
-      let updatesMap = {}
-      if (!this.updatedUserSearches && !this.userSearches) return 0
-      const searches = this.updatedUserSearches || this.userSearches
-      searches.forEach((search) => {
+      let updatesMap = {};
+      if (!this.updatedUserSearches && !this.userSearches) return 0;
+      const searches = this.updatedUserSearches || this.userSearches;
+      searches.forEach(search => {
         if (search.updates && search.updates.length) {
-          search.updates.forEach((update) => {
-            if (!updatesMap[update.interactionName]) updatesMap[update.interactionName] = true
-          })
+          search.updates.forEach(update => {
+            if (!updatesMap[update.interactionName]) updatesMap[update.interactionName] = true;
+          });
         }
-      })
-      return Object.keys(updatesMap).length
+      });
+      return Object.keys(updatesMap).length;
     },
     trialEndTime() {
-      const timePts = new Date(this.loggedInUser.trialTime).toString().split(' ')
-      return `${timePts[1]} ${timePts[2]}`
+      const timePts = new Date(this.loggedInUser.trialTime).toString().split(' ');
+      return `${timePts[1]} ${timePts[2]}`;
     }
     // daysTime5() {
     //     return 1000 * 60 * 60 * 24 * 5;
@@ -218,57 +229,57 @@ export default {
   methods: {
     activeReleventTour() {
       if (this.$route.name === 'Results') {
-        eventBus.$emit('start-tour')
+        eventBus.$emit('start-tour');
       }
       if (this.$route.name === 'Boosters') {
-        eventBus.$emit('start-boosters-tour')
+        eventBus.$emit('start-boosters-tour');
       }
       if (this.$route.name === 'InteractionDetails' || this.$route.name === 'VinteractionDetails') {
-        eventBus.$emit('start-interaction-tour')
+        eventBus.$emit('start-interaction-tour');
       }
     },
     openVideoModal() {
-      eventBus.$emit('open-video')
+      eventBus.$emit('open-video');
     },
     toggleNavActive(val) {
-      if (!this.isScreenNarrow) return
-      this.isNavActive = typeof val === 'boolean' ? val : !this.isNavActive
+      if (!this.isScreenNarrow) return;
+      this.isNavActive = typeof val === 'boolean' ? val : !this.isNavActive;
     },
     onSubscribe() {
-      this.$router.push('/subscribe')
+      this.$router.push('/subscribe');
     },
     onLogin() {
-      this.$emit('login')
+      this.$emit('login');
     },
     onSignUp() {
-      this.$emit('signup')
+      this.$emit('signup');
     },
     async onLogout() {
-      await this.$store.dispatch({ type: 'logout' })
+      await this.$store.dispatch({ type: 'logout' });
       if (this.$route.path !== '/') {
-        this.$router.push('/')
+        this.$router.push('/');
       }
     },
     setNavClassName() {
       if (this.$route.name !== 'Home') {
-        this.isNavIntersecting = false
-        return
+        this.isNavIntersecting = false;
+        return;
       }
-      const intersectingEl = document.querySelector('section.home-content')
-      const elNav = this.$refs.navbar
-      this.isNavIntersecting = window.scrollY >= intersectingEl.offsetTop - elNav.offsetHeight
+      const intersectingEl = document.querySelector('section.home-content');
+      const elNav = this.$refs.navbar;
+      this.isNavIntersecting = window.scrollY >= intersectingEl.offsetTop - elNav.offsetHeight;
     }
   },
   mounted() {
-    document.addEventListener('scroll', this.setNavClassName)
+    document.addEventListener('scroll', this.setNavClassName);
   },
   beforeDestroy() {
-    document.removeEventListener('scroll', this.setNavClassName)
+    document.removeEventListener('scroll', this.setNavClassName);
   },
   created() {
-    eventBus.$on(EV_update_nav, (searches) => {
-      this.updatedUserSearches = searches
-    })
+    eventBus.$on(EV_update_nav, searches => {
+      this.updatedUserSearches = searches;
+    });
   },
   components: {
     CloseIcon,
@@ -278,5 +289,5 @@ export default {
     // HomeIcon,
     // VideoIcon
   }
-}
+};
 </script>
