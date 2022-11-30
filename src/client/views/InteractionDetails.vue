@@ -18,10 +18,10 @@
           <!-- <router-link to="/" class="interaction-details-header-logo v-tour-interaction-step-4">
                         <img :src="require('@/client/assets/imgs/logo-vector.svg')" alt="Logo" />
                     </router-link> -->
-          <h1 v-if="side1Material && side2Material">Interaction of {{ side1Material && side1Material.name }} & {{ side2Material && side2Material.name }}</h1>
+          <h1 class="v-tour-interaction-step-4" v-if="side1Material && side2Material">Interaction of {{ side1Material && side1Material.name }} & {{ side2Material && side2Material.name }}</h1>
           <h1 v-else>Interaction</h1>
           <span class="interaction-details-header-actions">
-            <!-- <PlayTourBtn :dontOpen="isScreenNarrow" @click.native="startTour" align="right"/> -->
+            <PlayTourBtn class="v-tour-interaction-step-4" :dontOpen="isScreenNarrow" @click.native="startTour" align="right"/>
 
             <button class="print-btn print-btn-icon no-print" title="Print" @click="printWindow()">
               <printer-icon title="" />
@@ -124,19 +124,19 @@
             <h3 class="subheader">What to monitor</h3>
             <div v-if="interaction.monitor.general">
               <span class="font-medium">General: </span>
-              {{ interaction.monitor.general |; (remove - ending - dot) | capitalize }}
+              {{ interaction.monitor.general | capitalize }}
             </div>
             <div v-if="interaction.monitor.labTests">
               <span class="font-medium">Lab tests: </span>
-              {{ interaction.monitor.labTests |; (remove - ending - dot) | capitalize }}
+              {{ interaction.monitor.labTests | capitalize }}
             </div>
             <div v-if="interaction.monitor.otherTests">
               <span class="font-medium">Other tests: </span>
-              {{ interaction.monitor.otherTests |; (remove - ending - dot) | capitalize }}
+              {{ interaction.monitor.otherTests | capitalize }}
             </div>
             <div v-if="interaction.monitor.symptoms">
               <span class="font-medium">Symptoms: </span>
-              {{ interaction.monitor.symptoms |; (remove - ending - dot) | capitalize }}
+              {{ interaction.monitor.symptoms | capitalize }}
             </div>
           </div>
           <collapse class="review-of-studies" v-if="interaction.reviewOfStudies" hide-de-activator allow-overflow>
@@ -485,7 +485,7 @@ export default {
   },
   methods: {
     startTour() {
-      console.log(this.$tours);
+      console.log(this.$tours['onboarding-interaction-tour']);
       this.$tours['onboarding-interaction-tour'].start();
       // this.$tours['boosters-tour'].start();
     },
@@ -626,14 +626,12 @@ export default {
   },
   created() {
     this.$store.dispatch('notifyEndTrial');
-    eventBus.$on('start-interaction-tour', () => {
-      this.$tours['onboarding-interaction-tour'].start();
-    });
+    // eventBus.$on('start-interaction-tour', () => {
+    //   this.$tours['onboarding-interaction-tour'].start();
+    // });
   },
   beforeDestroy() {
-    eventBus.$off('start-interaction-tour', () => {
-      this.$tours['onboarding-interaction-tour'].start();
-    });
+    eventBus.$off('start-interaction-tour');
   },
   components: {
     ChevronLeftIcon,

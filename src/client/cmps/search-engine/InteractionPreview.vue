@@ -138,7 +138,7 @@
           </template>
         </div>
         <div v-else-if="!!interaction.isMaterialGroup">
-          <positive-interaction-preview :interaction="interaction" :materials="materials" :parent-idx="idx" :isSupp="isSupp" :key="counter" @removeInteraction="removeInteraction" @interactionDone="interactionDone" @setCount="setCount" />
+          <positive-interaction-preview @add-to-search="addToSearch" :interaction="interaction" :materials="materials" :parent-idx="idx" :isSupp="isSupp" :key="counter" @removeInteraction="removeInteraction" @interactionDone="interactionDone" @setCount="setCount" />
         </div>
         <div
           v-else
@@ -313,6 +313,10 @@ export default {
     }
   },
   methods: {
+    addToSearch(toAdd) {
+      eventBus.$emit('add-to-search', toAdd);
+      // this.$emit('add-to-search', toAdd);
+    },
     isLowLevelInteraction(interaction) {
       if (!interaction.interactionLevel || interaction.interactionLevel === 1) return false;
       return true;
@@ -358,7 +362,7 @@ export default {
         parentIdx: this.parentIdx
       };
       interactionService.cacheSearchState(cacheData);
-      this.EmitScrollElementToTop();
+      // this.EmitScrollElementToTop();
     },
     getSide2Name(name) {
       const side2Name = name.split(' & ')[1].trim();

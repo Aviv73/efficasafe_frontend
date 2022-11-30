@@ -1,7 +1,7 @@
 const errorImg = require('@/client/assets/imgs/error.svg')
 const closeImg = require('@/client/assets/imgs/close-btn.svg')
 
-function toast({type = 'error', msg = '', html = '', timeout = null} = {}, olCloseCb) {
+function toast({type = 'error', msg = '', html = '', timeout = 10000} = {}, olCloseCb) {
   const styleStr =`<style>
     ${_StyleEl('.toast-alert', {
       position: 'fixed',
@@ -12,25 +12,24 @@ function toast({type = 'error', msg = '', html = '', timeout = null} = {}, olClo
       padding: '10px',
       borderRadius: '4px',
       fontStyle: 'italic',
-      color: '#6F818E',
       fontSize: '0.875rem',
       width: '370px',
       '&.success': {
         backgroundColor: 'green',
         '.prime-msg': {
-          color: 'green-darker'
+          // color: 'green-darker'
         }
       },
       '&.warning': {
         backgroundColor: 'yellow',
         '.prime-msg': {
-          color: 'yellow-darker'
+          // color: 'yellow-darker'
         }
       },
       '&.error': {
         backgroundColor: '#FFF5F5',
         '.prime-msg': {
-          color: '#E63946',
+          // color: '#E63946',
           '&::before': {
             content: `url(${errorImg})`,
             marginInlineEnd: '5px'
@@ -38,7 +37,7 @@ function toast({type = 'error', msg = '', html = '', timeout = null} = {}, olClo
         }
       },
       a: {
-        color: 'black',
+        // color: 'black',
         fontWeight: 'bold',
         cursor: 'pointer',
         textDecoration: 'underline'

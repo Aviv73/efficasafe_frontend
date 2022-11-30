@@ -9,7 +9,7 @@
         >
             <template #header>
                 <div class="interaction-preview-header table-row child" :class="{'interaction-column': !isAllowed(idx)}" @click="onCollapseToggle(idx, group.cacheKey)">
-                    <span class="table-col">
+                    <span class="table-col capsul-container flex align-center">
                         <!-- <positive-inner-list-count :key="renderKey" :group="group" :length="group.innerLength"/> -->
                         <interaction-capsules
                             :name="getInnerGroupName(group)"
@@ -19,6 +19,9 @@
                             :vInteractionCount="0"
                             :localize="true"
                         />
+                        <button title="Add to search results" class="add-tosearch-btn" @click.stop="addToSearch(group)">
+                            <img :src="require('@/client/assets/imgs/plus.png')" alt="">
+                        </button>
                     </span>
                     <span v-if="isAllowed(idx)" class="table-col recomendation" :title="group.recommendation">
                         {{ getShortRecommendation(group.recommendation) }}
@@ -155,6 +158,9 @@ export default {
         },
     },
     methods: {
+        addToSearch(toAdd) {
+            this.$emit('add-to-search', this.getInnerGroup(toAdd));
+        },
         sortVinteractions(){
             const map = interactionUIService.getRecommendationOrderMap()
             this.currInteraction.vInteractions.sort((a, b) => {
@@ -215,6 +221,10 @@ export default {
         getInteractionColor(recommendation, idx) {
             if(!this.isAllowed(idx)) return '#a4b8c6'
             return interactionUIService.getInteractionColor(recommendation);
+        },
+        getInnerGroup(group) {
+            if(this.isSupp && this.interaction.mainMaterialId === group.side1Material._id) return group.side2Material || group.side2Label;
+            else return group.side1Material;
         },
         getInnerGroupName(group) {
             let idx = 0

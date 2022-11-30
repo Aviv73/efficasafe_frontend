@@ -30,11 +30,48 @@
         }
     }
 }
-.flex-center {
+
+
+
+// FLEX HELPERS:
+.flex {
     display: flex;
+  }
+  .align-center {
     align-items: center;
+  }
+  .justify-center {
     justify-content: center;
-}
+  }
+  .space-around {
+    justify-content: space-around;
+  }
+  .space-between {
+    justify-content: space-between;
+  }
+  .column {
+    flex-direction: column;
+  }
+  .wrap {
+    flex-wrap: wrap;
+  }
+  .flex-start {
+    align-items: flex-start;
+  }
+  .flex-end {
+    align-items: flex-end;
+  }
+  .justify-end {
+    justify-content: flex-end;
+  }
+  .flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+
+
 .flex-end {
     display: flex;
     align-items: center;

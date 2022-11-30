@@ -21,7 +21,36 @@
   &.positive-booster {
     box-shadow: $slight-border-top;
     margin-block-start: 1px;
+    .capsul-container {
+      // padding-inline-end: 15px;
+      // position: relative;
+      .add-tosearch-btn {
+        img {
+          height: 100%;
+          width: 100%;
+        }
+        width: 20px;
+        height: 20px;
+        // background-color: green;
+        cursor: pointer;
+        margin-inline-start: 15px;
+        margin-bottom: 2px;
+        // position: absolute;
+        // left: 76%;
+        // top: 50%;
+        // transform: translateY(-50%);
+      }
+      @media (max-width: $break-narrow) {
+        transform: translateX(-30px);
+        justify-content: center;
+        flex-direction: row-reverse;
+        .add-tosearch-btn {
+          margin-inline-end: 30px;
+        }
+      }
+    }
   }
+
 
   &-header {
     pointer-events: all;
@@ -159,7 +188,7 @@
       color: rgba($clr-txt-dark, 0.8);
     }
   }
-  .poss-booster-count {
+  .poss-booster-count{
     position: absolute;
     left: 10%;
     top: 26px;

@@ -311,14 +311,13 @@ export default {
         if (!isSameSearch) {
           this.$store.commit('resetPosSupp');
           await this.getResults();
-        } else {
+        } 
+        else {
           //Search positive if there are non in the front already
           if (!this.positiveInteractions.length && !this.suppPositiveInteractions.length) {
-            this.isLoading = true;
-            this.isPBLoading = true;
+            // this.isLoading = true;
             await this.getPositives();
-            this.isLoading = false;
-            this.isPBLoading = false;
+            // this.isLoading = false;
           }
         }
         if (isImported) this.showImportMsg(nonExisting);
@@ -865,7 +864,6 @@ export default {
   },
   methods: {
     startBoostTour() {
-      // console.log(this.$tours);
       this.$tours['boosters-tour'].start();
     },
     startSearchTour() {
@@ -945,50 +943,18 @@ export default {
         this.isLoading = false;
         return;
       }
-      // if (this.$route.name === 'Boosters') {
-      //     this.isPBLoading = true;
-      //     await this.getPositives();
-      //     this.isLoading = false;
-      //     this.isPBLoading = false;
-      //     const prms = [ this.getInteractions(), this.getDBankInteractions() ];
-      //     await Promise.all(prms);
-      //     this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions)
-      // } else {
-      //     const prms = [ this.getInteractions(), this.getDBankInteractions() ];
-      //     await Promise.all(prms);
-      //     this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions)
-      //     this.isLoading = false;
-      // }
-      this.isPBLoading = true;
+
       this.isLoading = true;
       const prms = [this.getInteractions(), this.getDBankInteractions()];
-
       await Promise.all(prms);
+      this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions);
       window.scrollTo(0, this.$refs.interactionHeaderRef.offsetTop - 50);
       this.isLoading = false;
 
-      this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions);
       await this.getPositives();
-      this.isPBLoading = false;
-
-      // Old why, getting all info at once
-
-      // if (this.$route.name === 'Boosters') {
-      //     await this.getPositives();
-      //     this.isLoading = false;
-      //     this.isPBLoading = false;
-      //     const prms = [ this.getInteractions(), this.getDBankInteractions() ];
-      //     await Promise.all(prms);
-      // } else {
-      //     const prms = [ this.getInteractions(), this.getDBankInteractions() ];
-      //     await Promise.all(prms);
-      //     this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions)
-      //     this.isLoading = false;
-      //     await this.getPositives();
-      //     this.isPBLoading = false;
-      // }
     },
     async getPositives() {
+      this.isPBLoading = true;
       const drugIds = this.materials.reduce((acc, { type, _id, labels, isIncluded }) => {
         if (type !== 'drug' || isIncluded) return acc;
         if (!acc.includes(_id)) acc.push(_id);
@@ -1029,17 +995,19 @@ export default {
       this.$store.commit('setRedPositiveSupp', { redIds: idsToTurnRed });
       this.idsToTurnRed = idsToTurnRed;
       this.positiveInteractions = await this.removeDupNonPositives(interactions);
-      this.suppPositiveInteractions = this.addCacheKey(suppInteractions);
+      this.suppPositiveInteractions = await this.addCacheKey(suppInteractions);
       this.suppPositiveInteractions.forEach(int => {
         int.vInteractions.forEach(vInt => {
           const interactionName = vInt.side1Material._id === int.side2Id ? `${vInt.side2Material.name} & ${vInt.side1Material.name}` : `${vInt.side1Material.name} & ${vInt.side2Material.name}`;
           vInt.name = interactionName;
+
         });
         int.vInteractions = this.sortInteractions(int.vInteractions, true);
       });
       this.emptySuppPositiveInteractions = this.getEmptyPositiveSupp();
       this.restoreState('Boosters', searchState);
       this.restoreState('suppBoosters', searchStateSupp);
+      this.isPBLoading = false;
     },
     getEmptyPositiveSupp() {
       const suppMaterials = this.materials.filter(m => m.type !== 'drug');
@@ -1074,9 +1042,9 @@ export default {
       }, []);
       return emptySupps;
     },
-    addCacheKey(interactions) {
-      interactions.forEach(int => {
-        int.vInteractions.forEach(vInt => {
+    async addCacheKey(interactions) {
+      const prms = interactions.map(int => {
+        const currPrm = Promise.all(int.vInteractions.map(vInt => {
           const ids = {
             side1Id: vInt.side1Material._id,
             side2Id: vInt.side2Material._id,
@@ -1100,9 +1068,11 @@ export default {
           };
           vInt.cacheKey = `/search/positive-boosters/${filterBy.id}/supps`;
           this.$nextTick(() => (vInt.mainMaterialName = int.name));
-          this.$store.dispatch({ type: 'getInteractions', filterBy, cacheKey: `/search/positive-boosters/${filterBy.id}/supps` });
-        });
+          return this.$store.dispatch({ type: 'getInteractions', filterBy, cacheKey: `/search/positive-boosters/${filterBy.id}/supps` });
+        }));
+        return currPrm;
       });
+      await Promise.all(prms);
       return interactions;
     },
     async getInteractions() {
@@ -1123,7 +1093,6 @@ export default {
       };
 
       const { interactions, pageCount, total, searchState } = await this.$store.dispatch({ type: 'getInteractions', filterBy, cacheKey: `/search?${this.$route.fullPath.split('?')[1]}` });
-      // console.log('interactions', interactions);
 
       this.pageCount = pageCount;
       this.interactions = interactions;
@@ -1322,7 +1291,8 @@ export default {
       this.$store.commit({ type: 'setIsShowAll', isChecked });
       await this.getResults();
     },
-    sortInteractions(interactions, isPosSupp = false) {
+    sortInteractions(interactions, isPosSupp = false) { // NOT HERE
+      interactions = JSON.parse(JSON.stringify(interactions));
       const { recommendationsOrderMap: map } = this.$options;
       if (this.sortOptions) {
         const { sortBy, side, isDesc } = this.sortOptions;
@@ -1344,9 +1314,10 @@ export default {
         }
       }
       const positiveOrder = isPosSupp ? -1 : 1;
-      return interactions.slice().sort((a, b) => {
+      const res = interactions.sort((a, b) => {
         return (map[b.recommendation] - map[a.recommendation]) * positiveOrder || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) || a.name.toLowerCase().localeCompare(b.name.toLowerCase());
       });
+      return res;
     },
     insertInteraction(acc, interaction) {
       const idx = acc.findIndex(vin => vin.side2Material && vin.side2Material._id === interaction.side2Material._id && vin.side1Material._id === interaction.side1Material._id);
@@ -1472,9 +1443,10 @@ export default {
       this.undoneQueries.push(query);
       this.$router.replace({ query: { q: queries } });
     },
-    sortMaterials(materials) {
+    sortMaterials(materials) { // NOT HERE
       const { q } = this.$route.query;
-      return materials.sort((a, b) => q.indexOf(a.userQuery) - q.indexOf(b.userQuery));
+      const sortedMaterials = [...materials];
+      return sortedMaterials.sort((a, b) => q.indexOf(a.userQuery) - q.indexOf(b.userQuery));
     },
     isQueryExists(query) {
       return this.$route.query.q.indexOf(query) !== -1;
@@ -1592,30 +1564,22 @@ export default {
           }
         }
       });
+      eventBus.$on('add-to-search', async toAdd => {
+          this.isLoading = true;
+          const criteria = { autocomplete: true, q: toAdd.name }
+          const results = await this.$store.dispatch({ type: 'getMaterials', criteria });
+          const materialsToAdd = results.materials.filter(c => c.txt === toAdd.name);
+          const materialToAdd = materialsToAdd[0]
+          if (materialToAdd) await this.addMaterials(materialsToAdd[0]);
+          this.isLoading = false;
+      });
     },
     removeEventBusListeners() {
-      eventBus.$off('start-tour', () => {
-        if (this.materialsLength === 0) {
-          this.$nextTick(() => this.$tours['onboarding-no-searches-tour'].start());
-        } else {
-          this.$nextTick(() => this.$tours['onboarding-tour'].start());
-        }
-      });
-      eventBus.$off('start-boosters-tour', () => {
-        this.$tours['boosters-tour'].start();
-      });
-      eventBus.$off('interaction-list-mounted', () => {
-        if (this.innerListEl) this.innerListEl.scrollTo(0, this.initialListHight);
-      });
-      eventBus.$off('scroll-element-to-top', id => {
-        if (this.$route.name === 'Results') {
-          let element = document.getElementById(id);
-          if (element) {
-            var topPos = element.offsetTop;
-            this.innerListEl.scrollTop = topPos - 224;
-          }
-        }
-      });
+      eventBus.$off('start-tour');
+      eventBus.$off('start-boosters-tour');
+      eventBus.$off('interaction-list-mounted');
+      eventBus.$off('scroll-element-to-top');
+      eventBus.$off('add-to-search');
     },
     // handelStartDelayedTour(tourType, storageName, routeName){
     //     setTimeout(() => {

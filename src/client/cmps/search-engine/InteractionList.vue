@@ -2,14 +2,15 @@
     <section>
         <template>
             <div
-                v-if="isLoading || ($route.name === 'Boosters' && isPBLoading)"
+                v-if="isLoading || (($route.name === 'Boosters') && isPBLoading)"
                 class="flex-center flex-coloumn"
-            >
+            >   
                 <img v-if="$route.name === 'Boosters'" src="@/client/assets/icons/formulating.gif">
                 <loader v-else/>
                 <template v-if="$route.name === 'Boosters'">
-                    <h3 v-if="listData.loadingTime < 30">Formulating your protocol...</h3>
-                    <template v-else class="loading-err-container flex-center flex-coloumn">
+                    <h3 v-if="listData.loadingTime < 8">Formulating your protocol...</h3>
+                    <h3 v-else>Sorting your results...</h3>
+                    <!-- <template v-else class="loading-err-container flex-center flex-coloumn">
                         <h3>Formulating is taking more time than expected.</h3>
                         <h3>This could happen if the network connection is poor</h3>
                         <h3>Or a problem has occurred</h3>
@@ -18,7 +19,7 @@
                         <h3>Please report this issue</h3>
                         <h3>And/or try narrowing your search</h3>
                         <button @click="onReport" class="btn home-cta report-btn">Report</button>
-                    </template>
+                    </template> -->
                 </template>
             </div>
             <result-list-horizontal

@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from '@/cms/store';
 import Home from '@/client/views/Home.vue';
-import SearchEngine from '@/client/views/SearchEngine';
+import SearchEngine from '@/client/views/SearchEngineKeepAlive';
 import InteractionDetails from '@/client/views/InteractionDetails';
 import MaterialDetails from '@/client/views/MaterialDetails';
 import ResetPassForm from '@/client/views/auth/ResetPassForm.vue';
@@ -99,6 +99,7 @@ const routes = [
   {
     path: '/search',
     component: SearchEngine,
+    // keepAlive: true,
     children: [
       {
         path: '/search',
