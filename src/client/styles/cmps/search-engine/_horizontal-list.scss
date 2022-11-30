@@ -1,255 +1,314 @@
 .horizontal-list {
-    background-color: $clr3;
-    font-size: rem(12px);
-    line-height: rem(36px);
-    padding: 0 rem(24px);
-    
+  background-color: $clr3;
+  font-size: rem(12px);
+  line-height: rem(36px);
+  padding: 0 rem(24px);
+
+  @include for-narrow-layout {
+    padding: 0 rem(12px);
+  }
+  @include for-wide-layout {
+    padding: 0 0 0 rem(16px);
+  }
+
+  .evidence-level-popup-msg {
+    width: 18ch;
+  }
+  .swap-side-btn {
+    height: 16px;
+  }
+
+  .results-header {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    box-shadow: 0px 1px 1px 0 rgb(95 95 95 / 17%);
+
+    .btn-container {
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 1300px) {
+      flex-direction: column;
+      height: 70px;
+      padding-bottom: 8px;
+    }
+    .btn-container {
+      width: 275px;
+      display: flex;
+      justify-content: space-around;
+
+      button {
+        border: 1px solid #484848;
+        border-radius: 50px;
+        padding: 4px 5px 3px;
+      }
+
+      .selected {
+        background: #205072;
+        color: $white;
+        font-weight: bold;
+      }
+    }
+    .checkbox-container {
+      display: flex;
+      //   position: absolute;
+      right: 0;
+      margin: 0 25px;
+
+      .custom-checkbox-checkbox {
+        height: 12px;
+        width: 12px;
+        cursor: pointer;
+
+        &::before {
+          width: 2px;
+          height: 6px;
+          left: 47%;
+        }
+        &::after {
+          width: 2px;
+          height: 3px;
+          left: 58%;
+        }
+      }
+      .bigger-radius {
+        border-radius: 3.5px;
+      }
+
+      @media (max-width: 1300px) {
+        position: unset;
+        margin-left: 8.5px;
+      }
+
+      @media (max-width: 900px) {
+        position: unset;
+        margin-left: 31.5px;
+      }
+
+      .checkbox-title {
+        font-size: 14px;
+        margin-left: 4px;
+        color: $clr1;
+        margin-top: 1px;
+      }
+
+      .tooltip-content {
+        width: 300px;
+        padding: 10px;
+      }
+
+      .tooltip-trigger {
+        position: absolute;
+        top: 5px;
+        right: -22px;
+        color: $clr1;
+      }
+      .diff-badge {
+        height: 18px;
+        margin-left: 5px;
+        transform: translateY(9px);
+        color: blue;
+        background-color: $yellow;
+      }
+    }
+  }
+
+  &-header {
+    display: none;
+    align-items: center;
+    box-shadow: $slight-border-bottom;
+    color: $clr12;
+    user-select: none;
+    height: 50px;
+
     @include for-narrow-layout {
-        padding: 0 rem(12px);
-    }
-    @include for-wide-layout {
-        padding: 0 0 0 rem(16px);
+      display: flex;
     }
 
-    .evidence-level-popup-msg {
-        width: 18ch;
-    }
-    .swap-side-btn {
-        height: 16px;
-    }
+    &-item {
+      display: flex;
+      align-items: center;
 
-    .results-header{
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 40px;
-        box-shadow: 0px 1px 1px 0 rgb(95 95 95 / 17%);
-
-        @media (max-width: 1300px){
-            flex-direction: column;
-            height: 70px;
-            padding-bottom: 8px;
-        }
-        .btn-container{
-            width: 275px;
-            display: flex;
-            justify-content: space-around;
-
-            button{
-                border: 1px solid #484848;
-                border-radius: 50px;
-                padding: 4px 5px 3px;
-            }
-
-            .selected{
-                background: #205072;
-                color: $white;
-                font-weight: bold;
-            }
-        }
-        .checkbox-container{
-            display: flex;
-            position: absolute;
-            right: 0;
-            margin: 0 25px;
-
-            .custom-checkbox-checkbox {
-                height: 12px;
-                width: 12px;
-
-                &::before {
-                    width: 2px;
-                    height: 6px;
-                    left: 47%;
-                }
-                &::after {
-                    width: 2px;
-                    height: 3px;
-                    left: 58%;
-                }
-            }
-            .bigger-radius {
-                border-radius: 3.5px;
-            }
-
-            @media (max-width: 1300px){
-                position: unset;
-                margin-left: 8.5px;
-            }
-
-            @media (max-width: 900px){
-                position: unset;
-                margin-left: 31.5px;
-            }
-
-            .checkbox-title{
-                font-size: 14px;
-                margin-left: 4px;
-                color: $clr1;
-                margin-top: 1px;
-            }
-
-            .tooltip-content{
-                width: 300px;
-                padding: 10px;
-            }
-
-            .tooltip-trigger{
-                position: absolute;
-                top: 5px;
-                right: -22px;
-                color: $clr1
-            }
-            .diff-badge{
-                height: 18px;
-                margin-left: 5px;
-                transform: translateY(9px);
-                color: blue;
-                background-color: $yellow;
-            }
-        }
-    }
-
-    &-header {
-        display: none;
-        align-items: center;
-        box-shadow: $slight-border-bottom;
-        color: $clr12;
-        user-select: none;
-        height: 50px;
-        
+      &:first-child {
+        flex-basis: 46.66%;
+        margin-left: 7%;
+      }
+      &:nth-child(2) {
+        flex-basis: 33.33%;
         @include for-narrow-layout {
-            display: flex;
+          flex-basis: 25%;
         }
-
-        &-item {
-            display: flex;
-            align-items: center;
-            
-            &:first-child {
-                flex-basis: 46.66%;
-                margin-left: 7%;
-            }
-            &:nth-child(2) {
-                flex-basis: 33.33%;
-                @include for-narrow-layout {
-                    flex-basis: 25%;
-                }
-                @include for-wide-layout {
-                    flex-basis: 33.33%;
-                }
-            }
-            &:nth-child(3) {
-                flex-basis: auto;
-                min-width: max-content;
-            }
-            & > label {
-                cursor: pointer;
-            }
-            & > *:not(:last-child), .sort-icon {
-                margin-inline-end: rem(5px);
-            }
-            .tooltip-trigger {
-                cursor: help;
-                display: inline-block;
-                transform: translateY(2px);
-            }
-            .clickable{
-                cursor: pointer;
-                display: inline-block;
-                transform: translateY(2px);
-            }
-            .swap-side-icon {
-                transform: rotateZ(90deg);
-            }
-            .loe-tootltip-header{
-                font-weight: bold;
-                margin-block-end: 5px;
-                color: $clr1;
-            }
-
-            .mt{
-                margin-block-start: 5px;
-            }
+        @include for-wide-layout {
+          flex-basis: 33.33%;
         }
-        .tooltip-content {
-            padding: rem(16px) rem(14px);
-            color: $clr-txt-darker;
-            user-select: text;
-            
-            ol {
-                max-width: 28ch;
-                list-style: decimal;
-                margin-inline-start: rem(16px);
+      }
+      &:nth-child(3) {
+        flex-basis: auto;
+        min-width: max-content;
+      }
+      & > label {
+        cursor: pointer;
+      }
+      & > *:not(:last-child),
+      .sort-icon {
+        margin-inline-end: rem(5px);
+      }
+      .tooltip-trigger {
+        cursor: help;
+        display: inline-block;
+        transform: translateY(2px);
+      }
+      .clickable {
+        cursor: pointer;
+        display: inline-block;
+        transform: translateY(2px);
+      }
+      .swap-side-icon {
+        transform: rotateZ(90deg);
+      }
+      .loe-tootltip-header {
+        font-weight: bold;
+        margin-block-end: 5px;
+        color: $clr1;
+      }
 
-                li:not(:last-child) {
-                    margin-block-end: rem(12px);
-                }
-            }
-            .recommendation-tooltip {
-                max-width: 200px;
-
-                .d-block {
-                    margin-block-end: rem(8px);
-                }
-                .highlight {
-                    color: $clr1;
-                    font-weight: bold;
-                }
-                .all-rec{
-                    font-weight: bold;
-                    text-decoration: underline;
-
-                }
-            }
-        }
+      .mt {
+        margin-block-start: 5px;
+      }
     }
-    .show-pos-supp-btn{
-        display: block;
-        margin: 0 auto;
-        border-radius: 100px;
-        padding: 0.4rem 1rem;
-        background-color: $clr11;
-        color: #FFFFFF;
-        border: 2px solid $clr11;
-        box-shadow: none;
-        margin-block-start: 11px;
-        pointer-events: all;
+    .tooltip-content {
+      padding: rem(16px) rem(14px);
+      color: $clr-txt-darker;
+      user-select: text;
+
+      ol {
+        max-width: 28ch;
+        list-style: decimal;
+        margin-inline-start: rem(16px);
+
+        li:not(:last-child) {
+          margin-block-end: rem(12px);
+        }
+      }
+      .recommendation-tooltip {
+        max-width: 200px;
+
+        .d-block {
+          margin-block-end: rem(8px);
+        }
+        .highlight {
+          color: $clr1;
+          font-weight: bold;
+        }
+        .all-rec {
+          font-weight: bold;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+  .show-pos-supp-btn {
+    display: block;
+    margin: 0 auto;
+    border-radius: 100px;
+    padding: 0.4rem 1rem;
+    background-color: $clr11;
+    color: #ffffff;
+    border: 2px solid $clr11;
+    box-shadow: none;
+    margin-block-start: 11px;
+    pointer-events: all;
+    display: flex;
+    margin-block-end: 7px;
+
+    p {
+      margin-top: 7px;
+    }
+  }
+  .loading {
+    opacity: 0.5;
+
+    .loader {
+      width: 20px;
+    }
+    p {
+      margin-top: 3px;
+      margin-right: 8px;
+    }
+  }
+  &-list-item {
+    box-shadow: $slight-border-bottom;
+
+    &.boosters-opener {
+      font-size: rem(14px);
+      padding: rem(6px) 0;
+
+      .tour-btn {
+        text-transform: capitalize;
+        text-decoration: underline;
+      }
+      .close-icon {
+        display: inline-block;
+        height: 14px;
+      }
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .checkbox-container-search {
+    .checkbox-container {
+      position: unset;
+      margin-left: 31.5px;
+      text-align: center;
+      flex-direction: column;
+      margin: 0 25px;
+      padding-top: 15px;
+      > div {
         display: flex;
-        margin-block-end: 7px;
+        justify-content: center;
+      }
+      .custom-checkbox-checkbox {
+        height: 12px;
+        width: 12px;
 
-        p{
-            margin-top: 7px;
+        &::before {
+          width: 2px;
+          height: 6px;
+          left: 47%;
         }
+        &::after {
+          width: 2px;
+          height: 3px;
+          left: 58%;
+        }
+      }
+      .bigger-radius {
+        border-radius: 3.5px;
+      }
+      .checkbox-instructions {
+        font-weight: bold;
+        padding-top: 5px;
+      }
+
+      .checkbox-title {
+        font-size: 14px;
+        margin-left: 4px;
+        color: $clr1;
+        margin-top: 1px;
+      }
+
+      .diff-badge {
+        height: 18px;
+        margin-left: 5px;
+        transform: translateY(2px);
+        color: blue;
+        background-color: $yellow;
+      }
     }
-    .loading{
-        opacity: 0.5;
-
-        .loader{
-            width: 20px;
-        }
-        p{
-            margin-top: 3px;
-            margin-right: 8px;
-        }
-    }
-    &-list-item {
-        box-shadow: $slight-border-bottom;
-
-        &.boosters-opener {
-            font-size: rem(14px);
-            padding: rem(6px) 0;
-
-            .tour-btn {
-                text-transform: capitalize;
-                text-decoration: underline;
-                
-            }
-            .close-icon {
-                display: inline-block;
-                height: 14px;
-            }
-        }
-    }
+  }
 }

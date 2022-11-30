@@ -28,7 +28,7 @@
           </tooltip>
         </div>
         <ul class="search-engine-search-materials" :class="{ empty: !materials.length }">
-          <tooltip v-for="(result, idx) in formatedMaterials" :key="idx" on="focus" wrap-el="li" closable left>
+          <tooltip v-for="(result, idx) in formatedMaterials" :key="idx" on="focus" wrap-el="li" closable bottomLeft>
             <template #close-icon>
               <close-icon :size="16" title="" />
             </template>
@@ -961,14 +961,21 @@ export default {
       // }
       this.isPBLoading = true;
       this.isLoading = true;
+
       const prms = [this.getInteractions(), this.getDBankInteractions()];
 
       await Promise.all(prms);
-      window.scrollTo(0, this.$refs.interactionHeaderRef.offsetTop - 50);
       this.isLoading = false;
 
       this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions);
       await this.getPositives();
+      window.scrollTo({
+        top: this.$refs.interactionHeaderRef.offsetTop - 50,
+        left: 0,
+        behavior: 'smooth'
+      });
+      // window.scrollTo(0, this.$refs.interactionHeaderRef.offsetTop - 50);
+
       this.isPBLoading = false;
 
       // Old why, getting all info at once

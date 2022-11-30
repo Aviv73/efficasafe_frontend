@@ -48,9 +48,10 @@
     }
     .evidence-level {
       display: inline-block;
-      margin-inline-end: 3px;
+      // margin-inline-end: 3px;
     }
   }
+
   .negative-msg {
     padding-bottom: 30px;
     padding-left: 16px;
@@ -215,6 +216,12 @@
   .interaction-column {
     flex-direction: column;
   }
+  .label-interaction-preview-group-header span:nth-child(2) {
+    padding-inline-start: 20px;
+  }
+  .label-interaction-preview-group-header span:nth-child(3) {
+    margin-inline-end: 22px;
+  }
 
   .horizontal-list-list {
     &.optimizers-view {
@@ -265,6 +272,8 @@
       padding-bottom: 0;
       .interaction-capsules {
         margin-bottom: 0;
+        transform: translateX(-7px);
+
         .interaction-capsules-side {
           margin-bottom: 0;
           // padding-bottom: 0;
@@ -282,13 +291,22 @@
             }
           }
         }
+        .small-data-not-advised {
+          transform: translate(-17px, 0px);
+        }
         // justify-content: space-between;
         padding: 0 10px;
         .recomendation {
+          padding-inline-start: 5px;
+          // background-color: red;
+        }
+        .recomendation-not-advised {
           padding-inline-start: 20px;
         }
+
         .small-data {
           padding-inline-end: 20px;
+          margin-inline-start: -38px;
         }
         // .interaction-preview {
         //   .de-activator {
@@ -300,9 +318,10 @@
 
         // }
         .evidence-level {
-          margin-inline-end: 7px;
+          // margin-inline-end: 7px;
         }
         margin-bottom: 10px;
+        // justify-content: space-between;
         justify-content: space-around;
         gap: 7px;
         .small-data {

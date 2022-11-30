@@ -5,7 +5,7 @@
   position: relative;
 
   h1 {
-    font-size: rem(30px);
+    font-size: rem(26px);
     font-weight: 500;
     text-align: center;
     line-height: initial;
@@ -180,6 +180,7 @@
     background-color: $clr6;
     padding: rem(12px) 5px;
     position: relative;
+    color: #205072;
 
     @include for-narrow-layout {
       padding: rem(31.5px) 0;

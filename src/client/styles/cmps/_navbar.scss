@@ -18,8 +18,25 @@
     display: flex;
     align-items: center;
     gap: rem(35px);
+    height: 30px;
+    padding-bottom: 2px;
+
+    .nav-search {
+      display: flex;
+      align-items: center;
+      a {
+        display: flex;
+        align-items: center;
+      }
+
+      img {
+        width: 18px;
+      }
+    }
+
     @media (max-width: $break-narrow) {
       gap: 10px;
+      padding-bottom: 0px;
     }
 
     .logo-mobile .logo-name {
@@ -30,8 +47,17 @@
       display: flex;
       align-items: center;
       gap: rem(24px);
+      li {
+        position: relative;
+        top: 3px;
+      }
+
       &.last-part {
         margin-inline-start: auto;
+
+        .user-updated {
+          margin-right: 5px;
+        }
       }
     }
   }
@@ -39,10 +65,11 @@
   .logo {
     position: relative;
     // background-color: #e2f0f0;
-    height: 30px;
+    // height: 30px;
     display: flex;
+    // padding: 2px 0px 7px 0px;
     gap: rem(8px);
-    padding: 7px;
+    // padding: 7px;
     padding-inline-end: rem(15px);
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
@@ -71,7 +98,7 @@
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    background-color: red;
+    background-color: $red;
     color: $white;
     position: absolute;
     top: 11px;
@@ -87,7 +114,9 @@
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    background-color: red;
+    background-color: $red;
+    color: $white;
+
     // position: absolute;
     // top: 5px;
     // left: -18px;
@@ -164,7 +193,7 @@
   .navbar-user-dropdown {
     display: flex;
     flex-direction: column;
-    background-color: #e2f0f0;
+    background-color: #fafafa;
     box-shadow: 0px 0px 10px rgba($black, 0.25);
     border-radius: 3px;
     font-size: rem(14px);
@@ -259,10 +288,14 @@
     }
     @media (max-width: $break-narrow) {
       .list-logo-container {
+        // display: flex;
+        // align-items: center;
+        // justify-content: space-between;
+        // padding-inline-end: rem(13px);
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding-inline-end: rem(13px);
+        flex-direction: row-reverse;
+        padding: rem(9px);
+        // 0px 0.8125rem
       }
       // display: inline-flex;
       flex-direction: column;
