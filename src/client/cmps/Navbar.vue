@@ -84,7 +84,7 @@
           </ul>
         </template>
 
-        <div class="nav-search">
+        <div v-if="isScreenNarrow" class="nav-search">
           <router-link to="/search">
             <img src="@/client/assets/imgs/search-icon-header.png" alt="Search" />
           </router-link>
