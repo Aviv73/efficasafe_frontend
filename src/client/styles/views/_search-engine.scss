@@ -149,14 +149,20 @@
         background-color: #fff;
       }
     }
-    &-materials {
+    .search-engine-search-materials {
       align-self: stretch;
+      display: flex;
+      flex-wrap: wrap;
       font-family: roboto-medium, sans-serif;
       font-weight: 500;
       font-size: rem(14px);
       line-height: rem(17px);
       margin-block-start: rem(10px);
       margin-block-end: rem(10px);
+
+      > * {
+        width: 50%;
+      }
 
       @include for-narrow-layout {
         margin-block-start: unset;

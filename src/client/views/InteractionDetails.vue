@@ -21,14 +21,14 @@
           <h1 class="v-tour-interaction-step-4" v-if="side1Material && side2Material">Interaction of {{ side1Material && side1Material.name }} & {{ side2Material && side2Material.name }}</h1>
           <h1 v-else>Interaction</h1>
           <span class="interaction-details-header-actions">
-            <PlayTourBtn class="v-tour-interaction-step-4" :dontOpen="isScreenNarrow" @click.native="startTour" align="right"/>
+            <PlayTourBtn class="v-tour-interaction-step-4" :dontOpen="isScreenNarrow" @click.native="startTour" align="right" />
 
             <button class="print-btn print-btn-icon no-print" title="Print" @click="printWindow()">
               <printer-icon title="" />
             </button>
             <button class="share-btn share-btn-icon no-print" title="Share" @click="isShareModalActive = true">
               <!-- <share-variant-icon title="" :size="isScreenNarrow ? 18 : 24" /> -->
-              <share-variant-icon title="" />
+              <share-variant-icon title="" :size="22" />
             </button>
           </span>
         </div>
@@ -165,6 +165,10 @@
             <template #header>
               <h3 class="subheader flex-align-center">
                 Pharmacokinetics
+                <span class="de-activator">
+                  <chevron-up-icon class="opened" title="" />
+                  <chevron-down-icon class="closed" title="" />
+                </span>
                 <span class="badge badge-red" v-if="releventSide1PathwaysByColors.red">
                   {{ releventSide1PathwaysByColors.red }}
                 </span>
@@ -173,10 +177,6 @@
                 </span>
                 <span class="badge badge-green" v-if="releventSide1PathwaysByColors.green">
                   {{ releventSide1PathwaysByColors.green }}
-                </span>
-                <span class="de-activator">
-                  <chevron-up-icon class="opened" title="" />
-                  <chevron-down-icon class="closed" title="" />
                 </span>
               </h3>
             </template>
@@ -505,8 +505,9 @@ export default {
       else material = this.side2Material;
 
       if (material.isUnderStudy) return;
+      console.log('this.interaction.side1Material', this.interaction.side1Material);
 
-      let routeData = this.$router.resolve({ path: `/material/${material._id}` });
+      let routeData = this.$router.resolve({ path: `/material/${material._id}?name=${this.interaction.side1Material.name}` });
       window.open(routeData.href, '_blank');
     },
     checkIsPartOfSide1(name) {

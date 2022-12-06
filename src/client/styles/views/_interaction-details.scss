@@ -181,6 +181,9 @@
     padding: rem(12px) 5px;
     position: relative;
     color: #205072;
+    .invisible-header {
+      display: none;
+    }
 
     @include for-narrow-layout {
       padding: rem(31.5px) 0;
@@ -354,9 +357,9 @@
       padding: 5px 8px;
     }
     .capsules {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
+      // position: absolute;
+      // left: 50%;
+      // transform: translateX(-50%);
       margin-block-end: 0;
 
       @include for-narrow-layout {
@@ -457,6 +460,11 @@
     }
     .summary-container p {
       margin-block-end: rem(12px);
+    }
+    .review-of-studies {
+      .de-activator {
+        margin-inline-start: 6px;
+      }
     }
     .review-of-studies p {
       margin-block-end: rem(12px);
