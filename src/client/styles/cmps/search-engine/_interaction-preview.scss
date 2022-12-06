@@ -48,6 +48,8 @@
     }
     .evidence-level {
       display: inline-block;
+      // position: relative;
+      // right: 0px;
       // margin-inline-end: 3px;
     }
   }
@@ -216,6 +218,10 @@
   .interaction-column {
     flex-direction: column;
   }
+  .refs-length {
+    position: absolute;
+    right: 30px;
+  }
   .label-interaction-preview-group-header span:nth-child(2) {
     padding-inline-start: 20px;
   }
@@ -241,6 +247,9 @@
             }
           }
         }
+        .recomendation {
+          margin-inline-start: -12px !important;
+        }
         .recomendation,
         .evidence-level {
           display: none !important;
@@ -253,9 +262,19 @@
           }
           .interaction-preview {
             .interaction-preview-header {
+              .small-data {
+                // background-color: red;
+                .evidence-level {
+                  position: absolute;
+                  right: 0px;
+                  right: 30px;
+                }
+              }
               .recomendation,
               .evidence-level {
                 display: block !important;
+                margin-inline-start: 13px;
+                // background-color: red;
               }
               .tooltip-box {
                 display: flex;
@@ -297,11 +316,11 @@
         // justify-content: space-between;
         padding: 0 10px;
         .recomendation {
-          padding-inline-start: 5px;
+          padding-inline-start: rem(43px);
           // background-color: red;
         }
         .recomendation-not-advised {
-          padding-inline-start: 20px;
+          padding-inline-start: 30px;
         }
 
         .small-data {
@@ -318,11 +337,11 @@
 
         // }
         .evidence-level {
-          // margin-inline-end: 7px;
+          margin-inline-end: 7px;
         }
         margin-bottom: 10px;
         // justify-content: space-between;
-        justify-content: space-around;
+        justify-content: space-between;
         gap: 7px;
         .small-data {
           margin-inline-start: 20px;

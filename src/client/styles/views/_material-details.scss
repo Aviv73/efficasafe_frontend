@@ -100,7 +100,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 24px;
+      margin: 24px;
 
       img {
         width: 18px;
@@ -163,6 +163,7 @@
       position: absolute;
       right: 0px;
       top: 16px;
+      color: #205072;
 
       @media (max-width: $break-narrow) {
         // top: 16px;
@@ -179,6 +180,7 @@
     &-at {
       font-size: rem(14px);
       color: #5a6770;
+
       margin-bottom: 5px;
       @media (max-width: $break-narrow) {
         margin-top: 22px;
@@ -191,6 +193,8 @@
       line-height: 37px;
       text-transform: capitalize;
       color: #133146;
+      color: #205072;
+
       margin-bottom: 5px;
       @media (max-width: $break-narrow) {
         font-size: 26px;

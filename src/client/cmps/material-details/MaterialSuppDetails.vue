@@ -2,9 +2,9 @@
   <section style="width: 100%">
     <aside v-if="material" class="material-details-nav" :class="{ show: showNav }">
       <button class="drawer-btn" @click="showNav = false" v-if="isScreenNarrow"><arrow-left-icon /></button>
-      <router-link to="/" class="material-details-nav-logo">
+      <!-- <router-link to="/" class="material-details-nav-logo">
         <img :src="require('@/client/assets/imgs/flat-logo.png')" alt="Logo" />
-      </router-link>
+      </router-link> -->
       <div class="material-details-nav-header">
         <img :src="require(`@/client/assets/icons/types/${getTypeImgName(material.type)}.svg`)" alt="" />
         <h3 @click="goTo('Title')">{{ material.name }}</h3>
@@ -44,7 +44,9 @@
         <share-variant-icon v-else title="" />
       </button>
       <button class="drawer-btn" @click="showNav = true" v-if="isScreenNarrow"><menu-icon title="" /></button>
-      <h1 ref="Title" class="material-details-content-name">{{ material.name }}</h1>
+      <h1 ref="Title" class="material-details-content-name">
+        {{ material.name }} - <span>{{ searchedMaterialName }}</span>
+      </h1>
       <!-- <div v-if="aliasesToShow.length" class="material-details-content-aliases-container">
                 <p v-for="alias in aliasesToShow" :key="alias">{{alias}}</p>
             </div> -->
@@ -222,6 +224,9 @@ export default {
     originalMaterial: {
       type: Object,
       required: true
+    },
+    searchedMaterialName: {
+      type: String
     }
   },
   data() {

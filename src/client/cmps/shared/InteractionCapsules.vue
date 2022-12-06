@@ -18,8 +18,11 @@
       @mouseleave="showTitle(null)"
       v-if="!showDraftName && !isMaterialGroup"
     >
-      <span v-if="isInteractionDetails" :class="{ pointer: isLink, 'clip-txt': isScreenNarrow }" @click="goToMaterial(side1NameToShow)">{{ isScreenNarrow ? side1NameToShow.slice(0, 15) : side1NameToShow }}</span>
-      <span v-else :title="side1NameToShow" :class="{ 'clip-txt': isScreenNarrow }">{{ isScreenNarrow ? side1NameToShow.slice(0, 16) : side1NameToShow }}</span>
+      <span v-if="isInteractionDetails" :class="{ pointer: isLink, 'clip-txt': isScreenNarrow }" @click="goToMaterial(side1NameToShow)">{{ side1NameToShow.slice(0, 16) }}</span>
+      <span v-else :title="side1NameToShow" :class="{ 'clip-txt': isScreenNarrow }">{{ side1NameToShow.slice(0, 16) }}</span>
+      <!-- <span v-if="isInteractionDetails" :class="{ pointer: isLink, 'clip-txt': isScreenNarrow }" @click="goToMaterial(side1NameToShow)">{{ isScreenNarrow ? side1NameToShow.slice(0, 15) : side1NameToShow }}</span>
+      <span v-else :title="side1NameToShow" :class="{ 'clip-txt': isScreenNarrow }">{{ isScreenNarrow ? side1NameToShow.slice(0, 16) : side1NameToShow }}</span> -->
+
       <!-- old title - "titleSide1" -->
       <svg xmlns="http://www.w3.org/2000/svg" class="cap cap-left" viewBox="0 0 24.192 48.001">
         <path
@@ -47,10 +50,14 @@
           transform="translate(24.192 48.001) rotate(180)"
         />
       </svg>
-      <span v-if="isInteractionDetails" :class="{ pointer: isLink, 'clip-txt': isScreenNarrow }" @click="goToMaterial(draftNameContent)"> {{ isScreenNarrow ? trimmedDraftNameContent : draftNameContent }} </span>
+      <span v-if="isInteractionDetails" :class="{ pointer: isLink, 'clip-txt': isScreenNarrow }" @click="goToMaterial(draftNameContent)"> {{ draftNameContent }} </span>
+      <span v-else :title="titleSide2" :class="{ 'clip-txt': isScreenNarrow }">
+        {{ draftNameContent }}
+      </span>
+      <!-- <span v-if="isInteractionDetails" :class="{ pointer: isLink, 'clip-txt': isScreenNarrow }" @click="goToMaterial(draftNameContent)"> {{ isScreenNarrow ? trimmedDraftNameContent : draftNameContent }} </span>
       <span v-else :title="titleSide2" :class="{ 'clip-txt': isScreenNarrow }">
         {{ isScreenNarrow ? trimmedDraftNameContent : draftNameContent }}
-      </span>
+      </span> -->
       <svg xmlns="http://www.w3.org/2000/svg" class="cap cap-right" viewBox="0 0 24.192 48.001">
         <path
           :fill="color"
