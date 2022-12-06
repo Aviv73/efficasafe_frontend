@@ -89,10 +89,14 @@
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <infinite-loading
+              <div class="loader-container">
+                <Loader class="loader" v-if="isLoadingChunk"/>
+                <p class="loader" v-else>No more materials...</p>
+              </div>
+              <!-- <infinite-loading
                 @infinite="infiScrollHandler"
                 force-use-infinite-wrapper=".infinite-wrapper"
-              ></infinite-loading>
+              ></infinite-loading> -->
             </v-list-item-group>
           </v-list>
         </v-card>
@@ -116,7 +120,10 @@
 import { eventBus, EV_material_unselected, EV_cleanSelection, EV_primary_material_changed, EV_refresh_root_tree_view } from '@/cms/services/eventBus.service';
 import materialTreeView from '@/cms/cmps/common/MaterialTreeView';
 import autocomplete from '@/cms/cmps/Autocomplete';
-import InfiniteLoading from 'vue-infinite-loading';
+// import InfiniteLoading from 'vue-infinite-loading';
+import Loader from '@/client/cmps/common/icons/Loader.vue';
+
+
 
 export default {
   currPage: 0,
@@ -148,7 +155,10 @@ export default {
         sortBy: [ 'type', 'name' ],
         isDesc: [ true, false ]
       },
-      primaryMaterialIds: []
+      primaryMaterialIds: [],
+      // materialsToShow: [],
+      isLoadingChunk: false,
+      currPage: -1
     };
   },
   computed: {
@@ -204,31 +214,67 @@ export default {
     },
     async infiScrollHandler($state) {
       this.$options.currPage++;
-      await this.loadMaterials(this.sortBy);
-
-      if (this.materials.length < 20) $state.complete();
+      const newMaterials = await this.loadMaterials(this.sortBy);
+      this.materialsToShow.push(...newMaterials);
+      if (newMaterials.length < 20) {
+        $state.complete();
+        this.restLoadChunk = $state.reset;
+      }
       else {
+        this.restLoadChunk = null;
         setTimeout(() => {
           $state.loaded();
         }, 100);
       }
     },
+    async loadChunk() {
+      // if (this.isLoadingChunk) return;
+      this.isLoadingChunk = true;
+      this.currPage++;
+      const currSearch = this.search; // for case of change of async
+      const oldMatireals = JSON.parse(JSON.stringify(this.materials));
+      const newMaterials = await this.loadMaterials({...this.sortBy, page: this.currPage});
+      let combinedMaterials = []
+      if (currSearch !== this.search) {
+        return;
+        }
+      combinedMaterials = [...oldMatireals, ...newMaterials];
+      // else this.currPage = -1;
+      this.$store.commit('setMaterials', { materials: combinedMaterials });
+      this.$store.commit('setMaterialCount', { total: combinedMaterials.length });
+      if (newMaterials.length < 20) {
+        this.isLoadingChunk = false;
+      } else if (this.activeTab === 'materials') setTimeout(() => this.loadChunk(), 2000);
+    },
     async loadMaterials(sortBy = {}) {
-      const currPage = this.search ? 0 : this.$options.currPage;
+      // const currPage = this.search ? 0 : this.$options.currPage;
+      const currPage = this.$options.currPage;
       const criteria = {
-        ...sortBy,
         page: currPage,
-        q: this.search
+        q: this.search,
+        ...sortBy,
       };
 
-      await this.$store.dispatch({ type: 'loadMaterials', criteria });
+      return await this.$store.dispatch({ type: 'loadMaterials', criteria });
     },
     handleNavigation(activeTab) {
       this.activeTab = activeTab;
+      if (activeTab === 'materials') this.loadChunk();
     },
     filterMaterials(val) {
       this.search = val;
-      this.loadMaterials(this.sortBy);
+
+      // this.$options.currPage = 0;
+      // this.materialsToShow = [];
+      // this.restLoadChunk?.();
+      // this.loadMaterials(this.sortBy);
+
+      this.currPage = -1;
+      this.$store.commit('setMaterials', { materials: [] });
+      this.$store.commit('setMaterialCount', { total: 0 });
+
+
+      this.loadChunk(this.sortBy);
     },
     toggleFromSelection(material) {
       const idx = this.selection.findIndex(
@@ -266,7 +312,7 @@ export default {
     }
   },
   created() {
-    this.loadMaterials(this.sortBy);
+    // this.loadMaterials(this.sortBy);
     eventBus.$on(EV_material_unselected, async ({ materialIds }) => {
       if (materialIds && materialIds.length) {
         const criteria = { materialId: materialIds };
@@ -298,7 +344,15 @@ export default {
   components: {
     materialTreeView,
     autocomplete,
-    InfiniteLoading
-  }
+    // InfiniteLoading,
+    Loader
+  },
+  // watch: {
+  //   search() {
+  //     this.$options.currPage = -1;
+  //     this.materialsToShow = [];
+  //     this.restLoadChunk?.();
+  //   }
+  // }
 };
 </script>
