@@ -1039,7 +1039,7 @@ export default {
       this.$store.commit('setRedPositiveSupp', { redIds: idsToTurnRed });
       this.idsToTurnRed = idsToTurnRed;
       this.positiveInteractions = await this.removeDupNonPositives(interactions);
-      this.suppPositiveInteractions = this.addCacheKey(suppInteractions);
+      this.suppPositiveInteractions = await this.addCacheKey(suppInteractions);
       this.suppPositiveInteractions.forEach(int => {
         int.vInteractions.forEach(vInt => {
           const interactionName = vInt.side1Material._id === int.side2Id ? `${vInt.side2Material.name} & ${vInt.side1Material.name}` : `${vInt.side1Material.name} & ${vInt.side2Material.name}`;
@@ -1107,7 +1107,8 @@ export default {
               id: [...idsToSerch, idToCompare],
               page: 0,
               limit: Number.MAX_SAFE_INTEGER,
-              materialCount: this.materialIds.length + 1
+              materialCount: this.materialIds.length + 1,
+              sortOpts: this.sortOptions
             };
             vInt.cacheKey = `/search/positive-boosters/${filterBy.id}/supps`;
             this.$nextTick(() => (vInt.mainMaterialName = int.name));
@@ -1116,6 +1117,7 @@ export default {
         );
         return currPrm;
       });
+      await Promise.all(prms);
       return interactions;
     },
     async getInteractions() {
