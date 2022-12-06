@@ -9,7 +9,7 @@
           <loader v-else/>
           <template v-if="$route.name === 'Boosters'">
               <h3 v-if="listData.loadingTime < 8">Formulating your protocol...</h3>
-              <h3 v-else>Sorting your results...</h3>
+              <h3 v-else>A few more seconds, sorting your results...</h3>
               <!-- <template v-else class="loading-err-container flex-center flex-coloumn">
                   <h3>Formulating is taking more time than expected.</h3>
                   <h3>This could happen if the network connection is poor</h3>
