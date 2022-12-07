@@ -52,7 +52,7 @@
               <material-interactions-preview :materials="result.materials" :userQuery="result.txt" :disabled="result.isIncluded" :interactions="getMaterialInteractions(result)" :isOneMaterial="materials.length === 1" />
             </template>
 
-            <template #img>
+            <template #preview>
               <li class="search-engine-search-materials-chip clip-txt activator">
                 <img :src="getResultIcon(result)" alt="" :class="{ disabled: result.isIncluded }" />
                 <p :class="{ disabled: result.isIncluded }">{{ result.txt }}</p>
@@ -331,8 +331,7 @@ export default {
         if (!isSameSearch) {
           this.$store.commit('resetPosSupp');
           await this.getResults();
-        } 
-        else {
+        } else {
           //Search positive if there are non in the front already
           if (!this.positiveInteractions.length && !this.suppPositiveInteractions.length) {
             // this.isLoading = true;
@@ -1029,7 +1028,6 @@ export default {
         int.vInteractions.forEach(vInt => {
           const interactionName = vInt.side1Material._id === int.side2Id ? `${vInt.side2Material.name} & ${vInt.side1Material.name}` : `${vInt.side1Material.name} & ${vInt.side2Material.name}`;
           vInt.name = interactionName;
-
         });
         int.vInteractions = this.sortInteractions(int.vInteractions, true);
       });

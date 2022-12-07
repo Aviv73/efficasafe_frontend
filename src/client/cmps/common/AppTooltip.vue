@@ -2,11 +2,11 @@
   <section class="app-tooltip">
     <!-- <img  :src="require('@/assets/tooltip.svg')" alt="" /> -->
     <div ref="elImg" @click="handleHover($event)">
-      <slot name="img"></slot>
+      <slot name="preview"></slot>
     </div>
     <!-- <div ref="elMsg" class="msg">{{ $t(msg) }}</div> -->
     <div v-show="isShown" ref="elMsg" class="msg">
-      <div @click.stop="toggleClose" class="close-btn">
+      <div @click="toggleClose" class="close-btn">
         <close-icon class="black" :size="16" title="" />
       </div>
 
@@ -45,6 +45,7 @@ export default {
   methods: {
     toggleClose() {
       this.isShown = false;
+      console.log(this.isShown);
     },
     // handleHover(ev) {
     //   eventBus.$emit('tooltip-open');
@@ -130,11 +131,14 @@ export default {
 <style lang="scss" scoped>
 .app-tooltip {
   position: relative;
+  width: 50%;
 
   .close-btn {
     position: absolute;
     top: 24px;
     right: 20px;
+    cursor: pointer;
+    z-index: 5;
   }
 
   .msg {
