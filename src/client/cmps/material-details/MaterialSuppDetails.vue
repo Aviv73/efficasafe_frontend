@@ -45,7 +45,7 @@
       </button>
       <button class="drawer-btn" @click="showNav = true" v-if="isScreenNarrow"><menu-icon title="" /></button>
       <h1 ref="Title" class="material-details-content-name">
-        {{ material.name }} - <span>{{ searchedMaterialName }}</span>
+        {{ material.name }}<span class="material-details-content-name-search" v-if="searchedMaterialName"> - {{ searchedMaterialName }}</span>
       </h1>
       <!-- <div v-if="aliasesToShow.length" class="material-details-content-aliases-container">
                 <p v-for="alias in aliasesToShow" :key="alias">{{alias}}</p>
