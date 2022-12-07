@@ -45,7 +45,6 @@ export default {
   methods: {
     toggleClose() {
       this.isShown = false;
-      console.log(this.isShown);
     },
     // handleHover(ev) {
     //   eventBus.$emit('tooltip-open');
