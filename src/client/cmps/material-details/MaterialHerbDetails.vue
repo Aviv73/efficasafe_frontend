@@ -38,7 +38,7 @@
           <share-variant-icon title="" :size="22" />
         </button>
         <h1 ref="Title" class="material-details-content-name">
-          {{ material.name }}<span class="material-details-content-name-search" v-if="searchedMaterialName"> - {{ searchedMaterialName }}</span>
+          {{ material.name }}
         </h1>
       </div>
 

@@ -5,10 +5,10 @@
         <span class="monitor-summary-header table-col">
           <span class="capsule">
             Ensure patient safety by monitoring these:
-            <span class="de-activator">
+            <!-- <span class="de-activator">
               <chevron-up-icon class="opened" title="" />
               <chevron-down-icon class="closed" title="" />
-            </span>
+            </span> -->
           </span>
         </span>
         <span class="table-col" />
@@ -89,8 +89,8 @@
 // import Collapse from '@/client/cmps/common/Collapse';
 
 // import CollapseToggleIcon from '@/client/cmps/common/icons/CollapseToggleIcon';
-import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
-import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
+// import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
+// import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
 
 export default {
   props: {
@@ -188,8 +188,8 @@ export default {
   },
   components: {
     // Collapse,
-    ChevronUpIcon,
-    ChevronDownIcon
+    // ChevronUpIcon,
+    // ChevronDownIcon
     // CollapseToggleIcon
   }
 };
