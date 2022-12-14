@@ -7,6 +7,10 @@
       | <router-link to="/privacy-statement" class="link">Privacy Statement</router-link>
       <p>Email: <a href="mailto:contact@efficasafe.com" class="link">contact@efficasafe.com</a></p>
     </small>
+    <small>
+      <p>11 Hatavor st. Tel-Aviv</p>
+      <p>Tel: +972544648228</p>
+    </small>
   </footer>
 </template>
 

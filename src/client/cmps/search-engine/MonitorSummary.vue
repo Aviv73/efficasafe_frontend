@@ -1,5 +1,45 @@
 <template>
   <section class="monitor-summary">
+    <template>
+      <div class="interaction-preview-header WTM-title table-row">
+        <span class="monitor-summary-header table-col">
+          <span class="capsule">
+            Ensure patient safety by monitoring these:
+            <!-- <span class="de-activator">
+              <chevron-up-icon class="opened" title="" />
+              <chevron-down-icon class="closed" title="" />
+            </span> -->
+          </span>
+        </span>
+        <span class="table-col" />
+        <span class="table-col" />
+      </div>
+    </template>
+    <template>
+      <div class="interaction-preview-content">
+        <ul class="monitor-summary-list">
+          <li v-if="generalTxt">
+            <span class="monitor-summary-list-header font-bold">General:</span>
+            {{ generalTxt | capitalize }}
+          </li>
+          <li v-if="labTestsTxt">
+            <span class="monitor-summary-list-header font-bold">Lab Tests:</span>
+            {{ labTestsTxt | capitalize }}
+          </li>
+          <li v-if="otherTestsTxt">
+            <span class="monitor-summary-list-header font-bold">Other Tests:</span>
+            {{ otherTestsTxt | capitalize }}
+          </li>
+          <li v-if="symptomsTxt">
+            <span class="monitor-summary-list-header font-bold">Symptoms:</span>
+            {{ symptomsTxt | capitalize }}
+          </li>
+        </ul>
+      </div>
+    </template>
+    <p class="monitor-summary-footer">This monitoring guidance is for Drug vs. Herb/Supplement interactions. Click each one for specifics. Drug-Drug monitoring specifics can be found on each Drug-Drug interaction page.</p>
+  </section>
+  <!-- <section class="monitor-summary">
     <collapse :isMonitorSummary="true">
       <template #header>
         <div class="interaction-preview-header WTM-title table-row">
@@ -42,15 +82,15 @@
         <collapse-toggle-icon />
       </template>
     </collapse>
-  </section>
+  </section> -->
 </template>
 
 <script>
-import Collapse from '@/client/cmps/common/Collapse';
+// import Collapse from '@/client/cmps/common/Collapse';
 
-import CollapseToggleIcon from '@/client/cmps/common/icons/CollapseToggleIcon';
-import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
-import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
+// import CollapseToggleIcon from '@/client/cmps/common/icons/CollapseToggleIcon';
+// import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
+// import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
 
 export default {
   props: {
@@ -147,10 +187,10 @@ export default {
     this.flatten(this.interactions);
   },
   components: {
-    Collapse,
-    ChevronUpIcon,
-    ChevronDownIcon,
-    CollapseToggleIcon
+    // Collapse,
+    // ChevronUpIcon,
+    // ChevronDownIcon
+    // CollapseToggleIcon
   }
 };
 </script>

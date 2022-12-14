@@ -149,8 +149,10 @@
         background-color: #fff;
       }
     }
-    &-materials {
+    .search-engine-search-materials {
       align-self: stretch;
+      display: flex;
+      flex-wrap: wrap;
       font-family: roboto-medium, sans-serif;
       font-weight: 500;
       font-size: rem(14px);
@@ -691,4 +693,13 @@
     transform: translate(100%, 0);
     opacity: 0;
   }
+}
+
+.screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(147, 145, 145, 0.055);
 }

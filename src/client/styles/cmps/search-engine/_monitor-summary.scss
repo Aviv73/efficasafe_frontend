@@ -1,51 +1,58 @@
 .monitor-summary {
-    font-size: rem(16px);
+  font-size: rem(16px);
+  line-height: rem(20px);
+  // font-family: roboto-medium, sans-serif;
+  // font-weight: 500;
+  color: $clr-txt-darker;
+
+  &-header {
+    padding: rem(10px) 0;
+    margin-inline-start: rem(30px);
+    margin-inline-end: rem(30px);
+
+    .capsule {
+      display: inline-block;
+      position: relative;
+      font-size: rem(18px);
+      color: $clr1;
+
+      .de-activator {
+        right: -24px;
+        top: calc(50% + 2px);
+      }
+    }
+  }
+  &-footer {
+    text-align: center;
+    padding: 10px 0px;
+  }
+  .WTM-title {
+    margin: rem(5px) 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  &-list {
+    color: rgba($clr1, 0.8);
     line-height: rem(20px);
-    font-family: roboto-medium, sans-serif;
-    font-weight: 500;
-    color: $clr-txt-darker;
+    font-family: roboto, sans-serif;
+    font-weight: normal;
+    letter-spacing: rem(0.07px);
+    padding: rem(20px) 0;
+    padding-inline-start: rem(30px);
+    padding-inline-end: rem(30px);
+
+    @include for-narrow-layout {
+      padding-inline-end: 14%;
+    }
 
     &-header {
-        padding: rem(10px) 0;
-        margin-inline-start: rem(30px);
-        margin-inline-end: rem(30px);
-        
-        .capsule {
-            display: inline-block;
-            position: relative;
-            font-size: rem(18px);
-            color: $clr1;
-
-            .de-activator {
-                right: -24px;
-                top: calc(50% + 2px);
-            }
-        }
-
+      color: rgba($clr-txt-dark, 0.8);
     }
-    .WTM-title{
-        margin: rem(5px) 0;
-    }
-    &-list {
-        color: rgba($clr1, .8);
-        line-height: rem(20px);
-        font-family: roboto, sans-serif;
-        font-weight: normal;
-        letter-spacing: rem(.07px);
-        padding: rem(20px) 0;
-        padding-inline-start: rem(30px);
-        padding-inline-end: rem(30px);
-        
-        @include for-narrow-layout {
-            padding-inline-end: 14%;
-        }
 
-        &-header {
-            color: rgba($clr-txt-dark, .8);
-        }
-
-        li:not(:last-child) {
-            margin-block-end: rem(4px);
-        }
+    li:not(:last-child) {
+      margin-block-end: rem(4px);
     }
+  }
 }

@@ -2,9 +2,9 @@
   <section style="width: 100%">
     <aside v-if="material" class="material-details-nav" :class="{ show: showNav }">
       <button class="drawer-btn" @click="showNav = false" v-if="isScreenNarrow"><arrow-left-icon /></button>
-      <router-link to="/" class="material-details-nav-logo">
+      <!-- <router-link to="/" class="material-details-nav-logo">
         <img :src="require('@/client/assets/imgs/flat-logo.png')" alt="Logo" />
-      </router-link>
+      </router-link> -->
       <div class="material-details-nav-header">
         <img :src="require(`@/client/assets/icons/types/${getTypeImgName(material.type)}.svg`)" alt="" />
         <h3 @click="goTo('Title')">{{ material.name }}</h3>
@@ -35,9 +35,11 @@
       <div>
         <button class="material-details-content-share-btn" @click="$emit('openShareModal')">
           <!-- <mobile-share-icon v-if="isScreenNarrow" title="" /> -->
-          <share-variant-icon title="" />
+          <share-variant-icon title="" :size="22" />
         </button>
-        <h1 ref="Title" class="material-details-content-name">{{ material.name }}</h1>
+        <h1 ref="Title" class="material-details-content-name">
+          {{ material.name }}<span class="material-details-content-name-search" v-if="userSearch && material.name !== userSearch"> - {{ userSearch }}</span>
+        </h1>
       </div>
 
       <button class="drawer-btn" @click="showNav = true" v-if="isScreenNarrow"><menu-icon title="" /></button>
@@ -80,8 +82,10 @@
       <section v-if="(material.indications && material.indications.length) || material.medicinalUsesTxt" class="material-details-content-section">
         <h3 ref="Medicinal uses">Medicinal uses</h3>
         <p v-if="material.indications && material.indications.length">{{ material.indications.join(', ') }}</p>
-        <br />
-        <p v-if="material.medicinalUsesTxt" v-html="material.medicinalUsesTxt" v-refs-tooltip-material="{ material, refCountMap }"></p>
+        <template v-if="material.medicinalUsesTxt">
+          <!-- <br /> -->
+          <p v-html="material.medicinalUsesTxt" v-refs-tooltip-material="{ material, refCountMap }"></p>
+        </template>
         <hr class="line" />
       </section>
       <section v-if="material.dosage" class="material-details-content-section">
@@ -199,6 +203,10 @@ export default {
   props: {
     originalMaterial: {
       type: Object,
+      required: true
+    },
+    searchedMaterialName: {
+      type: String,
       required: true
     }
   },
@@ -356,6 +364,9 @@ export default {
     }
   },
   computed: {
+    userSearch() {
+      return this.$route.query.q;
+    },
     isScreenNarrow() {
       return this.$store.getters.isScreenNarrow;
     },

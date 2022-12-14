@@ -34,7 +34,8 @@
               style="max-width: 200px;"
               :title="item.side1Material.name"
             >
-              <div @click="goToInteraction(item._id)">
+              <!-- <div @click="goToInteraction(item._id)"> -->
+              <router-link :to="`/interaction/${item._id}`">
                 <div class="side-name-img" v-if="item.side1Material">
                   <img
                     :src="require(`@/cms/assets/icons/${item.side1Material.type}.svg`)"
@@ -45,7 +46,7 @@
                     {{ item.side1Material.name }}
                   </span>
                 </div>
-              </div>
+              </router-link>
             </td>
             <td class="td-side">
               <div @click="goToInteraction(item._id)">

@@ -21,14 +21,14 @@
           <h1 class="v-tour-interaction-step-4" v-if="side1Material && side2Material">Interaction of {{ side1Material && side1Material.name }} & {{ side2Material && side2Material.name }}</h1>
           <h1 v-else>Interaction</h1>
           <span class="interaction-details-header-actions">
-            <PlayTourBtn class="v-tour-interaction-step-4" :dontOpen="isScreenNarrow" @click.native="startTour" align="right"/>
+            <PlayTourBtn class="v-tour-interaction-step-4" :dontOpen="isScreenNarrow" @click.native="startTour" align="right" />
 
             <button class="print-btn print-btn-icon no-print" title="Print" @click="printWindow()">
               <printer-icon title="" />
             </button>
             <button class="share-btn share-btn-icon no-print" title="Share" @click="isShareModalActive = true">
               <!-- <share-variant-icon title="" :size="isScreenNarrow ? 18 : 24" /> -->
-              <share-variant-icon title="" />
+              <share-variant-icon title="" :size="22" />
             </button>
           </span>
         </div>
@@ -51,7 +51,7 @@
               <span class="clip-txt">{{ interaction.recommendation }}</span>
             </span>
             <span class="evidence-level">
-              Level of evidenc {{ interaction.evidenceLevel }}
+              Level of evidence {{ interaction.evidenceLevel }}
               <tooltip on="hover" right>
                 <template #content>
                   <div class="evidence-level-tooltip-content" v-html="refsDetailsTxt" />
@@ -88,6 +88,7 @@
             <span class="note"> <span class="font-bold">Note:</span> {{ interaction.note }} </span>
           </div>
           <div class="mobile-blure" v-if="isScreenNarrow && (showMobileAlerts || showMobileEvedence)" @click="showMobileAlerts = showMobileEvedence = false"></div>
+
           <div class="mobile-data-modal evidence-level-mobile" v-if="showMobileEvedence && isScreenNarrow">
             <button class="close-btn" @click.stop="toggleMobileLevelOfEvedence">
               <img :src="require('@/client/assets/imgs/close-btn.svg')" />
@@ -97,6 +98,7 @@
               <div class="sub-txt" v-html="refsDetailsTxt" />
             </div>
           </div>
+
           <div class="mobile-data-modal alerts-mobile" v-if="showMobileAlerts && isScreenNarrow">
             <button class="close-btn" @click.stop="toggleMobileAlerts">
               <img :src="require('@/client/assets/imgs/close-btn.svg')" />
@@ -111,6 +113,7 @@
               </div>
             </div>
           </div>
+
           <h3 v-if="interaction.summary" class="subheader regular-pointer">Summary</h3>
           <p
             class="paragraph regular-pointer summary-container"
@@ -165,6 +168,10 @@
             <template #header>
               <h3 class="subheader flex-align-center">
                 Pharmacokinetics
+                <span class="de-activator">
+                  <chevron-up-icon class="opened" title="" />
+                  <chevron-down-icon class="closed" title="" />
+                </span>
                 <span class="badge badge-red" v-if="releventSide1PathwaysByColors.red">
                   {{ releventSide1PathwaysByColors.red }}
                 </span>
@@ -173,10 +180,6 @@
                 </span>
                 <span class="badge badge-green" v-if="releventSide1PathwaysByColors.green">
                   {{ releventSide1PathwaysByColors.green }}
-                </span>
-                <span class="de-activator">
-                  <chevron-up-icon class="opened" title="" />
-                  <chevron-down-icon class="closed" title="" />
                 </span>
               </h3>
             </template>
@@ -505,8 +508,10 @@ export default {
       else material = this.side2Material;
 
       if (material.isUnderStudy) return;
+      // :to="{ path: `/material/${material._id}`, query: { q: userQuery } }"
+      console.log('name', name);
 
-      let routeData = this.$router.resolve({ path: `/material/${material._id}` });
+      let routeData = this.$router.resolve({ path: `/material/${material._id}`, query: { q: name } });
       window.open(routeData.href, '_blank');
     },
     checkIsPartOfSide1(name) {

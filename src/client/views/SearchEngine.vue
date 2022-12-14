@@ -28,7 +28,7 @@
           </tooltip>
         </div>
         <ul class="search-engine-search-materials" :class="{ empty: !materials.length }">
-          <tooltip v-for="(result, idx) in formatedMaterials" :key="idx" on="focus" wrap-el="li" closable bottomLeft>
+          <!-- <tooltip v-for="(result, idx) in formatedMaterials" :key="idx" on="focus" wrap-el="li" closable bottomLeft>
             <template #close-icon>
               <close-icon :size="16" title="" />
             </template>
@@ -46,7 +46,28 @@
                 </button>
               </span>
             </li>
-          </tooltip>
+          </tooltip> -->
+
+          <div @click.stop="closeTooltip" v-if="isOpen" class="screen"></div>
+          <AppTooltip v-for="(result, idx) in formatedMaterials" :key="idx" on="focus">
+            <template #content>
+              <material-interactions-preview :materials="result.materials" :userQuery="result.txt" :disabled="result.isIncluded" :interactions="getMaterialInteractions(result)" :isOneMaterial="materials.length === 1" />
+            </template>
+
+            <template #preview>
+              <li @click="openTooltip" class="search-engine-search-materials-chip clip-txt activator">
+                <img :src="getResultIcon(result)" alt="" :class="{ disabled: result.isIncluded }" />
+                <p :class="{ disabled: result.isIncluded }">{{ result.txt }}</p>
+
+                <span class="search-engine-search-materials-chip-actions">
+                  <information-outline-icon class="info-icon hover-activator" :class="{ 'under-construction': isOneUnderStudy(result), red: result.isIncluded }" :size="16" title="" />
+                  <button class="close-btn" @click.stop="removeMaterials(result.txt)" :data-close-btn="true">
+                    <close-icon :size="16" title="" class="black" />
+                  </button>
+                </span>
+              </li>
+            </template>
+          </AppTooltip>
         </ul>
         <div v-if="(initialLoadingDone && !loggedInUser) || (loggedInUser && !loggedInUser.email_verified && loggedInUser.type !== 'subscribed')" class="search-engine-search-cta">
           <span v-if="freeSearchesCount > 0" class="search-engine-search-msg" :class="isRed"
@@ -75,8 +96,8 @@
               <button class="print-btn print-btn-icon" :title="loggedInUser ? 'Print' : 'Subscribed users can print their search results'" @click="onPrint">
                 <printer-icon title="" />
               </button>
-              <button class="share-btn share-btn-icon" :title="loggedInUser ? 'Share' : 'Subscribed users can share their search results'" @click="isShareModalActive = true">
-                <share-variant-icon title="" />
+              <button :style="{ top: $route.name === 'Boosters' ? '0px' : '10px' }" class="share-btn share-btn-icon" :title="loggedInUser ? 'Share' : 'Subscribed users can share their search results'" @click="isShareModalActive = true">
+                <share-variant-icon title="" :size="22" />
               </button>
               <template v-if="!isScreenNarrow">
                 <tooltip v-if="!isLoadingFile" bottomCornerLeft>
@@ -218,6 +239,7 @@ import PrintModal from '@/client/cmps/shared/modals/PrintModal';
 import SaveSearchModal from '@/client/cmps/shared/modals/SaveSearchModal';
 import SearchesLeftModal from '@/client/cmps/shared/modals/SearchesLeftModal';
 import Tooltip from '@/client/cmps/common/Tooltip';
+import AppTooltip from '@/client/cmps/common/AppTooltip';
 import ModalWrap from '@/client/cmps/common/ModalWrap';
 import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
 import MaterialInteractionsPreview from '@/client/cmps/search-engine/MaterialInteractionsPreview';
@@ -241,6 +263,7 @@ export default {
   name: 'SearchEngine',
   data() {
     return {
+      isOpen: false,
       isLoading: false,
       isPBLoading: false,
       materials: [],
@@ -311,8 +334,7 @@ export default {
         if (!isSameSearch) {
           this.$store.commit('resetPosSupp');
           await this.getResults();
-        } 
-        else {
+        } else {
           //Search positive if there are non in the front already
           if (!this.positiveInteractions.length && !this.suppPositiveInteractions.length) {
             // this.isLoading = true;
@@ -863,6 +885,17 @@ export default {
     }
   },
   methods: {
+    openTooltip() {
+      this.isOpen = true;
+    },
+    closeTooltip() {
+      // console.log('this.isOpen', this.isOpen);
+
+      if (this.isOpen) {
+        eventBus.$emit('tooltip-open');
+      }
+      this.isOpen = false;
+    },
     startBoostTour() {
       this.$tours['boosters-tour'].start();
     },
@@ -953,12 +986,14 @@ export default {
 
       this.getPositives();
 
+      setTimeout(() => {
+        window.scrollTo({
+          top: this.$refs.interactionHeaderRef.offsetTop - 50,
+          left: 0,
+          behavior: 'smooth'
+        });
+      }, 2000);
       // window.scrollTo(0, this.$refs.interactionHeaderRef.offsetTop - 50);
-      window.scrollTo({
-        top: this.$refs.interactionHeaderRef.offsetTop - 50,
-        left: 0,
-        behavior: 'smooth'
-      });
     },
     async getPositives() {
       this.isPBLoading = true;
@@ -1007,7 +1042,6 @@ export default {
         int.vInteractions.forEach(vInt => {
           const interactionName = vInt.side1Material._id === int.side2Id ? `${vInt.side2Material.name} & ${vInt.side1Material.name}` : `${vInt.side1Material.name} & ${vInt.side2Material.name}`;
           vInt.name = interactionName;
-
         });
         int.vInteractions = this.sortInteractions(int.vInteractions, true);
       });
@@ -1051,32 +1085,35 @@ export default {
     },
     async addCacheKey(interactions) {
       const prms = interactions.map(int => {
-        const currPrm = Promise.all(int.vInteractions.map(vInt => {
-          const ids = {
-            side1Id: vInt.side1Material._id,
-            side2Id: vInt.side2Material._id,
-            mainSide2MaterialId: int.mainSide2MaterialId
-          };
-          const idCountMap = Object.values(ids).reduce((acc, id) => {
-            if (!acc[id]) acc[id] = 0;
-            acc[id]++;
-            return acc;
-          }, {});
-          const idToCompare = Object.keys(idCountMap).find(key => idCountMap[key] === 1);
-          const idsToSerch = this.materialSuppIds.filter(suppId => {
-            return !this.idsToTurnRed.includes(suppId);
-          });
-          const filterBy = {
-            isSearchResults: true,
-            id: [...idsToSerch, idToCompare],
-            page: 0,
-            limit: Number.MAX_SAFE_INTEGER,
-            materialCount: this.materialIds.length + 1
-          };
-          vInt.cacheKey = `/search/positive-boosters/${filterBy.id}/supps`;
-          this.$nextTick(() => (vInt.mainMaterialName = int.name));
-          return this.$store.dispatch({ type: 'getInteractions', filterBy, cacheKey: `/search/positive-boosters/${filterBy.id}/supps` });
-        }));
+        const currPrm = Promise.all(
+          int.vInteractions.map(vInt => {
+            const ids = {
+              side1Id: vInt.side1Material._id,
+              side2Id: vInt.side2Material._id,
+              mainSide2MaterialId: int.mainSide2MaterialId
+            };
+            const idCountMap = Object.values(ids).reduce((acc, id) => {
+              if (!acc[id]) acc[id] = 0;
+              acc[id]++;
+              return acc;
+            }, {});
+            const idToCompare = Object.keys(idCountMap).find(key => idCountMap[key] === 1);
+            const idsToSerch = this.materialSuppIds.filter(suppId => {
+              return !this.idsToTurnRed.includes(suppId);
+            });
+            const filterBy = {
+              isSearchResults: true,
+              id: [...idsToSerch, idToCompare],
+              page: 0,
+              limit: Number.MAX_SAFE_INTEGER,
+              materialCount: this.materialIds.length + 1,
+              sortOpts: this.sortOptions
+            };
+            vInt.cacheKey = `/search/positive-boosters/${filterBy.id}/supps`;
+            this.$nextTick(() => (vInt.mainMaterialName = int.name));
+            return this.$store.dispatch({ type: 'getInteractions', filterBy, cacheKey: `/search/positive-boosters/${filterBy.id}/supps` });
+          })
+        );
         return currPrm;
       });
       await Promise.all(prms);
@@ -1298,7 +1335,8 @@ export default {
       this.$store.commit({ type: 'setIsShowAll', isChecked });
       await this.getResults();
     },
-    sortInteractions(interactions, isPosSupp = false) { // NOT HERE
+    sortInteractions(interactions, isPosSupp = false) {
+      // NOT HERE
       interactions = JSON.parse(JSON.stringify(interactions));
       const { recommendationsOrderMap: map } = this.$options;
       if (this.sortOptions) {
@@ -1450,7 +1488,8 @@ export default {
       this.undoneQueries.push(query);
       this.$router.replace({ query: { q: queries } });
     },
-    sortMaterials(materials) { // NOT HERE
+    sortMaterials(materials) {
+      // NOT HERE
       const { q } = this.$route.query;
       const sortedMaterials = [...materials];
       return sortedMaterials.sort((a, b) => q.indexOf(a.userQuery) - q.indexOf(b.userQuery));
@@ -1572,13 +1611,13 @@ export default {
         }
       });
       eventBus.$on('add-to-search', async toAdd => {
-          this.isLoading = true;
-          const criteria = { autocomplete: true, q: toAdd.name }
-          const results = await this.$store.dispatch({ type: 'getMaterials', criteria });
-          const materialsToAdd = results.materials.filter(c => c.txt === toAdd.name);
-          const materialToAdd = materialsToAdd[0]
-          if (materialToAdd) await this.addMaterials(materialsToAdd[0]);
-          this.isLoading = false;
+        this.isLoading = true;
+        const criteria = { autocomplete: true, q: toAdd.name };
+        const results = await this.$store.dispatch({ type: 'getMaterials', criteria });
+        const materialsToAdd = results.materials.filter(c => c.txt === toAdd.name);
+        const materialToAdd = materialsToAdd[0];
+        if (materialToAdd) await this.addMaterials(materialsToAdd[0]);
+        this.isLoading = false;
       });
     },
     removeEventBusListeners() {
@@ -1661,6 +1700,7 @@ export default {
     this.addEventBusListeners();
   },
   components: {
+    AppTooltip,
     Autocomplete,
     Tooltip,
     MaterialInteractionsPreview,

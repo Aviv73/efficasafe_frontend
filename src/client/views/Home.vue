@@ -250,7 +250,7 @@ export default {
       }
     },
     searchWithBtn() {
-    //   console.log('this.searches[0]', this.searches[0]);
+      //   console.log('this.searches[0]', this.searches[0]);
 
       if (!this.loggedInUser) {
         if (this.freeSearchesCount <= 0) {

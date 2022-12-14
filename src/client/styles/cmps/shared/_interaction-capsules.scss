@@ -1,110 +1,116 @@
 .interaction-capsules {
-    min-width: max-content;
-    max-width: 100%;
-    z-index: 0;
-    margin-block-end: rem(12px);
+  min-width: max-content;
+  max-width: 100%;
+  z-index: 0;
+  margin-block-end: rem(12px);
+  position: relative;
+
+  // &:not(:last-child) {
+  // }
+
+  // @include for-narrow-layout {
+  //     margin-block-end: 0;
+  // }
+  @media (min-width: $break-narrow) {
+    margin-block-end: 0;
+  }
+
+  &.dup {
+    transform: translateX(50%);
+  }
+  &.group {
+    transform: translateX(-10px);
+    @include for-narrow-layout {
+      transform: none;
+    }
+  }
+  &-side {
+    display: inline-block;
+    width: rem(140px);
+    padding: rem(10px) rem(16px);
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background-color: $white;
+    border-radius: 100px;
+    box-shadow: 0px 2px 2px rgba($gray, 0.3);
     position: relative;
 
-    // &:not(:last-child) {
-    // }
-    
-    // @include for-narrow-layout {
-    //     margin-block-end: 0;
-    // }
-    @media (min-width: $break-narrow) {
-        margin-block-end: 0;
+    @include for-mobile-layout {
+      width: rem(180px);
     }
+    @include for-narrow-layout {
+      width: rem(120px);
+    }
+    @include for-middle2-layout {
+      width: rem(160px);
+    }
+    @include for-wide-layout {
+      width: rem(180px);
+    }
+    &.wide {
+      width: rem(160px);
 
-    &.dup {
-        transform: translateX(50%);
-    }
-    &.group {
-        transform: translateX(-10px);
-        @include for-narrow-layout {
-            transform: none;
-        }
-    }
-    &-side {
-        display: inline-block;
+      @include for-mobile-layout {
+        width: rem(180px);
+      }
+      @include for-narrow-layout {
         width: rem(140px);
-        padding: rem(10px) rem(16px); 
-        text-align: center;
-        overflow: hidden; 
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        background-color: $white;
-        border-radius: 100px;
-        box-shadow: 0px 2px 2px rgba($gray, .3);
-        position: relative;
-        
-        @include for-mobile-layout {
-            width: rem(180px);
-        }
-        @include for-narrow-layout {
-            width: rem(120px);
-        }
-        @include for-middle2-layout {
-            width: rem(160px);
-        }
-        @include for-wide-layout {
-            width: rem(180px);
-        }
-        &.wide {
-            width: rem(160px);
-
-            @include for-mobile-layout {
-                width: rem(180px);
-            }
-            @include for-narrow-layout {
-                width: rem(140px);
-            }
-            @include for-middle2-layout {
-                width: rem(200px);
-            }
-            @include for-wide-layout {
-                width: rem(235px);
-            }
-        }
-        &.dense {
-            width: rem(100px);
-
-            @include for-middle2-layout {
-                width: rem(120px);
-            }
-        }
-
-        .cap {
-            position: absolute;
-            top: 0;
-            height: 100%;
-
-            &-left {
-                right: 0;
-            }
-            &-right {
-                left: 0;
-            }
-        }
+      }
+      @include for-middle2-layout {
+        width: rem(200px);
+      }
+      @include for-wide-layout {
+        width: rem(235px);
+      }
     }
-    .light-gray{
-        background-color: #e1e1e1 !important;
-    }
-    .layer {
-        position: absolute;
-        top: 0;
-        left: auto;
-        height: 90%;
-        width: rem(20px);
-        z-index: -1;
-        border-radius: 0 100px 100px 0;
-        background-color: $white;
-        box-shadow: 0px 2px 2px rgba($gray, .9);
+    &.dense {
+      width: rem(100px);
+
+      @include for-middle2-layout {
+        width: rem(120px);
+      }
     }
 
-    .serach-engin-capsule{
-        width: rem(155px);
-        @include for-mobile-layout {
-            width: rem(140px);
-        }
+    .cap {
+      position: absolute;
+      top: 0;
+      height: 100%;
+
+      &-left {
+        right: 0;
+      }
+      &-right {
+        left: 0;
+      }
     }
+  }
+  .light-gray {
+    background-color: #e1e1e1 !important;
+  }
+  .layer {
+    position: absolute;
+    top: 0;
+    left: auto;
+    height: 90%;
+    width: rem(20px);
+    z-index: -1;
+    border-radius: 0 100px 100px 0;
+    background-color: $white;
+    box-shadow: 0px 2px 2px rgba($gray, 0.9);
+  }
+  .clip-txt {
+    width: 75%;
+  }
+  .serach-engin-capsule {
+    width: rem(155px);
+    // .clip-txt {
+    //   //   transform: translate(0px, 1px);
+    //   width: 75%;
+    // }
+    @include for-mobile-layout {
+      width: rem(140px);
+    }
+  }
 }

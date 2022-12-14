@@ -46,7 +46,7 @@
       background-color: $clr16;
     }
     .is-invalid .select-trigger {
-        border-color: $red;
+      border-color: $red;
     }
     .select-options {
       background-color: $clr16;
@@ -80,7 +80,7 @@
         .custom-checkbox-checkbox {
           background-color: $clr16;
         }
-        [type="checkbox"]:checked + .custom-checkbox-checkbox {
+        [type='checkbox']:checked + .custom-checkbox-checkbox {
           background-color: $clr1;
         }
       }
@@ -97,7 +97,7 @@
       margin-block-end: rem(110px);
     }
 
-    .disabled-btn{
+    .disabled-btn {
       opacity: 0.2;
     }
   }
