@@ -79,7 +79,7 @@
       <section v-if="(material.indications && material.indications.length) || material.medicinalUsesTxt" class="material-details-content-section">
         <h3 ref="Medicinal uses">Medicinal uses</h3>
         <p v-if="material.indications && material.indications.length">{{ material.indications.join(', ') }}</p>
-        <br />
+        <!-- <br /> -->
         <p v-if="material.medicinalUsesTxt" v-html="material.medicinalUsesTxt" v-refs-tooltip-material="{ material, refCountMap }"></p>
         <hr class="line" />
       </section>
