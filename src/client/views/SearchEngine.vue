@@ -47,13 +47,15 @@
               </span>
             </li>
           </tooltip> -->
+
+          <div @click.stop="closeTooltip" v-if="isOpen" class="screen"></div>
           <AppTooltip v-for="(result, idx) in formatedMaterials" :key="idx" on="focus">
             <template #content>
               <material-interactions-preview :materials="result.materials" :userQuery="result.txt" :disabled="result.isIncluded" :interactions="getMaterialInteractions(result)" :isOneMaterial="materials.length === 1" />
             </template>
 
             <template #preview>
-              <li class="search-engine-search-materials-chip clip-txt activator">
+              <li @click="openTooltip" class="search-engine-search-materials-chip clip-txt activator">
                 <img :src="getResultIcon(result)" alt="" :class="{ disabled: result.isIncluded }" />
                 <p :class="{ disabled: result.isIncluded }">{{ result.txt }}</p>
 
@@ -261,6 +263,7 @@ export default {
   name: 'SearchEngine',
   data() {
     return {
+      isOpen: false,
       isLoading: false,
       isPBLoading: false,
       materials: [],
@@ -882,6 +885,17 @@ export default {
     }
   },
   methods: {
+    openTooltip() {
+      this.isOpen = true;
+    },
+    closeTooltip() {
+      // console.log('this.isOpen', this.isOpen);
+
+      if (this.isOpen) {
+        eventBus.$emit('tooltip-open');
+      }
+      this.isOpen = false;
+    },
     startBoostTour() {
       this.$tours['boosters-tour'].start();
     },

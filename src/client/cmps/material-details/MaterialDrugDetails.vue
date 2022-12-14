@@ -39,7 +39,7 @@
       </button>
       <button class="drawer-btn" @click="showNav = true" v-if="isScreenNarrow"><menu-icon title="" /></button>
       <h1 ref="Title" class="material-details-content-name">
-        {{ material.name }}
+        {{ material.name }}<span class="material-details-content-name-search" v-if="userSearch && material.name !== userSearch"> - {{ userSearch }}</span>
       </h1>
 
       <!-- <div v-if="aliasesToShow.length" class="material-details-content-aliases-container">
@@ -307,6 +307,9 @@ export default {
     }
   },
   computed: {
+    userSearch() {
+      return this.$route.query.q;
+    },
     singleAliasesToShow() {
       let singleAlias = this.aliasesToShow.filter(alias => alias.toLowerCase() === this.material.name.toLowerCase())[0];
       if (!singleAlias) return;

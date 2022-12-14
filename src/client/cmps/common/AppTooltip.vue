@@ -6,7 +6,7 @@
     </div>
     <!-- <div ref="elMsg" class="msg">{{ $t(msg) }}</div> -->
     <div v-show="isShown" ref="elMsg" class="msg">
-      <div @click="toggleClose" class="close-btn">
+      <div @click="toggleClose" class="close-btn-tooltip">
         <close-icon class="black" :size="16" title="" />
       </div>
 
@@ -17,7 +17,7 @@
 
 <script>
 import CloseIcon from 'vue-material-design-icons/Close';
-// import { eventBus } from '@/cms/services/eventBus.service';
+import { eventBus } from '@/cms/services/eventBus.service';
 
 export default {
   name: 'Tooltip',
@@ -37,10 +37,10 @@ export default {
     CloseIcon
   },
   created() {
-    // eventBus.$on('tooltip-open', () => {
-    //   this.isShown = false;
-    //   console.log('WTF', this.isShown);
-    // });
+    eventBus.$on('tooltip-open', () => {
+      this.isShown = false;
+      // console.log('from event bus');
+    });
   },
   methods: {
     toggleClose() {
@@ -76,6 +76,7 @@ export default {
     //   style[posYStyleProp] = pos.y + 'px';
     // },
     handleHover(ev) {
+      eventBus.$emit('tooltip-open');
       this.isShown = true;
 
       const { elImg, elMsg } = this.$refs;
@@ -132,7 +133,7 @@ export default {
   position: relative;
   width: 50%;
 
-  .close-btn {
+  .close-btn-tooltip {
     position: absolute;
     top: 24px;
     right: 20px;
