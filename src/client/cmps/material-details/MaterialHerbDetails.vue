@@ -38,7 +38,7 @@
           <share-variant-icon title="" :size="22" />
         </button>
         <h1 ref="Title" class="material-details-content-name">
-          {{ material.name }}
+          {{ material.name }}<span class="material-details-content-name-search" v-if="userSearch && material.name !== userSearch"> - {{ userSearch }}</span>
         </h1>
       </div>
 
@@ -362,6 +362,9 @@ export default {
     }
   },
   computed: {
+    userSearch() {
+      return this.$route.query.q;
+    },
     isScreenNarrow() {
       return this.$store.getters.isScreenNarrow;
     },

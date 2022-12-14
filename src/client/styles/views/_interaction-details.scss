@@ -325,6 +325,7 @@
           display: flex;
         }
       }
+
       &.mobile {
         order: -2;
         align-self: center;
@@ -336,7 +337,7 @@
         }
       }
       &.drugbank {
-        margin-block-end: rem(72px);
+        margin-block-end: rem(22px);
       }
       &.txt-dark {
         color: $clr1;
@@ -463,7 +464,7 @@
     }
     .review-of-studies {
       .de-activator {
-        margin-inline-start: 6px;
+        margin-inline-start: 8px;
       }
     }
     .review-of-studies p {
@@ -473,6 +474,9 @@
     .pharmacokinetics {
       .subheader {
         pointer-events: all;
+        .badge {
+          margin-bottom: 5px;
+        }
       }
       .de-activator {
         position: static;
@@ -534,41 +538,7 @@
 
     .down {
       @include for-narrow-layout {
-        top: 40px;
-      }
-    }
-    .drugbank-logo {
-      position: absolute;
-      right: 50%;
-      top: rem(48px);
-      transform: translateX(70%);
-
-      @include for-narrow-layout {
-        top: 0;
-        right: 24px;
-        transform: none;
-      }
-      @include for-wide-layout {
-        right: 0;
-      }
-
-      img {
-        width: 200px;
-        filter: grayscale(100%);
-        opacity: 0.6;
-        transition: filter 0.3s ease-in-out;
-
-        @include hover-supported {
-          filter: grayscale(0);
-        }
-      }
-      figcaption {
-        opacity: 0.8;
-        position: absolute;
-        bottom: 5px;
-        left: 0;
-        transform: translateX(-105%);
-        user-select: none;
+        // top: 40px;
       }
     }
   }
@@ -636,5 +606,47 @@
   .loader {
     display: block;
     margin: 20vh auto;
+  }
+}
+
+.drugbank-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 10vh;
+  .drugbank-logo {
+    // position: absolute;
+    // right: 50%;
+    // top: rem(48px);
+    // transform: translate(-70%, -50%);
+
+    // @include for-narrow-layout {
+    //   right: 50%;
+    //   top: 50%;
+    //   transform: translate(-50%, -50%);
+    // }
+    // @include for-wide-layout {
+    //   right: 0;
+    // }
+
+    img {
+      width: 200px;
+      filter: grayscale(100%);
+      opacity: 0.6;
+      transition: filter 0.3s ease-in-out;
+
+      @include hover-supported {
+        filter: grayscale(0);
+      }
+    }
+    figcaption {
+      opacity: 0.8;
+      // position: absolute;
+      bottom: 5px;
+      left: 0;
+      // transform: translateX(-105%);
+      user-select: none;
+    }
   }
 }

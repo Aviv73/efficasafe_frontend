@@ -51,7 +51,7 @@
               <span class="clip-txt">{{ interaction.recommendation }}</span>
             </span>
             <span class="evidence-level">
-              Level of evidenc {{ interaction.evidenceLevel }}
+              Level of evidence {{ interaction.evidenceLevel }}
               <tooltip on="hover" right>
                 <template #content>
                   <div class="evidence-level-tooltip-content" v-html="refsDetailsTxt" />
@@ -88,6 +88,7 @@
             <span class="note"> <span class="font-bold">Note:</span> {{ interaction.note }} </span>
           </div>
           <div class="mobile-blure" v-if="isScreenNarrow && (showMobileAlerts || showMobileEvedence)" @click="showMobileAlerts = showMobileEvedence = false"></div>
+
           <div class="mobile-data-modal evidence-level-mobile" v-if="showMobileEvedence && isScreenNarrow">
             <button class="close-btn" @click.stop="toggleMobileLevelOfEvedence">
               <img :src="require('@/client/assets/imgs/close-btn.svg')" />
@@ -97,6 +98,7 @@
               <div class="sub-txt" v-html="refsDetailsTxt" />
             </div>
           </div>
+
           <div class="mobile-data-modal alerts-mobile" v-if="showMobileAlerts && isScreenNarrow">
             <button class="close-btn" @click.stop="toggleMobileAlerts">
               <img :src="require('@/client/assets/imgs/close-btn.svg')" />
@@ -111,6 +113,7 @@
               </div>
             </div>
           </div>
+
           <h3 v-if="interaction.summary" class="subheader regular-pointer">Summary</h3>
           <p
             class="paragraph regular-pointer summary-container"
@@ -505,9 +508,10 @@ export default {
       else material = this.side2Material;
 
       if (material.isUnderStudy) return;
-      console.log('this.interaction.side1Material', this.interaction.side1Material);
+      // :to="{ path: `/material/${material._id}`, query: { q: userQuery } }"
+      console.log('name', name);
 
-      let routeData = this.$router.resolve({ path: `/material/${material._id}?name=${this.interaction.side1Material.name}` });
+      let routeData = this.$router.resolve({ path: `/material/${material._id}`, query: { q: name } });
       window.open(routeData.href, '_blank');
     },
     checkIsPartOfSide1(name) {
