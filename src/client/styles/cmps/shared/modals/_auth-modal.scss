@@ -1,391 +1,396 @@
 .auth-modal {
-    position: absolute;
+  position: absolute;
+  z-index: 999;
+  top: 6%;
+  background-color: $white;
+  box-shadow: 0px 2px 4px rgba($black, 0.6);
+  border: 1px solid $clr6;
+  border-radius: 6px;
+
+  .days-of-trial {
+    margin-top: rem(30px);
+  }
+
+  .auth0-lock-widget-container {
+    height: rem(500px);
+
+    @include for-mobile-layout {
+      height: unset;
+    }
+  }
+
+  &-cover {
+    position: fixed;
+    background-color: rgba($black, 0.6);
+    height: 100vh;
+    width: 100vw;
+    left: 0;
+    top: 0;
+  }
+
+  &-content {
+    position: fixed;
     z-index: 999;
-    top: 6%;
+    top: 10%;
+    left: 50%;
+    width: rem(350px);
+    transform: translateX(-50%);
     background-color: $white;
-    box-shadow: 0px 2px 4px rgba($black, .6);
-    border: 1px solid $clr6;
+    box-shadow: 0px 2px 4px rgba($black, 0.6);
     border-radius: 6px;
+    height: fit-content;
+    animation: fade-in 1s;
 
-    .auth0-lock-widget-container {
-        height: rem(500px);
+    .searches-msg {
+      h3 {
+        font-weight: bold;
+        color: red;
+        margin-bottom: 4px;
+      }
 
-        @include for-mobile-layout {
-            height: unset;
-        }
-    }
-
-    &-cover {
-        position: fixed;
-        background-color: rgba($black, .6);
-        height: 100vh;
-        width: 100vw;
-        left: 0;
-        top: 0;
-    }
-
-    &-content {
-        position: fixed;
-        z-index: 999;
-        top: 10%;
-        left: 50%;
-        width: rem(350px);
-        transform: translateX(-50%);
-        background-color: $white;
-        box-shadow: 0px 2px 4px rgba($black, .6);
-        border-radius: 6px;
-        height: fit-content;
-        animation: fade-in 1s; 
-
-        .searches-msg{
-            h3{
-                font-weight: bold;
-                color: red;
-                margin-bottom: 4px;
-            }
-            
-            h4{
-                font-weight: bold;
-                color: $clr1;
-                margin-bottom: 4px;
-            }
-
-            p{
-                font-size: rem(12px);
-                span{
-                    font-weight: bold;
-                }
-            }
-        }
-
-        .close-modal-btn{
-            position: absolute;
-            right: 17px;
-            top: 12px;
-        }
-
-        img{
-            margin-top: rem(40px);
-            margin-bottom: rem(5px);
-        }
-
-        .signup-link{
-            // text-decoration: underline;
-            align-self: center;
-            // height: rem(30px);
-            border: 1.5px solid #EAEAEA;
-            border-radius: 7px;
-            cursor: pointer;
-            font-size: 13px;
-            color: #225474;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: fit-content;
-            margin: 20px auto;
-            margin-top: 10px;
-            // margin-bottom: 15px;
-            padding: 7px 10px;
-        }
-        
-        &-media-btns{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-block-start: 10px;
-            margin-block-end: 40px;
-
-            
-            a{
-                position: relative;
-                margin-bottom: 13px;
-                width: 100%;
-                line-height: 37px;
-                font-size: rem(13px);
-                font-family: roboto-medium;
-                color: #205072;
-                border-radius: 6px;
-                font-weight: bold;
-
-                img{
-                    position: absolute;
-                    margin: 0;
-                    left: 23px;
-                    top: 6px;
-                }
-
-                .facebook-img{
-                    width: 10%;
-                    @include for-mobile-layout {
-                        width: 7%;
-                    }
-                }
-            }
-
-            .blue{
-                border: 2px solid #205072;
-            }
-            
-        }
-
-        .msg{
-            color: #fff;
-            text-align: center;
-            padding: 10px;
-            line-height: 1.8;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            animation: fade-in 1s; 
-        }
-
-        .failed{
-            background-color: #ff3e00 !important;
-        }
-
-        .successe{
-            background-color: #54C394;
-        }
-
-        .forgot-pass-link{
-            font-size: 13px;
-            color: rgba(0,0,0,0.87);
-            cursor: pointer;
-            margin-bottom: 10px;
-            
-        }
-    
-        .resend-email-btn {
-            cursor: pointer;
-            text-decoration: underline;
-            position: absolute;
-            outline: $clr4;
-            color: $clr4;
-            bottom: 60px;
-            left: 50%;
-            transform: translateX(-50%);
-            margin-bottom: 20px;
-    
-            &:disabled {
-                opacity: .5;
-            }
-        }
-    
-        @include for-mobile-layout {
-            width: rem(500px);
-        }
-        
-        .register-btn{
-            width: 100%;
-            height: 37px;
-            background-color: $clr1;
-            border-radius: 5px;
-            font-size: rem(13px);
-            font-family: roboto-medium;
-            color: #FFFFFF;
-            margin-block-end: 13px;
-
-            // @include for-mobile-layout {
-            //     width: rem(395px);
-            // }
-        }
-
-        .loader{
-            width: 24px;
-            margin: 0;
-            transform: translateY(2px);
-        }
-
-        .disabled{
-            cursor: default;
-        }
-
-        .invalid-btn{
-            background-color: red;
-            font-size: 12px;
-        }
-
-        .disabled{
-            opacity: 0.7;
-        }
-
-        &-container{
-            margin: 0 auto;
-            width: 72%;
-        }
-    }
-
-    &-title {
+      h4 {
+        font-weight: bold;
         color: $clr1;
-        font-size: rem(22px);
-        // margin-block-start: rem(72px);
-        margin-block-end: rem(48px);
-    }
+        margin-bottom: 4px;
+      }
 
-    &-small-title {
-        color: $clr1;
-        margin: rem(32px) 0 rem(16px);
-
-        &.gap-lg {
-            margin: rem(32px) 0;
-        }
-    }
-
-    &-sub-title {
-        color: $clr-txt-darker;
-        font-size: rem(16px);
-        padding: 0 12px;
-    }
-
-    &-field {
-        position: relative;
-        margin-block-end: rem(24px);
-        font-size: rem(14px);
-        margin-bottom: 7px;
-        
-        &-pass-toggle {
-            position: absolute;
-            top: 50%;
-            right: 6px;
-            transform: translateY(-50%);
-            color: $gray;
-        }
-
-        .reset-pass-toggle{
-            z-index: 9999;
-            top: -50px;
-            right: 0;
-
-            .eye-icon{
-                transform: scale(1.5);
-            }
-        }
-
-        .eye-icon{
-            position: absolute;
-            top: 65px;
-            right: 15px;
-            cursor: pointer;
-            color: #7e7575;
-        }
-
-        input {
-            height: rem(43px);
-            width: 100%;
-            margin-bottom: 13px;
-            background-color: $clr3;
-            border: 1px solid $clr3;
-            border-radius: 6px;
-            padding: 0 rem(24px);
-            transition: border-color .3s ease-in-out;
-            
-            &.is-invalid {
-                border-color: $red;
-            }
-            &:focus {
-                outline: none;
-                border-color: $clr6;
-            }
-            &::placeholder {
-                text-align: start;
-            }
-        }
-        .checkbox-container{
-            display: flex;
-
-            .checkbox{
-                width: 12px;
-                height: unset;
-                display: block;
-                margin-top: 3px;
-                background-color: #fff;
-            }
-            
-            p{
-                margin-left: 5px;
-            }
-
-            a{
-                color: $clr2;
-            }
-        }
-    }
-
-    &-user-msg {
-        background-color: $green;
-        color: $white;
+      p {
         font-size: rem(12px);
-        padding: 0px;
-        border-radius: 0 0 6px 6px;
-        position: absolute;
-        left: 0;
-        bottom: 0;
+        span {
+          font-weight: bold;
+        }
+      }
+    }
+
+    .close-modal-btn {
+      position: absolute;
+      right: 17px;
+      top: 12px;
+    }
+
+    img {
+      margin-top: rem(40px);
+      margin-bottom: rem(5px);
+    }
+
+    .signup-link {
+      // text-decoration: underline;
+      align-self: center;
+      // height: rem(30px);
+      border: 1.5px solid #eaeaea;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 13px;
+      color: #225474;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      margin: 20px auto;
+      margin-top: 10px;
+      // margin-bottom: 15px;
+      padding: 7px 10px;
+    }
+
+    &-media-btns {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-block-start: 10px;
+      margin-block-end: 40px;
+
+      a {
+        position: relative;
+        margin-bottom: 13px;
         width: 100%;
-        
-        @include for-mobile-layout {
-            padding: rem(5px);
+        line-height: 37px;
+        font-size: rem(13px);
+        font-family: roboto-medium;
+        color: #205072;
+        border-radius: 6px;
+        font-weight: bold;
+
+        img {
+          position: absolute;
+          margin: 0;
+          left: 23px;
+          top: 6px;
         }
 
-        &.is-error {
-            background-color: $red;
+        .facebook-img {
+          width: 10%;
+          @include for-mobile-layout {
+            width: 7%;
+          }
         }
+      }
+
+      .blue {
+        border: 2px solid #205072;
+      }
     }
 
-    &-close-btn {
-        position: absolute;
-        top: 39px;
-        right: 35px;
-        color: $gray;
-        font-size: rem(14px);
+    .msg {
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      line-height: 1.8;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      animation: fade-in 1s;
     }
 
-    #effica-modal {
-        position: fixed;
-        left: 50%;
-        transform: translateX(-50%);
-        width: rem(500px);
-        max-width: 96%;
+    .failed {
+      background-color: #ff3e00 !important;
     }
 
-    .mt{
-        margin-top: rem(32px);
-    }
-    
-    .desc {
-        font-size: rem(14px);
-        color: $clr-txt-darker;
-        padding: 0px 10px;
+    .successe {
+      background-color: #54c394;
     }
 
-    .assistance {
-        color: $clr1;
-        font-size: rem(14px);
-        margin-top: rem(55px);
-        margin-bottom: 40px;
+    .forgot-pass-link {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.87);
+      cursor: pointer;
+      margin-bottom: 10px;
     }
 
-    .or-container{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    .resend-email-btn {
+      cursor: pointer;
+      text-decoration: underline;
+      position: absolute;
+      outline: $clr4;
+      color: $clr4;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-bottom: 20px;
 
-        p{
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-        .line{
-            height: 1px;
-            background-color: black;
-            width: 36%;
-            margin-block-end: 9px;
-        }
+      &:disabled {
+        opacity: 0.5;
+      }
     }
 
-    .reset-pass{
-        height: 380px !important;
+    @include for-mobile-layout {
+      width: rem(500px);
     }
 
+    .register-btn {
+      width: 100%;
+      height: 37px;
+      background-color: $clr1;
+      border-radius: 5px;
+      font-size: rem(13px);
+      font-family: roboto-medium;
+      color: #ffffff;
+      margin-block-end: 13px;
+
+      // @include for-mobile-layout {
+      //     width: rem(395px);
+      // }
+    }
+
+    .loader {
+      width: 24px;
+      margin: 0;
+      transform: translateY(2px);
+    }
+
+    .disabled {
+      cursor: default;
+    }
+
+    .invalid-btn {
+      background-color: red;
+      font-size: 12px;
+    }
+
+    .disabled {
+      opacity: 0.7;
+    }
+
+    &-container {
+      margin: 0 auto;
+      width: 72%;
+    }
+  }
+
+  &-title {
+    color: $clr1;
+    font-size: rem(22px);
+    // margin-block-start: rem(72px);
+    margin: rem(17px) 0;
+  }
+
+  &-small-title {
+    color: $clr1;
+    margin: rem(32px) 0 rem(16px);
+    p {
+      font-weight: light;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    &.gap-lg {
+      margin: rem(32px) 15px;
+    }
+  }
+
+  &-sub-title {
+    color: $clr-txt-darker;
+    font-size: rem(16px);
+    padding: 0 12px;
+  }
+
+  &-field {
+    position: relative;
+    margin-block-end: rem(24px);
+    font-size: rem(14px);
+    margin-bottom: 7px;
+
+    &-pass-toggle {
+      position: absolute;
+      top: 50%;
+      right: 6px;
+      transform: translateY(-50%);
+      color: $gray;
+    }
+
+    .reset-pass-toggle {
+      z-index: 9999;
+      top: -50px;
+      right: 0;
+
+      .eye-icon {
+        transform: scale(1.5);
+      }
+    }
+
+    .eye-icon {
+      position: absolute;
+      top: 65px;
+      right: 15px;
+      cursor: pointer;
+      color: #7e7575;
+    }
+
+    input {
+      height: rem(43px);
+      width: 100%;
+      margin-bottom: 13px;
+      background-color: $clr3;
+      border: 1px solid $clr3;
+      border-radius: 6px;
+      padding: 0 rem(24px);
+      transition: border-color 0.3s ease-in-out;
+
+      &.is-invalid {
+        border-color: $red;
+      }
+      &:focus {
+        outline: none;
+        border-color: $clr6;
+      }
+      &::placeholder {
+        text-align: start;
+      }
+    }
+    .checkbox-container {
+      display: flex;
+
+      .checkbox {
+        width: 12px;
+        height: unset;
+        display: block;
+        margin-top: 3px;
+        background-color: #fff;
+      }
+
+      p {
+        margin-left: 5px;
+      }
+
+      a {
+        color: $clr2;
+      }
+    }
+  }
+
+  &-user-msg {
+    background-color: $green;
+    color: $white;
+    font-size: rem(12px);
+    padding: 0px;
+    border-radius: 0 0 6px 6px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+
+    @include for-mobile-layout {
+      padding: rem(5px);
+    }
+
+    &.is-error {
+      background-color: $red;
+    }
+  }
+
+  &-close-btn {
+    position: absolute;
+    top: 39px;
+    right: 35px;
+    color: $gray;
+    font-size: rem(14px);
+  }
+
+  #effica-modal {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    width: rem(500px);
+    max-width: 96%;
+  }
+
+  .mt {
+    margin-top: rem(32px);
+  }
+
+  .desc {
+    font-size: rem(14px);
+    color: $clr-txt-darker;
+    padding: 0px 10px;
+  }
+
+  .assistance {
+    color: $clr1;
+    font-size: rem(14px);
+    margin-top: rem(55px);
+    margin-bottom: 40px;
+  }
+
+  .or-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    p {
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .line {
+      height: 1px;
+      background-color: black;
+      width: 36%;
+      margin-block-end: 9px;
+    }
+  }
+
+  .reset-pass {
+    height: 380px !important;
+  }
 }

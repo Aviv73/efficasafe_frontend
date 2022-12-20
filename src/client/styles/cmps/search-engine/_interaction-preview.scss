@@ -51,7 +51,6 @@
     }
   }
 
-
   &-header {
     pointer-events: all;
     margin: rem(16px) 0;
@@ -91,7 +90,10 @@
   }
   &-content {
     position: relative;
-    box-shadow: $slight-border-y;
+    // box-shadow: $slight-border-y;
+    // box-shadow: 0px 1px 1px 0 rgb(95 95 95 / 17%);
+    // box-shadow: 0px 1px 1px 0 rgb(95 95 95 / 17%);
+
     margin: 1px 0;
     // padding: rem(14px) 0;
 
@@ -191,7 +193,7 @@
       color: rgba($clr-txt-dark, 0.8);
     }
   }
-  .poss-booster-count{
+  .poss-booster-count {
     position: absolute;
     left: 10%;
     top: 26px;
@@ -259,6 +261,13 @@
   }
 
   .horizontal-list-list {
+    .monitor-summary-header {
+      text-align: center;
+      > span {
+        text-align: center;
+        width: 70%;
+      }
+    }
     &.optimizers-view {
       .interaction-capsules {
         margin-block-end: 0;
@@ -349,7 +358,7 @@
           // background-color: red;
         }
         .recomendation-not-advised {
-          padding-inline-start: 30px;
+          padding-inline-start: 0px;
         }
 
         .small-data {

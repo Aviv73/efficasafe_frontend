@@ -298,6 +298,7 @@ export default {
   computed: {
     warnings() {
       if (!this.side1Material || !this.side2Material) return [];
+
       return interactionUIService.createWarnings(this.side1Material, this.side2Material);
     },
     pageTitle() {
@@ -509,7 +510,7 @@ export default {
 
       if (material.isUnderStudy) return;
       // :to="{ path: `/material/${material._id}`, query: { q: userQuery } }"
-      console.log('name', name);
+      // console.log('name', name);
 
       let routeData = this.$router.resolve({ path: `/material/${material._id}`, query: { q: name } });
       window.open(routeData.href, '_blank');

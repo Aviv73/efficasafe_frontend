@@ -34,9 +34,9 @@
           'left-top-corner': topLeftCorner,
           'center-bottom': centerBottom,
           'bottom-corner-left': bottomCornerLeft,
+          'left-corner': left,
           bottom,
           top,
-          left,
           right
         }"
         :style="{
@@ -259,6 +259,11 @@ export default {
   &.right-top-corner {
     left: 16px;
     bottom: 18px;
+  }
+  &.left-corner {
+    top: -14%;
+    width: 100%;
+    right: 152px;
   }
 
   &.left-bottom-corner {

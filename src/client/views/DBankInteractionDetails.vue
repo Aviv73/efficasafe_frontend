@@ -199,8 +199,8 @@
       </main>
       <div class="drugbank-container main-container">
         <figure class="drugbank-logo">
-          <img :src="require(`@/cms/assets/drugbank.png`)" alt="DrugBank logo" />
           <figcaption class="caption">powered by</figcaption>
+          <img :src="require(`@/cms/assets/drugbank.png`)" alt="DrugBank logo" />
         </figure>
       </div>
       <footer class="interaction-details-refs">
@@ -365,6 +365,7 @@ export default {
     },
     warnings() {
       if (!this.side1Material || !this.side2Material) return [];
+
       return interactionUIService.createWarnings(this.side1Material, this.side2Material);
     },
     pageTitle() {

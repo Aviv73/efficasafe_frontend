@@ -5,6 +5,15 @@
   &-container {
     flex-grow: 1;
   }
+  .WTM-disabled {
+    opacity: 0.5;
+    // pointer-events: none;
+    // cursor: not-allowed !important;
+    cursor: auto !important;
+  }
+  a {
+    cursor: pointer;
+  }
 
   .brim-end {
     background-color: $clr3;
@@ -464,7 +473,8 @@
     &-link {
       flex-grow: 1;
       position: relative;
-
+      display: flex;
+      align-items: center;
       &.boosters-link {
         position: relative;
         .play-tour-btn {

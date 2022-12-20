@@ -499,6 +499,18 @@
       }
     }
     .warnings-container {
+      padding: 5px;
+      border-radius: 5px;
+      transform: translateY(-15px);
+      .alerts-title {
+        margin: 10px;
+        color: #484848;
+        font-size: 14px;
+        color: #e63946;
+        line-height: 1.1;
+        text-transform: uppercase;
+        width: 30%;
+      }
       @include for-narrow-layout {
         position: absolute;
         top: 0;
@@ -613,7 +625,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   height: 10vh;
   .drugbank-logo {
     // position: absolute;
@@ -645,6 +657,7 @@
       // position: absolute;
       bottom: 5px;
       left: 0;
+      padding-bottom: rem(5px);
       // transform: translateX(-105%);
       user-select: none;
     }

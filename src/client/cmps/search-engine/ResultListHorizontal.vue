@@ -1,7 +1,7 @@
 <template>
   <section class="horizontal-list">
     <div v-if="$route.name === 'Results'" class="results-header">
-      <div v-if="!isScreenNarrow" class="checkbox-container">
+      <div v-if="false" class="checkbox-container">
         <checkbox class="checkbox" @change="handleCheckbox" :isChecked="isChecked" :biggerRadius="true"></checkbox>
         <h4 class="checkbox-title">Theoretical interactions</h4>
         <span v-if="theoreticalDiff" class="badge diff-badge">{{ theoreticalDiff }}</span>

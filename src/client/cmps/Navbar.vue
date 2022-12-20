@@ -119,7 +119,7 @@
                       <!-- {{freeTrialMsg}} -->
                       Trial ends on {{ trialEndTime }}
                     </p>
-                    <router-link class="err" v-else to="/subscribe">Trial ended on {{ trialEndTime }}</router-link>
+                    <router-link class="err" v-else to="/subscribe">Trial waiting for email verification</router-link>
                   </template>
                   <p v-else-if="!loggedInUser.email_verified">Verify your email for a free trial</p>
                 </div>
