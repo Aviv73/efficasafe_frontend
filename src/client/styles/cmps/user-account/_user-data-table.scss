@@ -1,307 +1,304 @@
 .user-data-table {
-    flex: 1 1 auto;
-    overflow: auto;
-    height: fit-content;
-    max-width: 100%;
-    font-size: rem(14px);
-    line-height: rem(16px);
+  flex: 1 1 auto;
+  overflow: auto;
+  height: fit-content;
+  max-width: 100%;
+  font-size: rem(14px);
+  line-height: rem(16px);
+
+  @include for-mobile-layout {
+    height: 377px;
+  }
+
+  table {
+    width: 100%;
+  }
+  tr {
+    box-shadow: $slight-border-bottom;
+  }
+  th {
+    font-family: roboto-medium, sans-serif;
+    font-weight: 500;
+    padding: rem(8px) rem(24px);
+    text-transform: capitalize;
+    text-align: left;
 
     @include for-mobile-layout {
-        height: 377px;
+      min-width: 100px;
     }
-    
-    table {
-        width: 100%;
+
+    label {
+      cursor: pointer;
     }
-    tr {
-        box-shadow: $slight-border-bottom;
+
+    .sort-icon {
+      display: none;
+
+      @include for-mobile-layout {
+        display: initial;
+        height: rem(14px);
+        width: rem(14px);
+        margin-block-end: -2px;
+      }
     }
-    th {
-        font-family: roboto-medium, sans-serif;
+  }
+  .mobile-updates-header {
+    padding: 0;
+    opacity: 0;
+  }
+  td {
+    padding: rem(12px) rem(24px);
+  }
+
+  .td-actions {
+    column-count: $clr1;
+    height: 100% !important;
+    .search-link {
+      border-radius: 2px;
+      background-color: $clr1;
+      padding: rem(4px) rem(24px);
+      color: $white;
+      transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+
+      @include hover-supported {
+        background-color: lighten($clr1, 5%);
+        color: lighten($white, 5%);
+      }
+    }
+    .note-btn {
+      position: relative;
+      .note-img {
+        margin-top: 4px;
+        margin-left: 8px;
+        width: 20px;
+      }
+    }
+    .notes-container {
+      position: absolute;
+      width: 300px;
+      height: fit-content;
+      top: -23px;
+      right: 23px;
+      background: #ffffff;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.063);
+      border-radius: 4px;
+      text-align: start;
+      padding: 12px;
+      cursor: default;
+      display: none;
+
+      @include for-narrow-layout {
+        width: 420px;
+      }
+
+      .notes-title {
         font-weight: 500;
-        padding: rem(8px) rem(24px);
-        text-transform: capitalize;
-        text-align: left;
-        
-        @include for-mobile-layout {
-            min-width: 100px;
-        }
-
-        label {
-            cursor: pointer;
-        }
-
-        .sort-icon {
-            display: none;
-
-            @include for-mobile-layout {
-                display: initial;
-                height: rem(14px);
-                width: rem(14px);
-                margin-block-end: -2px;
-            }
-        }
-
-    }
-    .mobile-updates-header{
-        padding: 0;
-        opacity: 0;
-    }
-    td {
-        padding: rem(12px) rem(24px);
-    }
-
-    .td-actions {
-        column-count: $clr1;
-        height: 100% !important;
-        .search-link {
-            border-radius: 2px;
-            background-color: $clr1;
-            padding: rem(4px) rem(24px);
-            color: $white;
-            transition: background-color .3s ease-in-out, color .3s ease-in-out;
-    
-            @include hover-supported {
-                background-color: lighten($clr1, 5%);
-                color: lighten($white, 5%);
-            }
-        }
-        .note-btn{
-            position: relative;
-            .note-img{
-                margin-top: 4px;
-                margin-left: 8px;
-                width: 20px;
-            }
-
-        }
-        .notes-container{
-            position: absolute;
-            width: 300px;
-            height: fit-content;
-            top: -23px;
-            right: 23px;
-            background: #FFFFFF;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.063);
-            border-radius: 4px;
-            text-align: start;
-            padding: 12px;
-            cursor: default;
-            display: none;
-
-            @include for-narrow-layout {
-                width: 420px;
-            }
-
-            .notes-title{
-                font-weight: 500;
-                font-size: 14px;
-                color: #133146;
-                margin-bottom: 8px;
-            }
-
-            .close-notes-btn{
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                color: gray;
-            }
-
-            .note-list{
-                max-height: 350px;
-                overflow-y: auto;
-
-                .note-preview{
-                    position: relative;
-                    border-bottom: 1px solid #D1D1D1;
-                    margin-bottom: 8px;
-                    max-height: 140px;
-                    overflow-y: auto;
-                    line-break: anywhere;
-
-                    .remove-note-btn{
-                        position: absolute;
-                        top: 0;
-                        right: 12px;
-                        transform: rotate(45deg);
-                        font-size: 16px;
-                        color: gray;
-                    }
-
-                    .date{
-                        font-style: italic;
-                        font-weight: normal;
-                        font-size: 12px;
-                        line-height: 14px;
-                        color: #A5A5A5;
-                        margin: 8px 0;
-                    }
-                    .txt{
-                        font-size: 14px;
-                        color: #484848;
-                        margin-bottom: 8px;
-                        cursor: pointer;
-
-                        &:focus{
-                            border: none;
-                            background-color: #EFEFEF;
-                            border-radius: 3px;
-                            outline: none;
-                            width: 100%;
-                            height: 80px;
-                            padding: 2px 10px;
-                            margin-bottom: 8px;
-                            cursor: text;
-                            height: fit-content;
-                        }
-                    }
-                }
-            }
-
-
-            .add-note-container{
-                .notes-input{
-                    border: none;
-                    border-left: 2px solid #133146;
-                    height: 18px;
-                    resize: none;
-                    overflow-y: hidden;
-                    padding-left: 10px;
-                    margin-top: 5px;
-
-                    &::placeholder{
-                        font-style: italic;
-                        font-size: 12px;
-                    }
-
-                    &:focus{
-                        border: none;
-                        background-color: #EFEFEF;
-                        border-radius: 3px;
-                        outline: none;
-                        width: 100%;
-                        height: 80px;
-                        padding: 10px;
-                        margin-bottom: 8px;
-                    }
-                }
-
-                .notes-btn{
-                    display: none;
-                }
-
-                .show{
-                    display: block;
-                    background: #225474;
-                    border-radius: 2px;
-                    width: 78px;
-                    height: 24px;
-                    padding: 4px 24px;
-                    color: white;
-                }
-            }
-        }
-
-        .show{
-            display: block;
-        }
-        .delete-btn {
-            transition: color .3s ease-in-out;
-            margin-top: 4px;
-            @include hover-supported {
-                color: lighten($clr1, 5%);
-            }
-        }
-    }
-
-    .end-subscrition-btn{
-        background-color: $red;
-        color: $white;
-        font-weight: bold;
-        border-radius: 10px;
-        padding: 5px;
-    }
-
-    .bell-icon{
-        color: $red;
-        cursor: pointer;
-    }
-
-    .notification-container{
-        padding: 15px;
-        max-width: 475px;
-        .rapper:not(:first-child){
-            margin-top: 20px;
-        }
-
-        h3{
-            font-size: rem(15px);
-            color: black;
-
-            span{
-                color: $clr1;
-            }
-        }
-
-        ul{
-            padding-left: 15px;
-            list-style: decimal;
-            margin-bottom: 20px;
-        }
-    }
-
-    .narrow{
-        max-width: 280px;
-    }
-
-    .bell-container{
-        position: relative;
-        margin-left: 12%;
-    }
-
-    .mini-menu{
-        width: 282px;
-        height: 136px;
-        display: flex;
-        flex-direction: column;
-        align-items: start;
-        justify-content: space-around;
-        padding: 18px 40px 10px;
-        font-size: 18px;
+        font-size: 14px;
         color: #133146;
-        
-        .mini-menu-btn{
-            width: 100%;
-            text-align: start;
+        margin-bottom: 8px;
+      }
+
+      .close-notes-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: gray;
+      }
+
+      .note-list {
+        max-height: 350px;
+        overflow-y: auto;
+
+        .note-preview {
+          position: relative;
+          border-bottom: 1px solid #d1d1d1;
+          margin-bottom: 8px;
+          max-height: 140px;
+          overflow-y: auto;
+          line-break: anywhere;
+
+          .remove-note-btn {
+            position: absolute;
+            top: 0;
+            right: 12px;
+            transform: rotate(45deg);
+            font-size: 16px;
+            color: gray;
+          }
+
+          .date {
+            font-style: italic;
+            font-weight: normal;
+            font-size: 12px;
+            line-height: 14px;
+            color: #a5a5a5;
+            margin: 8px 0;
+          }
+          .txt {
+            font-size: 14px;
+            color: #484848;
+            margin-bottom: 8px;
             cursor: pointer;
 
-            &:hover{
-                text-decoration: underline;
+            &:focus {
+              border: none;
+              background-color: #efefef;
+              border-radius: 3px;
+              outline: none;
+              width: 100%;
+              height: 80px;
+              padding: 2px 10px;
+              margin-bottom: 8px;
+              cursor: text;
+              height: fit-content;
             }
+          }
         }
-    }
+      }
 
-    ::-webkit-scrollbar {
-        width: 16px;
-    }
+      .add-note-container {
+        .notes-input {
+          border: none;
+          border-left: 2px solid #133146;
+          height: 18px;
+          resize: none;
+          overflow-y: hidden;
+          padding-left: 10px;
+          margin-top: 5px;
 
-    ::-webkit-scrollbar-thumb {
-        background-color: $clr2;
-        border: 4px solid transparent;
-        border-radius: 8px;
-        background-clip: padding-box; 
-    }
+          &::placeholder {
+            font-style: italic;
+            font-size: 12px;
+          }
 
-    .link-header{
-        text-align: center !important;
-        width: 14%;
-    }
-
-    .purchases-cell{
-        padding: rem(8px) rem(5px) !important;
-
-        @include for-mobile-layout {
-            padding: rem(8px) rem(24px) !important;
+          &:focus {
+            border: none;
+            background-color: #efefef;
+            border-radius: 3px;
+            outline: none;
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            margin-bottom: 8px;
+          }
         }
+
+        .notes-btn {
+          display: none;
+        }
+
+        .show {
+          display: block;
+          background: #225474;
+          border-radius: 2px;
+          width: 78px;
+          height: 24px;
+          padding: 4px 24px;
+          color: white;
+        }
+      }
     }
+
+    .show {
+      display: block;
+    }
+    .delete-btn {
+      transition: color 0.3s ease-in-out;
+      margin-top: 4px;
+      @include hover-supported {
+        color: lighten($clr1, 5%);
+      }
+    }
+  }
+
+  .end-subscrition-btn {
+    background-color: $red;
+    color: $white;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 5px;
+  }
+
+  .bell-icon {
+    color: $red;
+    cursor: pointer;
+  }
+
+  .notification-container {
+    padding: 15px;
+    max-width: 475px;
+    .rapper:not(:first-child) {
+      margin-top: 20px;
+    }
+
+    h3 {
+      font-size: rem(15px);
+      color: black;
+
+      span {
+        color: $clr1;
+      }
+    }
+
+    ul {
+      padding-left: 15px;
+      list-style: decimal;
+      margin-bottom: 20px;
+    }
+  }
+
+  .narrow {
+    max-width: 280px;
+  }
+
+  .bell-container {
+    position: relative;
+    margin-left: 12%;
+  }
+
+  .mini-menu {
+    width: 282px;
+    height: 136px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-around;
+    padding: 18px 40px 10px;
+    font-size: 18px;
+    color: #133146;
+
+    .mini-menu-btn {
+      width: 100%;
+      text-align: start;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  ::-webkit-scrollbar {
+    width: 16px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: $clr2;
+    border: 4px solid transparent;
+    border-radius: 8px;
+    background-clip: padding-box;
+  }
+
+  .link-header {
+    text-align: center !important;
+    width: 14%;
+  }
+
+  .purchases-cell {
+    padding: rem(8px) rem(5px) !important;
+
+    @include for-mobile-layout {
+      padding: rem(8px) rem(24px) !important;
+    }
+  }
 }

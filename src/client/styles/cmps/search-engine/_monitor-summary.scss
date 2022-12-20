@@ -9,6 +9,7 @@
     padding: rem(10px) 0;
     margin-inline-start: rem(30px);
     margin-inline-end: rem(30px);
+    // text-align: left !important;
 
     .capsule {
       display: inline-block;
@@ -23,15 +24,20 @@
     }
   }
   &-footer {
-    text-align: center;
-    padding: 10px 0px;
+    // text-align: center;
+    // padding: 10px 0px;
+    padding: rem(10px) rem(30px);
   }
   .WTM-title {
     margin: rem(5px) 0;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     flex-wrap: wrap;
+    // @include for-narrow-layout {
+    //   text-align: center;
+    // }
+    // box-shadow: 0px 1px 1px 0 rgb(95 95 95 / 17%);
   }
   &-list {
     color: rgba($clr1, 0.8);
@@ -39,7 +45,7 @@
     font-family: roboto, sans-serif;
     font-weight: normal;
     letter-spacing: rem(0.07px);
-    padding: rem(20px) 0;
+    padding: rem(5px) 0;
     padding-inline-start: rem(30px);
     padding-inline-end: rem(30px);
 

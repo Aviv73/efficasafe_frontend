@@ -28,13 +28,13 @@
     box-shadow: 0px 1px 1px 0 rgb(95 95 95 / 17%);
 
     .btn-container {
-      margin-bottom: 10px;
+      // margin-bottom: 10px;
     }
 
     @media (max-width: 1300px) {
       flex-direction: column;
       height: 70px;
-      padding-bottom: 8px;
+      // padding-bottom: 8px;
     }
     .btn-container {
       width: 275px;
@@ -259,57 +259,57 @@
   }
 }
 
-@media (max-width: 900px) {
-  .checkbox-container-search {
-    .checkbox-container {
-      position: unset;
-      margin-left: 31.5px;
-      text-align: center;
-      flex-direction: column;
-      margin: 0 25px;
-      padding-top: 15px;
-      > div {
-        display: flex;
-        justify-content: center;
-      }
-      .custom-checkbox-checkbox {
-        height: 12px;
-        width: 12px;
+.checkbox-container-search {
+  .checkbox-container {
+    position: unset;
+    margin-left: 31.5px;
+    text-align: center;
+    flex-direction: column;
+    margin: 0 25px;
 
-        &::before {
-          width: 2px;
-          height: 6px;
-          left: 47%;
-        }
-        &::after {
-          width: 2px;
-          height: 3px;
-          left: 58%;
-        }
-      }
-      .bigger-radius {
-        border-radius: 3.5px;
-      }
-      .checkbox-instructions {
-        font-weight: 500;
-        font-size: 14px;
-        padding-top: 5px;
-      }
+    padding-top: 15px;
 
-      .checkbox-title {
-        font-size: 14px;
-        margin-left: 4px;
-        color: $clr1;
-        margin-top: 1px;
-      }
+    > div {
+      display: flex;
+      justify-content: center;
+    }
+    .custom-checkbox-checkbox {
+      height: 12px;
+      width: 12px;
 
-      .diff-badge {
-        height: 18px;
-        margin-left: 5px;
-        transform: translateY(2px);
-        color: blue;
-        background-color: $yellow;
+      &::before {
+        width: 2px;
+        height: 6px;
+        left: 47%;
       }
+      &::after {
+        width: 2px;
+        height: 3px;
+        left: 58%;
+      }
+    }
+    .bigger-radius {
+      border-radius: 3.5px;
+    }
+    .checkbox-instructions {
+      font-weight: 500;
+      font-size: 14px;
+      padding-top: 5px;
+    }
+
+    .checkbox-title {
+      font-size: 14px;
+      margin-left: 4px;
+      color: $clr1;
+      margin-top: 1px;
+    }
+
+    .diff-badge {
+      height: 18px;
+      margin-left: 5px;
+      transform: translateY(2px);
+      color: blue;
+      background-color: $yellow;
     }
   }
 }

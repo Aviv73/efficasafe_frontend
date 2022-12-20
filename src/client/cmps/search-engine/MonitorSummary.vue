@@ -37,7 +37,11 @@
         </ul>
       </div>
     </template>
-    <p class="monitor-summary-footer">This monitoring guidance is for Drug vs. Herb/Supplement interactions. Click each one for specifics. Drug-Drug monitoring specifics can be found on each Drug-Drug interaction page.</p>
+    <p class="monitor-summary-footer">
+      This monitoring guidance is for Drug vs. Herb/Supplement interactions. <br />
+      Click each one for specifics.<br />
+      Drug-Drug monitoring specifics can be found on each Drug-Drug interaction page.
+    </p>
   </section>
   <!-- <section class="monitor-summary">
     <collapse :isMonitorSummary="true">

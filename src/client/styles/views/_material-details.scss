@@ -197,13 +197,18 @@
 
       margin-bottom: 5px;
       @media (max-width: $break-narrow) {
-        font-size: 26px;
+        font-size: 22px;
         // text-align: center;
         padding-top: 8px;
       }
     }
     .material-details-content-name-search {
-      font-size: 22px;
+      font-size: 18px;
+      display: inline-block;
+      margin-left: 5px;
+      @media (max-width: $break-narrow) {
+        font-size: 15px;
+      }
     }
     &-family {
       font-size: 16px;

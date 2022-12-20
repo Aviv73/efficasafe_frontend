@@ -176,7 +176,22 @@
               </router-link>
             </li>
             <li class="search-engine-nav-link">
-              <router-link class="link" :to="{ name: 'Monitor', query: this.$route.query }" ref="whatToMonitorLink"> What to monitor </router-link>
+              <tooltip v-if="formatedMaterials.length <= 1" left>
+                <template #content>
+                  <div class="tooltip-content">
+                    <span> This tab opens only when the search contains multiple materials. </span>
+                  </div>
+                </template>
+                <router-link :class="{ 'WTM-disabled': formatedMaterials.length <= 1 }" :disabled="formatedMaterials.length <= 1" :event="formatedMaterials.length > 1 ? 'click' : ''" class="link" :to="{ name: 'Monitor', query: this.$route.query }" ref="whatToMonitorLink">
+                  What to monitor
+                </router-link>
+              </tooltip>
+              <router-link v-else :class="{ 'WTM-disabled': formatedMaterials.length <= 1 }" :disabled="formatedMaterials.length <= 1" :event="formatedMaterials.length > 1 ? 'click' : ''" class="link" :to="{ name: 'Monitor', query: this.$route.query }" ref="whatToMonitorLink">
+                What to monitor
+              </router-link>
+              <!-- <router-link :class="{ 'WTM-disabled': formatedMaterials.length <= 1 }" :disabled="formatedMaterials.length <= 1" :event="formatedMaterials.length > 1 ? 'click' : ''" class="link" :to="{ name: 'Monitor', query: this.$route.query }" ref="whatToMonitorLink">
+                What to monitor
+              </router-link> -->
             </li>
             <li class="search-engine-nav-link">
               <label class="display-toggle" title="Horizontal view">
@@ -368,6 +383,9 @@ export default {
     }
   },
   computed: {
+    disabledTitle() {
+      return this.formatedMaterials.length <= 1 ? ` This link is not supported with a single result, Please insert more material/s ` : '';
+    },
     routableListData() {
       switch (this.$route.name) {
         case 'Results':
@@ -885,6 +903,12 @@ export default {
     }
   },
   methods: {
+    goToWhatToMonitor() {
+      // const routeData = this.$router.resolve({ name: 'Monitor', query: this.$route.query });
+      // window.open(routeData.href, '_blank');
+      if (this.formatedMaterials.length <= 1) return;
+      this.$router.push({ name: 'Monitor', query: this.$route.query });
+    },
     openTooltip() {
       this.isOpen = true;
     },
