@@ -73,12 +73,12 @@ export const userStore = {
                 return
             }
             const {user} = res
-            if(user.purchases.length && typeof user.purchases[0].until === 'number' && user.purchases[0].until < Date.now()){
+            if (user.purchases.length && typeof user.purchases[0].until === 'number' && user.purchases[0].until < Date.now()){
                 user.purchases[0].until = 'Done'
                 user.type = 'registered'
                 user.trialTime = null
                 await dispatch({ type: 'updateLoggedInUser', user });
-            }else{
+            } else{
                 commit({ type: 'setLoggedInUser', user });
             }
             if (['InteractionDetails', 'VinteractionDetails', 'Results', 'Boosters'].includes(router.history.current.name)) {

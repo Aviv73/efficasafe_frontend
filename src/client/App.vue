@@ -119,6 +119,7 @@ export default {
         }
     },
     async created(){
+        await this.connectUser()
         await this.removeServiceWorker()
 
         await this.$store.dispatch('pullManagementData')
@@ -130,7 +131,6 @@ export default {
             location.reload()
         };
 
-        await this.connectUser()
 
         setInterval(this.connectUser, 300000);
 
