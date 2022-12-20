@@ -221,7 +221,7 @@ export default {
       this.itemToDelete = null;
       this.isModalActive = false;
     },
-    getSearchLink(fullUrl) {
+    getSearchLink(fullUrl = '') {
       if (fullUrl.startsWith(window.location.origin)) {
         return fullUrl.substring(window.location.origin.length);
       }
