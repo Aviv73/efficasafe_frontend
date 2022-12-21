@@ -176,7 +176,7 @@
               </router-link>
             </li>
             <li class="search-engine-nav-link">
-              <tooltip v-if="formatedMaterials.length <= 1" left>
+              <tooltip v-if="(formatedMaterials.length <= 1) && false" left>
                 <template #content>
                   <div class="tooltip-content">
                     <span> This tab opens only when the search contains multiple materials. </span>
@@ -186,7 +186,7 @@
                   What to monitor
                 </router-link>
               </tooltip>
-              <router-link v-else :class="{ 'WTM-disabled': formatedMaterials.length <= 1 }" :disabled="formatedMaterials.length <= 1" :event="formatedMaterials.length > 1 ? 'click' : ''" class="link" :to="{ name: 'Monitor', query: this.$route.query }" ref="whatToMonitorLink">
+              <router-link v-else :class="{ 'WTM-disabled': (formatedMaterials.length <= 1) && false }" :disabled="(formatedMaterials.length <= 1) && false" :event="(formatedMaterials.length > 1) || true ? 'click' : ''" class="link" :to="{ name: 'Monitor', query: this.$route.query }" ref="whatToMonitorLink">
                 What to monitor
               </router-link>
               <!-- <router-link :class="{ 'WTM-disabled': formatedMaterials.length <= 1 }" :disabled="formatedMaterials.length <= 1" :event="formatedMaterials.length > 1 ? 'click' : ''" class="link" :to="{ name: 'Monitor', query: this.$route.query }" ref="whatToMonitorLink">
