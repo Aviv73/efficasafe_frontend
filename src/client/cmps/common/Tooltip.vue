@@ -264,10 +264,13 @@ export default {
 top: 78%;
     width: 100%;
     right: 141px;
+        padding: 15px;
     @media  (max-width: 768px) {
     top: -14%;
     right: 152px;
     width: 100%;
+        padding: 0;
+
     
   }
   }
