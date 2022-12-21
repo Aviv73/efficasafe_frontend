@@ -261,9 +261,15 @@ export default {
     bottom: 18px;
   }
   &.left-corner {
-    top: -14%;
+top: 78%;
     width: 100%;
+    right: 141px;
+    @media  (max-width: 768px) {
+    top: -14%;
     right: 152px;
+    width: 100%;
+    
+  }
   }
 
   &.left-bottom-corner {
