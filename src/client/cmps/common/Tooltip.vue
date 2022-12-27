@@ -262,8 +262,8 @@ export default {
   }
   &.left-corner {
 top: 78%;
-    width: 100%;
-    right: 141px;
+    width:260px;
+    right: 110px;
         padding: 15px;
     @media  (max-width: 768px) {
     top: -14%;
