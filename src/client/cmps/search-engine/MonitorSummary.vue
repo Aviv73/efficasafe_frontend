@@ -96,6 +96,8 @@
 // import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 // import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
 
+const msgsToMentionSource = ['Blood drug level', 'Exacerbation of drug adverse reactions', 'exacerbation of symptoms for which the drug is being given', 'exacerbation of toxicity symptoms', 'reduction of drug efficacy', 'potentiation or reduction of drug efficacy'];
+
 export default {
   props: {
     interactions: {
@@ -110,16 +112,16 @@ export default {
   },
   computed: {
     generalTxt() {
-      return this.getMonitorTxt('general');
+      return this.getMonitorTxtBetter('general');
     },
     labTestsTxt() {
-      return this.getMonitorTxt('labTests');
+      return this.getMonitorTxtBetter('labTests');
     },
     otherTestsTxt() {
-      return this.getMonitorTxt('otherTests');
+      return this.getMonitorTxtBetter('otherTests');
     },
     symptomsTxt() {
-      return this.getMonitorTxt('symptoms');
+      return this.getMonitorTxtBetter('symptoms');
     }
   },
   methods: {
@@ -130,9 +132,42 @@ export default {
         } else this.flatInteractions.push(interaction);
       });
     },
+    getMonitorTxtBetter(propName) {
+      const wardMap = this.flatInteractions.reduce((_wardMap, { monitor, side2Material, side2Label }) => {
+        const regex = new RegExp(', (?![^(]*\\))');
+        let words = monitor[propName]
+          .split(regex)
+          .filter(str => str)
+          .map(str => str.trim());
+        words.forEach((word) => {
+          if (!_wardMap[word]) {
+            const secChar = word.charAt(1);
+            word = secChar !== secChar.toUpperCase() ? word.charAt(0).toLowerCase() + word.slice(1) : word;
+            const lastChar = word.charAt(word.length - 1);
+            word = lastChar === '.' ? word.substring(0, word.length - 1) : word;
+            const byName = side2Material?.name || side2Label?.name || '';
+            if (!_wardMap[word]) {
+              _wardMap[word] = [byName];
+            } 
+            else _wardMap[word].push(byName)
+          }
+        });
+        return _wardMap;
+      }, {});
+
+      const words = this.sortRes(Object.keys(wardMap));
+
+      const res = words.map(c => {
+        const names = Array.from(new Set(wardMap[c]?.filter(Boolean) || []));
+        if (msgsToMentionSource.includes(c) && names.length) return `${c} (${names.join(', ')})`;
+        return c;
+      });
+
+      return res.join(', ');
+    },
     getMonitorTxt(propName) {
       const seenMap = {};
-      const reduced = this.flatInteractions.reduce((acc, { monitor }) => {
+      const reduced = this.flatInteractions.reduce((acc, { monitor, side2Material, side2Label }) => {
         const regex = new RegExp(', (?![^(]*\\))');
         let words = monitor[propName]
           .split(regex)
@@ -147,11 +182,15 @@ export default {
             if (!seenMap[word]) {
               acc.push(word);
               seenMap[word] = true;
-            }
+            } 
+            // else seenMap[word].push(byName)
           }
           return acc;
         }, []);
-        acc += acc && words.join(', ') ? ', ' + words.join(', ') : words.join(', ');
+        const joined = words.join(', ');
+        acc += acc && joined ? ', ' + joined : joined;
+        const byName = side2Material?.name || side2Label?.name || '';
+        if (msgsToMentionSource.includes(joined)) acc += ` (${byName})`;
         return acc;
       }, '');
       const sortted = this.sortRes(reduced);
@@ -159,7 +198,7 @@ export default {
     },
     sortRes(str) {
       const regex = new RegExp(', (?![^(]*\\))');
-      const strs = str.split(regex).map(str => str.trim());
+      const strs = Array.isArray(str)? str : str.split(regex).map(str => str.trim());
       const noCaps = strs
         .filter(str => {
           if (str !== 'aPTT' && str !== 'hbA1c' && str !== 'hct' && str !== 'hgB' && str !== str.toUpperCase()) return str;
@@ -183,6 +222,7 @@ export default {
         all.splice(bloodDrugLvlIdx, 1);
         all.unshift(bloodDrugLvl);
       }
+      if (Array.isArray(str)) return all;
       const newStr = all.join(', ');
       return newStr;
     }

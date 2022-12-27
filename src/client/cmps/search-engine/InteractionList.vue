@@ -23,6 +23,7 @@
         v-else-if="!isLoading && !isVertical"
         :materials="materials"
         :interactions="listData.interactions"
+        :allInteractions="listData.allInteractions"
         :suppInteractions="listData.suppInteractions"
         :suppRedInteractions="listData.suppRedInteractions"
         :suppEmptyInteractions="listData.suppEmptyInteractions"
