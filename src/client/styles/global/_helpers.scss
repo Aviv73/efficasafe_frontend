@@ -8,6 +8,7 @@
     padding: 0;
   }
 }
+
 .side-by-side-container {
   display: grid;
   max-width: 100%;
@@ -220,4 +221,19 @@
 .regular-sub {
   cursor: default;
   color: unset;
+}
+
+
+
+
+.main-layout {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 rem(100px);
+
+@media (max-width: 768px) {
+  padding: 0 rem(5px);
+
+
+}
 }

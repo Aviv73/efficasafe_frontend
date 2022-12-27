@@ -15,7 +15,8 @@ export const materialService = {
     updateMaterials,
     getEmptyRef,
     getEmptyPathway,
-    removeMany
+    removeMany,
+    getMaterials
 }
 
 async function list(filterBy = {}, doCache = false, cacheKey = false) {
@@ -30,6 +31,11 @@ async function list(filterBy = {}, doCache = false, cacheKey = false) {
     const res = await httpService.get(END_POINT, filterBy);
     if (doCache) cache[key] = res;
     return res;
+}
+async function getMaterials(filterBy = {}) {
+    
+    const materials = await httpService.get(`${END_POINT}/index`, filterBy);
+    return materials;
 }
 
 function getById(id) {
