@@ -1384,6 +1384,8 @@ export default {
       }
       const positiveOrder = isPosSupp ? -1 : 1;
       const res = interactions.sort((a, b) => {
+        if (!a.name) a.name = '';
+        if (!b.name) b.name = '';
         return (map[b.recommendation] - map[a.recommendation]) * positiveOrder || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) || a.name.toLowerCase().localeCompare(b.name.toLowerCase());
       });
       return res;
