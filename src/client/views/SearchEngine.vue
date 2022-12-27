@@ -408,7 +408,8 @@ export default {
         case 'Monitor':
           return {
             interactions: this.formatedInteractions,
-            allInteractions: this.formatInteractions(this.wtmInteractions),
+            // allInteractions: this.formatInteractions(this.wtmInteractions),
+            allInteractions: this.wtmInteractions,
             // allInteractions: this.wtmInteractions,
             // allInteractions: this.formatedInteractions,
             pageCount: this.pageCount,
@@ -1213,7 +1214,7 @@ export default {
         materialCount: this.materialsLength
       }, false);
       const [dbRes, intRes] = await Promise.all([dbIntPrm, intPrm]);
-      const res = [...dbRes.dBankInteractions, ...intRes.interactions];
+      const res = [...dbRes.dBankInteractions, ...this.formatInteractions(intRes.interactions)];
       this.wtmInteractions = res;
       return res;
     },
@@ -1428,8 +1429,9 @@ export default {
       return res;
     },
     insertInteraction(acc, interaction) {
+      if (!interaction) return acc;
       const idx = acc.findIndex(vin => vin.side2Material && vin.side2Material._id === interaction.side2Material._id && vin.side1Material._id === interaction.side1Material._id);
-      const groupIdx = acc.findIndex(vin => vin._id === `${interaction.side1Material._id}-${interaction.side2Material._id}`);
+      const groupIdx = acc.findIndex(vin => vin._id === `${interaction.side1Material?._id}-${interaction.side2Material?._id || interaction.side2Label?._id || -1}`);
       // vInteraction & v-group not found
       if (idx === -1 && groupIdx === -1) acc.push(interaction);
       // found 1 v-interaction - make it a group

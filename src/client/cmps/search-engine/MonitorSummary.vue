@@ -96,7 +96,7 @@
 // import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 // import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
 
-const msgsToMentionSource = ['Blood drug level', 'Exacerbation of drug adverse reactions', 'exacerbation of symptoms for which the drug is being given', 'exacerbation of toxicity symptoms', 'reduction of drug efficacy', 'potentiation or reduction of drug efficacy'];
+const msgsToMentionSource = ['Blood drug level', 'Exacerbation of drug adverse reactions', 'exacerbation of symptoms for which the drug is being given', 'exacerbation of toxicity symptoms', 'reduction of drug efficacy', 'potentiation or reduction of drug efficacy'].map(c => c.toLowerCase());
 
 export default {
   props: {
@@ -133,15 +133,17 @@ export default {
       });
     },
     getMonitorTxtBetter(propName) {
-      const wardMap = this.flatInteractions.reduce((_wardMap, { monitor, side2Material, side2Label }) => {
+      const wardMap = this.flatInteractions.reduce((_wardMap, interaction) => {
+        const { monitor, side2Material, side2Label } = interaction;
         const regex = new RegExp(', (?![^(]*\\))');
-        let words = monitor[propName]
+        let words = (monitor?.[propName] || '')
           .split(' ')
           .filter(Boolean)
           .join(' ')
           .split(regex)
           .filter(str => str)
           .map(str => str.trim());
+
         words.forEach((word) => {
           if (!_wardMap[word]) {
             const secChar = word.charAt(1);
@@ -149,12 +151,10 @@ export default {
             const lastChar = word.charAt(word.length - 1);
             word = lastChar === '.' ? word.substring(0, word.length - 1) : word;
             word = word.trim();
-            if (word === 'blood calcium level') console.log('WELLO?');
             const byName = side2Material?.name || side2Label?.name || '';
-            if (!_wardMap[word]) {
-              _wardMap[word] = [byName];
-            } 
+            if (!_wardMap[word]) _wardMap[word] = [byName];
             else _wardMap[word].push(byName)
+            if (word === 'blood calcium level') console.log('WELLO?', _wardMap[word]);
           }
         });
         return _wardMap;
@@ -164,7 +164,7 @@ export default {
 
       const res = words.map(c => {
         const names = Array.from(new Set(wardMap[c]?.filter(Boolean) || []));
-        if (msgsToMentionSource.includes(c) && names.length) return `${c} (${names.join(', ')})`;
+        if (msgsToMentionSource.includes(c.toLowerCase()) && names.length) return `${c} (${names.join(', ')})`;
         return c;
       });
 
