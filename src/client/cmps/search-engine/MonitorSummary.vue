@@ -136,6 +136,9 @@ export default {
       const wardMap = this.flatInteractions.reduce((_wardMap, { monitor, side2Material, side2Label }) => {
         const regex = new RegExp(', (?![^(]*\\))');
         let words = monitor[propName]
+          .split(' ')
+          .filter(Boolean)
+          .join(' ')
           .split(regex)
           .filter(str => str)
           .map(str => str.trim());
@@ -145,6 +148,8 @@ export default {
             word = secChar !== secChar.toUpperCase() ? word.charAt(0).toLowerCase() + word.slice(1) : word;
             const lastChar = word.charAt(word.length - 1);
             word = lastChar === '.' ? word.substring(0, word.length - 1) : word;
+            word = word.trim();
+            if (word === 'blood calcium level') console.log('WELLO?');
             const byName = side2Material?.name || side2Label?.name || '';
             if (!_wardMap[word]) {
               _wardMap[word] = [byName];
