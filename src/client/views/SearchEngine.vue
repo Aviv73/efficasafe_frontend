@@ -1164,24 +1164,24 @@ export default {
       return await this.$store.dispatch({ type: 'getInteractions', filterBy: {...filterBy, id: ids}, cacheKey: cacheKey });
     },
     async getInteractions() {
-      // const ids = this.materials.reduce((acc, { _id, labels }) => {
-      //   if (!acc.includes(_id)) acc.push(_id);
-      //   labels.forEach(label => {
-      //     if (!acc.includes(label._id)) acc.push(label._id);
-      //   });
-      //   return acc;
-      // }, []);
+      const ids = this.materials.reduce((acc, { _id, labels }) => {
+        if (!acc.includes(_id)) acc.push(_id);
+        labels.forEach(label => {
+          if (!acc.includes(label._id)) acc.push(label._id);
+        });
+        return acc;
+      }, []);
       let { page } = this.$route.query;
       if (!page) page = 1;
       const filterBy = {
         isSearchResults: true,
         page: --page,
-        // id: ids,
+        id: ids,
         materialCount: this.materialsLength
       };
 
       // const { interactions, pageCount, total, searchState } = await this.$store.dispatch({ type: 'getInteractions', filterBy, cacheKey: `/search?${this.$route.fullPath.split('?')[1]}` });
-      const { interactions, pageCount, total, searchState } = await this.loadInteractions(filterBy);
+      const { interactions, pageCount, total, searchState } = await this.loadInteractions({...filterBy});
 
       this.pageCount = pageCount;
       this.interactions = interactions;

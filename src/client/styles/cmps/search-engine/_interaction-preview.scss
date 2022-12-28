@@ -53,7 +53,7 @@
 
   &-header {
     pointer-events: all;
-    margin: rem(16px) 0;
+    margin: rem(14px) 0;
 
     &.empty-group {
       pointer-events: none;
@@ -165,6 +165,7 @@
       font-family: roboto, sans-serif;
       font-weight: normal;
       letter-spacing: rem(0.07px);
+      margin-bottom: 18px;
 
       @include for-narrow-layout {
         padding-inline-end: 14%;

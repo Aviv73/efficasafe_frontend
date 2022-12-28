@@ -1,5 +1,5 @@
 <template>
-  <section class="warnings-container" :class="{ down: isDb }">
+  <section v-if="warnings && warnings.length" class="warnings-container" :class="{ down: isDb }">
     <span class="alerts-title">Alerts</span>
     <div v-for="(warning, idx) in warnings" :key="idx" class="warning">
       <template v-if="!isScreenNarrow">
@@ -35,6 +35,11 @@ export default {
     isDb: {
       type: Boolean,
       default: false
+    }
+  },
+  data() {
+    return {
+      warnings: []
     }
   },
   computed: {

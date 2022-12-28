@@ -18,8 +18,8 @@
       @mouseleave="showTitle(null)"
       v-if="!showDraftName && !isMaterialGroup"
     >
-      <span v-if="isInteractionDetails" :class="{ pointer: isLink, 'clip-txt': isScreenNarrow }" @click="goToMaterial(side1NameToShow)">{{ side1NameToShow.slice(0, 16) }}</span>
-      <span v-else :title="side1NameToShow" :class="{ 'clip-txt': isScreenNarrow }">{{ side1NameToShow.slice(0, 16) }}</span>
+      <span v-if="isInteractionDetails" :class="{ pointer: isLink, 'clip-txt': isScreenNarrow }" @click="goToMaterial(side1NameToShow)">{{ side1NameToShow }}</span>
+      <span v-else :title="side1NameToShow" :class="{ 'clip-txt': isScreenNarrow }">{{ side1NameToShow }}</span>
       <!-- <span v-if="isInteractionDetails" :class="{ pointer: isLink, 'clip-txt': isScreenNarrow }" @click="goToMaterial(side1NameToShow)">{{ isScreenNarrow ? side1NameToShow.slice(0, 15) : side1NameToShow }}</span>
       <span v-else :title="side1NameToShow" :class="{ 'clip-txt': isScreenNarrow }">{{ isScreenNarrow ? side1NameToShow.slice(0, 16) : side1NameToShow }}</span> -->
 
@@ -80,6 +80,9 @@
 </template>
 
 <script>
+ 
+import { utilService } from '@/cms/services/util.service';
+
 export default {
   props: {
     name: {
@@ -286,10 +289,13 @@ export default {
         this.$emit('openModal', null);
         return;
       }
-      const page = {
-        pageX: ev.pageX,
-        offset: ev.offsetY
-      };
+      // const page = {
+      //   // pageX: ev.pageX,
+      //   // offset: ev.offsetY
+      //   x: ev.screenX,
+      //   y: ev.screenY
+      // };
+      const page = utilService.getMousePosition(ev);
       this.$emit('openModal', page);
     }
   }

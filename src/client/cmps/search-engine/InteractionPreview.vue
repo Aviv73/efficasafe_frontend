@@ -1,6 +1,6 @@
 <template>
   <section class="interaction-preview" :id="interaction._id">
-    <collapse @collapse-closed="onCollapseToggle" :initial-is-visible="initialCollapseIsVisible" :disable="!isAllowed">
+    <collapse @collapse-closed="onCollapseToggle" :initialIsVisible="$route.name === 'Monitor'" :initial-is-visible="initialCollapseIsVisible" :disable="!isAllowed">
       <template #header>
         <component :is="headerCmp" :to="interactionURL" @click="onCollapseToggle">
           <span v-if="$route.name === 'Boosters' && !isChild && !interaction.isNegative" class="poss-booster-count badge" :style="getBadgeColor(interaction)">{{ newLength || getVinteractionsCount(interaction) }}</span>
