@@ -23,6 +23,7 @@ import Whiteboard from '@/client/views/Whiteboard'
 import InteractionList from '@/client/cmps/search-engine/InteractionList';
 import UserApp from '@/client/cmps/user-account/UserApp';
 import UserEdit from '@/client/cmps/user-account/UserEdit';
+import MainIndex from '@/client/views/index/MainIndex';
 
 
 Vue.use(VueRouter);
@@ -173,6 +174,11 @@ const routes = [
         }
       }
     ]
+  },
+  {
+    path: '/index',
+    name: 'index',
+    component: MainIndex
   },
   {
     path: ''

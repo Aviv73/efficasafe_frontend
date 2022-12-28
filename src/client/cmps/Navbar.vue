@@ -62,6 +62,9 @@
             <li class="navbar-nav-item" @click="toggleNavActive">
               <router-link to="/search"> Interaction checker </router-link>
             </li>
+            <li class="navbar-nav-item" @click="toggleNavActive">
+              <router-link to="/index"> Index A-Z </router-link>
+            </li>
             <li class="navbar-nav-item" v-if="false">
               <dropdown :dontHover="isScreenNarrow">
                 <template #activator>

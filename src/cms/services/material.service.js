@@ -4,164 +4,169 @@ const END_POINT = 'material';
 const cache = {};
 
 export const materialService = {
-    list,
-    getById,
-    getByName,
-    getByDBId,
-    save,
-    remove,
-    restore,
-    getEmptyMaterial,
-    updateMaterials,
-    getEmptyRef,
-    getEmptyPathway,
-    removeMany
-}
+  list,
+  getById,
+  getByName,
+  getByDBId,
+  save,
+  remove,
+  restore,
+  getEmptyMaterial,
+  updateMaterials,
+  getEmptyRef,
+  getEmptyPathway,
+  removeMany,
+  getMaterials
+};
 
 async function list(filterBy = {}, doCache = false, cacheKey = false) {
-    let key = '';
-    if (doCache) {
-        key = filterBy.q ? filterBy.q.toString() : cacheKey
-        if (cache[key]) {
-            return cache[key];
-        }
+  let key = '';
+  if (doCache) {
+    key = filterBy.q ? filterBy.q.toString() : cacheKey;
+    if (cache[key]) {
+      return cache[key];
     }
+  }
 
-    const res = await httpService.get(END_POINT, filterBy);
-    if (doCache) cache[key] = res;
-    return res;
+  const res = await httpService.get(END_POINT, filterBy);
+  if (doCache) cache[key] = res;
+  return res;
+}
+async function getMaterials(filterBy = {}) {
+  const materials = await httpService.get(`${END_POINT}/index`, filterBy);
+  return materials;
 }
 
 function getById(id) {
-    return httpService.get(`${END_POINT}/${id}`);
+  return httpService.get(`${END_POINT}/${id}`);
 }
 
 function getByName(name) {
-    return httpService.get(`${END_POINT}/name/${name}`);
+  return httpService.get(`${END_POINT}/name/${name}`);
 }
 
 function getByDBId(DBId) {
-    return httpService.get(`${END_POINT}/byDB/${DBId}`);
+  return httpService.get(`${END_POINT}/byDB/${DBId}`);
 }
 
 function save(material) {
-    if (material._id) return httpService.put(`${END_POINT}/${material._id}`, material);
-    else return httpService.post(END_POINT, material);
+  if (material._id) return httpService.put(`${END_POINT}/${material._id}`, material);
+  else return httpService.post(END_POINT, material);
 }
 
 function restore(material) {
-    return httpService.post(END_POINT, material);
+  return httpService.post(END_POINT, material);
 }
 
 function remove(id) {
-    httpService.delete(`${END_POINT}/${id}`);
+  httpService.delete(`${END_POINT}/${id}`);
 }
 
 function removeMany(ids) {
-    httpService.delete(END_POINT, ids);
+  httpService.delete(END_POINT, ids);
 }
 
 function updateMaterials(data) {
-    return httpService.put(END_POINT, data);
+  return httpService.put(END_POINT, data);
 }
 
 function getEmptyMaterial() {
-    return {
-        name: '',
-        type: '',
-        atcIds: [],
-        drugBankId: '',
-        updatedAt: null,
-        botanicalFamily: '',
-        plantPartUsed: '',
-        desc: '',
-        dBankDesc: '',
-        dBankClinicalDesc: '',
-        dosage: '',
-        mechanismOfAction: '',
-        precautions: '',
-        adverseReactions: '',
-        activeConstituents: '',
-        medicinalUsesTxt: '',
-        brands: [],
-        aliases: [],
-        dBankAliases: [],
-        medicinalActions: [],
-        indications: [],
-        dBankIndications: [],
-        dBankCategories: [],
-        labels: [],
-        atcPaths: [],
-        regions: [],
-        refs: [],
-        dBankRefs: [],
-        qualities: [],
-        compounds: [],
-        formulas: [],
-        pathways: [],
-        pathwayRefs: [],
-        sensitivities: '',
-        overdosage: '',
-        contraindications: '',
-        toxicity: '',
-        pregnancy: '',
-        lactation: '',
-        effectOnDrugMetabolism: '',
-        detailedPharmacology: '',
-        externalLinks: [],
-        isNarrowTherapeutic: false,
-        isG6pd: false,
-        isSalicylate: false,
-        isComposite: false,
-        isTannin: false,
-        isPhototoxicity: false,
-        isSulfa: false,
-        isUnderStudy: false,
-        fdaLabel: '',
-        pharmacology: {
-            indication: '',
-            pharmacodynamics: '',
-            mechanismOfAction: '',
-            absorption: '',
-            toxicity: '',
-            proteinBinding: '',
-            metabolism: '',
-            halfLife: '',
-            routeOfElimination: '',
-            volumeOfDistribution: '',
-            clearance: '',
-        },
-        structuredAdverseEffects: [],
-        structuredContraIndications: [],
-        foodInteractions: [],
-        ODA: '',
-        RDA: '',
-        absorptionAndExcretion: '',
-        causesOfDeficiency: '',
-        nutritionalSources: '',
-        otherCharacteristics: '',
-        symptomsOfDeficiency: ''
-    }
+  return {
+    name: '',
+    type: '',
+    atcIds: [],
+    drugBankId: '',
+    updatedAt: null,
+    botanicalFamily: '',
+    plantPartUsed: '',
+    desc: '',
+    dBankDesc: '',
+    dBankClinicalDesc: '',
+    dosage: '',
+    mechanismOfAction: '',
+    precautions: '',
+    adverseReactions: '',
+    activeConstituents: '',
+    medicinalUsesTxt: '',
+    brands: [],
+    aliases: [],
+    dBankAliases: [],
+    medicinalActions: [],
+    indications: [],
+    dBankIndications: [],
+    dBankCategories: [],
+    labels: [],
+    atcPaths: [],
+    regions: [],
+    refs: [],
+    dBankRefs: [],
+    qualities: [],
+    compounds: [],
+    formulas: [],
+    pathways: [],
+    pathwayRefs: [],
+    sensitivities: '',
+    overdosage: '',
+    contraindications: '',
+    toxicity: '',
+    pregnancy: '',
+    lactation: '',
+    effectOnDrugMetabolism: '',
+    detailedPharmacology: '',
+    externalLinks: [],
+    isNarrowTherapeutic: false,
+    isG6pd: false,
+    isSalicylate: false,
+    isComposite: false,
+    isTannin: false,
+    isPhototoxicity: false,
+    isSulfa: false,
+    isUnderStudy: false,
+    fdaLabel: '',
+    pharmacology: {
+      indication: '',
+      pharmacodynamics: '',
+      mechanismOfAction: '',
+      absorption: '',
+      toxicity: '',
+      proteinBinding: '',
+      metabolism: '',
+      halfLife: '',
+      routeOfElimination: '',
+      volumeOfDistribution: '',
+      clearance: ''
+    },
+    structuredAdverseEffects: [],
+    structuredContraIndications: [],
+    foodInteractions: [],
+    ODA: '',
+    RDA: '',
+    absorptionAndExcretion: '',
+    causesOfDeficiency: '',
+    nutritionalSources: '',
+    otherCharacteristics: '',
+    symptomsOfDeficiency: ''
+  };
 }
 
 function getEmptyRef() {
-    return {
-        draftIdx: 0,
-        type: '',
-        txt: '',
-        link: '',
-        pubmedId: ''
-    }
+  return {
+    draftIdx: 0,
+    type: '',
+    txt: '',
+    link: '',
+    pubmedId: ''
+  };
 }
 
 function getEmptyPathway() {
-    return {
-        name: '',
-        type: '',
-        fullName: '',
-        influence: '',
-        actions: [],
-        references: [],
-        fullReferences: []
-    }
+  return {
+    name: '',
+    type: '',
+    fullName: '',
+    influence: '',
+    actions: [],
+    references: [],
+    fullReferences: []
+  };
 }
