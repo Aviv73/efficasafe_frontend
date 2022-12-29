@@ -38,10 +38,10 @@
               <img src="@/client/assets/imgs/google.svg" alt="Logo" />
               Signup with google
             </a>
-            <a :href="facebookLink" class="blue" role="button">
+            <!-- <a :href="facebookLink" class="blue" role="button">
               <img class="facebook-img" src="@/client/assets/imgs/facebook.svg" alt="Logo" />
               Signup with facebook
-            </a>
+            </a> -->
           </div>
         </template>
         <template v-else>
@@ -111,9 +111,9 @@ export default {
     googleLink() {
       return process.env.NODE_ENV === 'development' ? 'http://localhost:3000/auth/google' : '/auth/google';
     },
-    facebookLink() {
-      return process.env.NODE_ENV === 'development' ? 'http://localhost:3000/auth/facebook' : '/auth/facebook';
-    },
+    // facebookLink() {
+    //   return process.env.NODE_ENV === 'development' ? 'http://localhost:3000/auth/facebook' : '/auth/facebook';
+    // },
     passInputType() {
       if (!this.isShowPass) return 'password';
       return 'text';
