@@ -59,6 +59,31 @@
       }
     }
   }
+  .material-under-study {
+    position: relative;
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .material-under-study-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .material-under-study-img {
+      display: flex;
+      justify-content: center;
+      svg:nth-child(2) {
+        transform: translate(-70%, 20%);
+      }
+    }
+    .material-under-study-content {
+      text-align: center;
+      margin-top: rem(20px);
+    }
+  }
   .main-index-letters {
     display: flex;
     justify-content: space-around;
