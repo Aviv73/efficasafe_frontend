@@ -135,19 +135,23 @@
   }
 
   .index-main-content {
-    column-count: 4;
+    // column-count: 4;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    column-gap: 20px;
     line-height: 30px;
     color: $clr1;
     margin-top: 20px;
 
     overflow-y: scroll;
-    @media (max-width: 768px) {
-      // text-align: center;
-      margin-top: 5px;
 
-      column-count: auto;
-      height: 450px;
-    }
+    // @media (max-width: 768px) {
+    //   // text-align: center;
+    //   margin-top: 5px;
+
+    //   column-count: auto;
+    //   height: 450px;
+    // }
 
     .results-container {
       // margin: 5px 0px;
