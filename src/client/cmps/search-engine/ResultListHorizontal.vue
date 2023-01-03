@@ -20,12 +20,13 @@
         <button @click="showResults('drug')" :class="{ selected: isSelected('drug') }">Drug - Drug</button>
       </div>
     </div>
-    <header class="horizontal-list-header" v-if="$route.name !== 'Boosters'">
+    <header class="horizontal-list-header">
       <span class="horizontal-list-header-item">
         <label class="flex-align-center" title="Sort A-Z / Z-A" tabindex="0">
           <input type="checkbox" hidden @change="emitSort('name', $event.target.checked)" />
           <sort-vertical-icon class="sort-icon" title="" />
-          <span>{{ side1Name }} vs {{ side2Name }}</span>
+          <span v-if="$route.name == 'Boosters'">Drug</span>
+          <span v-else>{{ side1Name }} vs {{ side2Name }}</span>
         </label>
         <button @click="changeSortBySide" class="swap-side-btn">
           <sort-vertical-icon class="swap-side-icon" color="#329D9C" title="" />
