@@ -184,7 +184,7 @@ export default {
           value: 'isUnderStudy',
         },
         {
-          text: 'Hinned from index',
+          text: 'Hidden from index',
           align: 'center',
           value: 'isHidden',
         },
