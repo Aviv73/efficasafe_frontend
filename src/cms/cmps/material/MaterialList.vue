@@ -81,6 +81,17 @@
                 />
               </div>
             </td>
+            <td>
+              <div style="margin-left: 41%;">
+                <v-checkbox
+                  class="mr-2"
+                  v-model="item.isHidden"
+                  :value="item.isHidden"
+                  title="Hide from index"
+                  @change="updateMaterial(item)"
+                />
+              </div>
+            </td>
           </tr>
         </tbody>
       </template>
@@ -162,6 +173,11 @@ export default {
           text: 'Under construction',
           align: 'center',
           value: 'isUnderStudy',
+        },
+        {
+          text: 'Hinned from index',
+          align: 'center',
+          value: 'isHidden',
         },
       ],
     };
