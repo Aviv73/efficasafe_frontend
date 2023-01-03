@@ -33,10 +33,10 @@
                             <img src="@/client/assets/imgs/google.svg" alt="Logo" />
                             Login with google
                         </a>
-                        <a :href="facebookLink" class="blue" role="button">
+                        <!-- <a :href="facebookLink" class="blue" role="button">
                             <img class="facebook-img" src="@/client/assets/imgs/facebook.svg" alt="Logo" />
                             Login with facebook 
-                        </a>
+                        </a> -->
                     </div>
                 </div>
             </div>
@@ -79,10 +79,10 @@ export default {
             if(window.AutopilotAnywhere && window.AutopilotAnywhere.sessionId) return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/google?q=${window.AutopilotAnywhere.sessionId}` : `/auth/google?q=${window.AutopilotAnywhere.sessionId}`
             return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/google` : `/auth/google`
         },
-        facebookLink(){
-            if(window.AutopilotAnywhere && window.AutopilotAnywhere.sessionId) return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/facebook?q=${window.AutopilotAnywhere.sessionId}` : `/auth/facebook?q=${window.AutopilotAnywhere.sessionId}`
-            return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/facebook` : `/auth/facebook`
-        },
+        // facebookLink(){
+        //     if(window.AutopilotAnywhere && window.AutopilotAnywhere.sessionId) return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/facebook?q=${window.AutopilotAnywhere.sessionId}` : `/auth/facebook?q=${window.AutopilotAnywhere.sessionId}`
+        //     return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/facebook` : `/auth/facebook`
+        // },
         passInputType(){
             if(!this.isShowPass) return 'password'
             return 'text'
