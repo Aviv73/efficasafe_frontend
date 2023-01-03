@@ -2,7 +2,7 @@
   <section class="main-index">
     <section class="index-search full">
       <div class="index-search-input main-layout">
-        <AppAutoComplete @materialSelected="materialSelected" :placeholder="'Search Drug / Herb / Supplements'" />
+        <AppAutoComplete @materialSelected="materialSelected" :placeholder="'Search Drug / Herb / Supplement'" />
       </div>
       <div class="index-search-material-type">
         <button :class="{ focused: materialType === 'drug' }" @click="setMaterialType('drug')">Drugs</button>
@@ -12,7 +12,7 @@
     </section>
     <section class="main-layout">
       <section class="main-index-letters">
-        <button :class="{ focused: letterFilter === letter }" @click="setFilter(letter)" class="letter-btn" v-for="letter in letters" :key="letter">
+        <button :class="{ focused: letterFilter === letter, disabled: isDisabled(letter) }" :disabled="isDisabled(letter)" @click="setFilter(letter)" class="letter-btn" v-for="letter in letters" :key="letter">
           <span>{{ letter }}</span>
         </button>
       </section>
@@ -42,16 +42,16 @@
       <Loader />
     </div>
     <main v-else class="index-main-content main-layout">
-      <template v-if="!materialUnderStudy && materials.length > 0">
+      <template v-if="!isMaterialUnderStudy && materials.length > 0">
         <div v-for="material in materials" :key="material._id" class="results-container" :class="{ disabled: material.isUnderStudy }">
           <router-link :is="material.isUnderStudy ? 'span' : 'router-link'" :to="{ path: `/material/${material._id}` }" target="_blank"> {{ material.name }} </router-link>
         </div>
       </template>
-      <template v-if="materials.length === 0 && !materialUnderStudy">
+      <template v-if="materials.length === 0 && !isMaterialUnderStudy">
         <section class="no-results">No Materials that starts with - {{ subgroupFilter }}</section>
       </template>
     </main>
-    <div v-if="materialUnderStudy" class="material-under-study main-layout">
+    <div v-if="isMaterialUnderStudy" class="material-under-study main-layout">
       <div class="material-under-study-container">
         <div class="material-under-study-img">
           <svg width="68" height="71" viewBox="0 0 68 71" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -103,17 +103,29 @@ export default {
       materialType: 'drug',
       letterFilter: 'A',
       subgroupFilter: '',
-      materialUnderStudy: false,
+      isMaterialUnderStudy: false,
       subgroupLetters: ['Aa', 'Ab', 'Ac', 'Ad', 'Ae', 'Af', 'Ag', 'Ah', 'Ai', 'Aj', 'Ak', 'Al', 'Am', 'An', 'Ao', 'Ap', 'Aq', 'Ar', 'As', 'At', 'Au', 'Av', 'Aw', 'Ax', 'Ay', 'Az']
     };
   },
   async created() {
-    const criteria = {
-      q: 'A'
-    };
+    const { l, type, subl } = this.$route.query;
+    if (l && type) {
+      this.letterFilter = l;
+      this.materialType = type;
 
-    this.materials = await this.$store.dispatch({ type: 'fetchMaterials', criteria });
-    this.sortMaterials(this.materials);
+      if (subl) {
+        this.subgroupFilter = subl;
+        this.subgroupLetters = this.setsubGroupLetters(subl.charAt(0));
+      }
+    }
+    this.materials = await this.$store.dispatch({
+      type: 'fetchMaterials',
+      criteria: {
+        q: this.letterFilter,
+        type: this.materialType
+      }
+    });
+    // this.sortMaterials(this.materials);
 
     this.isLoading = false;
   },
@@ -124,8 +136,11 @@ export default {
       if (this.materialType === 'supplement') return disabledSuppluments.includes(letter);
     },
     async setMaterialType(type) {
-      this.materialUnderStudy = false;
+      this.isMaterialUnderStudy = false;
       this.materialType = type;
+      // this.$router.push({
+      //   query: { letterFilter: this.letterFilter, type: this.materialType }
+      // });
       this.setFilter(this.letterFilter);
     },
     setsubGroupLetters(switchedLetter) {
@@ -135,10 +150,20 @@ export default {
         return newLetter.join('');
       });
     },
+    pushFilterToQueryParams() {
+      this.$router.replace({
+        path: '/index',
+        query: { l: this.letterFilter, type: this.materialType, subl: this.subgroupFilter }
+      });
+    },
     async setFilter(letter) {
-      this.materialUnderStudy = false;
+      this.isMaterialUnderStudy = false;
       if (!letter) return;
       this.letterFilter = letter;
+      this.pushFilterToQueryParams();
+      // this.$router.push({
+      //   query: { letterFilter: this.letterFilter, type: this.materialType }
+      // });
       this.subgroupLetters = this.setsubGroupLetters(letter);
       const criteria = {
         q: this.letterFilter,
@@ -156,8 +181,9 @@ export default {
       return materials.sort((a, b) => a.name.localeCompare(b.name));
     },
     async setSubfilter(subLetters) {
-      this.materialUnderStudy = false;
+      this.isMaterialUnderStudy = false;
       this.subgroupFilter = subLetters;
+      this.pushFilterToQueryParams();
       const criteria = {
         q: this.subgroupFilter,
         type: this.materialType
@@ -167,21 +193,18 @@ export default {
 
       this.materials = await this.$store.dispatch({ type: 'fetchMaterials', criteria });
       this.sortMaterials(this.materials);
-      console.log('materials', this.materials);
 
       this.isLoading = false;
     },
 
     async materialSelected(item) {
-      this.materialUnderStudy = false;
+      this.isMaterialUnderStudy = false;
       this.isLoading = true;
       // this.materials = [];
       const material = await this.$store.dispatch({ type: 'getMaterialByName', name: item.txt });
-      console.log('material', material);
 
       if (material.isUnderStudy) {
-        console.log('This material is under study');
-        this.materialUnderStudy = true;
+        this.isMaterialUnderStudy = true;
       } else {
         const routeData = this.$router.resolve({ path: `/material/${material._id}` });
         window.open(routeData.href, '_blank');

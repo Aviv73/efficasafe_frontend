@@ -7,7 +7,6 @@
           <close-icon :size="14" />
         </button>
         <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
-        <!-- <p @click="openLoginModal" class="signup-link">Already have an account? login now</p> -->
         <div v-if="showFreeSearchesMsg" class="searches-msg">
           <h3>No free searches left</h3>
           <h4>Want to enjoy efficasafe free trial for</h4>
@@ -38,6 +37,8 @@
               <img src="@/client/assets/imgs/google.svg" alt="Logo" />
               Signup with google
             </a>
+            <p @click="openLoginModal" class="signup-link">Already have an account? login now</p>
+
             <!-- <a :href="facebookLink" class="blue" role="button">
               <img class="facebook-img" src="@/client/assets/imgs/facebook.svg" alt="Logo" />
               Signup with facebook
