@@ -39,6 +39,15 @@
           </label>
         </th>
       </template>
+      <template v-slot:[`header.isHidden`]="{ header }">
+        <th class="d-flex justify-center">
+          <label class="list-header">
+            <input type="checkbox" hidden @change="onSort('isHidden', $event.target.checked)">
+            {{ header.text }}
+            <v-icon class="icon" :class="{ 'icon-active': isSortedBy(header.value) }">mdi-arrow-down</v-icon>
+          </label>
+        </th>
+      </template>
       <template v-slot:body="{ items }">
         <tbody>
           <tr class="tr-material" v-for="item in items" :key="item._id">
