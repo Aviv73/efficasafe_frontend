@@ -10,7 +10,7 @@
         <button :class="{ focused: materialType === 'supplement' }" @click="setMaterialType('supplement')">Supplements</button>
       </div>
     </section>
-    <section class="main-layout">
+    <section class="letters-container main-layout">
       <section class="main-index-letters">
         <button :class="{ focused: letterFilter === letter, disabled: isDisabled(letter) }" :disabled="isDisabled(letter)" @click="setFilter(letter)" class="letter-btn" v-for="letter in letters" :key="letter">
           <span>{{ letter }}</span>
@@ -21,7 +21,7 @@
           <span>{{ letterFilter }}</span>
         </button>
       </section> -->
-      <section v-if="materialType === 'drug'" class="main-index-sub-letters">
+      <section v-if="materialType === 'drug'" class="letters-container main-index-sub-letters">
         <button
           :class="{
             focused: subgroupFilter === letter,
@@ -38,7 +38,7 @@
       </section>
     </section>
 
-    <div class="main-index-loader" v-if="!materials.length || isLoading">
+    <div class="main-index-loader" v-if="isLoading">
       <Loader />
     </div>
     <main v-else class="index-main-content main-layout">
@@ -75,10 +75,7 @@
             <rect x="7.19336" y="23.9941" width="4.39112" height="26.5859" rx="2.19556" fill="#6F818E" />
           </svg>
         </div>
-        <div class="material-under-study-content">
-          This material is still under construction.<br />
-          Because you searched for this material, it will get higher priority.
-        </div>
+        <div class="material-under-study-content">FYI: We will give higher priority to this material since you searched for it.</div>
       </div>
     </div>
   </section>
@@ -121,7 +118,7 @@ export default {
     this.materials = await this.$store.dispatch({
       type: 'fetchMaterials',
       criteria: {
-        q: this.letterFilter,
+        q: subl ? this.subgroupFilter : this.letterFilter,
         type: this.materialType
       }
     });
@@ -193,6 +190,7 @@ export default {
 
       this.materials = await this.$store.dispatch({ type: 'fetchMaterials', criteria });
       this.sortMaterials(this.materials);
+      console.log('this.materials', this.materials);
 
       this.isLoading = false;
     },

@@ -251,11 +251,12 @@
       overflow-x: hidden;
     }
 
-    &-header {
+    .search-engine-results-header {
       background-color: $clr6;
       padding: rem(17px) 24px rem(20px);
       overflow: hidden;
       color: $clr1;
+      height: 111px;
 
       @include for-narrow-layout {
         padding: rem(22px) 24px rem(8px) 0;
@@ -266,6 +267,7 @@
       }
       @media only screen and (max-width: 900px) {
         // display: flex;
+        height: unset;
         flex-direction: row-reverse;
         align-items: center;
       }

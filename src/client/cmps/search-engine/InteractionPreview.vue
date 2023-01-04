@@ -36,7 +36,14 @@
               <lock-icon class="lock-icon" :size="18" />
               <p class="clip-txt">open only for subscribers</p>
             </span>
-            <span v-if="isAllowed" class="table-col small-data" :class="{ 'small-data-not-advised': interaction.recommendation === 'Coadministration is not advised' }">
+            <span
+              v-if="isAllowed"
+              class="table-col small-data"
+              :class="{
+                'small-data-not-advised': interaction.recommendation === 'Coadministration is not advised',
+                togglable: ((!interaction.refs && !interaction.severity) || interaction.side2Label) && !interaction.isEmpty
+              }"
+            >
               <tooltip right :txt="getLongEvidenceLevel(interaction.evidenceLevel || interaction.evidence_level)">
                 <template #content>
                   <ul class="loe-tooltip">
@@ -51,6 +58,7 @@
                   {{ getRefsCount(interaction) }}
                 </span>
               </tooltip>
+              <!-- Arrow -->
               <span v-if="((!interaction.refs && !interaction.severity) || interaction.side2Label) && !interaction.isEmpty" class="de-activator">
                 <chevron-up-icon class="opened" title="" />
                 <chevron-down-icon class="closed" title="" />

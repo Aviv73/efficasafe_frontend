@@ -65,7 +65,6 @@
         />
       </svg>
     </div>
-
     <span v-if="isGroup || isLabel">
       <span
         class="layer"
@@ -80,7 +79,6 @@
 </template>
 
 <script>
- 
 import { utilService } from '@/cms/services/util.service';
 
 export default {

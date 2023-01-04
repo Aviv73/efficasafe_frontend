@@ -29,6 +29,10 @@
           height: 100%;
           width: 100%;
         }
+        // position: absolute;
+        transform: translate(45px, -5px);
+        // left: 220px;
+        top: 6px;
         width: 20px;
         height: 20px;
         // background-color: green;
@@ -39,13 +43,32 @@
         // left: 76%;
         // top: 50%;
         // transform: translateY(-50%);
+
+        @media (max-width: 1400px) {
+          transform: translateX(90px);
+        }
+        @media (max-width: 1270px) {
+          transform: translateX(75px);
+        }
+        @media (max-width: 1150px) {
+          transform: translateX(45px);
+        }
+        @media (max-width: 1050px) {
+          transform: translateX(35px);
+        }
+        @media (max-width: 950px) {
+          transform: translateX(25px);
+        }
       }
+
       @media (max-width: $break-narrow) {
-        transform: translateX(-30px);
+        // transform: translateX(-30px);
+
         justify-content: center;
-        flex-direction: row-reverse;
+        // flex-direction: row-reverse;
         .add-tosearch-btn {
           margin-inline-end: 30px;
+          transform: translate(10px, -7px);
         }
       }
     }
@@ -140,11 +163,11 @@
       opacity: 0.8;
     }
     .de-activator {
-      position: absolute;
-      top: 50%;
-      right: 25%;
-      transform: translateY(-50%);
-
+      // position: absolute;
+      // top: 50%;
+      // right: 25%;
+      // transform: translateY(-50%);
+      transform: translateX(28%);
       &-bottom {
         position: absolute;
         left: 50%;
@@ -197,11 +220,16 @@
   .poss-booster-count {
     position: absolute;
     left: 10%;
-    top: 26px;
+    top: 33px;
+    @media (max-width: 768px) {
+      // transform: translateX(-51px);
+      left: 70%;
+      top: 27px;
+    }
 
     @include for-narrow-layout {
       left: 30%;
-      top: 27px;
+      // top: 27px;
       transform: translateX(10px);
     }
   }
@@ -287,7 +315,8 @@
           }
         }
         .recomendation {
-          margin-inline-start: -12px !important;
+          // margin-inline-start: -12px !important;
+          padding-inline-start: 23px;
         }
         .recomendation,
         .evidence-level {
@@ -309,10 +338,13 @@
                   right: 30px;
                 }
               }
+              .small-data:not(.togglable) .tooltip-box {
+                margin-inline-end: 7px;
+              }
               .recomendation,
               .evidence-level {
                 display: block !important;
-                margin-inline-start: 13px;
+                // margin-inline-start: 13px;
                 // background-color: red;
               }
               .tooltip-box {
@@ -322,6 +354,13 @@
               }
             }
           }
+        }
+      }
+      .interaction-capsules.group:only-child {
+        transform: translateX(-7px);
+
+        @media (max-width: 768px) {
+          transform: translateX(-51px);
         }
       }
     }
@@ -337,9 +376,7 @@
           // padding-bottom: 0;
         }
       }
-      .interaction-capsules.group:only-child {
-        transform: translateX(-7px);
-      }
+
       .interaction-preview-header {
         .interaction-capsules-side {
           &:not(:only-of-type) {
@@ -350,21 +387,33 @@
           }
         }
         .small-data-not-advised {
-          transform: translate(-17px, 0px);
+          // transform: translate(-17px, 0px);
         }
         // justify-content: space-between;
         padding: 0 10px;
         .recomendation {
-          padding-inline-start: rem(43px);
+          // padding-inline-start: rem(19px);
+          padding-inline-start: 0.1875rem;
+          // max-width: 190px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+
           // background-color: red;
         }
         .recomendation-not-advised {
-          padding-inline-start: 0px;
+          // padding-inline-start: 0px;
         }
 
-        .small-data {
-          padding-inline-end: 20px;
-          margin-inline-start: -38px;
+        .small-data.togglable,
+        .small-data:not(.togglable) .tooltip-box {
+          // padding-inline-end: 20px;
+          // margin-inline-end: 1.5625rem;
+          width: 40px;
+          margin-inline-end: 0.9875rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
         }
         // .interaction-preview {
         //   .de-activator {
@@ -383,7 +432,7 @@
         justify-content: space-between;
         gap: 7px;
         .small-data {
-          margin-inline-start: 20px;
+          // margin-inline-start: 20px;
         }
       }
     }
