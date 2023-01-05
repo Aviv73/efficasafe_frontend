@@ -443,7 +443,7 @@
         background-color: $clr14;
         border-radius: 2px;
         border: 1px solid rgba($clr1, 0.26);
-        opacity: 0.75;
+        // opacity: 0.75;
         text-align: center;
 
         @include for-narrow-layout {
