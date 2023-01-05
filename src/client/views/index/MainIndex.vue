@@ -75,7 +75,10 @@
             <rect x="7.19336" y="23.9941" width="4.39112" height="26.5859" rx="2.19556" fill="#6F818E" />
           </svg>
         </div>
-        <div class="material-under-study-content">FYI: We will give higher priority to this material since you searched for it.</div>
+        <div class="material-under-study-content">
+          This material is still under construction. <br />
+          FYI: We will give higher priority to this material since you searched for it.
+        </div>
       </div>
     </div>
   </section>
