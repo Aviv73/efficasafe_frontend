@@ -6,7 +6,7 @@
           <span class="table-col capsul-container flex align-center">
             <!-- <positive-inner-list-count :key="renderKey" :group="group" :length="group.innerLength"/> -->
             <interaction-capsules :name="getInnerGroupName(group)" :isMaterialGroup="true" :color="getInteractionColor(group.recommendation, idx)" :showDraftName="false" :vInteractionCount="0" :localize="true" />
-            <button title="Add to search results" class="add-tosearch-btn" @click.stop="addToSearch(group)">
+            <button v-if="!isInSearch(group)" title="Add to search results" class="add-tosearch-btn" @click.stop="addToSearch(group)">
               <!-- <img :src="require('@/client/assets/imgs/plus.png')" alt=""> -->
               <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="1.75" y="2" width="12.5" height="12.5" rx="6.25" fill="#56c596" />
@@ -150,6 +150,9 @@ export default {
     }
   },
   methods: {
+    isInSearch(mat) {
+      return this.$route.query.q.find(c => c === this.getInnerGroup(mat).name);
+    },
     addToSearch(toAdd) {
       this.$emit('add-to-search', this.getInnerGroup(toAdd));
     },

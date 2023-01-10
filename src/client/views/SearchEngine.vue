@@ -312,7 +312,10 @@ export default {
       sameQ: false,
       isLoadingFile: false,
       innerListEl: null,
-      wtmInteractions: []
+      wtmInteractions: [],
+
+      dontReload: false,
+      addedOptMatToSearch: false
     };
   },
   metaInfo() {
@@ -323,6 +326,9 @@ export default {
   watch: {
     '$route.query': {
       async handler(to, from) {
+        const _dontReload = this.dontReload;
+        this.dontReload = false;
+        if (_dontReload) return;
         if (from && !from.page) from.page = 1;
         if (to && !to.page) to.page = 1;
         this.loadingTime = 0;
@@ -347,6 +353,11 @@ export default {
         }
         this.sameQ = from && from.q && to.q.length === from.q.length && to.q.every((val, idx) => val === from.q[idx]) ? true : false;
         const isSameSearch = from && from.q && to.q.length === from.q.length && to.q.every((val, idx) => val === from.q[idx]) && from.page === to.page;
+        if (isSameSearch) return;
+        // if (_dontReload) {
+        //   await this.getMaterials();
+        //   return;
+        // }
         if (!isSameSearch) {
           this.$store.commit('resetPosSupp');
           await this.getResults();
@@ -379,6 +390,10 @@ export default {
         this.isViewVertical = false;
       } else {
         this.isViewVertical = storageService.load('view', true) === 'vertical';
+        if (this.addedOptMatToSearch) {
+          this.getResults();
+          this.addedOptMatToSearch = false;
+        }
       }
       this.routerTransitionName = routesOrder[to.name] < routesOrder[from.name] ? 'slide-right' : 'slide-left';
     }
@@ -1676,13 +1691,18 @@ export default {
         }
       });
       eventBus.$on('add-to-search', async toAdd => {
-        this.isLoading = true;
+        // this.isLoading = true;
         const criteria = { autocomplete: true, q: toAdd.name };
         const results = await this.$store.dispatch({ type: 'getMaterials', criteria });
         const materialsToAdd = results.materials.filter(c => c.txt === toAdd.name);
         const materialToAdd = materialsToAdd[0];
-        if (materialToAdd) await this.addMaterials(materialsToAdd[0]);
-        this.isLoading = false;
+        if (materialToAdd) {
+          this.dontReload = true;
+          this.addedOptMatToSearch = true;
+          await this.addMaterials(materialsToAdd[0]);
+          await this.getMaterials();
+        }
+        // this.isLoading = false;
       });
     },
     removeEventBusListeners() {
