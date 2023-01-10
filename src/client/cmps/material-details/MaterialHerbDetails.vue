@@ -396,7 +396,6 @@ export default {
         });
         return aliasesToReturn;
       }
-      // console.log('material.aliases', material.aliases);
 
       return material.aliases.length ? material.aliases.sort() : material.dBankAliases.sort();
     },

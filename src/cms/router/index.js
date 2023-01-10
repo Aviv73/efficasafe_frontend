@@ -222,7 +222,6 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   if(!store.state.userStore.loggedInUser){
-    console.log('getting user');
     await store.dispatch('getUserInfo');
   }
   const { loggedInUser } = store.state.userStore;

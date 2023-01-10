@@ -146,7 +146,6 @@ export default {
                 res.splice(idx, 1)
                 res.unshift(first)
             }
-            console.log(JSON.parse(JSON.stringify(res)));
             return res
         },
         emitSelection(item) {

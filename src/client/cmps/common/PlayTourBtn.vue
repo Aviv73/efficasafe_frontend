@@ -52,7 +52,6 @@ export default {
     updateWidth(diff = 1) {
       const _update = () => {
         this.actualWidth += diff;
-        console.log('OWOW', this.actualWidth);
         if ((diff < 0) && (this.actualWidth > this.closeWidth) && this.isHover) window.requestAnimationFrame(_update);
         else if ((diff > 0) && (this.actualWidth < this.openWidth) && !this.isHover) window.requestAnimationFrame(_update);
       }
@@ -87,7 +86,6 @@ export default {
   // },
   // methods: {
     // play() {
-    //   console.log('WOWOOWWOW', this.tourEvName);
     //   eventBus.$emit(this.tourEvName)
     // }
   // }

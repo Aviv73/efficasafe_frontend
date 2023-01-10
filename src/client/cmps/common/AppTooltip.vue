@@ -39,7 +39,6 @@ export default {
   created() {
     eventBus.$on('tooltip-open', () => {
       this.isShown = false;
-      // console.log('from event bus');
     });
   },
   methods: {
@@ -64,14 +63,12 @@ export default {
 
     //   const { style } = elMsg;
     //   style.left = style.right = style.bottom = style.top = '';
-    //   console.log('isMobile', this.isMobile);
 
     //   if (!this.isMobile) style[posXStyleProp] = pos.x + 'px';
     //   else {
     //     style[posXStyleProp] = '50%';
     //     style.transform = 'translateX(-50%)';
     //   }
-    //   console.log(style[posYStyleProp], pos.y + 'px');
 
     //   style[posYStyleProp] = pos.y + 'px';
     // },

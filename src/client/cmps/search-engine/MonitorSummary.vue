@@ -154,7 +154,6 @@ export default {
             const byName = side2Material?.name || side2Label?.name || '';
             if (!_wardMap[word]) _wardMap[word] = [byName];
             else _wardMap[word].push(byName)
-            if (word === 'blood calcium level') console.log('WELLO?', _wardMap[word]);
           }
         });
         return _wardMap;

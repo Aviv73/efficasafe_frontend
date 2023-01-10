@@ -193,7 +193,6 @@ export default {
 
       this.materials = await this.$store.dispatch({ type: 'fetchMaterials', criteria });
       this.sortMaterials(this.materials);
-      console.log('this.materials', this.materials);
 
       this.isLoading = false;
     },

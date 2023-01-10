@@ -139,8 +139,6 @@ export default {
       return this.$store.getters.getListType;
     },
     isReaultsPage() {
-      console.log(this.$route.fullPath.includes('boosters') || this.$route.fullPath.includes('monitor'));
-
       return this.$route.fullPath.includes('boosters') || this.$route.fullPath.includes('monitor');
     }
   },

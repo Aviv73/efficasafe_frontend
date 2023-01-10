@@ -491,7 +491,6 @@ export default {
   },
   methods: {
     startTour() {
-      console.log(this.$tours['onboarding-interaction-tour']);
       this.$tours['onboarding-interaction-tour'].start();
       // this.$tours['boosters-tour'].start();
     },
@@ -510,7 +509,6 @@ export default {
 
       if (material.isUnderStudy) return;
       // :to="{ path: `/material/${material._id}`, query: { q: userQuery } }"
-      // console.log('name', name);
 
       let routeData = this.$router.resolve({ path: `/material/${material._id}`, query: { q: name } });
       window.open(routeData.href, '_blank');
