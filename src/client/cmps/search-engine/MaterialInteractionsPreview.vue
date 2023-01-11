@@ -68,7 +68,8 @@
       <hr v-if="(materials.length === 1 && !isOneMaterial) || materials[0].isUnderStudy" />
     </div>
     <div v-if="materials[0].isUnderStudy" class="text-center under-construction">
-      This material is still under construction. The results you may see are only partial. Because you searched this material, it will get higher priority.
+      This material is still under construction. The results you may see are only partial.<br />FYI:<br />
+      We will give higher priority to this material since you searched for it.
       <hr v-if="materials.length === 1 && !isOneMaterial" />
     </div>
     <div v-if="materials.length === 1 && !isOneMaterial" class="interactions-preview-actions">

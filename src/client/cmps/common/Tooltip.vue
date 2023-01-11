@@ -35,7 +35,7 @@
           'center-bottom': centerBottom,
           'bottom-corner-left': bottomCornerLeft,
           'left-corner': left,
-          bottom,
+          bottom: bottom,
           top,
           right
         }"
@@ -159,71 +159,71 @@ export default {
       exceedsLeft: false,
       exceedsX: false,
       viewportWidth: 0
-    };
+    }
   },
   methods: {
     hoverToggle() {
-      if (this.on !== 'hover') return;
-      this.isActive = !this.isActive;
+      if (this.on !== 'hover') return
+      this.isActive = !this.isActive
     },
     toggleIsActive(ev) {
-      if (this.hidden || this.on !== 'focus') return;
-      const isClosing = ev.path.some(el => el.dataset && el.dataset.closeBtn);
-      if (isClosing) return;
-      this.isActive = !this.isActive;
+      if (this.hidden || this.on !== 'focus') return
+      const isClosing = ev.path.some(el => el.dataset && el.dataset.closeBtn)
+      if (isClosing) return
+      this.isActive = !this.isActive
     },
     onToggle(isActive) {
-      if (this.hidden || this.on !== 'focus') return;
+      if (this.hidden || this.on !== 'focus') return
 
-      this.checkIfInViewport();
-      this.isActive = isActive;
+      this.checkIfInViewport()
+      this.isActive = isActive
     },
     checkIfInViewport() {
-      const { activator, tooltip } = this.$refs;
-      const { right, left } = activator.getBoundingClientRect();
-      const { width } = tooltip.getBoundingClientRect();
-      let isExceedsRight = false;
-      let isExceedsLeft = false;
+      const { activator, tooltip } = this.$refs
+      const { right, left } = activator.getBoundingClientRect()
+      const { width } = tooltip.getBoundingClientRect()
+      let isExceedsRight = false
+      let isExceedsLeft = false
 
-      const rightMargin = right + width;
-      const leftMargin = left - width;
+      const rightMargin = right + width
+      const leftMargin = left - width
 
       if (rightMargin > this.viewportWidth && leftMargin < 0) {
-        this.exceedsX = true;
-        return;
+        this.exceedsX = true
+        return
       } else if (rightMargin > this.viewportWidth) {
-        isExceedsRight = true;
+        isExceedsRight = true
       } else if (leftMargin < 0) {
-        isExceedsLeft = true;
+        isExceedsLeft = true
       }
-      this.exceedsRight = isExceedsRight;
-      this.exceedsLeft = isExceedsLeft;
+      this.exceedsRight = isExceedsRight
+      this.exceedsLeft = isExceedsLeft
     }
   },
   mounted() {
-    this.viewportWidth = window.innerWidth;
-    const el = this.$refs.activator.querySelector('.hover-activator');
-    if (!el) return;
+    this.viewportWidth = window.innerWidth
+    const el = this.$refs.activator.querySelector('.hover-activator')
+    if (!el) return
     el.addEventListener('mouseenter', () => {
-      this.onToggle(true);
-    });
+      this.onToggle(true)
+    })
     el.addEventListener('mouseleave', () => {
-      if (this.$refs.activator === document.activeElement) return;
-      this.onToggle(false);
-    });
+      if (this.$refs.activator === document.activeElement) return
+      this.onToggle(false)
+    })
   },
   beforeDestroy() {
-    const el = this.$refs.activator.querySelector('.hover-activator');
-    if (!el) return;
+    const el = this.$refs.activator.querySelector('.hover-activator')
+    if (!el) return
     el.removeEventListener('mouseenter', () => {
-      this.onToggle(true);
-    });
+      this.onToggle(true)
+    })
     el.removeEventListener('mouseleave', () => {
-      if (this.$refs.activator === document.activeElement) return;
-      this.onToggle(false);
-    });
+      if (this.$refs.activator === document.activeElement) return
+      this.onToggle(false)
+    })
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -261,18 +261,16 @@ export default {
     bottom: 18px;
   }
   &.left-corner {
-top: 78%;
-    width:260px;
+    top: 78%;
+    width: 260px;
     right: 110px;
-        padding: 15px;
-    @media  (max-width: 768px) {
-    top: -14%;
-    right: 152px;
-    width: 100%;
-        padding: 0;
-
-    
-  }
+    padding: 15px;
+    @media (max-width: 768px) {
+      top: -14%;
+      right: 152px;
+      width: 100%;
+      padding: 0;
+    }
   }
 
   &.left-bottom-corner {
@@ -294,7 +292,8 @@ top: 78%;
   &.bottom {
     top: 100%;
     left: 50%;
-    transform: translateX(-50%);
+    // transform: translateX(-50%);
+    transform: translate(-50%, 8%);
 
     &-left {
       top: 100%;

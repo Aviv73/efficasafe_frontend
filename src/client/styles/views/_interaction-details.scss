@@ -366,6 +366,7 @@
       @include for-narrow-layout {
         left: 0;
         transform: none;
+        transform: translateX(-50%);
       }
     }
     .evidence-level {
