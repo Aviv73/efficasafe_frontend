@@ -24,18 +24,18 @@
       <span class="horizontal-list-header-item">
         <label class="flex-align-center" title="Sort A-Z / Z-A" tabindex="0">
           <input type="checkbox" hidden @change="emitSort('name', $event.target.checked)" />
-          <sort-vertical-icon class="sort-icon" title="" />
+          <sort-vertical-icon color="#205072" class="sort-icon" title="" />
           <span v-if="$route.name == 'Boosters'">Drug</span>
           <span v-else>{{ side1Name }} vs {{ side2Name }}</span>
         </label>
         <button @click="changeSortBySide" class="swap-side-btn">
-          <sort-vertical-icon class="swap-side-icon" color="#329D9C" title="" />
+          <sort-vertical-icon class="swap-side-icon" color="#205072" title="" />
         </button>
       </span>
       <span class="horizontal-list-header-item">
         <label class="flex-align-center" :title="sortRecommendationTxt" tabindex="0">
           <input type="checkbox" hidden @change="emitSort('recommendation', !$event.target.checked)" />
-          <sort-vertical-icon class="sort-icon" title="" />
+          <sort-vertical-icon color="#205072" class="sort-icon" title="" />
           <span>Recommendation</span>
         </label>
         <tooltip on="hover" bottomLeft>
@@ -192,22 +192,22 @@
 </template>
 
 <script>
-import { eventBus, EV_sortby_side_swaped } from '@/cms/services/eventBus.service';
-import CancelIcon from 'vue-material-design-icons/Cancel';
+import { eventBus, EV_sortby_side_swaped } from '@/cms/services/eventBus.service'
+import CancelIcon from 'vue-material-design-icons/Cancel'
 
-import InteractionPreview from '@/client/cmps/search-engine/InteractionPreview';
-import Tooltip from '@/client/cmps/common/Tooltip';
-import Collapse from '@/client/cmps/common/Collapse';
-import MonitorSummary from '@/client/cmps/search-engine/MonitorSummary';
-import Loader from '@/client/cmps/common/icons/Loader';
-import ModalWrap from '@/client/cmps/common/ModalWrap';
-import AllRecommendationsModal from '@/client/cmps/shared/modals/AllRecommendationsModal';
-import Checkbox from '@/client/cmps/common/Checkbox';
+import InteractionPreview from '@/client/cmps/search-engine/InteractionPreview'
+import Tooltip from '@/client/cmps/common/Tooltip'
+import Collapse from '@/client/cmps/common/Collapse'
+import MonitorSummary from '@/client/cmps/search-engine/MonitorSummary'
+import Loader from '@/client/cmps/common/icons/Loader'
+import ModalWrap from '@/client/cmps/common/ModalWrap'
+import AllRecommendationsModal from '@/client/cmps/shared/modals/AllRecommendationsModal'
+import Checkbox from '@/client/cmps/common/Checkbox'
 
-import SortVerticalIcon from '@/client/cmps/common/icons/SortVerticalIcon';
-import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
-import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
-import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
+import SortVerticalIcon from '@/client/cmps/common/icons/SortVerticalIcon'
+import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline'
+import ChevronDownIcon from 'vue-material-design-icons/ChevronDown'
+import ChevronUpIcon from 'vue-material-design-icons/ChevronUp'
 
 export default {
   props: {
@@ -264,64 +264,64 @@ export default {
       isAllRecommendationsModalActive: false,
       renderKey: 101,
       isChecked: false
-    };
+    }
   },
   computed: {
     isShowAllDBI() {
-      return this.$store.getters.isShowAllDBI;
+      return this.$store.getters.isShowAllDBI
     },
     side1Name() {
-      if (this.listType === 'drug') return 'Drug';
-      return this.sortBySide === 1 ? 'Supplement' : 'Drug';
+      if (this.listType === 'drug') return 'Drug'
+      return this.sortBySide === 1 ? 'Supplement' : 'Drug'
     },
     side2Name() {
-      if (this.listType === 'drug') return 'Drug';
-      return this.sortBySide === 1 ? 'Drug' : 'Supplement';
+      if (this.listType === 'drug') return 'Drug'
+      return this.sortBySide === 1 ? 'Drug' : 'Supplement'
     },
     sortBySide() {
-      return this.$store.getters.firstInteractionSide;
+      return this.$store.getters.firstInteractionSide
     },
     sortBy() {
-      return this.$store.getters.InteractionSort;
+      return this.$store.getters.InteractionSort
     },
     listType() {
-      return this.$store.getters.getListType;
+      return this.$store.getters.getListType
     },
     suppInteractionsToShow() {
-      const toShow = this.currSuppInteractions.filter(i => !i.isNotToShow);
-      return toShow;
+      const toShow = this.currSuppInteractions.filter(i => !i.isNotToShow)
+      return toShow
     },
     suppCount() {
-      return this.$store.getters.getPosSuppBoostersCount;
+      return this.$store.getters.getPosSuppBoostersCount
     },
     isSelected() {
       return type => {
-        return type === this.listType;
-      };
+        return type === this.listType
+      }
     },
     suppDrugBtnTxt() {
-      if (this.isAllSupp) return 'All Results';
-      return 'Supplements - Drug';
+      if (this.isAllSupp) return 'All Results'
+      return 'Supplements - Drug'
     },
     sortRecommendationTxt() {
-      if (this.pageCount > 1) return 'sorting is only available for one page at a time';
-      return 'Sort by recommendation';
+      if (this.pageCount > 1) return 'sorting is only available for one page at a time'
+      return 'Sort by recommendation'
     },
     isScreenNarrow() {
-      return this.$store.getters.isScreenNarrow;
+      return this.$store.getters.isScreenNarrow
     },
     theoreticalDiff() {
-      return this.$store.getters.theoreticalDiff;
+      return this.$store.getters.theoreticalDiff
     }
   },
   methods: {
     handleCheckbox(isChecked) {
-      this.isChecked = isChecked;
-      this.$emit('handle-DBI-filter', isChecked);
+      this.isChecked = isChecked
+      this.$emit('handle-DBI-filter', isChecked)
     },
     showResults(type) {
-      this.$store.commit({ type: 'setListType', listType: type });
-      this.$router.push({ query: { q: [...this.$route.query.q], page: 1 } }).catch(() => {});
+      this.$store.commit({ type: 'setListType', listType: type })
+      this.$router.push({ query: { q: [...this.$route.query.q], page: 1 } }).catch(() => {})
     },
     removeInteraction(idx) {
       const emptyInteraction = {
@@ -333,96 +333,96 @@ export default {
         isEmpty: true,
         isNotToShow: true,
         total: 0
-      };
-      this.currSuppInteractions.splice(idx, 1, emptyInteraction);
-      this.emptySuppInteractions.push(emptyInteraction);
+      }
+      this.currSuppInteractions.splice(idx, 1, emptyInteraction)
+      this.emptySuppInteractions.push(emptyInteraction)
       setTimeout(() => {
-        this.isLoadingSuppInteractions = false;
-      }, 10000);
+        this.isLoadingSuppInteractions = false
+      }, 10000)
     },
     interactionDone() {
       if (!this.currSuppInteractions.length) {
-        this.isLoadingSuppInteractions = false;
-        this.renderKey++;
+        this.isLoadingSuppInteractions = false
+        this.renderKey++
       }
-      this.interactionDoneLoadingCount++;
+      this.interactionDoneLoadingCount++
       if (this.interactionDoneLoadingCount === this.suppInteractionsOriginalLength) {
-        this.isLoadingSuppInteractions = false;
-        this.renderKey++;
+        this.isLoadingSuppInteractions = false
+        this.renderKey++
       }
     },
     showPosSupp() {
-      this.$store.commit('setIsPosSuppOpen');
-      this.isShowPosSupp = !this.isShowPosSupp;
+      this.$store.commit('setIsPosSuppOpen')
+      this.isShowPosSupp = !this.isShowPosSupp
     },
     emitSort(sortBy, isChecked) {
-      this.$emit('list-sorted', { sortBy, side: this.sortBySide, isDesc: !isChecked });
+      this.$emit('list-sorted', { sortBy, side: this.sortBySide, isDesc: !isChecked })
       if (this.$route.name === 'Results') {
-        const newSort = [sortBy, isChecked];
-        this.$store.commit({ type: 'setSortBy', newSort });
+        const newSort = [sortBy, isChecked]
+        this.$store.commit({ type: 'setSortBy', newSort })
       }
     },
     getInteractionKey(interaction) {
-      return interaction.side2Material ? `${interaction._id}-${interaction.side2Material._id}` : interaction._id;
+      return interaction.side2Material ? `${interaction._id}-${interaction.side2Material._id}` : interaction._id
     },
     changeSortBySide() {
-      let side;
-      if (this.sortBySide === 1) side = 2;
-      else side = 1;
-      this.$store.commit({ type: 'setFirstInteractionSide', side });
-      eventBus.$emit(EV_sortby_side_swaped, this.sortBySide);
+      let side
+      if (this.sortBySide === 1) side = 2
+      else side = 1
+      this.$store.commit({ type: 'setFirstInteractionSide', side })
+      eventBus.$emit(EV_sortby_side_swaped, this.sortBySide)
     },
     restoreCollapses() {
       if (this.$store.getters.getIsPosSuppOpen) {
-        this.isShowPosSupp = true;
+        this.isShowPosSupp = true
       }
     },
     restoreSort() {
       if (this.$route.name === 'Results') {
         this.$nextTick(() => {
-          this.emitSort(this.sortBy[0], this.sortBy[1]);
-        });
+          this.emitSort(this.sortBy[0], this.sortBy[1])
+        })
         this.$nextTick(() => {
-          eventBus.$emit(EV_sortby_side_swaped, this.sortBySide);
-        });
+          eventBus.$emit(EV_sortby_side_swaped, this.sortBySide)
+        })
       }
     },
     openAllRecommendations() {
-      this.isAllRecommendationsModalActive = true;
+      this.isAllRecommendationsModalActive = true
     },
     closeAllRecommendations() {
-      this.isAllRecommendationsModalActive = false;
+      this.isAllRecommendationsModalActive = false
     }
   },
   mounted() {
     setTimeout(() => {
-      eventBus.$emit('interaction-list-mounted');
-    }, 0);
+      eventBus.$emit('interaction-list-mounted')
+    }, 0)
   },
   created() {
-    this.currSuppInteractions = JSON.parse(JSON.stringify(this.suppInteractions));
+    this.currSuppInteractions = JSON.parse(JSON.stringify(this.suppInteractions))
     if (!this.currSuppInteractions.length) {
-      this.isLoadingSuppInteractions = false;
-      this.renderKey++;
+      this.isLoadingSuppInteractions = false
+      this.renderKey++
     }
-    this.suppInteractionsOriginalLength = this.suppInteractions.length;
-    this.restoreCollapses();
-    this.restoreSort();
-    this.isChecked = this.isShowAllDBI;
+    this.suppInteractionsOriginalLength = this.suppInteractions.length
+    this.restoreCollapses()
+    this.restoreSort()
+    this.isChecked = this.isShowAllDBI
     this.$nextTick(() => {
-      eventBus.$emit(EV_sortby_side_swaped, this.sortBySide);
-    });
+      eventBus.$emit(EV_sortby_side_swaped, this.sortBySide)
+    })
   },
   watch: {
     suppEmptyInteractions: {
       handler() {
-        this.emptySuppInteractions = JSON.parse(JSON.stringify(this.suppEmptyInteractions));
+        this.emptySuppInteractions = JSON.parse(JSON.stringify(this.suppEmptyInteractions))
       },
       immediate: true
     },
     suppInteractions: {
       handler() {
-        this.currSuppInteractions = JSON.parse(JSON.stringify(this.suppInteractions));
+        this.currSuppInteractions = JSON.parse(JSON.stringify(this.suppInteractions))
       },
       immediate: true
     }
@@ -442,5 +442,5 @@ export default {
     Checkbox,
     CancelIcon
   }
-};
+}
 </script>
