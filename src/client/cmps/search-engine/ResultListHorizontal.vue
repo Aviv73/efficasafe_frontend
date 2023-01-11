@@ -142,7 +142,7 @@
                     </button>
                 </span>
             </li> -->
-      <li class="horizontal-list-list-item" v-for="(interaction, idx) in interactions" :key="interaction._id + idx">
+      <li class="horizontal-list-list-item" v-for="(interaction, idx) in interactions" :key="interaction._id + '-' + idx">
         <interaction-preview :interaction="interaction" :materials="materials" :link="$route.name !== 'Monitor'" :idx="idx" />
       </li>
       <button v-if="(currSuppInteractions.length || emptySuppInteractions.length || suppRedInteractions.length) && isLoadingSuppInteractions" class="show-pos-supp-btn loading">
