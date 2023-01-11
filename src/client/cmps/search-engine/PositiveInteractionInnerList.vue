@@ -1,7 +1,7 @@
 <template>
     <section class="positive-interaction-inner-list">
         <interaction-preview
-            v-for="(interaction, idx) in interactions"
+            v-for="(interaction, idx) in calcedInteractions"
             :key="interaction._id"
             :interaction="interaction"
             :materials="materials"
@@ -21,6 +21,12 @@ export default {
     recommendationMap: interactionUIService.getRecommendationOrderMap(),
     name: 'PositiveInteractionInnerList',
     props: {
+        parentInteraction: {
+            type: Object
+        },
+        group: {
+            type: Object
+        },
         side1Id: {
             type: String,
             required: true
@@ -56,6 +62,19 @@ export default {
         }
     },
     computed: {
+        calcedInteractions() {
+            // return this.interactions;
+            // if (this.isSupp) return this.interactions;
+            // if (this.parentInteraction.children) 
+            // console.log(this.parentInteraction, this.parentInteraction.vInteractions?.find(c => c._id === this.side1Id));
+            return this.group.children || [];
+
+            // const optimizationData = this.$store.getters.optimizationData;
+            // const forParentInt = optimizationData.find(c => c.for === this.parentInteraction._id);
+            // const forCurrSide1 = forParentInt.results.find(c => c.side1 === this.side1Id);
+            // console.log('WOWO', forCurrSide1.interactions);
+            // return forCurrSide1.interactions;
+        },
         materialIds() {
             return this.materials.reduce((acc, material) => {
                 if (material.type !== 'drug') return acc;
@@ -82,16 +101,19 @@ export default {
     },
     methods: {
         async getInteractions() {
-            const filterBy = {
-                isSearchResults: true,
-                id: [ this.side1Id, ...this.materialIds ],
-                page: 0,
-                limit: Number.MAX_SAFE_INTEGER,
-                materialCount: this.materialIds.length + 1
-            };
-            let { interactions } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
-            this.interactions = this.formatInteractions(interactions);
-            this.$emit('doneDrugGroup')
+            return console.log('was about to do BAD inner fetch');
+            // console.log('WOWOWO', this.parentInteraction?.children);
+            // if (this.parentInteraction?.children) return this.parentInteraction.children;
+            // const filterBy = {
+            //     isSearchResults: true,
+            //     id: [ this.side1Id, ...this.materialIds ],
+            //     page: 0,
+            //     limit: Number.MAX_SAFE_INTEGER,
+            //     materialCount: this.materialIds.length + 1
+            // };
+            // let { interactions } = await this.$store.dispatch({ type: 'getInteractions', filterBy });
+            // this.interactions = this.formatInteractions(interactions);
+            // this.$emit('doneDrugGroup')
         },
         async getSuppInteractions() {
             const ids = {
@@ -236,7 +258,7 @@ export default {
         if(this.isSupp){
             this.getSuppInteractions()
         }else{
-            this.getInteractions();
+            // this.getInteractions();
         }
     },
     components: {

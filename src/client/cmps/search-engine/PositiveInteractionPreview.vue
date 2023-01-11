@@ -50,6 +50,8 @@
       <template #content>
         <div class="interaction-preview-content">
           <positive-interaction-inner-list
+            :parentInteraction="interaction"
+            :group="group" 
             :side1-id="group.side1Material._id"
             :side2-id="group.side2Material._id"
             :main-side2-material-id="interaction.mainMaterialId"
