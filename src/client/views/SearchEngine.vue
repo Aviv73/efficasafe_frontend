@@ -539,10 +539,14 @@ export default {
         });
       });
       const map = this.$options.recommendationsOrderMap;
+      const sortVints = (a, b) => {
+          return (map[b.recommendation] - map[a.recommendation]) * -1 || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) || a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+        }
       const formatedPositiveInteractions = this.positiveInteractions.reduce((acc, interaction) => {
         const existing = acc.find(i => i.name === interaction.name && i.mainMaterialId === interaction.mainMaterialId);
         if (!existing) {
           acc.push(interaction);
+          interaction.vInteractions.sort(sortVints);
         } else {
           existing.evidenceLevel = this.getMoreSeverEvidenceLevel(existing.evidenceLevel, interaction.evidenceLevel);
           existing.recommendation = this.getMoreSeverRecomm(true, existing.recommendation, interaction.recommendation);
@@ -553,9 +557,7 @@ export default {
               existing.total++;
             }
           });
-          existing.vInteractions.sort((a, b) => {
-            return (map[b.recommendation] - map[a.recommendation]) * -1 || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) || a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-          });
+          existing.vInteractions.sort(sortVints);
         }
         return acc;
       }, []);

@@ -1,6 +1,6 @@
 <template>
   <section class="interaction-preview positive-booster" v-if="currInteraction && currInteraction.vInteractions.length">
-    <collapse v-for="(group, idx) in currInteraction.vInteractions" :key="group._id + idx" @collapse-closed="onCollapseToggle(idx, group.cacheKey)" :initial-is-visible="isInitialiOpen(idx)" :disable="!isAllowed(idx)">
+    <collapse v-for="(group, idx) in sortVints(currInteraction.vInteractions)" :key="group._id + idx" @collapse-closed="onCollapseToggle(idx, group.cacheKey)" :initial-is-visible="isInitialiOpen(idx)" :disable="!isAllowed(idx)">
       <template #header>
         <div class="interaction-preview-header table-row child" :class="{ 'interaction-column': !isAllowed(idx) }" @click="onCollapseToggle(idx, group.cacheKey)">
           <span class="table-col capsul-container flex align-center">
@@ -91,6 +91,7 @@ import LockIcon from 'vue-material-design-icons/Lock';
 import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 
 export default {
+  name: 'PositiveInteractionPreview',
   props: {
     interaction: {
       type: Object,
@@ -152,6 +153,14 @@ export default {
     }
   },
   methods: {
+    sortVints(vInts = []) {
+      // const map = interactionUIService.getRecommendationOrderMap();
+      return [...vInts].sort((a, b) => {
+        return (b.children?.length || 0) - (a.children?.length || 0);
+        // return (map[b.recommendation] - map[a.recommendation]) * -1 || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) || (b.children?.length || 0) - (a.children?.length || 0) || a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+        // return (map[b.recommendation] - map[a.recommendation]) * -1 || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) || a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+      });
+    },
     isInSearch(mat) {
       return this.$route.query.q.find(c => c === this.getInnerGroup(mat).name);
     },
@@ -159,10 +168,10 @@ export default {
       this.$emit('add-to-search', this.getInnerGroup(toAdd));
     },
     sortVinteractions() {
-      const map = interactionUIService.getRecommendationOrderMap();
-      this.currInteraction.vInteractions.sort((a, b) => {
-        return (a.innerLength - b.innerLength) * -1 || (map[b.recommendation] - map[a.recommendation]) * -1 || (b.innerRecSum - a.innerRecSum) * -1 || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) || a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-      });
+      // const map = interactionUIService.getRecommendationOrderMap();
+      // this.currInteraction.vInteractions.sort((a, b) => {
+      //   return (a.innerLength - b.innerLength) * -1 || (map[b.recommendation] - map[a.recommendation]) * -1 || (b.innerRecSum - a.innerRecSum) * -1 || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) || a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+      // });
     },
     onOpenSignUp() {
       eventBus.$emit(EV_open_signup);

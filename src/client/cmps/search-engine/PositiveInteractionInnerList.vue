@@ -2,7 +2,7 @@
     <section class="positive-interaction-inner-list">
         <interaction-preview
             v-for="(interaction, idx) in calcedInteractions"
-            :key="interaction._id"
+            :key="idx + '-' + interaction._id"
             :interaction="interaction"
             :materials="materials"
             :idx="idx"
@@ -67,7 +67,20 @@ export default {
             // if (this.isSupp) return this.interactions;
             // if (this.parentInteraction.children) 
             // console.log(this.parentInteraction, this.parentInteraction.vInteractions?.find(c => c._id === this.side1Id));
-            return this.group.children || [];
+            
+            // return this.group.children || [];
+            // console.log(this.materials);
+            // console.log(this.group.children);
+            // const recMap = interactionUIService.getRecommendationOrderMap();
+            const res = [...(this.group.children || [])]
+                // .map((c => ({
+                //     ...c,
+
+                // })))
+                // .sort((a, b) => {
+                //     return (recMap[b.recommendation] - recMap[a.recommendation]) * -1 || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) || a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+                // });
+            return this.formatInteractions(res);
 
             // const optimizationData = this.$store.getters.optimizationData;
             // const forParentInt = optimizationData.find(c => c.for === this.parentInteraction._id);
@@ -228,7 +241,7 @@ export default {
                 const [ mainInteraction ] = interactions.splice(mainInteractionIdx, 1);
                 interactions.unshift(mainInteraction);
             }
-            this.$emit('setInnerInteractionsLength', { length: interactions.length, idx: this.groupIdx, innerRecSum: this.getSumRecommendation(interactions)})
+            // this.$emit('setInnerInteractionsLength', { length: interactions.length, idx: this.groupIdx, innerRecSum: this.getSumRecommendation(interactions)})
             return interactions;
         },
         getSumRecommendation(interactions){
