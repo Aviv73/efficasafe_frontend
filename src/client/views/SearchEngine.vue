@@ -413,6 +413,7 @@ export default {
         case 'Boosters':
           return {
             interactions: this.formatedPositiveInteractions,
+            // interactions: this.$store.getters.optimizationData,
             suppInteractions: this.formatedSuppPositiveInteractions,
             suppRedInteractions: this.formatedSuppPositiveRed,
             suppEmptyInteractions: this.emptySuppPositiveInteractions,
@@ -538,10 +539,14 @@ export default {
         });
       });
       const map = this.$options.recommendationsOrderMap;
+      const sortVints = (a, b) => {
+          return (map[b.recommendation] - map[a.recommendation]) * -1 || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) || a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+        }
       const formatedPositiveInteractions = this.positiveInteractions.reduce((acc, interaction) => {
         const existing = acc.find(i => i.name === interaction.name && i.mainMaterialId === interaction.mainMaterialId);
         if (!existing) {
           acc.push(interaction);
+          interaction.vInteractions.sort(sortVints);
         } else {
           existing.evidenceLevel = this.getMoreSeverEvidenceLevel(existing.evidenceLevel, interaction.evidenceLevel);
           existing.recommendation = this.getMoreSeverRecomm(true, existing.recommendation, interaction.recommendation);
@@ -552,9 +557,7 @@ export default {
               existing.total++;
             }
           });
-          existing.vInteractions.sort((a, b) => {
-            return (map[b.recommendation] - map[a.recommendation]) * -1 || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) || a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-          });
+          existing.vInteractions.sort(sortVints);
         }
         return acc;
       }, []);
@@ -817,6 +820,40 @@ export default {
     }
   },
   methods: {
+    async getAllOpties() {
+      // console.log(this.routableListData.interactions[].vInteractions[].side1Material._id)
+      // const interactions = this.interactions;
+      // const interactions = this.allInteractions;
+      // const interactions = this.formatedPositiveInteractions;
+      // const interactions = this.formatedPositiveInteractions;
+      // console.log(interactions)
+      // const interactionData = interactions.map(interaction => {
+      //     return {
+      //       // for: interaction._id, // interaction._id
+      //       for: this.materials.find(c => c.name === interaction.name)?._id,
+      //       source: interaction.affected_drug?.drugbank_id ? 'drag' : 'reg',
+      //       interactWith: interaction.vInteractions?.map(vInt => vInt.side1Material._id) || []
+      //     }
+      // });
+      console.time('NEW OPTIES FETCH TIME');
+      const materialIds = this.materials.reduce((acc, material) => {
+        if (material.type !== 'drug') return acc;
+          const ids = [ material._id, ...material.labels.map(l => l._id) ];
+          ids.forEach(id => {
+            if (!acc.includes(id)) acc.push(id);
+          });
+          return acc;
+      }, []);
+
+      const fetchData = { interactionData: null, materialIds, matNames: this.$route.query.q };
+      
+      await this.$store.dispatch({ type: 'loadOptimizationData', fetchData });
+      this.positiveInteractions = JSON.parse(JSON.stringify(this.$store.getters.optimizationData));
+      // console.log('WELLO FORMATED RES', this.formatedPositiveInteractions);
+      console.timeEnd('NEW OPTIES FETCH TIME');
+      return this.positiveInteractions;
+      // console.log('FORMATTED', this.formatedPositiveInteractions);
+    },
     formatInteractions(interactions) {
       interactions = JSON.parse(JSON.stringify(interactions));
       let formatedInteractions = interactions.reduce((acc, interaction) => {
@@ -1030,6 +1067,7 @@ export default {
       this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions);
       this.isLoading = false;
 
+      this.getAllOpties();
       this.getPositives();
 
       setTimeout(() => {
@@ -1076,21 +1114,26 @@ export default {
         suppIds,
         isSupp: true
       };
-      const [{ interactions, searchState }, { interactions: suppInteractions, idsToTurnRed, searchState: searchStateSupp }] = await Promise.all([
+      const [{ searchState }, { searchState: searchStateSupp }] = await Promise.all([
+      // const [{ interactions, searchState }, { interactions: suppInteractions, idsToTurnRed, searchState: searchStateSupp }] = await Promise.all([
         this.$store.dispatch({ type: 'getInteractions', filterBy: drugFilterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}` }),
         this.$store.dispatch({ type: 'getInteractions', filterBy: suppFilterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}/supps` })
       ]);
-      this.$store.commit('setRedPositiveSupp', { redIds: idsToTurnRed });
-      this.idsToTurnRed = idsToTurnRed;
-      this.positiveInteractions = await this.removeDupNonPositives(interactions);
-      this.suppPositiveInteractions = await this.addCacheKey(suppInteractions);
-      this.suppPositiveInteractions.forEach(int => {
-        int.vInteractions.forEach(vInt => {
-          const interactionName = vInt.side1Material._id === int.side2Id ? `${vInt.side2Material.name} & ${vInt.side1Material.name}` : `${vInt.side1Material.name} & ${vInt.side2Material.name}`;
-          vInt.name = interactionName;
-        });
-        int.vInteractions = this.sortInteractions(int.vInteractions, true);
-      });
+      // this.$store.commit('setRedPositiveSupp', { redIds: idsToTurnRed });
+      // this.idsToTurnRed = idsToTurnRed;
+      // console.log('BEFORE!@', JSON.parse(JSON.stringify(interactions)));
+      // this.positiveInteractions = await this.removeDupNonPositives(interactions);
+      // const res = 
+      // console.log('WOWOWO', res);
+
+      // this.suppPositiveInteractions = await this.addCacheKey(suppInteractions);
+      // this.suppPositiveInteractions.forEach(int => {
+      //   int.vInteractions.forEach(vInt => {
+      //     const interactionName = vInt.side1Material._id === int.side2Id ? `${vInt.side2Material.name} & ${vInt.side1Material.name}` : `${vInt.side1Material.name} & ${vInt.side2Material.name}`;
+      //     vInt.name = interactionName;
+      //   });
+      //   int.vInteractions = this.sortInteractions(int.vInteractions, true);
+      // });
       this.emptySuppPositiveInteractions = this.getEmptyPositiveSupp();
       this.restoreState('Boosters', searchState);
       this.restoreState('suppBoosters', searchStateSupp);

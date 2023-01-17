@@ -184,6 +184,13 @@ export default {
         return side1Name;
       }
       const nameToDisplay = this.showDraftName && this.draftName ? this.draftName : this.side2Name;
+
+      // const side1Name = this.name.split('&')[0].trim();
+      // console.log(this.interaction);
+      
+      // const fixedName = this.materials.find(c => c.name === this.draftName)?.userQuery || nameToDisplay;
+      // console.log(this.materials.find(c => c.name === this.draftName), nameToDisplay);
+
       if (this.$route.name === 'Boosters') return nameToDisplay;
       // if (nameToDisplay.length >= 14 && this.isGroup) {
       //     return `${nameToDisplay.substring(0, 12)}...(${this.vInteractionCount})`;
@@ -247,6 +254,7 @@ export default {
           }
           return acc;
         }, 0);
+        if (queryName === side2Name) return side2Name;
         if (count > 1) {
           return `${queryName} - ${side2Name}`;
         } else {

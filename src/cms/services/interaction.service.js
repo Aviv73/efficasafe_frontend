@@ -14,7 +14,8 @@ export const interactionService = {
     getEmptyInteraction,
     cacheSearchState,
     getPrintPreview,
-    getCache
+    getCache,
+    getOptimizationData
 }
 
 function getCache(key) {
@@ -72,6 +73,12 @@ function removeMany(ids) {
 function getPrintPreview(filterBy) {
     return httpService.post(`${END_POINT}/print`, filterBy, 'arraybuffer');
 }
+
+
+function getOptimizationData(fetchData) {
+    return httpService.post(`${END_POINT}/optimization-data`, {fetchData});
+}
+
 
 function getEmptyInteraction() {
     return {

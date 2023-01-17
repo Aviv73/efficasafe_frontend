@@ -18,9 +18,11 @@ export const interactionStore = ({
         sortBy:['recommendation', true],
         interactionPageHeight: null,
         listType: 'all',
-        interactionListHight: null
+        interactionListHight: null,
+        optimizationData: null
     },
     getters: {
+        optimizationData(state) { return state.optimizationData },
         interactions(state) {
             return state.interactions;
         },
@@ -62,6 +64,9 @@ export const interactionStore = ({
         }
     },
     mutations: {
+        setOptimizationData(state, { optimizationData }) {
+            state.optimizationData = optimizationData;
+        },
         setInteractionListHight(state, { hight }){
             state.interactionListHight = hight
         },
@@ -136,6 +141,11 @@ export const interactionStore = ({
         }
     },
     actions: {
+        async loadOptimizationData({ commit }, { fetchData }) {
+            const optimizationData = await interactionService.getOptimizationData(fetchData);
+            commit({ type: 'setOptimizationData', optimizationData });
+            return optimizationData;
+        },
         async loadInteractions(context, { filterBy }) {
             const { interactions, total } = await interactionService.list(filterBy);
             context.commit({ type: 'setInteractions', interactions });

@@ -60,6 +60,7 @@
               </tooltip>
               <!-- Arrow -->
               <span v-if="((!interaction.refs && !interaction.severity) || interaction.side2Label) && !interaction.isEmpty" class="de-activator">
+              <!-- <span v-if="interaction.vInteractions" class="de-activator"> -->
                 <chevron-up-icon class="opened" title="" />
                 <chevron-down-icon class="closed" title="" />
               </span>

@@ -150,7 +150,7 @@
         <loader class="loader" />
       </button>
       <div v-show="!isLoadingSuppInteractions">
-        <collapse v-if="interactions.length && (currSuppInteractions.length || emptySuppInteractions.length || suppRedInteractions.length)" :showTimes="false" :initial-is-visible="isShowPosSupp">
+        <collapse v-if="interactionToRender.length && (currSuppInteractions.length || emptySuppInteractions.length || suppRedInteractions.length)" :showTimes="false" :initial-is-visible="isShowPosSupp">
           <template #header>
             <button @click="showPosSupp" class="show-pos-supp-btn">
               <p>Optimizers - supplements ({{ suppCount }})</p>
@@ -172,7 +172,7 @@
             </div>
           </template>
         </collapse>
-        <div v-if="!interactions.length && (currSuppInteractions.length || emptySuppInteractions.length || suppRedInteractions)">
+        <div v-if="!interactionToRender.length && (currSuppInteractions.length || emptySuppInteractions.length || suppRedInteractions)">
           <li class="horizontal-list-list-item" v-for="(interaction, idx) in suppInteractionsToShow" :key="interaction._id">
             <interaction-preview :interaction="interaction" :materials="materials" :link="$route.name !== 'Monitor'" :idx="idx" :counter="renderKey" :isSupp="true" @removeInteraction="removeInteraction" @interactionDone="interactionDone" />
           </li>
@@ -267,6 +267,15 @@ export default {
     }
   },
   computed: {
+    interactionToRender() {
+      // return this.interactions;
+      const isOptimizationPage = this.$route.name === 'Boosters';
+      if (isOptimizationPage) return this.optimizationData || this.interactions;
+      return this.interactions;
+    },
+    optimizationData() {
+      return this.$store.getters.optimizationData;
+    },
     isShowAllDBI() {
       return this.$store.getters.isShowAllDBI
     },
