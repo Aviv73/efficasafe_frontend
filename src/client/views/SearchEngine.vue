@@ -1053,7 +1053,6 @@ export default {
       this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions);
       this.isLoading = false;
 
-      this.getAllOpties();
       this.getPositives();
 
       setTimeout(() => {
@@ -1105,6 +1104,8 @@ export default {
         this.$store.dispatch({ type: 'getInteractions', filterBy: drugFilterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}` }),
         this.$store.dispatch({ type: 'getInteractions', filterBy: suppFilterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}/supps` })
       ]);
+
+      await this.getAllOpties();
       // this.$store.commit('setRedPositiveSupp', { redIds: idsToTurnRed });
       // this.idsToTurnRed = idsToTurnRed;
       // console.log('BEFORE!@', JSON.parse(JSON.stringify(interactions)));
