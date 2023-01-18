@@ -315,7 +315,8 @@ export default {
       wtmInteractions: [],
 
       dontReload: false,
-      addedOptMatToSearch: false
+      addedOptMatToSearch: false,
+      prevSearch: null
     };
   },
   metaInfo() {
@@ -340,7 +341,7 @@ export default {
         const { q, isImported, nonExisting, activeTour, share } = this.$route.query;
         if (!q || !q.length) {
           this.$store.commit('resetPosSupp');
-          this.reset();
+          // this.reset();
           eventBus.$emit(EV_search_results_cleared);
           this.$store.commit({ type: 'setListType', listType: 'all' });
           return;
@@ -351,8 +352,11 @@ export default {
         if (!Array.isArray(q) && q) {
           this.$route.query.q = [q];
         }
-        this.sameQ = from && from.q && to.q.length === from.q.length && to.q.every((val, idx) => val === from.q[idx]) ? true : false;
-        const isSameSearch = from && from.q && to.q.length === from.q.length && to.q.every((val, idx) => val === from.q[idx]) && from.page === to.page;
+        const isqEq = this.isSameSearch && this.isSameSearch.q && to.q.length === this.isSameSearch.q.length && to.q.every((val, idx) => val === this.isSameSearch.q[idx]);
+        this.sameQ = isqEq;
+        // const isSameSearch = isqEq && from.page === to.page;
+        const isSameSearch = JSON.stringify(to) === JSON.stringify(this.prevSearch);
+        this.prevSearch = JSON.parse(JSON.stringify(to));
         if (isSameSearch) return;
         // if (_dontReload) {
         //   await this.getMaterials();
@@ -821,21 +825,6 @@ export default {
   },
   methods: {
     async getAllOpties() {
-      // console.log(this.routableListData.interactions[].vInteractions[].side1Material._id)
-      // const interactions = this.interactions;
-      // const interactions = this.allInteractions;
-      // const interactions = this.formatedPositiveInteractions;
-      // const interactions = this.formatedPositiveInteractions;
-      // console.log(interactions)
-      // const interactionData = interactions.map(interaction => {
-      //     return {
-      //       // for: interaction._id, // interaction._id
-      //       for: this.materials.find(c => c.name === interaction.name)?._id,
-      //       source: interaction.affected_drug?.drugbank_id ? 'drag' : 'reg',
-      //       interactWith: interaction.vInteractions?.map(vInt => vInt.side1Material._id) || []
-      //     }
-      // });
-      console.time('NEW OPTIES FETCH TIME');
       const materialIds = this.materials.reduce((acc, material) => {
         if (material.type !== 'drug') return acc;
           const ids = [ material._id, ...material.labels.map(l => l._id) ];
@@ -849,10 +838,7 @@ export default {
       
       await this.$store.dispatch({ type: 'loadOptimizationData', fetchData });
       this.positiveInteractions = JSON.parse(JSON.stringify(this.$store.getters.optimizationData));
-      // console.log('WELLO FORMATED RES', this.formatedPositiveInteractions);
-      console.timeEnd('NEW OPTIES FETCH TIME');
       return this.positiveInteractions;
-      // console.log('FORMATTED', this.formatedPositiveInteractions);
     },
     formatInteractions(interactions) {
       interactions = JSON.parse(JSON.stringify(interactions));
@@ -1807,7 +1793,10 @@ export default {
       }
       eventBus.$emit(EV_show_user_msg, 'The walkthrough and the tutorial are not available on a narrow screen. Please use this link on a computer', 10000);
     }
-    await this.getMaterials();
+    if (!this.didMount) {
+      await this.getMaterials();
+      this.didMount = true;
+    }
     this.innerListEl = this.$el.querySelector('.inner-view');
     if (this.innerListEl) {
       this.innerListEl.addEventListener('scroll', ev => {

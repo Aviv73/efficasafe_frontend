@@ -83,9 +83,10 @@ import { httpService } from '@/cms/services/http.service';
 import { eventBus, EV_show_user_msg } from '@/cms/services/eventBus.service';
 
 export default {
+  name: 'InteractionList',
   props: {
     listData: {
-      type: Object,
+      type: [Array, Object],
       required: true
     },
     isVertical: {

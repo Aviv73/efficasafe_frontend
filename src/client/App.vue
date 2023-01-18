@@ -2,7 +2,9 @@
     <div id="app">
         <navbar @login="onLogin" @signup="onSignUp" />
         <main>
-            <router-view @signup="onSignUp" @showAuth="onShowAuth" @showValidate="onShowValidate"/>
+            <keep-alive>
+                <router-view @signup="onSignUp" @showAuth="onShowAuth" @showValidate="onShowValidate"/>
+            </keep-alive>
         </main>
         <main-footer />
         <auth-modal

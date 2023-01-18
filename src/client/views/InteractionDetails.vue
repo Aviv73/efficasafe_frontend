@@ -411,8 +411,8 @@ export default {
       return interactionUIService.getInteractionColor(this.interaction.recommendation);
     },
     interactionName() {
-      if (this.isVirtual) return `${this.interaction.side1Material.name} & ${this.side2Material.name}`;
-      return `${this.interaction.side1Material.name} & ${this.interaction.side2Material.name}`;
+      if (this.isVirtual) return `${this.interaction.side1Material?.name} & ${this.side2Material?.name}`;
+      return `${this.interaction.side1Material?.name} & ${this.interaction.side2Material?.name}`;
     },
     side1PathwayRefs() {
       const txt =

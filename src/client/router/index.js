@@ -100,7 +100,7 @@ const routes = [
   {
     path: '/search',
     component: SearchEngine,
-    // keepAlive: true,
+    keepAlive: true,
     children: [
       {
         path: '/search',

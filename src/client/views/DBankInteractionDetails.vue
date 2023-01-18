@@ -470,6 +470,7 @@ export default {
     },
     async getInteraction() {
       const { id } = this.$route.params;
+      if (!id) return;
       this.interaction = await drugBankService.getInteraction(id);
       const [side1Material, side2Material] = await Promise.all([materialService.getByDBId(this.interaction.affected_drug.drugbank_id), materialService.getByDBId(this.interaction.subject_drug.drugbank_id)]);
       this.side1Material = side1Material;
