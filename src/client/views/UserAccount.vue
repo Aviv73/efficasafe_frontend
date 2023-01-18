@@ -36,6 +36,7 @@
 
 <script>
 export default {
+    name: 'UserAccount',
     metaInfo () {
         return {
             title: 'Account'

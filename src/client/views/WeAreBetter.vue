@@ -1,90 +1,90 @@
 <template>
-    <section class="about-hebrew-page"  style="direction: ltr;">
+    <section style="direction: ltr;">
         <page-header/>
-        <article class="about-hebrew-page-container">
-            <h1 class="title">What makes <span class="highlight">Efficasafe</span> the best interaction platform in the world?</h1>
-            <section>
-                <p>The platform's uniqueness lies first and foremost – in the quantity of scientific data</p>
-                <p>reviewed in each interaction.</p>
-                <p>Much more than in any other platform.</p>
-                <p>How much more? Let’s see...</p>
-                <p class="sub-title-4">Here is an example. This oncology patient has prescriptions for 4 drugs and 3 herbs:</p>
-            </section>
-            <img class="img1 center" src="@/client/assets/imgs/about-img-1.png" alt="">
-            <section>
-                <p class="sub-title" >In the table below, you will find the results obtained when searching for interactions between these drugs and supplements on various search engines, including:</p>
-                <p class="english">Micromedex, UpToDate, Medscape, Webmd, Drugs.com, Rxlist, NaturalMedicines, BodyBalancerpro</p>
-                <p class="sub-title-2" >Please pay attention to the numbers in each interaction:</p>
-                <p>The first number is the total number of sources.</p>
-                <p>The second number indicates clinical studies.</p>
-                <p class="sub-title-4">And the third number, if stated, indicates meta-analyses.</p>
-            </section>
-            <img class="img2 center" src="@/client/assets/imgs/about-hebrew-img-4.jpeg" alt="">
-            <section>
-                <p class="sub-title-3">On average, the results ranged from 4-6 sources per interaction, of which 2-3 are clinical.</p>
-                <p class="sub-title-4">Now, let's examine the amount of evidence on <span class="highlight">Efficasafe</span>:</p>
-            </section>
-            <img class="img2 center" src="@/client/assets/imgs/about-hebrew-img-2.jpeg" alt="">
-            <section>
-                <p class="sub-title-3">Much, much higher...</p>
-                <p>As you may have noticed, not only is the amount of evidence different, but the recommendations themselves are entirely different.</p>
-                <p>While all platforms warn against different combinations, <span class="highlight">Efficasafe's</span> recommendations are positive.</p>
-                <p>In some cases, the clinical recommendations state that coadministration may even be advised.</p>
+        <article class="we-are-better-page main-container">
+            <section class="text-center">
+                <h1 class="title">What makes <span class="highlight">Efficasafe</span> the best interaction platform in the world?</h1>
+                <div>
+                    <p class="secondary-txt">
+                        Our platform stands out from the rest due to the sheer volume of scientific data that we review in each interaction.
+                        <br/>
+                        We go above and beyond to ensure that our conclusions are as accurate as possible..
+                    </p>
+                </div>
             </section>
             <section>
-                <p>How can this be possible?</p>
-                <p>The answer is, you guessed it, the amount of data.</p>
-                <p class="sub-title-3">The large number of clinical studies conducted on each combination allows for more accurate conclusions and a higher confidence level.</p>
-                <p>Let us explain.</p>
-                <p>Here’s an example, let’s say you want to combine Cinnamon (Cinnamomum zeylanicum) with Metformin (the drug of choice for high blood sugar).</p>
-                <p>If there are only one or two studies that show that Cinnamon reduces blood glucose levels, it only makes sense to assume that coadministration with sugar-lowering drugs may lead to enhanced activity and in the worst-case scenario, even cause hypoglycemia.</p>
-                <p class="sub-title-3">Therefore, it also makes sense and right to warn against coadministration.</p>
-                <p>But, if there are 8 Meta-analyses, reviewing 35 clinical studies in which Cinnamon was given to people with diabetes,</p>
-                <p>And of them, 9 studies examined the coadministration of Cinnamon with sugar-lowering drugs, including Metformin,</p>
-                <p>And all of these studies have found the coadministration to be not only safe but also more effective than the drugs alone in improving a variety of diabetes indices,</p>
-                <p>And in none of the studies has there been a single case of hypoglycemia,</p>
-                <p class="sub-title-3">And there is not even a single hypoglycemia case reported in the professional literature,</p>
-                <p>Then the conclusions are entirely different…</p>
-                <p>Or in other words, maybe size does matter :)</p>
-            </section>
-            <div class="sign-up-btn-container">
-                <button @click="openSignup" class="sign-up-btn">
-                    Sign up now
-                </button>
-            </div>
-            <section>
-                <p class="space-bottom">And it's not just the large pool of data that <span class="highlight">Efficasafe's</span> platform has to offer:</p>
-                <ul>
-                    <li>Unlimited search of drugs and supplements</li>
-                    <li>Drug-Drug and Herb-Supplement-Drug Interactions</li>
-                    <li>Ratings of the level of evidence per interaction</li>
-                    <li>Short and clear recommendation and summary</li>
-                    <li>Detailed breakdown of the evidence</li>
-                    <li>Both positive and negative interactions</li>
-                    <li>Monitoring guidance per interaction</li>
-                    <li>Pharmacokinetics of each interaction</li>
-                </ul>
+                <p class="sub-title" >Let’s look at an example.</p>
+                <p>A patient (John smith) who is prescribed 4 drugs (Warfarin, Atorvastatin, Metformin, Ritalin) and wants to take 3 supplements (Turmeric, Cinnamon, Omega-3).</p>
+                <p>Here is a table listing all <strong>possible interactions</strong>, with the recommendations according to leading interaction databases. Please note the numbers in each cell.</p>
             </section>
             <section>
-                <p>Oh, one more thing…</p>
-                <p>Do you know how after every patient intake, you need to carefully consider which herbs and/or supplements you should recommend your patient?</p>
-                <p><span class="highlight">Efficasafe</span> does that too and in a whole new way.</p>
-                <p class="sub-title-3">The platform shows all the recommended combinations with drugs, allowing you to discover combinations that may enhance drug efficacy and/or reduce toxicity and adverse events.</p>
-                <p class="sub-title-3"><span class="highlight">We call this feature Optimizers.</span></p>
-                <p>And that's not all. There are more features to discover still.</p>
-                <p class="sub-title-4">Sign up for <span class="highlight">Efficasafe</span> today and start seeing (search) results!</p>
+                <p>Numbers from left: <strong>(1)</strong>(2)(3) = Total number of references (1)<strong>(2)</strong>(3) = Number of clinical trials (1)(2)<strong>(3)</strong> = Meta-analyses <i>(If presented)</i></p>
+                <img src="@/client/assets/imgs/we-are-better-table.png" alt="">
             </section>
-            <section>
-                <p>By the way, we have not forgotten about our patient.</p>
-                <p class="sub-title-4">This is how his healthcare provider sees him:</p>
+            <section class="flex wrap example-section">
+                <div class="card-like">
+                    <p>
+                        As you can see in the table, in comparison to other platforms that only include a small number of
+                        references and clinical trials for each interaction, efficasafe’s extensive data collection allows us to
+                        provide <strong>more in-depth and trustworthy information</strong>.
+                        In fact, our extensive data often leads to different conclusions than those drawn by platforms with
+                        less information.
+                    </p>
+                </div>
+                <div>
+                    <p>Take the <strong>combination</strong> of Cinnamon and Metformin, a popular diabetes medication, <strong>for example.</strong></p>
+                    <p>
+                        While other platforms may caution against this combination due to limited data (a maximum of 5
+                        studies), efficasafe’s conclusion, based on a larger amount of data (11 systematic reviews and 53
+                        clinical trials, 10 of which were randomized controlled trials (RCTs) that examined the
+                        coadministration of Cinnamon and antidiabetic drugs including Metformin) is that it is not only safe
+                        but can even be more effective than the drug alone.
+                    </p>
+                    <p>As you can see, it’s all about the data.</p>
+                    <p>
+                        <strong>Having a larger amount of data allows for more precise conclusions to be drawn, enabling you to
+                        make better-informed decisions and improve patient care.</strong>
+
+                    </p>
+                </div>
             </section>
-            <img class="img2 center border" src="@/client/assets/imgs/about-hebrew-img-3.jpeg" alt="">
-            <p>Sign up now, and you, too, will be able to see more clearly!</p>
-            <div class="sign-up-btn-container">
-                <button @click="openSignup" class="sign-up-btn">
-                    Sign up now
-                </button>
-            </div>
+            <section class="inner-container">
+                <section>
+                    <h2 class="wait-title">
+                        <p class="card-like secondary-txt text-center">
+                            But wait, could there be other supplements that are more effective?
+                        </p>
+                        <div class="material-imgs">
+                            <img class="material-img" src="@/client/assets/imgs/we-are-better-material.svg" alt="">
+                            <img class="material-leaves-img" src="@/client/assets/imgs/we-are-better-leaves.svg" alt="">
+                        </div>
+                        <img class="material-leaves-img-2" src="@/client/assets/imgs/we-are-better-leaves-2.svg" alt="">
+                    </h2>
+                </section>
+                <section>
+                    <p class="sub-title">Meet the optimizers.</p>
+                    <p>
+                        Optimizers are combinations of drugs and supplements that either increase drug efficacy or reduce
+                        toxicity and adverse events or preferably do both.
+                        Efficasafe presents these unique combinations and allows you to <strong>optimize your treatment plan</strong>.
+                    </p>
+                </section>
+                <section>
+                    <p class="sub-title">Here’s what it looks like:</p>
+                    <img src="@/client/assets/imgs/we-are-better-optimizers-sample.png" alt="">
+                </section>
+                <section class="card-like even-more">
+                    <p class="sub-title">There is even more.</p>
+                    <p class="sub-title">The platform also provides you with:</p>
+                    <ul>
+                        <li>Patient monitoring tools</li>
+                        <li>Newest updates directly to patients’ records</li>
+                        <li>Full monographs of drugs, herbs, and supplements</li>
+                    </ul>
+                </section>
+
+                <router-link class="self-center fit-content" to="/subscribe"><button>Subscribe Now!</button></router-link>
+            </section>
         </article>
     </section>
 </template>
@@ -111,3 +111,165 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import '@/client/styles/setup/_variables.scss';
+.we-are-better-page {
+    line-height: 1.5rem;
+    h1 {
+        font-size: 2rem;
+        font-weight: bold;
+        line-height: 2.5rem;
+    }
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    section {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    p:not(:last-child) {
+        margin-bottom: 30px;
+    }
+    img {
+        width: 100%;
+    }
+    .sub-title {
+        font-weight: bold;
+    }
+    .card-like {
+        padding: 16px;
+        border: 1px solid #A5A5A5;
+        box-shadow: -3px 6px 3px rgba(19, 49, 70, 0.56);
+        border-radius: 12px;
+    }
+
+    .even-more {
+        font-size: 1.25rem;
+        margin-bottom: 60px;
+    }
+    button {
+        font-size: 1.375rem;
+        color: white;
+        font-weight: bold;
+        background-color: #133146;
+        width: 220px;
+        height: 50px;
+        border-radius: 40px;
+        margin: 0 auto;
+    }
+    .fit-content {
+        width: fit-content;
+    }
+
+    .example-section {
+        flex-direction: row !important;
+        .card-like {
+            width: 350px;
+        }
+        :nth-child(2) {
+            flex: 1;
+        }
+    }
+
+    .inner-container {
+        gap: 30px;
+        display: flex;
+        flex-direction: column;
+        max-width: 950px;
+        margin: 0 auto;
+    }
+
+    .wait-title {
+        position: relative;
+        z-index: 5;
+        color: #55C595;
+        font-size: 1.25rem;
+        .card-like {
+            border-radius: 50px;
+            position: relative;
+            background-color: white;
+            z-index: 1;
+        }
+        .material-imgs {
+            z-index: 1;
+            position: absolute;
+            width: 40px;
+            height: 60px;
+            right: 0;
+            top: 10px;
+            transform: translate(50%, -50%);
+            .material-img {
+                // position: absolute;
+            }
+            .material-leaves-img {
+                position: absolute;
+                z-index: -1;
+                right: -13px;
+                top: -30px;
+                width: 50px;
+                height: 70px;
+            }
+        }
+        .material-leaves-img-2 {
+            position: absolute;
+            z-index: -3;
+            right: 15px;
+            top: -30px;
+            width: 25px;
+            height: 50px;
+        }
+    }
+
+    @media (max-width: $break-narrow) {
+        gap: 25px;
+        font-size: 12px;
+        line-height: 1rem;
+        h1 {
+            font-size: 1rem;
+            line-height: 1.2rem;
+        }
+        p:not(:last-child) {
+            margin-bottom: 10px;
+        }
+        .example-section {
+            gap: 30px;
+            .card-like {
+                width: unset;
+            }
+        }
+        .card-like {
+            font-size: 13px !important;
+        }
+        .inner-container {
+            gap: 25px;
+            max-width: unset;
+        }
+        .secondary-txt {
+            font-size: 0.875rem;
+        }
+        // section {
+        //     gap: unset;
+        // }
+        .wait-title {
+            .material-imgs {
+                width: 25px;
+                height: 45px;
+                right: 2.5px;
+                top: 50%;
+                .material-leaves-img {
+                    right: -12.5px;
+                    top: -40px;
+                    width: 30px;
+                    height: 60px;
+                }
+            }
+            .material-leaves-img-2 {
+                display: none;
+            }
+            
+        }
+    }
+}
+</style>
