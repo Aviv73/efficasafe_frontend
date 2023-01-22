@@ -1,7 +1,8 @@
 import axios from 'axios';
 import config from '../config/index'
 
-const DEFAULT_CURRENCY = 'USD'
+// const DEFAULT_CURRENCY = 'USD'
+const DEFAULT_CURRENCY = 'ILS'
 
 export const locationService = {
     getLocalCurrency,
@@ -13,6 +14,7 @@ async function getLocalCurrency() {
     try{
         const key = config.abstractApiKey
         let res = await axios.get(`https://ipgeolocation.abstractapi.com/v1/?api_key=${key}&fields=currency`)
+        console.log(res);
         const currencyCode = res.data.currency.currency_code
         if(currencyCode !== 'ILS' && currencyCode !== 'EUR') return DEFAULT_CURRENCY
         return currencyCode
