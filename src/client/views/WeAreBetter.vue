@@ -144,7 +144,7 @@ export default {
     border-radius: 12px;
   }
   .card-like:not(:first-child) {
-    margin-bottom: 15px;
+    margin-bottom: 50px;
   }
   button {
     font-size: 1.375rem;
