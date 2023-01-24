@@ -78,6 +78,7 @@ import PageFirstIcon from 'vue-material-design-icons/PageFirst';
 import PageLastIcon from 'vue-material-design-icons/PageLast';
 
 export default {
+    name: 'UserApp',
     data() {
         return {
             isEndSubscriptionModal: false,
