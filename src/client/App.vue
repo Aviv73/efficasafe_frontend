@@ -169,5 +169,14 @@ export default {
         UpdateMsg,
         videoModal
     },
+
+    
+
+    watch: {
+        '$route.path'(path) {
+            console.log('WOW?');
+            this.$store.commit({ type: 'addRouterHistory', path })
+        }
+    }
 };
 </script>

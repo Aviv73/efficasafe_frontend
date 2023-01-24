@@ -9,7 +9,7 @@
         @delete-cancel="dialog = false"
       />
       <div class="action-container">
-        <v-btn color="primary" @click="$router.go(-1)">
+        <v-btn color="primary" @click="goBack()">
           <v-icon small left>mdi-arrow-left</v-icon>Back
         </v-btn>
         <v-btn
@@ -103,6 +103,10 @@ export default {
     },
   },
   methods: {
+    goBack() {
+      if (this.$store.getters.routerHistory.length <= 1) this.$router.push('/');
+      else this.$router.go(-1);
+    },
     isPrimaryMaterial(matId) {
       return this.label.primaryMaterialIds.includes(matId);
     },

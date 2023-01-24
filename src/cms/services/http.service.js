@@ -40,6 +40,7 @@ async function ajax(endpoint, method = 'get', data = null, responseType = 'json'
         const res = await axios(config);
         return res.data;
     } catch (err) {
+        if (!err.response) throw err;
         if (err.response && err.response.status === 401) {
             if(err.response.data.providerError){
                 eventBus.$emit(EV_wrong_provider , err.response.data.providerError)

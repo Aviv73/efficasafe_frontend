@@ -2,7 +2,7 @@
     <section class="v-interaction-details">
         <div class="container">
             <div class="mb-5">
-                <v-btn color="primary" @click="$router.go(-1)">
+                <v-btn color="primary" @click="goBack()">
                     <v-icon small left>mdi-arrow-left</v-icon>Back
                 </v-btn>
             </div>
@@ -189,6 +189,10 @@ export default {
         }
     },
     methods: {
+        goBack() {
+            if (this.$store.getters.routerHistory.length <= 1) this.$router.push('/');
+            else this.$router.go(-1);
+        },
         async getVinteractionSides() {
             this.isLoading = true;
             const { id, matId } = this.$route.params;

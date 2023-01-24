@@ -5,7 +5,7 @@
         <span class="brim-start" />
         <div class="flex-space-between">
           <span class="interaction-details-header-link no-print">
-            <button class="flex-align-center" @click="$router.go(-1)">
+            <button class="flex-align-center" @click="goBack()">
               <template v-if="!isScreenNarrow">
                 <chevron-left-icon title="" />
                 Back to search
@@ -490,6 +490,10 @@ export default {
     }
   },
   methods: {
+    goBack() {
+      if (this.$store.getters.routerHistory.length <= 1) this.$router.push('/');
+      else this.$router.go(-1);
+    },
     startTour() {
       this.$tours['onboarding-interaction-tour'].start();
       // this.$tours['boosters-tour'].start();

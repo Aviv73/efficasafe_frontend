@@ -3,7 +3,7 @@
     <div class="container">
       <main v-if="!isLoading && interaction">
         <header class="pb-4">
-          <v-btn color="primary" @click="$router.go(-1)"> <v-icon small left>mdi-arrow-left</v-icon>Back </v-btn>
+          <v-btn color="primary" @click="goBack()"> <v-icon small left>mdi-arrow-left</v-icon>Back </v-btn>
           <v-btn :color="isTextFormatted ? 'secondary' : 'primary'" @click="isTextFormatted = !isTextFormatted">
             <v-icon small left>{{ isTextFormatted ? 'mdi-eye-outline' : 'mdi-eye-off-outline' }}</v-icon
             >View {{ isTextFormatted ? 'origin' : 'formatted' }} text
@@ -91,6 +91,10 @@ export default {
     }
   },
   methods: {
+    goBack() {
+      if (this.$store.getters.routerHistory.length <= 1) this.$router.push('/');
+      else this.$router.go(-1);
+    },
     async loadInteraction() {
       this.isLoading = true;
       const { id } = this.$route.params;

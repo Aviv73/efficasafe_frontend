@@ -10,7 +10,7 @@
                     @delete-cancel="dialog = false"
                 />
                 <div class="action-container">
-                    <v-btn class="base-btn action-btn" color="primary" @click="$router.go(-1)">
+                    <v-btn class="base-btn action-btn" color="primary" @click="goBack()">
                         <v-icon small left>mdi-arrow-left</v-icon>Back
                     </v-btn>
                     <v-btn
@@ -543,6 +543,10 @@ export default {
         },
     },
     methods: {
+        goBack() {
+            if (this.$store.getters.routerHistory.length <= 1) this.$router.push('/');
+            else this.$router.go(-1);
+        },
         getPathwayColor({ influence }) {
             let firstLine = influence.split('</p>')[0];
             if (!firstLine) return 'default';

@@ -32,9 +32,14 @@ export default new Vuex.Store({
     managementData: null,
     initialLoading: false,
     isSharedToken: false,
-    userSearch: ''
+    userSearch: '',
+
+    routerHistory: []
   },
   getters: {
+    routerHistory(state) {
+      return state.routerHistory;
+    },
     hasFailedTasks(state) {
       return state.hasFailedTasks;
     },
@@ -90,6 +95,10 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    addRouterHistory(state, { path }) {
+      state.routerHistory.push(path);
+    },
+
     makeMaterialNamesMap(state, { materials }) {
       state.materialNamesMap = materials.reduce((acc, material) => {
         if (!acc[material.name]) acc[material.name] = [material.userQuery];

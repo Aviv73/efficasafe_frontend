@@ -10,7 +10,7 @@
           @delete-cancel="dialog = false"
         />
         <div class="action-container">
-          <v-btn color="primary" @click="$router.go(-1)">
+          <v-btn color="primary" @click="goBack()">
             <v-icon small left>mdi-arrow-left</v-icon>Back
           </v-btn>
           <v-spacer></v-spacer>
@@ -316,6 +316,10 @@ export default {
     }
   },
   methods: {
+    goBack() {
+      if (this.$store.getters.routerHistory.length <= 1) this.$router.push('/');
+      else this.$router.go(-1);
+    },
     async getPathways() {
       const { _id } = this.interaction.side2Material;
       const { pathways, pathwayRefs } = await this.$store.dispatch({ type: 'loadMaterial', matId: _id });
