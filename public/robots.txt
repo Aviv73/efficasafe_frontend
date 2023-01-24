@@ -1,4 +1,29 @@
 User-agent: *
+Disallow: /
+
+User-agent: Googlebot
 Disallow: /terms-and-conditions
 Disallow: /cookie-policy
 Disallow: /cms
+Disallow: /search
+
+User-agent: Bingbot
+Disallow: /terms-and-conditions
+Disallow: /cookie-policy
+Disallow: /cms
+Disallow: /search
+
+User-agent: Slurp
+Disallow: /terms-and-conditions
+Disallow: /cookie-policy
+Disallow: /cms
+Disallow: /search
+
+User-agent: DuckDuckBot
+Disallow: /terms-and-conditions
+Disallow: /cookie-policy
+Disallow: /cms
+Disallow: /search
+
+
+Sitemap: https://www.efficasafe.com/sitemap.xml
