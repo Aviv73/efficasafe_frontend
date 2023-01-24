@@ -125,16 +125,17 @@ export default {
         await this.removeServiceWorker()
 
         await this.$store.dispatch('pullManagementData')
-        const BASE_URL = (process.env.NODE_ENV === 'development') ? '//localhost:3000' : '';
-        const events = new EventSource(`${BASE_URL}/events`, { withCredentials: true });
-
-        events.onmessage = () => {
-            storageService.store('show-other-login', true);
-            location.reload()
-        };
 
 
-        setInterval(this.connectUser, 300000);
+        // const BASE_URL = (process.env.NODE_ENV === 'development') ? '//localhost:3000' : '';
+        // const events = new EventSource(`${BASE_URL}/events`, { withCredentials: true });
+        // events.onmessage = () => {
+        //     storageService.store('show-other-login', true);
+        //     location.reload()
+        // };
+
+
+        // setInterval(this.connectUser, 300000);
 
         if(storageService.load('show-other-login')){
             await this.$store.dispatch('logout')
