@@ -3,7 +3,7 @@
     <span class="alerts-title">Alerts</span>
     <div v-for="(warning, idx) in warnings" :key="idx" class="warning">
       <template v-if="!isScreenNarrow">
-        <tooltip on="hover" bottom style="border-radius: 18px">
+        <tooltip on="hover" bottom style="border-radius: 18px; width: 100%">
           <template #content>
             <div class="tooltip-content">
               {{ warning.text }}
@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import { interactionUIService } from '@/cms/services/interaction-ui.service'
+import { interactionUIService } from '@/cms/services/interaction-ui.service';
 
-import Tooltip from '@/client/cmps/common/Tooltip'
+import Tooltip from '@/client/cmps/common/Tooltip';
 
 export default {
   props: {
@@ -40,18 +40,18 @@ export default {
   data() {
     return {
       warnings: []
-    }
+    };
   },
   computed: {
     isScreenNarrow() {
-      return this.$store.getters.isScreenNarrow
+      return this.$store.getters.isScreenNarrow;
     }
   },
   created() {
-    this.warnings = interactionUIService.createWarnings(this.side1Material, this.side2Material)
+    this.warnings = interactionUIService.createWarnings(this.side1Material, this.side2Material);
   },
   components: {
     Tooltip
   }
-}
+};
 </script>
