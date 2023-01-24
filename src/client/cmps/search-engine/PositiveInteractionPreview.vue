@@ -157,6 +157,7 @@ export default {
       });
     },
     isInSearch(mat) {
+      if (!this.$route.query.q) return false;
       return this.$route.query.q.find(c => c === this.getInnerGroup(mat).name);
     },
     addToSearch(toAdd) {

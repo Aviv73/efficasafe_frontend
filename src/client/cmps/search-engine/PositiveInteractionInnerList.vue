@@ -171,7 +171,7 @@ export default {
             const { recommendationMap: map } = this.$options;
             interactions.forEach(interaction => {
                 if (interaction.side2Label) {
-                    const { _id, name, type } = this.materials.find(m => m.labels.some(l => l._id === interaction.side2Label._id));
+                    const { _id, name, type } = this.materials.find(m => m.labels.some(l => l?._id === interaction.side2Label?._id));
                     interaction.side2Material = {
                         _id,
                         name,

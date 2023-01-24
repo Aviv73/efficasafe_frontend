@@ -216,7 +216,9 @@
           </div>
         </nav>
         <transition :name="routerTransitionName" mode="out-in">
-          <router-view class="inner-view" :key="$route.name" :listData="routableListData" :isVertical="isViewVertical" :materials="materials" :isLoading="isLoading" :isPBLoading="isPBLoading" @page-changed="handlePaging" @list-sorted="handleSort" @handle-DBI-filter="handleDBIFilter" />
+          <keep-alive>
+            <router-view class="inner-view" :key="$route.name" :listData="routableListData" :isVertical="isViewVertical" :materials="materials" :isLoading="isLoading" :isPBLoading="isPBLoading" @page-changed="handlePaging" @list-sorted="handleSort" @handle-DBI-filter="handleDBIFilter" />
+          </keep-alive>
         </transition>
       </div>
       <span class="brim-end" />
@@ -633,7 +635,7 @@ export default {
         group.vInteractions.forEach(vInteraction => {
           vInteraction.isSupp = true;
           if (vInteraction.side2Label) {
-            const { _id, name, type } = this.materials.find(m => m.labels.some(l => l._id === vInteraction.side2Label._id));
+            const { _id, name, type } = this.materials.find(m => m.labels.some(l => l?._id === vInteraction.side2Label?._id));
             vInteraction.side2Material = {
               _id,
               name,
