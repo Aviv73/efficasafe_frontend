@@ -29,7 +29,7 @@
             extensive data often leads to different conclusions than those drawn by platforms with less information.
           </p>
         </div>
-        <div>
+        <div class="example-wrapper">
           <p>Take the <strong>combination</strong> of Cinnamon and Metformin, a popular diabetes medication, <strong>for example.</strong></p>
           <p>
             While other platforms may caution against this combination due to limited data (a maximum of 5 studies), efficasafe’s conclusion, based on a larger amount of data (11 systematic reviews and 53 clinical trials, 10 of which were randomized controlled trials (RCTs) that examined the
@@ -94,10 +94,6 @@ export default {
   computed: {
     loggedInUser() {
       return this.$store.getters.loggedInUser;
-    },
-    formatCtaBtn() {
-      if (!this.loggedInUser?.type === 'trial') return 'Subscribe now!';
-      else return 'Start a free trial';
     }
   },
   methods: {
@@ -130,7 +126,7 @@ export default {
     gap: 10px;
   }
   p:nth-child(2) {
-    margin-bottom: 10px;
+    // margin-bottom: 10px;
   }
   img {
     width: 100%;
@@ -147,6 +143,9 @@ export default {
     box-shadow: -3px 6px 3px rgba(19, 49, 70, 0.56);
     border-radius: 12px;
   }
+  .card-like:not(:first-child) {
+    margin-bottom: 15px;
+  }
   button {
     font-size: 1.375rem;
     color: white;
@@ -160,6 +159,13 @@ export default {
   }
   .fit-content {
     width: fit-content;
+  }
+
+  .example-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
   }
 
   // .example-section {
@@ -244,6 +250,7 @@ export default {
         width: unset;
       }
     }
+
     .card-like {
       font-size: 13px !important;
     }
