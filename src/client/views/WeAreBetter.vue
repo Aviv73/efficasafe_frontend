@@ -3,23 +3,25 @@
     <page-header />
     <article class="we-are-better-page main-container">
       <section class="text-center">
-        <h1 class="title">What makes <span class="highlight">Efficasafe</span> the best <br />interaction platform in the world?</h1>
+        <h1 class="title">What makes <span class="highlight">efficasafe</span> the best <br />interaction platform in the world?</h1>
         <div>
           <p class="secondary-txt">
             Our platform stands out from the rest due to the sheer volume of scientific data that we review in each interaction.
             <br />
-            We go above and beyond to ensure that our conclusions are as accurate as possible..
+            We go above and beyond to ensure that our conclusions are as accurate as possible.
           </p>
         </div>
       </section>
       <section>
-        <h3 class="sub-title">Let’s look at an example.</h3>
+        <br/>
+        <h3 class="sub-title">Let’s look at an example:</h3>
         <p>A patient (John smith) who is prescribed 4 drugs (Warfarin, Atorvastatin, Metformin, Ritalin) and wants to take 3 supplements (Turmeric, Cinnamon, Omega-3).</p>
         <p>Here is a table listing all <strong>possible interactions</strong>, with the recommendations according to leading interaction databases.</p>
+        <!-- <br/> -->
         <p>Please note the numbers in each cell.</p>
       </section>
       <section>
-        <p>Numbers from left: <strong>(1)</strong>(2)(3) = Total number of references (1)<strong>(2)</strong>(3) = Number of clinical trials (1)(2)<strong>(3)</strong> = Meta-analyses <i>(If presented)</i></p>
+        <p>Numbers from left: <strong>(1)</strong>(2)(3) = Total number of references; (1)<strong>(2)</strong>(3) = Number of clinical trials; (1)(2)<strong>(3)</strong> = Meta-analyses <i>(If presented)</i></p>
         <img src="@/client/assets/imgs/we-are-better-table.png" alt="" />
       </section>
       <section class="flex wrap example-section">
@@ -53,15 +55,17 @@
           </h2>
         </section>
         <section>
-          <h3 class="sub-title">Meet the optimizers.</h3>
+          <br/>
+          <h3 class="sub-title">Meet the optimizers:</h3>
           <p>Optimizers are combinations of drugs and supplements that either increase drug efficacy or reduce toxicity and adverse events or preferably do both. Efficasafe presents these unique combinations and allows you to <strong>optimize your treatment plan</strong>.</p>
         </section>
         <section>
           <p class="sub-title">Here’s what it looks like:</p>
+          <br/>
           <img src="@/client/assets/imgs/we-are-better-optimizers-sample.png" alt="" />
         </section>
         <section class="card-like even-more">
-          <h3 class="sub-title">There is even more.</h3>
+          <h3 class="sub-title">There is even more!</h3>
           <h3 class="sub-title">The platform also provides you with:</h3>
           <ul>
             <li>Patient monitoring tools</li>
@@ -109,6 +113,7 @@ export default {
 @import '@/client/styles/setup/_variables.scss';
 .main-container {
   max-width: 1150px;
+  margin-bottom: 100px;
 }
 .we-are-better-page {
   line-height: 1.5rem;
@@ -135,7 +140,7 @@ export default {
     font-weight: bold;
   }
   .subscribe-btn {
-    margin: 15px 0px;
+    // margin: 5px 0px;
   }
   .card-like {
     padding: 16px;
@@ -143,9 +148,7 @@ export default {
     box-shadow: -3px 6px 3px rgba(19, 49, 70, 0.56);
     border-radius: 12px;
   }
-  .card-like:not(:first-child) {
-    margin-bottom: 50px;
-  }
+  
   button {
     font-size: 1.375rem;
     color: white;
@@ -155,7 +158,8 @@ export default {
     height: 50px;
     border-radius: 40px;
     margin: 0 auto;
-    margin: 20px 0px;
+    // margin: 20px 0px;
+    margin-top: 50px;
   }
   .fit-content {
     width: fit-content;
@@ -228,6 +232,16 @@ export default {
       width: 25px;
       height: 50px;
     }
+  }
+
+  ul {
+    padding-inline-start: 40px;
+    // li {
+    //   &:before {
+    //     content: "V";
+    //   }
+    // }
+    list-style: disc;
   }
 
   @media (max-width: $break-narrow) {
