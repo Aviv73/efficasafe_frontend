@@ -28,6 +28,7 @@
     "vue-debounce": "^2.5.7",
     "vue-infinite-loading": "^2.4.5",
     "vue-json-excel": "^0.3.0",
+    "vue-keep-scroll-position": "^0.1.2",
     "vue-material-design-icons": "^4.11.0",
     "vue-meta": "^2.4.0",
     "vue-moment": "^4.1.0",

@@ -18,6 +18,9 @@ Vue.use(VueTour);
 Vue.use(VueMeta)
 Vue.component("downloadExcel", JsonExcel);
 
+import VueKeepScrollPosition from 'vue-keep-scroll-position';
+Vue.use(VueKeepScrollPosition, { smooth: true });
+
 Vue.config.productionTip = false;
 
 new Vue({

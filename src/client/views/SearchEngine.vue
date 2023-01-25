@@ -217,7 +217,7 @@
         </nav>
         <transition :name="routerTransitionName" mode="out-in">
           <keep-alive>
-            <router-view class="inner-view" :key="$route.name" :listData="routableListData" :isVertical="isViewVertical" :materials="materials" :isLoading="isLoading" :isPBLoading="isPBLoading" @page-changed="handlePaging" @list-sorted="handleSort" @handle-DBI-filter="handleDBIFilter" />
+            <router-view v-keep-scroll-position ref="elRouter" class="inner-view" :key="$route.name" :listData="routableListData" :isVertical="isViewVertical" :materials="materials" :isLoading="isLoading" :isPBLoading="isPBLoading" @page-changed="handlePaging" @list-sorted="handleSort" @handle-DBI-filter="handleDBIFilter" />
           </keep-alive>
         </transition>
       </div>
@@ -318,7 +318,8 @@ export default {
 
       dontReload: false,
       addedOptMatToSearch: false,
-      prevSearch: null
+      prevSearch: null,
+      scrollPos: 0
     };
   },
   metaInfo() {
@@ -402,7 +403,10 @@ export default {
         }
       }
       this.routerTransitionName = routesOrder[to.name] < routesOrder[from.name] ? 'slide-right' : 'slide-left';
-    }
+    },
+    // '$route.path'(to, from) {
+      
+    // }
   },
   computed: {
     disabledTitle() {
@@ -1760,7 +1764,35 @@ export default {
       }, 500);
     }
   },
+  // deactivated() {
+  //   console.log('des, ', document.querySelector('.inner-view'));
+  //   // this.scrollPos = document.querySelector('.inner-view').scrollY;
+  //   this.scrollPos = 120;
+  // },
+  // activated() {
+  //   // setTimeout() 
+  //   console.log(this.$refs, this.scrollPos);
+  //   setTimeout(() => {
+  //     console.log('WOWO', this.scrollPos);
+  //     console.log('cre', document.querySelector('.inner-view'));
+  //     document.querySelector('.inner-view').scrollTo(0, this.scrollPos);
+  //   }, 1000);
+  //   // console.log('WOWO');
+  //   // setTimeout(() => {
+  //   //   this.innerListEl = this.$el.querySelector('.inner-view');
+  //   //   if (this.innerListEl) {
+  //   //     console.log('WOWO');
+  //   //     this.innerListEl.addEventListener('scroll', ev => {
+  //   //       this.$store.commit({ type: 'setInteractionListHight', hight: ev.target.scrollTop });
+  //   //     });
+  //   //   }
+  //   // }, 1000);
+  // },
   async mounted() {
+    // this.$nextTick(() => {
+    //   this.$refs.elRouter.scrollTop = this.$store.state.scrollPosition;
+    // });
+
     const el = this.$refs.whatToMonitorLink.$el;
     let options = {
       rootMargin: '0px 0px 0px 0px',
