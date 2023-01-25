@@ -532,7 +532,7 @@ export default {
         group.isMaterialGroup = true;
         group.vInteractions.forEach(vInteraction => {
           if (vInteraction.side2Label) {
-            const { _id, name, type } = this.materials.find(m => m.labels.some(l => l?._id === vInteraction.side2Label?._id));
+            const { _id, name, type } = this.materials.find(m => m.labels.some(l => l?._id === vInteraction.side2Label?._id)) || {};
             vInteraction.side2Material = {
               _id,
               name,
@@ -635,7 +635,7 @@ export default {
         group.vInteractions.forEach(vInteraction => {
           vInteraction.isSupp = true;
           if (vInteraction.side2Label) {
-            const { _id, name, type } = this.materials.find(m => m.labels.some(l => l?._id === vInteraction.side2Label?._id));
+            const { _id, name, type } = this.materials.find(m => m.labels.some(l => l?._id === vInteraction.side2Label?._id)) || {};
             vInteraction.side2Material = {
               _id,
               name,
@@ -1108,21 +1108,7 @@ export default {
       ]);
 
       await this.getAllOpties();
-      // this.$store.commit('setRedPositiveSupp', { redIds: idsToTurnRed });
-      // this.idsToTurnRed = idsToTurnRed;
-      // console.log('BEFORE!@', JSON.parse(JSON.stringify(interactions)));
-      // this.positiveInteractions = await this.removeDupNonPositives(interactions);
-      // const res = 
-      // console.log('WOWOWO', res);
 
-      // this.suppPositiveInteractions = await this.addCacheKey(suppInteractions);
-      // this.suppPositiveInteractions.forEach(int => {
-      //   int.vInteractions.forEach(vInt => {
-      //     const interactionName = vInt.side1Material._id === int.side2Id ? `${vInt.side2Material.name} & ${vInt.side1Material.name}` : `${vInt.side1Material.name} & ${vInt.side2Material.name}`;
-      //     vInt.name = interactionName;
-      //   });
-      //   int.vInteractions = this.sortInteractions(int.vInteractions, true);
-      // });
       this.emptySuppPositiveInteractions = this.getEmptyPositiveSupp();
       this.restoreState('Boosters', searchState);
       this.restoreState('suppBoosters', searchStateSupp);
@@ -1599,6 +1585,8 @@ export default {
       const queries = this.$route.query.q.filter(q => q !== query);
       this.undoneQueries.push(query);
       this.$router.replace({ query: { q: queries } });
+      this.materials = this.materials.filter(c => c.userQuery !== query);
+      this.prevSearch = JSON.parse(JSON.stringify(this.$route.query));
     },
     sortMaterials(materials) {
       // NOT HERE
@@ -1614,6 +1602,7 @@ export default {
       this.$store.commit({ type: 'setTheoreticalDiff', diff: 0 });
       eventBus.$emit(EV_search_results_cleared);
       this.$router.push({ name: this.$route.name }).catch(() => {});
+      this.materials = [];
     },
     getResultIcon(result) {
       let fileName = '';

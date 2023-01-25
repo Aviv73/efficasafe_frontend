@@ -168,7 +168,7 @@ export default {
     },
     toggleIsActive(ev) {
       if (this.hidden || this.on !== 'focus') return
-      const isClosing = ev.path.some(el => el.dataset && el.dataset.closeBtn)
+      const isClosing = ev.composedPath().some(el => el.dataset && el.dataset.closeBtn)
       if (isClosing) return
       this.isActive = !this.isActive
     },
