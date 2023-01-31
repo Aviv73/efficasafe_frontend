@@ -174,7 +174,6 @@ export default {
 
     watch: {
         '$route.path'(path) {
-            console.log('WOW?');
             this.$store.commit({ type: 'addRouterHistory', path })
         }
     }

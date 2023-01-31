@@ -1606,7 +1606,8 @@ export default {
       this.$store.commit({ type: 'setTheoreticalDiff', diff: 0 });
       eventBus.$emit(EV_search_results_cleared);
       this.$router.push({ name: this.$route.name }).catch(() => {});
-      this.materials = [];
+      // this.materials = [];
+      this.reset();
     },
     getResultIcon(result) {
       let fileName = '';
@@ -1685,9 +1686,13 @@ export default {
       this.dBankTotal = 0;
       this.sortOptions = null;
       this.isLoading = false;
+      this.isPBLoading = false;
       this.$store.commit({ type: 'setTheoreticalDiff', diff: 0 });
       this.$store.commit({ type: 'resetSuppRefs' });
       this.$store.commit({ type: 'resetInteractionListHight' });
+
+      this.$store.commit({ type: 'setOptimizationData', data: null });
+      this.prevSearch = null;
     },
     moveArrow({ target }) {
       this.arrowRightPosition = target.scrollLeft * -1;
@@ -1765,23 +1770,17 @@ export default {
     }
   },
   // deactivated() {
-  //   console.log('des, ', document.querySelector('.inner-view'));
   //   // this.scrollPos = document.querySelector('.inner-view').scrollY;
   //   this.scrollPos = 120;
   // },
   // activated() {
   //   // setTimeout() 
-  //   console.log(this.$refs, this.scrollPos);
   //   setTimeout(() => {
-  //     console.log('WOWO', this.scrollPos);
-  //     console.log('cre', document.querySelector('.inner-view'));
   //     document.querySelector('.inner-view').scrollTo(0, this.scrollPos);
   //   }, 1000);
-  //   // console.log('WOWO');
   //   // setTimeout(() => {
   //   //   this.innerListEl = this.$el.querySelector('.inner-view');
   //   //   if (this.innerListEl) {
-  //   //     console.log('WOWO');
   //   //     this.innerListEl.addEventListener('scroll', ev => {
   //   //       this.$store.commit({ type: 'setInteractionListHight', hight: ev.target.scrollTop });
   //   //     });
