@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { eventBus, EV_show_cookie_notice, EV_open_signup, EV_open_login, EV_show_other_login } from '@/cms/services/eventBus.service';
+import { eventBus, EV_show_cookie_notice, EV_open_signup, EV_open_login /*, EV_show_other_login */ } from '@/cms/services/eventBus.service';
 import { storageService } from '@/cms/services/storage.service';
 
 import Navbar from '@/client/cmps/Navbar';
@@ -137,11 +137,11 @@ export default {
 
         // setInterval(this.connectUser, 300000);
 
-        if(storageService.load('show-other-login')){
-            await this.$store.dispatch('logout')
-            eventBus.$emit(EV_show_other_login);
-            storageService.remove('show-other-login')
-        }
+        // if(storageService.load('show-other-login')){
+        //     await this.$store.dispatch('logout')
+        //     eventBus.$emit(EV_show_other_login);
+        //     storageService.remove('show-other-login')
+        // }
 
         eventBus.$on(EV_open_signup, this.onSignUp);
         eventBus.$on(EV_open_login, this.onLogin);

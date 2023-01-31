@@ -211,7 +211,7 @@ export default {
                 })
                 .slice(from, from + filterBy.itemsPerPage);
             }
-            let purchasesCopy = this.purchases ? JSON.parse(JSON.stringify(this.purchases)) : JSON.parse(JSON.stringify(this.loggedInUser.purchases))
+            let purchasesCopy = this.purchases ? JSON.parse(JSON.stringify(this.purchases)) : JSON.parse(JSON.stringify(this.loggedInUser?.purchases || []));
             return purchasesCopy
                     .sort((a, b) => {
                         const { field, isDesc } = this.sortBy;
@@ -227,6 +227,7 @@ export default {
         },
         totalItems() {
             const { loggedInUser } = this;
+            if (!loggedInUser) return 0;
             const items = (this.$route.name === 'Searches') ? 'searches' : 'purchases';
             return loggedInUser[items].length;
         },
@@ -319,7 +320,7 @@ export default {
     },
     async created(){
         await this.$store.dispatch('getUserSearches');
-        this.purchases = JSON.parse(JSON.stringify(this.loggedInUser.purchases))
+        this.purchases = JSON.parse(JSON.stringify(this.loggedInUser?.purchases || []));
     },
     async destroyed(){
         await this.$store.dispatch('getUserInfo');

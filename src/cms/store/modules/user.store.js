@@ -69,7 +69,7 @@ export const userStore = {
         async getUserInfo({ commit, dispatch }) {
             const res = await userService.getUserInfo();
             if(!res.user){
-                await dispatch({type: 'logout'});
+                // await dispatch({type: 'logout'});
                 return
             }
             const {user} = res
