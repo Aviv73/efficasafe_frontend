@@ -38,6 +38,7 @@
                                     Take a tour
                             </button>
                         </li> -->
+
             <li class="navbar-nav-item">
               <dropdown :linksToKeepOpen="['About', 'PrinciplesAndProcesses', 'ContactUs']" :dontHover="isScreenNarrow">
                 <template #activator>
@@ -45,6 +46,7 @@
                     <span> About </span>
                   </div>
                 </template>
+
                 <template #content>
                   <div class="navbar-user-dropdown">
                     <div class="navbar-user-dropdown-links">
@@ -56,6 +58,9 @@
                 </template>
               </dropdown>
             </li>
+            <li class="navbar-nav-item" @click="toggleNavActive">
+              <router-link to="/features"> Features</router-link>
+            </li>
             <li class="navbar-nav-item" @click="toggleNavActive" v-if="!loggedInUser || loggedInUser.type !== 'subscribed'">
               <router-link to="/subscribe"> Pricing </router-link>
             </li>
@@ -65,6 +70,7 @@
             <li class="navbar-nav-item" @click="toggleNavActive">
               <router-link to="/index"> Index A-Z </router-link>
             </li>
+
             <li class="navbar-nav-item" v-if="false">
               <dropdown :dontHover="isScreenNarrow">
                 <template #activator>

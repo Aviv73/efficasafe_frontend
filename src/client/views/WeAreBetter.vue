@@ -74,7 +74,7 @@
           </ul>
         </section>
 
-        <a v-if="!this.loggedInUser" class="subscribe-btn self-center fit-content" @click="$emit('signup')"> <button>Start a free trial</button></a>
+        <a v-if="!this.loggedInUser" class="subscribe-btn self-center fit-content" @click="$emit('signup')"> <button>Start a Free Trial</button></a>
 
         <router-link v-else-if="this.loggedInUser.type !== 'subscribed'" class="subscribe-btn self-center fit-content" to="/subscribe">
           <button>Subscribe now!</button>

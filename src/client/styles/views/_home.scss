@@ -4,16 +4,167 @@
 
   header {
     min-height: 560px;
-    background-image: url('../assets/imgs/home-bg-mobile.jpg');
+    background-image: url('../assets/imgs/homepage-bg-mobile.jpeg');
+    // background-image: url('../assets/imgs/home-bg-mobile.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 0 0;
+    // background-position: center left;
+    // background-attachment: fixed;
+
     padding-block-start: 55px;
+
+    // justify-content: space-evenly;
+    .header-title {
+      // margin-top: 18px;
+      font-size: rem(32px);
+      line-height: 1.2;
+      color: #133146;
+    }
+    .cards-container a {
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 46px;
+      text-align: center;
+      text-decoration-line: underline;
+      text-transform: capitalize;
+      color: #349c9e;
+      // margin-block-start: 15px;
+      margin-block-start: 145px;
+      @media (max-width: 768px) {
+        margin-block-start: 191px;
+      }
+    }
+    @media (max-width: 768px) {
+      padding-block-start: 35px;
+
+      .header-title {
+        font-size: rem(20px);
+      }
+      .home-subheader {
+        margin-top: 15px;
+      }
+    }
+    .cards {
+      margin-top: 40px;
+      height: 142px;
+      display: flex;
+      flex-direction: column;
+      gap: 60px;
+      align-items: center;
+      transition: all 0.3s;
+
+      .home-subheader-1 {
+        margin-top: 50px;
+        font-size: rem(18px);
+      }
+      .img-cards {
+        display: flex;
+        gap: 30px;
+        // min-height: 142px;
+        min-height: 95px;
+        transform: translateY(-10px);
+
+        @media (max-width: 768px) {
+          transform: translateY(20px);
+
+          gap: 10px;
+          // transform: translateY(-50px);
+          img {
+            width: 70px;
+          }
+        }
+      }
+      .cards-container {
+        display: flex;
+        width: 100%;
+        gap: 30px;
+        // max-width: 985px;
+        justify-content: center;
+        height: 142px;
+        transform: translateY(-30px);
+        flex-wrap: wrap;
+        @media (max-width: 900px) {
+        }
+
+        // width: 80%;
+        // margin-top: 50px;
+        .line-container {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: center;
+          transform: translateY(-18px);
+          .line-between {
+            // height: 100%;
+            border: 1px solid #d1d1d194;
+            height: 70px;
+            // transform: rotate(90deg);
+          }
+        }
+
+        .home-card {
+          display: flex;
+          // width: 25%;
+          flex-direction: column;
+          align-items: center;
+          span {
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 21.09px;
+          }
+
+          img {
+            // height: 100px;
+            // width: 100px;
+          }
+        }
+
+        @media (max-width: 768px) {
+          // flex-direction: column;
+          gap: 3px;
+          .home-card {
+            width: 48%;
+
+            span {
+              font-size: 13px;
+              font-weight: 500;
+            }
+            img {
+              width: 80px;
+            }
+          }
+        }
+      }
+      @media (max-width: 768px) {
+        margin-top: 5px;
+        gap: 20px;
+        .cards-container {
+          margin-top: 15px;
+        }
+        .home-subheader-1 {
+          font-size: 14px;
+          margin-top: 30px;
+        }
+      }
+    }
+
+    .home-logo {
+      margin-top: 26px;
+      gap: 5px;
+
+      @media (max-width: 768px) {
+        margin-top: 0px;
+      }
+    }
 
     @include for-mobile-layout {
       padding-block-start: 35px;
-      background-image: url('../assets/imgs/home-bg.jpg');
-      min-height: 650px;
+      // background-image: url('../assets/imgs/home-bg.jpg');
+      background-image: url('../assets/imgs/homepage-bg.jpeg');
+      min-height: 600px;
     }
 
     @include for-mobile-horizontal {
@@ -21,12 +172,16 @@
     }
 
     .header {
-      margin-top: 15px;
+      margin-top: 18px;
     }
+  }
+  .home-subheader {
+    font-size: 18px;
+    margin-top: 30px;
   }
 
   h1 {
-    margin-block-end: rem(32px);
+    // margin-block-end: rem(32px);
     align-items: center;
     font-size: rem(18px);
     line-height: rem(28px);
@@ -41,12 +196,24 @@
       margin-block-end: rem(24px);
     }
 
+    [alt='Efficasafe Logoo'] {
+      width: 30px;
+      margin-block-end: rem(0px);
+
+      @include for-narrow-layout {
+        // width: 70px;
+      }
+
+      @include for-mobile-horizontal {
+        margin-block-end: rem(30px);
+      }
+    }
     [alt='Efficasafe Logo'] {
       width: 170px;
       margin-block-end: rem(0px);
 
       @include for-narrow-layout {
-        width: 220px;
+        // width: 70px;
       }
 
       @include for-mobile-horizontal {
@@ -68,7 +235,7 @@
     color: $gradient-clr2;
   }
 
-  &-container {
+  .home-container {
     width: calc(100% - 25px);
     max-width: 736px;
     margin: 0 auto;
@@ -172,18 +339,25 @@
     }
   }
 
-  &-cta {
+  .home-cta {
+    position: absolute;
+    // bottom: 50px;
+    transform: translateY(380px);
     margin-block-end: rem(38px);
     margin-block-start: rem(28px);
-    height: 44px;
-    width: 285px;
-    left: 640px;
-    top: 374px;
-    border-radius: 45px;
+    text-align: center;
     padding: 11px 20px 11px 20px;
-    font-size: 16px;
-    background-color: $clr1;
-    text-transform: uppercase;
+    line-height: unset;
+    font-size: 1.375rem;
+    background-color: #133146;
+    width: 220px;
+    height: 50px;
+    border-radius: 40px;
+    margin: 20px 0px;
+
+    @media (max-width: 768px) {
+      transform: translateY(377);
+    }
 
     @include hover-supported {
       box-shadow: none;
@@ -388,7 +562,7 @@
 
   &-content {
     background-image: linear-gradient(90deg, $gradient-clr1, $gradient-clr2);
-    padding-block-start: 294px;
+    padding-block-start: 200px;
 
     padding-block-end: 160px;
     @include for-narrow-layout {
@@ -511,11 +685,15 @@
 
   .bottom-btn {
     display: none;
-    @include for-narrow-layout {
-      display: inline-block;
-      // margin: 0;
-      margin: 80px 0 40px 0;
-      // transform: translateY(82px);
-    }
+    //   @include for-narrow-layout {
+    //     display: inline-block;
+    //     // margin: 0;
+    //     margin: 80px 0 40px 0;
+    //     // transform: translateY(82px);
+    //   }
   }
+}
+
+.mb-start40 {
+  margin-block-start: 40px;
 }
