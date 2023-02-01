@@ -1,6 +1,6 @@
 <template>
   <section class="home">
-    <header class="flex-coloumn">
+    <!-- <header class="flex-coloumn">
       <h1 class="flex-coloumn">
         <a href="/">
           <img src="@/client/assets/imgs/logo.png" alt="Efficasafe Logo" />
@@ -30,7 +30,40 @@
           </div>
         </template>
       </div>
+    </header> -->
+
+    <header class="flex-coloumn">
+      <!-- <h1 class="flex-coloumn"> -->
+      <h1>
+        <a class="home-logo flex" href="/">
+          <img src="@/client/assets/imgs/efficasafe-logo.svg" alt="Efficasafe Logoo" />
+          <img src="@/client/assets/imgs/efficasafe.svg" alt="Efficasafe Logo" />
+        </a>
+      </h1>
+
+      <!-- </h1> -->
+      <div class="flex-coloumn cards-container">
+        <HomeCard1 key="card-1" v-if="!isSelectedCardEven" />
+        <HomeCard2 v-else />
+        <router-link to="/we-are-better" v-if="!isSelectedCardEven">Click To See How</router-link>
+        <router-link v-else to="/features">Click For All Features</router-link>
+        <button v-if="!loggedInUser" class="btn home-cta" @click="$emit('signup')">Start a Free Trial</button>
+        <button v-else class="btn home-cta" @click="searchWithBtn">Subscribe Now</button>
+
+        <!-- <template v-if="managementData">
+          <div v-if="isFirstTime" class="home-ftu-container">
+            <h3 class="first">Try our platform - Get {{ managementData.freeSearchesNum }} free searches</h3>
+            <h3 class="card">No credit card required.</h3>
+          </div>
+          <div v-else-if="!loggedInUser" class="home-ftu-container">
+            <h3 class="first">Get a free {{ managementData.freeTrailDaysNum }} day trial of unlimited searches and features!</h3>
+            <h3 class="card">No credit card required.</h3>
+            <button class="trial-btn" @click="$emit('signup')">Start a free trial now</button>
+          </div>
+        </template> -->
+      </div>
     </header>
+
     <section class="home-stats">
       <div class="home-container">
         <h3 class="stats-header">Our database is based on:</h3>
@@ -127,7 +160,9 @@
       </div>
     </section>
     <section class="home-content">
-      <ul class="home-content-list">
+      <Features v-if="!isScreenNarrow" />
+
+      <!-- <ul class="home-content-list">
         <li class="home-content-list-item">
           <article class="main-container">
             <h1>Search</h1>
@@ -164,7 +199,7 @@
             <p><span class="font-bold">Supply</span> reliable, referenced information to help patients better understand their medications and/or supplements.</p>
           </article>
         </li>
-      </ul>
+      </ul> -->
       <button class="btn home-cta bottom-btn" @click="searchWithBtn">Get interactions</button>
       <template v-if="managementData">
         <div v-if="isFirstTime" class="home-ftu-container bottom">
@@ -186,18 +221,23 @@
 <script>
 import Swiper from '@/client/cmps/common/Swiper';
 import AnimatedInteger from '@/client/cmps/common/AnimatedInteger';
-import Autocomplete from '@/client/cmps/shared/Autocomplete';
+// import Autocomplete from '@/client/cmps/shared/Autocomplete';
 import ChevronRightIcon from 'vue-material-design-icons/ChevronRight';
 import ChevronLeftIcon from 'vue-material-design-icons/ChevronLeft';
 import WelcomeModal from '../cmps/shared/modals/WelcomeModal';
 import PassChangeSuccess from '../cmps/shared/modals/PassChangeSuccess';
 import { storageService } from '@/cms/services/storage.service';
 import { eventBus, EV_clear_input, EV_show_user_msg } from '@/cms/services/eventBus.service';
+import HomeCard1 from '../cmps/home/HomeCard1';
+import HomeCard2 from '../cmps/home/HomeCard2';
+import Features from '../views/Features';
 
 export default {
   name: 'Home',
   data() {
     return {
+      selectedCard: 1,
+      intervalId: null,
       stats: {
         totalClinicalCount: 0,
         totalPreClinicalCount: 0,
@@ -213,6 +253,9 @@ export default {
     isScreenNarrow() {
       return this.$store.getters.isScreenNarrow;
     },
+    isSelectedCardEven() {
+      return this.selectedCard % 2 === 0;
+    },
     loggedInUser() {
       return this.$store.getters.loggedInUser;
     },
@@ -224,6 +267,11 @@ export default {
     }
   },
   methods: {
+    moveCards() {
+      this.intervalId = setInterval(() => {
+        this.selectedCard++;
+      }, 10000);
+    },
     goToSearch(query) {
       if (query.nestedMaterials.length) {
         this.searches = [...this.searches, ...query.nestedMaterials];
@@ -250,7 +298,6 @@ export default {
       }
     },
     searchWithBtn() {
-
       if (!this.loggedInUser) {
         if (this.freeSearchesCount <= 0) {
           this.$emit('showAuth');
@@ -268,6 +315,7 @@ export default {
     }
   },
   async created() {
+    this.moveCards();
     this.stats = await this.$store.dispatch({ type: 'getStatistics' });
     const isFirstTime = storageService.load('first');
     if (!isFirstTime) {
@@ -284,14 +332,26 @@ export default {
       storageService.remove('show-failed-login');
     }
   },
+  destroyed() {
+    clearInterval(this.intervalId);
+  },
   components: {
     Swiper,
     AnimatedInteger,
-    Autocomplete,
+    Features,
+    // Autocomplete,
     ChevronRightIcon,
     ChevronLeftIcon,
     WelcomeModal,
-    PassChangeSuccess
+    PassChangeSuccess,
+    HomeCard1,
+    HomeCard2
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.main-container {
+  max-width: 1220px;
+}
+</style>

@@ -16,6 +16,7 @@ import ManageEmails from '@/client/views/ManageEmails';
 import CookiePolicy from '@/client/views/CookiePolicy';
 import Subscribe from '@/client/views/Subscribe';
 import PaymentFailed from '@/client/views/PaymentFailed';
+import Features from '@/client/views/Features';
 import Success from '@/client/views/Success';
 import BonusTrialTime from '@/client/views/BonusTrialTime';
 import Whiteboard from '@/client/views/Whiteboard'
@@ -56,6 +57,11 @@ const routes = [
     path: '/payment-failed',
     name: 'paymentFailed',
     component: PaymentFailed
+  },
+  {
+    path: '/features',
+    name: 'features',
+    component: Features
   },
   {
     path: '/success',
@@ -258,7 +264,7 @@ router.beforeEach(async (to, from, next) => {
     if (store.getters.loggedInUser) next();
     else next({ name: 'Home' });
   }
-  if(to.meta.blockSubscribed){
+  if (to.meta.blockSubscribed) {
     if (store.getters.loggedInUser && store.getters.loggedInUser.type === 'subscribed') next({ name: 'Home' });
   }
   window.scrollTo(0, 0);
@@ -266,7 +272,7 @@ router.beforeEach(async (to, from, next) => {
 });
 
 router.afterEach((to) => {
-  window.dataLayer.push({'event': 'customPage', virtualPagePath: to.fullPath})
+  window.dataLayer.push({ 'event': 'customPage', virtualPagePath: to.fullPath })
 })
 
 export default router;
