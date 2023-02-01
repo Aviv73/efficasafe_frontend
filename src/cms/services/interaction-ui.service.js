@@ -141,7 +141,7 @@ function calculateEvidenceLevel(refs) {
   } else return 'Z';
 }
 
-function getInteractionColor(recommendation) {
+function getInteractionColor(recommendation = '') {
   switch (recommendation.toLowerCase()) {
     case 'avoid coadministration':
     case 'coadministration is not advised':

@@ -150,7 +150,8 @@ export default {
         // return (b.children?.length || 0) - (a.children?.length || 0);
         // const calcVal = (vint) => (10 - vint.recommendation) * (vint.children?.length || 0);
         // const calcVal = (vint) => (vint.children?.length || 0);
-        const calcVal = (vint) => vint.children.reduce((sum, c) => sum + (10 - map[c.recommendation]), 0) * (vint.children?.length || 0);
+        // const calcVal = (vint) => vint.children.reduce((sum, c) => sum + (10 - map[c.recommendation]), 0) * (vint.children?.length || 0);
+        const calcVal = (vint) => vint.children.reduce((sum, c) => sum + (11 - map[c.recommendation]), 0) / vint.children.length + vint.children.length * 0.6;
         return calcVal(b) - calcVal(a);
         // return (map[b.recommendation] - map[a.recommendation]) * -1 || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) || (b.children?.length || 0) - (a.children?.length || 0) || a.name.toLowerCase().localeCompare(b.name.toLowerCase());
         // return (map[b.recommendation] - map[a.recommendation]) * -1 || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) || a.name.toLowerCase().localeCompare(b.name.toLowerCase());

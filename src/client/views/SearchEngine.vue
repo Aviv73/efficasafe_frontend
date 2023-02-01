@@ -449,7 +449,8 @@ export default {
       return this.$store.getters.getInteractionListHight;
     },
     boostersCount() {
-      return this.$store.getters.getPosBoostersCount || this.totalPositiveBoosters;
+      return this.formatedPositiveInteractions?.reduce((acc, c) => acc+c.vInteractions.length, 0) || 0; 
+      // return this.$store.getters.getPosBoostersCount || this.totalPositiveBoosters;
     },
     isShowAllDBI() {
       return this.$store.getters.isShowAllDBI;
@@ -603,7 +604,7 @@ export default {
         }
       } else {
         formatedPositiveInteractions.sort((a, b) => {
-          return (map[b.recommendation] - map[a.recommendation]) * -1 || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) || b.vInteractions.length - a.vInteractions.length || a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+          return (map[b.recommendation] - map[a.recommendation]) * -1 || (a.evidenceLevel || '').toLowerCase().localeCompare((b.evidenceLevel || '').toLowerCase()) || b.vInteractions.length - a.vInteractions.length || a.name.toLowerCase().localeCompare(b.name.toLowerCase());
         });
       }
       const nonSuppDrugs = this.materials.filter(m => m.type === 'drug' && !m.isIncluded);
@@ -839,10 +840,15 @@ export default {
           });
           return acc;
       }, []);
-
       const fetchData = { interactionData: null, materialIds, matNames: this.$route.query.q };
       
+      const prevSearch = JSON.stringify(this.prevSearch)
       await this.$store.dispatch({ type: 'loadOptimizationData', fetchData });
+      if (prevSearch !== JSON.stringify(this.prevSearch)) {
+        console.log('did it');
+        this.$store.commit({ type: 'setOptimizationData', data: null });
+        return [];
+      }
       this.positiveInteractions = JSON.parse(JSON.stringify(this.$store.getters.optimizationData));
       return this.positiveInteractions;
     },
