@@ -19,7 +19,8 @@
           <button title="Redo" :disabled="!undoneQueries.length" @click="navigateQueries(1)">
             <redo-icon />
           </button>
-          | <button :disabled="!$route.query.q || !$route.query.q.length" @click="clearSearch">Clear search</button> |
+          <!-- | <button :disabled="!$route.query.q || !$route.query.q.length" @click="clearSearch">Clear search</button> | -->
+          | <button :disabled="!materials || !materials.length" @click="clearSearch">Clear search</button> |
           <tooltip :hidden="!!loggedInUser" bottom>
             <template #content>
               <span class="msg"> Subscribed users can save their search results </span>
@@ -360,6 +361,7 @@ export default {
         // const isSameSearch = isqEq && from.page === to.page;
         const isSameSearch = JSON.stringify(to) === JSON.stringify(this.prevSearch);
         this.prevSearch = JSON.parse(JSON.stringify(to));
+        console.log(isSameSearch);
         if (isSameSearch) return;
         // if (_dontReload) {
         //   await this.getMaterials();
@@ -382,7 +384,7 @@ export default {
       immediate: true
     },
     $route(to, from) {
-      //for paging
+      //for paging       
       if (from && JSON.stringify(from.query) === JSON.stringify(to.query) && from.name !== to.name && from.query.page !== 1) {
         if (this.$route.query.q) {
           this.$router.replace({ query: { q: [...this.$route.query.q], page: 1 } }).catch(() => {});
@@ -1773,6 +1775,9 @@ export default {
         window.print();
       }, 500);
     }
+  },
+  activated() {
+      if (!this.$route.query.q) this.reset();
   },
   // deactivated() {
   //   // this.scrollPos = document.querySelector('.inner-view').scrollY;

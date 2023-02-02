@@ -46,7 +46,7 @@
         <HomeCard1 key="card-1" v-if="!isSelectedCardEven" />
         <HomeCard2 v-else />
         <router-link to="/we-are-better" v-if="!isSelectedCardEven">Click To See How</router-link>
-        <router-link v-else to="/we-are-better">Click For All Features</router-link>
+        <router-link v-else to="/we-are-better">Click To See How</router-link>
         <button v-if="!loggedInUser" class="btn home-cta" @click="$emit('signup')">Start a Free Trial</button>
         <button v-else-if="loggedInUser.type !== 'subscribed'" class="btn home-cta" @click="goToSubscribeWithBtn">Subscribe Now</button>
         <button v-else class="btn home-cta wide" @click="searchWithBtn">Search Interactions</button>
