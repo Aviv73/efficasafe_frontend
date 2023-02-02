@@ -362,6 +362,11 @@
     @include hover-supported {
       box-shadow: none;
     }
+
+    
+    &.wide {
+      width: 260px;
+    }
   }
 
   &-swiper {

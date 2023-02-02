@@ -46,9 +46,10 @@
         <HomeCard1 key="card-1" v-if="!isSelectedCardEven" />
         <HomeCard2 v-else />
         <router-link to="/we-are-better" v-if="!isSelectedCardEven">Click To See How</router-link>
-        <router-link v-else to="/features">Click For All Features</router-link>
+        <router-link v-else to="/we-are-better">Click For All Features</router-link>
         <button v-if="!loggedInUser" class="btn home-cta" @click="$emit('signup')">Start a Free Trial</button>
-        <button v-else class="btn home-cta" @click="searchWithBtn">Subscribe Now</button>
+        <button v-else-if="loggedInUser.type !== 'subscribed'" class="btn home-cta" @click="goToSubscribeWithBtn">Subscribe Now</button>
+        <button v-else class="btn home-cta wide" @click="searchWithBtn">Search Interactions</button>
 
         <!-- <template v-if="managementData">
           <div v-if="isFirstTime" class="home-ftu-container">
@@ -270,7 +271,7 @@ export default {
     moveCards() {
       this.intervalId = setInterval(() => {
         this.selectedCard++;
-      }, 10000);
+      }, 12000);
     },
     goToSearch(query) {
       if (query.nestedMaterials.length) {
@@ -312,6 +313,9 @@ export default {
         this.$router.push(`/search?q=${this.searches[0]}`);
         this.$store.commit({ type: 'setUserSearch', search: this.searches[0] });
       }
+    },
+    goToSubscribeWithBtn() {
+      this.$router.push(`/subscribe`);
     }
   },
   async created() {
