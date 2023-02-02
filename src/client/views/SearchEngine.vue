@@ -845,7 +845,6 @@ export default {
       const prevSearch = JSON.stringify(this.prevSearch)
       await this.$store.dispatch({ type: 'loadOptimizationData', fetchData });
       if (prevSearch !== JSON.stringify(this.prevSearch)) {
-        console.log('did it');
         this.$store.commit({ type: 'setOptimizationData', data: null });
         return [];
       }

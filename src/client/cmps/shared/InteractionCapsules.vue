@@ -186,10 +186,8 @@ export default {
       const nameToDisplay = this.showDraftName && this.draftName ? this.draftName : this.side2Name;
 
       // const side1Name = this.name.split('&')[0].trim();
-      // console.log(this.interaction);
       
       // const fixedName = this.materials.find(c => c.name === this.draftName)?.userQuery || nameToDisplay;
-      // console.log(this.materials.find(c => c.name === this.draftName), nameToDisplay);
 
       if (this.$route.name === 'Boosters') return nameToDisplay;
       // if (nameToDisplay.length >= 14 && this.isGroup) {

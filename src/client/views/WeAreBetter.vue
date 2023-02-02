@@ -92,9 +92,6 @@ export default {
   components: {
     PageHeader
   },
-  created() {
-    console.log('user', this.loggedInUser);
-  },
   computed: {
     loggedInUser() {
       return this.$store.getters.loggedInUser;

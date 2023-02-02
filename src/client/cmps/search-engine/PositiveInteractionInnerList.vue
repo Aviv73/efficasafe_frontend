@@ -66,11 +66,8 @@ export default {
             // return this.interactions;
             // if (this.isSupp) return this.interactions;
             // if (this.parentInteraction.children) 
-            // console.log(this.parentInteraction, this.parentInteraction.vInteractions?.find(c => c._id === this.side1Id));
             
             // return this.group.children || [];
-            // console.log(this.materials);
-            // console.log(this.group.children);
             // const recMap = interactionUIService.getRecommendationOrderMap();
             const res = [...(this.group.children || [])]
                 // .map((c => ({
@@ -85,7 +82,6 @@ export default {
             // const optimizationData = this.$store.getters.optimizationData;
             // const forParentInt = optimizationData.find(c => c.for === this.parentInteraction._id);
             // const forCurrSide1 = forParentInt.results.find(c => c.side1 === this.side1Id);
-            // console.log('WOWO', forCurrSide1.interactions);
             // return forCurrSide1.interactions;
         },
         materialIds() {
@@ -114,8 +110,7 @@ export default {
     },
     methods: {
         async getInteractions() {
-            return console.log('was about to do BAD inner fetch');
-            // console.log('WOWOWO', this.parentInteraction?.children);
+            // return console.log('was about to do BAD inner fetch');
             // if (this.parentInteraction?.children) return this.parentInteraction.children;
             // const filterBy = {
             //     isSearchResults: true,

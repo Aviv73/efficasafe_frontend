@@ -151,7 +151,6 @@ export default {
         emitSelection(item) {
             this.$emit('item-selected', item);
             this.results = [];
-      // console.log(JSON.parse(JSON.stringify(res)));
 
             if (this.isOnSearchPage) {
                 this.search1 = '';
