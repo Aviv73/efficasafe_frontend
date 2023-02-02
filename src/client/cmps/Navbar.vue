@@ -58,9 +58,9 @@
                 </template>
               </dropdown>
             </li>
-            <li class="navbar-nav-item" @click="toggleNavActive">
+            <!-- <li class="navbar-nav-item" @click="toggleNavActive">
               <router-link to="/features"> Features</router-link>
-            </li>
+            </li> -->
             <li class="navbar-nav-item" @click="toggleNavActive" v-if="!loggedInUser || loggedInUser.type !== 'subscribed'">
               <router-link to="/subscribe"> Pricing </router-link>
             </li>
