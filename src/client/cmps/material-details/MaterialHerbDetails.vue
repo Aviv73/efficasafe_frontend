@@ -367,7 +367,6 @@ export default {
     prityName() {
       const name = this.material?.name || '';
       const lowwerName = name.toLowerCase();
-      console.log(name.charAt(0).toUpperCase() + lowwerName.slice(1));
       return name.charAt(0).toUpperCase() + lowwerName.slice(1);
     },
     userSearch() {

@@ -181,7 +181,8 @@ export default {
     this.isLoading = false;
     document.addEventListener('scroll', this.savePageHight);
 
-    this.interactions = await this.getInteractions(material);
+    // this.interactions = await this.getInteractions(material);
+    // this.interactions = material.interactions;
   },
   beforeDestroy() {
     document.removeEventListener('scroll', this.savePageHight);
