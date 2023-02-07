@@ -175,7 +175,7 @@ export default {
     const { name } = this.$route.query;
     this.searchedMaterialName = name;
 
-    const material = await this.$store.dispatch({ type: 'loadMaterial', matId: id });
+    const material = await this.$store.dispatch({ type: 'loadMaterial', matId: id, materialView: true });
     if (!material.isShowPage) return this.$router.push('/404');
     this.material = material;
     this.isLoading = false;

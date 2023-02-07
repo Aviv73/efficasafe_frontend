@@ -37,8 +37,8 @@ async function getMaterials(filterBy = {}) {
   return materials;
 }
 
-function getById(id) {
-  return httpService.get(`${END_POINT}/${id}`);
+function getById(id, criteria = {}) {
+  return httpService.get(`${END_POINT}/${id}`, criteria);
 }
 
 function getByName(name) {

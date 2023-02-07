@@ -94,8 +94,8 @@ export const materialStore = {
     async getStatistics() {
       return await materialService.list({ isStats: true });
     },
-    async loadMaterial(context, { matId }) {
-      return await materialService.getById(matId);
+    async loadMaterial(context, { matId, materialView }) {
+      return await materialService.getById(matId, { materialView });
     },
     async saveMaterial(context, { material }) {
       const isEdit = !!material._id;
