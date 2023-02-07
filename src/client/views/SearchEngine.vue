@@ -168,7 +168,7 @@
                 <span v-if="isPBLoading">
                   <img src="@/client/assets/imgs/dot-green-loader.gif" />
                 </span>
-                <span v-else-if="boostersCount">
+                <span v-else>
                   {{ '\xa0' }}
                   <span class="badge" :style="positivesBadgeColor">
                     {{ boostersCount }}
@@ -361,7 +361,6 @@ export default {
         // const isSameSearch = isqEq && from.page === to.page;
         const isSameSearch = JSON.stringify(to) === JSON.stringify(this.prevSearch);
         this.prevSearch = JSON.parse(JSON.stringify(to));
-        console.log(isSameSearch);
         if (isSameSearch) return;
         // if (_dontReload) {
         //   await this.getMaterials();

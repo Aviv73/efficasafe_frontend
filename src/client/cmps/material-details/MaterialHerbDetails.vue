@@ -7,7 +7,7 @@
       </router-link> -->
       <div class="material-details-nav-header">
         <img :src="require(`@/client/assets/icons/types/${getTypeImgName(material.type)}.svg`)" alt="" />
-        <h3 @click="goTo('Title')">{{ material.name }}</h3>
+        <h3 @click="goTo('Title')">{{ prityName }}</h3>
       </div>
       <hr />
       <section class="material-details-nav-links">
@@ -38,7 +38,7 @@
           <share-variant-icon title="" :size="22" />
         </button>
         <h1 ref="Title" class="material-details-content-name">
-          {{ material.name }}<span class="material-details-content-name-search" v-if="userSearch && material.name !== userSearch"> - {{ userSearch }}</span>
+          {{ prityName }}<span class="material-details-content-name-search" v-if="userSearch && material.name !== userSearch"> - {{ userSearch }}</span>
         </h1>
       </div>
 
@@ -205,10 +205,10 @@ export default {
       type: Object,
       required: true
     },
-    searchedMaterialName: {
-      type: String,
-      required: true
-    }
+    // searchedMaterialName: {
+    //   type: String,
+    //   required: true
+    // }
   },
   data() {
     return {
@@ -364,6 +364,12 @@ export default {
     }
   },
   computed: {
+    prityName() {
+      const name = this.material?.name || '';
+      const lowwerName = name.toLowerCase();
+      console.log(name.charAt(0).toUpperCase() + lowwerName.slice(1));
+      return name.charAt(0).toUpperCase() + lowwerName.slice(1);
+    },
     userSearch() {
       return this.$route.query.q;
     },
