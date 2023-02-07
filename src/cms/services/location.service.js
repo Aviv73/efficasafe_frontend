@@ -1,8 +1,8 @@
 // import axios from 'axios';
 // import config from '../config/index'
 
-const DEFAULT_CURRENCY = 'USD'
-// const DEFAULT_CURRENCY = 'ILS'
+// const DEFAULT_CURRENCY = 'USD';
+const DEFAULT_CURRENCY = 'ILS';
 
 export const locationService = {
     getLocalCurrency,
