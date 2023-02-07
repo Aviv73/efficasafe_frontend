@@ -1,8 +1,8 @@
-import axios from 'axios';
-import config from '../config/index'
+// import axios from 'axios';
+// import config from '../config/index'
 
-// const DEFAULT_CURRENCY = 'USD'
-const DEFAULT_CURRENCY = 'ILS'
+const DEFAULT_CURRENCY = 'USD'
+// const DEFAULT_CURRENCY = 'ILS'
 
 export const locationService = {
     getLocalCurrency,
@@ -12,9 +12,10 @@ export const locationService = {
 
 async function getLocalCurrency() { 
     try{
-        const key = config.abstractApiKey
-        let res = await axios.get(`https://ipgeolocation.abstractapi.com/v1/?api_key=${key}&fields=currency`)
-        const currencyCode = res.data.currency.currency_code
+        // const key = config.abstractApiKey
+        // let res = await axios.get(`https://ipgeolocation.abstractapi.com/v1/?api_key=${key}&fields=currency`)
+        // const currencyCode = res.data.currency.currency_code
+        const currencyCode = window.geoplugin_currencyCode();
         if(currencyCode !== 'ILS' && currencyCode !== 'EUR') return DEFAULT_CURRENCY
         return currencyCode
     }catch(err){
@@ -24,9 +25,10 @@ async function getLocalCurrency() {
 
 async function getCountryName(){
     try{
-        const key = config.abstractApiKey
-        let res = await axios.get(`https://ipgeolocation.abstractapi.com/v1/?api_key=${key}&fields=country`)
-        return res.data.country
+        // const key = config.abstractApiKey
+        // let res = await axios.get(`https://ipgeolocation.abstractapi.com/v1/?api_key=${key}&fields=country`)
+        // return res.data.country
+        return window.geoplugin_countryName();
     }catch(err){
         return 'unknown'
     }
