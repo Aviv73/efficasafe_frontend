@@ -5,7 +5,8 @@ export const utilService = {
     regexIndexOf,
     checkIfInsideRef,
     transHebrew,
-    getMousePosition
+    getMousePosition,
+    getElPosOnScreen
 }
 
 function checkIfInsideRef(txt, refIdx) {
@@ -125,3 +126,15 @@ function getMousePosition(event) {
 
     return { x: event.pageX, y: event.pageY };
 }
+
+function getElPosOnScreen(el) {
+    const pos = { y: 0, x: 0 };
+    if (!el) return pos;
+    let _el = el;
+    while (_el.tagName !== 'BODY') {
+      pos.y += _el.offsetTop;
+      pos.x += _el.offsetLeft;
+      _el = _el.offsetParent;
+    }
+    return pos;
+  }

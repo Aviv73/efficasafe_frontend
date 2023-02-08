@@ -19,6 +19,8 @@
 import CloseIcon from 'vue-material-design-icons/Close';
 import { eventBus } from '@/cms/services/eventBus.service';
 
+import { utilService } from '@/cms/services/util.service';
+
 export default {
   name: 'Tooltip',
   props: {
@@ -95,25 +97,13 @@ export default {
         style[posXStyleProp] = imgWidth / 2 + 'px';
       } else {
         const screenWidth = window.innerWidth;
-        const elImgPos = getElPosOnScreen(elImg);
+        const elImgPos = utilService.getElPosOnScreen(elImg);
         // let diff = screenWidth - elImgPos.x;
         style[posXStyleProp] = screenWidth / 2 - elImgPos.x + 'px';
         // style[posXStyleProp] = imgWidth / 2 + (screenWidth / 2 - elImgPos.x) + 'px';
         // style[posXStyleProp] = screenWidth / 2 - diff + imgWidth / 2 + 'px';
 
         style.transform = 'translateX(-50%)';
-      }
-
-      function getElPosOnScreen(el) {
-        const pos = { y: 0, x: 0 };
-        if (!el) return pos;
-        let _el = el;
-        while (_el.tagName !== 'BODY') {
-          pos.y += _el.offsetTop;
-          pos.x += _el.offsetLeft;
-          _el = _el.offsetParent;
-        }
-        return pos;
       }
     }
   },
