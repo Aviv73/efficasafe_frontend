@@ -91,7 +91,7 @@
           <div class="flex-center p-relative capsules-container">
             <interaction-capsules class="capsules" :name="interactionName" :color="interactionColor" :vInteractionCount="0" :localize="false" :showDraftName="false" :isLink="true" :isInteractionDetails="true" @go-to-material="goToMaterial" @openModal="ev => (this.pageLoc = ev)" on-details-page />
             <template v-if="pageLoc">
-              <div v-if="!isScreenNarrow" class="capsule-title" :style="{ top: pageLoc.y + 'px', left: pageLoc.x + 'px', position: 'fixed', 'z-index': 1000 }">
+              <div v-if="!isScreenNarrow" class="capsule-title" :style="{ top: pageLoc.y + 'px', left: pageLoc.x + 'px', transform: 'translateX(-50%)', position: 'fixed', 'z-index': 1000 }">
                 Press for more info
                 <div class="arrow-down"></div>
               </div>
@@ -476,6 +476,7 @@ export default {
       const { id } = this.$route.params;
       if (!id) return;
       this.interaction = await drugBankService.getInteraction(id);
+      if (!this.interaction?.affected_drug) return;
       const [side1Material, side2Material] = await Promise.all([materialService.getByDBId(this.interaction.affected_drug.drugbank_id), materialService.getByDBId(this.interaction.subject_drug.drugbank_id)]);
       this.side1Material = side1Material;
       this.side2Material = side2Material;

@@ -293,14 +293,20 @@ export default {
         this.$emit('openModal', null);
         return;
       }
+      const el = ev.target;
+      const elPos = utilService.getElPosOnScreen(el);
+      const pos = {
+        x: elPos.x - el.offsetWidth/2,
+        y:  elPos.y + el.offsetHeight
+      }
       // const page = {
       //   // pageX: ev.pageX,
       //   // offset: ev.offsetY
       //   x: ev.screenX,
       //   y: ev.screenY
       // };
-      const page = utilService.getMousePosition(ev);
-      this.$emit('openModal', page);
+      // const pos = utilService.getMousePosition(ev);
+      this.$emit('openModal', pos);
     }
   }
 };

@@ -153,9 +153,10 @@
   a {
     color: $clr1;
     font-weight: 400;
-    &:hover {
-      text-decoration: underline;
-    }
+    text-decoration: underline;
+    // &:hover {
+      // text-decoration: underline;
+    // }
   }
 
   .subheader {
