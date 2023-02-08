@@ -103,6 +103,9 @@ export default {
     interactions: {
       type: Array,
       required: true
+    },
+    materials: {
+      type: Array
     }
   },
   data() {
@@ -151,7 +154,8 @@ export default {
             const lastChar = word.charAt(word.length - 1);
             word = lastChar === '.' ? word.substring(0, word.length - 1) : word;
             word = word.trim();
-            const byName = side2Material?.name || side2Label?.name || '';
+            const material = this.materials.find(c => c._id === (side2Material || side2Label)?._id);
+            const byName = material.userQuery || side2Material?.name || side2Label?.name || '';
             if (!_wardMap[word]) _wardMap[word] = [byName];
             else _wardMap[word].push(byName)
           }
