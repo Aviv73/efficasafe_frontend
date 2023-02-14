@@ -26,4 +26,23 @@ Disallow: /cms
 Disallow: /search
 
 
+User-agent: Googlebot
+Allow: /$
+
+User-agent: Googlebot-Image
+Allow: /$
+
+User-agent: Googlebot-Video
+Allow: /$
+
+User-agent: Googlebot-News
+Allow: /$
+
+User-agent: Googlebot-AdsBot
+Allow: /$
+
+User-agent: Lighthouse
+Allow: /$
+
+
 Sitemap: https://www.efficasafe.com/sitemap.xml
