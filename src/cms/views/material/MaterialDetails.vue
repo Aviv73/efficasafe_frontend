@@ -544,7 +544,7 @@ export default {
     },
     methods: {
         goBack() {
-            if (this.$store.getters.routerHistory.length <= 1) this.$router.push('/');
+            if (this.$store.getters.routerHistory.length < 1) this.$router.push('/');
             else this.$router.go(-1);
         },
         getPathwayColor({ influence }) {

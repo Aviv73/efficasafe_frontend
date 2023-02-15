@@ -174,7 +174,7 @@ export default {
 
     watch: {
         '$route.path'(path) {
-            this.$store.commit({ type: 'addRouterHistory', path })
+            this.$store.commit({ type: 'addRouterHistory', path });
         }
     }
 };
