@@ -416,7 +416,7 @@ export default {
     }
     this.suppInteractionsOriginalLength = this.suppInteractions.length
     this.restoreCollapses()
-    this.restoreSort()
+    // this.restoreSort()
     this.isChecked = this.isShowAllDBI
     this.$nextTick(() => {
       eventBus.$emit(EV_sortby_side_swaped, this.sortBySide)

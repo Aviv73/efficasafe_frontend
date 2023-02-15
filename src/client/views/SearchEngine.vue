@@ -320,7 +320,9 @@ export default {
       dontReload: false,
       addedOptMatToSearch: false,
       prevSearch: null,
-      scrollPos: 0
+      scrollPos: 0,
+
+      sortOpts: null
     };
   },
   metaInfo() {
@@ -1181,7 +1183,7 @@ export default {
               page: 0,
               limit: Number.MAX_SAFE_INTEGER,
               materialCount: this.materialIds.length + 1,
-              sortOpts: this.sortOptions
+              sort: this.sortOptions
             };
             vInt.cacheKey = `/search/positive-boosters/${filterBy.id}/supps`;
             this.$nextTick(() => (vInt.mainMaterialName = int.name));
@@ -1220,7 +1222,8 @@ export default {
         isSearchResults: true,
         page: --page,
         id: ids,
-        materialCount: this.materialsLength
+        materialCount: this.materialsLength,
+        sort: this.sortOpts
       };
 
       // const { interactions, pageCount, total, searchState } = await this.$store.dispatch({ type: 'getInteractions', filterBy, cacheKey: `/search?${this.$route.fullPath.split('?')[1]}` });
@@ -1271,7 +1274,7 @@ export default {
       if (!page) page = 1;
       const drugBankIds = this.materials.filter(m => !m.isIncluded).map(mat => mat.drugBankId);
       const drugBankId = drugBankIds.length === 1 ? drugBankIds[0] : drugBankIds;
-      const criteria = { drugBankId, page: --page, showAll: this.isShowAllDBI };
+      const criteria = { drugBankId, page: --page, showAll: this.isShowAllDBI, sort: this.sortOpts };
       const { dBankInteractions, pageCount, total, diff } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria, cacheKey: `/search/drug2drug?${this.$route.fullPath.split('?')[1]}&filter=${this.isShowAllDBI}` });
       this.dBankInteractions = dBankInteractions;
       this.dBankPageCount = pageCount;
@@ -1375,7 +1378,64 @@ export default {
       interactions = interactions.concat(dBankInteractions);
       return this.sortInteractions(interactions);
     },
+    getSortOpts(isDrug) {
+      const sortOrder = isDesc ? 1 : -1;
+      // const sortOrder = isDesc ? -1 : 1;
+      const { sortBy, side, isDesc } = this.sortOpts;
+      const opts = {};
+      if (isDrug) {
+        if (sortBy === 'name') {
+          const sideName = side === 1 ? 'subject_drug' : 'affected_drug';
+          opts[sideName+'.name'] = sortOrder;
+        }
+        // else if (sortBy === 'recommendation') opts.recommendation = sortOrder;
+        else if (sortBy === 'recommendation') opts.recommendationOrder = sortOrder;
+        else if (sortBy === 'evidenceLevel') opts.evidence_level = sortOrder;
+      } else {
+        if (sortBy === 'name') {
+          const sideNameOpt1 = side === 1 ? 'side1Material' : 'side2Material';
+          const sideNameOpt2 = side === 1 ? 'side1Material' : 'side2Label';
+          opts[sideNameOpt1+'.name'] = sortOrder;
+          opts[sideNameOpt2+'.name'] = sortOrder;
+        }
+        // else if (sortBy === 'recommendation') opts.recommendation = sortOrder;
+        else if (sortBy === 'recommendation') opts.order = sortOrder;
+        else if (sortBy === 'evidenceLevel') opts.evidenceLevel = sortOrder;
+      }
+    },
     handleSort({ sortBy, side, isDesc }) {
+      // let { page } = this.$route.query;
+      // if (!page) page = 1;
+      // const limit = Math.max(this.pageCount, this.dBankPageCount);
+      // this.sortOpts = {[sortBy]: 1, side};
+      this.sortOpts = {};
+      const sortOrder = isDesc ? 1 : -1;
+      // const sortOrder = isDesc ? -1 : 1;
+      if (this.listType === 'drug' || (this.listType === 'all')) {
+        if (sortBy === 'name') {
+          const sideName = side === 1 ? 'subject_drug' : 'affected_drug';
+          this.sortOpts[sideName+'.name'] = sortOrder;
+        }
+        // else if (sortBy === 'recommendation') this.sortOpts.recommendation = sortOrder;
+        else if (sortBy === 'recommendation') this.sortOpts.recommendationOrder = sortOrder;
+        else if (sortBy === 'evidenceLevel') this.sortOpts.evidence_level = sortOrder;
+      }
+      if (this.listType === 'all') {
+        if (sortBy === 'name') {
+          const sideNameOpt1 = side === 1 ? 'side1Material' : 'side2Material';
+          const sideNameOpt2 = side === 1 ? 'side1Material' : 'side2Label';
+          this.sortOpts[sideNameOpt1+'.name'] = sortOrder;
+          this.sortOpts[sideNameOpt2+'.name'] = sortOrder;
+        }
+        // else if (sortBy === 'recommendation') this.sortOpts.recommendation = sortOrder;
+        else if (sortBy === 'recommendation') this.sortOpts.order = sortOrder;
+        else if (sortBy === 'evidenceLevel') this.sortOpts.evidenceLevel = sortOrder;
+      }
+      console.log('WOWOWO BEING SORTEDDDD')
+      console.log(this.sortOpts);
+      this.getResults();
+    },
+    handleSort_old({ sortBy, side, isDesc }) {
       const { recommendationsOrderMap: map } = this.$options;
       const sortOrder = isDesc ? 1 : -1;
       switch (this.$route.name) {
