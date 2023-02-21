@@ -142,13 +142,17 @@ Vue.directive('refs-tooltip', {
         }
     },
     update(el, binding, vnode, { isRootInsert }) {
-        const { pathwaysFirst, pathwaysSecond, dynamicTxt, dBank } = binding.modifiers;
-        const { combinedRefs, side2Refs } = binding.value;
+        const { pathwaysFirst, pathwaysSecond, dynamicTxt, dBank, asGiven } = binding.modifiers;
+        const { combinedRefs, side2Refs, refNums } = binding.value;
         if ((isRootInsert && !dynamicTxt) || dBank) return;
         
         const elSubs = el.querySelectorAll('sub');
         for (let i = 0; i < elSubs.length; i++) {
-            const refIdxs = interactionUIService.getRefsOrder(elSubs[i].innerText);
+            let refIdxs = interactionUIService.getRefsOrder(elSubs[i].innerText);
+            // const refNums = elSubs[i].getAttribute('refNums');
+            // if (asGiven) refIdxs = elSubs[i].innerText.slice(1, elSubs[i].innerText.length-1).split(',').filter(Boolean).reduce((acc, c) => [...acc, ...c.split('-').filter(Boolean).map(_ => +_.trim())], []);
+            if (refNums) refIdxs = refNums.slice(1, refNums.length-1).split(',').filter(Boolean).reduce((acc, c) => [...acc, ...c.split('-').filter(Boolean).map(_ => +_.trim())], []);
+            if (refNums) console.log(refIdxs);
             if (!refIdxs.length){
                 elSubs[i].classList.add('regular-sub')
                 continue;
@@ -158,10 +162,12 @@ Vue.directive('refs-tooltip', {
                 if(a < b) return -1
                 return 0
             })
-            elSubs[i].innerText = interactionUIService.formatRefStrs(elSubs[i].innerText);
+            if (!asGiven) elSubs[i].innerText = interactionUIService.formatRefStrs(elSubs[i].innerText);
             elSubs[i].addEventListener('mouseenter', setTooltipPos);
             
-            const refs = getRefsFromIdxs(refIdxs, combinedRefs);
+            let refs = getRefsFromIdxs(refIdxs, combinedRefs);
+            if (asGiven) refs = refIdxs.map(c => combinedRefs[c-1]);
+            // if (asGiven) console.log(refs, combinedRefs, refIdxs, elSubs[i].innerText);
             const elTooltip = document.createElement('aside');
             elTooltip.classList.add('refs-tooltip');
             
@@ -169,6 +175,7 @@ Vue.directive('refs-tooltip', {
             for (let j = 0; j < refs.length; j++) {
                 let draftIdx = combinedRefs.findIndex(ref => ref && ref.txt === refs[j].txt) + 1;
                 // let draftIdx = combinedRefs.findIndex(ref => ref && ref.draftIdx === refs[j].draftIdx) + 1;
+                // if (asGiven) draftIdx = refs[j].draftIdx
                 if (pathwaysFirst) {
                     const sameRefs = combinedRefs.filter(ref => ref && ref.draftIdx === refs[j].draftIdx);
                     if (sameRefs.length > 1) {

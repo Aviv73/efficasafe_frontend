@@ -9,11 +9,38 @@
             :key="index"
         >
             <span class="font-medium font-capitalize blue regular-pointer">{{ name }}: </span>
+            <span class="pathway" 
+                v-for="(pathway, idx) in pathways" 
+                :key="idx"
+                v-refs-tooltip.asGiven="{
+                    combinedRefs,
+                    side2Refs,
+                    refNums: getMaterialRefNums(pathway.references, true)
+                }"
+            >
+                <span>{{ idx === 0 ? '' : ',' }} </span>
+                <span class="font-uppercase">{{ pathway.name + '\xa0' }}</span>
+                <v-tooltip bottom :activator="`.enzyme-${idx}`">
+                    <div v-if="pathway.fullName">{{ pathway.fullName }}</div>
+                    <span class="text-capitalize" v-if="pathway.actions.length">
+                        {{ pathway.actions.join(', ') }} 
+                    </span>
+                    <p v-if="!pathway.fullName && !pathway.actions.length" class="ma-0">No additional info :(</p>
+                </v-tooltip>
+                <sub :refNums="getMaterialRefNums(pathway.references)">{{ getMaterialRefNums(pathway.references) }}</sub>
+            </span>
+        </div>
+        <!-- <div
+            class="side2-pathways-row"
+            v-for="({ name, pathways }, index) in formatedPathways"
+            :key="index"
+        >
+            <span class="font-medium font-capitalize blue regular-pointer">{{ name }}: </span>
             <span
                 class="pathway"
                 v-for="(pathway, idx) in pathways"
                 :key="idx"
-                v-refs-tooltip.pathwaysFirst="{
+                v-refs-tooltip.asGiven="{
                     combinedRefs,
                     side2Refs
                 }"
@@ -35,12 +62,12 @@
                 </tooltip>
                 <sub>{{ getMaterialRefNums(pathway.references) }}</sub>
             </span>
-        </div>
+        </div> -->
     </section>
 </template>
 
 <script>
-import Tooltip from '@/client/cmps/common/Tooltip';
+// import Tooltip from '@/client/cmps/common/Tooltip';
 
 export default {
     props: {
@@ -59,7 +86,11 @@ export default {
         materialName: {
             type: String,
             required: true
-        }
+        },
+        formatRefs: {
+            type: Function,
+            required: true
+        },
     },
     computed: {
         formatedPathways() {
@@ -90,11 +121,13 @@ export default {
         }
     },
     methods: {
-        getMaterialRefNums(pubmedIds) {
+        getMaterialRefNums(pubmedIds, dontMinimize = false) {
+            // console.log(pubmedIds)
+            // return this.formatRefs()
             if (!this.side2Refs.length || !pubmedIds.length) return '';
             if (pubmedIds.length === 1) {
                 const field = (typeof pubmedIds[0] === 'number') ? 'pubmedId' : 'link';
-                const refIdx  = this.combinedRefs.findIndex(ref => pubmedIds.includes(ref[field]));
+                const refIdx = this.combinedRefs.findIndex(ref => pubmedIds.includes(ref[field]));
                 return `(${refIdx + 1})`;
             }
             let refsStr = '';
@@ -103,10 +136,25 @@ export default {
                 const idx = this.combinedRefs.findIndex(ref => pubmedIds[i] === ref[field]);
                 refsStr += (idx + 1) + ', ';
             }
-            const sortedRefs = refsStr.split(', ').filter(str => str).sort((a, b) => a - b).join(', ')
-            const str = this.minimizeRefs(sortedRefs.split(', '))
+            const sortedRefs = refsStr.split(', ').filter(str => str).sort((a, b) => (+a) - (+b)).join(', ')
+            const str = dontMinimize? sortedRefs : this.minimizeRefs(sortedRefs.split(', '))
             return `(${str})`;
         },
+        // getMaterialRefNums(pubmedIds) {
+        //     if (!this.side2Refs.length || !pubmedIds.length) return '';
+        //     if (pubmedIds.length === 1) {
+        //         const field = (typeof pubmedIds[0] === 'number') ? 'pubmedId' : 'link';
+        //         const refIdx = this.combinedRefs.findIndex(ref => pubmedIds.includes(ref[field]));
+        //         return `(${refIdx + 1})`;
+        //     }
+        //     let refsStr = '';
+        //     for (let i = 0; i < pubmedIds.length; i++) {
+        //         const field = (typeof pubmedIds[i] === 'number') ? 'pubmedId' : 'link';
+        //         const idx = this.combinedRefs.findIndex(ref => pubmedIds[i] === ref[field]);
+        //         refsStr += (idx + 1) + ', ';
+        //     }
+        //     return `(${refsStr.split(', ').filter(str => str).sort((a, b) => a - b).join(', ')})`;
+        // },
         minimizeRefs(refs){
             let refsStr = '';
             let isSequence = false;
@@ -127,7 +175,7 @@ export default {
         },
     },
     components: {
-        Tooltip
+        // Tooltip
     }
 }
 </script>

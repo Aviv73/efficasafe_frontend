@@ -195,7 +195,7 @@
                   </h3>
                 </template>
                 <template #content>
-                  <side2-pathways v-if="relevantSide2Pathways.length" :side2Pathways="relevantSide2Pathways" :combinedRefs="combinedRefs" :side2Refs="side2Refs" :materialName="interactionName.split(' & ')[1]" />
+                  <side2-pathways v-if="relevantSide2Pathways.length" :side2Pathways="relevantSide2Pathways" :combinedRefs="combinedRefs" :side2Refs="side2Refs" :materialName="interactionName.split(' & ')[1]" :formatRefs="formatRefs" />
                   <p v-else class="side2-pathways">There is no data on {{ side2Material.name }} metabolism</p>
                 </template>
               </collapse>
@@ -235,7 +235,7 @@
 
 <script>
 import { interactionUIService } from '@/cms/services/interaction-ui.service';
-// import { utilService } from '@/cms/services/util.service';
+import { utilService } from '@/cms/services/util.service';
 import { storageService } from '@/cms/services/storage.service';
 import { eventBus } from '@/cms/services/eventBus.service';
 
@@ -315,7 +315,7 @@ export default {
       return title;
     },
     combinedRefs() {
-      return this.interactionRefs.concat(this.relevantSide2Refs, this.side1PathwayRefs);
+      return Array.from(new Set([...this.interactionRefs, ...this.relevantSide2Refs, ...this.side1PathwayRefs]));
     },
     refsDetailsTxt() {
       const { getRefsCountByType, interactionRefs } = this;
@@ -603,7 +603,7 @@ export default {
 
       return refs.filter(iterateFunc).length;
     },
-    formatRefs(txt, isPathwaysRefs = false) {
+    _formatRefs(txt, isPathwaysRefs = false) {
       const openTag = '<sub>(';
       const closeTag = ')</sub>';
 
@@ -635,6 +635,37 @@ export default {
         .join(openTag);
 
       return fixedTxt;
+    },
+    formatRefs(txt, isPathwaysRefs = false) {
+      if (!this.combinedRefs.length) return;
+      const refsOrder = interactionUIService.getRefsOrder(txt, false, false).filter(num => txt.indexOf(num) > -1);
+      let lastRefIdx = 0;
+      refsOrder.forEach((refNum) => {
+        let draftIdx = this.combinedRefs.findIndex(ref => ref && ref.draftIdx === refNum) + 1;
+        if (isPathwaysRefs) {
+          const sameRefs = this.combinedRefs.filter(ref => ref && ref.draftIdx === refNum);
+          if (sameRefs.length > 1) {
+            const ref = sameRefs.find(ref => this.side2Refs.findIndex(currRef => currRef.link === ref.link) === -1);
+            draftIdx = this.combinedRefs.indexOf(ref) + 1;
+          }
+        }
+        let refIdx = txt.indexOf(refNum, lastRefIdx + draftIdx.toString().length);
+        if (!utilService.checkIfInsideRef(txt, refIdx) || lastRefIdx === refIdx) {
+          let cnt = 0;
+          while (txt.charAt(refIdx) === txt.charAt(refIdx + cnt)) {
+            cnt++;
+          }
+          refIdx = txt.indexOf(refNum, refIdx + cnt);
+        }
+        if (lastRefIdx + draftIdx.toString().length > refIdx) lastRefIdx = refIdx + draftIdx.toString().length;
+        else lastRefIdx = refIdx;
+        if (refIdx > -1) {
+          txt = txt.slice(0, lastRefIdx) +
+          txt.slice(lastRefIdx, (lastRefIdx + refNum.toString().length)).replace(refNum, draftIdx) +
+          txt.slice(lastRefIdx + refNum.toString().length);
+        } 
+      });
+      return txt;
     }
   },
   created() {
