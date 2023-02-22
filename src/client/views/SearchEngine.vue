@@ -347,7 +347,7 @@ export default {
           this.$store.commit('resetPosSupp');
           // this.reset();
           eventBus.$emit(EV_search_results_cleared);
-          this.$store.commit({ type: 'setListType', listType: 'all' });
+          // this.$store.commit({ type: 'setListType', listType: 'all' });
           return;
         }
         if (share) this.$store.dispatch({ type: 'checkIfValidToken', tokenCode: share });
