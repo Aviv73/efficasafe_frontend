@@ -19,8 +19,8 @@
                 }"
             >
                 <span>{{ idx === 0 ? '' : ',' }} </span>
-                <span class="font-uppercase">{{ pathway.name + '\xa0' }}</span>
-                <v-tooltip bottom :activator="`.enzyme-${idx}`">
+                <span data-app :class="`enzyme-${name}-${idx}`" class="font-uppercase">{{ pathway.name + '\xa0' }}</span>
+                <v-tooltip bottom :activator="`.enzyme-${name}-${idx}`">
                     <div v-if="pathway.fullName">{{ pathway.fullName }}</div>
                     <span class="text-capitalize" v-if="pathway.actions.length">
                         {{ pathway.actions.join(', ') }} 
