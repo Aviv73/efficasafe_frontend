@@ -34,6 +34,7 @@
         :evidenceLevelPopupActive="evidenceLevelPopupActive"
         @list-sorted="$emit('list-sorted', $event)"
         @handle-DBI-filter="$emit('handle-DBI-filter', $event)"
+        :sortParams="sortParams"
       />
       <result-list-vertical v-else-if="!isLoading && isVertical" :materials="materials" />
 
@@ -108,6 +109,11 @@ export default {
     evidenceLevelPopupActive: {
       type: Boolean,
       default: false
+    },
+      
+    sortParams: {
+      type: Object,
+      default: () => ({})
     }
   },
   data() {

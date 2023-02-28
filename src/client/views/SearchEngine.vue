@@ -218,7 +218,7 @@
         </nav>
         <transition :name="routerTransitionName" mode="out-in">
           <keep-alive>
-            <router-view v-keep-scroll-position ref="elRouter" class="inner-view" :key="$route.name" :listData="routableListData" :isVertical="isViewVertical" :materials="materials" :isLoading="isLoading" :isPBLoading="isPBLoading" @page-changed="handlePaging" @list-sorted="handleSort" @handle-DBI-filter="handleDBIFilter" />
+            <router-view :sortParams="sortParams" v-keep-scroll-position ref="elRouter" class="inner-view" :key="$route.name" :listData="routableListData" :isVertical="isViewVertical" :materials="materials" :isLoading="isLoading" :isPBLoading="isPBLoading" @page-changed="handlePaging" @list-sorted="handleSort" @handle-DBI-filter="handleDBIFilter" />
           </keep-alive>
         </transition>
       </div>
@@ -322,7 +322,11 @@ export default {
       prevSearch: null,
       scrollPos: 0,
 
-      sortOpts: null
+      sortOpts: null,
+      sortParams: {},
+
+      dBankFetchRes: {},
+      intFetchRes: {}
     };
   },
   metaInfo() {
@@ -421,7 +425,7 @@ export default {
           return {
             interactions: this.getRelevetInteractions,
             pageCount: this.getReleventPageCount,
-            total: this.total
+            total: this.getRelevetTotal
           };
         case 'Boosters':
           return {
@@ -464,16 +468,26 @@ export default {
       else {
         const isAllSupplements = this.materials.every(material => material.type !== 'drug');
         if (isAllSupplements) return this.formatedInteractions;
-        let { page } = this.$route.query;
-        if (!page) page = 1;
-        const limit = Math.max(this.pageCount, this.dBankPageCount);
-        if (limit == page) return this.allInteractions;
-        return this.dBankInteractions;
+        return this.allInteractions;
+        // let { page } = this.$route.query;
+        // if (!page) page = 1;
+        // const limit = Math.max(this.pageCount, this.dBankPageCount);
+        // if (limit == page) return this.allInteractions;
+        // return this.dBankInteractions;
       }
     },
+    getRelevetTotal() {
+      if (this.listType === 'supp') return this.intFetchRes.total || 0;
+      else if (this.listType === 'drug') return this.dBankFetchRes.total || 0;
+      return this.intFetchRes.total + this.dBankFetchRes.total;
+      // return this.total;
+    },
     getReleventPageCount() {
-      if (this.listType === 'supp') return this.pageCount;
-      else return this.dBankPageCount;
+      if (this.listType === 'supp') return this.intFetchRes.pageCount || 0;
+      else if (this.listType === 'drug') return this.dBankFetchRes.pageCount || 0;
+      return Math.max(this.intFetchRes.pageCount, this.dBankFetchRes.pageCount);
+      // if (this.listType === 'supp') return this.pageCount;
+      // else return this.dBankPageCount;
     },
     allInteractionCount() {
       let intCount = this.total || 0;
@@ -1065,6 +1079,7 @@ export default {
       const prms = [this.getInteractions(), this.getDBankInteractions(), this.getWtmInteractions()];
       await Promise.all(prms);
       this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions);
+      this.handleSort_onLocalData();
       this.isLoading = false;
 
       this.getPositives();
@@ -1221,6 +1236,7 @@ export default {
       const filterBy = {
         isSearchResults: true,
         page: --page,
+        limit: 10,
         id: ids,
         materialCount: this.materialsLength,
         sort: this.sortOpts
@@ -1228,6 +1244,8 @@ export default {
 
       // const { interactions, pageCount, total, searchState } = await this.$store.dispatch({ type: 'getInteractions', filterBy, cacheKey: `/search?${this.$route.fullPath.split('?')[1]}` });
       const { interactions, pageCount, total, searchState } = await this.loadInteractions({...filterBy});
+
+      this.intFetchRes = {interactions, pageCount, total};
 
       this.pageCount = pageCount;
       this.interactions = interactions;
@@ -1274,8 +1292,9 @@ export default {
       if (!page) page = 1;
       const drugBankIds = this.materials.filter(m => !m.isIncluded).map(mat => mat.drugBankId);
       const drugBankId = drugBankIds.length === 1 ? drugBankIds[0] : drugBankIds;
-      const criteria = { drugBankId, page: --page, showAll: this.isShowAllDBI, sort: this.sortOpts };
+      const criteria = { drugBankId, page: --page, limit: 10, showAll: this.isShowAllDBI, sort: this.sortOpts };
       const { dBankInteractions, pageCount, total, diff } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria, cacheKey: `/search/drug2drug?${this.$route.fullPath.split('?')[1]}&filter=${this.isShowAllDBI}` });
+      this.dBankFetchRes = {dBankInteractions, pageCount, total};
       this.dBankInteractions = dBankInteractions;
       this.dBankPageCount = pageCount;
       this.dBankTotal = total;
@@ -1378,36 +1397,12 @@ export default {
       interactions = interactions.concat(dBankInteractions);
       return this.sortInteractions(interactions);
     },
-    getSortOpts(isDrug) {
-      const sortOrder = isDesc ? 1 : -1;
-      // const sortOrder = isDesc ? -1 : 1;
-      const { sortBy, side, isDesc } = this.sortOpts;
-      const opts = {};
-      if (isDrug) {
-        if (sortBy === 'name') {
-          const sideName = side === 1 ? 'subject_drug' : 'affected_drug';
-          opts[sideName+'.name'] = sortOrder;
-        }
-        // else if (sortBy === 'recommendation') opts.recommendation = sortOrder;
-        else if (sortBy === 'recommendation') opts.recommendationOrder = sortOrder;
-        else if (sortBy === 'evidenceLevel') opts.evidence_level = sortOrder;
-      } else {
-        if (sortBy === 'name') {
-          const sideNameOpt1 = side === 1 ? 'side1Material' : 'side2Material';
-          const sideNameOpt2 = side === 1 ? 'side1Material' : 'side2Label';
-          opts[sideNameOpt1+'.name'] = sortOrder;
-          opts[sideNameOpt2+'.name'] = sortOrder;
-        }
-        // else if (sortBy === 'recommendation') opts.recommendation = sortOrder;
-        else if (sortBy === 'recommendation') opts.order = sortOrder;
-        else if (sortBy === 'evidenceLevel') opts.evidenceLevel = sortOrder;
-      }
-    },
     handleSort({ sortBy, side, isDesc }) {
       // let { page } = this.$route.query;
       // if (!page) page = 1;
       // const limit = Math.max(this.pageCount, this.dBankPageCount);
       // this.sortOpts = {[sortBy]: 1, side};
+      this.sortParams = { sortBy, side, isDesc };
       this.sortOpts = {};
       const sortOrder = isDesc ? 1 : -1;
       // const sortOrder = isDesc ? -1 : 1;
@@ -1432,10 +1427,13 @@ export default {
         else if (sortBy === 'evidenceLevel') this.sortOpts.evidenceLevel = sortOrder;
       }
       console.log('WOWOWO BEING SORTEDDDD')
+      console.log(this.sortParams);
       console.log(this.sortOpts);
       this.getResults();
     },
-    handleSort_old({ sortBy, side, isDesc }) {
+    handleSort_onLocalData(data) {
+      if (data) this.sortParams = data;
+      const { sortBy, side, isDesc } = this.sortParams || {};
       const { recommendationsOrderMap: map } = this.$options;
       const sortOrder = isDesc ? 1 : -1;
       switch (this.$route.name) {
@@ -1462,12 +1460,16 @@ export default {
                   break;
               }
             }
-            if (this.listType === 'all' && page == limit) {
+            // if (this.listType === 'all' && page == limit) {
+            if (this.listType === 'all') {
               switch (sortBy) {
                 case 'name':
                   return this.allInteractions.sort((a, b) => {
                     const nameA = this.materials.find(mat => mat.name === a.name.split(' & ')[side - 1]) ? this.materials.find(mat => mat.name === a.name.split(' & ')[side - 1]).userQuery.toLowerCase() : a.name.split(' & ')[side - 1].toLowerCase();
                     const nameB = this.materials.find(mat => mat.name === b.name.split(' & ')[side - 1]) ? this.materials.find(mat => mat.name === b.name.split(' & ')[side - 1]).userQuery.toLowerCase() : b.name.split(' & ')[side - 1].toLowerCase();
+                    // const getSide = (int) => side == 1 ? int.side1Material || int.subject_drug : int.side2Material || int.side2Label || int.affected_drug;
+                    // const nameA = getSide(a).name.toLowerCase();
+                    // const nameB = getSide(b).name.toLowerCase();
                     if (nameA > nameB) return sortOrder;
                     if (nameA < nameB) return sortOrder * -1;
                     return 0;
@@ -1694,6 +1696,8 @@ export default {
         case 'food':
           fileName = 'food';
           break;
+        default:
+          fileName = 'other';
       }
       if (result.materials.length > 1) {
         const isDrugCompound = result.materials.some(({ type }) => type === 'drug');
