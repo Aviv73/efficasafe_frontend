@@ -19,7 +19,6 @@ async function getLocalCurrency() {
         if(currencyCode !== 'ILS' && currencyCode !== 'EUR') return DEFAULT_CURRENCY
         return currencyCode
     }catch(err){
-        console.log('WOWOWO ERROR');
         console.error(err);
         return DEFAULT_CURRENCY
     }

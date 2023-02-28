@@ -238,6 +238,7 @@ import ShareVariantIcon from 'vue-material-design-icons/ShareVariant';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
 
 export default {
+  name: "DBInteractionDetails",
   wrongRefsMap: drugBankService.getWrongRefsMap(),
   data() {
     return {

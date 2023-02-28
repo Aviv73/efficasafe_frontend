@@ -122,7 +122,6 @@ export default {
     },
     methods: {
         getMaterialRefNums(pubmedIds, dontMinimize = false) {
-            // console.log(pubmedIds)
             // return this.formatRefs()
             if (!this.side2Refs.length || !pubmedIds.length) return '';
             if (pubmedIds.length === 1) {

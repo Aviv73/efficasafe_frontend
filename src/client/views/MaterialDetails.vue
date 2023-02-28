@@ -79,6 +79,7 @@ import herbDetails from '@/client/cmps/material-details/MaterialHerbDetails';
 import suppDetails from '@/client/cmps/material-details/MaterialSuppDetails';
 
 export default {
+  name: "MaterialDetails",
   data() {
     return {
       material: null,

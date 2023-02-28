@@ -152,7 +152,6 @@ Vue.directive('refs-tooltip', {
             // const refNums = elSubs[i].getAttribute('refNums');
             // if (asGiven) refIdxs = elSubs[i].innerText.slice(1, elSubs[i].innerText.length-1).split(',').filter(Boolean).reduce((acc, c) => [...acc, ...c.split('-').filter(Boolean).map(_ => +_.trim())], []);
             if (refNums) refIdxs = refNums.slice(1, refNums.length-1).split(',').filter(Boolean).reduce((acc, c) => [...acc, ...c.split('-').filter(Boolean).map(_ => +_.trim())], []);
-            if (refNums) console.log(refIdxs);
             if (!refIdxs.length){
                 elSubs[i].classList.add('regular-sub')
                 continue;
@@ -167,7 +166,6 @@ Vue.directive('refs-tooltip', {
             
             let refs = getRefsFromIdxs(refIdxs, combinedRefs);
             if (asGiven) refs = refIdxs.map(c => combinedRefs[c-1]);
-            // if (asGiven) console.log(refs, combinedRefs, refIdxs, elSubs[i].innerText);
             const elTooltip = document.createElement('aside');
             elTooltip.classList.add('refs-tooltip');
             

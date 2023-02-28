@@ -263,6 +263,7 @@ import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline
 import PlayTourBtn from '@/client/cmps/common/PlayTourBtn';
 
 export default {
+  name: "InteractionDetails",
   side1Refs: [],
   data() {
     return {
