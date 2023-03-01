@@ -146,6 +146,10 @@ export const interactionStore = ({
             commit({ type: 'setOptimizationData', optimizationData });
             return optimizationData;
         },
+        async loadAllInteractionSearchData(context, { criteria }) {
+            const allInteractionsData = await interactionService.getAllInteractionSearchData(criteria);
+            return allInteractionsData;
+        },
         async loadInteractions(context, { filterBy }) {
             const { interactions, total } = await interactionService.list(filterBy);
             context.commit({ type: 'setInteractions', interactions });

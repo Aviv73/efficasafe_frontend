@@ -15,7 +15,8 @@ export const interactionService = {
     cacheSearchState,
     getPrintPreview,
     getCache,
-    getOptimizationData
+    getOptimizationData,
+    getAllInteractionSearchData
 }
 
 function getCache(key) {
@@ -77,6 +78,10 @@ function getPrintPreview(filterBy) {
 
 function getOptimizationData(fetchData) {
     return httpService.post(`${END_POINT}/optimization-data`, {fetchData});
+}
+
+function getAllInteractionSearchData(criteria) {
+    return httpService.post(`${END_POINT}/all-search-data`, {criteria});
 }
 
 

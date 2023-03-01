@@ -23,7 +23,7 @@
     <header class="horizontal-list-header">
       <span class="horizontal-list-header-item">
         <label class="flex-align-center" title="Sort A-Z / Z-A" tabindex="0">
-          <input type="checkbox" hidden @change="emitSort('name', $event.target.checked)" />
+          <input type="checkbox" :value="isNameChecked" hidden @change="isNameChecked = !isNameChecked, emitSort('name', isNameChecked)" />
           <sort-vertical-icon color="#205072" class="sort-icon" title="" />
           <span v-if="$route.name == 'Boosters'">Drug</span>
           <span v-else>{{ side1Name }} vs {{ side2Name }}</span>
@@ -34,7 +34,7 @@
       </span>
       <span class="horizontal-list-header-item">
         <label class="flex-align-center" :title="sortRecommendationTxt" tabindex="0">
-          <input type="checkbox" hidden @change="emitSort('recommendation', !$event.target.checked)" />
+          <input type="checkbox" :value="isRecChecked" hidden @change="isRecChecked = !isRecChecked, emitSort('recommendation', isRecChecked)" />
           <sort-vertical-icon color="#205072" class="sort-icon" title="" />
           <span>Recommendation</span>
         </label>
@@ -250,6 +250,10 @@ export default {
     isDBankInteractions: {
       type: Boolean,
       default: false
+    },
+    sortParams: {
+      type: Object,
+      default: () => ({})
     }
   },
   data() {
@@ -263,7 +267,10 @@ export default {
       currSuppInteractions: null,
       isAllRecommendationsModalActive: false,
       renderKey: 101,
-      isChecked: false
+      isChecked: false,
+
+      isNameChecked: ((this.sortParams?.sortBy === 'name') && !this.sortParams?.isDesc) || false,
+      isRecChecked: ((this.sortParams?.sortBy === 'recommendation') && !this.sortParams?.isDesc) || false
     }
   },
   computed: {
@@ -365,6 +372,8 @@ export default {
       this.isShowPosSupp = !this.isShowPosSupp
     },
     emitSort(sortBy, isChecked) {
+      console.log('isChecked', isChecked);
+      console.log('asdasddassad', this.sortParams);
       this.$emit('list-sorted', { sortBy, side: this.sortBySide, isDesc: !isChecked })
       if (this.$route.name === 'Results') {
         const newSort = [sortBy, isChecked]
@@ -416,7 +425,7 @@ export default {
     }
     this.suppInteractionsOriginalLength = this.suppInteractions.length
     this.restoreCollapses()
-    this.restoreSort()
+    // this.restoreSort()
     this.isChecked = this.isShowAllDBI
     this.$nextTick(() => {
       eventBus.$emit(EV_sortby_side_swaped, this.sortBySide)

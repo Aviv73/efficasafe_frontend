@@ -243,6 +243,8 @@ export default {
           return 'other';
         case 'food':
           return 'food';
+        default:
+          return 'other'
       }
     },
     organizeRefs(material) {
