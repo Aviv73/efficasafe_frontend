@@ -435,7 +435,7 @@ export default {
       return this.allInteractionsData.dBankTotal
     },
     dBankPageCount() {
-      return this.dBankTotal / this.pagination.limit;
+      return Math.ceil(this.dBankTotal / this.pagination.limit);
     },
     total() {
       // return this.allInteractionsData.regTotal;
@@ -452,7 +452,7 @@ export default {
           }, 0);
     },
     pageCount() {
-      return this.total / this.pagination.limit;
+      return Math.ceil(this.total / this.pagination.limit);
     },
     
 
@@ -776,42 +776,43 @@ export default {
       }, []);
     },
     totalRefsCount() {
-      const dBankRefsCount = this.dBankInteractions.reduce((acc, { references }) => {
-        acc += Object.values(references).reduce((innerAcc, refsArr) => {
-          innerAcc += refsArr.length;
-          return innerAcc;
-        }, 0);
-        return acc;
-      }, 0);
-      if (!this.total) return dBankRefsCount;
-      const seenRefsMap = {};
-      const refsCount = this.interactions.reduce((acc, { side1Material, refs }) => {
-        refs.forEach(ref => {
-          if (!seenRefsMap[side1Material._id]) seenRefsMap[side1Material._id] = {};
+      return this.allInteractionsData?.totalRefsCount + this.$store.getters.supplementsRefsNonDups.length || 0;
+      // const dBankRefsCount = this.dBankInteractions.reduce((acc, { references }) => {
+      //   acc += Object.values(references).reduce((innerAcc, refsArr) => {
+      //     innerAcc += refsArr.length;
+      //     return innerAcc;
+      //   }, 0);
+      //   return acc;
+      // }, 0);
+      // if (!this.total) return dBankRefsCount;
+      // const seenRefsMap = {};
+      // const refsCount = this.interactions.reduce((acc, { side1Material, refs }) => {
+      //   refs.forEach(ref => {
+      //     if (!seenRefsMap[side1Material._id]) seenRefsMap[side1Material._id] = {};
 
-          if (!seenRefsMap[side1Material._id][ref + '']) {
-            acc++;
-            seenRefsMap[side1Material._id][ref + ''] = true;
-          }
-        });
-        return acc;
-      }, 0);
-      const pathwayRefsCount = this.materials.reduce((acc, { _id, pathways }) => {
-        pathways.forEach(pathway => {
-          if (((pathway.type === 'enzyme' || pathway.type === 'transporter') && !pathway.actions.includes('substrate') && !pathway.actions.includes('binder')) || (pathway.type === 'carrier' && (pathway.actions.includes('inducer') || pathway.actions.includes('inhibitor')))) return;
-          if (!seenRefsMap[_id]) seenRefsMap[_id] = {};
-          pathway.references.forEach(ref => {
-            if (!seenRefsMap[_id][ref + '']) {
-              acc++;
-              seenRefsMap[_id][ref + ''] = true;
-            }
-          });
-        });
+      //     if (!seenRefsMap[side1Material._id][ref + '']) {
+      //       acc++;
+      //       seenRefsMap[side1Material._id][ref + ''] = true;
+      //     }
+      //   });
+      //   return acc;
+      // }, 0);
+      // const pathwayRefsCount = this.materials.reduce((acc, { _id, pathways }) => {
+      //   pathways.forEach(pathway => {
+      //     if (((pathway.type === 'enzyme' || pathway.type === 'transporter') && !pathway.actions.includes('substrate') && !pathway.actions.includes('binder')) || (pathway.type === 'carrier' && (pathway.actions.includes('inducer') || pathway.actions.includes('inhibitor')))) return;
+      //     if (!seenRefsMap[_id]) seenRefsMap[_id] = {};
+      //     pathway.references.forEach(ref => {
+      //       if (!seenRefsMap[_id][ref + '']) {
+      //         acc++;
+      //         seenRefsMap[_id][ref + ''] = true;
+      //       }
+      //     });
+      //   });
 
-        return acc;
-      }, 0);
+      //   return acc;
+      // }, 0);
 
-      return refsCount + dBankRefsCount + pathwayRefsCount + this.$store.getters.supplementsRefsNonDups.length;
+      // return refsCount + dBankRefsCount + pathwayRefsCount + this.$store.getters.supplementsRefsNonDups.length;
     },
     totalInteractionCount() {
       if (this.$route.name === 'Boosters') {
@@ -1293,6 +1294,7 @@ export default {
       //   return this.formatInteractions([c])[0];
       // })
       this.$store.commit({ type: 'setTheoreticalDiff', diff: this.allInteractionsData.theoreticalDiff });
+      console.log(this.getReleventPageCount)
       console.log(this.allInteractionsData);
     },
     async getInteractionsData() {
