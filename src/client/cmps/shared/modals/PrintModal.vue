@@ -294,7 +294,7 @@ export default {
         localizedInteraction() {
             return this.interactions.map(interaction => {
                 const { materialNamesMap } = this.$store.getters;
-                let [ side1Name, side2Name ] = interaction.name.split('&').map(str => str.trim());
+                let [ side1Name, side2Name ] = interaction?.name?.split('&').map(str => str.trim()) || ['', ''];
                 if (materialNamesMap[side1Name]) side1Name = materialNamesMap[side1Name][0];
                 if (materialNamesMap[side2Name]) side2Name = materialNamesMap[side2Name][0];
                 

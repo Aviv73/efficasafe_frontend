@@ -15,7 +15,7 @@
           >
             <span class="table-col" :class="{ 'flex-align-center': isDuplicate, 'off-interaction-col-1': !isAllowed }">
               <interaction-capsules
-                :name="interactionName"
+                :name="interactionName || ''"
                 :color="getInteractionColor(interaction)"
                 :vInteractionCount="newLength || getVinteractionsCount(interaction)"
                 :localize="!isCompoundPart"
@@ -383,8 +383,8 @@ export default {
     getRefsCount(interaction) {
       let refCount;
       if (interaction.refs) {
-        if (this.totalPathwaysRefsCount[`${interaction.side1Material.name}-${interaction.side2Material.name}`]) {
-          refCount = interaction.refs.length + this.totalPathwaysRefsCount[`${interaction.side1Material.name}-${interaction.side2Material.name}`];
+        if (this.totalPathwaysRefsCount[`${interaction.side1Material?.name || ''}-${interaction.side2Material?.name || ''}`]) {
+          refCount = interaction.refs.length + this.totalPathwaysRefsCount[`${interaction.side1Material?.name || ''}-${interaction.side2Material?.name || ''}`];
         } else {
           refCount = interaction.refs.length + this.pathwayRefCount;
         }
@@ -393,8 +393,8 @@ export default {
     },
     getRefsCountTxt(interaction) {
       if (interaction.refs) {
-        if (this.totalPathwaysRefsCount[`${interaction.side1Material.name}-${interaction.side2Material.name}`]) {
-          return `${interaction.refs.length + this.totalPathwaysRefsCount[`${interaction.side1Material.name}-${interaction.side2Material.name}`]}`;
+        if (this.totalPathwaysRefsCount[`${interaction.side1Material?.name || ''}-${interaction.side2Material?.name || ''}`]) {
+          return `${interaction.refs.length + this.totalPathwaysRefsCount[`${interaction.side1Material?.name | ''}-${interaction.side2Material?.name | ''}`]}`;
         }
         return `${interaction.refs.length + this.pathwayRefCount}`;
       }
@@ -410,13 +410,13 @@ export default {
           matId: interaction.side2Material._id
         });
       }
-      const side2Pathways = side2Material.pathways.reduce((acc, pathway) => {
+      const side2Pathways = side2Material?.pathways.reduce((acc, pathway) => {
         if (((pathway.type === 'enzyme' || pathway.type === 'transporter') && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))) || (pathway.type === 'carrier' && !pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor'))) {
           acc.push(pathway);
         }
 
         return acc;
-      }, []);
+      }, []) || [];
       const seenRefsMap = {};
       const side2Refs = side2Pathways.reduce((acc, pathway) => {
         pathway.references.forEach(ref => {
@@ -459,7 +459,7 @@ export default {
           seenRefsMap[ref] = true;
         }
       });
-      this.$store.commit({ type: 'setPathwayRefCount', data: { id: `${side1Material.name}-${side2Material.name}`, count: side1PathwayRefs.length + side2Refs.length } });
+      this.$store.commit({ type: 'setPathwayRefCount', data: { id: `${side1Material?.name || ''}-${side2Material?.name || ''}`, count: side1PathwayRefs.length + side2Refs.length } });
       this.$store.commit({ type: 'updateSupplementsRefsNonDups', refs: side1PathwayRefs });
       this.pathwayRefCount = side1PathwayRefs.length + side2Refs.length;
     },

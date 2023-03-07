@@ -266,14 +266,14 @@ export default {
       return false;
     },
     titleSide1() {
-      if (this.name.includes('&')) {
+      if (this.name?.includes('&')) {
         const side1Name = this.name.split('&')[0].trim();
         return side1Name;
       }
       return this.side1NameToShow;
     },
     titleSide2() {
-      if (this.name.includes('&')) {
+      if (this.name?.includes('&')) {
         const side1Name = this.name.split('&')[1].trim();
         return side1Name;
       }

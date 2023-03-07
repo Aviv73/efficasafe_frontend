@@ -432,24 +432,25 @@ export default {
       return this.allInteractions?.filter(c => c.source !== 'dBank') || [];
     },
     dBankTotal() {
-      return this.allInteractionsData.dBankTotal
+      return this.allInteractionsData?.dBankTotal || 0
     },
     dBankPageCount() {
       return Math.ceil(this.dBankTotal / this.pagination.limit);
     },
     total() {
+      return this.allInteractionsData?.total || 0
       // return this.allInteractionsData.regTotal;
-      return this.materialsLength === 1
-        ? this.allInteractionsData.regTotal
-        : this.interactions.reduce((acc, i) => {
-            if (i.side2Material) acc++;
-            else {
-              const { _id } = i.side2Label || {};
-              const materials = this.materials.filter(material => !material.isIncluded && material.labels.some(label => label._id === _id));
-              acc += materials.length;
-            }
-            return acc;
-          }, 0);
+      // return this.materialsLength === 1
+      //   ? this.allInteractionsData.regTotal
+      //   : this.interactions.reduce((acc, i) => {
+      //       if (i.side2Material) acc++;
+      //       else {
+      //         const { _id } = i.side2Label || {};
+      //         const materials = this.materials.filter(material => !material.isIncluded && material.labels.some(label => label._id === _id));
+      //         acc += materials.length;
+      //       }
+      //       return acc;
+      //     }, 0);
     },
     pageCount() {
       return Math.ceil(this.total / this.pagination.limit);
@@ -1294,8 +1295,6 @@ export default {
       //   return this.formatInteractions([c])[0];
       // })
       this.$store.commit({ type: 'setTheoreticalDiff', diff: this.allInteractionsData.theoreticalDiff });
-      console.log(this.getReleventPageCount)
-      console.log(this.allInteractionsData);
     },
     async getInteractionsData() {
       const ids = this.materials.reduce((acc, { _id, labels }) => {
@@ -1443,7 +1442,7 @@ export default {
       const [materialName] = this.$store.getters.materialRealName(result.txt);
       const seenIds = {};
       let interactions = this.interactions.reduce((acc, interaction) => {
-        const doTake = !seenIds[interaction._id] && (interaction.name.includes(materialName) || interaction.name.includes(result.txt));
+        const doTake = !seenIds[interaction._id] && (interaction.name?.includes(materialName) || interaction.name?.includes(result.txt));
         seenIds[interaction._id] = true;
         if (doTake) {
           const { _id, name, recommendation, evidenceLevel } = interaction;
@@ -1814,7 +1813,8 @@ export default {
         this.materials = [];
       }
       // this.interactions = [];
-      this.dBankInteractions = [];
+      // this.dBankInteractions = [];
+      this.allInteractionsData = {};
       this.positiveInteractions = [];
       this.suppPositiveInteractions = [];
       this.idsToTurnRed = [];

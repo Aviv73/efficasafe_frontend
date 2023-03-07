@@ -40,7 +40,7 @@
 
       <div v-if="!isReaultsPage && theoreticalDiff" class="checkbox-container-search">
         <div class="checkbox-container">
-          <div>
+          <div v-if="listType !== 'supp'">
             <checkbox class="checkbox" @change="handleCheckbox" :isChecked="isChecked" :biggerRadius="true"></checkbox>
             <h4 class="checkbox-title">Theoretical interactions</h4>
             <span v-if="theoreticalDiff" class="badge diff-badge">{{ theoreticalDiff }}</span>
