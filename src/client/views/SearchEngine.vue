@@ -1471,7 +1471,8 @@ export default {
       return this.sortInteractions(interactions);
     },
     handleSort({ sortBy, side, isDesc }) {
-      this.pagination.page = 1;
+      this.pagination.page = 0;
+      this.$router.push({ query: { q: [...this.$route.query.q], page: this.pagination.page+1 } });
       // let { page } = this.$route.query;
       // if (!page) page = 1;
       // const limit = Math.max(this.pageCount, this.dBankPageCount);
