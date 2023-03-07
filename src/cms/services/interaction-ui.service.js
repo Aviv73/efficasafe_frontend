@@ -160,7 +160,7 @@ function getInteractionColor(recommendation = '') {
       return '#a4b8c6';
   }
 }
-function getInteractionColorName(recommendation) {
+function getInteractionColorName(recommendation = '') {
   switch (recommendation.toLowerCase()) {
     case 'avoid coadministration':
     case 'coadministration is not advised':
@@ -180,7 +180,7 @@ function getInteractionColorName(recommendation) {
   }
 }
 
-function getShortRecommendation(fullRec) {
+function getShortRecommendation(fullRec = '') {
   switch (fullRec.toLowerCase()) {
     case 'avoid coadministration':
     case 'coadministration is not advised':

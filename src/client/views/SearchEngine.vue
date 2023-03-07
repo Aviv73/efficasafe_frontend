@@ -338,6 +338,9 @@ export default {
     };
   },
   watch: {
+    listType() {
+      this.getResults();
+    },
     '$route.query': {
       async handler(to, from) {
         const _dontReload = this.dontReload;
@@ -477,11 +480,11 @@ export default {
           };
         case 'Monitor':
           return {
-            interactions: this.formatedInteractions,
+            interactions: this.interactions,
             // allInteractions: this.formatInteractions(this.wtmInteractions),
             allInteractions: this.wtmInteractions,
             // allInteractions: this.wtmInteractions,
-            // allInteractions: this.formatedInteractions,
+            // allInteractions: this.interactions,
             pageCount: this.pageCount,
             total: this.total,
             isDBankInteractions: !!this.dBankInteractions.length
@@ -500,18 +503,19 @@ export default {
       return this.$store.getters.isShowAllDBI;
     },
     getRelevetInteractions() {
-      if (this.listType === 'supp') return this.formatedInteractions;
+      if (this.listType === 'supp') return this.interactions;
       else if (this.listType === 'drug') return this.dBankInteractions;
-      else {
-        const isAllSupplements = this.materials.every(material => material.type !== 'drug');
-        if (isAllSupplements) return this.formatedInteractions;
-        // return this.allInteractions;
-        let { page } = this.$route.query;
-        if (!page) page = 1;
-        const limit = Math.max(this.pageCount, this.dBankPageCount);
-        if (limit == page) return this.allInteractions;
-        return this.dBankInteractions;
-      }
+      else return this.allInteractions;
+      // else {
+      //   const isAllSupplements = this.materials.every(material => material.type !== 'drug');
+      //   if (isAllSupplements) return this.interactions;
+      //   // return this.allInteractions;
+      //   let { page } = this.$route.query;
+      //   if (!page) page = 1;
+      //   const limit = Math.max(this.pageCount, this.dBankPageCount);
+      //   if (limit == page) return this.allInteractions;
+      //   return this.dBankInteractions;
+      // }
     },
     // getRelevetTotal() {
     //   // if (this.listType === 'supp') return this.intFetchRes.total || 0;
@@ -553,11 +557,11 @@ export default {
     },
     interactionsColorCountSupp() {
       if (!this.interactionsColorCountMap) return null;
-      if (this.formatedInteractions.length === 50 || this.pageCount > 1) {
+      if (this.interactions.length === 50 || this.pageCount > 1) {
         return this.interactionsColorCountMap;
       } else {
         const map = { red: 0, yellow: 0, green: 0 };
-        this.formatedInteractions.forEach(int => {
+        this.interactions.forEach(int => {
           if (int.vInteractions) {
             int.vInteractions.forEach(vint => {
               map[interactionUIService.getInteractionColorName(vint.recommendation)]++;
@@ -752,9 +756,10 @@ export default {
       });
       return formatedSuppPositiveReds;
     },
-    formatedInteractions() {
-      return this.formatInteractions(this.interactions);
-    },
+    // formatedInteractions() {
+    //  // return this.interactions;
+      // return this.formatInteractions(this.interactions);
+    // },
     formatedMaterials() {
       return this.materials.reduce((acc, material) => {
         const result = acc.find(res => res.txt === material.userQuery);
@@ -1116,7 +1121,7 @@ export default {
       this.isLoading = true;
 
       // const prms = [this.getInteractions(), this.getDBankInteractions(), this.getWtmInteractions()];
-      const prms = [this.getAllInteractionsData(), this.getInteractions(), this.getDBankInteractions(), this.getWtmInteractions()];
+      const prms = [this.getAllInteractionsData(), this.getInteractionsData(), this.getDBankInteractionsData(), this.getWtmInteractions()];
       await Promise.all(prms);
       // this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions);
       // this.handleSort_onLocalData();
@@ -1281,16 +1286,16 @@ export default {
       const drugBankId = drugBankIds.length === 1 ? drugBankIds[0] : drugBankIds;
       const dBankFilterBy = { drugBankId, showAll: this.isShowAllDBI };
 
-      const criteria = { intsFilterBy, dBankFilterBy, sortParams: this.sortParams, pagination: this.pagination, materials: this.materials };
+      const criteria = { intsFilterBy, dBankFilterBy, sortParams: this.sortParams, pagination: this.pagination, materials: this.materials, listType: this.listType };
       this.allInteractionsData = await this.$store.dispatch({ type: 'loadAllInteractionSearchData', criteria });
-      this.allInteractionsData.interactions = this.allInteractionsData.interactions.map(c => {
-        if (c.source === 'dBank') return c;
-        return this.formatInteractions([c]);
-      })
+      // this.allInteractionsData.interactions = this.allInteractionsData.interactions.map(c => {
+      //   if (c.source === 'dBank') return c;
+      //   return this.formatInteractions([c])[0];
+      // })
       this.$store.commit({ type: 'setTheoreticalDiff', diff: this.allInteractionsData.theoreticalDiff });
       console.log(this.allInteractionsData);
     },
-    async getInteractions() {
+    async getInteractionsData() {
       const ids = this.materials.reduce((acc, { _id, labels }) => {
         if (!acc.includes(_id)) acc.push(_id);
         labels.forEach(label => {
@@ -1349,10 +1354,10 @@ export default {
       this.wtmInteractions = res;
       return res;
     },
-    async getDBankInteractions() {
+    async getDBankInteractionsData() {
       const isAllSupplements = this.materials.every(material => material.type !== 'drug');
       if (!this.materialsLength || isAllSupplements) {
-        this.dBankInteractions = [];
+        // this.dBankInteractions = [];
         return;
       }
       let { page } = this.$route.query;
@@ -1435,7 +1440,7 @@ export default {
       if (this.materialsLength <= 1 || result.isIncluded) return [];
       const [materialName] = this.$store.getters.materialRealName(result.txt);
       const seenIds = {};
-      let interactions = this.formatedInteractions.reduce((acc, interaction) => {
+      let interactions = this.interactions.reduce((acc, interaction) => {
         const doTake = !seenIds[interaction._id] && (interaction.name.includes(materialName) || interaction.name.includes(result.txt));
         seenIds[interaction._id] = true;
         if (doTake) {

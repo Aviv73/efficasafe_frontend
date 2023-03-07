@@ -372,8 +372,6 @@ export default {
       this.isShowPosSupp = !this.isShowPosSupp
     },
     emitSort(sortBy, isChecked) {
-      console.log('isChecked', isChecked);
-      console.log('asdasddassad', this.sortParams);
       this.$emit('list-sorted', { sortBy, side: this.sortBySide, isDesc: !isChecked })
       if (this.$route.name === 'Results') {
         const newSort = [sortBy, isChecked]
