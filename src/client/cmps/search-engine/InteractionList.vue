@@ -123,6 +123,10 @@ export default {
     };
   },
   watch: {
+    '$route.query.page'(val) {
+      if (isNaN(+val)) return;
+      this.page = +val;
+    },
     page(val) {
       this.$emit('page-changed', val);
     },
