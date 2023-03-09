@@ -329,7 +329,7 @@ export default {
       dBankFetchRes: {},
       intFetchRes: {},
 
-      pagination: { limit: 50, page: (this.$route.query?.page || 1) - 1 }
+      pagination: { limit: 50, page: +(this.$route.query?.page || 1) - 1 }
     };
   },
   metaInfo() {
@@ -1103,8 +1103,10 @@ export default {
       this.isArrowShown = false;
     },
     handlePaging(page) {
+      if (isNaN(+page)) return;
+      if ((page - 1) === this.pagination.page) return;
       this.pagination.page = page-1;
-      this.$router.push({ query: { q: [...this.$route.query.q], page } });
+      this.$router.push({ query: { ...this.$route.query, q: [...(this.$route.query.q || [])], page } });
     },
     handleCtaBtn() {
       if (this.loggedInUser && !this.loggedInUser.email_verified) this.$emit('showValidate');
@@ -1471,8 +1473,10 @@ export default {
       return this.sortInteractions(interactions);
     },
     handleSort({ sortBy, side, isDesc }) {
-      this.pagination.page = 0;
-      // this.$router.push({ query: { q: [...this.$route.query.q], page: this.pagination.page+1 } });
+      if (this.pagination.page) {
+        this.pagination.page = 0;
+        this.$router.push({ query: { ...this.$route.query, q: [...(this.$route.query.q || [])], page: this.pagination.page+1 } });
+      }
       // let { page } = this.$route.query;
       // if (!page) page = 1;
       // const limit = Math.max(this.pageCount, this.dBankPageCount);

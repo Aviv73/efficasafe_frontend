@@ -483,6 +483,7 @@ export default {
       this.side2Material = side2Material;
     },
     async getLinks() {
+      if (!this.interaction) return;
       const criteria = {
         isSearchResults: true,
         q: [this.interaction.affected_drug.name, this.interaction.subject_drug.name]
