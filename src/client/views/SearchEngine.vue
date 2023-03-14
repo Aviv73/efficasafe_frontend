@@ -286,15 +286,6 @@ export default {
       isPBLoading: false,
       materials: [],
       allInteractionsData: {},
-      // allInteractions: [],
-      // interactions: [],
-      // pageCount: 0,
-      // total: 0,
-      interactionsColorCountMap: { red: 0, yellow: 0, green: 0 },
-      // dBankInteractions: [],
-      // dBankPageCount: 0,
-      // dBankTotal: 0,
-      dBankInteractionsColorCountMap: { red: 0, yellow: 0, green: 0 },
       positiveInteractions: [],
       suppPositiveInteractions: [],
       emptySuppPositiveInteractions: [],
@@ -339,10 +330,14 @@ export default {
   },
   watch: {
     listType() {
-      this.getResults();
+      // this.getResults();
     },
     '$route.query': {
       async handler(to, from) {
+        if (
+          to && from && (to.page !== from.page) &&
+          JSON.stringify(to.q) === JSON. stringify(from.q)
+        ) return;
         const _dontReload = this.dontReload;
         this.dontReload = false;
         if (_dontReload) return;
@@ -398,7 +393,7 @@ export default {
       //for paging       
       if (from && JSON.stringify(from.query) === JSON.stringify(to.query) && from.name !== to.name && from.query.page !== 1) {
         if (this.$route.query.q) {
-          this.$router.replace({ query: { q: [...this.$route.query.q], page: 1 } }).catch(() => {});
+          this.$router.replace({ query: { ...this.$route.query, q: [...this.$route.query.q], page: 1 } }).catch(() => {});
         }
       }
       const routesOrder = {
@@ -422,14 +417,17 @@ export default {
     // }
   },
   computed: {
-    allInteractions() {
+    fetchResultInteractions() {
       return this.allInteractionsData?.interactions || [];
     },
+    allInteractions() {
+      return this.slicePage(this.fetchResultInteractions, this.pagination);
+    },
     dBankInteractions() {
-      return this.allInteractions?.filter(c => c.source === 'dBank') || [];
+      return this.slicePage(this.fetchResultInteractions.filter(c => c.source === 'dBank'), this.pagination);
     },
     interactions() {
-      return this.allInteractions?.filter(c => c.source !== 'dBank') || [];
+      return this.slicePage(this.fetchResultInteractions.filter(c => c.source !== 'dBank'), this.pagination);
     },
     dBankTotal() {
       return this.allInteractionsData?.dBankTotal || 0
@@ -438,24 +436,24 @@ export default {
       return Math.ceil(this.dBankTotal / this.pagination.limit);
     },
     total() {
-      return this.allInteractionsData?.total || 0
-      // return this.allInteractionsData.regTotal;
-      // return this.materialsLength === 1
-      //   ? this.allInteractionsData.regTotal
-      //   : this.interactions.reduce((acc, i) => {
-      //       if (i.side2Material) acc++;
-      //       else {
-      //         const { _id } = i.side2Label || {};
-      //         const materials = this.materials.filter(material => !material.isIncluded && material.labels.some(label => label._id === _id));
-      //         acc += materials.length;
-      //       }
-      //       return acc;
-      //     }, 0);
+      return this.allInteractionsData?.total || 0;
     },
-    pageCount() {
+    allPageCount() {
       return Math.ceil(this.total / this.pagination.limit);
     },
+    pageCount() {
+      return Math.ceil(this.allInteractionsData?.regTotal / this.pagination.limit);
+    },
+    interactionsColorCountMap() {
+      return this.allInteractionsData?.interactionsColorCountMap || { red: 0, yellow: 0, green: 0 };
+    },
+    dBankInteractionsColorCountMap() {
+      return this.allInteractionsData?.dBankInteractionsColorCountMap || { red: 0, yellow: 0, green: 0 };
+    },
     
+
+
+
 
     disabledTitle() {
       return this.formatedMaterials.length <= 1 ? ` This link is not supported with a single result, Please insert more material/s ` : '';
@@ -507,28 +505,9 @@ export default {
       if (this.listType === 'supp') return this.interactions;
       else if (this.listType === 'drug') return this.dBankInteractions;
       else return this.allInteractions;
-      // else {
-      //   const isAllSupplements = this.materials.every(material => material.type !== 'drug');
-      //   if (isAllSupplements) return this.interactions;
-      //   // return this.allInteractions;
-      //   let { page } = this.$route.query;
-      //   if (!page) page = 1;
-      //   const limit = Math.max(this.pageCount, this.dBankPageCount);
-      //   if (limit == page) return this.allInteractions;
-      //   return this.dBankInteractions;
-      // }
     },
-    // getRelevetTotal() {
-    //   // if (this.listType === 'supp') return this.intFetchRes.total || 0;
-    //   // else if (this.listType === 'drug') return this.dBankFetchRes.total || 0;
-    //   // return this.intFetchRes.total + this.dBankFetchRes.total;
-    //   return this.total;
-    // },
     getReleventPageCount() {
-      // if (this.listType === 'supp') return this.intFetchRes.pageCount || 0;
-      // else if (this.listType === 'drug') return this.dBankFetchRes.pageCount || 0;
-      // return Math.max(this.intFetchRes.pageCount, this.dBankFetchRes.pageCount);
-      if (this.listType === 'all') return this.allInteractionsData.pageCount;
+      if (this.listType === 'all') return this.allPageCount;
       if (this.listType === 'supp') return this.pageCount;
       else return this.dBankPageCount;
     },
@@ -757,10 +736,6 @@ export default {
       });
       return formatedSuppPositiveReds;
     },
-    // formatedInteractions() {
-    //  // return this.interactions;
-      // return this.formatInteractions(this.interactions);
-    // },
     formatedMaterials() {
       return this.materials.reduce((acc, material) => {
         const result = acc.find(res => res.txt === material.userQuery);
@@ -778,42 +753,6 @@ export default {
     },
     totalRefsCount() {
       return this.allInteractionsData?.totalRefsCount + this.$store.getters.supplementsRefsNonDups.length || 0;
-      // const dBankRefsCount = this.dBankInteractions.reduce((acc, { references }) => {
-      //   acc += Object.values(references).reduce((innerAcc, refsArr) => {
-      //     innerAcc += refsArr.length;
-      //     return innerAcc;
-      //   }, 0);
-      //   return acc;
-      // }, 0);
-      // if (!this.total) return dBankRefsCount;
-      // const seenRefsMap = {};
-      // const refsCount = this.interactions.reduce((acc, { side1Material, refs }) => {
-      //   refs.forEach(ref => {
-      //     if (!seenRefsMap[side1Material._id]) seenRefsMap[side1Material._id] = {};
-
-      //     if (!seenRefsMap[side1Material._id][ref + '']) {
-      //       acc++;
-      //       seenRefsMap[side1Material._id][ref + ''] = true;
-      //     }
-      //   });
-      //   return acc;
-      // }, 0);
-      // const pathwayRefsCount = this.materials.reduce((acc, { _id, pathways }) => {
-      //   pathways.forEach(pathway => {
-      //     if (((pathway.type === 'enzyme' || pathway.type === 'transporter') && !pathway.actions.includes('substrate') && !pathway.actions.includes('binder')) || (pathway.type === 'carrier' && (pathway.actions.includes('inducer') || pathway.actions.includes('inhibitor')))) return;
-      //     if (!seenRefsMap[_id]) seenRefsMap[_id] = {};
-      //     pathway.references.forEach(ref => {
-      //       if (!seenRefsMap[_id][ref + '']) {
-      //         acc++;
-      //         seenRefsMap[_id][ref + ''] = true;
-      //       }
-      //     });
-      //   });
-
-      //   return acc;
-      // }, 0);
-
-      // return refsCount + dBankRefsCount + pathwayRefsCount + this.$store.getters.supplementsRefsNonDups.length;
     },
     totalInteractionCount() {
       if (this.$route.name === 'Boosters') {
@@ -893,6 +832,11 @@ export default {
     }
   },
   methods: {
+    slicePage(ints, { page, limit }) {
+      const start = page * limit;
+      const end = start + limit;
+      return ints.slice(start, end);
+    },
     async getAllOpties() {
       const materialIds = this.materials.reduce((acc, material) => {
         if (material.type !== 'drug') return acc;
@@ -1124,9 +1068,8 @@ export default {
 
       this.isLoading = true;
 
-      // const prms = [this.getInteractions(), this.getDBankInteractions(), this.getWtmInteractions()];
-      const prms = [this.getAllInteractionsData(), this.getInteractionsData(), this.getDBankInteractionsData(), this.getWtmInteractions()];
-      await Promise.all(prms);
+      await this.getAllInteractionsData();
+      this.wtmInteractions = JSON.parse(JSON.stringify(this.fetchResultInteractions));
       // this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions);
       // this.handleSort_onLocalData();
       this.isLoading = false;
@@ -1290,92 +1233,16 @@ export default {
       const drugBankId = drugBankIds.length === 1 ? drugBankIds[0] : drugBankIds;
       const dBankFilterBy = { drugBankId, showAll: this.isShowAllDBI };
 
-      const criteria = { intsFilterBy, dBankFilterBy, sortParams: this.sortParams, pagination: this.pagination, materials: this.materials, listType: this.listType };
-      this.allInteractionsData = await this.$store.dispatch({ type: 'loadAllInteractionSearchData', criteria });
-      // this.allInteractionsData.interactions = this.allInteractionsData.interactions.map(c => {
-      //   if (c.source === 'dBank') return c;
-      //   return this.formatInteractions([c])[0];
-      // })
-      this.$store.commit({ type: 'setTheoreticalDiff', diff: this.allInteractionsData.theoreticalDiff });
-    },
-    async getInteractionsData() {
-      const ids = this.materials.reduce((acc, { _id, labels }) => {
-        if (!acc.includes(_id)) acc.push(_id);
-        labels.forEach(label => {
-          if (!acc.includes(label._id)) acc.push(label._id);
-        });
-        return acc;
-      }, []);
-      let { page } = this.$route.query;
-      if (!page) page = 1;
-      const filterBy = {
-        isSearchResults: true,
-        page: --page,
-        limit: 10,
-        id: ids,
-        materialCount: this.materialsLength,
-        // sort: this.sortOpts
-      };
-
-      // const { interactions, pageCount, total, searchState } = await this.$store.dispatch({ type: 'getInteractions', filterBy, cacheKey: `/search?${this.$route.fullPath.split('?')[1]}` });
-      // const { interactions, pageCount, total, searchState } = await this.loadInteractions({...filterBy});
-
-      // this.intFetchRes = {interactions, pageCount, total};
-
-      // this.pageCount = pageCount;
-      // // this.interactions = interactions;
-      // this.total =
-      //   this.materialsLength === 1
-      //     ? total
-      //     : interactions.reduce((acc, i) => {
-      //         if (i.side2Material) acc++;
-      //         else {
-      //           const { _id } = i.side2Label;
-      //           const materials = this.materials.filter(material => !material.isIncluded && material.labels.some(label => label._id === _id));
-      //           acc += materials.length;
-      //         }
-      //         return acc;
-      //       }, 0);
-      filterBy.listsCount = true;
-      this.interactionsColorCountMap = await this.$store.dispatch({ type: 'getInteractions', filterBy });
-      // this.restoreState('Results', searchState);
-    },
-    async getWtmInteractions() {
-      const dbIntPrm = this.$store.dispatch({ type: 'getDBankInteractions', criteria: {
-        drugBankId: this.materials.filter(m => !m.isIncluded).map(mat => mat.drugBankId),
-        page: 0, limit: Number.MAX_SAFE_INTEGER,  showAll: this.isShowAllDBI
-      } });
-      const intPrm = this.loadInteractions({
-        isSearchResults: true,
-        page: 0,
+      const paginationForFetch = {
+        ...this.pagination,
         limit: Number.MAX_SAFE_INTEGER,
-        // id: ids,
-        materialCount: this.materialsLength
-      }, false);
-      const [dbRes, intRes] = await Promise.all([dbIntPrm, intPrm]);
-      const res = [...dbRes.dBankInteractions, ...this.formatInteractions(intRes.interactions)];
-      this.wtmInteractions = res;
-      return res;
-    },
-    async getDBankInteractionsData() {
-      const isAllSupplements = this.materials.every(material => material.type !== 'drug');
-      if (!this.materialsLength || isAllSupplements) {
-        // this.dBankInteractions = [];
-        return;
+        page: 0
       }
-      let { page } = this.$route.query;
-      if (!page) page = 1;
-      const drugBankIds = this.materials.filter(m => !m.isIncluded).map(mat => mat.drugBankId);
-      const drugBankId = drugBankIds.length === 1 ? drugBankIds[0] : drugBankIds;
-      const criteria = { drugBankId, page: --page, limit: 10, showAll: this.isShowAllDBI, sort: this.sortOpts };
-      // const { dBankInteractions, pageCount, total, diff } = await this.$store.dispatch({ type: 'getDBankInteractions', criteria, cacheKey: `/search/drug2drug?${this.$route.fullPath.split('?')[1]}&filter=${this.isShowAllDBI}` });
-      // this.dBankFetchRes = {dBankInteractions, pageCount, total};
-      // this.dBankInteractions = dBankInteractions;
-      // this.dBankPageCount = pageCount;
-      // this.dBankTotal = total;
-      // this.$store.commit({ type: 'setTheoreticalDiff', diff });
-      criteria.listsCount = true;
-      this.dBankInteractionsColorCountMap = await this.$store.dispatch({ type: 'getDBankInteractions', criteria });
+
+      const criteria = { intsFilterBy, dBankFilterBy, sortParams: this.sortParams, pagination: paginationForFetch, materials: this.materials, listType: this.listType };
+      this.allInteractionsData = await this.$store.dispatch({ type: 'loadAllInteractionSearchData', criteria });
+
+      if (!this.isShowAllDBI) this.$store.commit({ type: 'setTheoreticalDiff', diff: this.allInteractionsData.theoreticalDiff });
     },
     async getMaterials() {
       if (!this.$route.query.q || !this.$route.query.q.length) {
@@ -1477,34 +1344,7 @@ export default {
         this.pagination.page = 0;
         this.$router.push({ query: { ...this.$route.query, q: [...(this.$route.query.q || [])], page: this.pagination.page+1 } });
       }
-      // let { page } = this.$route.query;
-      // if (!page) page = 1;
-      // const limit = Math.max(this.pageCount, this.dBankPageCount);
-      // this.sortOpts = {[sortBy]: 1, side};
       this.sortParams = { sortBy, side, isDesc };
-      // this.sortOpts = {};
-      // const sortOrder = isDesc ? 1 : -1;
-      // // const sortOrder = isDesc ? -1 : 1;
-      // if (this.listType === 'drug' || (this.listType === 'all')) {
-      //   if (sortBy === 'name') {
-      //     const sideName = side === 1 ? 'subject_drug' : 'affected_drug';
-      //     this.sortOpts[sideName+'.name'] = sortOrder;
-      //   }
-      //   // else if (sortBy === 'recommendation') this.sortOpts.recommendation = sortOrder;
-      //   else if (sortBy === 'recommendation') this.sortOpts.recommendationOrder = sortOrder;
-      //   else if (sortBy === 'evidenceLevel') this.sortOpts.evidence_level = sortOrder;
-      // }
-      // if (this.listType === 'all') {
-      //   if (sortBy === 'name') {
-      //     const sideNameOpt1 = side === 1 ? 'side1Material' : 'side2Material';
-      //     const sideNameOpt2 = side === 1 ? 'side1Material' : 'side2Label';
-      //     this.sortOpts[sideNameOpt1+'.name'] = sortOrder;
-      //     this.sortOpts[sideNameOpt2+'.name'] = sortOrder;
-      //   }
-      //   // else if (sortBy === 'recommendation') this.sortOpts.recommendation = sortOrder;
-      //   else if (sortBy === 'recommendation') this.sortOpts.order = sortOrder;
-      //   else if (sortBy === 'evidenceLevel') this.sortOpts.evidenceLevel = sortOrder;
-      // }
       this.getResults();
     },
     handleSort_onLocalData(data) {
@@ -1639,11 +1479,11 @@ export default {
       const { q } = this.$route.query;
       if (diff < 0) {
         const lastQ = q[q.length - 1];
-        this.$router.push({ query: { q: q.slice(0, -1) } });
+        this.$router.push({ query: { ...this.$route.query, q: q.slice(0, -1), page: 1 } });
         this.undoneQueries.push(lastQ);
       } else {
         const lastQ = this.undoneQueries.pop();
-        this.$router.push({ query: { q: [...q, lastQ] } });
+        this.$router.push({ query: { ...this.$route.query, q: [...q, lastQ], page: 1 } });
       }
     },
     isOneUnderStudy({ materials, isIncluded }) {
@@ -1723,10 +1563,10 @@ export default {
         }
       } else {
         if (item.nestedMaterials.length) {
-          this.$router.push({ query: { q: item.nestedMaterials } });
+          this.$router.push({ query: { ...this.$route.query, q: item.nestedMaterials, page: 1 } });
           return;
         }
-        this.$router.push({ query: { q: [item.txt] } });
+        this.$router.push({ query: { ...this.$route.query, q: [item.txt], page: 1 } });
       }
     },
     removeMaterials(query) {
@@ -1750,7 +1590,6 @@ export default {
       this.$store.commit({ type: 'setTheoreticalDiff', diff: 0 });
       eventBus.$emit(EV_search_results_cleared);
       this.$router.push({ name: this.$route.name }).catch(() => {});
-      // this.materials = [];
       this.reset();
     },
     getResultIcon(result) {
@@ -1818,19 +1657,11 @@ export default {
       if (resetMaterials) {
         this.materials = [];
       }
-      // this.interactions = [];
-      // this.dBankInteractions = [];
       this.allInteractionsData = {};
       this.positiveInteractions = [];
       this.suppPositiveInteractions = [];
       this.idsToTurnRed = [];
       this.emptySuppPositiveInteractions = [];
-      this.interactionsColorCountMap = { red: 0, yellow: 0, green: 0 };
-      this.dBankInteractionsColorCountMap = { red: 0, yellow: 0, green: 0 };
-      // this.pageCount = 0;
-      // this.dBankPageCount = 0;
-      // this.total = 0;
-      // this.dBankTotal = 0;
       this.sortOptions = null;
       this.isLoading = false;
       this.isPBLoading = false;
@@ -1868,7 +1699,6 @@ export default {
         }
       });
       eventBus.$on('add-to-search', async toAdd => {
-        // this.isLoading = true;
         const criteria = { autocomplete: true, q: toAdd.name };
         const results = await this.$store.dispatch({ type: 'getMaterials', criteria });
         const materialsToAdd = results.materials.filter(c => c.txt === toAdd.name);
@@ -1879,7 +1709,6 @@ export default {
           await this.addMaterials(materialsToAdd[0]);
           await this.getMaterials();
         }
-        // this.isLoading = false;
       });
     },
     removeEventBusListeners() {
@@ -1889,13 +1718,6 @@ export default {
       eventBus.$off('scroll-element-to-top');
       eventBus.$off('add-to-search');
     },
-    // handelStartDelayedTour(tourType, storageName, routeName){
-    //     setTimeout(() => {
-    //         if(this.$route.name === routeName && !storageService.load(storageName) && !this.isScreenNarrow){
-    //             this.$tours[tourType].start();
-    //         }
-    //     }, 40000)
-    // },
     handleVideoTutorial() {
       if (!storageService.load('seen-tutorial')) {
         storageService.store('seen-tutorial', true);
@@ -1919,29 +1741,7 @@ export default {
   activated() {
       if (!this.$route.query.q) this.reset();
   },
-  // deactivated() {
-  //   // this.scrollPos = document.querySelector('.inner-view').scrollY;
-  //   this.scrollPos = 120;
-  // },
-  // activated() {
-  //   // setTimeout() 
-  //   setTimeout(() => {
-  //     document.querySelector('.inner-view').scrollTo(0, this.scrollPos);
-  //   }, 1000);
-  //   // setTimeout(() => {
-  //   //   this.innerListEl = this.$el.querySelector('.inner-view');
-  //   //   if (this.innerListEl) {
-  //   //     this.innerListEl.addEventListener('scroll', ev => {
-  //   //       this.$store.commit({ type: 'setInteractionListHight', hight: ev.target.scrollTop });
-  //   //     });
-  //   //   }
-  //   // }, 1000);
-  // },
   async mounted() {
-    // this.$nextTick(() => {
-    //   this.$refs.elRouter.scrollTop = this.$store.state.scrollPosition;
-    // });
-
     const el = this.$refs.whatToMonitorLink.$el;
     let options = {
       rootMargin: '0px 0px 0px 0px',
