@@ -337,7 +337,7 @@ export default {
     },
     showResults(type) {
       this.$store.commit({ type: 'setListType', listType: type })
-      this.$router.push({ query: { q: [...this.$route.query.q], page: 1 } }).catch(() => {})
+      this.$router.push({ query: { ...this.$route.query, q: [...this.$route.query.q], page: 1 } }).catch(() => {})
     },
     removeInteraction(idx) {
       const emptyInteraction = {

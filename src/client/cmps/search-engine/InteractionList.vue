@@ -38,7 +38,7 @@
       />
       <result-list-vertical v-else-if="!isLoading && isVertical" :materials="materials" />
 
-      <div v-if="!isReaultsPage && theoreticalDiff" class="checkbox-container-search">
+      <div v-if="!isReaultsPage && (theoreticalDiff || isChecked)" class="checkbox-container-search">
         <div class="checkbox-container">
           <div v-if="listType !== 'supp'">
             <checkbox class="checkbox" @change="handleCheckbox" :isChecked="isChecked" :biggerRadius="true"></checkbox>
