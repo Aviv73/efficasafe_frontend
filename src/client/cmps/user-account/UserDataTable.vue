@@ -1,6 +1,6 @@
 <template>
   <section class="user-data-table">
-    <table>
+    <table class="table-header">
       <thead>
         <tr>
           <th v-for="(header, idx) in headers" :key="idx" :class="{ 'link-header': header.title === 'Link', 'purchases-cell': $route.name === 'Purchases', 'mobile-updates-header': isSearchesMobile && header.title === 'Updates' }">
@@ -12,57 +12,106 @@
             <span v-else>{{ header.title }}</span>
           </th>
         </tr>
-        <tr v-for="(item, rowIdx) in items" :key="rowIdx">
-          <td v-for="(header, colIdx) in headers" :key="colIdx" :class="{ 'purchases-cell': $route.name === 'Purchases' }">
-            <router-link class="search-link" :to="getSearchLink(item['url'])" title="View search">
-              <span v-if="header.field === 'title'" class="font-medium">
+      </thead>
+    </table>
+    <div class="table-body">
+      <table>
+
+        <tbody>
+          <tr v-for="(item, rowIdx) in items" :key="rowIdx">
+            <td v-for="(header, colIdx) in headers" :key="colIdx" :class="{ 'purchases-cell': $route.name === 'Purchases' }">
+              <router-link class="search-link" :to="getSearchLink(item['url'])" title="View search">
+                <span v-if="header.field === 'title'" class="font-medium">
+                  {{ item[header.field] }}
+                </span>
+              </router-link>
+              <span v-if="header.title === 'Updates'" class="font-medium">
+                <tooltip class="bell-container" v-if="item.updates && item.updates.length" on="focus" :bottom="!isSearchesMobile" :left="isSearchesMobile">
+                  <template #content>
+                    <div class="notification-container" :class="{ narrow: isSearchesMobile }">
+                      <div class="rapper" v-for="(update, idx) in item.updates" :key="idx">
+                        <h3>
+                          The <span>{{ update.interactionName }}</span> interaction has been updated:
+                        </h3>
+                        <ul>
+                          <li v-if="update.txt">Some text has been changed</li>
+                          <li v-if="update.newRefs.length">{{ refsAddedTxt(update.newRefs) }}</li>
+                          <li v-if="update.loe">{{ `The level of evidence has changed from ${update.loe.old} to ${update.loe.new}` }}</li>
+                          <li v-if="update.rec">
+                            The recommendation has changed from <span :style="{ 'background-color': getRecColor(update.rec.old) }">{{ update.rec.old }}</span> to <span :style="{ 'background-color': getRecColor(update.rec.new) }">{{ update.rec.new }}</span>
+                          </li>
+                        </ul>
+                        <hr v-if="idx !== item.updates.length - 1" />
+                      </div>
+                    </div>
+                  </template>
+                  <bell-icon @mousedown="removeUpdate(rowIdx, $event)" class="bell-icon" title="Interaction Update" />
+                </tooltip>
+              </span>
+              <span v-else-if="(header.field === 'at') && item.at">
+                {{ item[header.field] | moment('DD/MM/YYYY') }}
+              </span>
+              <span v-else-if="header.field === 'price'"> {{ item.coin || '$' }}{{ item[header.field] }} </span>
+              <span v-else-if="header.field === 'plan'">
                 {{ item[header.field] }}
               </span>
-            </router-link>
-            <span v-if="header.title === 'Updates'" class="font-medium">
-              <tooltip class="bell-container" v-if="item.updates && item.updates.length" on="focus" :bottom="!isSearchesMobile" :left="isSearchesMobile">
-                <template #content>
-                  <div class="notification-container" :class="{ narrow: isSearchesMobile }">
-                    <div class="rapper" v-for="(update, idx) in item.updates" :key="idx">
-                      <h3>
-                        The <span>{{ update.interactionName }}</span> interaction has been updated:
-                      </h3>
-                      <ul>
-                        <li v-if="update.txt">Some text has been changed</li>
-                        <li v-if="update.newRefs.length">{{ refsAddedTxt(update.newRefs) }}</li>
-                        <li v-if="update.loe">{{ `The level of evidence has changed from ${update.loe.old} to ${update.loe.new}` }}</li>
-                        <li v-if="update.rec">
-                          The recommendation has changed from <span :style="{ 'background-color': getRecColor(update.rec.old) }">{{ update.rec.old }}</span> to <span :style="{ 'background-color': getRecColor(update.rec.new) }">{{ update.rec.new }}</span>
-                        </li>
-                      </ul>
-                      <hr v-if="idx !== item.updates.length - 1" />
+              <span v-else-if="(header.field === 'until') && item.until">
+                {{ item[header.field] | moment('DD/MM/YYYY') }}
+              </span>
+              <span v-else-if="header.field === 'notes'" class="td-actions">
+                <button v-if="item" class="note-btn">
+                  <img title="Notes" v-if="item.notes && item.notes.length" @click.stop="openNoteModal(item)" class="note-img" src="@/client/assets/icons/sticky-note.svg" alt="" />
+                  <img title="Add a note" v-else @click.stop="openNoteModal(item)" class="note-img" src="@/client/assets/icons/add-circle.svg" alt="" />
+                  <div class="notes-container" :id="item.at">
+                    <h3 class="notes-title">{{ item.title | capitalize }}</h3>
+                    <button @click="closeNotes" class="close-notes-btn">Close</button>
+                    <div class="note-list">
+                      <div class="note-preview" v-for="(note, idx) in item.notes" :key="note.id">
+                        <button class="remove-note-btn" @click="onRemoveNote(idx)">+</button>
+                        <p class="date">
+                          <template v-if="note.date">
+                            {{ note.date | moment('DD MMM YYYY | h:mm A') }}
+                          </template>
+                        </p>
+                        <p contenteditable="true" @focusout="onSaveEditedNote(idx, $event)" class="txt">{{ note.txt }}</p>
+                      </div>
+                    </div>
+                    <div class="add-note-container">
+                      <textarea @focusout="onSaveNote" class="notes-input" placeholder="Add note" v-model="newNoteTxt"></textarea>
+                      <button class="notes-btn" :class="{ show: isShowSaveBtn }" @click="onSaveNote">Save</button>
                     </div>
                   </div>
-                </template>
-                <bell-icon @mousedown="removeUpdate(rowIdx, $event)" class="bell-icon" title="Interaction Update" />
-              </tooltip>
-            </span>
-            <span v-else-if="header.field === 'at'">
-              {{ item[header.field] | moment('DD/MM/YYYY') }}
-            </span>
-            <span v-else-if="header.field === 'price'"> {{ item.coin || '$' }}{{ item[header.field] }} </span>
-            <span v-else-if="header.field === 'plan'">
-              {{ item[header.field] }}
-            </span>
-            <span v-else-if="header.field === 'until'">
-              {{ item[header.field] | moment('DD/MM/YYYY') }}
-            </span>
-            <span v-else-if="header.field === 'notes'" class="td-actions">
-              <button v-if="item" class="note-btn">
-                <img title="Notes" v-if="item.notes && item.notes.length" @click.stop="openNoteModal(item)" class="note-img" src="@/client/assets/icons/sticky-note.svg" alt="" />
-                <img title="Add a note" v-else @click.stop="openNoteModal(item)" class="note-img" src="@/client/assets/icons/add-circle.svg" alt="" />
+                </button>
+              </span>
+              <span v-else-if="header.field === 'url'" class="td-actions">
+                <router-link class="search-link" :to="getSearchLink(item['url'])" title="View search"> View </router-link>
+              </span>
+              <span v-else-if="!header.field && $route.name === 'Purchases'">
+                <button class="end-subscrition-btn" @click="onEndSubscription(item)" v-if="item.until === 'Ongoing' && item.price !== 0">End subscription</button>
+                <p v-else-if="item.canceledAt">Subscription Canceled at: {{ item.canceledAt | moment('DD/MM/YYYY') }}</p>
+              </span>
+              <span class="flex-space-between td-actions" v-else-if="!header.title && isSearchesMobile" style="position: relative">
+                <tooltip :ref="`tooltip-${item.at}`" right on="focus">
+                  <template #content>
+                    <div class="mini-menu">
+                      <router-link class="mini-menu-btn" :to="getSearchLink(item['url'])">View</router-link>
+                      <button :id="`minimenu${item.at}`" class="mini-menu-btn" @click="openNoteModal(item)">Add/view notes</button>
+                      <button class="mini-menu-btn" @click="onRemove(item)">Delete</button>
+                    </div>
+                  </template>
+                  <img src="@/client/assets/icons/three-dots.svg" alt="" />
+                </tooltip>
                 <div class="notes-container" :id="item.at">
                   <h3 class="notes-title">{{ item.title | capitalize }}</h3>
-                  <button @click="closeNotes" class="close-notes-btn">Close</button>
+                  <button @click.stop="closeNotes" class="close-notes-btn">Close</button>
                   <div class="note-list">
                     <div class="note-preview" v-for="(note, idx) in item.notes" :key="note.id">
                       <button class="remove-note-btn" @click="onRemoveNote(idx)">+</button>
-                      <p class="date">{{ note.date | moment('DD MMM YYYY | h:mm A') }}</p>
+                      <p class="date">
+                        <template v-if="note.date">
+                          {{ note.date | moment('DD MMM YYYY | h:mm A') }}
+                        </template>
+                      </p>
                       <p contenteditable="true" @focusout="onSaveEditedNote(idx, $event)" class="txt">{{ note.txt }}</p>
                     </div>
                   </div>
@@ -71,51 +120,17 @@
                     <button class="notes-btn" :class="{ show: isShowSaveBtn }" @click="onSaveNote">Save</button>
                   </div>
                 </div>
-              </button>
-            </span>
-            <span v-else-if="header.field === 'url'" class="td-actions">
-              <router-link class="search-link" :to="getSearchLink(item['url'])" title="View search"> View </router-link>
-            </span>
-            <span v-else-if="!header.field && $route.name === 'Purchases'">
-              <button class="end-subscrition-btn" @click="onEndSubscription(item)" v-if="item.until === 'Ongoing' && item.price !== 0">End subscription</button>
-              <p v-else-if="item.canceledAt">Subscription Canceled at: {{ item.canceledAt | moment('DD/MM/YYYY') }}</p>
-            </span>
-            <span class="flex-space-between td-actions" v-else-if="!header.title && isSearchesMobile" style="position: relative">
-              <tooltip :ref="`tooltip-${item.at}`" right on="focus">
-                <template #content>
-                  <div class="mini-menu">
-                    <router-link class="mini-menu-btn" :to="getSearchLink(item['url'])">View</router-link>
-                    <button :id="`minimenu${item.at}`" class="mini-menu-btn" @click="openNoteModal(item)">Add/view notes</button>
-                    <button class="mini-menu-btn" @click="onRemove(item)">Delete</button>
-                  </div>
-                </template>
-                <img src="@/client/assets/icons/three-dots.svg" alt="" />
-              </tooltip>
-              <div class="notes-container" :id="item.at">
-                <h3 class="notes-title">{{ item.title | capitalize }}</h3>
-                <button @click.stop="closeNotes" class="close-notes-btn">Close</button>
-                <div class="note-list">
-                  <div class="note-preview" v-for="(note, idx) in item.notes" :key="note.id">
-                    <button class="remove-note-btn" @click="onRemoveNote(idx)">+</button>
-                    <p class="date">{{ note.date | moment('DD MMM YYYY | h:mm A') }}</p>
-                    <p contenteditable="true" @focusout="onSaveEditedNote(idx, $event)" class="txt">{{ note.txt }}</p>
-                  </div>
-                </div>
-                <div class="add-note-container">
-                  <textarea @focusout="onSaveNote" class="notes-input" placeholder="Add note" v-model="newNoteTxt"></textarea>
-                  <button class="notes-btn" :class="{ show: isShowSaveBtn }" @click="onSaveNote">Save</button>
-                </div>
-              </div>
-            </span>
-            <span class="flex-space-between td-actions" v-else-if="!header.title">
-              <button class="delete-btn" title="Delete search" @click="onRemove(item)">
-                <delete-icon title="" />
-              </button>
-            </span>
-          </td>
-        </tr>
-      </thead>
-    </table>
+              </span>
+              <span class="flex-space-between td-actions" v-else-if="!header.title">
+                <button class="delete-btn" title="Delete search" @click="onRemove(item)">
+                  <delete-icon title="" />
+                </button>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <modal-wrap v-if="isModalActive" :isActive="isModalActive" @close-modal="closeModal">
       <aside class="confirm-delete">
         <confirm-delete @close-modal="closeModal" :itemToDelete="itemToDelete" @delete-confirmed="emitDeleteItem" />
@@ -271,3 +286,20 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+  .user-data-table {
+    overflow: unset;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    .table-body {
+      flex: 1;
+      // height: 100%;
+      overflow: auto;
+      // table {
+      // }
+      // margin-top: $header-height;
+    }
+  }
+</style>
