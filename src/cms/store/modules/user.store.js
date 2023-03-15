@@ -84,6 +84,7 @@ export const userStore = {
             if (['InteractionDetails', 'VinteractionDetails', 'Results', 'Boosters'].includes(router.history.current.name)) {
                 dispatch('notifyEndTrial');
             }
+            window.ap3c?.track?.({"v":0,"email":user.email,"first":user.firstName,"last":user.lastName});
             return user
         },
         notifyEndTrial({ getters }) {
