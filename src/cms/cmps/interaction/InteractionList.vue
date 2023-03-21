@@ -86,7 +86,7 @@
             </td>
             <td class="td-side">
               <div class="rec-level-ball" :title="item.recommendation || 'No recommendation'" :style="{ 'background-color': getInteractionColor(item.recommendation) }">
-                <span>{{recsMap[item.recommendation?.toLowerCase?.() || ''] || ''}}</span>
+                <span>{{recsMap[item.recommendation? item.recommendation.toLowerCase() : ''] || ''}}</span>
               </div>
             </td>
             <td
