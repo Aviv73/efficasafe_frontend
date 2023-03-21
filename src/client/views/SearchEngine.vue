@@ -163,7 +163,26 @@
             </li>
             <li class="search-engine-nav-link boosters-link">
               <PlayTourBtn :dontOpen="isScreenNarrow" @click.native="startBoostTour" />
-              <router-link class="link boosters pb-tour-step-0" :to="{ name: 'Boosters', query: this.$route.query }">
+              <tooltip v-if="disableOptiPage" left>
+                <template #content>
+                  <div class="tooltip-content">
+                    <span> Optimizers are shown only for drugs. </span>
+                  </div>
+                </template>
+                <router-link :event="disableOptiPage? '' : 'click'" :class="{ 'WTM-disabled': disableOptiPage }" :disabled="disableOptiPage" class="link boosters pb-tour-step-0" :to="{ name: 'Boosters', query: this.$route.query }">
+                  Optimizers
+                  <span v-if="isPBLoading">
+                    <img src="@/client/assets/imgs/dot-green-loader.gif" />
+                  </span>
+                  <span v-else>
+                    {{ '\xa0' }}
+                    <span class="badge" :style="positivesBadgeColor">
+                      {{ boostersCount }}
+                    </span>
+                  </span>
+                </router-link>
+              </tooltip>
+              <router-link v-else :event="disableOptiPage? '' : 'click'" :class="{ 'WTM-disabled': disableOptiPage }" :disabled="disableOptiPage" class="link boosters pb-tour-step-0" :to="{ name: 'Boosters', query: this.$route.query }">
                 Optimizers
                 <span v-if="isPBLoading">
                   <img src="@/client/assets/imgs/dot-green-loader.gif" />
@@ -334,7 +353,8 @@ export default {
     },
     '$route.query': {
       async handler(to, from) {
-        if (!this.$route.query?.q) return this.clearSearch();
+        const isEmpty = Array.isArray(this.$route.query.q)? !this.$route.query.q.length : !this.$route.query.q ;
+        if (isEmpty) return this.clearSearch();
         if (
           to && from && (to.page !== from.page) &&
           JSON.stringify(to.q) === JSON. stringify(from.q)
@@ -454,7 +474,9 @@ export default {
     
 
 
-
+    disableOptiPage() {
+      return !this.materials?.some(c => c.type === 'drug');
+    },
 
     disabledTitle() {
       return this.formatedMaterials.length <= 1 ? ` This link is not supported with a single result, Please insert more material/s ` : '';

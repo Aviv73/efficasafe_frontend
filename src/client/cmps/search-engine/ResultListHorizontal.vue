@@ -145,45 +145,47 @@
       <li class="horizontal-list-list-item" v-for="(interaction, idx) in interactions" :key="interaction._id + '-' + idx">
         <interaction-preview :interaction="interaction" :materials="materials" :link="$route.name !== 'Monitor'" :idx="idx" />
       </li>
-      <button v-if="(currSuppInteractions.length || emptySuppInteractions.length || suppRedInteractions.length) && isLoadingSuppInteractions" class="show-pos-supp-btn loading">
-        <p>Optimizers - supplements</p>
-        <loader class="loader" />
-      </button>
-      <div v-show="!isLoadingSuppInteractions">
-        <collapse v-if="interactionToRender.length && (currSuppInteractions.length || emptySuppInteractions.length || suppRedInteractions.length)" :showTimes="false" :initial-is-visible="isShowPosSupp">
-          <template #header>
-            <button @click="showPosSupp" class="show-pos-supp-btn">
-              <p>Optimizers - supplements ({{ suppCount }})</p>
-              <chevron-up-icon v-if="isShowPosSupp" />
-              <chevron-down-icon v-else />
-            </button>
-          </template>
-          <template #content>
-            <div>
-              <li class="horizontal-list-list-item" v-for="(interaction, idx) in suppInteractionsToShow" :key="interaction._id">
-                <interaction-preview :interaction="interaction" :materials="materials" :link="$route.name !== 'Monitor'" :idx="idx" :isSupp="true" :counter="renderKey" @removeInteraction="removeInteraction" @interactionDone="interactionDone" />
-              </li>
-              <li class="horizontal-list-list-item" v-for="(interaction, idx) in emptySuppInteractions" :key="interaction._id">
-                <interaction-preview :interaction="interaction" :materials="materials" :link="$route.name !== 'Monitor'" :idx="idx" :isSupp="true" @removeInteraction="removeInteraction" @interactionDone="interactionDone" />
-              </li>
-              <li class="horizontal-list-list-item" v-for="(interaction, idx) in suppRedInteractions" :key="interaction._id">
-                <interaction-preview :interaction="interaction" :materials="materials" :link="$route.name !== 'Monitor'" :idx="idx" :isSupp="true" @removeInteraction="removeInteraction" @interactionDone="interactionDone" />
-              </li>
-            </div>
-          </template>
-        </collapse>
-        <div v-if="!interactionToRender.length && (currSuppInteractions.length || emptySuppInteractions.length || suppRedInteractions)">
-          <li class="horizontal-list-list-item" v-for="(interaction, idx) in suppInteractionsToShow" :key="interaction._id">
-            <interaction-preview :interaction="interaction" :materials="materials" :link="$route.name !== 'Monitor'" :idx="idx" :counter="renderKey" :isSupp="true" @removeInteraction="removeInteraction" @interactionDone="interactionDone" />
-          </li>
-          <li class="horizontal-list-list-item" v-for="(interaction, idx) in emptySuppInteractions" :key="interaction._id">
-            <interaction-preview :interaction="interaction" :materials="materials" :link="$route.name !== 'Monitor'" :idx="idx" :isSupp="true" @removeInteraction="removeInteraction" @interactionDone="interactionDone" />
-          </li>
-          <li class="horizontal-list-list-item" v-for="(interaction, idx) in suppRedInteractions" :key="interaction._id">
-            <interaction-preview :interaction="interaction" :materials="materials" :link="$route.name !== 'Monitor'" :idx="idx" :isSupp="true" @removeInteraction="removeInteraction" @interactionDone="interactionDone" />
-          </li>
+      <template v-if="false">
+        <button v-if="(currSuppInteractions.length || emptySuppInteractions.length || suppRedInteractions.length) && isLoadingSuppInteractions" class="show-pos-supp-btn loading">
+          <p>Optimizers - supplements</p>
+          <loader class="loader" />
+        </button>
+        <div v-show="!isLoadingSuppInteractions">
+          <collapse v-if="interactionToRender.length && (currSuppInteractions.length || emptySuppInteractions.length || suppRedInteractions.length)" :showTimes="false" :initial-is-visible="isShowPosSupp">
+            <template #header>
+              <button @click="showPosSupp" class="show-pos-supp-btn">
+                <p>Optimizers - supplements ({{ suppCount }})</p>
+                <chevron-up-icon v-if="isShowPosSupp" />
+                <chevron-down-icon v-else />
+              </button>
+            </template>
+            <template #content>
+              <div>
+                <li class="horizontal-list-list-item" v-for="(interaction, idx) in suppInteractionsToShow" :key="interaction._id">
+                  <interaction-preview :interaction="interaction" :materials="materials" :link="$route.name !== 'Monitor'" :idx="idx" :isSupp="true" :counter="renderKey" @removeInteraction="removeInteraction" @interactionDone="interactionDone" />
+                </li>
+                <li class="horizontal-list-list-item" v-for="(interaction, idx) in emptySuppInteractions" :key="interaction._id">
+                  <interaction-preview :interaction="interaction" :materials="materials" :link="$route.name !== 'Monitor'" :idx="idx" :isSupp="true" @removeInteraction="removeInteraction" @interactionDone="interactionDone" />
+                </li>
+                <li class="horizontal-list-list-item" v-for="(interaction, idx) in suppRedInteractions" :key="interaction._id">
+                  <interaction-preview :interaction="interaction" :materials="materials" :link="$route.name !== 'Monitor'" :idx="idx" :isSupp="true" @removeInteraction="removeInteraction" @interactionDone="interactionDone" />
+                </li>
+              </div>
+            </template>
+          </collapse>
+          <div v-if="!interactionToRender.length && (currSuppInteractions.length || emptySuppInteractions.length || suppRedInteractions)">
+            <li class="horizontal-list-list-item" v-for="(interaction, idx) in suppInteractionsToShow" :key="interaction._id">
+              <interaction-preview :interaction="interaction" :materials="materials" :link="$route.name !== 'Monitor'" :idx="idx" :counter="renderKey" :isSupp="true" @removeInteraction="removeInteraction" @interactionDone="interactionDone" />
+            </li>
+            <li class="horizontal-list-list-item" v-for="(interaction, idx) in emptySuppInteractions" :key="interaction._id">
+              <interaction-preview :interaction="interaction" :materials="materials" :link="$route.name !== 'Monitor'" :idx="idx" :isSupp="true" @removeInteraction="removeInteraction" @interactionDone="interactionDone" />
+            </li>
+            <li class="horizontal-list-list-item" v-for="(interaction, idx) in suppRedInteractions" :key="interaction._id">
+              <interaction-preview :interaction="interaction" :materials="materials" :link="$route.name !== 'Monitor'" :idx="idx" :isSupp="true" @removeInteraction="removeInteraction" @interactionDone="interactionDone" />
+            </li>
+          </div>
         </div>
-      </div>
+      </template>
     </ul>
     <modal-wrap :isActive="isAllRecommendationsModalActive" @close-modal="closeAllRecommendations">
       <all-recommendations-modal @close-modal="closeAllRecommendations"> </all-recommendations-modal>

@@ -110,6 +110,7 @@ import ChevronUpIcon from 'vue-material-design-icons/ChevronUp';
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown';
 
 export default {
+  name: "LabelInteractionPreview",
   props: {
     interaction: {
       type: Object,
@@ -287,7 +288,7 @@ export default {
       return `${this.interaction.side1Material.name} & ${noIdGroupName}`;
     },
     getPathwayRefCount(materialId) {
-      const { pathways } = this.relatedMaterials.find(m => m._id === materialId);
+      const { pathways } = this.relatedMaterials.find(m => m._id === materialId) || { pathways: [] };
       const side2Pathways = pathways.reduce((acc, pathway) => {
         if (((pathway.type === 'enzyme' || pathway.type === 'transporter') && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))) || (pathway.type === 'carrier' && !pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor'))) {
           acc.push(pathway);
@@ -305,7 +306,7 @@ export default {
         });
         return acc;
       }, []);
-      const side1PathwayRefs = this.material.pathways.reduce((acc, pathway) => {
+      const side1PathwayRefs = this.material?.pathways?.reduce((acc, pathway) => {
         const idx = side2Pathways.findIndex(side2Pathway => side2Pathway.name?.replace('CYP', '').toUpperCase() === pathway.name?.replace('CYP', '').toUpperCase());
         if (idx !== -1) {
           const refs = interactionUIService.getRefsOrder(pathway.influence);
@@ -319,7 +320,7 @@ export default {
           });
         }
         return acc;
-      }, []);
+      }, []) || [];
       const refs = interactionUIService.getRefsOrder(this.material.effectOnDrugMetabolism);
       const moreRefs = refs.reduce((acc, ref) => {
         if (!seenRefsMap[ref]) {

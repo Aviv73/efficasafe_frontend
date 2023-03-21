@@ -143,7 +143,7 @@
             <p class="monitor-list" v-else>There is nothing to monitor for this interaction.</p>
           </template>
           <template v-else>
-            <label-interaction-preview :interaction="interaction" :material="materials[0]" :materialIds="materialIds" :shortRecommendation="getShortRecommendation(interaction.recommendation)" :color="getInteractionColor(interaction)" :link="link" :parent-idx="idx" />
+            <label-interaction-preview v-if="materials && materials.length" :interaction="interaction" :material="materials[0]" :materialIds="materialIds" :shortRecommendation="getShortRecommendation(interaction.recommendation)" :color="getInteractionColor(interaction)" :link="link" :parent-idx="idx" />
           </template>
         </div>
         <div v-else-if="!!interaction.isMaterialGroup">
