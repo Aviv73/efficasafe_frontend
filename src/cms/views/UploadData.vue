@@ -78,13 +78,16 @@ export default {
             this.isLoading = true
             const criteria = {
                 page: 0,
-                limit: 0,
+                limit: 1,
                 drugBankId: this.drugBankId
             }
-            const {name, type} = (await this.$store.dispatch({type: 'getMaterials', criteria}))[0]
-            this.miniMaterial = {
-                name,
-                type
+            const mat = (await this.$store.dispatch({type: 'getMaterials', criteria}))[0];
+            if (mat) {
+                const {name, type} =  mat || {}
+                this.miniMaterial = {
+                    name,
+                    type
+                }
             }
             this.isLoading = false
         },
