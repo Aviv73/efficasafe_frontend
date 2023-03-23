@@ -326,7 +326,7 @@ export default {
       sameQ: false,
       isLoadingFile: false,
       innerListEl: null,
-      wtmInteractions: [],
+      // wtmInteractions: [],
 
       dontReload: false,
       addedOptMatToSearch: false,
@@ -440,6 +440,9 @@ export default {
   computed: {
     fetchResultInteractions() {
       return this.allInteractionsData?.interactions || [];
+    },
+    wtmInteractions() {
+      return this.fetchResultInteractions;
     },
     allInteractions() {
       return this.slicePage(this.fetchResultInteractions, this.pagination);
@@ -1092,7 +1095,7 @@ export default {
       this.isLoading = true;
 
       await this.getAllInteractionsData();
-      this.wtmInteractions = JSON.parse(JSON.stringify(this.fetchResultInteractions));
+      // this.wtmInteractions = JSON.parse(JSON.stringify(this.fetchResultInteractions));
       // this.allInteractions = this.dBankInteractions.concat(this.formatedInteractions);
       // this.handleSort_onLocalData();
       this.isLoading = false;

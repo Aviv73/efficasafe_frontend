@@ -243,6 +243,14 @@ export default {
     // ChevronUpIcon,
     // ChevronDownIcon
     // CollapseToggleIcon
+  },
+  watch: {
+    interactions: {
+      deep: true,
+      handler() {
+        this.flatten(this.interactions);
+      }
+    }
   }
 };
 </script>
