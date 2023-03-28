@@ -31,8 +31,13 @@ export const labelStore = ({
             });
         },
         updateLabel(state, { label }) {
-            const idx = state.labels.findIndex(currLabel => currLabel._id === label._id);
-            state.labels.splice(idx, 1, label);
+            if (!label) return;
+            const idx = state.labels?.findIndex(currLabel => currLabel._id === label._id) || -1;
+            if (idx === -1) {
+                if (!state.labels) state.labels = [];
+                state.labels.unshift(label);
+            }
+            else state.labels.splice(idx, 1, label);
         },
         setLabelCount(state, { total }) {
             state.labelsCount = total;

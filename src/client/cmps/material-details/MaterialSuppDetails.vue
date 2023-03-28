@@ -179,19 +179,21 @@
             <information-outline-icon class="info-icon" :size="16" title="" />
           </tooltip>
         </div>
-
-        <ul class="side1-pathways-nav flex-align-center chip-list">
-          <li class="side1-pathways-nav-item material-details-item" v-for="pathway in material.pathways" :key="pathway.name">
-            <tooltip on="hover" bottom>
-              <template #content>
-                <section class="pathways-tooltip" v-html="pathway.influence"></section>
-              </template>
-              <div class="chip material-details-chip" :class="setPathwayClassName(pathway.influence)">
-                {{ pathway.name }}
-              </div>
-            </tooltip>
-          </li>
-        </ul>
+        <div>
+          <ul class="side1-pathways-nav flex-align-center chip-list">
+            <li class="side1-pathways-nav-item material-details-item" v-for="pathway in material.pathways" :key="pathway.name">
+              <tooltip on="hover" bottom>
+                <template #content>
+                  <section class="pathways-tooltip" v-html="pathway.influence"></section>
+                </template>
+                <div class="chip material-details-chip" :class="setPathwayClassName(pathway.influence)">
+                  {{ pathway.name }}
+                </div>
+              </tooltip>
+            </li>
+          </ul>
+          <p class="click-enzyme-chips-msg">* Click on each enzyme to see more information</p>
+        </div>
         <p class="pathway-exp-txt">{{ pathwayExpTxt }}</p>
         <hr class="line" />
       </section>

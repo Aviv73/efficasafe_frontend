@@ -307,9 +307,12 @@ export default {
     transform: translateX(-50%);
   }
   &.center-bottom {
-    bottom: 50%;
+    top: calc(50% + 15px);
     left: 50%;
-    transform: translateX(-50%, -50%);
+    transform: translateX(-50%);
+
+    width: 260px;
+    padding: 10px;
   }
   &.left {
     left: 100%;

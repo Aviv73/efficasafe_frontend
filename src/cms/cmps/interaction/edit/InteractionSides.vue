@@ -20,7 +20,7 @@
         @click:close="removeSide(2)"
       >
         <v-avatar left>
-          <v-img
+          <img v-if="materialSideType"
             class="side-type-img"
             :src="materialSideType"
             :alt="side2.type"
@@ -98,8 +98,8 @@ export default {
       return this.sides.side2.material || this.sides.side2.label;
     },
     materialSideType() {
-      if (this.sides.side2.material) {
-        return require(`@/cms/assets/icons/${this.side2.type}.svg`);
+      if (this.sides.side2.material && this.side2.type) {
+        return require(`@/cms/assets/icons/${this.side2.type || 'custom'}.svg`);
       }
       return require(`@/cms/assets/icons/custom.svg`);
     }

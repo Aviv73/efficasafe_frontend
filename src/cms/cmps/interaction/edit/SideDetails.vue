@@ -3,7 +3,7 @@
   <v-card class="px-2 pb-1">
     <v-card-title class="side-details-title px-0">
         <v-avatar left class="mr-2" size="20">
-            <v-img
+            <v-img v-if="side.type"
                 :src="require(`@/cms/assets/icons/${side.type}.svg`)"
             ></v-img>
         </v-avatar>
@@ -223,7 +223,7 @@
         <v-chip-group column>
             <v-chip v-for="(region, idx) in side.regions" :key="'region' + idx" class="text-uppercase">
                 <v-avatar left>
-                    <v-img
+                    <v-img v-if="region"
                         :src="require(`@/cms/assets/icons/regions/${region.toLowerCase()}.svg`)"
                     ></v-img>
                 </v-avatar>

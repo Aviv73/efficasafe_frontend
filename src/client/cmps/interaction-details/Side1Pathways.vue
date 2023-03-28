@@ -34,15 +34,18 @@
           <information-outline-icon class="info-icon" :size="16" title="" />
         </tooltip>
       </div>
-      <ul class="side1-pathways-nav flex-align-center">
-        <li class="side1-pathways-nav-item" v-for="pathway in pathways" :key="pathway.name">
-          <button class="chip" :class="setPathwayClassName(pathway.influence)" @click="activeTab = pathway.name">
-            <chevron-down-icon v-if="activeTab !== pathway.name" :size="16" title="" />
-            <chevron-up-icon v-else :size="16" title="" />
-            {{ pathway.name }}
-          </button>
-        </li>
-      </ul>
+      <div>
+        <ul class="side1-pathways-nav flex-align-center">
+          <li class="side1-pathways-nav-item" v-for="pathway in pathways" :key="pathway.name">
+            <button class="chip" :class="setPathwayClassName(pathway.influence)" @click="activeTab = pathway.name">
+              <chevron-down-icon v-if="activeTab !== pathway.name" :size="16" title="" />
+              <chevron-up-icon v-else :size="16" title="" />
+              {{ pathway.name }}
+            </button>
+          </li>
+        </ul>
+        <p class="click-enzyme-chips-msg">* Click on each enzyme to see more information</p>
+      </div>
       <p
         class="active-tab-txt regular-pointer"
         v-show="pathways.length"

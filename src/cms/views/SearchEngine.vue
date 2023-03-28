@@ -73,7 +73,7 @@
                                             <v-list-item-icon>
                                                 <v-avatar class="mr-2" size="24" rounded>
                                                     <v-img
-                                                        :src="require(`@/cms/assets/icons/${material.type}.svg`)"
+                                                        :src="require(`@/cms/assets/icons/${material.type || 'custom'}.svg`)"
                                                     />
                                                 </v-avatar>
                                                 <v-list-item-content>

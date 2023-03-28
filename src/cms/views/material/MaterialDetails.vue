@@ -41,7 +41,7 @@
                     <v-card-title class="material-details-title">
                         <v-avatar left class="mr-2" size="20">
                             <v-img
-                                :src="require(`@/cms/assets/icons/${material.type}.svg`)"
+                                :src="require(`@/cms/assets/icons/${material.type || 'custom'}.svg`)"
                             ></v-img>
                         </v-avatar>
                         {{ material.name }}
@@ -297,7 +297,7 @@
                     <v-chip-group column v-if="material.regions.length">
                         <v-chip v-for="region in material.regions" :key="region">
                             <v-avatar left>
-                                <v-img
+                                <v-img v-if="region"
                                     :src="
                                         require(`@/cms/assets/icons/regions/${region.toLowerCase()}.svg`)
                                     "

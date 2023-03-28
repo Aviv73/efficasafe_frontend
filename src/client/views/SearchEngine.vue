@@ -163,7 +163,7 @@
             </li>
             <li class="search-engine-nav-link boosters-link">
               <PlayTourBtn :dontOpen="isScreenNarrow" @click.native="startBoostTour" />
-              <tooltip v-if="disableOptiPage" left>
+              <tooltip v-if="disableOptiPage" centerBottom>
                 <template #content>
                   <div class="tooltip-content">
                     <span> Optimizers are shown only for drugs. </span>
@@ -196,7 +196,7 @@
               </router-link>
             </li>
             <li class="search-engine-nav-link">
-              <tooltip v-if="formatedMaterials.length <= 1" left>
+              <tooltip v-if="formatedMaterials.length <= 1" centerBottom>
                 <template #content>
                   <div class="tooltip-content">
                     <span> This tab opens only when the search contains multiple materials. </span>
@@ -334,7 +334,7 @@ export default {
       scrollPos: 0,
 
       sortOpts: null,
-      sortParams: { sortBy: '', side: 1, isDesc: false },
+      sortParams: { sortBy: 'recommendation', side: 1, isDesc: false },
 
       dBankFetchRes: {},
       intFetchRes: {},
@@ -1606,7 +1606,7 @@ export default {
       // NOT HERE
       const { q } = this.$route.query;
       const sortedMaterials = [...materials];
-      return sortedMaterials.sort((a, b) => q.indexOf(a.userQuery) - q.indexOf(b.userQuery));
+      return sortedMaterials.sort((a, b) => q?.indexOf(a.userQuery) - q?.indexOf(b.userQuery));
     },
     isQueryExists(query) {
       return this.$route.query.q.indexOf(query) !== -1;

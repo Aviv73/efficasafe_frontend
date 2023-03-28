@@ -30,17 +30,20 @@
                   <template #content>
                     <div class="notification-container" :class="{ narrow: isSearchesMobile }">
                       <div class="rapper" v-for="(update, idx) in item.updates" :key="idx">
-                        <h3>
-                          The <span>{{ update.interactionName }}</span> interaction has been updated:
-                        </h3>
-                        <ul>
-                          <li v-if="update.txt">Some text has been changed</li>
-                          <li v-if="update.newRefs.length">{{ refsAddedTxt(update.newRefs) }}</li>
-                          <li v-if="update.loe">{{ `The level of evidence has changed from ${update.loe.old} to ${update.loe.new}` }}</li>
-                          <li v-if="update.rec">
-                            The recommendation has changed from <span :style="{ 'background-color': getRecColor(update.rec.old) }">{{ update.rec.old }}</span> to <span :style="{ 'background-color': getRecColor(update.rec.new) }">{{ update.rec.new }}</span>
-                          </li>
-                        </ul>
+                        <template v-if="!update.isNew">
+                          <h3>
+                            The <span>{{ update.interactionName }}</span> interaction has been updated:
+                          </h3>
+                          <ul>
+                            <li v-if="update.txt">Some text has been changed</li>
+                            <li v-if="update.newRefs.length">{{ refsAddedTxt(update.newRefs) }}</li>
+                            <li v-if="update.loe">{{ `The level of evidence has changed from ${update.loe.old} to ${update.loe.new}` }}</li>
+                            <li v-if="update.rec">
+                              The recommendation has changed from <span :style="{ 'background-color': getRecColor(update.rec.old) }">{{ update.rec.old }}</span> to <span :style="{ 'background-color': getRecColor(update.rec.new) }">{{ update.rec.new }}</span>
+                            </li>
+                          </ul>
+                        </template>
+                        <h3 v-else>New interaction: {{update.interactionName}}</h3>
                         <hr v-if="idx !== item.updates.length - 1" />
                       </div>
                     </div>

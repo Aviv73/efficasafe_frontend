@@ -424,7 +424,7 @@ export default {
           return acc;
         }, '');
       const sortedRefs = interactionUIService.getSortedRefs(txt, this.$options.side1Refs);
-      return sortedRefs.filter(ref => this.interactionRefs.findIndex(currRef => currRef.link === ref.link) === -1);
+      return sortedRefs.filter(ref => this.interactionRefs.findIndex(currRef => currRef?.link === ref?.link) === -1);
     },
     relevantSide2Pathways() {
       return this.side2Material.pathways.filter(

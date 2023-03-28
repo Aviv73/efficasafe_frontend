@@ -286,6 +286,19 @@
         font-size: 12px;
         font-style: unset;
       }
+
+      table {
+        tr {
+          td {
+            padding: 6px;
+            text-align: center !important;
+            vertical-align: middle !important;
+            p {
+              margin: 0;
+            }
+          }
+        }
+      }
     }
 
     &-refs {

@@ -48,9 +48,9 @@
     &-nav {
         display: flex;
         flex-wrap: wrap;
-        border-bottom: 1px solid rgba($clr12, .1);
-        margin-block-end: rem(15px);
-        padding-block-end: rem(10px);       
+        // border-bottom: 1px solid rgba($clr12, .1);
+        margin-block-end: rem(10px);
+        // padding-block-end: rem(10px);       
 
         li {
             max-width: 100%;
@@ -107,4 +107,11 @@
             padding-inline-end: 30%;
         }
     }
+}
+
+.click-enzyme-chips-msg {
+    color: rgb(125, 125, 125);
+    border-bottom: 1px solid rgba($clr12, .1);
+    margin-block-end: rem(15px);
+    padding-block-end: rem(10px);  
 }

@@ -34,7 +34,7 @@
                 <div class="d-flex align-center mb-3" v-else-if="miniMaterial">
                     <v-avatar left class="mr-2" size="20">
                         <v-img
-                            :src="require(`@/cms/assets/icons/${miniMaterial.type}.svg`)"
+                            :src="require(`@/cms/assets/icons/${miniMaterial.type || 'custom'}.svg`)"
                         ></v-img>
                     </v-avatar>
                     <h3>{{miniMaterial.name}}</h3>
