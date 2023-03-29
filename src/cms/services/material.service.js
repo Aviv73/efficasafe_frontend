@@ -16,7 +16,9 @@ export const materialService = {
   getEmptyRef,
   getEmptyPathway,
   removeMany,
-  getMaterials
+  getMaterials,
+  getMatsFromGroupSelection,
+  getMaterialGroupNames
 };
 
 async function list(filterBy = {}, doCache = false, cacheKey = false) {
@@ -169,4 +171,37 @@ function getEmptyPathway() {
     references: [],
     fullReferences: []
   };
+}
+
+
+function getMaterialGroupNames() {
+  return ['mag-supplements', 'mag-antacid', 'mag-laxatives', 'Inorganic mag comp', 'Organic mag comp', 'All zincs'];
+}
+const magSupplements = ['Magnesium sulfate', 'Magnesium glycinate', 'Magnesium phosphate', 'Magnesium oxide', 'Magnesium orotate', 'Magnesium malate', 'Magnesium levulinate', 'Magnesium lactate', 'Magnesium gluconate', 'Magnesium citrate', 'Magnesium chloride', 'Magnesium aspartate', 'Magnesium acetate tetrahydrate', 'Magnesium ascorbate', 'Magnesium Fumarate'];
+const magAntacid = ['Magnesium trisilicate', 'Magnesium silicate', 'Magnesium peroxide', 'Magnesium oxide', 'Magnesium hydroxide', 'Magnesium carbonate', 'Magnesium Aluminum Silicate'];
+const magLaxatives = ['Magnesium sulfate', 'Magnesium peroxide', 'Magnesium oxide', 'Magnesium hydroxide', 'Magnesium citrate',' Magnesium cation', 'Magnesium carbonate', 'Magnesium acetate'];
+const inorganicMagComp = ['Magnesium trisilicate', 'Magnesium silicate', 'Magnesium peroxide', 'Magnesium oxide', 'Magnesium hydroxide', 'Magnesium carbonate', 'Magnesium Aluminum Silicate', 'Magnesium sulfate', 'Magnesium phosphate', 'Magnesium chloride'];
+const organicMagComp = ['Magnesium malate', 'Magnesium lactate', 'Magnesium gluconate', 'Magnesium citrate', 'Magnesium acetate tetrahydrate', 'Magnesium pidolate', 'Magnesium orotate', 'Magnesium glycinate', 'Magnesium ascorbate', 'Magnesium Fumarate', 'Magnesium gluconate', 'Magnesium acetate', 'Magnesium aspartate', 'Magnesium levulinate'];
+const allZincs = ['Zinc L-carnosine', 'Zinc acetate', 'Zinc ascorbate', 'Zinc carbonate', 'Zinc cation', 'Zinc chloride', 'Zinc citrate', 'Zinc DL-aspartate', 'Zinc gluconate', 'Zinc glycinate', 'Zinc glycinate citrate', 'Zinc iodide', 'Zinc monoethylfumarate', 'Zinc orotate', 'Zinc oxide', 'Zinc picolinate', 'Zinc phenolsulfonate', 'Zinc protoporphyrin', 'Zinc sulfate'];
+
+
+async function getMatsFromGroupSelection(groupName) {
+  let materialNames
+  if(groupName === 'mag-supplements') materialNames = magSupplements
+  else if(groupName === 'mag-antacid') materialNames = magAntacid
+  else if(groupName === 'mag-laxatives') materialNames = magLaxatives
+  else if(groupName === 'Inorganic mag comp') materialNames = inorganicMagComp
+  else if(groupName === 'Organic mag comp') materialNames = organicMagComp
+  else if(groupName === 'All zincs') materialNames = allZincs
+  else return
+
+  const res = await materialService.list({isSearchResults: true, q: materialNames});
+  const miniMaterials = res.materials.map( ({name,_id,type}) => {
+    return {
+      text: name,
+      _id,
+      type
+    }
+  })
+  return miniMaterials;
 }

@@ -43,7 +43,10 @@
                             </li>
                           </ul>
                         </template>
-                        <h3 v-else>New interaction: {{update.interactionName}}</h3>
+                        <template v-else>
+                          <h3>New interaction: {{update.interactionName}}</h3>
+                          <p v-if="update.recommendation" :style="{color: getRecColor(update.recommendation)}">{{update.recommendation}}</p>
+                        </template>
                         <hr v-if="idx !== item.updates.length - 1" />
                       </div>
                     </div>

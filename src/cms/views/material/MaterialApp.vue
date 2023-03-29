@@ -5,7 +5,7 @@
         <v-card-title>
           Materials collection
           <v-spacer></v-spacer>
-          <v-btn class="mr-8" color="success" @click="onAddMultiRefs">
+          <v-btn class="mr-8" color="success" @click="onAddMultiRefs" v-if="isAdmin">
             <v-icon small left>mdi-content-copy</v-icon>Add refs to multi materials
           </v-btn>
           <v-btn color="primary" to="/material/edit/">new material</v-btn>
@@ -35,6 +35,7 @@
         <v-card class="multiple-modal-container">
            <v-card-title class="primary headline" style="color:white; font-weight:bold;">Add refs to multiple materials</v-card-title>
            <autocomplete style="width: 60%; margin: 0 auto" @emitAutocomplete="addMaterial" allow-term-search/>
+           <v-select style="width: 60%; margin: 0 auto" :items="groupNames" label="Groups" @change="handleSelectGroup"></v-select>
            <template v-if="!isLoadingAddMultiRefs">
               <section class="multiple-material-list" style="height: 200px">
                 <p class="count">{{materialsToAddRefs.length}}</p>
@@ -97,7 +98,9 @@ export default {
       materialsToAddRefs: [],
       refsToAdd: [],
       materialsWithRefs:[],
-      isLoadingAddMultiRefs: false
+      isLoadingAddMultiRefs: false,
+
+      groupNames: materialService.getMaterialGroupNames()
     };
   },
   watch: {
@@ -109,6 +112,12 @@ export default {
     },
   },
   computed: {
+    loggedInUser() {
+      return this.$store.getters.loggedInUser;
+    },
+    isAdmin() {
+      return this.loggedInUser && (this.loggedInUser.role === 'admin');
+    },
     materials() {
       return this.$store.getters.materials;
     },
@@ -120,6 +129,10 @@ export default {
     }
   },
   methods: {
+    async handleSelectGroup(groupName){
+      const miniMaterials = await materialService.getMatsFromGroupSelection(groupName);
+      miniMaterials.forEach( m => this.addMaterial(m))
+    },
     setFilter(filterBy) {
       const criteria = {
         ...this.$route.query,
@@ -219,11 +232,12 @@ export default {
       for (let i = 0; i < this.materialsToAddRefs.length; i++) {
         const miniMat = this.materialsToAddRefs[i];
         const material = await materialService.getById(miniMat._id)
-        if(material.refs.length){
-          this.materialsWithRefs.push(miniMat.text)
-          continue
-        }  
-        material.refs = JSON.parse(JSON.stringify(this.refsToAdd))
+        // if(material.refs.length){
+        //   this.materialsWithRefs.push(miniMat.text)
+        //   continue
+        // }  
+        // material.refs.push(...JSON.parse(JSON.stringify(this.refsToAdd))); // to add and keep old ones;
+        material.refs = JSON.parse(JSON.stringify(this.refsToAdd)) // to rewright all refs by new ones;
         await materialService.save(material)
       }
       this.isLoadingAddMultiRefs = false

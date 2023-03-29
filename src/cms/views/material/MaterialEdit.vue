@@ -995,7 +995,7 @@ export default {
       dBankRefDialog: false,
       pathwayDialog: false,
       externalLinksDialog: false,
-      drawer: false,
+      drawer: true,
       editedExternalLink: {
         resource: '',
         url: ''

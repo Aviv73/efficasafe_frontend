@@ -353,11 +353,13 @@ export default {
     },
     '$route.query': {
       async handler(to, from) {
+        if (!['Boosters', 'Monitor', 'Results'].includes(this.$route.name)) return;
+
         const isEmpty = Array.isArray(this.$route.query.q)? !this.$route.query.q.length : !this.$route.query.q ;
         if (isEmpty) return this.clearSearch();
         if (
           to && from && (to.page !== from.page) &&
-          JSON.stringify(to.q) === JSON. stringify(from.q)
+          (JSON.stringify(to.q) === JSON. stringify(from.q))
         ) return;
         const _dontReload = this.dontReload;
         this.dontReload = false;
@@ -384,8 +386,8 @@ export default {
         if (!Array.isArray(q) && q) {
           this.$route.query.q = [q];
         }
-        const isqEq = this.isSameSearch && this.isSameSearch.q && to.q.length === this.isSameSearch.q.length && to.q.every((val, idx) => val === this.isSameSearch.q[idx]);
-        this.sameQ = isqEq;
+        // const isqEq = this.prevSearch && this.prevSearch.q && to.q.length === this.prevSearch.q.length && to.q.every((val, idx) => val === this.prevSearch.q[idx]);
+        // this.sameQ = isqEq;
         // const isSameSearch = isqEq && from.page === to.page;
         const isSameSearch = JSON.stringify(to) === JSON.stringify(this.prevSearch);
         this.prevSearch = JSON.parse(JSON.stringify(to));
@@ -411,6 +413,7 @@ export default {
       immediate: true
     },
     $route(to, from) {
+      // if (from.name !== '')
       //for paging       
       if (from && JSON.stringify(from.query) === JSON.stringify(to.query) && from.name !== to.name && from.query.page !== 1) {
         if (this.$route.query.q) {
@@ -1765,7 +1768,7 @@ export default {
     }
   },
   activated() {
-      if (!this.$route.query.q) this.reset();
+    // if (!this.$route.query.q) this.reset();
   },
   async mounted() {
     const el = this.$refs.whatToMonitorLink.$el;
