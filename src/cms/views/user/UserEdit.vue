@@ -202,10 +202,10 @@
                     class="elevation-1"
                 >
                     <template v-slot:[`item.at`]="{ item }">
-                        <span>{{ item.at | moment('DD/MM/YYYY') }}</span>
+                        <span v-if="item.at">{{ new Date(item.at) | moment('DD/MM/YYYY') }}</span>
                     </template>
                     <template v-slot:[`item.until`]="{ item }">
-                        <span>{{ item.until | moment('DD/MM/YYYY') }}</span>
+                        <span v-if="item.until">{{ new Date(item.until) | moment('DD/MM/YYYY') }}</span>
                     </template>
                     <template v-slot:[`item.price`]="{ item }">
                         <span>{{item.coin}}{{item.price}}</span>

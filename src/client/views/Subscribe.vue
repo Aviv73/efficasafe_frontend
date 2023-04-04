@@ -54,7 +54,7 @@
                     <p class="ribbon-txt-save ribbon-deal">DEAL!</p>
                 </div>
                 <h3 class="card-title" v-if="!selectedCoupon.endTrialDate">Individual {{plan.durationTxt}}</h3>
-                <h3 class="card-title" v-else>Free trial until {{ selectedCoupon.endTrialDate | moment('DD/MM/YYYY') }}</h3>
+                <h3 class="card-title" v-else>Free trial until {{ new Date(selectedCoupon.endTrialDate) | moment('DD/MM/YYYY') }}</h3>
                 <p class="card-price">{{localCurrency}} <span>{{getPriceByLocation(plan)}}</span> /mo</p>
                 <p class="card-billing-txt" v-if="!selectedCoupon.endTrialDate">{{billingTxt(plan)}}</p>
                 <button class="card-btn" :class="{'margin-top': selectedCoupon.endTrialDate}">{{couponSelectBtnTxt((idx))}}</button>

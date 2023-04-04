@@ -532,7 +532,7 @@ export default {
     }
   },
   async created() {
-    this.getPathwayRefsCount();
+    // this.getPathwayRefsCount();
     this.primarySideInView = this.$store.getters.firstInteractionSide;
     eventBus.$on(EV_sortby_side_swaped, this.swapSideNames);
     this.restoreCollapses();

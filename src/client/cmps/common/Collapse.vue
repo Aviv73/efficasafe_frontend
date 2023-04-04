@@ -10,7 +10,7 @@
                 <!-- Toggle collapse -->
             </slot>
         </header>
-        <transition name="scale-y">
+        <transition name="scale-y" v-if="!noContent">
             <main
                 class="collapse-content"
                 :class="{ 'allow-overflow': allowOverflow }"
@@ -21,7 +21,7 @@
                 </slot>
             </main>
         </transition>
-        <transition name="scale-y">
+        <transition name="scale-y" v-if="!noContent">
             <button
                 v-if="isContentVisible"
                 class="close-btn"
@@ -70,6 +70,10 @@ export default {
             default: false
         },
         disable : {
+            type: Boolean,
+            default: false
+        },
+        noContent : {
             type: Boolean,
             default: false
         }

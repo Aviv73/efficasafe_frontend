@@ -13,7 +13,11 @@
                     <tbody>
                         <tr v-for="item in items" :key="item._id">
                             <td style="text-align: start">{{item.code}}</td>
-                            <td style="text-align: start" :class="{'red-txt': item.validUntil < Date.now()}">{{ item.validUntil | moment('DD/MM/YYYY') }}</td>
+                            <td style="text-align: start" :class="{'red-txt': item.validUntil < Date.now()}">
+                                <template v-if="item.validUntil">
+                                    {{ new Date(item.validUntil) | moment('DD/MM/YYYY') }}
+                                </template>
+                            </td>
                             <td style="text-align: start">{{ item.endTrialDate ? 'Trial' : 'Subscription' }}</td>
                             <td style="text-align: start">
                                 <v-btn color="primary" @click="onOpenEdit(item)"><v-icon small>mdi-pencil</v-icon></v-btn>
@@ -97,7 +101,11 @@
                     <tbody>
                         <tr v-for="item in items" :key="item._id">
                             <td style="text-align: start">{{item.code}}</td>
-                            <td style="text-align: start" :class="{'red-txt': item.validUntil < Date.now()}">{{ item.validUntil | moment('DD/MM/YYYY') }}</td>
+                            <td style="text-align: start" :class="{'red-txt': item.validUntil < Date.now()}">
+                                <template v-if="item.validUntil">
+                                    {{ new Date(item.validUntil) | moment('DD/MM/YYYY') }}
+                                </template>
+                            </td>
                             <td style="text-align: start">
                                 <v-btn color="primary" @click="onOpenEdit(item)"><v-icon small>mdi-pencil</v-icon></v-btn>
                                 <v-btn color="error" @click="onDeleteCoupon(item.id)" class="ml-4"><v-icon small>mdi-delete</v-icon></v-btn>

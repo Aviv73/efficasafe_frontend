@@ -22,7 +22,7 @@
           </template>
           <template #content>
             <component v-for="vInteraction in atcGroup.vInteractions" :key="vInteraction.side2Material._id" :is="vInteractionHeaderEl" :to="`/interaction/${vInteraction._id}/${vInteraction.side2Material._id}`">
-              <collapse>
+              <collapse :noContent="link">
                 <template #header>
                   <div class="label-interaction-preview-group-header table-row child">
                     <span class="table-col">
@@ -62,7 +62,7 @@
     <template v-else>
       <div class="label-interaction-preview-list" :class="{ 'is-empty': !atcGroupedVinteractions.length }" v-if="restOfVinteractions.length">
         <component v-for="vInteraction in restOfVinteractions" :key="vInteraction.side2Material._id" :is="vInteractionHeaderEl" :to="`/interaction/${vInteraction._id}/${vInteraction.side2Material._id}`">
-          <collapse>
+          <collapse :noContent="link">
             <template #header>
               <div class="label-interaction-preview-group-header table-row">
                 <span class="table-col">
@@ -79,13 +79,13 @@
                 </span>
               </div>
             </template>
-            <template #content>
+            <template #content v-if="!link">
               <div v-if="!link" class="summary-container">
                 <h3 class="font-bold">Summary</h3>
                 <long-txt :txt="vInteraction.summary" :maxChars="250" :expandable="false" :overflowSymb="getInteractionLink(vInteraction)" isHTML />
               </div>
             </template>
-            <template #de-activator>
+            <template #de-activator v-if="!link">
               <collapse-toggle-icon />
             </template>
           </collapse>

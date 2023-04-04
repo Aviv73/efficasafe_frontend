@@ -20,7 +20,7 @@
             </td>
 
             <td width="180" align="center">
-                <span>{{ item.deletedAt | moment('DD/MM/YYYY')  }}</span>
+                <span v-if="item.deletedAt">{{ new Date(item.deletedAt) | moment('DD/MM/YYYY')  }}</span>
             </td>
 
             <td class="td-actions" width="180" align="center">

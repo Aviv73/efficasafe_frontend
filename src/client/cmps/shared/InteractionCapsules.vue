@@ -242,7 +242,7 @@ export default {
       // if((this.$route.name === 'InteractionDetails' ||  this.$route.name === 'VinteractionDetails') && this.sortBySide === 2) return this.side2Name
       if (!this.name) return '';
       if (this.isMaterialGroup) return this.$store.getters.materialNamesMap[this.name] ? this.$store.getters.materialNamesMap[this.name][0] : this.name;
-      const side2Name = this.name.split('&')[1].trim();
+      const side2Name = this.name?.split('&')[1]?.trim() || '';
       // if (this.onDetailsPage || !this.isSideSwapped) return side1Name;
       if (this.$store.getters.materialNamesMap && this.$store.getters.materialNamesMap[side2Name]) {
         const queryName = this.$store.getters.materialNamesMap[side2Name][0];
