@@ -36,7 +36,7 @@
       </div>
       <div>
         <ul class="side1-pathways-nav flex-align-center">
-          <li class="side1-pathways-nav-item" v-for="pathway in pathways" :key="pathway.name">
+          <li class="side1-pathways-nav-item" v-for="pathway in sortedPathways" :key="pathway.name">
             <button class="chip" :class="setPathwayClassName(pathway.influence)" @click="activeTab = pathway.name">
               <chevron-down-icon v-if="activeTab !== pathway.name" :size="16" title="" />
               <chevron-up-icon v-else :size="16" title="" />
@@ -106,6 +106,20 @@ export default {
     };
   },
   computed: {
+    sortedPathways() {
+      return [...this.pathways]
+        .sort((a, b) => a.name > b.name? 1 : -1)
+        .sort((a, b) => {
+          const valMap = {
+            'chip-red': 1,
+            'chip-yellow': 2,
+            'chip-green': 3,
+          }
+          const aVal = valMap[this.setPathwayClassName(a.influence)];
+          const bVal = valMap[this.setPathwayClassName(b.influence)];
+          return aVal - bVal;
+        })
+    },
     unrelevantPathwayNames() {
       return this.unrelevantPathways.map((p) => p.name?.toUpperCase()).join(', ');
     },

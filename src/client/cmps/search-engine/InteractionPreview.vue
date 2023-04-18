@@ -319,7 +319,57 @@ export default {
       if (this.isChild) return true;
       if (!this.loggedInUser && this.idx > idxToShow) return false;
       return true;
-    }
+    },
+    relevantMatsRefs() {
+      if (!(this?.interaction?.fullSide1Data && this?.interaction?.fullSide2Data)) return 0;
+
+      const interactionRelevantRefs = this.interaction.fullSide1Data.refs.filter(ref => this.interaction.refs.includes(ref.draftIdx));
+      
+      const relevantSide2Pathways = this.interaction.fullSide2Data.pathways.filter(
+          pathway =>
+            (pathway.type === 'enzyme' && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))) ||
+            (pathway.type === 'transporter' && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))) ||
+            (pathway.type === 'carrier' && !pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor'))
+        );
+      const relevantSide1Pathways = this.interaction.fullSide1Data.pathways.filter(pathway => {
+          const idx = relevantSide2Pathways.findIndex(side2Pathway => side2Pathway.name?.replace('CYP', '').toUpperCase() === pathway.name?.replace('CYP', '').toUpperCase());
+          return idx !== -1 && !pathway.actions.length;
+      });
+      const txtForSide1Sort = this.interaction.fullSide1Data.effectOnDrugMetabolism +
+        ' ' +
+        relevantSide1Pathways.reduce((acc, pathway) => {
+          acc += pathway.influence + ' ';
+          return acc;
+        }, '');
+      const sorted1Refs = interactionUIService.getSortedRefs(txtForSide1Sort, this.interaction.fullSide1Data.refs)
+      const side1Refs = sorted1Refs.filter(ref => interactionRelevantRefs.findIndex(currRef => currRef?.link === ref?.link) === -1)
+      
+      const relevantSide2Refs = (() => {
+        
+        let nextDraftIdx = 1;
+        return relevantSide2Pathways.reduce((acc, pathway) => {
+          pathway.references.forEach((pubmedId, idx) => {
+            const isValidUrl = typeof pubmedId === 'string' && pubmedId.startsWith('http');
+            const ref = {
+              draftIdx: nextDraftIdx++,
+              type: '',
+              txt: pathway.fullReferences[idx],
+              link: isValidUrl ? pubmedId : `https://pubmed.ncbi.nlm.nih.gov/${pubmedId}`,
+              pubmedId: isValidUrl ? 0 : pubmedId
+            };
+            const isUnique = acc.findIndex(currRef => currRef.link === ref.link) === -1;
+            if (isUnique) acc.push(ref);
+          });
+          return acc;
+        }, []);
+      })();
+
+      return side1Refs.length + relevantSide2Refs.length;
+
+      
+      // return relevantSide1Pathways.reduce((acc, c) => acc+c.references.length, 0)
+      //      + relevantSide2Pathways.reduce((acc, c) => acc+c.references.length, 0);
+    },
   },
   methods: {
     addToSearch(toAdd) {
@@ -389,6 +439,7 @@ export default {
           refCount = interaction.refs.length + this.pathwayRefCount;
         }
       }
+      refCount += this.relevantMatsRefs;
       return refCount ? `(${refCount})` : '';
     },
     getRefsCountTxt(interaction) {

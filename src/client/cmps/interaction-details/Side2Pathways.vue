@@ -105,19 +105,19 @@ export default {
             return this.side2Pathways.filter(
                 pathway => pathway.type === 'enzyme' &&
                 (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))
-            );
+            ).sort((a,b) => a.name > b.name? 1 : -1);
         },
         transporterPathways() {
             return this.side2Pathways.filter(
                 pathway => pathway.type === 'transporter' &&
                 (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))
-            );
+            ).sort((a,b) => a.name > b.name? 1 : -1);
         },
         carrierPathways() {
             return this.side2Pathways.filter(
                 pathway => pathway.type === 'carrier' && 
                 (!pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor'))
-            );
+            ).sort((a,b) => a.name > b.name? 1 : -1);
         }
     },
     methods: {
