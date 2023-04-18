@@ -48,14 +48,14 @@
                 <template #content>
                   <ul class="loe-tooltip">
                     <li>{{ getLongEvidenceLevel(interaction.evidenceLevel || interaction.evidence_level) }}</li>
-                    <li v-if="interaction.refs && !interaction.side2Label">{{ getRefsCountTxt(interaction) }} scientific articles</li>
+                    <li v-if="interaction.refs && !interaction.side2Label">{{ getRefsCount(interaction) }} scientific articles</li>
                   </ul>
                 </template>
                 <span class="evidence-level" :class="{ only: interaction.evidence_level && true }">
                   {{ interaction.evidenceLevel || interaction.evidence_level }}
                 </span>
                 <span class="refs" v-if="interaction.refs && !interaction.side2Label">
-                  {{ getRefsCount(interaction) }}
+                  ({{ getRefsCount(interaction) }})
                 </span>
               </tooltip>
               <!-- Arrow -->
@@ -440,7 +440,7 @@ export default {
         }
       }
       refCount += this.relevantMatsRefs;
-      return refCount ? `(${refCount})` : '';
+      return refCount ? `${refCount}` : '';
     },
     getRefsCountTxt(interaction) {
       if (interaction.refs) {
