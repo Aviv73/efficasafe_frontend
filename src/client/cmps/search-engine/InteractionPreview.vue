@@ -325,23 +325,23 @@ export default {
 
       const interactionRelevantRefs = this.interaction.fullSide1Data.refs.filter(ref => this.interaction.refs.includes(ref.draftIdx));
       
-      const relevantSide2Pathways = this.interaction.fullSide2Data.pathways.filter(
+      const relevantSide2Pathways = this.interaction?.fullSide2Data?.pathways?.filter(
           pathway =>
             (pathway.type === 'enzyme' && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))) ||
             (pathway.type === 'transporter' && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))) ||
             (pathway.type === 'carrier' && !pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor'))
-        );
-      const relevantSide1Pathways = this.interaction.fullSide1Data.pathways.filter(pathway => {
+        ) || [];
+      const relevantSide1Pathways = this.interaction?.fullSide1Data?.pathways?.filter(pathway => {
           const idx = relevantSide2Pathways.findIndex(side2Pathway => side2Pathway.name?.replace('CYP', '').toUpperCase() === pathway.name?.replace('CYP', '').toUpperCase());
           return idx !== -1 && !pathway.actions.length;
-      });
-      const txtForSide1Sort = this.interaction.fullSide1Data.effectOnDrugMetabolism +
+      }) || [];
+      const txtForSide1Sort = (this.interaction?.fullSide1Data?.effectOnDrugMetabolism +
         ' ' +
         relevantSide1Pathways.reduce((acc, pathway) => {
           acc += pathway.influence + ' ';
           return acc;
-        }, '');
-      const sorted1Refs = interactionUIService.getSortedRefs(txtForSide1Sort, this.interaction.fullSide1Data.refs)
+        }, '')) || '';
+      const sorted1Refs = interactionUIService.getSortedRefs(txtForSide1Sort, this.interaction?.fullSide1Data?.refs || [])
       const side1Refs = sorted1Refs.filter(ref => interactionRelevantRefs.findIndex(currRef => currRef?.link === ref?.link) === -1)
       
       const relevantSide2Refs = (() => {

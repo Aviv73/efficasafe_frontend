@@ -1271,7 +1271,7 @@ export default {
       const criteria = { intsFilterBy, dBankFilterBy, sortParams: this.sortParams, pagination: paginationForFetch, materials: this.materials, listType: this.listType };
       this.allInteractionsData = await this.$store.dispatch({ type: 'loadAllInteractionSearchData', criteria });
 
-      console.log('GOT IT', this.allInteractionsData);
+      // console.log('GOT IT', this.allInteractionsData);
 
       if (!this.isShowAllDBI) this.$store.commit({ type: 'setTheoreticalDiff', diff: this.allInteractionsData.theoreticalDiff });
     },
