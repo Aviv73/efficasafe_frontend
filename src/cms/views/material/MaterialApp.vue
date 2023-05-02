@@ -8,7 +8,8 @@
           <v-btn class="mr-8" color="success" @click="onAddMultiRefs" v-if="isAdmin">
             <v-icon small left>mdi-content-copy</v-icon>Add refs to multi materials
           </v-btn>
-          <v-btn color="primary" to="/material/edit/">new material</v-btn>
+          <v-btn class="mr-8" color="primary" to="/material/edit/">new material</v-btn>
+          <SearchRefs/>
         </v-card-title>
 
         <material-filter
@@ -85,6 +86,7 @@ import ModalWrap from '@/client/cmps/common/ModalWrap';
 import autocomplete from '@/cms/cmps/Autocomplete';
 import loader from '@/cms/cmps/general/LoadingCmp';
 import iconsMap from '@/cms/cmps/general/IconsMap';
+import SearchRefs from '@/cms/cmps/SearchRefs.vue';
 
 export default {
   data() {
@@ -300,7 +302,8 @@ export default {
     ModalWrap,
     autocomplete,
     loader,
-    iconsMap
+    iconsMap,
+    SearchRefs
   },
 };
 </script>

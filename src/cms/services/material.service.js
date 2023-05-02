@@ -18,7 +18,8 @@ export const materialService = {
   removeMany,
   getMaterials,
   getMatsFromGroupSelection,
-  getMaterialGroupNames
+  getMaterialGroupNames,
+  loadRefs
 };
 
 async function list(filterBy = {}, doCache = false, cacheKey = false) {
@@ -70,6 +71,10 @@ function removeMany(ids) {
 
 function updateMaterials(data) {
   return httpService.put(END_POINT, data);
+}
+
+function loadRefs(criteria) {
+  return httpService.get(`${END_POINT}/refrences`, {criteria});
 }
 
 function getEmptyMaterial() {

@@ -43,5 +43,10 @@ export default {
         await this.$store.dispatch('pullManagementData')
         if (this.loggedInUser) this.loadData();
     },
+    watch: {
+        '$route.path'(path) {
+            this.$store.commit({ type: 'addRouterHistory', path });
+        }
+    }
 };
 </script>

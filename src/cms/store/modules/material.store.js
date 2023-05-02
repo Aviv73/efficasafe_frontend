@@ -125,6 +125,10 @@ export const materialStore = {
     async removeMaterials(context, { ids }) {
       await materialService.removeMany(ids);
       context.commit({ type: 'removeMaterials', ids });
+    },
+
+    async loadRefs(context, { criteria }) {
+      return materialService.loadRefs(criteria);
     }
   }
 };
