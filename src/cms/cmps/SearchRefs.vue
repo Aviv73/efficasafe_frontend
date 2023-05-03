@@ -3,6 +3,7 @@
     <v-btn color="primary" @click="show = true">Search Refs</v-btn>
     <div v-if="show" @click="show = false" class="blur"></div>
     <section v-if="show" class="search-refs-section flex column gap15">
+      <button class="close-btn" @click="show = false">X</button>
       <h3>Search Refs</h3>
       <form @submit.prevent="loadRefs" class="flex column gap15 align-start">
         <label class="flex gap5">
@@ -15,29 +16,37 @@
         </label>
         <v-btn color="primary" type="submit" class="">Search</v-btn>
       </form>
-      <ul class="refs flex column gap10" v-if="refs.length">
+      <h3 v-if="isLoading">Getting results..</h3>
+      <ul class="refs flex column gap10" v-else-if="refs.length">
         <li class="ref flex column gap5" v-for="ref in refs" :key="ref._id">
-          <h4>{{ref.pubmedId || `draftIdx: ${ref.draftIdx}`}}</h4>
+          <!-- <h4 v-if="ref.pubmedId">{{`pubmedId: ${ref.pubmedId}` || `draftIdx: ${ref.draftIdx}`}}</h4> -->
+          <h4>
+            {{`pubmedId: ${ref.pubmedId || '-no pubmedId-'}`}}
+          </h4>
+          <small><a v-if="ref.link" target="_blank" :href="ref.link">{{ref.link}}</a></small>
           <p>{{ref.txt}}</p>
-          <div class="material" v-for="material in ref.materails" :key="material._id">
-            <p>
-              <router-link :to="`material/${material._id}`">
-                {{material.name}} ({{material.refNum}})
-              </router-link>
-              <template v-if="material.interactsWith.length"> | </template>
-              <small>
-                <router-link 
-                  v-for="(int, idx) in material.interactsWith" :key="int._id"
-                  :to="`interaction/${int.intId}`"
-                >
-                  <!-- :to="int.type === 'material' ? `material/${int._id}` : `label/${int._id}`" -->
-                  {{int.name}}<template v-if="idx !== material.interactsWith.length-1">,</template>
+          <ul class="materials">
+            <li class="material" v-for="material in ref.materails" :key="material._id">
+              <p>
+                <router-link :to="`material/${material._id}`">
+                  {{material.name}} ({{material.refNum + 1}})
                 </router-link>
-              </small>
-            </p>
-          </div>
+                <template v-if="material.interactsWith.length"> | </template>
+                <small>
+                  <router-link 
+                    v-for="(int, idx) in material.interactsWith" :key="int._id"
+                    :to="`interaction/${int.intId}`"
+                  >
+                    <!-- :to="int.type === 'material' ? `material/${int._id}` : `label/${int._id}`" -->
+                    {{int.name}}<template v-if="idx !== material.interactsWith.length-1">,</template>
+                  </router-link>
+                </small>
+              </p>
+            </li>
+          </ul>
         </li>
       </ul>
+      <h3 v-else-if="!isPristin">No results..</h3>
     </section>
   </div>
 </template>
@@ -53,13 +62,17 @@ export default {
         pmId: ''
         // pmId: '24648302'
       },
-      show: false
+      show: false,
+      isPristin: true,
+      isLoading: false
     }
   },
   methods: {
     async loadRefs() {
+      this.isLoading = true;
+      this.isPristin = false;
       const refs = await this.$store.dispatch({ type: 'loadRefs', criteria: this.criteria });
-      console.log('GOT IT', refs);
+      this.isLoading = false;
       this.refs = JSON.parse(JSON.stringify(refs));
     }
   },
@@ -80,6 +93,19 @@ export default {
   z-index: 100;
 }
 .search-refs-section {
+  .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 0 !important;
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 5px;
+    background-color: #e9e9e9;
+    box-shadow: 0px 0px 10px 0.3px rgba(0,0,0,0.1);
+  }
   position: fixed;
   // top: 50%;
   top: 15%;
@@ -100,6 +126,9 @@ export default {
   h3 {
     font-weight: bold;
   }
+  p {
+    margin: 0;
+  }
   label {
     span {
       width: 75px;
@@ -118,18 +147,23 @@ export default {
   }
 
   .refs {
-    max-height: 500px;
+    max-height: 400px;
     overflow-y: auto;
     .ref {
       &:not(:last-child) {
         border-bottom: 1px solid rgba(0, 0, 0, 0.5);
       }
       
-      .material {
-        &:not(:last-child) {
-          border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+      .materials {
+        padding-inline-start: 10px;
+        .material {
+          p {
+            margin: 10px 0;
+          }
+          &:not(:last-child) {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+          }
         }
-        margin-inline-start: 10px;
       }
     }
   }

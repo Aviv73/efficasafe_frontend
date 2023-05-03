@@ -583,22 +583,22 @@ export default {
       let iterateFunc = null;
       switch (type) {
         case 'clinical':
-          iterateFunc = ref => ref.type === 'clinical' || ref.type === 'retrospective';
+          iterateFunc = ref => ref?.type === 'clinical' || ref?.type === 'retrospective';
           break;
         case 'pre-clinical':
-          iterateFunc = ref => ref.type === 'in vitro' || ref.type === 'animal';
+          iterateFunc = ref => ref?.type === 'in vitro' || ref?.type === 'animal';
           break;
         case 'systematic':
-          iterateFunc = ref => ref.type === 'systematic';
+          iterateFunc = ref => ref?.type === 'systematic';
           break;
         case 'meta':
-          iterateFunc = ref => ref.type === 'meta';
+          iterateFunc = ref => ref?.type === 'meta';
           break;
         case 'case':
-          iterateFunc = ref => ref.type === 'case';
+          iterateFunc = ref => ref?.type === 'case';
           break;
         case 'articles':
-          iterateFunc = ref => ref.type === 'review' || ref.type === 'drug label' || ref.type === 'book' || ref.type === 'Book' || !ref.type;
+          iterateFunc = ref => ref?.type === 'review' || ref?.type === 'drug label' || ref?.type === 'book' || ref?.type === 'Book' || !ref?.type;
           break;
       }
 

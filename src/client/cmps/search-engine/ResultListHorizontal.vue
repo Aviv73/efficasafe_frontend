@@ -33,7 +33,7 @@
         </button>
       </span>
       <span class="horizontal-list-header-item">
-        <label class="flex-align-center" :title="sortRecommendationTxt" tabindex="0">
+        <label class="flex-align-center" tabindex="0">
           <input type="checkbox" :value="isRecChecked" hidden @change="isRecChecked = !isRecChecked, emitSort('recommendation', isRecChecked)" />
           <sort-vertical-icon color="#205072" class="sort-icon" title="" />
           <span>Recommendation</span>

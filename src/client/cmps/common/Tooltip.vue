@@ -213,7 +213,7 @@ export default {
     })
   },
   beforeDestroy() {
-    const el = this.$refs.activator.querySelector('.hover-activator')
+    const el = this.$refs?.activator?.querySelector?.('.hover-activator')
     if (!el) return
     el.removeEventListener('mouseenter', () => {
       this.onToggle(true)
