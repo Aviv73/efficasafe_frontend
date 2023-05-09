@@ -120,16 +120,17 @@ export default {
                 return;
             }
             this.isLoading = true;
-            q = q.trim()
+            q = q.trim().toLowerCase();
             q = this.transHebrew(q)
             this.lastQ = q
             const criteria = { autocomplete: true, q };
             const results = await this.$store.dispatch({ type: 'getMaterials', criteria });
             if(results.originalQ === this.lastQ || this.transHebrew(results.originalQ) === this.lastQ){
                 this.results = this.sortRes(results.materials, q);
+
                 this.isLoading = false;
             }else{
-                this.isLoading = false;
+                // this.isLoading = false;
                 return
             }
         },
