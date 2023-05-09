@@ -544,7 +544,7 @@ export default {
         this.side1Pathways = side1Material.pathways;
         this.$options.side1Refs = side1Material.refs;
         this.effectOnDrugMetabolism = side1Material.effectOnDrugMetabolism;
-        this.interactionRefs = side1Material.refs.filter(ref => this.interaction.refs.includes(ref.draftIdx));
+        this.interactionRefs = side1Material?.refs?.filter(ref => this.interaction.refs.includes(ref.draftIdx)) || [];
       } else {
         const [interaction, material] = await Promise.all([this.$store.dispatch({ type: 'loadInteraction', id }), this.$store.dispatch({ type: 'loadMaterial', matId })]);
         if (!interaction || !material) {
