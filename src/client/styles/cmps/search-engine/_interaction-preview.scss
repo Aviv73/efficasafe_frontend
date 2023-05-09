@@ -9,9 +9,9 @@
   @include for-narrow-layout {
     padding-bottom: 0px;
 
-    .interaction-preview-header {
-      padding: 10px 0px;
-    }
+    // .interaction-preview-header {
+    //   padding: 10px 0px;
+    // }
   }
 
   @include for-wide-layout {
@@ -386,7 +386,7 @@
           // transform: translate(-17px, 0px);
         }
         // justify-content: space-between;
-        padding: 0 10px;
+        // padding: 0 10px;
         .recomendation {
           // padding-inline-start: rem(19px);
           padding-inline-start: 0.1875rem;

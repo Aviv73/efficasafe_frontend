@@ -161,6 +161,24 @@
                 </span>
               </router-link>
             </li>
+            <li class="search-engine-nav-link">
+              <tooltip v-if="formatedMaterials.length <= 1" centerBottom>
+                <template #content>
+                  <div class="tooltip-content">
+                    <span> This tab opens only when the search contains multiple materials. </span>
+                  </div>
+                </template>
+                <router-link :class="{ 'WTM-disabled': formatedMaterials.length <= 1 }" :disabled="formatedMaterials.length <= 1" :event="formatedMaterials.length > 1 ? 'click' : ''" class="link" :to="{ name: 'Monitor', query: this.$route.query }" ref="whatToMonitorLink">
+                  What to monitor
+                </router-link>
+              </tooltip>
+              <router-link v-else :class="{ 'WTM-disabled': formatedMaterials.length <= 1 }" :disabled="formatedMaterials.length <= 1" :event="formatedMaterials.length > 1 ? 'click' : ''" class="link" :to="{ name: 'Monitor', query: this.$route.query }" ref="whatToMonitorLink">
+                What to monitor
+              </router-link>
+              <!-- <router-link :class="{ 'WTM-disabled': formatedMaterials.length <= 1 }" :disabled="formatedMaterials.length <= 1" :event="formatedMaterials.length > 1 ? 'click' : ''" class="link" :to="{ name: 'Monitor', query: this.$route.query }" ref="whatToMonitorLink">
+                What to monitor
+              </router-link> -->
+            </li>
             <li class="search-engine-nav-link boosters-link">
               <PlayTourBtn :dontOpen="isScreenNarrow" @click.native="startBoostTour" />
               <tooltip v-if="disableOptiPage" centerBottom>
@@ -194,24 +212,6 @@
                   </span>
                 </span>
               </router-link>
-            </li>
-            <li class="search-engine-nav-link">
-              <tooltip v-if="formatedMaterials.length <= 1" centerBottom>
-                <template #content>
-                  <div class="tooltip-content">
-                    <span> This tab opens only when the search contains multiple materials. </span>
-                  </div>
-                </template>
-                <router-link :class="{ 'WTM-disabled': formatedMaterials.length <= 1 }" :disabled="formatedMaterials.length <= 1" :event="formatedMaterials.length > 1 ? 'click' : ''" class="link" :to="{ name: 'Monitor', query: this.$route.query }" ref="whatToMonitorLink">
-                  What to monitor
-                </router-link>
-              </tooltip>
-              <router-link v-else :class="{ 'WTM-disabled': formatedMaterials.length <= 1 }" :disabled="formatedMaterials.length <= 1" :event="formatedMaterials.length > 1 ? 'click' : ''" class="link" :to="{ name: 'Monitor', query: this.$route.query }" ref="whatToMonitorLink">
-                What to monitor
-              </router-link>
-              <!-- <router-link :class="{ 'WTM-disabled': formatedMaterials.length <= 1 }" :disabled="formatedMaterials.length <= 1" :event="formatedMaterials.length > 1 ? 'click' : ''" class="link" :to="{ name: 'Monitor', query: this.$route.query }" ref="whatToMonitorLink">
-                What to monitor
-              </router-link> -->
             </li>
             <li class="search-engine-nav-link">
               <label class="display-toggle" title="Horizontal view">
@@ -1087,15 +1087,20 @@ export default {
     },
     async getResults() {
       this.isLoading = true;
+      this.isPBLoading = true;
       await this.getMaterials();
       if (this.$route.query.q && this.$route.query.q.length === 1 && this.materialsLength > 1) {
         eventBus.$emit(EV_show_user_msg, "Compound as a single result isn't supported, Please insert more material/s", 15000);
         this.reset(false);
         this.isLoading = false;
+        this.isPBLoading = false;
         return;
       }
 
+      this.isPBLoading = true;
       this.isLoading = true;
+
+      this.getPositives();
 
       await this.getAllInteractionsData();
       // this.wtmInteractions = JSON.parse(JSON.stringify(this.fetchResultInteractions));
@@ -1103,7 +1108,7 @@ export default {
       // this.handleSort_onLocalData();
       this.isLoading = false;
 
-      this.getPositives();
+      
 
       setTimeout(() => {
         window.scrollTo({
