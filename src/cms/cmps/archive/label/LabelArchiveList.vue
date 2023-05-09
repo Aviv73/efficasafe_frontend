@@ -16,7 +16,7 @@
             </td>
 
             <td width="180" align="center">
-                <span v-if="item.deletedAt">{{ new Date(item.deletedAt) | moment('DD/MM/YYYY')  }}</span>
+                <span v-if="item.deletedAt">{{ new Date(item.deletedAt) | timeFilter('DD/MM/YYYY')  }}</span>
             </td>
 
             <td class="td-color" width="80">

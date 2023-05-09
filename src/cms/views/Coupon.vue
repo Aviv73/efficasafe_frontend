@@ -15,7 +15,7 @@
                             <td style="text-align: start">{{item.code}}</td>
                             <td style="text-align: start" :class="{'red-txt': item.validUntil < Date.now()}">
                                 <template v-if="item.validUntil">
-                                    {{ new Date(item.validUntil) | moment('DD/MM/YYYY') }}
+                                    {{ new Date(item.validUntil) | timeFilter('DD/MM/YYYY') }}
                                 </template>
                             </td>
                             <td style="text-align: start">{{ item.endTrialDate ? 'Trial' : 'Subscription' }}</td>
@@ -103,7 +103,7 @@
                             <td style="text-align: start">{{item.code}}</td>
                             <td style="text-align: start" :class="{'red-txt': item.validUntil < Date.now()}">
                                 <template v-if="item.validUntil">
-                                    {{ new Date(item.validUntil) | moment('DD/MM/YYYY') }}
+                                    {{ new Date(item.validUntil) | timeFilter('DD/MM/YYYY') }}
                                 </template>
                             </td>
                             <td style="text-align: start">

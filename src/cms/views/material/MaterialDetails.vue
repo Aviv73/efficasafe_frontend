@@ -80,7 +80,7 @@
                     <div class="info-value">{{ material.type }}</div>
 
                     <h3 class="info-title" v-if="material.updatedAt">Last Update At:</h3>
-                    <div class="info-value" v-if="material.updatedAt">{{ new Date(material.updatedAt) | moment('MMM Do YYYY') }}</div>
+                    <div class="info-value" v-if="material.updatedAt">{{ new Date(material.updatedAt) | timeFilter('MMM Do YYYY') }}</div>
 
                     <h3 class="info-title" v-if="material.atcId">ATC Code:</h3>
                     <div class="info-value" v-if="material.atcId">{{ material.atcId }}</div>

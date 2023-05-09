@@ -55,14 +55,14 @@
                 </tooltip>
               </span>
               <span v-else-if="(header.field === 'at') && item.at">
-                {{ new Date(item[header.field]) | moment('DD/MM/YYYY') }}
+                {{ new Date(item[header.field]) | timeFilter('DD/MM/YYYY') }}
               </span>
               <span v-else-if="header.field === 'price'"> {{ item.coin || '$' }}{{ item[header.field] }} </span>
               <span v-else-if="header.field === 'plan'">
                 {{ item[header.field] }}
               </span>
               <span v-else-if="(header.field === 'until') && item.until">
-                {{ new Date(item[header.field]) | moment('DD/MM/YYYY') }}
+                {{ new Date(item[header.field]) | timeFilter('DD/MM/YYYY') }}
               </span>
               <span v-else-if="header.field === 'notes'" class="td-actions">
                 <button v-if="item" class="note-btn">
@@ -76,7 +76,7 @@
                         <button class="remove-note-btn" @click="onRemoveNote(idx)">+</button>
                         <p class="date">
                           <template v-if="note.date">
-                            {{ new Date(note.date) | moment('DD MMM YYYY | h:mm A') }}
+                            {{ new Date(note.date) | timeFilter('DD MMM YYYY | h:mm A') }}
                           </template>
                         </p>
                         <p contenteditable="true" @focusout="onSaveEditedNote(idx, $event)" class="txt">{{ note.txt }}</p>
@@ -94,7 +94,7 @@
               </span>
               <span v-else-if="!header.field && $route.name === 'Purchases'">
                 <button class="end-subscrition-btn" @click="onEndSubscription(item)" v-if="item.until === 'Ongoing' && item.price !== 0">End subscription</button>
-                <p v-else-if="item.canceledAt">Subscription Canceled at: {{ new Date(item.canceledAt) | moment('DD/MM/YYYY') }}</p>
+                <p v-else-if="item.canceledAt">Subscription Canceled at: {{ new Date(item.canceledAt) | timeFilter('DD/MM/YYYY') }}</p>
               </span>
               <span class="flex-space-between td-actions" v-else-if="!header.title && isSearchesMobile" style="position: relative">
                 <tooltip :ref="`tooltip-${item.at}`" right on="focus">
@@ -115,7 +115,7 @@
                       <button class="remove-note-btn" @click="onRemoveNote(idx)">+</button>
                       <p class="date">
                         <template v-if="note.date">
-                          {{ new Date(note.date) | moment('DD MMM YYYY | h:mm A') }}
+                          {{ new Date(note.date) | timeFilter('DD MMM YYYY | h:mm A') }}
                         </template>
                       </p>
                       <p contenteditable="true" @focusout="onSaveEditedNote(idx, $event)" class="txt">{{ note.txt }}</p>

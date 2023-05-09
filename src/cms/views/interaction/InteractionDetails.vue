@@ -68,7 +68,7 @@
           <p class="info-value" v-if="interaction.side2DraftName">{{ interaction.side2DraftName }}</p>
 
           <h3 class="info-title" v-if="interaction.updatedAt">Updated At:</h3>
-          <p class="info-value" v-if="interaction.updatedAt">{{ new Date(interaction.updatedAt) | moment('MMM Do YYYY') }}</p>
+          <p class="info-value" v-if="interaction.updatedAt">{{ new Date(interaction.updatedAt) | timeFilter('MMM Do YYYY') }}</p>
 
           <h3 class="info-title"  v-if="interaction.summary">Summary:</h3>
           <p
