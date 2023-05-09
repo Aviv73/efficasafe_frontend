@@ -1,7 +1,8 @@
 import Vue from 'vue';
-import moment from 'vue-moment';
+import vueMoment from 'vue-moment';
+import moment from 'moment';
 
-Vue.use(moment);
+Vue.use(vueMoment);
 
 Vue.filter('ref-txt', (val) => {
     const doiIdx = val.indexOf('doi');
@@ -28,3 +29,19 @@ Vue.filter('remove-ending-dot', (val) => {
 Vue.filter('display-snake-case', (val) => {
     return val.replace(/_/g, ' ');
 });
+
+Vue.filter('timeFilter', (val, format) => {
+    if (!isValidDate(val)) return 'Invalin Date';
+    return format? moment(val, format).format(format) : moment(val);
+});
+
+function isValidDate(time) {
+    try {
+        if (!time) return false;
+        const dateItem = new Date(time);
+        if (isNaN(+dateItem)) return false;
+        return true;
+    } catch(err) {
+        return false
+    }
+}
