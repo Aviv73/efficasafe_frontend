@@ -5,6 +5,9 @@
   margin-block-end: rem(12px);
   position: relative;
 
+  display: flex;
+  align-items: stretch;
+
   // &:not(:last-child) {
   // }
 

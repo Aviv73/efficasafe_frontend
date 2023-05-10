@@ -15,6 +15,12 @@
     cursor: pointer;
   }
 
+  .search-engine-nav-link {
+    .tooltip-box {
+      width: 100%;
+    }
+  }
+
   .brim-end {
     background-color: $clr3;
     position: relative;
