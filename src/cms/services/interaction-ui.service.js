@@ -81,7 +81,8 @@ function formatRefStrs(refStr) {
   return `(${formatedRefStr})`;
 }
 
-function getSortedRefs(txt, refs) {
+function getSortedRefs(txt = '', refs = []) {
+  refs = refs.filter(Boolean);
   const refsOrder = getRefsOrder(txt);
   const sortedRefs = [];
   refsOrder.forEach(refIdx => {
