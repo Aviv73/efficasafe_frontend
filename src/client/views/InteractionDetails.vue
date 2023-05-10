@@ -316,7 +316,7 @@ export default {
       return title;
     },
     combinedRefs() {
-      return Array.from(new Set([...this.interactionRefs, ...this.relevantSide2Refs, ...this.side1PathwayRefs]));
+      return Array.from(new Set([...this.interactionRefs, ...this.relevantSide2Refs, ...this.side1PathwayRefs])).filter(Boolean);
     },
     refsDetailsTxt() {
       const { getRefsCountByType, interactionRefs } = this;

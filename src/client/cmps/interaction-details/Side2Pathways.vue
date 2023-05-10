@@ -70,6 +70,7 @@
 // import Tooltip from '@/client/cmps/common/Tooltip';
 
 export default {
+    name: "Side2Pathways",
     props: {
         side2Pathways: {
             type: Array,
@@ -126,7 +127,7 @@ export default {
             if (!this.side2Refs.length || !pubmedIds.length) return '';
             if (pubmedIds.length === 1) {
                 const field = (typeof pubmedIds[0] === 'number') ? 'pubmedId' : 'link';
-                const refIdx = this.combinedRefs.findIndex(ref => pubmedIds.includes(ref[field]));
+                const refIdx = this.combinedRefs.filter(Boolean).findIndex(ref => ref && pubmedIds.includes(ref[field]));
                 return `(${refIdx + 1})`;
             }
             let refsStr = '';
