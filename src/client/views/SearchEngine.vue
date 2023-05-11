@@ -1,6 +1,6 @@
 <template>
   <section class="search-engine">
-    <div class="search-engine-container side-by-side-container">
+    <div class="search-engine-container side-by-side-container" :class="{'positive-boosters-search': $route.name === 'Boosters'}">
       <span class="brim-start" />
       <div class="search-engine-search flex-coloumn">
         <router-link to="/" class="logo">

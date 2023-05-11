@@ -23,19 +23,19 @@
     <header class="horizontal-list-header">
       <span class="horizontal-list-header-item">
         <label class="flex-align-center" title="Sort A-Z / Z-A" tabindex="0">
-          <input type="checkbox" :value="isNameChecked" hidden @change="isNameChecked = !isNameChecked, emitSort('name', isNameChecked)" />
-          <sort-vertical-icon color="#205072" class="sort-icon" title="" />
+          <input class="sort-item" type="checkbox" :value="isNameChecked" hidden @change="isNameChecked = !isNameChecked, emitSort('name', isNameChecked)" />
+          <sort-vertical-icon class="sort-item sort-icon" color="#205072" title="" />
           <span v-if="$route.name == 'Boosters'">Drug</span>
           <span v-else>{{ side1Name }} vs {{ side2Name }}</span>
         </label>
-        <button @click="changeSortBySide" class="swap-side-btn">
+        <button @click="changeSortBySide" class="sort-item swap-side-btn">
           <sort-vertical-icon class="swap-side-icon" color="#205072" title="" />
         </button>
       </span>
       <span class="horizontal-list-header-item">
         <label class="flex-align-center" tabindex="0">
-          <input type="checkbox" :value="isRecChecked" hidden @change="isRecChecked = !isRecChecked, emitSort('recommendation', isRecChecked)" />
-          <sort-vertical-icon color="#205072" class="sort-icon" title="" />
+          <input class="sort-item" type="checkbox" :value="isRecChecked" hidden @change="isRecChecked = !isRecChecked, emitSort('recommendation', isRecChecked)" />
+          <sort-vertical-icon class="sort-item sort-icon" color="#205072" title="" />
           <span>Recommendation</span>
         </label>
         <tooltip on="hover" bottomLeft>

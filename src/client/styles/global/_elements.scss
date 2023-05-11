@@ -175,7 +175,8 @@ sub {
       text-align: center;
 
       @include for-narrow-layout {
-        flex-basis: 52.66%;
+        // flex-basis: 52.66%;
+        flex-basis: 45%;
         text-align: initial;
       }
     }
@@ -190,7 +191,7 @@ sub {
 
       @include for-narrow-layout {
         // flex-basis: 25%;
-        padding: 0px 10px;
+        // padding: 0px 10px;
       }
       @include for-wide-layout {
         flex-basis: 33.33%;
