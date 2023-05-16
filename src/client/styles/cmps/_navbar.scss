@@ -10,6 +10,14 @@
   padding: rem(10px) 0;
   transition: background-color 0.6s ease;
 
+  .logo {
+    // height: 30px;;
+    .logo-name {
+      height: 20px;;
+      // height: 100%;
+    }
+  }
+
   .main-container {
     padding: 0;
   }
@@ -40,10 +48,12 @@
     }
     .logo-mobile {
       display: flex;
+      // height: 100%;
     }
-
+    
     .logo-mobile .logo-name {
       margin-left: 5px;
+      height: 20px;
     }
 
     .nav-part {
@@ -77,9 +87,11 @@
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
     padding-inline-start: rem(20px);
+    height: 100%;
     .logo-name {
       position: relative;
       bottom: rem(0.5px);
+      // height: 100%;
     }
 
     .onion-right {
@@ -276,12 +288,15 @@
   .navbar-nav {
     .logo {
       display: none;
+      height: 100%;
       @media (max-width: $break-narrow) {
         display: flex;
         justify-content: flex-start;
         height: rem(50px);
         padding: rem(15px);
+        height: 100%;
         .logo-name {
+          height: 100%;
           display: block;
         }
         &:hover {

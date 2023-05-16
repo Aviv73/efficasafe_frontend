@@ -36,7 +36,7 @@
       <!-- <h1 class="flex-coloumn"> -->
       <h1>
         <a class="home-logo flex" href="/">
-          <img src="@/client/assets/imgs/efficasafe-logo.svg" alt="Efficasafe Logoo" />
+          <!-- <img src="@/client/assets/imgs/efficasafe-logo.svg" alt="Efficasafe Logoo" /> -->
           <img src="@/client/assets/imgs/efficasafe.svg" alt="Efficasafe Logo" />
         </a>
       </h1>

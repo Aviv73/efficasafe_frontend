@@ -1,7 +1,7 @@
 <template>
   <header class="page-header flex-center">
     <router-link to="/">
-      <img :src="require('@/client/assets/imgs/flat-logo.png')" alt="Logo" />
+      <img class="logo" :src="require('@/client/assets/imgs/flat-logo.png')" alt="Logo" />
     </router-link>
     <span v-if="!isMobile" class="page-header-link">
       <button class="flex-align-center font-medium" @click="$router.go(-1)">

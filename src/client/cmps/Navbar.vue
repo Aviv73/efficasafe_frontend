@@ -5,7 +5,7 @@
         <div class="navbar-msgs flex-center nav-part">
           <div class="flex-center">
             <router-link to="/" title="Home" class="logo">
-              <img src="@/client/assets/imgs/efficasafe-logo-light.svg" alt="Efficasafe" />
+              <!-- <img src="@/client/assets/imgs/efficasafe-logo-light.svg" alt="Efficasafe" /> -->
               <img class="logo-name" src="@/client/assets/imgs/efficasafe-light.svg" alt="Efficasafe" />
             </router-link>
           </div>
@@ -16,7 +16,7 @@
             <menu-icon title="" />
           </button>
           <router-link v-if="isScreenNarrow" to="/" title="Home" class="logo-mobile">
-            <img src="@/client/assets/imgs/efficasafe-logo-light.svg" alt="Efficasafe" />
+            <!-- <img src="@/client/assets/imgs/efficasafe-logo-light.svg" alt="Efficasafe" /> -->
             <img class="logo-name" src="@/client/assets/imgs/efficasafe-light.svg" alt="Efficasafe" />
           </router-link>
           <div class="navbar-overlay" :class="{ active: isNavActive }" @click="toggleNavActive"></div>

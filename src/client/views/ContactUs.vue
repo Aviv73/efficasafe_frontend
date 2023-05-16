@@ -5,6 +5,7 @@
       <header>
         <router-link to="/">
           <img
+            class="logo"
             :src="require('@/client/assets/imgs/flat-logo.png')"
             alt="Logo"
           />

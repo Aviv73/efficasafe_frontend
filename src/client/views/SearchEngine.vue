@@ -4,8 +4,9 @@
       <span class="brim-start" />
       <div class="search-engine-search flex-coloumn">
         <router-link to="/" class="logo">
-          <img src="@/client/assets/imgs/logo-symbol.png" alt="Logo" />
-          <img src="@/client/assets/imgs/logo-txt.png" alt="Efficasafe" />
+          <!-- <img src="@/client/assets/imgs/logo-symbol.png" alt="Logo" />
+          <img src="@/client/assets/imgs/logo-txt.png" alt="Efficasafe" /> -->
+          <img src="@/client/assets/imgs/logo.png" alt="Efficasafe" />
         </router-link>
         <div class="form-container">
           <PlayTourBtn :dontOpen="isScreenNarrow" @click.native="startSearchTour" />
