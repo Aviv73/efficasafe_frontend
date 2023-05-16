@@ -6,7 +6,7 @@
         <button @click="closeModal" class="close-modal-btn">
           <close-icon :size="14" />
         </button>
-        <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
+        <img class="logo" src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
         <div v-if="showFreeSearchesMsg" class="searches-msg">
           <h3>No free searches left</h3>
           <h4>Want to enjoy efficasafe free trial for</h4>

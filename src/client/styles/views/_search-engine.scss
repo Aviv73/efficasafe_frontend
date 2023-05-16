@@ -2,6 +2,10 @@
   flex-grow: 1;
   display: flex;
 
+  .child-flex>*, .flex {
+    flex: unset
+  }
+
   &-container {
     flex-grow: 1;
   }

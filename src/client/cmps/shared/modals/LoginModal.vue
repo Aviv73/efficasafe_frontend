@@ -6,7 +6,7 @@
                     <button @click="closeModal" class="close-modal-btn">
                         <close-icon :size="14" />
                     </button>
-                    <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
+                    <img class="logo" src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
                     <p @click="openSignupModal" class="signup-link">Don't have an account? signup now</p>
                     <div v-if="wrongProviderMsg || isShowFailedMsg" class="msg failed">{{wrongProviderMsg || 'WRONG EMAIL OR PASSWORD.'}}</div>
                     <div v-if="isShowSuccesseMsg" class="msg successe">You are now logged in.</div>
@@ -95,7 +95,6 @@ export default {
         openSignupModal(){
             eventBus.$emit(EV_open_signup);
             this.$emit('closeModal');
-            
         },
         async onRegister(){
             if(this.isLoading){

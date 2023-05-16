@@ -6,7 +6,7 @@
                 <button @click="$router.go(-1)" class="close-modal-btn">
                     <close-icon :size="14" />
                 </button>
-                <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
+                <img class="logo" src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
                 <div class="auth-modal-small-title font-medium">
                     <p>Enter your Email</p>
                 </div>

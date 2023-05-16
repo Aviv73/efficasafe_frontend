@@ -4,7 +4,7 @@
     <div>
       <button class="auth-modal-close-btn" @click="closeModal">X</button>
       <div class="auth-modal-content txt-center">
-        <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
+        <img class="logo" src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
         <div class="auth-modal-small-title font-medium gap-lg">
           Congratulations!
           <p>You have joined the elite physicians, pharmacists, and caregivers who already enjoy full access to the most up-to-date, evidence-based interactions database.</p>

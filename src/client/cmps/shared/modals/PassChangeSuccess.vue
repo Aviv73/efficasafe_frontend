@@ -3,7 +3,7 @@
         <div class="auth-modal-cover" @click.stop="closeModal()"></div>
         <div>
             <div class="auth-modal-content txt-center">
-                <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
+                <img class="logo" src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
                 <div class="auth-modal-small-title font-medium gap-lg">
                     Congratulations!
                     <span class="d-block">Your password has been changed!</span>
