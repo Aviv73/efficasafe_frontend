@@ -152,10 +152,16 @@
     }
 
     .home-logo {
-      margin-top: 26px;
+      img {
+        width: 330px;
+      }
+      margin-top: 33px;
       gap: 5px;
 
       @media (max-width: 768px) {
+        img {
+          width: 200px;
+        }
         margin-top: 0px;
       }
     }
