@@ -2,7 +2,10 @@
   <section class="cards">
     <span class="header">
       <h1 class="header-title font-bold">
-        Transforming Herb-Drug-Supplement interactions analysis <br />
+        <br />
+        Transforming Herb-Drug-Supplement interactions analysis 
+        <br />
+        <br />
         for greater efficacy and safety <br v-if="isScreenNarrow" />of integrative healthcare.
       </h1>
     </span>
