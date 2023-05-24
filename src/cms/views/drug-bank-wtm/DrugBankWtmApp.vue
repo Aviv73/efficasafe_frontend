@@ -7,7 +7,7 @@
                         Drug Bank WTM workshop
                     </h2>
                 </v-card-title>
-                <form @submit.prevent="loadData" class="search-form flex column align-start gap10">
+                <form @submit.prevent="loadResultsData" class="search-form flex column align-start gap10">
                     <label class="flex gap10">
                         <span>Search by management</span>
                         <input v-model="filterBy.filter.search" type="text" placeholder="search"/>
@@ -42,9 +42,13 @@
                 </form>
             </v-card>
             <v-card class="results-container">
-                <h2>
-                    Drug Bank Interactions Results:
-                </h2>
+                <div class="flex align-center space-between">
+                    <h2>
+                        Drug Bank Interactions Results: 
+                    </h2>
+                    <v-btn @click="selectAllWtmInteractions" :disabled="!dBankWtms.length">Select All</v-btn>
+                    <v-btn @click="unSelectAllWtmInteractions" :disabled="!dBankWtms.length">Unselect All</v-btn>
+                </div>
                 <ul>
                     <li v-for="item in dBankWtms" :key="item._id" class="flex gap10">
                         <input type="checkbox" v-model="editData.ids" :value="item._id"/>
@@ -56,12 +60,29 @@
                     </li>
                 </ul>
             </v-card>
+            
+            <v-card>
+                <featured-interaction-filter 
+                    @filter-changed="setFilter"
+                />
+                <featured-interaction-grouped-list 
+                    :showActions="false"
+                    baseItemUrl="/d-bank-interaction"
+                    :groups="wtmGroups" 
+                    :groupCount="groupsCount" 
+                    :isLoading="isLoading"
+                    @sort-changed="setFilter"
+                    @pagination-changed="setFilter"
+                />
+            </v-card>
             <icons-map />
         </div>
     </section>
 </template>
 
 <script>
+import featuredInteractionGroupedList from '@/cms/cmps/featured-interaction/FeaturedInteractionGroupedList';
+import featuredInteractionFilter from '@/cms/cmps/featured-interaction/FeaturedInteractionFilter';
 import iconsMap from '@/cms/cmps/general/IconsMap';
 import monitorOptsMap from './monitorOptsMap.json';
 
@@ -80,7 +101,7 @@ export default {
                 ids: [],
                 searchBy: '',
                 generateItems: [] // [ { field, value, drug: { side, name } } ]
-            }
+            },
         }
     },
     watch: {
@@ -89,9 +110,22 @@ export default {
         },
         dBankWtms() {
             this.editData.ids = [];
+        },
+        '$route.query': {
+            handler() {
+                this.loadAllDbankWtms();
+            },
+            immediate: true
         }
     },
     computed: {
+        wtmGroups() {
+            console.log(this.$store.getters.dbankWtmsGroups);
+            return this.$store.getters.dbankWtmsGroups.groups;
+        },
+        groupsCount() {
+            return this.$store.getters.dbankWtmsGroups.total;
+        },
         height(){
             return this.$store.getters.getHeight
         },
@@ -100,9 +134,29 @@ export default {
         },
         AllGeneratorsValid() {
             return this.editData.generateItems.every(c => c.field && c.value);
+        },
+
+        allDbankWtmInteractionsFilterBy() {
+            return this.$store.getters.allDbankWtmInteractionsFilterBy;
         }
     },
     methods: {
+        selectAllWtmInteractions() {
+            this.editData.ids = this.dBankWtms.map(c => c._id);
+        },
+        unSelectAllWtmInteractions() {
+            this.editData.ids = [];
+        },
+        setFilter(filterBy) {
+            const criteria = {
+                ...this.$route.query,
+                ...filterBy,
+                colName: 'drugBankInteractionMonitor'
+            };
+            if (criteria.side1Name) criteria.page = 0;
+            const queryStr = '?' + new URLSearchParams(criteria).toString();
+            this.$router.push(queryStr);
+        },
         addAnotherGenerateItem() {
             this.editData.generateItems.push(
                 { field: '', value: '', drug: { side: null, name: null } }
@@ -111,7 +165,7 @@ export default {
         removeGenerateItem(idx) {
             this.editData.generateItems.splice(idx, 1);
         },
-        loadData() {
+        loadResultsData() {
             this.$store.dispatch({ type: 'loadDBankWtms', filterBy: this.filterBy });
         },
         async generateData() {
@@ -125,6 +179,18 @@ export default {
                 searchBy: '',
                 generateItems: [] // [ { field, value, drug: { side, name } } ]
             }
+        },
+
+        async loadAllDbankWtms() {
+            this.isLoading = true;
+            const filterBy = this.$route.query;
+            filterBy.isGroups = true;
+            filterBy.sortBy = filterBy.sortBy || 'name';
+            filterBy.isDesc = filterBy.isDesc || false;
+            filterBy.limit = filterBy.limit || Number.MAX_SAFE_INTEGER;
+            filterBy.colName = 'drugBankInteractionMonitor';
+            await this.$store.dispatch({ type: 'getDbankWtmGroups', filterBy });
+            this.isLoading = false;
         }
     },
     mounted(){
@@ -133,6 +199,8 @@ export default {
         }
     },
     components: {
+        featuredInteractionGroupedList,
+        featuredInteractionFilter,
         iconsMap
     }
 }

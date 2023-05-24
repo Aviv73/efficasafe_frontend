@@ -100,9 +100,10 @@ export default {
       if (!monitorData) return '';
       let res = '';
       for (let key in monitorData) {
-        const vals = monitorData[key];
         if (res) res += '\n';
         res += `${key}: `;
+        const vals = monitorData[key];
+        if (!vals) continue
         res += vals.reduce((acc, c) => {
           acc = acc + ` ${c.value}`;
           if (c.drug?.name) acc += ` (${c.drug.name})`;
