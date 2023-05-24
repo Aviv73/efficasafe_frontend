@@ -34,7 +34,13 @@
           <p v-if="interaction.extended_description" ref="extendedDescription" v-html="isTextFormatted ? getRefsToDisplay(interaction.extended_description) : interaction.extended_description" />
 
           <div class="text-capitalize" v-if="interaction.management">Management:</div>
-          <p v-if="interaction.management" ref="management" v-html="isTextFormatted ? getRefsToDisplay(interaction.management) : interaction.management" />
+          <p v-if="interaction.wtmData && interaction.wtmData.managementToShow" class="management" ref="management" v-html="interaction.wtmData.managementToShow" />
+          <p v-else-if="interaction.management" ref="management" v-html="isTextFormatted ? getRefsToDisplay(interaction.management) : interaction.management" />
+
+          <template v-if="monitorStr">
+            <p class="text-capitalize" v-if="monitorStr">Monitor:</p>
+            <p class="monitor-p">{{monitorStr}}</p>
+          </template>
 
           <v-divider class="d-bank-interaction-details-content-divider my-2" />
           <d-bank-refs-table class="d-bank-interaction-details-content-table" :refs="interactionRefs" :isEdit="false" />
@@ -88,6 +94,22 @@ export default {
         acc = acc.concat(moreRefs);
         return acc;
       }, []);
+    },
+    monitorStr() {
+      const monitorData = this.interaction.wtmData?.monitor || null;
+      if (!monitorData) return '';
+      let res = '';
+      for (let key in monitorData) {
+        const vals = monitorData[key];
+        if (res) res += '\n';
+        res += `${key}: `;
+        res += vals.reduce((acc, c) => {
+          acc = acc + ` ${c.value}`;
+          if (c.drug?.name) acc += ` (${c.drug.name})`;
+          return acc;
+        }, '');
+      }
+      return res;
     }
   },
   methods: {
@@ -189,3 +211,19 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+.d-bank-interaction-details-content {
+  .management {
+    
+    .generated {
+      display: inline-block;
+      background-color: yellow;
+      margin: 0;
+    }
+  }
+  .monitor-p {
+    white-space: pre-wrap;
+  }
+}
+</style>

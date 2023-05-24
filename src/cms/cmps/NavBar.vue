@@ -63,6 +63,16 @@
                 tile
                 color="white"
                 text
+                to="/drug-bank-wtm"
+                v-if="isAdmin || isEditor || isAssistantEditor"
+            >
+                dBankWtm
+            </v-btn>
+            <v-btn
+                class="nav-link"
+                tile
+                color="white"
+                text
                 to="/interaction"
                 v-if="isAdmin || isEditor"
                 >Interactions</v-btn

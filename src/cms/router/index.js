@@ -15,6 +15,7 @@ import interactionEdit from '../views/interaction/InteractionEdit';
 import interactionDetails from '../views/interaction/InteractionDetails';
 import vInteractionDetails from '@/cms/views/interaction/VinteractionDetails';
 import featuredInteractionApp from '@/cms/views/featured-interaction/FeaturedInteractionApp';
+import DrugBankWtmApp from '@/cms/views/drug-bank-wtm/DrugBankWtmApp';
 import featuredInteractionEdit from '@/cms/views/featured-interaction/FeaturedInteractionEdit';
 import archiveApp from '../views/archive/ArchiveApp';
 import DataIntegrity from '@/cms/views/DataIntegrity';
@@ -131,6 +132,12 @@ const routes = [
     path: '/featured-interaction',
     name: 'FeaturedInteraction',
     component: featuredInteractionApp,
+    meta: { allowed: ['admin', 'editor', 'assistantEditor'] }
+  },
+  {
+    path: '/drug-bank-wtm',
+    name: 'DrugBankWtmApp',
+    component: DrugBankWtmApp,
     meta: { allowed: ['admin', 'editor', 'assistantEditor'] }
   },
   {
