@@ -20,7 +20,7 @@
                         <label class="flex align-center gap10">
                             <span>Monitor field</span>
                             <!-- <input v-model="item.field" type="text" placeholder="monitor field"/> -->
-                            <select v-model="item.field" placeholder="monitor field">
+                            <select v-model="item.field" placeholder="monitor field" @change="item.value = ''">
                                 <option v-for="field in Object.keys(monitorOptsMap)" :key="field" :label="field" :value="field"/>
                             </select>
                         </label>
@@ -88,7 +88,17 @@ import featuredInteractionFilter from '@/cms/cmps/featured-interaction/FeaturedI
 import iconsMap from '@/cms/cmps/general/IconsMap';
 import monitorOptsMap from './monitorOptsMap.json';
 
-delete monitorOptsMap.drugParameter;
+// delete monitorOptsMap.drugParameter;
+
+const drugParameters = [
+    { val: 'blood drug level', label: 'labTests' },
+    { val: 'drug toxicity', label: 'symptoms' },
+    { val: 'exacerbation of drug adverse reactions', label: 'symptoms' },
+    { val: 'exacerbation of symptoms for which the drug is being given', label: 'symptoms' },
+    { val: 'exacerbation of toxicity symptoms', label: 'symptoms' },
+    { val: 'potentiation or reduction of drug efficacy', label: 'symptoms' },
+    { val: 'reduction of drug efficacy', label: 'symptoms' },
+]
 
 export default {
     name: 'DrugBankWtmApp',
@@ -153,15 +163,7 @@ export default {
     methods: {
         isToShowDrugParam(generateItem) {
             const iosDrugParameter = generateItem.field === 'drugParameter';
-            const isValidValue =  !![
-                { val: 'blood drug level', label: 'labTests' },
-                { val: 'drug toxicity', label: 'symptoms' },
-                { val: 'exacerbation of drug adverse reactions', label: 'symptoms' },
-                { val: 'exacerbation of symptoms for which the drug is being given', label: 'symptoms' },
-                { val: 'exacerbation of toxicity symptoms', label: 'symptoms' },
-                { val: 'potentiation or reduction of drug efficacy', label: 'symptoms' },
-                { val: 'reduction of drug efficacy', label: 'symptoms' },
-            ].find(c => (c.val === generateItem.value) && (c.label === generateItem.field));
+            const isValidValue =  !!drugParameters.find(c => (c.val === generateItem.value) && (c.label === generateItem.field));
             return iosDrugParameter || isValidValue;
         },
         async markWtmItemAsDone(id) {
@@ -199,8 +201,9 @@ export default {
         },
         async generateData() {
             this.editData.searchBy = this.filterBy.filter.search;
-            this.editData.forEach(c => {
+            this.editData.generateItems.forEach(c => {
                 if (!this.isToShowDrugParam(c)) c.drug = null;
+                if (c.field === 'drugParameter') c.field = drugParameters.find(_ => _.val === c.value).label
             });
             await this.$store.dispatch({ type: 'generateData', data: this.editData });
             this.initEditData();
