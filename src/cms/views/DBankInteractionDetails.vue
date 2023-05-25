@@ -106,7 +106,7 @@ export default {
         if (!vals) continue
         res += vals.reduce((acc, c) => {
           acc = acc + ` ${c.value}`;
-          if (c.drug?.name) acc += ` (${c.drug.name})`;
+          if (c.drug) acc += ` (${this.getSideName(c.drug)})`;
           return acc;
         }, '');
       }
@@ -114,6 +114,12 @@ export default {
     }
   },
   methods: {
+    getSideName(sideNum) {
+      if (sideNum == 1) return this.interaction.subject_drug?.name || '';
+      if (sideNum == 2) return this.interaction.affected_drug?.name || '';
+      return '';
+      
+    },
     goBack() {
       if (this.$store.getters.routerHistory.length < 1) this.$router.push('/');
       else this.$router.go(-1);

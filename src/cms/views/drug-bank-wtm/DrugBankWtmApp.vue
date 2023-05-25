@@ -31,11 +31,10 @@
                                 <option v-for="val in (monitorOptsMap[item.field] || [])" :key="val" :label="val" :value="val"/>
                             </datalist>
                         </label>
-                        <div class="flex align-center gap10 drug-side">
+                        <label v-if="isToShowDrugParam(item)" class="flex align-center gap10 drug-side">
                             <span>Side drug</span>
-                            <input class="side-num" v-model="item.drug.side" type="number" max="2" min="1"/>
-                            <input class="side-name" v-model="item.drug.name" type="text" placeholder="side drug name"/>
-                        </div>
+                            <input class="side-num" v-model="item.drug" type="number" max="2" min="1"/>
+                        </label>
                     </div>
                     <v-btn class="self-start" @click="addAnotherGenerateItem" :disabled="!AllGeneratorsValid">Add one more</v-btn>
                     <v-btn class="self-start" @click="generateData" :disabled="!(AllGeneratorsValid && editData.generateItems.length)">Do it!</v-btn>
@@ -44,12 +43,14 @@
             <v-card class="results-container">
                 <div class="flex align-center space-between">
                     <h2>
-                        Drug Bank Interactions Results: 
+                        Management search Results: 
                     </h2>
                     <v-btn @click="selectAllWtmInteractions" :disabled="!dBankWtms.length">Select All</v-btn>
                     <v-btn @click="unSelectAllWtmInteractions" :disabled="!dBankWtms.length">Unselect All</v-btn>
                 </div>
-                <ul>
+                <p v-if="isLoadingRes">Getting results..</p>
+                <p v-else-if="!dBankWtms.length">No results..</p>
+                <ul v-else>
                     <li v-for="item in dBankWtms" :key="item._id" class="flex gap10">
                         <input type="checkbox" v-model="editData.ids" :value="item._id"/>
                         <router-link :to="'/d-bank-interaction/' + item.dbankInteractionId">
@@ -81,10 +82,13 @@
 </template>
 
 <script>
+import { eventBus } from '@/cms/services/eventBus.service';
 import featuredInteractionGroupedList from '@/cms/cmps/featured-interaction/FeaturedInteractionGroupedList';
 import featuredInteractionFilter from '@/cms/cmps/featured-interaction/FeaturedInteractionFilter';
 import iconsMap from '@/cms/cmps/general/IconsMap';
 import monitorOptsMap from './monitorOptsMap.json';
+
+delete monitorOptsMap.drugParameter;
 
 export default {
     name: 'DrugBankWtmApp',
@@ -92,6 +96,7 @@ export default {
         return {
             monitorOptsMap,
             isLoading: false,
+            isLoadingRes: false,
             filterBy: {
                 filter: {
                     search: ''
@@ -103,6 +108,12 @@ export default {
                 generateItems: [] // [ { field, value, drug: { side, name } } ]
             },
         }
+    },
+    created() {
+        eventBus.$on('dBankWtmProcessIsDone', this.markWtmItemAsDone);
+    },
+    destroyed() {
+        eventBus.$on('dBankWtmProcessIsDone', this.markWtmItemAsDone);
     },
     watch: {
         'filterBy.filter.search'(val) {
@@ -120,7 +131,6 @@ export default {
     },
     computed: {
         wtmGroups() {
-            console.log(this.$store.getters.dbankWtmsGroups);
             return this.$store.getters.dbankWtmsGroups.groups;
         },
         groupsCount() {
@@ -141,6 +151,23 @@ export default {
         }
     },
     methods: {
+        isToShowDrugParam(generateItem) {
+            const iosDrugParameter = generateItem.field === 'drugParameter';
+            const isValidValue =  !![
+                { val: 'blood drug level', label: 'labTests' },
+                { val: 'drug toxicity', label: 'symptoms' },
+                { val: 'exacerbation of drug adverse reactions', label: 'symptoms' },
+                { val: 'exacerbation of symptoms for which the drug is being given', label: 'symptoms' },
+                { val: 'exacerbation of toxicity symptoms', label: 'symptoms' },
+                { val: 'potentiation or reduction of drug efficacy', label: 'symptoms' },
+                { val: 'reduction of drug efficacy', label: 'symptoms' },
+            ].find(c => (c.val === generateItem.value) && (c.label === generateItem.field));
+            return iosDrugParameter || isValidValue;
+        },
+        async markWtmItemAsDone(id) {
+            await this.$store.dispatch({ type: 'markWtmItemAsDone', id });
+            eventBus.$emit('doneTogglingInt', id);
+        },
         selectAllWtmInteractions() {
             this.editData.ids = this.dBankWtms.map(c => c._id);
         },
@@ -159,17 +186,22 @@ export default {
         },
         addAnotherGenerateItem() {
             this.editData.generateItems.push(
-                { field: '', value: '', drug: { side: null, name: null } }
+                { field: '', value: '', drug: null }
             );
         },
         removeGenerateItem(idx) {
             this.editData.generateItems.splice(idx, 1);
         },
-        loadResultsData() {
-            this.$store.dispatch({ type: 'loadDBankWtms', filterBy: this.filterBy });
+        async loadResultsData() {
+            this.isLoadingRes = true;
+            await this.$store.dispatch({ type: 'loadDBankWtms', filterBy: this.filterBy });
+            this.isLoadingRes = false;
         },
         async generateData() {
             this.editData.searchBy = this.filterBy.filter.search;
+            this.editData.forEach(c => {
+                if (!this.isToShowDrugParam(c)) c.drug = null;
+            });
             await this.$store.dispatch({ type: 'generateData', data: this.editData });
             this.initEditData();
         },

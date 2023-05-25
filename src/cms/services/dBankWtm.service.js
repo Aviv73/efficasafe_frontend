@@ -5,7 +5,8 @@ const END_POINT = 'dBankWTM';
 export const dBankWtmService = {
   queryByManagement,
   generateData,
-  getDbankWtmGroups
+  getDbankWtmGroups,
+  markWtmItemAsDone
 }
 
 function queryByManagement(filterBy) {
@@ -16,4 +17,7 @@ function getDbankWtmGroups(filterBy) {
 }
 function generateData(data) {
     return httpService.post(`${END_POINT}/generateWTM`, data);
+}
+function markWtmItemAsDone(id) {
+    return httpService.post(`${END_POINT}/toggleWtmItemAsDone`, {id});
 }

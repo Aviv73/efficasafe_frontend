@@ -160,7 +160,7 @@
                     'items-per-page-options': [ 15, 50, -1 ]
                 }"
             >
-                <template #[`item.isActive`]="{ item }">
+                <template #[`item.isActive`]="{ item }" v-if="showActions">
                     <v-icon
                         :color="(item.isActive) ? 'primary' : 'secondary'"
                     >
@@ -183,6 +183,18 @@
                         >
                             <v-icon x-small>mdi-pencil</v-icon>
                         </v-btn>
+                        <template v-else>
+                            <v-btn 
+                                color="primary" 
+                                x-small
+                                title="Mark as done"
+                                @click="emitDone(item._id)"
+                            >
+                                <v-icon x-small v-if="!item.wtmProcessDone">Done</v-icon>
+                                <v-icon x-small v-else>un Done</v-icon>
+                            </v-btn>
+
+                        </template>
                         <v-btn 
                             color="primary" 
                             x-small
@@ -216,6 +228,7 @@
 </template>
 
 <script>
+import { eventBus } from '@/cms/services/eventBus.service';
 import { featuredInteractionService } from '@/cms/services/featured-interaction.service';
 import materialPicker from '@/cms/cmps/featured-interaction/MaterialPicker';
 import confirmDelete from '@/cms/cmps/general/ConfirmDelete';
@@ -259,16 +272,16 @@ export default {
                     text: 'Side 2',
                     value: 'affected_drug.name'
                 },
-                {
+                this.showActions && {
                     text: 'Active',
                     value: 'isActive'
-                },
+                } || null,
                 {
                     text: 'Actions',
                     value: 'actions',
                     align: 'center'
                 }
-            ]
+            ].filter(Boolean)
         }
     },
     watch: {
@@ -317,6 +330,14 @@ export default {
         }
     },
     methods: {
+        toggleIntDone(id) {
+            const int = this.interactions.find(c => c._id === id);
+            if (!int) return;
+            int.wtmProcessDone = !int.wtmProcessDone;
+        },
+        emitDone(id) {
+            eventBus.$emit('dBankWtmProcessIsDone', id);
+        },
         async addToLabel() {
             const side2DBKId = this.selected.map(interactionId => {
                 return this.interactions.find(interaction => interaction._id === interactionId).affected_drug.drugbank_id;
@@ -397,6 +418,7 @@ export default {
         }
     },
     created() {
+        eventBus.$on('doneTogglingInt', this.toggleIntDone);
         const { lastFilterBy } = this.$store.getters;
         if (lastFilterBy) {
             this.restoreLastState();
@@ -405,6 +427,9 @@ export default {
             this.resetData();
             this.getFeaturedInteractions();
         }
+    },
+    destroyed() {
+        eventBus.$off('doneTogglingInt', this.toggleIntDone);
     },
     components: {
         confirmDelete,
