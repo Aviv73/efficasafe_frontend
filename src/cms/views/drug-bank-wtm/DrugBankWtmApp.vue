@@ -10,7 +10,7 @@
                 <form @submit.prevent="loadResultsData" class="search-form flex column align-start gap10">
                     <label class="flex gap10">
                         <span>Search by management</span>
-                        <input v-model="filterBy.filter.search" type="text" placeholder="search"/>
+                        <textarea v-model="filterBy.filter.search" type="text" placeholder="search"/>
                     </label>
                     <v-btn color="primary" type="submit" class="">Search</v-btn>
                 </form>
@@ -36,14 +36,21 @@
                             <input class="side-num" v-model="item.drug" type="number" max="2" min="1"/>
                         </label>
                     </div>
-                    <v-btn class="self-start" @click="addAnotherGenerateItem" :disabled="!AllGeneratorsValid">Add one more</v-btn>
-                    <v-btn class="self-start" @click="generateData" :disabled="!(AllGeneratorsValid && editData.generateItems.length)">Do it!</v-btn>
+                    <div class="flex gap20">
+                        <v-btn @click="addAnotherGenerateItem" :disabled="!AllGeneratorsValid">Add one more</v-btn>
+                        <v-btn @click="generateData(false)" :disabled="!(AllGeneratorsValid && editData.generateItems.length)">Do it!</v-btn>
+                        <v-btn @click="generateData(true)" :disabled="!(AllGeneratorsValid && editData.generateItems.length)">Do it and mark as done</v-btn>
+                    </div>
+                    <div class="flex gap20">
+                        <v-btn @click="tggleAllDone(true)" :disabled="!(editData.ids.length)">Mark all as done</v-btn>
+                        <v-btn @click="markAllAsUnDone(false)" :disabled="!(editData.ids.length)">Mark all as un done</v-btn>
+                    </div>
                 </form>
             </v-card>
             <v-card class="results-container">
                 <div class="flex align-center space-between">
                     <h2>
-                        Management search Results: 
+                        Management search Results ({{dBankWtms.length}}): 
                     </h2>
                     <v-btn @click="selectAllWtmInteractions" :disabled="!dBankWtms.length">Select All</v-btn>
                     <v-btn @click="unSelectAllWtmInteractions" :disabled="!dBankWtms.length">Unselect All</v-btn>
@@ -78,6 +85,7 @@
             </v-card>
             <icons-map />
         </div>
+        <BluredLoader v-if="isLoadingRes"/>
     </section>
 </template>
 
@@ -87,6 +95,7 @@ import featuredInteractionGroupedList from '@/cms/cmps/featured-interaction/Feat
 import featuredInteractionFilter from '@/cms/cmps/featured-interaction/FeaturedInteractionFilter';
 import iconsMap from '@/cms/cmps/general/IconsMap';
 import monitorOptsMap from './monitorOptsMap.json';
+import BluredLoader from '../../../client/cmps/common/BluredLoader.vue';
 
 // delete monitorOptsMap.drugParameter;
 
@@ -120,10 +129,10 @@ export default {
         }
     },
     created() {
-        eventBus.$on('dBankWtmProcessIsDone', this.markWtmItemAsDone);
+        eventBus.$on('dBankWtmProcessIsDone', this.markWtmItemsAsDone);
     },
     destroyed() {
-        eventBus.$on('dBankWtmProcessIsDone', this.markWtmItemAsDone);
+        eventBus.$on('dBankWtmProcessIsDone', this.markWtmItemsAsDone);
     },
     watch: {
         'filterBy.filter.search'(val) {
@@ -161,20 +170,38 @@ export default {
         }
     },
     methods: {
+        async tggleAllDone(value) {
+            this.isLoadingRes = true;
+            await this.$store.dispatch({ type: 'markWtmItemsAsDone', ids: this.editData.ids, value });
+            this.editData.ids.forEach(id => {
+                eventBus.$emit('doneTogglingInt', id);
+            });
+            this.isLoadingRes = false;
+        },
         isToShowDrugParam(generateItem) {
             const iosDrugParameter = generateItem.field === 'drugParameter';
             const isValidValue =  !!drugParameters.find(c => (c.val === generateItem.value) && (c.label === generateItem.field));
             return iosDrugParameter || isValidValue;
         },
-        async markWtmItemAsDone(id) {
-            await this.$store.dispatch({ type: 'markWtmItemAsDone', id });
+        async markWtmItemsAsDone(id) {
+            this.isLoadingRes = true;
+            await this.$store.dispatch({ type: 'markWtmItemsAsDone', ids: [id] });
             eventBus.$emit('doneTogglingInt', id);
+            this.isLoadingRes = false;
         },
         selectAllWtmInteractions() {
-            this.editData.ids = this.dBankWtms.map(c => c._id);
+            this.toggleSelectAllWtmInteractions(true);
         },
         unSelectAllWtmInteractions() {
-            this.editData.ids = [];
+            this.toggleSelectAllWtmInteractions(false);
+        },
+        toggleSelectAllWtmInteractions(value) {
+            this.isLoadingRes = true;
+            setTimeout(() => {
+                if (value) this.editData.ids = this.dBankWtms.map(c => c._id);
+                else this.editData.ids = [];
+                this.isLoadingRes = false;
+            }, 500);
         },
         setFilter(filterBy) {
             const criteria = {
@@ -199,14 +226,19 @@ export default {
             await this.$store.dispatch({ type: 'loadDBankWtms', filterBy: this.filterBy });
             this.isLoadingRes = false;
         },
-        async generateData() {
+        async generateData(markAsDone = false) {
+            this.isLoadingRes = true;
             this.editData.searchBy = this.filterBy.filter.search;
+            this.editData.markAsDone = markAsDone;
             this.editData.generateItems.forEach(c => {
                 if (!this.isToShowDrugParam(c)) c.drug = null;
                 if (c.field === 'drugParameter') c.field = drugParameters.find(_ => _.val === c.value).label
             });
             await this.$store.dispatch({ type: 'generateData', data: this.editData });
+            const oldIds = this.editData.ids;
             this.initEditData();
+            this.editData.ids = oldIds;
+            this.isLoadingRes = false;
         },
         initEditData() {
             this.editData = {
@@ -217,6 +249,7 @@ export default {
         },
 
         async loadAllDbankWtms() {
+            this.isLoadingRes = true;
             this.isLoading = true;
             const filterBy = this.$route.query;
             filterBy.isGroups = true;
@@ -226,6 +259,7 @@ export default {
             filterBy.colName = 'drugBankInteractionMonitor';
             await this.$store.dispatch({ type: 'getDbankWtmGroups', filterBy });
             this.isLoading = false;
+            this.isLoadingRes = false;
         }
     },
     mounted(){
@@ -236,7 +270,8 @@ export default {
     components: {
         featuredInteractionGroupedList,
         featuredInteractionFilter,
-        iconsMap
+        iconsMap,
+        BluredLoader
     }
 }
 </script>
@@ -245,11 +280,13 @@ export default {
 .drug-bank-wtm-app {
     form {
         padding: 16px;
-        input, select {
+        input, select, textarea {
             border: 1px solid rgba(0, 0, 0, 0.5);
             border-radius: 3px;
-            width: 200px;
             padding-inline-start: 5px;
+        }
+        input, select {
+            width: 200px;
         }
         span {
         }
