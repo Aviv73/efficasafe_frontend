@@ -8,57 +8,76 @@
                     </h2>
                 </v-card-title>
                 <form @submit.prevent="loadResultsData" class="search-form flex column align-start gap10">
-                    <label class="flex gap10">
-                        <span>Search by management</span>
+                    <div class="flex align-start gap20">
+                        <label class="flex gap10">
+                            <div class="flex align-center gap10">
+                                <span>Search by field</span>
+                                <select v-model="filterBy.fieldToSearch">
+                                    <option v-for="opt in searchFieldsOpts" :key="opt.value" :value="opt.value" :label="opt.label"/>
+                                </select>
+                            </div>
+                        </label>
                         <textarea v-model="filterBy.filter.search" type="text" placeholder="search"/>
-                    </label>
+                    </div>
                     <v-btn color="primary" type="submit" class="">Search</v-btn>
                 </form>
                 <form @submit.prevent="" class="flex column gap10">
-                    <div v-for="(item, idx) in editData.generateItems" :key="idx" class="generate-items flex align-center gap5">
-                        <button class="remove-btn flexx align-center justify-center" @click="removeGenerateItem(idx)"><span>X</span></button>
+                    <div v-for="(item, idx) in editData.generateItems" :key="idx" class="generate-items flex align-start gap5" @click.stop.prevent="">
+                        <button class="small-btn flexx align-center justify-center" @click="removeGenerateItem(idx)"><span>X</span></button>
                         <label class="flex align-center gap10">
                             <span>Monitor field</span>
                             <!-- <input v-model="item.field" type="text" placeholder="monitor field"/> -->
-                            <select v-model="item.field" placeholder="monitor field" @change="item.value = ''">
+                            <select v-model="item.field" placeholder="monitor field" @change="item.value = [{ val: '' }]">
                                 <option v-for="field in Object.keys(monitorOptsMap)" :key="field" :label="field" :value="field"/>
                             </select>
                         </label>
-                        <label class="flex align-center gap10">
-                            <span>Monitor Value</span>
-                            <input v-model="item.value" type="text" placeholder="monitor value" :list="'monitor-value-' + idx"/>
+                        <label class="flex align-start gap10">
+                            <div class="flex align-center gap10">
+                                <span>Monitor Value </span>
+                                <button class="small-btn flexx align-center justify-center" @click="addGenerateItemValue(item)"><span>+</span></button>
+                            </div>
+                            <div class="flex column gap10">
+                                <div class="flex align-center gap10" v-for="(currVal, currIdx) in item.value" :key="currIdx">
+                                    <input v-model="item.value[currIdx].val" type="text" placeholder="monitor value" :list="'monitor-value-' + idx"/>
+                                    <label v-if="isToShowDrugParam(item)" class="flex align-center gap10 drug-side">
+                                        <span>Side drug</span>
+                                        <input class="side-num" v-model="item.value[currIdx].drug" type="number" max="2" min="1"/>
+                                    </label>
+                                    <button class="small-btn flexx align-center justify-center" @click.stop.prevent="removeGenerateItemValue(item, currIdx)"><span>-</span></button>
+                                </div>
+                            </div>
+                            <!-- <input v-model="item.value" type="text" placeholder="monitor value" :list="'monitor-value-' + idx"/> -->
                             <datalist :id="'monitor-value-' + idx">
-                                <option v-for="val in (monitorOptsMap[item.field] || [])" :key="val" :label="val" :value="val"/>
+                                <option v-for="val in ([...(monitorOptsMap[item.field] || [])].sort())" :key="val" :label="val" :value="val"/>
                             </datalist>
-                        </label>
-                        <label v-if="isToShowDrugParam(item)" class="flex align-center gap10 drug-side">
-                            <span>Side drug</span>
-                            <input class="side-num" v-model="item.drug" type="number" max="2" min="1"/>
                         </label>
                     </div>
                     <div class="flex gap20">
                         <v-btn @click="addAnotherGenerateItem" :disabled="!AllGeneratorsValid">Add one more</v-btn>
-                        <v-btn @click="generateData(false)" :disabled="!(AllGeneratorsValid && editData.generateItems.length)">Do it!</v-btn>
-                        <v-btn @click="generateData(true)" :disabled="!(AllGeneratorsValid && editData.generateItems.length)">Do it and mark as done</v-btn>
+                        <v-btn @click="generateData(false)" :disabled="!filterBy.filter.search || !(AllGeneratorsValid && editData.generateItems.length)">Do it!</v-btn>
+                        <v-btn @click="generateData(true)" :disabled="!filterBy.filter.search || !(AllGeneratorsValid && editData.generateItems.length)">Do it and mark as done</v-btn>
+                        <v-btn @click="markAllManagementTerm()" :disabled="!filterBy.filter.search || !(editData.ids.length)">Color search</v-btn>
                     </div>
                     <div class="flex gap20">
                         <v-btn @click="tggleAllDone(true)" :disabled="!(editData.ids.length)">Mark all as done</v-btn>
-                        <v-btn @click="markAllAsUnDone(false)" :disabled="!(editData.ids.length)">Mark all as un done</v-btn>
+                        <v-btn @click="tggleAllDone(false)" :disabled="!(editData.ids.length)">Mark all as un done</v-btn>
                     </div>
                 </form>
             </v-card>
-            <v-card class="results-container">
-                <div class="flex align-center space-between">
+            <v-card class="results-container flex column gap30 mb-10">
+                <div class="flex align-center space-between width-all">
                     <h2>
-                        Management search Results ({{dBankWtms.length}}): 
+                        Management search Results ({{dBankWtms.length}}): <v-btn @click="showAllResults = !showAllResults">{{showAllResults? 'un show all' : 'show all'}}</v-btn>
                     </h2>
-                    <v-btn @click="selectAllWtmInteractions" :disabled="!dBankWtms.length">Select All</v-btn>
-                    <v-btn @click="unSelectAllWtmInteractions" :disabled="!dBankWtms.length">Unselect All</v-btn>
+                    <div class="flex align-center justify-end gap20">
+                        <v-btn @click="selectAllWtmInteractions" :disabled="!dBankWtms.length">Select All</v-btn>
+                        <v-btn @click="unSelectAllWtmInteractions" :disabled="!dBankWtms.length">Unselect All</v-btn>
+                    </div>
                 </div>
                 <p v-if="isLoadingRes">Getting results..</p>
                 <p v-else-if="!dBankWtms.length">No results..</p>
                 <ul v-else>
-                    <li v-for="item in dBankWtms" :key="item._id" class="flex gap10">
+                    <li v-for="item in (showAllResults && dBankWtms || firstResults)" :key="item._id" class="flex gap10">
                         <input type="checkbox" v-model="editData.ids" :value="item._id"/>
                         <router-link :to="'/d-bank-interaction/' + item.dbankInteractionId">
                             <h3>
@@ -70,9 +89,16 @@
             </v-card>
             
             <v-card>
-                <featured-interaction-filter 
+                <!-- <featured-interaction-filter 
                     @filter-changed="setFilter"
-                />
+                /> -->
+                <form @submit.prevent="loadAllDbankWtms" class="flex align-center gap30">
+                    <label class="flex gap10">
+                        <span>Search</span>
+                        <input v-model="allDataFilter.search" type="text" placeholder="search"/>
+                    </label>
+                    <v-btn color="primary" type="submit" class="">Search</v-btn>
+                </form>
                 <featured-interaction-grouped-list 
                     :showActions="false"
                     baseItemUrl="/d-bank-interaction"
@@ -92,7 +118,7 @@
 <script>
 import { eventBus } from '@/cms/services/eventBus.service';
 import featuredInteractionGroupedList from '@/cms/cmps/featured-interaction/FeaturedInteractionGroupedList';
-import featuredInteractionFilter from '@/cms/cmps/featured-interaction/FeaturedInteractionFilter';
+// import featuredInteractionFilter from '@/cms/cmps/featured-interaction/FeaturedInteractionFilter';
 import iconsMap from '@/cms/cmps/general/IconsMap';
 import monitorOptsMap from './monitorOptsMap.json';
 import BluredLoader from '../../../client/cmps/common/BluredLoader.vue';
@@ -117,8 +143,9 @@ export default {
             isLoading: false,
             isLoadingRes: false,
             filterBy: {
+                fieldToSearch: this.$route.query.fieldToSearch || 'managementToEdit',
                 filter: {
-                    search: ''
+                    search: this.$route.query.searchStr || ''
                 }
             },
             editData: {
@@ -126,23 +153,49 @@ export default {
                 searchBy: '',
                 generateItems: [] // [ { field, value, drug: { side, name } } ]
             },
+
+            showAllResults: false,
+
+            allDataFilter: {
+                search: ''
+            },
+
+            searchFieldsOpts: [
+                {label: 'Management', value: 'managementToEdit'},
+                {label: 'Extended description', value: 'extended_description'},
+                {label: 'Summary', value: 'summary'},
+            ],
+
+            dontLoad: false
         }
     },
     created() {
-        eventBus.$on('dBankWtmProcessIsDone', this.markWtmItemsAsDone);
+        eventBus.$on('dBankWtmProcessIsDone', this.toggleWtmItemsAsDone);
     },
     destroyed() {
-        eventBus.$on('dBankWtmProcessIsDone', this.markWtmItemsAsDone);
+        eventBus.$on('dBankWtmProcessIsDone', this.toggleWtmItemsAsDone);
     },
     watch: {
+        'filterBy':{
+            deep: true,
+            handler() {
+                this.dontLoad = true;
+                this.setFilter();
+                setTimeout(() => {
+                    this.dontLoad = false;
+                }, 100);
+            }
+        },
         'filterBy.filter.search'(val) {
             this.editData.searchBy = val;
         },
         dBankWtms() {
-            this.editData.ids = [];
+            // this.editData.ids = [];
+            this.showAllResults = false
         },
         '$route.query': {
             handler() {
+                if (this.dontLoad) return;
                 this.loadAllDbankWtms();
             },
             immediate: true
@@ -162,17 +215,26 @@ export default {
             return this.$store.getters.dBankWtms;
         },
         AllGeneratorsValid() {
-            return this.editData.generateItems.every(c => c.field && c.value);
+            return this.editData.generateItems?.every(c => c.field && c.value?.every(c => c.val));
         },
 
         allDbankWtmInteractionsFilterBy() {
             return this.$store.getters.allDbankWtmInteractionsFilterBy;
+        },
+
+        firstResults() {
+            return this.dBankWtms.slice(0, 10);
         }
     },
     methods: {
+        async markAllManagementTerm() {
+            this.isLoadingRes = true;
+            await this.$store.dispatch({ type: 'markAllManagementTerm', ids: this.editData.ids, term: this.filterBy.filter.search });
+            this.isLoadingRes = false;
+        },
         async tggleAllDone(value) {
             this.isLoadingRes = true;
-            await this.$store.dispatch({ type: 'markWtmItemsAsDone', ids: this.editData.ids, value });
+            await this.$store.dispatch({ type: 'toggleWtmItemsAsDone', ids: this.editData.ids, value });
             this.editData.ids.forEach(id => {
                 eventBus.$emit('doneTogglingInt', id);
             });
@@ -183,9 +245,9 @@ export default {
             const isValidValue =  !!drugParameters.find(c => (c.val === generateItem.value) && (c.label === generateItem.field));
             return iosDrugParameter || isValidValue;
         },
-        async markWtmItemsAsDone(id) {
+        async toggleWtmItemsAsDone(id) {
             this.isLoadingRes = true;
-            await this.$store.dispatch({ type: 'markWtmItemsAsDone', ids: [id] });
+            await this.$store.dispatch({ type: 'toggleWtmItemsAsDone', ids: [id] });
             eventBus.$emit('doneTogglingInt', id);
             this.isLoadingRes = false;
         },
@@ -201,40 +263,58 @@ export default {
                 if (value) this.editData.ids = this.dBankWtms.map(c => c._id);
                 else this.editData.ids = [];
                 this.isLoadingRes = false;
-            }, 500);
+            }, 100);
         },
-        setFilter(filterBy) {
+        setFilter(filterBy = {}) {
             const criteria = {
                 ...this.$route.query,
                 ...filterBy,
-                colName: 'drugBankInteractionMonitor'
+                colName: 'drugBankInteractionMonitor',
+                fieldToSearch: this.filterBy.fieldToSearch,
+                searchStr: this.filterBy.filter.search
+                // limit: 100
             };
             if (criteria.side1Name) criteria.page = 0;
+            if (!criteria.limit) criteria.limit = 50;
             const queryStr = '?' + new URLSearchParams(criteria).toString();
             this.$router.push(queryStr);
         },
         addAnotherGenerateItem() {
             this.editData.generateItems.push(
-                { field: '', value: '', drug: null }
+                { field: '', value: [{ val: '', drug: null }] }
             );
         },
         removeGenerateItem(idx) {
             this.editData.generateItems.splice(idx, 1);
         },
+        addGenerateItemValue(item) {
+            item.value.push({ val: '', drug: null });
+        },
+        removeGenerateItemValue(item, idx) {
+            item.value.splice(idx, 1);
+        },
         async loadResultsData() {
             this.isLoadingRes = true;
             await this.$store.dispatch({ type: 'loadDBankWtms', filterBy: this.filterBy });
+            this.editData.ids = this.dBankWtms.map(c => c._id);
             this.isLoadingRes = false;
         },
         async generateData(markAsDone = false) {
             this.isLoadingRes = true;
-            this.editData.searchBy = this.filterBy.filter.search;
-            this.editData.markAsDone = markAsDone;
-            this.editData.generateItems.forEach(c => {
-                if (!this.isToShowDrugParam(c)) c.drug = null;
-                if (c.field === 'drugParameter') c.field = drugParameters.find(_ => _.val === c.value).label
-            });
-            await this.$store.dispatch({ type: 'generateData', data: this.editData });
+            const editDataToSend = JSON.parse(JSON.stringify(this.editData));
+            editDataToSend.searchBy = this.filterBy.filter.search;
+            editDataToSend.searchField = this.filterBy.fieldToSearch;
+            editDataToSend.markAsDone = markAsDone;
+            editDataToSend.generateItems = editDataToSend.generateItems.reduce((acc, c) => {
+                acc.push(...c.value.map(currVal => {
+                    const curr = {...c, value: currVal.val, drug: currVal.drug};
+                    if (!this.isToShowDrugParam(curr)) curr.drug = null;
+                    if (curr.field === 'drugParameter') curr.field = drugParameters.find(_ => _.val === curr.value).label;
+                    return curr;
+                }));
+                return acc;
+            }, []);
+            await this.$store.dispatch({ type: 'generateData', data: editDataToSend });
             const oldIds = this.editData.ids;
             this.initEditData();
             this.editData.ids = oldIds;
@@ -252,10 +332,11 @@ export default {
             this.isLoadingRes = true;
             this.isLoading = true;
             const filterBy = this.$route.query;
+            filterBy.side1Name = this.allDataFilter.search;
             filterBy.isGroups = true;
             filterBy.sortBy = filterBy.sortBy || 'name';
             filterBy.isDesc = filterBy.isDesc || false;
-            filterBy.limit = filterBy.limit || Number.MAX_SAFE_INTEGER;
+            filterBy.limit = filterBy.limit || 50;
             filterBy.colName = 'drugBankInteractionMonitor';
             await this.$store.dispatch({ type: 'getDbankWtmGroups', filterBy });
             this.isLoading = false;
@@ -269,7 +350,7 @@ export default {
     },
     components: {
         featuredInteractionGroupedList,
-        featuredInteractionFilter,
+        // featuredInteractionFilter,
         iconsMap,
         BluredLoader
     }
@@ -308,7 +389,7 @@ export default {
             }
         }
     }
-    .remove-btn {
+    .small-btn {
         background-color: #b9b9b9;
         // padding: 5px;
         box-shadow: 0px 0px 10px 0.3px rgba(0,0,0,0.1);
@@ -326,6 +407,10 @@ export default {
 
     .results-container {
         padding: 16px;
+    }
+
+    td:has(.marked-row) {
+        background-color: yellow;
     }
 }
 </style>

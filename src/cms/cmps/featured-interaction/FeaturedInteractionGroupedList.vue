@@ -12,9 +12,9 @@
         disable-sort
         @click:row="onRowClick"
         :loading="isLoading"
-        :items-per-page="-1"
+        :items-per-page="50"
         :footer-props="{
-            'items-per-page-options': [ 15, 50, -1 ]
+            'items-per-page-options': [ 15, 50, 100, -1 ]
         }"
     >
         <template v-slot:[`header.name`]="{ header }">

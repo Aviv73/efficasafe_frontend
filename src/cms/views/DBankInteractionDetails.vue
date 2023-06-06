@@ -37,6 +37,9 @@
           <p v-if="interaction.wtmData && interaction.wtmData.managementToShow" class="management" ref="management" v-html="interaction.wtmData.managementToShow" />
           <p v-else-if="interaction.management" ref="management" v-html="isTextFormatted ? getRefsToDisplay(interaction.management) : interaction.management" />
 
+          <p>WTM process done:</p>
+          <div class="proccess-p">{{interaction.wtmData.wtmProcessDone || false}}</div>
+
           <template v-if="monitorStr">
             <p class="text-capitalize" v-if="monitorStr">Monitor:</p>
             <p class="monitor-p">{{monitorStr}}</p>
@@ -105,7 +108,8 @@ export default {
         const vals = monitorData[key];
         if (!vals) continue
         res += vals.reduce((acc, c) => {
-          acc = acc + ` ${c.value}`;
+          // acc = acc + ` ${c.value}`;
+          acc = [acc, c.value].filter(Boolean).join(', ');
           if (c.drug) acc += ` (${this.getSideName(c.drug)})`;
           return acc;
         }, '');
@@ -223,7 +227,7 @@ export default {
 .d-bank-interaction-details-content {
   .management {
     
-    .generated {
+    .generated, .marked {
       display: inline-block;
       background-color: yellow;
       margin: 0;

@@ -53,8 +53,12 @@ export const dBankWtmStore = {
             const dbankWtmsGroups = await dBankWtmService.getDbankWtmGroups(filterBy);
             context.commit({ type: 'setDbankWtmsGroups', dbankWtmsGroups });
         },
-        async markWtmItemsAsDone(context, { ids, value }) {
-            await dBankWtmService.markWtmItemsAsDone({ids, value});
+        async toggleWtmItemsAsDone(context, { ids, value }) {
+            await dBankWtmService.toggleWtmItemsAsDone({ids, value});
+        },
+        async markAllManagementTerm(context, { ids, term }) {
+            console.log('YO', ids, term);
+            await dBankWtmService.markAllManagementTerm({ids, term});
         },
     }
 }

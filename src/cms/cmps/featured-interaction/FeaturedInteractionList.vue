@@ -157,9 +157,12 @@
                 :loading="isLoading"
                 :items-per-page="15"
                 :footer-props="{
-                    'items-per-page-options': [ 15, 50, -1 ]
+                    'items-per-page-options': [ 15, 50, 100, -1 ]
                 }"
             >
+                <template #[`item.affected_drug.name`]="{ item }">
+                    <p class="margin0" :class="{'marked-row': !showActions && item.wtmProcessDone}">{{item.affected_drug.name}}</p>
+                </template>
                 <template #[`item.isActive`]="{ item }" v-if="showActions">
                     <v-icon
                         :color="(item.isActive) ? 'primary' : 'secondary'"
@@ -168,7 +171,7 @@
                     </v-icon>
                 </template>
                 <template #[`item.actions`]="{ item }">
-                    <div class="featured-interaction-list-actions">
+                    <div class="featured-interaction-list-actions" :class="{'marked-row': !showActions && item.wtmProcessDone}">
                         <v-checkbox
                             v-if="showActions"
                             v-model="selected"
@@ -184,7 +187,7 @@
                             <v-icon x-small>mdi-pencil</v-icon>
                         </v-btn>
                         <template v-else>
-                            <v-btn 
+                            <v-btn
                                 color="primary" 
                                 x-small
                                 title="Mark as done"
@@ -266,7 +269,7 @@ export default {
             filterBy: featuredInteractionService.getDefaultFilterBy(this.group._id),
             search: null,
             result: null,
-            options: {},
+            options: { },
             headers: [
                 {
                     text: 'Side 2',
