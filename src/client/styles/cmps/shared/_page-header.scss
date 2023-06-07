@@ -34,5 +34,8 @@
 
     .logo {
         height: 40px;
+        @media (max-width: $break-narrow) {
+            
+        }
     }
 }
