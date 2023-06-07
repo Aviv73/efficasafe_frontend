@@ -1,18 +1,20 @@
 <template>
+    <!-- <keep-alive> -->
     <section class="drug-bank-wtm-app">
         <div class="container">
             <v-card class="mb-10">
-                <v-card-title>
+                <v-card-title class="flex align-center space-between">
                     <h2>
                         Drug Bank WTM workshop
                     </h2>
+                    <v-btn @click="clear()">CLEAR</v-btn>
                 </v-card-title>
                 <form @submit.prevent="loadResultsData" class="search-form flex column align-start gap10">
                     <div class="flex align-start gap20">
                         <label class="flex gap10">
                             <div class="flex align-center gap10">
                                 <span>Search by field</span>
-                                <select v-model="filterBy.fieldToSearch">
+                                <select v-model="filterBy.fieldToSearch" @change="filterBy.filter.search = ''">
                                     <option v-for="opt in searchFieldsOpts" :key="opt.value" :value="opt.value" :label="opt.label"/>
                                 </select>
                             </div>
@@ -52,8 +54,10 @@
                             </datalist>
                         </label>
                     </div>
+                    <div>
+                        <v-btn @click="addAnotherGenerateItem" :disabled="!AllGeneratorsValid">Add monitor value</v-btn>
+                    </div>
                     <div class="flex gap20">
-                        <v-btn @click="addAnotherGenerateItem" :disabled="!AllGeneratorsValid">Add one more</v-btn>
                         <v-btn @click="generateData(false)" :disabled="!filterBy.filter.search || !(AllGeneratorsValid && editData.generateItems.length)">Do it!</v-btn>
                         <v-btn @click="generateData(true)" :disabled="!filterBy.filter.search || !(AllGeneratorsValid && editData.generateItems.length)">Do it and mark as done</v-btn>
                         <v-btn @click="markAllManagementTerm()" :disabled="!filterBy.filter.search || !(editData.ids.length)">Color search</v-btn>
@@ -92,10 +96,18 @@
                 <!-- <featured-interaction-filter 
                     @filter-changed="setFilter"
                 /> -->
-                <form @submit.prevent="loadAllDbankWtms" class="flex align-center gap30">
+                <ItemSearchList
+                    :itemsData="dbankWtmsMaterialsData"
+                    :initFilterBy="materialsFilterBy"
+                    @filter="loadAllMaterials"
+                    :singlePreviewCmp="DrugBankItemPreview"
+                    :isLoading="isLoading"
+                    :showLoader="false"
+                />
+                <!-- <form @submit.prevent="loadAllMaterials" class="flex align-center gap30">
                     <label class="flex gap10">
                         <span>Search</span>
-                        <input v-model="allDataFilter.search" type="text" placeholder="search"/>
+                        <input v-model="materialsFilterBy.filter.search" type="text" placeholder="search"/>
                     </label>
                     <v-btn color="primary" type="submit" class="">Search</v-btn>
                 </form>
@@ -107,21 +119,24 @@
                     :isLoading="isLoading"
                     @sort-changed="setFilter"
                     @pagination-changed="setFilter"
-                />
+                /> -->
             </v-card>
-            <icons-map />
+            <!-- <icons-map /> -->
         </div>
         <BluredLoader v-if="isLoadingRes"/>
     </section>
+    <!-- </keep-alive> -->
 </template>
 
 <script>
 import { eventBus } from '@/cms/services/eventBus.service';
-import featuredInteractionGroupedList from '@/cms/cmps/featured-interaction/FeaturedInteractionGroupedList';
+// import featuredInteractionGroupedList from '@/cms/cmps/featured-interaction/FeaturedInteractionGroupedList';
 // import featuredInteractionFilter from '@/cms/cmps/featured-interaction/FeaturedInteractionFilter';
-import iconsMap from '@/cms/cmps/general/IconsMap';
+// import iconsMap from '@/cms/cmps/general/IconsMap';
 import monitorOptsMap from './monitorOptsMap.json';
 import BluredLoader from '../../../client/cmps/common/BluredLoader.vue';
+import ItemSearchList from '../../cmps/common/ItemSearchList/ItemSearchList.vue';
+import DrugBankItemPreview from './DrugBankItemPreview.vue';
 
 // delete monitorOptsMap.drugParameter;
 
@@ -134,11 +149,17 @@ const drugParameters = [
     { val: 'potentiation or reduction of drug efficacy', label: 'symptoms' },
     { val: 'reduction of drug efficacy', label: 'symptoms' },
 ]
+drugParameters.forEach(curr => {
+    const idx = monitorOptsMap[curr.label]?.findIndex(c => c === curr.val) || -1;
+    if (idx === -1) return;
+    monitorOptsMap[curr.label].splice(idx, 1);
+});
 
 export default {
     name: 'DrugBankWtmApp',
     data() {
         return {
+            DrugBankItemPreview,
             monitorOptsMap,
             isLoading: false,
             isLoadingRes: false,
@@ -156,36 +177,54 @@ export default {
 
             showAllResults: false,
 
-            allDataFilter: {
-                search: ''
+
+            materialsFilterBy: {
+                filter: {
+                    search: '',
+                    params: {}
+                },
+                pagination: {
+                    page: 0,
+                    limit: 50,
+                },
+                sort: {
+                    'subject_drug.name': 1
+                },
             },
 
             searchFieldsOpts: [
                 {label: 'Management', value: 'managementToEdit'},
+                {label: 'Original management', value: 'management'},
                 {label: 'Extended description', value: 'extended_description'},
                 {label: 'Summary', value: 'summary'},
             ],
 
-            dontLoad: false
+            dontLoad: false,
+
+            didCreate: false
         }
     },
     created() {
+        if (this.didCreate) return;
+        console.log('WOWOWO');
         eventBus.$on('dBankWtmProcessIsDone', this.toggleWtmItemsAsDone);
+        this.initEditData();
+        this.didCreate = true;
     },
     destroyed() {
         eventBus.$on('dBankWtmProcessIsDone', this.toggleWtmItemsAsDone);
     },
     watch: {
-        'filterBy':{
-            deep: true,
-            handler() {
-                this.dontLoad = true;
-                this.setFilter();
-                setTimeout(() => {
-                    this.dontLoad = false;
-                }, 100);
-            }
-        },
+        // 'filterBy':{
+        //     deep: true,
+        //     handler() {
+        //         this.dontLoad = true;
+        //         this.setFilter();
+        //         setTimeout(() => {
+        //             this.dontLoad = false;
+        //         }, 100);
+        //     }
+        // },
         'filterBy.filter.search'(val) {
             this.editData.searchBy = val;
         },
@@ -193,13 +232,13 @@ export default {
             // this.editData.ids = [];
             this.showAllResults = false
         },
-        '$route.query': {
-            handler() {
-                if (this.dontLoad) return;
-                this.loadAllDbankWtms();
-            },
-            immediate: true
-        }
+        // '$route.query': {
+        //     handler() {
+        //         if (this.dontLoad) return;
+        //         this.loadAllMaterials();
+        //     },
+        //     immediate: true
+        // }
     },
     computed: {
         wtmGroups() {
@@ -224,6 +263,10 @@ export default {
 
         firstResults() {
             return this.dBankWtms.slice(0, 10);
+        },
+
+        dbankWtmsMaterialsData() {
+            return this.$store.getters.dbankWtmsMaterialsData;
         }
     },
     methods: {
@@ -324,23 +367,35 @@ export default {
             this.editData = {
                 ids: [],
                 searchBy: '',
-                generateItems: [] // [ { field, value, drug: { side, name } } ]
+                generateItems: [ { field: '', value: [ { val: '', drug: null } ] } ]
             }
         },
 
-        async loadAllDbankWtms() {
+        clear() {
+            this.initEditData();
+            this.setFilter();
+        },
+
+        async loadAllMaterials(filterBy) {
+            if (filterBy) this.materialsFilterBy = JSON.parse(JSON.stringify(filterBy));
             this.isLoadingRes = true;
             this.isLoading = true;
-            const filterBy = this.$route.query;
-            filterBy.side1Name = this.allDataFilter.search;
-            filterBy.isGroups = true;
-            filterBy.sortBy = filterBy.sortBy || 'name';
-            filterBy.isDesc = filterBy.isDesc || false;
-            filterBy.limit = filterBy.limit || 50;
-            filterBy.colName = 'drugBankInteractionMonitor';
-            await this.$store.dispatch({ type: 'getDbankWtmGroups', filterBy });
+            await this.$store.dispatch({ type: 'getDbankWtmMaterials', filterBy: this.materialsFilterBy });
             this.isLoading = false;
             this.isLoadingRes = false;
+
+            // this.isLoadingRes = true;
+            // this.isLoading = true;
+            // const filterBy = this.$route.query;
+            // filterBy.side1Name = this.materialsFilterBy.filter.search;
+            // filterBy.isGroups = true;
+            // filterBy.sortBy = filterBy.sortBy || 'name';
+            // filterBy.isDesc = filterBy.isDesc || false;
+            // filterBy.limit = filterBy.limit || 50;
+            // filterBy.colName = 'drugBankInteractionMonitor';
+            // await this.$store.dispatch({ type: 'getDbankWtmGroups', filterBy });
+            // this.isLoading = false;
+            // this.isLoadingRes = false;
         }
     },
     mounted(){
@@ -349,10 +404,11 @@ export default {
         }
     },
     components: {
-        featuredInteractionGroupedList,
+        // featuredInteractionGroupedList,
         // featuredInteractionFilter,
-        iconsMap,
-        BluredLoader
+        // iconsMap,
+        BluredLoader,
+        ItemSearchList
     }
 }
 </script>

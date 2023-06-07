@@ -7,7 +7,9 @@ export const dBankWtmService = {
   generateData,
   getDbankWtmGroups,
   toggleWtmItemsAsDone,
-  markAllManagementTerm
+  markAllManagementTerm,
+  getDbankWtmMaterials,
+  getDbankWtmInnerListData
 }
 
 function queryByManagement(filterBy) {
@@ -24,4 +26,10 @@ function toggleWtmItemsAsDone({ids, value}) {
 }
 function markAllManagementTerm({ids, term}) {
     return httpService.post(`${END_POINT}/markManagementTerm`, {ids, term});
+}
+function getDbankWtmMaterials(filterBy) {
+    return httpService.get(`${END_POINT}/getDbankWtmMaterials`, { filterBy });
+}
+function getDbankWtmInnerListData(filterBy) {
+    return httpService.get(`${END_POINT}/getDbankWtmInnerListData`, { filterBy });
 }

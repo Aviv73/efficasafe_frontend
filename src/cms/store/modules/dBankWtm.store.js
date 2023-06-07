@@ -4,6 +4,7 @@ export const dBankWtmStore = {
     state: {
       dbankWtmsData: { items: [], total: 0 },
       dbankWtmsGroups: { groups: [], total: 0 },
+      dbankWtmsMaterialsData: { items: [], total: 0 },
       allDbankWtmInteractionsFilterBy: {
             filter: {
                 search: '',
@@ -29,6 +30,9 @@ export const dBankWtmStore = {
         dbankWtmsGroups(state) {
             return state.dbankWtmsGroups;
         },
+        dbankWtmsMaterialsData(state) {
+            return state.dbankWtmsMaterialsData;
+        },
     },
     mutations: {
         setDBankWtmsData(state, { dbankWtmsData }) {
@@ -39,6 +43,9 @@ export const dBankWtmStore = {
         },
         setDbankWtmsGroups(state, {dbankWtmsGroups}) {
             state.dbankWtmsGroups = JSON.parse(JSON.stringify(dbankWtmsGroups));
+        },
+        setDbankWtmMaterialsData(state, {dbankWtmsMaterialsData}) {
+            state.dbankWtmsMaterialsData = JSON.parse(JSON.stringify(dbankWtmsMaterialsData));
         }
     },
     actions: {
@@ -53,12 +60,18 @@ export const dBankWtmStore = {
             const dbankWtmsGroups = await dBankWtmService.getDbankWtmGroups(filterBy);
             context.commit({ type: 'setDbankWtmsGroups', dbankWtmsGroups });
         },
+        async getDbankWtmMaterials(context, { filterBy }) {
+            const dbankWtmsMaterialsData = await dBankWtmService.getDbankWtmMaterials(filterBy);
+            context.commit({ type: 'setDbankWtmMaterialsData', dbankWtmsMaterialsData });
+        },
         async toggleWtmItemsAsDone(context, { ids, value }) {
             await dBankWtmService.toggleWtmItemsAsDone({ids, value});
         },
         async markAllManagementTerm(context, { ids, term }) {
-            console.log('YO', ids, term);
             await dBankWtmService.markAllManagementTerm({ids, term});
+        },
+        async getDbankWtmInnerListData(context, { filterBy }) {
+            return await dBankWtmService.getDbankWtmInnerListData(filterBy);
         },
     }
 }

@@ -3,7 +3,9 @@
         <nav-bar />
         <v-main class="app-main-container">
             <app-messages />
-            <router-view class="app-main-view" />
+            <keep-alive>
+                <router-view class="app-main-view" />
+            </keep-alive>
         </v-main>
     </v-app>
 </template>
