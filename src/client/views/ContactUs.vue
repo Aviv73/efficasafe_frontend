@@ -3,7 +3,7 @@
     <div class="contact-us-container side-by-side-container">
       <span class="brim-start" />
       <header>
-        <router-link to="/">
+        <router-link to="/" class="logo-container">
           <img
             class="logo"
             :src="require('@/client/assets/imgs/flat-logo.png')"

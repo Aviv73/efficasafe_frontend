@@ -121,7 +121,21 @@
 
 
 .contact-us-container {
-  .logo {
-    height: 40px;
+  .logo-container {
+    .logo {
+      height: 40px;
+    }
+    @media (max-width: $break-narrow) {
+      display: none;
+    }
+  }
+  header {
+    @media (max-width: $break-narrow) {
+      padding-top: 0 !important;
+      padding-bottom: 20px;
+    }
+    h2 {
+      margin-top: 30px !important;
+    }
   }
 }
