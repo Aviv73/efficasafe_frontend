@@ -35,4 +35,9 @@
     .logo {
         height: 40px;
     }
+    @media (max-width: $break-narrow) {
+        // display: none;
+        opacity: 0;
+        height: 0;
+    }
 }
