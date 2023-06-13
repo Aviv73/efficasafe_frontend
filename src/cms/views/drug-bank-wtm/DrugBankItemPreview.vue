@@ -3,7 +3,7 @@
     <div class="header width-all flex align-center space-between" @click="showInnerList = !showInnerList">
       <p>{{item.name}}</p>
       <div class="flex align-center gpa5 justify-end">
-        <p>{{item.count}}</p>
+        <p>{{item.wtmProcessDoneCount}} / {{item.count}}</p>
         <!-- <v-icon class="icon" :class="{ 'icon-active': showInnerList }">mdi-arrow-down</v-icon> -->
       </div>
     </div>

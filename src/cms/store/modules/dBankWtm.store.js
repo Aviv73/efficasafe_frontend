@@ -53,8 +53,8 @@ export const dBankWtmStore = {
             const dbankWtmsData = await dBankWtmService.queryByManagement(filterBy);
             context.commit({ type: 'setDBankWtmsData', dbankWtmsData });
         },
-        async generateData(context, { data }) {
-            await dBankWtmService.generateData(data);
+        async generateDbankWtmData(context, { data }) {
+            return await dBankWtmService.generateDbankWtmData(data);
         },
         async getDbankWtmGroups(context, { filterBy }) {
             const dbankWtmsGroups = await dBankWtmService.getDbankWtmGroups(filterBy);

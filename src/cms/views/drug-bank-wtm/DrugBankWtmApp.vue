@@ -58,8 +58,8 @@
                         <v-btn @click="addAnotherGenerateItem" :disabled="!AllGeneratorsValid">Add monitor value</v-btn>
                     </div>
                     <div class="flex gap20">
-                        <v-btn @click="generateData(false)" :disabled="!filterBy.filter.search || !(AllGeneratorsValid && editData.generateItems.length)">Do it!</v-btn>
-                        <v-btn @click="generateData(true)" :disabled="!filterBy.filter.search || !(AllGeneratorsValid && editData.generateItems.length)">Do it and mark as done</v-btn>
+                        <v-btn @click="generateDbankWtmData(false)" :disabled="!filterBy.filter.search || !(AllGeneratorsValid && editData.generateItems.length)">Do it!</v-btn>
+                        <v-btn @click="generateDbankWtmData(true)" :disabled="!filterBy.filter.search || !(AllGeneratorsValid && editData.generateItems.length)">Do it and mark as done</v-btn>
                         <v-btn @click="markAllManagementTerm()" :disabled="!filterBy.filter.search || !(editData.ids.length)">Color search</v-btn>
                     </div>
                     <div class="flex gap20">
@@ -123,7 +123,7 @@
             </v-card>
             <!-- <icons-map /> -->
         </div>
-        <BluredLoader v-if="isLoadingRes"/>
+        <BluredLoader v-if="isLoadingRes || isGenerating"/>
     </section>
     <!-- </keep-alive> -->
 </template>
@@ -150,7 +150,7 @@ const drugParameters = [
     { val: 'reduction of drug efficacy', label: 'symptoms' },
 ]
 drugParameters.forEach(curr => {
-    const idx = monitorOptsMap[curr.label]?.findIndex(c => c === curr.val) || -1;
+    const idx = monitorOptsMap[curr.label] ? monitorOptsMap[curr.label].indexOf(curr.val) : -1;
     if (idx === -1) return;
     monitorOptsMap[curr.label].splice(idx, 1);
 });
@@ -163,7 +163,9 @@ export default {
             monitorOptsMap,
             isLoading: false,
             isLoadingRes: false,
+            isGenerating: false,
             filterBy: {
+                searchIncludes: true,
                 fieldToSearch: this.$route.query.fieldToSearch || 'managementToEdit',
                 filter: {
                     search: this.$route.query.searchStr || ''
@@ -185,7 +187,7 @@ export default {
                 },
                 pagination: {
                     page: 0,
-                    limit: 50,
+                    limit: 100,
                 },
                 sort: {
                     'subject_drug.name': 1
@@ -206,7 +208,6 @@ export default {
     },
     created() {
         if (this.didCreate) return;
-        console.log('WOWOWO');
         eventBus.$on('dBankWtmProcessIsDone', this.toggleWtmItemsAsDone);
         this.initEditData();
         this.didCreate = true;
@@ -232,13 +233,12 @@ export default {
             // this.editData.ids = [];
             this.showAllResults = false
         },
-        // '$route.query': {
-        //     handler() {
-        //         if (this.dontLoad) return;
-        //         this.loadAllMaterials();
-        //     },
-        //     immediate: true
-        // }
+        '$route.query': {
+            handler(val) {
+                const sActive = this.$route.name === 'DrugBankWtmApp';
+                if (!Object.keys(val).length && sActive) this.clear();
+            }
+        }
     },
     computed: {
         wtmGroups() {
@@ -338,12 +338,13 @@ export default {
         },
         async loadResultsData() {
             this.isLoadingRes = true;
+            this.filterBy.searchIncludes = this.filterBy.fieldToSearch === 'management'? false : true;
             await this.$store.dispatch({ type: 'loadDBankWtms', filterBy: this.filterBy });
             this.editData.ids = this.dBankWtms.map(c => c._id);
             this.isLoadingRes = false;
         },
-        async generateData(markAsDone = false) {
-            this.isLoadingRes = true;
+        async generateDbankWtmData(markAsDone = false) {
+            this.isGenerating = true;
             const editDataToSend = JSON.parse(JSON.stringify(this.editData));
             editDataToSend.searchBy = this.filterBy.filter.search;
             editDataToSend.searchField = this.filterBy.fieldToSearch;
@@ -357,11 +358,14 @@ export default {
                 }));
                 return acc;
             }, []);
-            await this.$store.dispatch({ type: 'generateData', data: editDataToSend });
+            const daoneItems = await this.$store.dispatch({ type: 'generateDbankWtmData', data: editDataToSend });
             const oldIds = this.editData.ids;
+            daoneItems.forEach(id => {
+                eventBus.$emit('doneTogglingInt', id);
+            });
             this.initEditData();
             this.editData.ids = oldIds;
-            this.isLoadingRes = false;
+            this.isGenerating = false;
         },
         initEditData() {
             this.editData = {

@@ -13,7 +13,7 @@
       />
         <!-- @edit="item => $emit('edit', item)"
         @remove="id => $emit('remove', id)" -->
-      <PaginationBtns v-if="filterBy" :total="totalItems" :perPage="filterBy.pagination.limit" v-model="filterBy.pagination.page"/>
+      <PaginationBtns v-if="filterBy" :total="totalItems" :perPage="filterBy.pagination.limit" :initFilter="filterBy" @filtered="setFilter" v-model="filterBy.pagination.page"/>
     </template>
     <div v-else-if="!isLoading" class="flex column space-between align-center no-results-preview">
       <!-- <h3>{{$t('noItemsFound')}}...</h3> -->
@@ -82,7 +82,6 @@ export default {
       if (![newFilter?.filter?.search, this.filterBy?.filter?.search].includes(undefined)) {
         if (newFilter.filter.search !== this.filterBy.filter.search) newFilter.pagination.page = 0;
       }
-      console.log(newFilter);
       this.filterBy = newFilter;
     },
     initFilter() {
