@@ -284,7 +284,7 @@ export default {
     },
     percentageSave(){
         let monthlyPrice = this.localCurrency === 'ILS' ? this.plans[0].priceISL : this.localCurrency === 'EUR' ? this.plans[0].priceEUR : this.plans[0].priceUSD
-        let annualPrice = this.localCurrency === 'ILS' ? this.plans[1].priceISL : this.localCurrency === 'EUR' ? this.plans[1].priceEUR : this.plans[0].priceUSD
+        let annualPrice = this.localCurrency === 'ILS' ? this.plans[1].priceISL : this.localCurrency === 'EUR' ? this.plans[1].priceEUR : this.plans[1].priceUSD
         const percent = 100 - Math.ceil((100 * annualPrice) / monthlyPrice) 
         return percent
     },
