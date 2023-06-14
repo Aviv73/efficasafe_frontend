@@ -430,6 +430,7 @@ export default {
                     search: this.$route.query.searchStr || ''
                 }
             }
+            this.searchFieldSelected = { field: 'managementToEdit', includes: true, dontIgnoreDone: false };
         },
 
         clear() {
