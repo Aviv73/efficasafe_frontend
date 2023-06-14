@@ -14,12 +14,12 @@
                         <label class="flex gap10">
                             <div class="flex align-center gap10">
                                 <span>Search by field</span>
-                                <select v-model="filterBy.fieldToSearch" @change="filterBy.filter.search = ''">
-                                    <option v-for="opt in searchFieldsOpts" :key="opt.value" :value="opt.value" :label="opt.label"/>
+                                <select v-model="searchFieldSelected" @change="filterBy.filter.search = ''">
+                                    <option v-for="opt in searchFieldsOpts" :key="opt.label" :value="opt.value" :label="opt.label"/>
                                 </select>
                             </div>
                         </label>
-                        <textarea v-model="filterBy.filter.search" type="text" placeholder="search"/>
+                        <textarea @click="filterBy.filter.search = ''" v-model="filterBy.filter.search" type="text" placeholder="search"/>
                     </div>
                     <v-btn color="primary" type="submit" class="">Search</v-btn>
                 </form>
@@ -96,6 +96,7 @@
                 <!-- <featured-interaction-filter 
                     @filter-changed="setFilter"
                 /> -->
+                <v-btn @click="reloadAllLists">Reload all lists</v-btn>
                 <ItemSearchList
                     :itemsData="dbankWtmsMaterialsData"
                     :initFilterBy="materialsFilterBy"
@@ -148,6 +149,7 @@ const drugParameters = [
     { val: 'exacerbation of toxicity symptoms', label: 'symptoms' },
     { val: 'potentiation or reduction of drug efficacy', label: 'symptoms' },
     { val: 'reduction of drug efficacy', label: 'symptoms' },
+    { val: 'worsening of symptoms for which the drug is being administered', label: 'symptoms' },
 ]
 drugParameters.forEach(curr => {
     const idx = monitorOptsMap[curr.label] ? monitorOptsMap[curr.label].indexOf(curr.val) : -1;
@@ -165,6 +167,7 @@ export default {
             isLoadingRes: false,
             isGenerating: false,
             filterBy: {
+                dontIgnoreDone: false,
                 searchIncludes: true,
                 fieldToSearch: this.$route.query.fieldToSearch || 'managementToEdit',
                 filter: {
@@ -194,28 +197,45 @@ export default {
                 },
             },
 
+            searchFieldSelected: { field: 'managementToEdit', includes: true, dontIgnoreDone: false },
             searchFieldsOpts: [
-                {label: 'Management', value: 'managementToEdit'},
-                {label: 'Original management', value: 'management'},
-                {label: 'Extended description', value: 'extended_description'},
-                {label: 'Summary', value: 'summary'},
+                { label: 'Management', value: { field: 'managementToEdit', includes: true, dontIgnoreDone: false } },
+                { label: 'All management', value: { field: 'managementToEdit', includes: false, dontIgnoreDone: false } },
+                { label: 'Original management', value: { field: 'management', includes: true, dontIgnoreDone: true } },
+                { label: 'Extended description', value: { field: 'extended_description', includes: true, dontIgnoreDone: false } },
+                { label: 'Summary', value: { field: 'summary', includes: true, dontIgnoreDone: false } },
             ],
 
             dontLoad: false,
 
-            didCreate: false
+            didCreate: false,
+
+            viewdLists: []
         }
     },
     created() {
         if (this.didCreate) return;
         eventBus.$on('dBankWtmProcessIsDone', this.toggleWtmItemsAsDone);
+        eventBus.$on('viewdListToggled', this.toggleViewdList);
+        eventBus.$on('clearDbankWtmData', this.clear);
         this.initEditData();
+        this.initSearchData();
         this.didCreate = true;
     },
     destroyed() {
         eventBus.$on('dBankWtmProcessIsDone', this.toggleWtmItemsAsDone);
+        eventBus.$off('viewdListToggled', this.toggleViewdList);
+        eventBus.$off('clearDbankWtmData', this.clear);
     },
     watch: {
+        searchFieldSelected: {
+            deep: true,
+            handler(val) {
+                this.filterBy.fieldToSearch = val.field;
+                this.filterBy.searchIncludes = val.includes;
+                this.filterBy.dontIgnoreDone = val.dontIgnoreDone;
+            }
+        },
         // 'filterBy':{
         //     deep: true,
         //     handler() {
@@ -233,12 +253,16 @@ export default {
             // this.editData.ids = [];
             this.showAllResults = false
         },
-        '$route.query': {
-            handler(val) {
-                const sActive = this.$route.name === 'DrugBankWtmApp';
-                if (!Object.keys(val).length && sActive) this.clear();
-            }
-        }
+        // '$route.query': {
+        //     deep: true,
+        //     handler(val, prev) {
+        //         const isActive = this.$route.name === 'DrugBankWtmApp';
+        //         if (!isActive) return;
+        //         const isEqual = JSON.stringify(val) === JSON.stringify(prev);
+        //         const hasQuery = !!Object.keys(val).length;
+        //         if (!isEqual && !hasQuery) this.clear();
+        //     }
+        // }
     },
     computed: {
         wtmGroups() {
@@ -270,17 +294,37 @@ export default {
         }
     },
     methods: {
+        toggleViewdList(name, val) {
+            const idx = this.viewdLists.indexOf(name);
+            if (val) {
+                if (idx === -1) this.viewdLists.push(name);
+            } else {
+                if (idx !== -1) this.viewdLists.splice(idx, 1);
+            }
+            // if (idx === -1) this.viewdLists.push(name);
+            // else this.viewdLists.splice(idx, 1);
+        },
+        async reloadAllLists() {
+            await this.loadAllMaterials();
+            this.viewdLists.forEach(c => eventBus.$emit('openDbankMatWtmInnerList', c));
+        },
         async markAllManagementTerm() {
             this.isLoadingRes = true;
             await this.$store.dispatch({ type: 'markAllManagementTerm', ids: this.editData.ids, term: this.filterBy.filter.search });
+            const doneItems = await this.$store.dispatch({ type: 'markAllManagementTerm', ids: this.editData.ids, term: this.filterBy.filter.search });
+            doneItems.forEach(id => {
+                eventBus.$emit('doneTogglingInt', id, true);
+            });
+            // this.reloadAllLists();
             this.isLoadingRes = false;
         },
         async tggleAllDone(value) {
             this.isLoadingRes = true;
             await this.$store.dispatch({ type: 'toggleWtmItemsAsDone', ids: this.editData.ids, value });
             this.editData.ids.forEach(id => {
-                eventBus.$emit('doneTogglingInt', id);
+                eventBus.$emit('doneTogglingInt', id, value);
             });
+            // this.reloadAllLists();
             this.isLoadingRes = false;
         },
         isToShowDrugParam(generateItem) {
@@ -293,6 +337,7 @@ export default {
             await this.$store.dispatch({ type: 'toggleWtmItemsAsDone', ids: [id] });
             eventBus.$emit('doneTogglingInt', id);
             this.isLoadingRes = false;
+            // this.reloadAllLists();
         },
         selectAllWtmInteractions() {
             this.toggleSelectAllWtmInteractions(true);
@@ -338,7 +383,7 @@ export default {
         },
         async loadResultsData() {
             this.isLoadingRes = true;
-            this.filterBy.searchIncludes = this.filterBy.fieldToSearch === 'management'? false : true;
+            // this.filterBy.searchIncludes = this.filterBy.fieldToSearch === 'management'? false : true;
             await this.$store.dispatch({ type: 'loadDBankWtms', filterBy: this.filterBy });
             this.editData.ids = this.dBankWtms.map(c => c._id);
             this.isLoadingRes = false;
@@ -358,14 +403,16 @@ export default {
                 }));
                 return acc;
             }, []);
+            // await this.$store.dispatch({ type: 'generateDbankWtmData', data: editDataToSend });
             const daoneItems = await this.$store.dispatch({ type: 'generateDbankWtmData', data: editDataToSend });
             const oldIds = this.editData.ids;
             daoneItems.forEach(id => {
-                eventBus.$emit('doneTogglingInt', id);
+                eventBus.$emit('doneTogglingInt', id, true);
             });
             this.initEditData();
             this.editData.ids = oldIds;
             this.isGenerating = false;
+            // this.reloadAllLists();
         },
         initEditData() {
             this.editData = {
@@ -374,10 +421,22 @@ export default {
                 generateItems: [ { field: '', value: [ { val: '', drug: null } ] } ]
             }
         },
+        initSearchData() {
+            this.filterBy = {
+                dontIgnoreDone: false,
+                searchIncludes: true,
+                fieldToSearch: this.$route.query.fieldToSearch || 'managementToEdit',
+                filter: {
+                    search: this.$route.query.searchStr || ''
+                }
+            }
+        },
 
         clear() {
             this.initEditData();
-            this.setFilter();
+            this.initSearchData();
+            // this.setFilter();
+            this.$store.commit({type: 'setDBankWtmsData', dbankWtmsData: { items: [], total: 0 } });
         },
 
         async loadAllMaterials(filterBy) {

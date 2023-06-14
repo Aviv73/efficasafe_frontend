@@ -422,6 +422,7 @@
     "exacerbation of symptoms for which the drug is being given",
     "exacerbation of toxicity symptoms",
     "potentiation or reduction of drug efficacy",
-    "reduction of drug efficacy"
+    "reduction of drug efficacy",
+    "worsening of symptoms for which the drug is being administered"
   ]
 }

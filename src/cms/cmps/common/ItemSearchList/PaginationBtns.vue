@@ -91,7 +91,8 @@ export default {
       this.emitFilter();
       // this.$emit('input', pageNum);
     },
-    updateLimit() {
+    updateLimit(val) {
+      this.filterBy.pagination.limit = val;
       this.filterBy.pagination.page = 0;
       this.emitFilter();
     }

@@ -67,22 +67,32 @@ export default {
         this.isLoading = false;
         this.didLoad = true
     },
-      toggleIntDone(id) {
-        const int = this.itemsData.items.find(c => c._id === id);
-          if (!int) return;
-        int.wtmProcessDone = !int.wtmProcessDone;
-      },
+    toggleIntDone(id, val) {
+      const int = this.itemsData.items.find(c => c._id === id);
+        if (!int) return;
+      if (val === undefined) val = !int.wtmProcessDone;
+      // int.wtmProcessDone = !int.wtmProcessDone;
+      int.wtmProcessDone = val;
+    },
+    openListEmited(name) {
+      if (name !== this.item.name) return;
+      this.showInnerList = true;
+      this.loadList();
+    }
   },
   watch: {
-    showInnerList() {
+    showInnerList(val) {
       if (!this.didLoad) this.loadList();
+      eventBus.$emit('viewdListToggled', this.item.name, val);
     }
   },
   created() {
       eventBus.$on('doneTogglingInt', this.toggleIntDone);
+      eventBus.$on('openDbankMatWtmInnerList', this.openListEmited);
   },
   destroyed() {
-      eventBus.$off('doneTogglingInt', this.toggleIntDone);
+    eventBus.$off('doneTogglingInt', this.toggleIntDone);
+    eventBus.$off('openDbankMatWtmInnerList', this.openListEmited);
   }
 }
 </script>

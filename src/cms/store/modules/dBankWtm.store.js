@@ -68,7 +68,7 @@ export const dBankWtmStore = {
             await dBankWtmService.toggleWtmItemsAsDone({ids, value});
         },
         async markAllManagementTerm(context, { ids, term }) {
-            await dBankWtmService.markAllManagementTerm({ids, term});
+            return await dBankWtmService.markAllManagementTerm({ids, term});
         },
         async getDbankWtmInnerListData(context, { filterBy }) {
             return await dBankWtmService.getDbankWtmInnerListData(filterBy);

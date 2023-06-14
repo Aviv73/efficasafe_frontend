@@ -34,8 +34,8 @@
           <p v-if="interaction.extended_description" ref="extendedDescription" v-html="isTextFormatted ? getRefsToDisplay(interaction.extended_description) : interaction.extended_description" />
 
           <div class="text-capitalize" v-if="interaction.management">Management:</div>
-          <p v-if="interaction.wtmData && interaction.wtmData.managementToShow" class="management" ref="management" v-html="interaction.wtmData.managementToShow" />
-          <p v-else-if="interaction.management" ref="management" v-html="isTextFormatted ? getRefsToDisplay(interaction.management) : interaction.management" />
+          <p :class="{ marked: interaction.wtmData.wtmProcessDone }" v-if="interaction.wtmData && interaction.wtmData.managementToShow" class="management" ref="management" v-html="interaction.wtmData.managementToShow" />
+          <p :class="{ marked: interaction.wtmData.wtmProcessDone }" v-else-if="interaction.management" ref="management" v-html="isTextFormatted ? getRefsToDisplay(interaction.management) : interaction.management" />
 
           <p>WTM process done:</p>
           <div class="proccess-p">{{interaction.wtmData.wtmProcessDone || false}}</div>
@@ -173,6 +173,7 @@ export default {
     },
     setRefsToolTip() {
       const { extendedDescription, management } = this.$refs;
+      if (!extendedDescription || !management) return;
       const elSubs = [...extendedDescription.querySelectorAll('sub'), ...management.querySelectorAll('sub')];
       for (let i = 0; i < elSubs.length; i++) {
         const refsOrder = interactionUIService.getRefsOrder(elSubs[i].innerText);
@@ -225,13 +226,12 @@ export default {
 
 <style lang="scss">
 .d-bank-interaction-details-content {
-  .management {
-    
-    .generated, .marked {
-      display: inline-block;
-      background-color: yellow;
-      margin: 0;
-    }
+  .generated, .marked {
+    display: inline-block;
+    background-color: yellow;
+    margin: 0;
+  }
+  .management { 
   }
   .monitor-p {
     white-space: pre-wrap;
