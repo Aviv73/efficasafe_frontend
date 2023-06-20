@@ -2,7 +2,7 @@ import { featuredInteractionService } from '@/cms/services/featured-interaction.
 
 export const featuredInteractionStore = {
     state: {
-        featuredInteractionGroups: [],
+        featuredInteractionGroups: { groups: [], total: 0 },
         featuredGroupsCount: 0,
         expandedGroups: null,
         lastFilterBy: null,

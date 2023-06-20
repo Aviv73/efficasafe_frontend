@@ -12,9 +12,9 @@
         disable-sort
         @click:row="onRowClick"
         :loading="isLoading"
-        :items-per-page="-1"
+        :items-per-page="50"
         :footer-props="{
-            'items-per-page-options': [ 15, 50, -1 ]
+            'items-per-page-options': [ 15, 50, 100, -1 ]
         }"
     >
         <template v-slot:[`header.name`]="{ header }">
@@ -26,7 +26,7 @@
         </template>
         <template v-slot:expanded-item="{ headers, item }">
             <td :colspan="headers.length" class="expanded py-2 px-3 primary lighten-1">
-                <featured-interaction-list :group="item" ref="elList" />
+                <featured-interaction-list :group="item" ref="elList" :showActions="showActions" :baseItemUrl="baseItemUrl" />
             </td>
         </template>
     </v-data-table>
@@ -38,6 +38,14 @@ import featuredInteractionList from '@/cms/cmps/featured-interaction/FeaturedInt
 
 export default {
     props: {
+        showActions: {
+            type: Boolean,
+            default: true,
+        },
+        baseItemUrl: {
+            type: String,
+            default: '/featured-interaction',
+        },
         groups: {
             type: Array,
             required: true

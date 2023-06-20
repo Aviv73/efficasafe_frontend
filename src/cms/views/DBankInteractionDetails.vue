@@ -34,7 +34,16 @@
           <p v-if="interaction.extended_description" ref="extendedDescription" v-html="isTextFormatted ? getRefsToDisplay(interaction.extended_description) : interaction.extended_description" />
 
           <div class="text-capitalize" v-if="interaction.management">Management:</div>
-          <p v-if="interaction.management" ref="management" v-html="isTextFormatted ? getRefsToDisplay(interaction.management) : interaction.management" />
+          <p :class="{ marked: interaction.wtmData.wtmProcessDone }" v-if="interaction.wtmData && interaction.wtmData.managementToShow" class="management" ref="management" v-html="interaction.wtmData.managementToShow" />
+          <p :class="{ marked: interaction.wtmData.wtmProcessDone }" v-else-if="interaction.management" ref="management" v-html="isTextFormatted ? getRefsToDisplay(interaction.management) : interaction.management" />
+
+          <p>WTM process done:</p>
+          <div class="proccess-p">{{interaction.wtmData.wtmProcessDone || false}}</div>
+
+          <template v-if="monitorStr">
+            <p class="text-capitalize" v-if="monitorStr">Monitor:</p>
+            <p class="monitor-p">{{monitorStr}}</p>
+          </template>
 
           <v-divider class="d-bank-interaction-details-content-divider my-2" />
           <d-bank-refs-table class="d-bank-interaction-details-content-table" :refs="interactionRefs" :isEdit="false" />
@@ -88,9 +97,33 @@ export default {
         acc = acc.concat(moreRefs);
         return acc;
       }, []);
+    },
+    monitorStr() {
+      const monitorData = this.interaction.wtmData?.monitor || null;
+      if (!monitorData) return '';
+      let res = '';
+      for (let key in monitorData) {
+        if (res) res += '\n';
+        res += `${key}: `;
+        const vals = monitorData[key];
+        if (!vals) continue
+        res += vals.reduce((acc, c) => {
+          // acc = acc + ` ${c.value}`;
+          acc = [acc, c.value].filter(Boolean).join(', ');
+          if (c.drug) acc += ` (${this.getSideName(c.drug)})`;
+          return acc;
+        }, '');
+      }
+      return res;
     }
   },
   methods: {
+    getSideName(sideNum) {
+      if (sideNum == 1) return this.interaction.subject_drug?.name || '';
+      if (sideNum == 2) return this.interaction.affected_drug?.name || '';
+      return '';
+      
+    },
     goBack() {
       if (this.$store.getters.routerHistory.length < 1) this.$router.push('/');
       else this.$router.go(-1);
@@ -140,6 +173,7 @@ export default {
     },
     setRefsToolTip() {
       const { extendedDescription, management } = this.$refs;
+      if (!extendedDescription || !management) return;
       const elSubs = [...extendedDescription.querySelectorAll('sub'), ...management.querySelectorAll('sub')];
       for (let i = 0; i < elSubs.length; i++) {
         const refsOrder = interactionUIService.getRefsOrder(elSubs[i].innerText);
@@ -189,3 +223,18 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+.d-bank-interaction-details-content {
+  .generated, .marked {
+    display: inline-block;
+    background-color: yellow;
+    margin: 0;
+  }
+  .management { 
+  }
+  .monitor-p {
+    white-space: pre-wrap;
+  }
+}
+</style>

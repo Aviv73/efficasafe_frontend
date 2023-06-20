@@ -58,7 +58,8 @@ export default {
         setFilter(filterBy) {
             const criteria = {
                 ...this.$route.query,
-                ...filterBy
+                ...filterBy,
+                colName: 'featuredInteraction'
             };
             if (criteria.side1Name) criteria.page = 0;
             const queryStr = '?' + new URLSearchParams(criteria).toString();
@@ -71,6 +72,7 @@ export default {
             filterBy.sortBy = filterBy.sortBy || 'name';
             filterBy.isDesc = filterBy.isDesc || false;
             filterBy.limit = filterBy.limit || Number.MAX_SAFE_INTEGER;
+            filterBy.colName = 'featuredInteraction';
             await this.$store.dispatch({ type: 'loadFeaturedInteractionGroups', filterBy });
             this.isLoading = false;
         }

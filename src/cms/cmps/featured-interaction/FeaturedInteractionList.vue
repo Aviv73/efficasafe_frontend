@@ -1,7 +1,7 @@
 <template>
     <section class="featured-interaction-list">
         <main v-if="!isLoading">
-            <div class="featured-interaction-list-filter py-4">
+            <div class="featured-interaction-list-filter py-4" v-if="showActions">
                 <v-autocomplete 
                     class="featured-interaction-list-filter-field mb-0"
                     label="Search interactions"
@@ -157,10 +157,13 @@
                 :loading="isLoading"
                 :items-per-page="15"
                 :footer-props="{
-                    'items-per-page-options': [ 15, 50, -1 ]
+                    'items-per-page-options': [ 15, 50, 100, -1 ]
                 }"
             >
-                <template #[`item.isActive`]="{ item }">
+                <template #[`item.affected_drug.name`]="{ item }">
+                    <p class="margin0" :class="{'marked-row': !showActions && item.wtmProcessDone}">{{item.affected_drug.name}}</p>
+                </template>
+                <template #[`item.isActive`]="{ item }" v-if="showActions">
                     <v-icon
                         :color="(item.isActive) ? 'primary' : 'secondary'"
                     >
@@ -168,24 +171,38 @@
                     </v-icon>
                 </template>
                 <template #[`item.actions`]="{ item }">
-                    <div class="featured-interaction-list-actions">
+                    <div class="featured-interaction-list-actions" :class="{'marked-row': !showActions && item.wtmProcessDone}">
                         <v-checkbox
+                            v-if="showActions"
                             v-model="selected"
                             :value="item._id"
                         />
                         <v-btn 
+                            v-if="showActions"
                             color="primary" 
                             x-small
                             title="Edit interaction"
-                            :to="`/featured-interaction/edit/${item._id}`"
+                            :to="`${baseItemUrl}/edit/${item._id}`"
                         >
                             <v-icon x-small>mdi-pencil</v-icon>
                         </v-btn>
+                        <template v-else>
+                            <v-btn
+                                color="primary" 
+                                x-small
+                                title="Mark as done"
+                                @click="emitDone(item._id)"
+                            >
+                                <v-icon x-small v-if="!item.wtmProcessDone">Done</v-icon>
+                                <v-icon x-small v-else>un Done</v-icon>
+                            </v-btn>
+
+                        </template>
                         <v-btn 
                             color="primary" 
                             x-small
                             title="View interaction"
-                            :to="`/featured-interaction/${item._id}`"
+                            :to="`${baseItemUrl}/${item._id}`"
                         >
                             <v-icon x-small>mdi-eye</v-icon>
                         </v-btn>
@@ -214,12 +231,21 @@
 </template>
 
 <script>
+import { eventBus } from '@/cms/services/eventBus.service';
 import { featuredInteractionService } from '@/cms/services/featured-interaction.service';
 import materialPicker from '@/cms/cmps/featured-interaction/MaterialPicker';
 import confirmDelete from '@/cms/cmps/general/ConfirmDelete';
 
 export default {
     props: {
+        showActions: {
+            type: Boolean,
+            default: true,
+        },
+        baseItemUrl: {
+            type: String,
+            default: '/featured-interaction',
+        },
         group: {
             type: Object,
             required: true
@@ -243,22 +269,22 @@ export default {
             filterBy: featuredInteractionService.getDefaultFilterBy(this.group._id),
             search: null,
             result: null,
-            options: {},
+            options: { },
             headers: [
                 {
                     text: 'Side 2',
                     value: 'affected_drug.name'
                 },
-                {
+                this.showActions && {
                     text: 'Active',
                     value: 'isActive'
-                },
+                } || null,
                 {
                     text: 'Actions',
                     value: 'actions',
                     align: 'center'
                 }
-            ]
+            ].filter(Boolean)
         }
     },
     watch: {
@@ -307,6 +333,14 @@ export default {
         }
     },
     methods: {
+        toggleIntDone(id) {
+            const int = this.interactions.find(c => c._id === id);
+            if (!int) return;
+            int.wtmProcessDone = !int.wtmProcessDone;
+        },
+        emitDone(id) {
+            eventBus.$emit('dBankWtmProcessIsDone', id);
+        },
         async addToLabel() {
             const side2DBKId = this.selected.map(interactionId => {
                 return this.interactions.find(interaction => interaction._id === interactionId).affected_drug.drugbank_id;
@@ -317,7 +351,8 @@ export default {
             const filterBy = {
                 ids: [ ...this.selected ],
                 field,
-                value
+                value,
+                colName: this.$route.query.colName || ''
             };
             await this.$store.dispatch({ type: 'updateFeaturedInteractions', filterBy });
             this.materialPickerDialog = false;
@@ -330,7 +365,7 @@ export default {
         },
         async getFeaturedInteractions() {
             this.isLoading = true;
-            const filterBy = { ...this.filterBy };
+            const filterBy = { ...this.filterBy, colName: this.$route.query.colName || '' };
             if (filterBy.side2Name || filterBy.summary || filterBy.extended_description) filterBy.page = 0;
             const { featuredInteractions, total } = await this.$store.dispatch({ type: 'getFeaturedInteractions', filterBy });
             this.interactions = featuredInteractions;
@@ -339,7 +374,7 @@ export default {
         },
         async getAutocompleteResults(q) {
             this.isAutocompleteLoading = true;
-            const filterBy = { ...this.filterBy, side2Name: q };
+            const filterBy = { ...this.filterBy, side2Name: q, colName: this.$route.query.colName || '' };
             filterBy.page = 0;
             const { featuredInteractions } = await this.$store.dispatch({ type: 'getFeaturedInteractions', filterBy });
             this.autocompleteItems = featuredInteractions;
@@ -386,6 +421,7 @@ export default {
         }
     },
     created() {
+        eventBus.$on('doneTogglingInt', this.toggleIntDone);
         const { lastFilterBy } = this.$store.getters;
         if (lastFilterBy) {
             this.restoreLastState();
@@ -394,6 +430,9 @@ export default {
             this.resetData();
             this.getFeaturedInteractions();
         }
+    },
+    destroyed() {
+        eventBus.$off('doneTogglingInt', this.toggleIntDone);
     },
     components: {
         confirmDelete,

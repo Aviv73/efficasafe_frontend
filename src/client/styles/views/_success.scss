@@ -6,7 +6,7 @@
     text-align: center;
     img{
         margin-top: 35px;
-        margin-bottom: 100px;
+        margin-bottom: 50px;
     }
 
     h2{
@@ -21,8 +21,12 @@
         color: #133146;
         font-size: 24px;
         font-weight: bold;
-        margin-bottom: 50px;
+        margin-bottom: 15px;
         line-height: 30px;
+    }
+    
+    .go-search-btn {
+        margin-top: 50px;
     }
 
     .failed-btns{
@@ -42,6 +46,13 @@
             button, span{
                 margin-inline-end: 8px;
             }
+        }
+    }
+
+    .logo{
+        height: 50px;
+        @media (max-width: $break-narrow) {
+            height: 30px;
         }
     }
 }

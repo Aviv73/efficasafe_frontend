@@ -44,7 +44,7 @@
             </button>
           </li>
         </ul>
-        <p class="click-enzyme-chips-msg">* Click on each enzyme to see more information</p>
+        <p v-if="sortedPathways.length > 1" class="click-enzyme-chips-msg">* Click on each enzyme to see more information</p>
       </div>
       <p
         class="active-tab-txt regular-pointer"

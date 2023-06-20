@@ -192,7 +192,7 @@
               </tooltip>
             </li>
           </ul>
-          <p class="click-enzyme-chips-msg">* Click on each enzyme to see more information</p>
+          <p v-if="material.pathways.length > 1" class="click-enzyme-chips-msg">* Click on each enzyme to see more information</p>
         </div>
         <p class="pathway-exp-txt">{{ pathwayExpTxt }}</p>
         <hr class="line" />

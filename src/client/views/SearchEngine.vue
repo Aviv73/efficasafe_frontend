@@ -340,7 +340,9 @@ export default {
       dBankFetchRes: {},
       intFetchRes: {},
 
-      pagination: { limit: 50, page: +(this.$route.query?.page || 1) - 1 }
+      pagination: { limit: 50, page: +(this.$route.query?.page || 1) - 1 },
+
+      didCreate: false
     };
   },
   metaInfo() {
@@ -1823,8 +1825,10 @@ export default {
     this.removeEventBusListeners();
   },
   created() {
+    // if (this.didCreate) return;
     this.$store.dispatch('notifyEndTrial');
     this.addEventBusListeners();
+    // this.didCreate = true;
   },
   components: {
     AppTooltip,

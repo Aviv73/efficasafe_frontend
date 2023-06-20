@@ -63,6 +63,17 @@
                 tile
                 color="white"
                 text
+                :to="{name: 'DrugBankWtmApp', query: {} }"
+                v-if="isAdmin || isEditor || isAssistantEditor"
+                @click="clearDbankWtmData"
+            >
+                dBankWtm
+            </v-btn>
+            <v-btn
+                class="nav-link"
+                tile
+                color="white"
+                text
                 to="/interaction"
                 v-if="isAdmin || isEditor"
                 >Interactions</v-btn
@@ -202,6 +213,10 @@ export default {
                 type: 'setHasFailedLogs',
                 hasLogs: true,
             });
+        },
+
+        clearDbankWtmData() {
+            eventBus.$emit('clearDbankWtmData');
         }
     },
     created() {

@@ -9,6 +9,7 @@ import { archiveStore } from './modules/archive.store';
 import { atcStore } from './modules/atc.store';
 import { drugBankStore } from './modules/drug-bank.store';
 import { featuredInteractionStore } from './modules/featured-interaction.store';
+import { dBankWtmStore } from './modules/dBankWtm.store';
 
 import { manageService } from '@/cms/services/manage.service';
 import { tokenService } from '@/cms/services/token.service';
@@ -205,6 +206,7 @@ export default new Vuex.Store({
     archiveStore,
     atcStore,
     drugBankStore,
-    featuredInteractionStore
+    featuredInteractionStore,
+    dBankWtmStore
   }
 });
