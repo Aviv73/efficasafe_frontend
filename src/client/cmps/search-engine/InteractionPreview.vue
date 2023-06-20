@@ -161,7 +161,7 @@
         >
           <p class="msg" v-if="interaction.isCompoundGroup === false">There are different interactions, dependent on {{ getSide2Name(interaction.name) }} use:</p>
           <div v-for="(vInteraction, index) in interaction.vInteractions" :key="index">
-            <interaction-preview :showContentInTitle="showContentInTitle" :hoverMsg_="(interaction.isCompoundGroup === false) && (interaction.originLabel && interaction.originLabel.name) || ''" :interaction="vInteraction" :materials="materials" :isCompoundPart="isCompoundPart || interaction.isCompoundGroup" :isDuplicate="interaction.isCompoundGroup === false" :link="link" :idx="index" :parent-idx="idx" is-child />
+            <interaction-preview :parentShowContentInTitle="showContentInTitle" :hoverMsg_="(interaction.isCompoundGroup === false) && (interaction.originLabel && interaction.originLabel.name) || ''" :interaction="vInteraction" :materials="materials" :isCompoundPart="isCompoundPart || interaction.isCompoundGroup" :isDuplicate="interaction.isCompoundGroup === false" :link="link" :idx="index" :parent-idx="idx" is-child />
           </div>
         </div>
       </template>
@@ -201,6 +201,10 @@ export default {
     interaction: {
       type: Object,
       required: true
+    },
+    parentShowContentInTitle: {
+      type: Boolean,
+      default: false
     },
     link: {
       type: Boolean,
@@ -257,7 +261,7 @@ export default {
   },
   computed: {
     showContentInTitle() {
-      return this.interaction.isCompoundGroup === false;
+      return this.parentShowContentInTitle || (this.interaction.isCompoundGroup === false);
     },
     isScreenNarrow() {
       return this.$store.getters.isScreenNarrow;
