@@ -2,13 +2,18 @@
     &-group-header {
         pointer-events: all;
         margin: rem(5px) 0;
+        @include for-narrow-layout {
+            .interaction-capsules {
+                justify-content: center;
+            }
+        }
 
         & > span:first-child {
             @include for-narrow-layout {
                 transform: translateX(10px);
             }
             @include for-wide-layout {
-                transform: translateX(40px);
+                // transform: translateX(25px);
             }
         }
         &.child > span:first-child {
@@ -16,7 +21,7 @@
                 transform: translateX(20px);
             }
             @include for-wide-layout {
-                transform: translateX(80px);
+                transform: translateX(25px);
             }
         }
     }

@@ -8,7 +8,8 @@
         <template v-else>
             <h2>Congratulations!</h2>
             <h3>We’re glad that you’ve decided to join us</h3>
-            <button class="btn" @click="$router.push('/search')">
+            <small>Please note: Credit charge will show as Naturopedia LTD</small>
+            <button class="btn go-search-btn" @click="$router.push('/search')">
                 Let’s search Interactions!
             </button>
         </template>

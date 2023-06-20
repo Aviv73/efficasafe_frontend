@@ -15,6 +15,7 @@
           >
             <span class="table-col" :class="{ 'flex-align-center': isDuplicate, 'off-interaction-col-1': !isAllowed }">
               <interaction-capsules
+                :hoverMsg="hoverMsg || (interaction.isCompoundGroup === false) && interaction.name || ''"
                 :name="interactionName || ''"
                 :color="getInteractionColor(interaction)"
                 :vInteractionCount="newLength || getVinteractionsCount(interaction)"
@@ -159,7 +160,7 @@
         >
           <p class="msg" v-if="interaction.isCompoundGroup === false">There are different interactions, dependent on {{ getSide2Name(interaction.name) }} use:</p>
           <div v-for="(vInteraction, index) in interaction.vInteractions" :key="index">
-            <interaction-preview :interaction="vInteraction" :materials="materials" :isCompoundPart="isCompoundPart || interaction.isCompoundGroup" :isDuplicate="interaction.isCompoundGroup === false" :link="link" :idx="index" :parent-idx="idx" is-child />
+            <interaction-preview :hoverMsg="(interaction.isCompoundGroup === false) && interaction.name || ''" :interaction="vInteraction" :materials="materials" :isCompoundPart="isCompoundPart || interaction.isCompoundGroup" :isDuplicate="interaction.isCompoundGroup === false" :link="link" :idx="index" :parent-idx="idx" is-child />
           </div>
         </div>
       </template>
@@ -191,6 +192,11 @@ import LockIcon from 'vue-material-design-icons/Lock';
 export default {
   name: 'InteractionPreview',
   props: {
+    hoverMsg: {
+      type: String,
+      required: false,
+      default: ''
+    },
     interaction: {
       type: Object,
       required: true

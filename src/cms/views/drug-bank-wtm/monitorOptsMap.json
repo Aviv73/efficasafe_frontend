@@ -363,7 +363,9 @@
     "homocysteine",
     "holotranscobalamin",
     "tpoab (thyroid peroxidase antibodies)",
-    "tgab (thyroglobulin antibodies)"
+    "tgab (thyroglobulin antibodies)",
+    "Uric acid",
+    "Aluminum blood level"
   ],
   "otherTests": [
     "dexa bone density scan",
