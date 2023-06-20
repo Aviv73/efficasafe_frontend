@@ -15,7 +15,8 @@
           >
             <span class="table-col" :class="{ 'flex-align-center': isDuplicate, 'off-interaction-col-1': !isAllowed }">
               <interaction-capsules
-                :hoverMsg="hoverMsg || (interaction.isCompoundGroup === false) && (interaction.originLabel && interaction.originLabel.name) || ''"
+                :showContentInTitle="showContentInTitle"
+                :hoverMsg_="hoverMsg || (interaction.isCompoundGroup === false) && (interaction.originLabel && interaction.originLabel.name) || ''"
                 :name="interactionName || ''"
                 :color="getInteractionColor(interaction)"
                 :vInteractionCount="newLength || getVinteractionsCount(interaction)"
@@ -160,7 +161,7 @@
         >
           <p class="msg" v-if="interaction.isCompoundGroup === false">There are different interactions, dependent on {{ getSide2Name(interaction.name) }} use:</p>
           <div v-for="(vInteraction, index) in interaction.vInteractions" :key="index">
-            <interaction-preview :hoverMsg="(interaction.isCompoundGroup === false) && (interaction.originLabel && interaction.originLabel.name) || ''" :interaction="vInteraction" :materials="materials" :isCompoundPart="isCompoundPart || interaction.isCompoundGroup" :isDuplicate="interaction.isCompoundGroup === false" :link="link" :idx="index" :parent-idx="idx" is-child />
+            <interaction-preview :showContentInTitle="showContentInTitle" :hoverMsg_="(interaction.isCompoundGroup === false) && (interaction.originLabel && interaction.originLabel.name) || ''" :interaction="vInteraction" :materials="materials" :isCompoundPart="isCompoundPart || interaction.isCompoundGroup" :isDuplicate="interaction.isCompoundGroup === false" :link="link" :idx="index" :parent-idx="idx" is-child />
           </div>
         </div>
       </template>
@@ -255,6 +256,9 @@ export default {
     };
   },
   computed: {
+    showContentInTitle() {
+      return this.interaction.isCompoundGroup === false;
+    },
     isScreenNarrow() {
       return this.$store.getters.isScreenNarrow;
     },

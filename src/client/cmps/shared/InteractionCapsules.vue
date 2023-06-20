@@ -19,7 +19,7 @@
       v-if="!showDraftName && !isMaterialGroup"
     >
       <span v-if="isInteractionDetails" :class="{ pointer: isLink, 'clip-txt': isScreenNarrow }" @click="goToMaterial(side1NameToShow)">{{ side1NameToShow }}</span>
-      <span v-else :title="hoverMsg || side1NameToShow" :class="{ 'clip-txt': isScreenNarrow }">{{ side1NameToShow }}</span>
+      <span v-else :title="(showContentInTitle && side1NameToShow) || (hoverMsg || side1NameToShow)" :class="{ 'clip-txt': isScreenNarrow }">{{ side1NameToShow }}</span>
       <!-- <span v-if="isInteractionDetails" :class="{ pointer: isLink, 'clip-txt': isScreenNarrow }" @click="goToMaterial(side1NameToShow)">{{ isScreenNarrow ? side1NameToShow.slice(0, 15) : side1NameToShow }}</span>
       <span v-else :title="side1NameToShow" :class="{ 'clip-txt': isScreenNarrow }">{{ isScreenNarrow ? side1NameToShow.slice(0, 16) : side1NameToShow }}</span> -->
 
@@ -51,7 +51,7 @@
         />
       </svg>
       <span v-if="isInteractionDetails" :class="{ pointer: isLink, 'clip-txt': isScreenNarrow }" @click="goToMaterial(draftNameContent)"> {{ draftNameContent }} </span>
-      <span v-else :title="hoverMsg || titleSide2" :class="{ 'clip-txt': isScreenNarrow }">
+      <span v-else :title="(showContentInTitle && draftNameContent) || (hoverMsg || titleSide2)" :class="{ 'clip-txt': isScreenNarrow }">
         {{ draftNameContent }}
       </span>
       <!-- <span v-if="isInteractionDetails" :class="{ pointer: isLink, 'clip-txt': isScreenNarrow }" @click="goToMaterial(draftNameContent)"> {{ isScreenNarrow ? trimmedDraftNameContent : draftNameContent }} </span>
@@ -83,6 +83,11 @@ import { utilService } from '@/cms/services/util.service';
 
 export default {
   props: {
+    showContentInTitle: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     hoverMsg: {
       type: String,
       required: false,
