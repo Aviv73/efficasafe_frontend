@@ -16,7 +16,7 @@
             color="primary" 
             x-small
             title="View interaction"
-            :to="`/d-bank-interaction/${item._id}`"
+            :to="`/d-bank-interaction/${item.dbankInteractionId}`"
         >
             <v-icon x-small>mdi-eye</v-icon>
         </v-btn>

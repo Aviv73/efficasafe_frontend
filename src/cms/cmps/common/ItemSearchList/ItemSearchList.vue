@@ -58,13 +58,15 @@ export default {
   },
   data() {
     return {
-      filterBy: null
+      filterBy: null,
+      dontEmit: false
     }
   },
   watch: {
     filterBy: {
       deep: true,
       handler(filterVal) {
+        if (this.dontEmit) return;
         if (!this.dontRoute) {
           const query = {};
           deepIterateWithObj(filterVal, (key, val) => {
@@ -94,7 +96,11 @@ export default {
           if (queryParams[key]) setDeepVal(filterByToSet, key, valToSet, '_');
         }, '_');
       }
+      this.dontEmit = true;
       this.filterBy = filterByToSet;
+      setTimeout(() => {
+        this.dontEmit = false;
+      }, 1);
     }
   },
   computed: {
