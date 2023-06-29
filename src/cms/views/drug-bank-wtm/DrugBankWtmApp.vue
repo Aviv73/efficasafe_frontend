@@ -231,6 +231,7 @@ export default {
         eventBus.$on('clearDbankWtmData', this.clear);
         this.initEditData();
         this.initSearchData();
+        this.loadAllMaterials();
         this.state.didCreate = true;
     },
     destroyed() {
