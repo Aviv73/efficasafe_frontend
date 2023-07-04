@@ -302,7 +302,7 @@ export default {
             eventBus.$emit(EV_show_user_msg, 'Please select a payment plan', 3000, 'error');
             return 
         }
-        if(this.loggedInUser.type === 'subscribed' && this.loggedInUser.purchases[0].until === 'Ongoing'){
+        if(this.loggedInUser.type === 'subscribed' && this.loggedInUser.purchases[0]?.until === 'Ongoing'){
             eventBus.$emit(EV_show_user_msg, 'You already have an active subscription, to purchase a new one, please cancel the active one under your account', 15000, 'error');
             return 
         }
@@ -350,9 +350,9 @@ export default {
         this.selectedCoupon = coupon
     },
     getRelevantPrice(){
-        let price = this.selectedPlan.priceUSD 
-        if(this.localCurrency === 'ILS') price = this.selectedPlan.priceISL 
-        if(this.localCurrency === 'EUR') price = this.selectedPlan.priceEUR
+        let price = +this.selectedPlan.priceUSD 
+        if(this.localCurrency === 'ILS') price = +this.selectedPlan.priceISL 
+        if(this.localCurrency === 'EUR') price = +this.selectedPlan.priceEUR
         return price * this.selectedPlan.duration
     },
     getPriceByLocation(plan){

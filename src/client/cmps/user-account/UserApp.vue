@@ -285,6 +285,7 @@ export default {
             const user = JSON.parse(JSON.stringify(this.loggedInUser))
             let updatedUser = this.calcEndSubscription(user)
             updatedUser.purchases[0].canceledAt = Date.now()
+            updatedUser.type = 'registered';
             updatedUser = await this.$store.dispatch({ type: 'updateLoggedInUser', user: updatedUser })
             await this.$store.dispatch({type:'updateAutoPilotContact', user: updatedUser})
             this.purchases = JSON.parse(JSON.stringify(updatedUser.purchases))
