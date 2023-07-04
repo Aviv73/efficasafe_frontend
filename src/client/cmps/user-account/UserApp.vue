@@ -285,7 +285,6 @@ export default {
             const user = JSON.parse(JSON.stringify(this.loggedInUser))
             let updatedUser = this.calcEndSubscription(user)
             updatedUser.purchases[0].canceledAt = Date.now()
-            updatedUser.type = 'registered';
             updatedUser = await this.$store.dispatch({ type: 'updateLoggedInUser', user: updatedUser })
             await this.$store.dispatch({type:'updateAutoPilotContact', user: updatedUser})
             this.purchases = JSON.parse(JSON.stringify(updatedUser.purchases))
@@ -299,8 +298,15 @@ export default {
             return user
         },
         checkIfDatePassed(startTime, numOfMonth){
-            const timeToAdd = 1000 * 60 * 60 * 24 * 30 * numOfMonth
-            const newTime = startTime + timeToAdd
+            function _addMonths(date, n) {
+                var newDate = new Date(date);
+                newDate.setMonth(newDate.getMonth() + n);
+                return newDate;
+            }
+            numOfMonth = +numOfMonth;
+            // const timeToAdd = 1000 * 60 * 60 * 24 * 30 * numOfMonth
+            // const newTime = startTime + timeToAdd
+            const newTime = _addMonths(startTime, numOfMonth).getTime();
             const currDate = Date.now()
             if(newTime < currDate){
                 return this.checkIfDatePassed(newTime, numOfMonth)

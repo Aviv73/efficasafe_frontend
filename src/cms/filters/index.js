@@ -31,7 +31,7 @@ Vue.filter('display-snake-case', (val) => {
 });
 
 Vue.filter('timeFilter', (val, format) => {
-    if (!isValidDate(val)) return 'Invalin Date';
+    if (!isValidDate(val)) return 'Invalid Date';
     return format? moment(val, format).format(format) : moment(val);
 });
 

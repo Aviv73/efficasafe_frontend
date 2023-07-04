@@ -265,7 +265,8 @@ router.beforeEach(async (to, from, next) => {
     else next({ name: 'Home' });
   }
   if (to.meta.blockSubscribed) {
-    if (store.getters.loggedInUser && store.getters.loggedInUser.type === 'subscribed') next({ name: 'Home' });
+    // if (store.getters.loggedInUser && store.getters.loggedInUser.type === 'subscribed') next({ name: 'Home' });
+    if (store.getters.loggedInUser && store.getters.loggedInUser.purchases?.find(c => c.until === 'Onging')) next({ name: 'Home' });
   }
   window.scrollTo(0, 0);
   next();

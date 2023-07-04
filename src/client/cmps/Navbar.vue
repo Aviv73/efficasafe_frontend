@@ -61,7 +61,7 @@
             <!-- <li class="navbar-nav-item" @click="toggleNavActive">
               <router-link to="/features"> Features</router-link>
             </li> -->
-            <li class="navbar-nav-item" @click="toggleNavActive" v-if="!loggedInUser || loggedInUser.type !== 'subscribed'">
+            <li class="navbar-nav-item" @click="toggleNavActive" v-if="!loggedInUser || !noOngingPurch">
               <router-link to="/subscribe"> Pricing </router-link>
             </li>
             <li class="navbar-nav-item" @click="toggleNavActive">
@@ -176,6 +176,9 @@ export default {
     updatedUserSearches: null
   }),
   computed: {
+    noOngingPurch() {
+      return !!this.loggedInUser?.purchases?.find(c => c.until  === 'Ongoing');
+    },
     isTrialMode() {
       // return true;
       return this.loggedInUser && this.loggedInUser.type !== 'subscribed';
