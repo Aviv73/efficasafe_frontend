@@ -283,6 +283,7 @@ export default {
         },
         async updateEndSubscriptionUser(){
             const user = JSON.parse(JSON.stringify(this.loggedInUser))
+            user.type = 'trial';
             let updatedUser = this.calcEndSubscription(user)
             updatedUser.purchases[0].canceledAt = Date.now()
             updatedUser = await this.$store.dispatch({ type: 'updateLoggedInUser', user: updatedUser })
