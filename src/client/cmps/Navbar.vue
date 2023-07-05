@@ -129,7 +129,7 @@
                     Trial ends on {{ trialEndTime }}
                   </p>
                   <p v-else>
-                    Trial ends on {{ trialEndTime }}
+                    Trial ended on {{ trialEndTime }}
                   </p>
                 </div>
                 <!-- <template v-else-if="loggedInUser.type !== 'subscribed'">
