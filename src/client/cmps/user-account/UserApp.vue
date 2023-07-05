@@ -283,9 +283,13 @@ export default {
         },
         async updateEndSubscriptionUser(){
             const user = JSON.parse(JSON.stringify(this.loggedInUser))
-            user.type = 'trial';
             let updatedUser = this.calcEndSubscription(user)
-            updatedUser.purchases[0].canceledAt = Date.now()
+            updatedUser.purchases[0].canceledAt = Date.now();
+
+            user.type = 'trial';
+            if (user.trialTime) user.trialTime = updatedUser.purchases[0].until > user.trialTime? updatedUser.purchases[0].until : user.trialTime;
+            else user.trialTime = updatedUser.purchases[0].until;
+            
             updatedUser = await this.$store.dispatch({ type: 'updateLoggedInUser', user: updatedUser })
             await this.$store.dispatch({type:'updateAutoPilotContact', user: updatedUser})
             this.purchases = JSON.parse(JSON.stringify(updatedUser.purchases))

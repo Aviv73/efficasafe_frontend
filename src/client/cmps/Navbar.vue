@@ -118,20 +118,37 @@
             </template>
             <template #content>
               <div class="navbar-user-dropdown">
-                <div class="trial-msg" v-if="isTrialMode">
-                  <template v-if="loggedInUser.type === 'trial' || true">
+                <div class="trial-msg" v-if="!loggedInUser.email_verified">
+                  <router-link class="err" to="/subscribe">Trial waiting for email verification</router-link>
+                </div>
+                <div class="trial-msg" v-else-if="loggedInUser.type === 'trial'">
+                  <p v-if="freeTrialTime > 5">
+                    Trial ends on {{ trialEndTime }}
+                  </p>
+                  <p v-else-if="freeTrialTime > 0" class="warn">
+                    Trial ends on {{ trialEndTime }}
+                  </p>
+                  <p v-else>
+                    Trial ends on {{ trialEndTime }}
+                  </p>
+                </div>
+                <!-- <template v-else-if="loggedInUser.type !== 'subscribed'">
+                  <div class="trial-msg" v-else>
+                    <p>Verify your email for a free trial</p>
+                  </div>
+                </template> -->
+                <!-- <div class="trial-msg" v-if="isTrialMode">
+                  <template v-if="loggedInUser.type === 'trial'">
                     <p v-if="freeTrialTime > 5">
-                      <!-- {{freeTrialMsg}} -->
                       Trial ends on {{ trialEndTime }}
                     </p>
                     <p v-else-if="freeTrialTime > 0" class="warn">
-                      <!-- {{freeTrialMsg}} -->
                       Trial ends on {{ trialEndTime }}
                     </p>
-                    <router-link class="err" v-else to="/subscribe">Trial waiting for email verification</router-link>
+                    <router-link class="err" v-else-if="!loggedInUser.email_verified" to="/subscribe">Trial waiting for email verification</router-link>
                   </template>
                   <p v-else-if="!loggedInUser.email_verified">Verify your email for a free trial</p>
-                </div>
+                </div> -->
                 <div class="navbar-user-dropdown-links">
                   <router-link to="/account" class="navbar-user-dropdown-item account-col">
                     <span>Account</span>
