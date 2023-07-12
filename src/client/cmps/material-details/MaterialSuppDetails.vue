@@ -66,22 +66,22 @@
         <h3 ref="Depleteds"> Drug-induced depletions</h3>
         
         <div>
-          {{material.name}}
-          <span class="sure" v-if="material.depleteds.filter(_ => _.sure).length">
-            <span>leads</span> to deficiency of
+          <p class="sure" v-if="material.depleteds.filter(_ => _.sure).length">
+            {{material.name}} <span>leads</span> to deficiency of
             <router-link v-for="(c, idx) in material.depleteds.filter(_ => _.sure)" :key="c.name" :to="`/search?q=${originalMaterial.name}&q=${c.name}`" target="_blank">
               {{c.name}}
-              <template v-if="idx !== (material.depleteds.filter(_ => _.sure).length-1)">,</template>
+              <template v-if="idx < (material.depleteds.filter(_ => _.sure).length-1) -2">, </template>
+              <template v-else-if="idx === (material.depleteds.filter(_ => _.sure).length-1) -2"> and </template>
             </router-link>
-          </span>
-          <template v-if="material.depleteds.filter(_ => _.sure).length && material.depleteds.filter(_ => !_.sure).length">and</template>
-          <span v-if="material.depleteds.filter(_ => !_.sure).length">
-            <span>may leads</span> to deficiency of
+          </p>
+          <p v-if="material.depleteds.filter(_ => !_.sure).length">
+            {{material.name}} <span>may leads</span> to deficiency of
             <router-link v-for="(c, idx) in material.depleteds.filter(_ => !_.sure)" :key="c.name" :to="`/search?q=${originalMaterial.name}&q=${c.name}`" target="_blank">
               {{c.name}}
-              <template v-if="idx !== (material.depleteds.filter(_ => !_.sure).length-1)">,</template>
+              <template v-if="idx < (material.depleteds.filter(_ => !_.sure).length-1) -2">, </template>
+              <template v-else-if="idx === (material.depleteds.filter(_ => !_.sure).length-1) -2"> and </template>
             </router-link>
-          </span>
+          </p>
         </div>
 
         <hr class="line" />
