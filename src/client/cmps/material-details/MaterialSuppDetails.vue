@@ -13,6 +13,7 @@
       <section class="material-details-nav-links">
         <a v-if="material.desc" @click="goTo('Background')">Background</a>
         <a @click="goTo('Interactions')">Interactions</a>
+        <a v-if="material.depleteds && material.depleteds.length" @click="goTo('Depleteds')">Depleteds</a>
         <a v-if="material.nutritionalSources" @click="goTo('Nutritional sources')">Nutritional sources</a>
         <a v-if="material.medicinalActions && material.medicinalActions.length" @click="goTo('Medicinal actions')">Medicinal actions</a>
 
@@ -59,6 +60,30 @@
       <section class="material-details-content-section">
         <h3 ref="Interactions">Interactions</h3>
         <router-link :to="`/search?q=${originalMaterial.name}`" target="_blank" class="fda-link font14"> click here to see all of the interactions </router-link>
+        <hr class="line" />
+      </section>
+      <section v-if="material.depleteds && material.depleteds.length" class="material-details-content-section depleted-section">
+        <h3 ref="Depleteds"> Drug-induced depleteds</h3>
+        
+        <div>
+          {{material.name}}
+          <span class="sure" v-if="material.depleteds.filter(_ => _.sure).length">
+            <span>leads</span> to deficiency of
+            <router-link v-for="(c, idx) in material.depleteds.filter(_ => _.sure)" :key="c.name" :to="`/search?q=${originalMaterial.name}&q=${c.name}`" target="_blank">
+              {{c.name}}
+              <template v-if="idx !== (material.depleteds.filter(_ => _.sure).length-1)">,</template>
+            </router-link>
+          </span>
+          <template v-if="material.depleteds.filter(_ => _.sure).length && material.depleteds.filter(_ => !_.sure).length">and</template>
+          <span v-if="material.depleteds.filter(_ => !_.sure).length">
+            <span>may leads</span> to deficiency of
+            <router-link v-for="(c, idx) in material.depleteds.filter(_ => !_.sure)" :key="c.name" :to="`/search?q=${originalMaterial.name}&q=${c.name}`" target="_blank">
+              {{c.name}}
+              <template v-if="idx !== (material.depleteds.filter(_ => !_.sure).length-1)">,</template>
+            </router-link>
+          </span>
+        </div>
+
         <hr class="line" />
       </section>
       <section v-if="material.nutritionalSources" class="material-details-content-section">
