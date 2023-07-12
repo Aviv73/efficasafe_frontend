@@ -69,7 +69,7 @@
             <router-link v-for="(c, idx) in material.depleteds.filter(_ => _.sure)" :key="c.name" :to="`/search?q=${originalMaterial.name}&q=${c.name}`" target="_blank">
               {{c.name}}
               <template v-if="idx < (material.depleteds.filter(_ => _.sure).length-1) -2">, </template>
-              <template v-else-if="idx === (material.depleteds.filter(_ => _.sure).length-1) -2"> and </template>
+              <template v-else-if="idx < (material.depleteds.filter(_ => _.sure).length-1) -1"> and </template>
             </router-link>
           </p>
           <p v-if="material.depleteds.filter(_ => !_.sure).length">
@@ -77,7 +77,7 @@
             <router-link v-for="(c, idx) in material.depleteds.filter(_ => !_.sure)" :key="c.name" :to="`/search?q=${originalMaterial.name}&q=${c.name}`" target="_blank">
               {{c.name}}
               <template v-if="idx < (material.depleteds.filter(_ => !_.sure).length-1) -2">, </template>
-              <template v-else-if="idx === (material.depleteds.filter(_ => !_.sure).length-1) -2"> and </template>
+              <template v-else-if="idx < (material.depleteds.filter(_ => !_.sure).length-1) -1"> and </template>
             </router-link>
           </p>
         </div>
