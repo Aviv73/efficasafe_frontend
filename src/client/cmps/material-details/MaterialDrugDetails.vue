@@ -14,7 +14,7 @@
       <section class="material-details-nav-links">
         <a v-if="material.dBankDesc" @click="goTo('Background')">Background</a>
         <a @click="goTo('Interactions')">Interactions</a>
-        <a v-if="material.depleteds && material.depleteds.length" @click="goTo('Depleteds')">Depleteds</a>
+        <a v-if="material.depleteds && material.depleteds.length" @click="goTo('Depleteds')">Depletions</a>
         <a v-if="material.dBankIndications && material.dBankIndications.length" @click="goTo('Medicinal uses')">Medicinal uses</a>
         <a v-if="material.pharmacology.indication" @click="goTo('Pharmacology')">Pharmacology</a>
         <a v-if="material.pharmacology.pharmacodynamics" @click="goTo('Pharmacodynamics')">Pharmacodynamics</a>
@@ -66,7 +66,7 @@
         <hr class="line" />
       </section>
       <section v-if="material.depleteds && material.depleteds.length" class="material-details-content-section depleted-section">
-        <h3 ref="Depleteds"> Drug-induced depleteds</h3>
+        <h3 ref="Depleteds"> Drug-induced depletions</h3>
         
         <div>
           {{material.name}}

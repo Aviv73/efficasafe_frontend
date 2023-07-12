@@ -13,7 +13,7 @@
       <section class="material-details-nav-links">
         <a v-if="material.desc" @click="goTo('Background')">Background</a>
         <a @click="goTo('Interactions')">Interactions</a>
-        <a v-if="material.depleteds && material.depleteds.length" @click="goTo('Depleteds')">Depleteds</a>
+        <a v-if="material.depleteds && material.depleteds.length" @click="goTo('Depleteds')">Depletions</a>
         <a v-if="material.nutritionalSources" @click="goTo('Nutritional sources')">Nutritional sources</a>
         <a v-if="material.medicinalActions && material.medicinalActions.length" @click="goTo('Medicinal actions')">Medicinal actions</a>
 
@@ -63,7 +63,7 @@
         <hr class="line" />
       </section>
       <section v-if="material.depleteds && material.depleteds.length" class="material-details-content-section depleted-section">
-        <h3 ref="Depleteds"> Drug-induced depleteds</h3>
+        <h3 ref="Depleteds"> Drug-induced depletions</h3>
         
         <div>
           {{material.name}}
