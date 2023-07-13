@@ -209,6 +209,7 @@ export default {
     }
     a {
       color: #55C595;
+      text-decoration: underline;
     }
     // .sure {
     //   a {

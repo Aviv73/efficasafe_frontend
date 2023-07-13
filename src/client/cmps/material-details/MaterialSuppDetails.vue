@@ -68,19 +68,23 @@
         <div>
           <p class="sure" v-if="material.depleteds.filter(_ => _.sure).length">
             {{material.name}} <span>leads</span> to deficiency of
-            <router-link v-for="(c, idx) in material.depleteds.filter(_ => _.sure)" :key="c.name" :to="`/search?q=${originalMaterial.name}&q=${c.name}`" target="_blank">
-              {{c.name}}
-              <template v-if="idx < (material.depleteds.filter(_ => _.sure).length-1) -2">, </template>
-              <template v-else-if="idx < (material.depleteds.filter(_ => _.sure).length-1) -1"> and </template>
-            </router-link>
+            <template v-for="(c, idx) in material.depleteds.filter(_ => _.sure)">
+              <router-link :key="c.name" :to="`/search?q=${originalMaterial.name}&q=${c.name}`" target="_blank">
+                {{c.name}}
+              </router-link>
+              <template v-if="idx < material.depleteds.filter(_ => _.sure).length -2">, </template>
+              <template v-else-if="idx < material.depleteds.filter(_ => _.sure).length -1"> and </template>
+            </template>
           </p>
           <p v-if="material.depleteds.filter(_ => !_.sure).length">
-            {{material.name}} <span>may leads</span> to deficiency of
-            <router-link v-for="(c, idx) in material.depleteds.filter(_ => !_.sure)" :key="c.name" :to="`/search?q=${originalMaterial.name}&q=${c.name}`" target="_blank">
-              {{c.name}}
-              <template v-if="idx < (material.depleteds.filter(_ => !_.sure).length-1) -2">, </template>
-              <template v-else-if="idx < (material.depleteds.filter(_ => !_.sure).length-1) -1"> and </template>
-            </router-link>
+            {{material.name}} <span>may lead</span> to deficiency of
+            <template v-for="(c, idx) in material.depleteds.filter(_ => !_.sure)">
+              <router-link :key="c.name" :to="`/search?q=${originalMaterial.name}&q=${c.name}`" target="_blank">
+                {{c.name}}
+              </router-link>
+              <template v-if="idx < material.depleteds.filter(_ => !_.sure).length -2">, </template>
+              <template v-else-if="idx < material.depleteds.filter(_ => !_.sure).length -1"> and </template>
+            </template>
           </p>
         </div>
 
