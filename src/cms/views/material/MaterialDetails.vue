@@ -419,6 +419,32 @@
                         :isEdit="false"
                     />
 
+                    <h3 ref="Depleteds"> Drug-induced depletions</h3>
+                    <section v-if="material.depleteds && material.depleteds.length" class="material-details-content-section depleted-section">
+                        <div>
+                        <p class="sure" v-if="material.depleteds.filter(_ => _.sure).length">
+                            {{material.name}} <span>leads</span> to deficiency of
+                            <template v-for="(c, idx) in material.depleteds.filter(_ => _.sure)">
+                                <router-link :key="c.name" :to="`/search?q=${material.name}&q=${c.name}`" target="_blank">
+                                    {{c.name}}
+                                </router-link>
+                                <template v-if="idx < material.depleteds.filter(_ => _.sure).length -2">, </template>
+                                <template v-else-if="idx < material.depleteds.filter(_ => _.sure).length -1"> and </template>
+                            </template>
+                        </p>
+                        <p v-if="material.depleteds.filter(_ => !_.sure).length">
+                            {{material.name}} <span>may lead</span> to deficiency of
+                            <template v-for="(c, idx) in material.depleteds.filter(_ => !_.sure)">
+                                <router-link :key="c.name" :to="`/search?q=${material.name}&q=${c.name}`" target="_blank">
+                                    {{c.name}}
+                                </router-link>
+                                <template v-if="idx < material.depleteds.filter(_ => !_.sure).length -2">, </template>
+                                <template v-else-if="idx < material.depleteds.filter(_ => !_.sure).length -1"> and </template>
+                            </template>
+                        </p>
+                        </div>
+                    </section>
+
                     <h3 class="info-title" v-if="material.labels.length">Labels</h3>
                     <v-chip-group column v-if="material.labels.length" class="material-details-labels">
                         <v-chip
@@ -676,3 +702,24 @@ export default {
     },
 };
 </script>
+
+
+<style lang="scss">
+  .depleted-section {
+    .danger {
+      color: red;
+    }
+    .warn {
+      color: yellow;
+    }
+    a {
+      color: #55C595 !important;
+      text-decoration: underline;
+    }
+    // .sure {
+    //   a {
+    //     color: red;
+    //   }
+    // }
+  }
+</style>
