@@ -62,30 +62,7 @@
       </section>
       <section v-if="material.depleteds && material.depleteds.length" class="material-details-content-section depleted-section">
         <h3 ref="Depleteds"> Drug-induced depletions</h3>
-        
-        <div>
-          <p class="sure" v-if="material.depleteds.filter(_ => _.sure).length">
-            {{material.name}} <span>leads</span> to deficiency of
-            <template v-for="(c, idx) in material.depleteds.filter(_ => _.sure)">
-              <router-link :key="c.name" :to="`/search?q=${originalMaterial.name}&q=${c.name}`" target="_blank">
-                {{c.name}}
-              </router-link>
-              <template v-if="idx < material.depleteds.filter(_ => _.sure).length -2">, </template>
-              <template v-else-if="idx < material.depleteds.filter(_ => _.sure).length -1"> and </template>
-            </template>
-          </p>
-          <p v-if="material.depleteds.filter(_ => !_.sure).length">
-            {{material.name}} <span>may lead</span> to deficiency of
-            <template v-for="(c, idx) in material.depleteds.filter(_ => !_.sure)">
-              <router-link :key="c.name" :to="`/search?q=${originalMaterial.name}&q=${c.name}`" target="_blank">
-                {{c.name}}
-              </router-link>
-              <template v-if="idx < material.depleteds.filter(_ => !_.sure).length -2">, </template>
-              <template v-else-if="idx < material.depleteds.filter(_ => !_.sure).length -1"> and </template>
-            </template>
-          </p>
-        </div>
-
+        <MaterialDepletionsSection :material="material"/>
         <hr class="line" />
       </section>
       <section v-if="material.plantPartUsed" class="material-details-content-section">
@@ -229,6 +206,7 @@ import ArrowLeftIcon from 'vue-material-design-icons/ArrowLeft';
 import ShareVariantIcon from 'vue-material-design-icons/ShareVariant';
 import Tooltip from '@/client/cmps/common/Tooltip';
 import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline';
+import MaterialDepletionsSection from '../common/MaterialDepletionsSection.vue';
 
 export default {
   props: {
@@ -467,7 +445,8 @@ export default {
     // MobileShareIcon,
     ShareVariantIcon,
     Tooltip,
-    InformationOutlineIcon
+    InformationOutlineIcon,
+    MaterialDepletionsSection
   }
 };
 </script>

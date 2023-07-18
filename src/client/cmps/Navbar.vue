@@ -65,7 +65,7 @@
               <router-link to="/subscribe"> Pricing </router-link>
             </li>
             <li class="navbar-nav-item" @click="toggleNavActive">
-              <router-link to="/search"> Interaction checker </router-link>
+              <router-link to="/search"> Search interactions </router-link>
             </li>
             <li class="navbar-nav-item" @click="toggleNavActive">
               <router-link to="/index"> Index A-Z </router-link>

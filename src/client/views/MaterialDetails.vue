@@ -198,23 +198,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
-  .depleted-section {
-    .danger {
-      color: red;
-    }
-    .warn {
-      color: yellow;
-    }
-    a {
-      color: #55C595;
-      text-decoration: underline;
-    }
-    // .sure {
-    //   a {
-    //     color: red;
-    //   }
-    // }
-  }
-</style>

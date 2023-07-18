@@ -16,11 +16,16 @@ export const interactionService = {
     getPrintPreview,
     getCache,
     getOptimizationData,
-    getAllInteractionSearchData
+    getAllInteractionSearchData,
+    getBySideIds
 }
 
 function getCache(key) {
     return cache[key];
+}
+
+function getBySideIds(sideIds) {
+    return httpService.get(`${END_POINT}/bySideIds`, {sideIds});
 }
 
 function cacheSearchState({ key, parentIdx, idx }) {

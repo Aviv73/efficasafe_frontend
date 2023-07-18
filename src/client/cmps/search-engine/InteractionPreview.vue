@@ -597,7 +597,7 @@ export default {
     }
   },
   async created() {
-    if (this.interaction.isCompoundGroup === false) console.log(this.interaction)
+    // if (this.interaction.isCompoundGroup === false) console.log(this.interaction)
     // this.getPathwayRefsCount();
     this.primarySideInView = this.$store.getters.firstInteractionSide;
     eventBus.$on(EV_sortby_side_swaped, this.swapSideNames);

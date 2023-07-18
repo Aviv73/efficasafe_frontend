@@ -37,6 +37,20 @@
         </ul>
       </div>
     </template>
+    <template v-if="materialsWithDeplations.length">
+      <br>
+      <div class="interaction-preview-content">
+        <ul class="monitor-summary-list">
+          <li>
+            <p>Drug-induced deficiencies:</p>
+          </li>
+          <li v-for="mat in materialsWithDeplations" :key="mat._id">
+            <MaterialDepletionsSection :onClickMatCb="addMaterialToSearch" :material="mat"/>
+          </li>
+        </ul>
+      </div>
+      <br>
+    </template>
     <p class="monitor-summary-footer">
       This monitoring guidance is for Drug vs. Herb/Supplement interactions. <br />
       Click each one for specifics.<br />
@@ -90,6 +104,8 @@
 </template>
 
 <script>
+import MaterialDepletionsSection from '../common/MaterialDepletionsSection.vue';
+import { eventBus } from '@/cms/services/eventBus.service';
 // import Collapse from '@/client/cmps/common/Collapse';
 
 // import CollapseToggleIcon from '@/client/cmps/common/icons/CollapseToggleIcon';
@@ -125,9 +141,15 @@ export default {
     },
     symptomsTxt() {
       return this.getMonitorTxtBetter('symptoms');
+    },
+    materialsWithDeplations() {
+      return  this.materials.filter(c => c.depleteds?.length);
     }
   },
   methods: {
+    addMaterialToSearch(mat) {
+      eventBus.$emit('add-to-search', mat);
+    },
     flatten(interactions) {
       interactions.forEach(interaction => {
         if (interaction.vInteractions) {
@@ -136,7 +158,7 @@ export default {
       });
     },
     getMonitorTxtBetter(propName) {
-      const wardMap = this.flatInteractions.reduce((_wardMap, interaction) => {
+      let wardMap = this.flatInteractions.reduce((_wardMap, interaction) => {
         const { monitor, side2Material, side2Label } = interaction;
         const regex = new RegExp(', (?![^(]*\\))');
         let words = (monitor?.[propName] || '')
@@ -162,6 +184,33 @@ export default {
         });
         return _wardMap;
       }, {});
+      
+      wardMap = this.materials.reduce((_wardMap, mat) => {
+        const { monitor, name } = mat;
+        if (!monitor) return _wardMap;
+        const regex = new RegExp(', (?![^(]*\\))');
+        let words = (monitor?.[propName] || '')
+          .split(' ')
+          .filter(Boolean)
+          .join(' ')
+          .split(regex)
+          .filter(str => str)
+          .map(str => str.trim());
+
+        words.forEach((word) => {
+          if (!_wardMap[word]) {
+            const secChar = word.charAt(1);
+            word = secChar !== secChar.toUpperCase() ? word.charAt(0).toLowerCase() + word.slice(1) : word;
+            const lastChar = word.charAt(word.length - 1);
+            word = lastChar === '.' ? word.substring(0, word.length - 1) : word;
+            word = word.trim();
+            const byName = name;
+            if (!_wardMap[word]) _wardMap[word] = [byName];
+            else _wardMap[word].push(byName);
+          }
+        });
+        return _wardMap;
+      }, wardMap);
 
       const words = this.sortRes(Object.keys(wardMap));
 
@@ -239,6 +288,7 @@ export default {
     this.flatten(this.interactions);
   },
   components: {
+    MaterialDepletionsSection
     // Collapse,
     // ChevronUpIcon,
     // ChevronDownIcon
@@ -254,3 +304,11 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+.depleted-section {
+  p {
+    margin-bottom: 0 !important;
+  }
+}
+</style>
