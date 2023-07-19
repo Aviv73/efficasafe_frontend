@@ -74,7 +74,8 @@ export default {
       console.log(sideIds);
 
       const interaction = await interactionService.getBySideIds(sideIds);
-      this.$router.push(`/interaction/${interaction._id}`);
+      if (!interaction) return alert('Cant find interaction..');
+      this.$router.push(`/interaction/${interaction._id}/${subMat.labelId? this.material._id : ''}`);
     }
   }
 }
