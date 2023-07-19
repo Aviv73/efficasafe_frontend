@@ -4,7 +4,7 @@
     <p class="sure" v-if="sures.length">
       {{ material.name }} <span>leads</span> to deficiency of
       <template v-for="(c, idx) in sures">
-        <button @click="handleClick(c)" :key="c.name">
+        <button :title="hoverMsg" @click="handleClick(c)" :key="c.name">
           {{ c.name.trim() }}
         </button>
         <template v-if="idx < sures.length - 2">, </template>
@@ -18,7 +18,7 @@
     <p v-if="notSures.length">
       {{ material.name }} <span>may lead</span> to deficiency of
       <template v-for="(c, idx) in notSures">
-        <button @click="handleClick(c)" :key="c.name">
+        <button :title="hoverMsg" @click="handleClick(c)" :key="c.name">
           {{ c.name.trim() }}
         </button>
         <template v-if="idx < notSures.length - 2">, </template>
@@ -46,7 +46,11 @@ export default {
     basePushUrl: {
       type: String,
       default: ''
-    }
+    },
+    hoverMsg: {
+      type: String,
+      default: ''
+    },
   },
   computed: {
     sures() {
@@ -62,6 +66,10 @@ export default {
       // this.$router.push(`/search?q=${this.material.name}&q=${subMat.name}`);
 
       const sideIds = [this.material._id, subMat.labelId || subMat._id];
+
+      console.log(subMat);
+      console.log(sideIds);
+
       const interaction = await interactionService.getBySideIds(sideIds);
       this.$router.push(`/interaction/${interaction._id}`);
     }

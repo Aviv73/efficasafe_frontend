@@ -45,7 +45,7 @@
             <p>Drug-induced deficiencies:</p>
           </li>
           <li v-for="mat in materialsWithDeplations" :key="mat._id">
-            <MaterialDepletionsSection :onClickMatCb="addMaterialToSearch" :material="mat"/>
+            <MaterialDepletionsSection hoverMsg="Add to search results" :onClickMatCb="addMaterialToSearch" :material="mat"/>
           </li>
         </ul>
       </div>
