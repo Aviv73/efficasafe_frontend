@@ -65,7 +65,10 @@ export default {
       if (this.onClickMatCb) return this.onClickMatCb(subMat);
       // this.$router.push(`/search?q=${this.material.name}&q=${subMat.name}`);
 
-      const sideIds = [this.material._id, subMat.labelId || subMat._id];
+      let sideIds = [this.material._id, subMat._id];
+      if (subMat.labelId) {
+        sideIds = [subMat._id, subMat.labelId];
+      }
 
       console.log(subMat);
       console.log(sideIds);
