@@ -210,13 +210,16 @@ export default {
 
       const words = this.sortRes(Object.keys(wardMap));
 
-      const res = words.map(c => {
+      let res = words.map(c => {
         const names = Array.from(new Set(wardMap[c]?.filter(Boolean) || []));
         if (msgsToMentionSource.includes(c.toLowerCase()) && names.length) return `${c} (${names.filter(Boolean).join(', ')})`;
         return c;
       });
 
-      return res.map(c => c.trim().split(',').map(_=>_.trim()).filter(Boolean).join(',')).filter(Boolean).join(', ') + '.';
+      res = res.map(c => c.trim().split(',').map(_=>_.trim()).filter(Boolean).join(',')).filter(Boolean).join(', ');
+      if (res) res +=  + '.';
+
+      return res;
     },
     getMaterialMonitorTxt(propName, asTxt = true) {
       const wardMap = this.materialsWithDeplations.reduce((_wardMap, mat) => {
