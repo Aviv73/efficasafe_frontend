@@ -163,7 +163,7 @@ export default {
       return  this.materials.filter(c => c.depleteds?.length);
     },
     materialsLabTestsTxt() {
-      return this.getMaterialMonitorTxt('otherTests');
+      return this.getMaterialMonitorTxt('labTests');
     },
     materialsSymtoms() {
       return this.getMaterialMonitorTxt('symptoms', false);
@@ -218,47 +218,59 @@ export default {
 
       // res = res.map(c => c.trim().split(',').map(_=>_.trim()).filter(Boolean).join(',')).filter(Boolean).join(', ');
       res = res.map(c => c.trim().split(',').filter(Boolean).join(',')).filter(Boolean).join(', ');
-      if (res) res += '.';
+      // if (res) res += '.';
 
       return res;
     },
     getMaterialMonitorTxt(propName, asTxt = true) {
+      console.log(this.materialsWithDeplations);
       const wardMap = this.materialsWithDeplations.reduce((_wardMap, mat) => {
-        const { monitor, name } = mat;
+        const { monitor } = mat;
+        console.log(propName, monitor)
         if (!monitor) return _wardMap;
-        const regex = new RegExp(', (?![^(]*\\))');
-        let words = (monitor?.[propName] || '')
-          .split(' ')
-          .filter(Boolean)
-          .join(' ')
-          .split(regex)
-          .filter(str => str)
-          .map(str => str.trim());
-
-        words.forEach((word) => {
-          if (!_wardMap[word]) {
-            const secChar = word.charAt(1);
-            word = secChar !== secChar.toUpperCase() ? word.charAt(0).toLowerCase() + word.slice(1) : word;
-            const lastChar = word.charAt(word.length - 1);
-            word = lastChar === '.' ? word.substring(0, word.length - 1) : word;
-            word = word.trim();
-            const byName = name;
-            if (!_wardMap[word]) _wardMap[word] = [byName];
-            else _wardMap[word].push(byName);
-          }
-        });
+        // const regex = new RegExp(', (?![^(]*\\))');
+        if (!monitor?.[propName]) return _wardMap;
+        _wardMap.push(monitor?.[propName]);
         return _wardMap;
-      }, {});
+        // _wardMap monitor?.[propName] || '';
+        // let words = (monitor?.[propName] || '')
+        //   .split(' ')
+        //   .filter(Boolean)
+        //   .map(str => str.trim())
+        //   // .join(' ');
+        //   // .split(regex)
+        //   // .filter(str => str)
+        //   // .map(str => str.trim());
 
-      const words = this.sortRes(Object.keys(wardMap));
+        // words.forEach((word) => {
+        //   if (!_wardMap[word]) {
+        //     const secChar = word.charAt(1);
+        //     word = secChar !== secChar.toUpperCase() ? word.charAt(0).toLowerCase() + word.slice(1) : word;
+        //     const lastChar = word.charAt(word.length - 1);
+        //     word = lastChar === '.' ? word.substring(0, word.length - 1) : word;
+        //     word = word.trim();
+        //     const byName = name;
+        //     if (!_wardMap[word]) _wardMap[word] = [byName];
+        //     else _wardMap[word].push(byName);
+        //   }
+        // });
+        // return _wardMap;
+      }, []);
 
-      const res = words.map(c => {
-        const names = Array.from(new Set(wardMap[c]?.filter(Boolean) || []));
-        if (msgsToMentionSource.includes(c.toLowerCase()) && names.length) return `${c} (${names.filter(Boolean).join('\n')})`;
-        return c;
-      });
+      // const words = this.sortRes(Object.keys(wardMap));
+      console.log(wardMap);
+      const res = wardMap;
+
+      // const res = words.map(c => {
+      //   const names = Array.from(new Set(wardMap[c]?.filter(Boolean) || []));
+      //   if (msgsToMentionSource.includes(c.toLowerCase()) && names.length) return `${c} (${names.filter(Boolean).join('\n')})`;
+      //   return c;
+      // });
+
 
       const filtered = res.map(c => c.trim()).filter(Boolean)
+
+      console.log(propName, filtered)
 
       return asTxt? filtered.join('\n') : filtered;
     },
