@@ -217,7 +217,7 @@ export default {
       });
 
       res = res.map(c => c.trim().split(',').map(_=>_.trim()).filter(Boolean).join(',')).filter(Boolean).join(', ');
-      if (res) res +=  + '.';
+      if (res) res += '.';
 
       return res;
     },
