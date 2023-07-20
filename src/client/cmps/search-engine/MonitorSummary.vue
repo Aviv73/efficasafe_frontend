@@ -226,8 +226,16 @@ export default {
       const wardMap = this.materialsWithDeplations.reduce((_wardMap, mat) => {
         const { monitor } = mat;
         if (!monitor) return _wardMap;
-        if (!monitor?.[propName]) return _wardMap;
-        _wardMap.push(monitor?.[propName]);
+        if (!monitor?.[propName]?.length) return _wardMap;
+        let vals = monitor[propName]
+        // const regex = new RegExp(', (?![^(]*\\))');
+        // let vals = (monitor[propName] || '')
+        //   .split(regex)
+        //   .filter(str => str)
+        //   .map(str => str.trim());
+        vals.forEach(c => {
+          if (!_wardMap.includes(c)) _wardMap.push(c);
+        })
         return _wardMap;
       }, []);
       const res = wardMap;
