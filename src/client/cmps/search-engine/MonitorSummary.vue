@@ -216,7 +216,8 @@ export default {
         return c;
       });
 
-      res = res.map(c => c.trim().split(',').map(_=>_.trim()).filter(Boolean).join(',')).filter(Boolean).join(', ');
+      // res = res.map(c => c.trim().split(',').map(_=>_.trim()).filter(Boolean).join(',')).filter(Boolean).join(', ');
+      res = res.map(c => c.trim().split(',').filter(Boolean).join(',')).filter(Boolean).join(', ');
       if (res) res += '.';
 
       return res;
