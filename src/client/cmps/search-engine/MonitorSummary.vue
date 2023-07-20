@@ -26,6 +26,10 @@
             <span class="monitor-summary-list-header font-bold">Lab Tests:</span>
             {{ labTestsTxt | capitalize }}
           </li>
+          <li v-if="materialsLabTestsTxt">
+            <span>Nurtrient levels:</span>
+            {{ materialsLabTestsTxt }}
+          </li>
           <li v-if="otherTestsTxt">
             <span class="monitor-summary-list-header font-bold">Other Tests:</span>
             {{ otherTestsTxt | capitalize }}
@@ -38,11 +42,12 @@
       </div>
     </template>
     <template v-if="materialsWithDeplations.length">
+
       <br>
       <div class="interaction-preview-content">
         <ul class="monitor-summary-list">
           <li>
-            <p>Drug-induced deficiencies:</p>
+            <p class="font-bold">Drug-induced deficiencies:</p>
           </li>
           <li v-for="mat in materialsWithDeplations" :key="mat._id">
             <MaterialDepletionsSection hoverMsg="Add to search results" :onClickMatCb="addMaterialToSearch" :material="mat"/>
@@ -50,6 +55,17 @@
         </ul>
       </div>
       <br>
+      <div class="interaction-preview-content" v-if="materialsSymtoms && materialsSymtoms.length">
+        <ul class="monitor-summary-list">
+          <li>
+            <p class="font-bold">Deficiency Symptoms:</p>
+          </li>
+          <li v-for="symp in materialsSymtoms" :key="symp">
+            {{ symp }}
+          </li>
+        </ul>
+        <br>
+      </div>
     </template>
     <p class="monitor-summary-footer">
       This monitoring guidance is for Drug vs. Herb/Supplement interactions. <br />
@@ -131,19 +147,26 @@ export default {
   },
   computed: {
     generalTxt() {
-      return this.getMonitorTxtBetter('general');
+      return this.getMonitorTxt('general');
     },
     labTestsTxt() {
-      return this.getMonitorTxtBetter('labTests');
+      return this.getMonitorTxt('labTests');
     },
     otherTestsTxt() {
-      return this.getMonitorTxtBetter('otherTests');
+      return this.getMonitorTxt('otherTests');
     },
     symptomsTxt() {
-      return this.getMonitorTxtBetter('symptoms');
+      return this.getMonitorTxt('symptoms');
     },
+
     materialsWithDeplations() {
       return  this.materials.filter(c => c.depleteds?.length);
+    },
+    materialsLabTestsTxt() {
+      return this.getMaterialMonitorTxt('otherTests');
+    },
+    materialsSymtoms() {
+      return this.getMaterialMonitorTxt('symptoms', false);
     }
   },
   methods: {
@@ -157,8 +180,8 @@ export default {
         } else this.flatInteractions.push(interaction);
       });
     },
-    getMonitorTxtBetter(propName) {
-      let wardMap = this.flatInteractions.reduce((_wardMap, interaction) => {
+    getMonitorTxt(propName) {
+      const wardMap = this.flatInteractions.reduce((_wardMap, interaction) => {
         const { monitor, side2Material, side2Label } = interaction;
         const regex = new RegExp(', (?![^(]*\\))');
         let words = (monitor?.[propName] || '')
@@ -184,8 +207,19 @@ export default {
         });
         return _wardMap;
       }, {});
-      
-      wardMap = this.materials.reduce((_wardMap, mat) => {
+
+      const words = this.sortRes(Object.keys(wardMap));
+
+      const res = words.map(c => {
+        const names = Array.from(new Set(wardMap[c]?.filter(Boolean) || []));
+        if (msgsToMentionSource.includes(c.toLowerCase()) && names.length) return `${c} (${names.filter(Boolean).join(', ')})`;
+        return c;
+      });
+
+      return res.map(c => c.trim().split(',').map(_=>_.trim()).filter(Boolean).join(',')).filter(Boolean).join(', ') + '.';
+    },
+    getMaterialMonitorTxt(propName, asTxt = true) {
+      const wardMap = this.materialsWithDeplations.reduce((_wardMap, mat) => {
         const { monitor, name } = mat;
         if (!monitor) return _wardMap;
         const regex = new RegExp(', (?![^(]*\\))');
@@ -210,19 +244,21 @@ export default {
           }
         });
         return _wardMap;
-      }, wardMap);
+      }, {});
 
       const words = this.sortRes(Object.keys(wardMap));
 
       const res = words.map(c => {
         const names = Array.from(new Set(wardMap[c]?.filter(Boolean) || []));
-        if (msgsToMentionSource.includes(c.toLowerCase()) && names.length) return `${c} (${names.join(', ')})`;
+        if (msgsToMentionSource.includes(c.toLowerCase()) && names.length) return `${c} (${names.filter(Boolean).join('\n')})`;
         return c;
       });
 
-      return res.join(', ');
+      const filtered = res.map(c => c.trim()).filter(Boolean)
+
+      return asTxt? filtered.join('\n') : filtered;
     },
-    getMonitorTxt(propName) {
+    getMonitorTxt_old_notused(propName) {
       const seenMap = {};
       const reduced = this.flatInteractions.reduce((acc, { monitor, side2Material, side2Label }) => {
         const regex = new RegExp(', (?![^(]*\\))');

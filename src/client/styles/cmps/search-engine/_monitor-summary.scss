@@ -57,6 +57,19 @@
       color: rgba($clr-txt-dark, 0.8);
     }
 
+      
+    p {
+      margin-bottom: 10px;
+    }
+
+    .depleted-section {
+      p:not(:last-child) {
+        margin-bottom: 5px !important;
+      }
+      // margin-bottom: 7px;
+      margin-bottom: 5px;
+    }
+
     li:not(:last-child) {
       margin-block-end: rem(4px);
     }
