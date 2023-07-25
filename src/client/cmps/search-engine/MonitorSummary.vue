@@ -43,7 +43,7 @@
     </template>
     <template v-if="materialsWithDeplations.length">
 
-      <br>
+      <!-- <br> -->
       <div class="interaction-preview-content">
         <ul class="monitor-summary-list">
           <li>
@@ -54,17 +54,17 @@
           </li>
         </ul>
       </div>
-      <br>
+      <!-- <br> -->
       <div class="interaction-preview-content" v-if="materialsSymtoms && materialsSymtoms.length">
         <ul class="monitor-summary-list">
           <li>
             <p class="font-bold">Deficiency Symptoms:</p>
           </li>
-          <li v-for="symp in materialsSymtoms" :key="symp">
-            {{ symp }}
+          <li v-for="symp in materialsSymtoms" :key="symp.value">
+            <span class="font-bold">{{symp.mats.join(', ')}}:</span> <span>{{ symp.value }}.</span>
           </li>
         </ul>
-        <br>
+        <!-- <br> -->
       </div>
     </template>
     <p class="monitor-summary-footer">
@@ -131,6 +131,7 @@ import { eventBus } from '@/cms/services/eventBus.service';
 const msgsToMentionSource = ['Blood drug level', 'Exacerbation of drug adverse reactions', 'exacerbation of symptoms for which the drug is being given', 'exacerbation of toxicity symptoms', 'reduction of drug efficacy', 'potentiation or reduction of drug efficacy'].map(c => c.toLowerCase());
 
 export default {
+  name: 'MonitorSummary',
   props: {
     interactions: {
       type: Array,
@@ -218,15 +219,15 @@ export default {
 
       // res = res.map(c => c.trim().split(',').map(_=>_.trim()).filter(Boolean).join(',')).filter(Boolean).join(', ');
       res = res.map(c => c.trim().split(',').filter(Boolean).join(',')).filter(Boolean).join(', ');
-      // if (res) res += '.';
+      if (res) res += '.';
 
       return res;
     },
     getMaterialMonitorTxt(propName, asTxt = true) {
-      const wardMap = this.materialsWithDeplations.reduce((_wardMap, mat) => {
+      const values = this.materialsWithDeplations.reduce((acc, mat) => {
         const { monitor } = mat;
-        if (!monitor) return _wardMap;
-        if (!monitor?.[propName]?.length) return _wardMap;
+        if (!monitor) return acc;
+        if (!monitor?.[propName]?.length) return acc;
         let vals = monitor[propName]
         // const regex = new RegExp(', (?![^(]*\\))');
         // let vals = (monitor[propName] || '')
@@ -234,13 +235,19 @@ export default {
         //   .filter(str => str)
         //   .map(str => str.trim());
         vals.forEach(c => {
-          if (!_wardMap.includes(c)) _wardMap.push(c);
+          let existedItem = acc.find(_ => _.value === c.value);
+          if (!existedItem) {
+            acc.push({...JSON.parse(JSON.stringify(c)), mats: [c.material.name]});
+          }
+          else existedItem.mats.push(c.material.name);
+          // if (!acc.includes(c)) acc.push(c);
         })
-        return _wardMap;
+        return acc;
       }, []);
-      const res = wardMap;
-      const filtered = res.map(c => c.trim()).filter(Boolean)
-      return asTxt? filtered.join(', ') : filtered;
+      const res = values.sort((a, b) => a.mats[0].toLowerCase() > b.mats[0].toLowerCase()? 1 : -1);
+      // const filtered = res.map(c => c.trim()).filter(Boolean)
+      // return asTxt? filtered.join(', ') : filtered;
+      return asTxt? res.map(c => c.value).join(', ') + '.' : res;
     },
     getMonitorTxt_old_notused(propName) {
       const seenMap = {};

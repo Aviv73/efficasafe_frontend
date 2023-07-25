@@ -5,6 +5,10 @@
   // font-weight: 500;
   color: $clr-txt-darker;
 
+  display: flex;
+  flex-direction: column;
+  gap: rem(5px);
+
   &-header {
     padding: rem(10px) 0;
     margin-inline-start: rem(30px);

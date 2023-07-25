@@ -124,7 +124,7 @@
     </header>
     <ul class="horizontal-list-list" :class="{ 'optimizers-view': $route.name === 'Boosters' }">
       <!-- <li v-if="$route.name === 'Monitor' && isDBankInteractions" class="horizontal-list-list-item boosters-opener flex-center txt-center">Monitoring guidance for Drug-Drug interactions can be found inside each interaction page.</li> -->
-      <li class="horizontal-list-list-item" v-if="$route.name === 'Monitor' && total">
+      <li class="horizontal-list-list-item" v-if="$route.name === 'Monitor' && (total || true)">
         <monitor-summary :interactions="allInteractions" :materials="materials" />
       </li>
       <!-- <li
