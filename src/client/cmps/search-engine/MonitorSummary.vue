@@ -239,7 +239,7 @@ export default {
           if (!existedItem) {
             acc.push({...JSON.parse(JSON.stringify(c)), mats: [c.material.name]});
           }
-          else existedItem.mats.push(c.material.name);
+          else if (!existedItem.mats.includes(c.material.name)) existedItem.mats.push(c.material.name);
           // if (!acc.includes(c)) acc.push(c);
         })
         return acc;
