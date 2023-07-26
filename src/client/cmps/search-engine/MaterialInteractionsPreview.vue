@@ -53,7 +53,7 @@
       </ul>
       <!-- <hr v-if="interactions.length || (materials.length === 1 && !isOneMaterial)" /> -->
     </div>
-    <br v-if="materials[0].isUnderStudy && materials[0].isShowPage && !interactions.length"/>
+    <br v-if="materials[0].isUnderStudy && materials.some(c => c.isShowPage) && !interactions.length"/>
     <div v-if="interactions.length" class="interactions-preview-interactions">
       <ul>
         <p class="sub-title">Interacts with:</p>
