@@ -61,17 +61,15 @@
                             </router-link>
                         </td>
 
-                        <td width="80" class="centered">
+                        <td width="80" class="">
                             <v-checkbox
-                                class="tr-label-checkbox"
-                                disabled
-                                readonly
-                                :ripple="false"
-                                :input-value="item.isSuper"
-                            ></v-checkbox>
+                                class="tr-label-checkboxx"
+                                v-model="item.isSuper"
+                                @change="updateLableSuper($event, item)"
+                            />
                         </td>
 
-                        <td class="td-color" width="80">
+                        <td class="td-color" width="80" >
                             <div
                                 class="color-circle v-chip"
                                 :style="{ backgroundColor: item.color }"
@@ -79,7 +77,7 @@
                         </td>
 
                         <td
-                            class="td-actions d-flex align-center justify-center"
+                            class="td-actions d-flex align-center justify-center height-all"
                             align="center"
                         >
                             <v-checkbox
@@ -219,6 +217,12 @@ export default {
         isSortedBy(property) {
             return this.$route.query.sortBy === property;
         },
+
+        updateLableSuper(value, label) {
+            const labelToEdit = JSON.parse(JSON.stringify(label));
+            labelToEdit.isSuper = value || false;
+            this.$emit('labelUpdated', labelToEdit);
+        }
     },
 };
 </script>

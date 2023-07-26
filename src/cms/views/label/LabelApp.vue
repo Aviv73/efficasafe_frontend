@@ -15,6 +15,7 @@
           @options-updated="setFilter"
           @header-clicked="setFilter"
           @delete-many-labels="removeMany"
+          @labelUpdated="updateLabel"
         />
       </v-card>
       <icons-map />
@@ -73,6 +74,10 @@ export default {
     async removeMany(ids) {
       await this.$store.dispatch({ type: "removeLabels", ids });
     },
+
+    async updateLabel(labelToEdit) {
+      await this.$store.dispatch({ type: 'saveLabel', label: labelToEdit });
+    }
   },
   components: {
     labelFilter,

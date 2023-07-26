@@ -141,6 +141,24 @@ export default {
             return q
         },
         sortRes(res, q){
+            const typesOrder = [
+                'name',
+                'aliase',
+                'dBankAliase',
+                'formula',
+                'compound',
+                'brand',
+            ]
+            res = [...res].sort((a,b) => {
+                const aTypeOrderIdx = typesOrder.length - typesOrder.indexOf(a.type);
+                const bTypeOrderIdx = typesOrder.length - typesOrder.indexOf(b.type);
+                console.log(a.type, b.type, bTypeOrderIdx - aTypeOrderIdx);
+                return bTypeOrderIdx - aTypeOrderIdx;
+                // if (a.isFormula === b.isFormula) return 0;
+                // if (a.isFormula) return 1;
+                // if (b.isFormula) return -1;
+                // return 0;
+            })
             const idx = res.findIndex(r => r.txt.toUpperCase() === q.toUpperCase())
             if(idx >=0){
                 const first = res[idx]
