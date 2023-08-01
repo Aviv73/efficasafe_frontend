@@ -55,7 +55,7 @@
         </ul>
       </div>
       <!-- <br> -->
-      <div class="interaction-preview-content" v-if="materialsSymtoms && materialsSymtoms.length">
+      <div class="interaction-preview-content" v-if="materialsSymtoms && materialsSymtoms.length && false">
         <ul class="monitor-summary-list">
           <li>
             <p class="font-bold">Deficiency Symptoms:</p>

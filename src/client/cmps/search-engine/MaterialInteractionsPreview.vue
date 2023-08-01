@@ -6,7 +6,7 @@
       <hr v-if="interactions.length || (materials.length === 1 && !isOneMaterial)" />
     </div>
     <div v-else class="interactions-preview-composites">
-      <h6 v-if="previewHeader" class="sub-title">{{ previewHeader }}</h6>
+      <!-- <h6 v-if="previewHeader" class="sub-title">{{ previewHeader }}</h6> -->
       <ul v-if="previewHeader">
         <li
           class="interactions-preview-composites-composite"
