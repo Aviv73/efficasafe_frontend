@@ -64,7 +64,7 @@
           </p>
           <p>
             <!-- <router-link target="_blank" :to="`/search?q=${material.name}&q=${c.name}`" >All interactions of {{c.name}} <img :src="require('@/client/assets/imgs/link-out.svg')"/></router-link> -->
-            <router-link target="_blank" :to="`/search&q=${c.name}`" >All interactions of {{c.name}} <img :src="require('@/client/assets/imgs/link-out.svg')"/></router-link>
+            <router-link target="_blank" :to="`/search?q=${c.name}`" >All interactions of {{c.name}} <img :src="require('@/client/assets/imgs/link-out.svg')"/></router-link>
           </p>
         </div>
       </template>
