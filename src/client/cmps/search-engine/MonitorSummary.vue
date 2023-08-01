@@ -28,7 +28,7 @@
           </li>
           <li v-if="materialsLabTestsTxt">
             <span>Nurtrient levels:</span>
-            {{ materialsLabTestsTxt }}
+            {{ materialsLabTestsTxt }}.
           </li>
           <li v-if="otherTestsTxt">
             <span class="monitor-summary-list-header font-bold">Other Tests:</span>
@@ -50,7 +50,7 @@
             <p class="font-bold">Drug-induced deficiencies:</p>
           </li>
           <li v-for="mat in materialsWithDeplations" :key="mat._id">
-            <MaterialDepletionsSection hoverMsg="Add to search results" :onClickMatCb="addMaterialToSearch" :material="mat"/>
+            <MaterialDepletionsSection hoverMsg="Add to search" :onClickMatCb="addMaterialToSearch" :material="mat"/>
           </li>
         </ul>
       </div>
@@ -247,7 +247,7 @@ export default {
       const res = values.sort((a, b) => a.mats[0].toLowerCase() > b.mats[0].toLowerCase()? 1 : -1);
       // const filtered = res.map(c => c.trim()).filter(Boolean)
       // return asTxt? filtered.join(', ') : filtered;
-      return asTxt? res.map(c => c.value).join(', ') + '.' : res;
+      return asTxt? res.map(c => c.value).join(', ') : res;
     },
     getMonitorTxt_old_notused(propName) {
       const seenMap = {};
