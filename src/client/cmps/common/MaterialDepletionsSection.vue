@@ -30,7 +30,7 @@
       </template>
     </p>
   </div>
-  <div class="depleted-section with-capsuls " v-else>
+  <div class="depleted-section with-capsuls" v-else>
     <span>{{ material.name }} leads to deficiency of</span> <AppTooltip v-for="c in depletedsToShow" :key="c._id"  on="focus">
       <template #preview>
         <span class="capsule" :class="c.sure? 'danger-border' : 'warn-border'">{{c.name}}</span>
@@ -51,20 +51,20 @@
           to {{c.name}} deficiency</p>
           <hr/>
           <div class="flex column gap10" v-if="material.monitor && material.monitor.symptoms.find(_ => _.material.name === c.name)">
-            <h4 class="bold flex align-center gap10 pointer" @click="showSymptoms = !showSymptoms"><span>Deficiency symptoms</span> <img :class="{toggled: showSymptoms}" class="small-arrow-img" :src="require('@/client/assets/imgs/small-arrow-down.svg')"/></h4>
-            <p class="symptom-p" v-if="showSymptoms">
+            <h4 class="bold flex align-center gap10 pointer big-txt" @click="showSymptoms = !showSymptoms"><span>Deficiency symptoms</span> <img :class="{toggled: showSymptoms}" class="small-arrow-img" :src="require('@/client/assets/imgs/small-arrow-down.svg')"/></h4>
+            <p class="symptom-p big-txt" v-if="showSymptoms">
               {{ material.monitor.symptoms.find(_ => _.material.name === c.name).value }}
             </p>
           </div>
           <p>
-            <button @click="goToInteractionPage(c)">Interaction data <img :src="require('@/client/assets/imgs/link-out.svg')"/></button>
+            <button class="big-txt" @click="goToInteractionPage(c)">Interaction data <img :src="require('@/client/assets/imgs/link-out.svg')"/></button>
           </p>
           <p v-if="onClickMatCb">
-            <button @click="goToMatPage(c)">{{c.name}} info <img :src="require('@/client/assets/imgs/link-out.svg')"/></button>
+            <button class="big-txt" @click="goToMatPage(c)">{{c.name}} info <img :src="require('@/client/assets/imgs/link-out.svg')"/></button>
           </p>
           <p>
             <!-- <router-link target="_blank" :to="`/search?q=${material.name}&q=${c.name}`" >All interactions of {{c.name}} <img :src="require('@/client/assets/imgs/link-out.svg')"/></router-link> -->
-            <router-link target="_blank" :to="`/search?q=${c.name}`" >All interactions of {{c.name}} <img :src="require('@/client/assets/imgs/link-out.svg')"/></router-link>
+            <router-link class="big-txt" target="_blank" :to="`/search?q=${c.name}`" >All interactions of {{c.name}} <img :src="require('@/client/assets/imgs/link-out.svg')"/></router-link>
           </p>
         </div>
       </template>
@@ -264,6 +264,9 @@ export default {
         margin: 0;
         text-transform: unset !important;
         color: #205072;
+        font-size: 14px !important;
+      }
+      .big-txt {
         font-size: 14px !important;
       }
       padding: 15px;

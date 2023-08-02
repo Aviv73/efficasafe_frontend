@@ -47,7 +47,7 @@
       <div class="interaction-preview-content">
         <ul class="monitor-summary-list">
           <li>
-            <p class="font-bold">Drug-induced deficiencies:</p>
+            <span class="monitor-summary-list-header font-bold">Drug-induced deficiencies:</span>
           </li>
           <li v-for="mat in materialsWithDeplations" :key="mat._id">
             <MaterialDepletionsSection hoverMsg="Add to search" :onClickMatCb="addMaterialToSearch" :material="mat"/>
@@ -130,6 +130,36 @@ import { eventBus } from '@/cms/services/eventBus.service';
 
 const msgsToMentionSource = ['Blood drug level', 'Exacerbation of drug adverse reactions', 'exacerbation of symptoms for which the drug is being given', 'exacerbation of toxicity symptoms', 'reduction of drug efficacy', 'potentiation or reduction of drug efficacy'].map(c => c.toLowerCase());
 
+const _duableValsWithCapAndLow = (acc, curr) => {
+  acc.push(
+    curr.charAt(0).toLowerCase() + curr.substring(1),
+    curr.charAt(0).toUpperCase() + curr.substring(1)
+  );
+  return acc;
+}
+const monitorsToIgnore = {
+  general: [],
+  otherTests: [],
+  labTests: [
+    'vitamin B12 level',
+    'Zinc level',
+    'vitamin C level',
+    'Magnesium level',
+    'vitamin D level',
+    'CoQ10 level',
+    'Vitamin B6 level',
+  ].reduce(_duableValsWithCapAndLow, []),
+  symptoms: [
+    'symptoms of vitamin B12 deficiency (fatigue, headaches, pale skin, shortness of breath, tingling, numbness, confusion, memory loss, depression, irritability)',
+    'symptoms of Zinc deficiency (skin lesions, hair loss, taste disturbance, delayed wound healing)',
+    'symptoms of vitamin C deficiency (immune weakness, poor wound healing, bleeding and inflammation in the gums, subcutaneous bleeding, fatigue, irritability, skin disorders, joint and muscle pain)',
+    'symptoms of Magnesium deficiency (fatigue, weakness, muscle weakness, muscle spasms, confusion, tremors, convulsions, arrhythmia, ventricular tachycardia, loss of appetite, nausea, vomiting)',
+    'symptoms of vitamin D deficiency (immune weakness, fatigue, muscle weakness, muscle pain, bone pain, bone loss, impaired wound healing)',
+    'symptoms of Q10 deficiency (fatigue, muscle weakness, muscle aches)',
+    'Symptoms of vitamin B6 deficiency (peripheral neuropathy, pellagra-like syndrome, anemia, seizures, confusion)'
+  ].reduce(_duableValsWithCapAndLow, []),
+}
+
 export default {
   name: 'MonitorSummary',
   props: {
@@ -194,6 +224,7 @@ export default {
           .map(str => str.trim());
 
         words.forEach((word) => {
+          if (monitorsToIgnore[propName]?.includes(word)) return;
           if (!_wardMap[word]) {
             const secChar = word.charAt(1);
             word = secChar !== secChar.toUpperCase() ? word.charAt(0).toLowerCase() + word.slice(1) : word;
