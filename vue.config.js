@@ -18,7 +18,7 @@ module.exports = {
   "transpileDependencies": [
     "vuetify"
   ],
-  outputDir: '../backend/public',
+  outputDir: '../efficasafe_backend/public',
 
   configureWebpack: {
     plugins: [
