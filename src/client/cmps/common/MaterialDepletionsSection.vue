@@ -37,7 +37,7 @@
       </template>
       <template #content>
         <div class="tooltip-content flex column gap10">
-          <div class="flex align-center gap20">
+          <div class="flex align-center gap15">
             <h3 class="bold">{{c.name}}</h3>
             <template v-if="onClickMatCb">
               <button v-if="!isInSearch(c) && onClickMatCb" :title="hoverMsg" class="add-tosearch-btn flex align-center gap5" @click.stop="onClickMatCb(c)">
@@ -279,6 +279,10 @@ export default {
       p {
         margin-bottom: 0;
         padding-inline-end: 0;
+      }
+
+      .add-tosearch-btn {
+        padding-bottom: 1px;
       }
     }
 
