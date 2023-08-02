@@ -122,8 +122,10 @@ export default {
 
   .close-btn-tooltip {
     position: absolute;
-    top: 24px;
-    right: 20px;
+    // top: 24px;
+    // right: 20px;
+    top: 10px;
+    right: 10px;
     cursor: pointer;
     z-index: 5;
   }
