@@ -356,6 +356,7 @@ export default {
     interactions: {
       deep: true,
       handler() {
+        this.flatInteractions = [];
         this.flatten(this.interactions);
       }
     }

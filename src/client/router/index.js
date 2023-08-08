@@ -256,8 +256,8 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
+  await store.dispatch('getUserInfo');
   if (to.meta.isGetUser) {
-    await store.dispatch('getUserInfo');
     next(addUtmToUrlQuery(to, from, store));
   }
   if (to.meta.requiresAuth) {

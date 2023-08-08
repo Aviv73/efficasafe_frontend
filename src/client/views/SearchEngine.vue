@@ -511,7 +511,8 @@ export default {
           };
         case 'Monitor':
           return {
-            interactions: this.interactions,
+            // interactions: this.interactions,
+            interactions: this.wtmInteractions,
             // allInteractions: this.formatInteractions(this.wtmInteractions),
             allInteractions: this.wtmInteractions,
             // allInteractions: this.wtmInteractions,
@@ -1626,10 +1627,10 @@ export default {
     },
     clearSearch() {
       this.undoneQueries = [];
+      this.reset();
       this.$store.commit({ type: 'setTheoreticalDiff', diff: 0 });
       eventBus.$emit(EV_search_results_cleared);
       this.$router.push({ name: this.$route.name }).catch(() => {});
-      this.reset();
     },
     getResultIcon(result) {
       let fileName = '';
