@@ -139,6 +139,9 @@
                             {{ item.email }}
                         </td>
                         <td class="centered text-center">
+                            {{ item.organization }}
+                        </td>
+                        <td class="centered text-center">
                             {{ item.country }}
                         </td>
                         <td class="centered text-center">
@@ -233,6 +236,12 @@ export default {
                 {
                     text: 'Email',
                     value: 'email',
+                    align: 'center',
+                    sortable: false,
+                },
+                {
+                    text: 'Organization',
+                    value: 'organization',
                     align: 'center',
                     sortable: false,
                 },

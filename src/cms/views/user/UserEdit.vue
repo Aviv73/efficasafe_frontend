@@ -40,6 +40,11 @@
                     />
                     <v-text-field
                         type="text"
+                        v-model="editedUser.organization"
+                        label="Organization"
+                    />
+                    <v-text-field
+                        type="text"
                         v-model="editedUser.phone"
                         label="Phone"
                     />

@@ -258,10 +258,10 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
   if (to.meta.isGetUser) {
     await store.dispatch('getUserInfo');
-    next();
+    next(addUtmToUrlQuery(to, from, store));
   }
   if (to.meta.requiresAuth) {
-    if (store.getters.loggedInUser) next();
+    if (store.getters.loggedInUser) next(addUtmToUrlQuery(to, from, store));
     else next({ name: 'Home' });
   }
   if (to.meta.blockSubscribed) {
@@ -269,7 +269,7 @@ router.beforeEach(async (to, from, next) => {
     if (store.getters.loggedInUser && store.getters.loggedInUser.purchases?.find(c => c.until === 'Onging')) next({ name: 'Home' });
   }
   window.scrollTo(0, 0);
-  next();
+  next(addUtmToUrlQuery(to, from, store));
 });
 
 router.afterEach((to) => {
@@ -277,3 +277,22 @@ router.afterEach((to) => {
 })
 
 export default router;
+
+
+
+function addUtmToUrlQuery(to, from, store) {
+  // if (Date) return undefined;
+  const loggedInUser = store.getters.loggedInUser;
+  if (!loggedInUser) return;
+  const utmVal = {utm_source: loggedInUser.organization, utm_medium: loggedInUser._id};
+  // `${loggedInUser.organization || 'UNKNOWN_ORGANIZATION'}-${loggedInUser._id}`
+  if (compareObj(utmVal, to.query)) return;
+  return { ...to, query: { ...(to.query || {}), ...utmVal } };
+}
+
+function compareObj(obj = {}, compareTo = {}) {
+  for (let key in obj) {
+    if (compareTo[key] !== obj[key]) return false;
+  }
+  return true;
+}

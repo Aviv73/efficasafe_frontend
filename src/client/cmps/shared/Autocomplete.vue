@@ -152,7 +152,6 @@ export default {
             res = [...res].sort((a,b) => {
                 const aTypeOrderIdx = typesOrder.length - typesOrder.indexOf(a.type);
                 const bTypeOrderIdx = typesOrder.length - typesOrder.indexOf(b.type);
-                console.log(a.type, b.type, bTypeOrderIdx - aTypeOrderIdx);
                 return bTypeOrderIdx - aTypeOrderIdx;
                 // if (a.isFormula === b.isFormula) return 0;
                 // if (a.isFormula) return 1;

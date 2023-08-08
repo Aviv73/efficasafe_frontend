@@ -22,6 +22,13 @@
                     v-model="filterBy.planType"
                 ></v-select>
                 <v-select
+                    v-if="searchBy === 'Organization'"
+                    class="small-search"
+                    :items="[]"
+                    label="Search By Organization"
+                    v-model="filterBy.organization"
+                ></v-select>
+                <v-select
                     v-if="searchBy === 'Role'"
                     class="small-search"
                     :items="roleItems"
@@ -85,6 +92,7 @@ export default {
             searchOptions: [
                 'Role',
                 'Type',
+                'Organization',
                 'Registration Date',
                 'End Trial Date',
                 'Coupon',
