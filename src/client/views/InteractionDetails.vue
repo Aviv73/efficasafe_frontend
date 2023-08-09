@@ -643,7 +643,7 @@ export default {
       let lastRefIdx = 0;
       
       let lastSubIdx = -1;
-      const subTag = '<sub>';
+      const subTag = '<sub';
       // const subEndTag = '</sub>';
 
       refsOrder.forEach((refNum) => {
