@@ -641,16 +641,27 @@ export default {
       if (!this.combinedRefs.length) return;
       const refsOrder = interactionUIService.getRefsOrder(txt, false, false).filter(num => txt.indexOf(num) > -1);
       let lastRefIdx = 0;
+      
+      let lastSubIdx = -1;
+      const subTag = '<sub>';
+      // const subEndTag = '</sub>';
+
       refsOrder.forEach((refNum) => {
+        const subIdx = txt.indexOf(subTag, lastSubIdx+1);
+        if (subIdx !== -1) lastSubIdx = subIdx + subTag.length;
+        // lastSubIdx = txt.indexOf(subEndTag, lastSubIdx);
+        
         let draftIdx = this.combinedRefs.findIndex(ref => ref && ref.draftIdx === refNum) + 1;
         if (isPathwaysRefs) {
           const sameRefs = this.combinedRefs.filter(ref => ref && ref.draftIdx === refNum);
           if (sameRefs.length > 1) {
             const ref = sameRefs.find(ref => this.side2Refs.findIndex(currRef => currRef.link === ref.link) === -1);
             draftIdx = this.combinedRefs.indexOf(ref) + 1;
+          
           }
         }
-        let refIdx = txt.indexOf(refNum, lastRefIdx + draftIdx.toString().length);
+        // let refIdx = txt.indexOf(refNum, lastRefIdx + draftIdx.toString().length);
+        let refIdx = txt.indexOf(refNum, lastSubIdx);
         if (!utilService.checkIfInsideRef(txt, refIdx) || lastRefIdx === refIdx) {
           let cnt = 0;
           while (txt.charAt(refIdx) === txt.charAt(refIdx + cnt)) {
@@ -662,8 +673,8 @@ export default {
         else lastRefIdx = refIdx;
         if (refIdx > -1) {
           txt = txt.slice(0, lastRefIdx) +
-          txt.slice(lastRefIdx, (lastRefIdx + refNum.toString().length)).replace(refNum, draftIdx) +
-          txt.slice(lastRefIdx + refNum.toString().length);
+                txt.slice(lastRefIdx, (lastRefIdx + refNum.toString().length)).replace(refNum, draftIdx) +
+                txt.slice(lastRefIdx + refNum.toString().length);
         } 
       });
       return txt;
