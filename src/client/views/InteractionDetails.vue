@@ -648,7 +648,8 @@ export default {
 
       refsOrder.forEach((refNum) => {
         const subIdx = txt.indexOf(subTag, lastSubIdx+1);
-        if (subIdx !== -1) lastSubIdx = subIdx + subTag.length;
+        // if (subIdx !== -1) lastSubIdx = subIdx + subTag.length;
+        if (subIdx !== -1) lastSubIdx = subIdx;
         // lastSubIdx = txt.indexOf(subEndTag, lastSubIdx);
         
         let draftIdx = this.combinedRefs.findIndex(ref => ref && ref.draftIdx === refNum) + 1;
