@@ -173,6 +173,7 @@ export default {
 </script>
         
 <style lang="scss">
+@import '@/client/styles/setup/_variables.scss';
 .depleted-section {
   .flex {
     display: flex !important;
@@ -216,6 +217,11 @@ export default {
         opacity: 1 !important;
         top: 50% !important;
         left: 50% !important;
+        @media (max-width: $break-narrow) {
+          position: fixed;
+          transform: translate(-50%, -50%);
+          width: 95vw !important;          
+        }
         box-shadow: 0px 0px 4px rgba(18, 18, 18, 0.1);
       }
     }
@@ -303,6 +309,9 @@ export default {
       }
     }
   }
+
+  
+  
 
   // .sure {
   //   a {
