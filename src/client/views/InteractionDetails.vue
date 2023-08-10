@@ -118,7 +118,7 @@
           <p
             class="paragraph regular-pointer summary-container"
             v-if="interaction.summary"
-            v-html="formatRefs(interaction.summary)"
+            v-html="formatRefs(interaction.summary, undefined, true)"
             v-refs-tooltip="{
               combinedRefs,
               side2Refs
@@ -637,20 +637,27 @@ export default {
 
       return fixedTxt;
     },
-    formatRefs(txt, isPathwaysRefs = false) {
+    formatRefs(txt, isPathwaysRefs = false, debug) {
+      if (Date /* == if true */) return this._formatRefs(txt, isPathwaysRefs);
       if (!this.combinedRefs.length) return;
       const refsOrder = interactionUIService.getRefsOrder(txt, false, false).filter(num => txt.indexOf(num) > -1);
       let lastRefIdx = 0;
       
       let lastSubIdx = -1;
-      const subTag = '<sub';
-      // const subEndTag = '</sub>';
+      const subTag = '<sub>';
+      const subEndTag = '</sub>';
 
       refsOrder.forEach((refNum) => {
-        const subIdx = txt.indexOf(subTag, lastSubIdx+1);
-        // if (subIdx !== -1) lastSubIdx = subIdx + subTag.length;
-        if (subIdx !== -1) lastSubIdx = subIdx;
+        let subIdx = txt.indexOf(subTag, lastSubIdx+1);
+        if (subIdx !== -1) {
+          lastSubIdx = subIdx = subIdx + subTag.length;
+        } else {
+          // return console.log('WOW');
+        }
+        let endSubIdx = txt.indexOf(subEndTag, subIdx);
         // lastSubIdx = txt.indexOf(subEndTag, lastSubIdx);
+
+
         
         let draftIdx = this.combinedRefs.findIndex(ref => ref && ref.draftIdx === refNum) + 1;
         if (isPathwaysRefs) {
@@ -670,12 +677,32 @@ export default {
           }
           refIdx = txt.indexOf(refNum, refIdx + cnt);
         }
+
+
+        const originalContent = txt.slice(subIdx, endSubIdx).split('(')[1]?.split(')')[0];
+        const contect = originalContent?.split(',').filter(Boolean).map(c => c.trim()) || [];
+        const fixedContent = `(${contect.map(curr => {
+          const nums = curr.split('-');
+          if (debug) console.log(nums, nums.map(c => c == refNum? draftIdx : c), refNum, draftIdx)
+          return nums.map(c => c == refNum? draftIdx : c).join('-');
+        }).join(',')})`;
+
+
         if (lastRefIdx + draftIdx.toString().length > refIdx) lastRefIdx = refIdx + draftIdx.toString().length;
         else lastRefIdx = refIdx;
         if (refIdx > -1) {
-          txt = txt.slice(0, lastRefIdx) +
-                txt.slice(lastRefIdx, (lastRefIdx + refNum.toString().length)).replace(refNum, draftIdx) +
-                txt.slice(lastRefIdx + refNum.toString().length);
+          // if (isPathwaysRefs) {
+          if (!Date) {
+            txt = txt.slice(0, subIdx) +
+                  fixedContent +
+                  txt.slice(endSubIdx);
+            // if (debug) console.log(subIdx, endSubIdx, fixedContent)
+            // lastSubIdx = endSubIdx + subEndTag.length;
+          } else {
+            txt = txt.slice(0, lastRefIdx) +
+                  txt.slice(lastRefIdx, (lastRefIdx + refNum.toString().length)).replace(refNum, draftIdx) +
+                  txt.slice(lastRefIdx + refNum.toString().length);
+          }
         } 
       });
       return txt;
