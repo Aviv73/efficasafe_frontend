@@ -49,7 +49,7 @@
       <p
         class="active-tab-txt regular-pointer"
         v-show="pathways.length"
-        v-html="formatRefs(activeTabTxt, true)"
+        v-html="formatRefs(activeTabTxt, true, true)"
         v-refs-tooltip.pathwaysSecond.dynamicTxt="{
           combinedRefs,
           side2Refs
@@ -104,6 +104,9 @@ export default {
     return {
       activeTab: this.pathways.length ? this.pathways[0].name : ''
     };
+  },
+  created() {
+    this.activeTab = this.sortedPathways.length ? this.sortedPathways[0].name : '';
   },
   computed: {
     sortedPathways() {
