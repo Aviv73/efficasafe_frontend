@@ -31,7 +31,7 @@
     </p>
   </div>
   <div class="depleted-section with-capsuls" v-else>
-    <span>{{ material.name }} leads to deficiency of</span> <AppTooltip v-for="c in depletedsToShow" :key="c._id"  on="focus">
+    <span>{{ material.name }} {{depletedsToShow.find(_ => _.sure) ? 'leads' : 'may lead'}} to deficiency of</span> <AppTooltip v-for="c in depletedsToShow" :key="c._id"  on="focus">
       <template #preview>
         <span class="capsule" :class="c.sure? 'danger-border' : 'warn-border'">{{c.name}}</span>
       </template>
