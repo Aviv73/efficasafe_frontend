@@ -296,6 +296,8 @@ import InformationOutlineIcon from 'vue-material-design-icons/InformationOutline
 import Loader from '@/client/cmps/common/icons/Loader';
 import PlayTourBtn from '@/client/cmps/common/PlayTourBtn';
 
+import { googleAnalyticsService } from '../../cms/services/googleAnalyticsService';
+
 export default {
   recommendationsOrderMap: interactionUIService.getRecommendationOrderMap(),
   name: 'SearchEngine',
@@ -402,6 +404,8 @@ export default {
         if (!isSameSearch) {
           this.$store.commit('resetPosSupp');
           await this.getResults();
+
+          if (!from?.q?.length && (to?.q?.length > 0)) googleAnalyticsService.shootSearchEvent();
         } else {
           //Search positive if there are non in the front already
           if (!this.positiveInteractions.length && !this.suppPositiveInteractions.length) {

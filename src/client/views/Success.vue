@@ -20,6 +20,8 @@
 import { userService } from '@/cms/services/user.service';
 import Loader from '@/client/cmps/common/icons/Loader';
 
+import { googleAnalyticsService } from '../../cms/services/googleAnalyticsService';
+
 export default {
     data(){
         return {
@@ -34,6 +36,7 @@ export default {
     async created() {
         await this.$store.dispatch('getUserInfo');
         const user = await userService.getById(this.loggedInUser._id);
+        googleAnalyticsService.shootPurchaseEvent(user.purchases.find(c => c.until === 'Ongoing'));
         this.$store.commit({ type: 'setLoggedInUser', user });
         await userService.updateSession(user)
         this.isLoading = false
