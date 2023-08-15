@@ -316,7 +316,17 @@ export default {
       return title;
     },
     combinedRefs() {
-      return Array.from(new Set([...this.interactionRefs, ...this.relevantSide2Refs, ...this.side1PathwayRefs])).filter(Boolean);
+      const addSource = (source) => (item) => {
+        return {
+          ...item,
+          source
+        }
+      }
+      return Array.from(new Set([
+        ...this.interactionRefs.map(addSource('origin')),
+        ...this.relevantSide2Refs.map(addSource('side2')),
+        ...this.side1PathwayRefs.map(addSource('side1'))
+      ])).filter(Boolean);
     },
     refsDetailsTxt() {
       const { getRefsCountByType, interactionRefs } = this;
@@ -604,7 +614,7 @@ export default {
 
       return refs.filter(iterateFunc).length;
     },
-    _formatRefs(txt, isPathwaysRefs = false) {
+    formatRefs(txt, isPathwaysRefs = false) {
       const openTag = '<sub>(';
       const closeTag = ')</sub>';
 
@@ -618,13 +628,16 @@ export default {
           const [numsBetweenTxt, info] = part.split(closeTag);
 
           const numsBetween = numsBetweenTxt.split(',').filter(Boolean);
-          const fixedNumsBetween = numsBetween.reduce((acc, c) => {
-            const fixedCurr = c
+          const fixedNumsBetween = numsBetween.reduce((acc, numsSeperatedWithComma) => {
+            const fixedCurr = numsSeperatedWithComma
               .split('-')
               .filter(Boolean)
               .map(draftIdxStr => {
-                const draftIdx = +draftIdxStr;
-                return this.combinedRefs.findIndex(ref => ref && ref.draftIdx === draftIdx) + 1;
+                let draftIdx = +draftIdxStr;
+                const opts = this.combinedRefs.filter(ref => ref && (ref.draftIdx === draftIdx)) ;
+                const item = (opts.find(ref => isPathwaysRefs? ref.source === 'side1' : true) || opts[0]);
+                const fixedVal = this.combinedRefs.findIndex(c => c.txt === item.txt) + 1;
+                return fixedVal;
               })
               .join('-');
             return [...acc, fixedCurr];
@@ -637,7 +650,7 @@ export default {
 
       return fixedTxt;
     },
-    formatRefs(txt, isPathwaysRefs = false, debug) {
+    _formatRefs(txt, isPathwaysRefs = false, debug) {
       if (Date /* == if true */) return this._formatRefs(txt, isPathwaysRefs);
       if (!this.combinedRefs.length) return;
       const refsOrder = interactionUIService.getRefsOrder(txt, false, false).filter(num => txt.indexOf(num) > -1);
