@@ -790,7 +790,8 @@ export default {
     },
     totalRefsCount() {
       if (!this.allInteractionsData.total) return 0;
-      return this.allInteractionsData?.totalRefsCount + this.$store.getters.supplementsRefsNonDups.length || 0;
+      // return this.allInteractionsData?.totalRefsCount + this.$store.getters.supplementsRefsNonDups.length || 0;
+      return this.allInteractionsData?.totalRefsCount || 0;
       // return this.$store.getters.supplementsRefsNonDups.length || 0;
       // return this.allInteractionsData?.totalRefsCount || 0;
     },
