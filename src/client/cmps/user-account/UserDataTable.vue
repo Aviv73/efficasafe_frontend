@@ -13,9 +13,9 @@
           </th>
         </tr>
       </thead>
-    </table>
+    <!-- </table>
     <div class="table-body">
-      <table>
+      <table> -->
 
         <tbody>
           <tr v-for="(item, rowIdx) in items" :key="rowIdx">
@@ -136,7 +136,7 @@
           </tr>
         </tbody>
       </table>
-    </div>
+    <!-- </div> -->
     <modal-wrap v-if="isModalActive" :isActive="isModalActive" @close-modal="closeModal">
       <aside class="confirm-delete">
         <confirm-delete @close-modal="closeModal" :itemToDelete="itemToDelete" @delete-confirmed="emitDeleteItem" />
@@ -303,6 +303,7 @@ export default {
     position: relative;
     display: flex;
     flex-direction: column;
+    overflow: auto;
     .table-body {
       flex: 1;
       // height: 100%;
