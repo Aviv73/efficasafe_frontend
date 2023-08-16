@@ -13,7 +13,7 @@ function shootPurchaseEvent(purchase) {
   shootEvent("purchase", {ecommerce: {
     transaction_id: purchase.recurringId, //required field, ID of real transaction based on your DB
     value: purchase.price, //total value 
-    currency: purchase.coin, //currency of payment 
+    currency: _coinToCurency(purchase.coin), //currency of payment 
     coupon: purchase.coupon || undefined, //if exist, if not - delete field or leave blank
     items: [{
       item_id: purchase.plan, //or id=2 if annual plan
@@ -30,4 +30,17 @@ function shootEvent(event, data = {}) {
     event,
     ...data
   });
+}
+
+
+function _coinToCurency(coinnSign) {
+  switch (coinnSign) {
+    case '₪':
+      return 'ILS'
+    case '€':
+      return 'EUR'
+    case '$':
+    default:
+      return 'USD'
+  }
 }
