@@ -199,11 +199,16 @@ export default {
   }
 
   &.with-capsuls {
-    >* {
-      &:not(:last-child) {
-        margin-inline-end: 5px;
-      }
-    }
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 5px;
+    // >* {
+    //   &:not(:last-child) {
+    //     margin-inline-end: 5px;
+    //   }
+    // }
     .app-tooltip {
       display: inline-block;
       position: relative;

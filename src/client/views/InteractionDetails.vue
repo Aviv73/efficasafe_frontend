@@ -411,9 +411,9 @@ export default {
       }, []);
     },
     side2Refs() {
-      return this.side2Material.pathwayRefs.filter((ref, idx, refs) => {
+      return this.side2Material?.pathwayRefs.filter((ref, idx, refs) => {
         return refs.findIndex(currRef => currRef.link === ref.link) === idx;
-      });
+      }) || [];
     },
     isVirtual() {
       return !!this.$route.params.matId;
@@ -437,12 +437,12 @@ export default {
       return sortedRefs.filter(ref => this.interactionRefs.findIndex(currRef => currRef?.link === ref?.link) === -1);
     },
     relevantSide2Pathways() {
-      return this.side2Material.pathways.filter(
+      return this.side2Material?.pathways.filter(
         pathway =>
           (pathway.type === 'enzyme' && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))) ||
           (pathway.type === 'transporter' && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))) ||
           (pathway.type === 'carrier' && !pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor'))
-      );
+      ) || [];
     },
     relevantSide1Pathways() {
       return this.side1Pathways.filter(pathway => {
