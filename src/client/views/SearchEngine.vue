@@ -1,16 +1,18 @@
 <template>
   <section class="search-engine">
-    <div class="search-engine-container side-by-side-container" :class="{'positive-boosters-search': $route.name === 'Boosters'}">
+    <div class="search-engine-container side-by-side-container"
+      :class="{ 'positive-boosters-search': $route.name === 'Boosters' }">
       <span class="brim-start" />
       <div class="search-engine-search flex-coloumn">
         <router-link to="/" class="logo">
           <!-- <img src="@/client/assets/imgs/logo-symbol.png" alt="Logo" />
           <img src="@/client/assets/imgs/logo-txt.png" alt="Efficasafe" /> -->
-          <img src="@/client/assets/imgs/logo.png" alt="Efficasafe" />
+          <img src="@/client/assets/imgs/logo.webp" alt="Efficasafe" width="230" height="130" />
         </router-link>
         <div class="form-container">
           <PlayTourBtn :dontOpen="isScreenNarrow" @click.native="startSearchTour" />
-          <autocomplete class="search-engine-search-bar v-tour1-step-0 no-print" isOnSearchPage :placeholder1="isScreenNarrow ? 'Add another' : '+   Add another'" @item-selected="addMaterials" />
+          <autocomplete class="search-engine-search-bar v-tour1-step-0 no-print" isOnSearchPage
+            :placeholder1="isScreenNarrow ? 'Add another' : '+   Add another'" @item-selected="addMaterials" />
         </div>
         <div class="search-engine-search-actions flex-space-between no-print">
           <button title="Undo" :disabled="!$route.query.q || !$route.query.q.length" @click="navigateQueries(-1)">
@@ -26,7 +28,8 @@
             <template #content>
               <span class="msg"> Subscribed users can save their search results </span>
             </template>
-            <button :disabled="!loggedInUser || !$route.query.q || !$route.query.q.length" @click="isSaveSearchModalActive = true">Save search</button>
+            <button :disabled="!loggedInUser || !$route.query.q || !$route.query.q.length"
+              @click="isSaveSearchModalActive = true">Save search</button>
           </tooltip>
         </div>
         <ul class="search-engine-search-materials" :class="{ empty: !materials.length }">
@@ -53,7 +56,9 @@
           <div @click.stop="closeTooltip" v-if="isOpen" class="screen"></div>
           <AppTooltip v-for="(result, idx) in formatedMaterials" :key="idx" on="focus">
             <template #content>
-              <material-interactions-preview :materials="result.materials" :userQuery="result.txt" :disabled="result.isIncluded" :interactions="getMaterialInteractions(result)" :isOneMaterial="materials.length === 1" />
+              <material-interactions-preview :materials="result.materials" :userQuery="result.txt"
+                :disabled="result.isIncluded" :interactions="getMaterialInteractions(result)"
+                :isOneMaterial="materials.length === 1" />
             </template>
 
             <template #preview>
@@ -62,7 +67,9 @@
                 <p :class="{ disabled: result.isIncluded }">{{ result.txt }}</p>
 
                 <span class="search-engine-search-materials-chip-actions">
-                  <information-outline-icon class="info-icon hover-activator" :class="{ 'under-construction': isOneUnderStudy(result), red: result.isIncluded }" :size="16" title="" />
+                  <information-outline-icon class="info-icon hover-activator"
+                    :class="{ 'under-construction': isOneUnderStudy(result), red: result.isIncluded }" :size="16"
+                    title="" />
                   <button class="close-btn" @click.stop="removeMaterials(result.txt)" :data-close-btn="true">
                     <close-icon :size="16" title="" class="black" />
                   </button>
@@ -71,19 +78,21 @@
             </template>
           </AppTooltip>
         </ul>
-        <div v-if="(initialLoadingDone && !loggedInUser) || (loggedInUser && !loggedInUser.email_verified && loggedInUser.type !== 'subscribed')" class="search-engine-search-cta">
-          <span v-if="freeSearchesCount > 0" class="search-engine-search-msg" :class="isRed"
-            ><span class="font-medium" :class="isRed">{{ freeSearchesCount }}</span> Free searches left</span
-          >
+        <div
+          v-if="(initialLoadingDone && !loggedInUser) || (loggedInUser && !loggedInUser.email_verified && loggedInUser.type !== 'subscribed')"
+          class="search-engine-search-cta">
+          <span v-if="freeSearchesCount > 0" class="search-engine-search-msg" :class="isRed"><span class="font-medium"
+              :class="isRed">{{ freeSearchesCount }}</span> Free searches left</span>
           <span v-else class="search-engine-search-msg red-txt">No free searches left</span>
           <button class="btn" id="searchPageSignup" @click="handleCtaBtn">
             {{ ctaBtnTxt }}
           </button>
         </div>
-        <div v-if="initialLoadingDone && loggedInUser && loggedInUser.type !== 'subscribed' && loggedInUser.email_verified" class="search-engine-search-cta">
+        <div
+          v-if="initialLoadingDone && loggedInUser && loggedInUser.type !== 'subscribed' && loggedInUser.email_verified"
+          class="search-engine-search-cta">
           <span class="search-engine-search-msg">
-            <span class="font-medium">{{ freeTrialTime }}</span> Free Trial days left</span
-          >
+            <span class="font-medium">{{ freeTrialTime }}</span> Free Trial days left</span>
           <button class="btn" id="searchPageSignup" @click="$router.push('/subscribe')">Subscribe now</button>
         </div>
       </div>
@@ -95,34 +104,41 @@
               {{ $route.name === 'Boosters' ? 'Optimizers' : 'Interactions' }}
             </span>
             <span class="search-engine-results-actions">
-              <button :disabled="!loggedInUser" class="print-btn print-btn-icon" :title="loggedInUser ? 'Print' : 'Subscribed users can print their search results'" @click="onPrint">
+              <button :disabled="!loggedInUser" class="print-btn print-btn-icon"
+                :title="loggedInUser ? 'Print' : 'Subscribed users can print their search results'" @click="onPrint">
                 <printer-icon title="" />
               </button>
-              <button :disabled="!loggedInUser" :style="{ top: $route.name === 'Boosters' ? '0px' : '10px' }" class="share-btn share-btn-icon" :title="loggedInUser ? 'Share' : 'Subscribed users can share their search results'" @click="isShareModalActive = true">
+              <button :disabled="!loggedInUser" :style="{ top: $route.name === 'Boosters' ? '0px' : '10px' }"
+                class="share-btn share-btn-icon"
+                :title="loggedInUser ? 'Share' : 'Subscribed users can share their search results'"
+                @click="isShareModalActive = true">
                 <share-variant-icon title="" :size="22" />
               </button>
               <template v-if="!isScreenNarrow">
                 <tooltip v-if="!isLoadingFile" bottomCornerLeft>
                   <template #content>
                     <div class="tooltip-content">
-                      <span> Import a list of your drug/supplements. Supports only xlsx files. Names only, one name per cell. </span>
+                      <span> Import a list of your drug/supplements. Supports only xlsx files. Names only, one name per
+                        cell. </span>
                     </div>
                   </template>
                   <label class="upload-btn">
                     <input type="file" @change="onImportList" hidden />
-                    <img class="upload-btn-icon" src="@/client/assets/icons/uploadXL.jpeg" alt="" />
+                    <img width="22" height="22" class="upload-btn-icon" src="@/client/assets/icons/uploadXL.jpeg"
+                      alt="" />
                   </label>
                 </tooltip>
                 <loader class="upload-loader" v-else />
                 <tooltip bottomCornerLeft>
                   <template #content>
                     <div class="tooltip-content">
-                      <span> Download a csv file containing your searched list, it is recommended to save it as a xlsx file for future import. </span>
+                      <span> Download a csv file containing your searched list, it is recommended to save it as a xlsx
+                        file for future import. </span>
                     </div>
                   </template>
                   <button class="download-btn download-btn-icon">
                     <download-excel :data="materialsToExcel" :escapeCsv="false" type="csv" name="My search.xls">
-                      <img src="@/client/assets/icons/downloadXL.jpeg" alt="" />
+                      <img src="@/client/assets/icons/downloadXL.jpeg" alt="" width="22" height="22" />
                     </download-excel>
                   </button>
                 </tooltip>
@@ -169,11 +185,15 @@
                     <span> This tab opens only when the search contains multiple materials. </span>
                   </div>
                 </template>
-                <router-link :class="{ 'WTM-disabled': formatedMaterials.length <= 1 }" :disabled="formatedMaterials.length <= 1" :event="formatedMaterials.length > 1 ? 'click' : ''" class="link" :to="{ name: 'Monitor', query: this.$route.query }" ref="whatToMonitorLink">
+                <router-link :class="{ 'WTM-disabled': formatedMaterials.length <= 1 }"
+                  :disabled="formatedMaterials.length <= 1" :event="formatedMaterials.length > 1 ? 'click' : ''"
+                  class="link" :to="{ name: 'Monitor', query: this.$route.query }" ref="whatToMonitorLink">
                   What to monitor
                 </router-link>
               </tooltip>
-              <router-link v-else :class="{ 'WTM-disabled': formatedMaterials.length <= 1 }" :disabled="formatedMaterials.length <= 1" :event="formatedMaterials.length > 1 ? 'click' : ''" class="link" :to="{ name: 'Monitor', query: this.$route.query }" ref="whatToMonitorLink">
+              <router-link v-else :class="{ 'WTM-disabled': formatedMaterials.length <= 1 }"
+                :disabled="formatedMaterials.length <= 1" :event="formatedMaterials.length > 1 ? 'click' : ''"
+                class="link" :to="{ name: 'Monitor', query: this.$route.query }" ref="whatToMonitorLink">
                 What to monitor
               </router-link>
               <!-- <router-link :class="{ 'WTM-disabled': formatedMaterials.length <= 1 }" :disabled="formatedMaterials.length <= 1" :event="formatedMaterials.length > 1 ? 'click' : ''" class="link" :to="{ name: 'Monitor', query: this.$route.query }" ref="whatToMonitorLink">
@@ -188,10 +208,18 @@
                     <span> Optimizers are shown only for drugs. </span>
                   </div>
                 </template>
-                <router-link :event="disableOptiPage? '' : 'click'" :class="{ 'WTM-disabled': disableOptiPage }" :disabled="disableOptiPage" class="link boosters pb-tour-step-0" :to="{ name: 'Boosters', query: this.$route.query }">
+                <router-link :event="disableOptiPage ? '' : 'click'" :class="{ 'WTM-disabled': disableOptiPage }"
+                  :disabled="disableOptiPage" class="link boosters pb-tour-step-0"
+                  :to="{ name: 'Boosters', query: this.$route.query }">
                   Optimizers
-                  <span v-if="isPBLoading">
+                  <!-- <span v-if="isPBLoading">
                     <img src="@/client/assets/imgs/dot-green-loader.gif" />
+                  </span> -->
+                  <span v-if="isPBLoading">
+                    <video width="30" height="30" autoplay loop muted playsinline>
+                      <source src="@/client/assets/imgs/dot-green-loader.webm" type="video/webm">
+                      Your browser does not support the video tag.
+                    </video>
                   </span>
                   <span v-else>
                     {{ '\xa0' }}
@@ -201,10 +229,18 @@
                   </span>
                 </router-link>
               </tooltip>
-              <router-link v-else :event="disableOptiPage? '' : 'click'" :class="{ 'WTM-disabled': disableOptiPage }" :disabled="disableOptiPage" class="link boosters pb-tour-step-0" :to="{ name: 'Boosters', query: this.$route.query }">
+              <router-link v-else :event="disableOptiPage ? '' : 'click'" :class="{ 'WTM-disabled': disableOptiPage }"
+                :disabled="disableOptiPage" class="link boosters pb-tour-step-0"
+                :to="{ name: 'Boosters', query: this.$route.query }">
                 Optimizers
-                <span v-if="isPBLoading">
+                <!-- <span v-if="isPBLoading">
                   <img src="@/client/assets/imgs/dot-green-loader.gif" />
+                </span> -->
+                <span v-if="isPBLoading">
+                  <video width="30" height="30" autoplay loop muted playsinline>
+                    <source src="@/client/assets/imgs/dot-green-loader.webm" type="video/webm">
+                    Your browser does not support the video tag.
+                  </video>
                 </span>
                 <span v-else>
                   {{ '\xa0' }}
@@ -216,15 +252,21 @@
             </li>
             <li class="search-engine-nav-link">
               <label class="display-toggle" title="Horizontal view">
-                <input type="radio" name="isVertical" v-model="isViewVertical" :value="false" hidden @input="savePrefs('view', 'horizontal')" />
+                <input type="radio" name="isVertical" v-model="isViewVertical" :value="false" hidden
+                  @input="savePrefs('view', 'horizontal')" />
                 <mobile-menu-icon class="rotate90" title="" />
               </label>
-              <tooltip :hidden="loggedInUser && loggedInUser.email_verified && (freeTrialTime > 0 || loggedInUser.type === 'subscribed')" leftBottomCorner>
+              <tooltip
+                :hidden="loggedInUser && loggedInUser.email_verified && (freeTrialTime > 0 || loggedInUser.type === 'subscribed')"
+                leftBottomCorner>
                 <template #content>
                   <span class="vertical-msg"> Vertical view is available for registered users </span>
                 </template>
                 <label class="display-toggle" title="Vertical view">
-                  <input :disabled="!loggedInUser || !loggedInUser.email_verified || (loggedInUser.type !== 'subscribed' && freeTrialTime <= 0)" type="radio" name="isVertical" v-model="isViewVertical" :value="true" hidden @input="savePrefs('view', 'vertical')" />
+                  <input
+                    :disabled="!loggedInUser || !loggedInUser.email_verified || (loggedInUser.type !== 'subscribed' && freeTrialTime <= 0)"
+                    type="radio" name="isVertical" v-model="isViewVertical" :value="true" hidden
+                    @input="savePrefs('view', 'vertical')" />
                   <mobile-menu-icon title="" />
                 </label>
               </tooltip>
@@ -238,7 +280,10 @@
         </nav>
         <transition :name="routerTransitionName" mode="out-in">
           <keep-alive>
-            <router-view :sortParams="sortParams" v-keep-scroll-position ref="elRouter" class="inner-view" :key="$route.name" :listData="routableListData" :isVertical="isViewVertical" :materials="materials" :isLoading="isLoading" :isPBLoading="isPBLoading" @page-changed="handlePaging" @list-sorted="handleSort" @handle-DBI-filter="handleDBIFilter" />
+            <router-view :sortParams="sortParams" v-keep-scroll-position ref="elRouter" class="inner-view"
+              :key="$route.name" :listData="routableListData" :isVertical="isViewVertical" :materials="materials"
+              :isLoading="isLoading" :isPBLoading="isPBLoading" @page-changed="handlePaging" @list-sorted="handleSort"
+              @handle-DBI-filter="handleDBIFilter" />
           </keep-alive>
         </transition>
       </div>
@@ -251,12 +296,16 @@
       <share-modal v-if="isShareModalActive || true" @close-modal="isShareModalActive = false" />
     </modal-wrap>
     <modal-wrap :isActive="isPrintModalActive" @close-modal="isPrintModalActive = false">
-      <print-modal :interactions="routableListData.suppInteractions && routableListData.suppInteractions.length ? routableListData.interactions.concat(routableListData.suppInteractions) : routableListData.interactions" :materials="materials" @close-modal="isPrintModalActive = false" />
+      <print-modal
+        :interactions="routableListData.suppInteractions && routableListData.suppInteractions.length ? routableListData.interactions.concat(routableListData.suppInteractions) : routableListData.interactions"
+        :materials="materials" @close-modal="isPrintModalActive = false" />
     </modal-wrap>
     <modal-wrap :isActive="isSaveSearchModalActive" @close-modal="isSaveSearchModalActive = false">
       <save-search-modal @close-modal="isSaveSearchModalActive = false" />
     </modal-wrap>
-    <modal-wrap :isActive="isSearchesLeftModalActive" @close-modal="isSearchesLeftModalActive = false">
+    <!-- Consider v-if to prevent unneseccery img loading -->
+    <modal-wrap v-if="isSearchesLeftModalActive" :isActive="isSearchesLeftModalActive"
+      @close-modal="isSearchesLeftModalActive = false">
       <searches-left-modal @close-modal="isSearchesLeftModalActive = false" />
     </modal-wrap>
     <onboarding-tour />
@@ -360,11 +409,11 @@ export default {
       async handler(to, from) {
         if (!['Boosters', 'Monitor', 'Results'].includes(this.$route.name)) return;
 
-        const isEmpty = Array.isArray(this.$route.query.q)? !this.$route.query.q.length : !this.$route.query.q ;
+        const isEmpty = Array.isArray(this.$route.query.q) ? !this.$route.query.q.length : !this.$route.query.q;
         if (isEmpty) return this.clearSearch();
         if (
           to && from && (to.page !== from.page) &&
-          (JSON.stringify(to.q) === JSON. stringify(from.q))
+          (JSON.stringify(to.q) === JSON.stringify(from.q))
         ) return;
         const _dontReload = this.dontReload;
         this.dontReload = false;
@@ -424,7 +473,7 @@ export default {
       //for paging       
       if (from && JSON.stringify(from.query) === JSON.stringify(to.query) && from.name !== to.name && from.query.page !== 1) {
         if (this.$route.query.q) {
-          this.$router.replace({ query: { ...this.$route.query, q: [...this.$route.query.q], page: 1 } }).catch(() => {});
+          this.$router.replace({ query: { ...this.$route.query, q: [...this.$route.query.q], page: 1 } }).catch(() => { });
         }
       }
       const routesOrder = {
@@ -444,7 +493,7 @@ export default {
       this.routerTransitionName = routesOrder[to.name] < routesOrder[from.name] ? 'slide-right' : 'slide-left';
     },
     // '$route.path'(to, from) {
-      
+
     // }
   },
   computed: {
@@ -484,7 +533,7 @@ export default {
     dBankInteractionsColorCountMap() {
       return this.allInteractionsData?.dBankInteractionsColorCountMap || { red: 0, yellow: 0, green: 0 };
     },
-    
+
 
 
     disableOptiPage() {
@@ -532,7 +581,7 @@ export default {
       return this.$store.getters.getInteractionListHight;
     },
     boostersCount() {
-      return this.formatedPositiveInteractions?.reduce((acc, c) => acc+c.vInteractions.length, 0) || 0; 
+      return this.formatedPositiveInteractions?.reduce((acc, c) => acc + c.vInteractions.length, 0) || 0;
       // return this.$store.getters.getPosBoostersCount || this.totalPositiveBoosters;
     },
     isShowAllDBI() {
@@ -625,10 +674,11 @@ export default {
           vInteraction.name = `${vInteraction.side1Material.name} & ${vInteraction.side2Material.name}`;
         });
       });
+      console.log("🚀 ~ file: SearchEngine.vue:677 ~ formatedPositiveInteractions ~ this.positiveInteractions:", JSON.parse(JSON.stringify({ ...this.positiveInteractions })))
       const map = this.$options.recommendationsOrderMap;
       const sortVints = (a, b) => {
-          return (map[b.recommendation] - map[a.recommendation]) * -1 || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) || a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-        }
+        return (map[b.recommendation] - map[a.recommendation]) * -1 || a.evidenceLevel.toLowerCase().localeCompare(b.evidenceLevel.toLowerCase()) || a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+      }
       const formatedPositiveInteractions = this.positiveInteractions.reduce((acc, interaction) => {
         const existing = acc.find(i => i.name === interaction.name && i.mainMaterialId === interaction.mainMaterialId);
         if (!existing) {
@@ -881,14 +931,14 @@ export default {
     async getAllOpties() {
       const materialIds = this.materials.reduce((acc, material) => {
         if (material.type !== 'drug') return acc;
-          const ids = [ material._id, ...material.labels.map(l => l._id) ];
-          ids.forEach(id => {
-            if (!acc.includes(id)) acc.push(id);
-          });
-          return acc;
+        const ids = [material._id, ...material.labels.map(l => l._id)];
+        ids.forEach(id => {
+          if (!acc.includes(id)) acc.push(id);
+        });
+        return acc;
       }, []);
       const fetchData = { interactionData: null, materialIds, matNames: this.$route.query.q };
-      
+
       const prevSearch = JSON.stringify(this.prevSearch)
       await this.$store.dispatch({ type: 'loadOptimizationData', fetchData });
       if (prevSearch !== JSON.stringify(this.prevSearch)) {
@@ -896,6 +946,7 @@ export default {
         return [];
       }
       this.positiveInteractions = JSON.parse(JSON.stringify(this.$store.getters.optimizationData));
+      console.log("🚀 ~ file: SearchEngine.vue:948 ~ getAllOpties ~  this.positiveInteractions:", this.positiveInteractions[1])
       return this.positiveInteractions;
     },
     formatInteractions(interactions) {
@@ -1070,7 +1121,7 @@ export default {
         if (!existingNames.length) {
           eventBus.$emit(EV_show_user_msg, 'Import failed. File not supported (must be xlsx) or no drugs/supplements recognized.', 25000, 'error');
           this.isLoadingFile = false;
-        } else this.$router.push({ query: { q: [...existingNames], isImported: true, nonExisting: [...nonExistingNames] } }).catch(() => {});
+        } else this.$router.push({ query: { q: [...existingNames], isImported: true, nonExisting: [...nonExistingNames] } }).catch(() => { });
       } catch (err) {
         eventBus.$emit(EV_show_user_msg, 'Import failed. File not supported (must be xlsx) or no drugs/supplements recognized.', 25000, 'error');
         this.isLoadingFile = false;
@@ -1090,7 +1141,7 @@ export default {
     handlePaging(page) {
       if (isNaN(+page)) return;
       if ((page - 1) === this.pagination.page) return;
-      this.pagination.page = page-1;
+      this.pagination.page = page - 1;
       this.$router.push({ query: { ...this.$route.query, q: [...(this.$route.query.q || [])], page } });
     },
     handleCtaBtn() {
@@ -1120,7 +1171,7 @@ export default {
       // this.handleSort_onLocalData();
       this.isLoading = false;
 
-      
+
 
       setTimeout(() => {
         window.scrollTo({
@@ -1167,7 +1218,7 @@ export default {
         isSupp: true
       };
       const [{ searchState }, { searchState: searchStateSupp }] = await Promise.all([
-      // const [{ interactions, searchState }, { interactions: suppInteractions, idsToTurnRed, searchState: searchStateSupp }] = await Promise.all([
+        // const [{ interactions, searchState }, { interactions: suppInteractions, idsToTurnRed, searchState: searchStateSupp }] = await Promise.all([
         this.$store.dispatch({ type: 'getInteractions', filterBy: drugFilterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}` }),
         this.$store.dispatch({ type: 'getInteractions', filterBy: suppFilterBy, cacheKey: `/search/positive-boosters?${this.$route.fullPath.split('?')[1]}/supps` })
       ]);
@@ -1258,8 +1309,8 @@ export default {
       }, []);
 
       // return await this.$store.dispatch({ type: 'getInteractions', filterBy: {...filterBy, id: ids}, cacheKey: `/search?${this.$route.fullPath.split('?')[1]}` });
-      const cacheKey = useCash? `/search?${this.$route.fullPath.split('?')[1]}` : undefined;
-      return await this.$store.dispatch({ type: 'getInteractions', filterBy: {...filterBy, id: ids}, cacheKey: cacheKey });
+      const cacheKey = useCash ? `/search?${this.$route.fullPath.split('?')[1]}` : undefined;
+      return await this.$store.dispatch({ type: 'getInteractions', filterBy: { ...filterBy, id: ids }, cacheKey: cacheKey });
     },
     async getAllInteractionsData() {
       const ids = this.materials.reduce((acc, { _id, labels }) => {
@@ -1390,7 +1441,7 @@ export default {
     handleSort({ sortBy, side, isDesc }) {
       if (this.pagination.page) {
         this.pagination.page = 0;
-        this.$router.push({ query: { ...this.$route.query, q: [...(this.$route.query.q || [])], page: this.pagination.page+1 } });
+        this.$router.push({ query: { ...this.$route.query, q: [...(this.$route.query.q || [])], page: this.pagination.page + 1 } });
       }
       this.sortParams = { sortBy, side, isDesc };
       this.getResults();
@@ -1638,7 +1689,7 @@ export default {
       this.reset();
       this.$store.commit({ type: 'setTheoreticalDiff', diff: 0 });
       eventBus.$emit(EV_search_results_cleared);
-      this.$router.push({ name: this.$route.name }).catch(() => {});
+      this.$router.push({ name: this.$route.name }).catch(() => { });
     },
     getResultIcon(result) {
       let fileName = '';

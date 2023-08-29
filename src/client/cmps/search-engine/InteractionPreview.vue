@@ -1,56 +1,45 @@
 <template>
   <section class="interaction-preview" :id="interaction._id">
-    <collapse @collapse-closed="onCollapseToggle" :initialIsVisible="$route.name === 'Monitor'" :initial-is-visible="initialCollapseIsVisible" :disable="!isAllowed">
+    <collapse @collapse-closed="onCollapseToggle" :initialIsVisible="$route.name === 'Monitor'"
+      :initial-is-visible="initialCollapseIsVisible" :disable="!isAllowed">
       <template #header>
         <component :is="headerCmp" :to="interactionURL" @click="onCollapseToggle">
-          <span v-if="$route.name === 'Boosters' && !isChild && !interaction.isNegative" class="poss-booster-count badge" :style="getBadgeColor(interaction)">{{ newLength || getVinteractionsCount(interaction) }}</span>
-          <div
-            class="interaction-preview-header table-row"
-            :class="{
-              child: isChild,
-              'dups-list': isDuplicate,
-              'empty-group': interaction.isEmpty,
-              'interaction-column': !isAllowed
-            }"
-          >
+          <span v-if="$route.name === 'Boosters' && !isChild && !interaction.isNegative" class="poss-booster-count badge"
+            :style="getBadgeColor(interaction)">{{ newLength || getVinteractionsCount(interaction) }}</span>
+          <div class="interaction-preview-header table-row" :class="{
+            child: isChild,
+            'dups-list': isDuplicate,
+            'empty-group': interaction.isEmpty,
+            'interaction-column': !isAllowed
+          }">
             <span class="table-col" :class="{ 'flex-align-center': isDuplicate, 'off-interaction-col-1': !isAllowed }">
-              <interaction-capsules
-                :showContentInTitle="showContentInTitle"
+              <interaction-capsules :showContentInTitle="showContentInTitle"
                 :hoverMsg_="hoverMsg || (interaction.isCompoundGroup === false) && (interaction.originLabel && interaction.originLabel.name) || ''"
-                :name="interactionName || ''"
-                :color="getInteractionColor(interaction)"
-                :vInteractionCount="newLength || getVinteractionsCount(interaction)"
-                :localize="!isCompoundPart"
-                :showDraftName="isDuplicate"
-                :draftName="interaction.side2DraftName"
-                :isLabel="!!interaction.side2Label"
-                :isMaterialGroup="!!interaction.isMaterialGroup"
-                :exactName="exactName"
-                :isPositive="isPositive"
-                :isSearcheEngin="true"
-                :isLowLevelInteraction="isLowLevelInteraction(interaction)"
-              />
+                :name="interactionName || ''" :color="getInteractionColor(interaction)"
+                :vInteractionCount="newLength || getVinteractionsCount(interaction)" :localize="!isCompoundPart"
+                :showDraftName="isDuplicate" :draftName="interaction.side2DraftName" :isLabel="!!interaction.side2Label"
+                :isMaterialGroup="!!interaction.isMaterialGroup" :exactName="exactName" :isPositive="isPositive"
+                :isSearcheEngin="true" :isLowLevelInteraction="isLowLevelInteraction(interaction)" />
             </span>
-            <span v-if="isAllowed" class="recomendation table-col" :class="{ 'recomendation-not-advised': interaction.recommendation === 'Coadministration is not advised' }" :title="interaction.recommendation">
+            <span v-if="isAllowed" class="recomendation table-col"
+              :class="{ 'recomendation-not-advised': interaction.recommendation === 'Coadministration is not advised' }"
+              :title="interaction.recommendation">
               {{ getShortRecommendation(interaction.recommendation) }}
             </span>
             <span v-else class="table-col flex-start off-interaction-col-2" title="Open only for subscribers">
               <lock-icon class="lock-icon" :size="18" />
               <p class="clip-txt">open only for subscribers</p>
             </span>
-            <span
-              v-if="isAllowed"
-              class="table-col small-data"
-              :class="{
-                'small-data-not-advised': interaction.recommendation === 'Coadministration is not advised',
-                togglable: ((!interaction.refs && !interaction.severity) || interaction.side2Label) && !interaction.isEmpty
-              }"
-            >
+            <span v-if="isAllowed" class="table-col small-data" :class="{
+              'small-data-not-advised': interaction.recommendation === 'Coadministration is not advised',
+              togglable: ((!interaction.refs && !interaction.severity) || interaction.side2Label) && !interaction.isEmpty
+            }">
               <tooltip right :txt="getLongEvidenceLevel(interaction.evidenceLevel || interaction.evidence_level)">
                 <template #content>
                   <ul class="loe-tooltip">
                     <li>{{ getLongEvidenceLevel(interaction.evidenceLevel || interaction.evidence_level) }}</li>
-                    <li v-if="interaction.refs && !interaction.side2Label">{{ getRefsCount(interaction) }} scientific articles</li>
+                    <li v-if="interaction.refs && !interaction.side2Label">{{ getRefsCount(interaction) }} scientific
+                      articles</li>
                   </ul>
                 </template>
                 <span class="evidence-level" :class="{ only: interaction.evidence_level && true }">
@@ -61,8 +50,10 @@
                 </span>
               </tooltip>
               <!-- Arrow -->
-              <span v-if="((!interaction.refs && !interaction.severity) || interaction.side2Label) && !interaction.isEmpty" class="de-activator">
-              <!-- <span v-if="interaction.vInteractions" class="de-activator"> -->
+              <span
+                v-if="((!interaction.refs && !interaction.severity) || interaction.side2Label) && !interaction.isEmpty"
+                class="de-activator">
+                <!-- <span v-if="interaction.vInteractions" class="de-activator"> -->
                 <chevron-up-icon class="opened" title="" />
                 <chevron-down-icon class="closed" title="" />
               </span>
@@ -85,11 +76,14 @@
         </component>
       </template>
       <template #content>
-        <div class="negative-msg" v-if="interaction.isNegative">{{ negativeMsgName(interaction.name) }} has a negative interaction with one of the searched drugs</div>
-        <div class="interaction-preview-content" :class="{ link: link }" v-if="!interaction.side2Label && interaction.side2Material">
+        <div class="negative-msg" v-if="interaction.isNegative">{{ negativeMsgName(interaction.name) }} has a negative
+          interaction with one of the searched drugs</div>
+        <div class="interaction-preview-content" :class="{ link: link }"
+          v-if="!interaction.side2Label && interaction.side2Material">
           <div v-if="!link">
             <div v-if="$route.name === 'Monitor'">
-              <ul class="monitor-list" v-if="interaction.monitor.general || interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptoms">
+              <ul class="monitor-list"
+                v-if="interaction.monitor.general || interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptoms">
                 <li v-if="interaction.monitor.general">
                   <span class="monitor-list-header font-bold">General:</span>
                   {{ interaction.monitor.general }}
@@ -111,20 +105,19 @@
             </div>
             <div v-else>
               <h3 class="font-bold">Summary</h3>
-              <long-txt :txt="interaction.summary" :maxChars="250" :expandable="false" :overflowSymb="getInteractionLink(interaction)" isHTML />
+              <long-txt :txt="interaction.summary" :maxChars="250" :expandable="false"
+                :overflowSymb="getInteractionLink(interaction)" isHTML />
             </div>
           </div>
-          <chevron-up-icon
-            class="chevron-icon"
-            :class="{
-              'u-hide': $route.name === 'Monitor'
-            }"
-            title=""
-          />
+          <chevron-up-icon class="chevron-icon" :class="{
+            'u-hide': $route.name === 'Monitor'
+          }" title="" />
         </div>
-        <div class="interaction-preview-content" :class="{ child: isChild }" v-else-if="interaction.side2Label && !interaction.side2Material">
+        <div class="interaction-preview-content" :class="{ child: isChild }"
+          v-else-if="interaction.side2Label && !interaction.side2Material">
           <template v-if="$route.name === 'Monitor'">
-            <ul class="monitor-list" v-if="interaction.monitor.general || interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptoms">
+            <ul class="monitor-list"
+              v-if="interaction.monitor.general || interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptoms">
               <li v-if="interaction.monitor.general">
                 <span class="monitor-list-header font-bold">General:</span>
                 {{ interaction.monitor.general }}
@@ -145,23 +138,29 @@
             <p class="monitor-list" v-else>There is nothing to monitor for this interaction.</p>
           </template>
           <template v-else>
-            <label-interaction-preview v-if="materials && materials.length" :interaction="interaction" :material="materials[0]" :materialIds="materialIds" :shortRecommendation="getShortRecommendation(interaction.recommendation)" :color="getInteractionColor(interaction)" :link="link" :parent-idx="idx" />
+            <label-interaction-preview v-if="materials && materials.length" :interaction="interaction"
+              :material="materials[0]" :materialIds="materialIds"
+              :shortRecommendation="getShortRecommendation(interaction.recommendation)"
+              :color="getInteractionColor(interaction)" :link="link" :parent-idx="idx" />
           </template>
         </div>
         <div v-else-if="!!interaction.isMaterialGroup">
-          <positive-interaction-preview @add-to-search="addToSearch" :interaction="interaction" :materials="materials" :parent-idx="idx" :isSupp="isSupp" :key="counter" @removeInteraction="removeInteraction" @interactionDone="interactionDone" @setCount="setCount" />
+          <positive-interaction-preview @add-to-search="addToSearch" :interaction="interaction" :materials="materials"
+            :parent-idx="idx" :isSupp="isSupp" :key="counter" @removeInteraction="removeInteraction"
+            @interactionDone="interactionDone" @setCount="setCount" />
         </div>
-        <div
-          v-else
-          class="interaction-preview-content"
-          :class="{
-            child: isChild,
-            group: true
-          }"
-        >
-          <p class="msg" v-if="interaction.isCompoundGroup === false">There are different interactions, dependent on {{ getSide2Name(interaction.name) }} use:</p>
+        <div v-else class="interaction-preview-content" :class="{
+          child: isChild,
+          group: true
+        }">
+          <p class="msg" v-if="interaction.isCompoundGroup === false">There are different interactions, dependent on {{
+            getSide2Name(interaction.name) }} use:</p>
           <div v-for="(vInteraction, index) in interaction.vInteractions" :key="index">
-            <interaction-preview :parentShowContentInTitle="showContentInTitle" :hoverMsg_="(interaction.isCompoundGroup === false) && (interaction.originLabel && interaction.originLabel.name) || ''" :interaction="vInteraction" :materials="materials" :isCompoundPart="isCompoundPart || interaction.isCompoundGroup" :isDuplicate="interaction.isCompoundGroup === false" :link="link" :idx="index" :parent-idx="idx" is-child />
+            <interaction-preview :parentShowContentInTitle="showContentInTitle"
+              :hoverMsg_="(interaction.isCompoundGroup === false) && (interaction.originLabel && interaction.originLabel.name) || ''"
+              :interaction="vInteraction" :materials="materials"
+              :isCompoundPart="isCompoundPart || interaction.isCompoundGroup"
+              :isDuplicate="interaction.isCompoundGroup === false" :link="link" :idx="index" :parent-idx="idx" is-child />
           </div>
         </div>
       </template>
@@ -334,20 +333,20 @@ export default {
       if (!this.loggedInUser && this.idx > idxToShow) return false;
       return true;
     },
-    relevantMatsRefs() {
+    relevantMatsRefsOrigin() {
       if (!(this?.interaction?.fullSide1Data && this?.interaction?.fullSide2Data)) return 0;
 
       const interactionRelevantRefs = this.interaction.fullSide1Data.refs.filter(ref => this.interaction.refs.includes(ref.draftIdx));
-      
+
       const relevantSide2Pathways = this.interaction?.fullSide2Data?.pathways?.filter(
-          pathway =>
-            (pathway.type === 'enzyme' && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))) ||
-            (pathway.type === 'transporter' && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))) ||
-            (pathway.type === 'carrier' && !pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor'))
-        ) || [];
+        pathway =>
+          (pathway.type === 'enzyme' && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))) ||
+          (pathway.type === 'transporter' && (pathway.actions.includes('substrate') || pathway.actions.includes('binder'))) ||
+          (pathway.type === 'carrier' && !pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor'))
+      ) || [];
       const relevantSide1Pathways = this.interaction?.fullSide1Data?.pathways?.filter(pathway => {
-          const idx = relevantSide2Pathways.findIndex(side2Pathway => side2Pathway.name?.replace('CYP', '').toUpperCase() === pathway.name?.replace('CYP', '').toUpperCase());
-          return idx !== -1 && !pathway.actions.length;
+        const idx = relevantSide2Pathways.findIndex(side2Pathway => side2Pathway.name?.replace('CYP', '').toUpperCase() === pathway.name?.replace('CYP', '').toUpperCase());
+        return idx !== -1 && !pathway.actions.length;
       }) || [];
       const txtForSide1Sort = (this.interaction?.fullSide1Data?.effectOnDrugMetabolism +
         ' ' +
@@ -357,9 +356,9 @@ export default {
         }, '')) || '';
       const sorted1Refs = interactionUIService.getSortedRefs(txtForSide1Sort, this.interaction?.fullSide1Data?.refs || [])
       const side1Refs = sorted1Refs.filter(ref => interactionRelevantRefs.findIndex(currRef => currRef?.link === ref?.link) === -1)
-      
+
       const relevantSide2Refs = (() => {
-        
+
         let nextDraftIdx = 1;
         return relevantSide2Pathways.reduce((acc, pathway) => {
           pathway.references.forEach((pubmedId, idx) => {
@@ -380,10 +379,70 @@ export default {
 
       return side1Refs.length + relevantSide2Refs.length;
 
-      
+
       // return relevantSide1Pathways.reduce((acc, c) => acc+c.references.length, 0)
       //      + relevantSide2Pathways.reduce((acc, c) => acc+c.references.length, 0);
     },
+    relevantMatsRefs() {
+      // Check if necessary data is present
+
+      if (!this?.interaction?.fullSide1Data || !this?.interaction?.fullSide2Data) return 0;
+
+      // Extract interaction-relevant references for Side1
+      const interactionRelevantRefs = this.interaction.fullSide1Data.refs.filter(ref =>
+        this.interaction.refs.includes(ref.draftIdx)
+      );
+
+      // Filter pathways based on given conditions
+      const filterPathway = (pathway) => {
+        const isEnzymeOrTransporter = ['enzyme', 'transporter'].includes(pathway.type) &&
+          (pathway.actions.includes('substrate') || pathway.actions.includes('binder'));
+        const isCarrier = pathway.type === 'carrier' &&
+          !pathway.actions.includes('inducer') && !pathway.actions.includes('inhibitor');
+
+        return isEnzymeOrTransporter || isCarrier;
+      };
+
+      const relevantSide2Pathways = this.interaction.fullSide2Data.pathways?.filter(filterPathway) || [];
+
+      // Check for matching pathways in Side1 and Side2
+      const relevantSide1Pathways = this.interaction.fullSide1Data.pathways?.filter(pathway => {
+        return relevantSide2Pathways.some(side2Pathway =>
+          side2Pathway.name?.replace('CYP', '').toUpperCase() === pathway.name?.replace('CYP', '').toUpperCase()
+        ) && !pathway.actions.length;
+      }) || [];
+
+      // Get sorted references for Side1 and filter out common references
+      const txtForSide1Sort = (this.interaction.fullSide1Data.effectOnDrugMetabolism + ' ' +
+        relevantSide1Pathways.map(pathway => pathway.influence).join(' ')) || '';
+
+      const sorted1Refs = interactionUIService.getSortedRefs(txtForSide1Sort, this.interaction.fullSide1Data.refs || []);
+
+      const side1Refs = sorted1Refs.filter(ref =>
+        !interactionRelevantRefs.some(currRef => currRef?.link === ref?.link)
+      );
+
+      // Extract unique references for Side2
+      let nextDraftIdx = 1;
+      const relevantSide2Refs = relevantSide2Pathways.flatMap(pathway => {
+        return pathway.references.map((pubmedId, idx) => {
+          const isValidUrl = typeof pubmedId === 'string' && pubmedId.startsWith('http');
+          return {
+            draftIdx: nextDraftIdx++,
+            type: '',
+            txt: pathway.fullReferences[idx],
+            link: isValidUrl ? pubmedId : `https://pubmed.ncbi.nlm.nih.gov/${pubmedId}`,
+            pubmedId: isValidUrl ? 0 : pubmedId
+          };
+        });
+      }).filter((ref, idx, self) =>
+        idx === self.findIndex(currRef => currRef.link === ref.link)
+      );
+
+
+      return side1Refs.length + relevantSide2Refs.length;
+    }
+
   },
   methods: {
     addToSearch(toAdd) {
@@ -453,7 +512,8 @@ export default {
           refCount = interaction.refs.length + this.pathwayRefCount;
         }
       }
-      refCount += this.relevantMatsRefs;
+      if (this.$route.name === 'Results') refCount += this.interaction.relevantMatsRefs;
+      else refCount += this.relevantMatsRefs;
       return refCount ? `${refCount}` : '';
     },
     getRefsCountTxt(interaction) {
@@ -599,6 +659,7 @@ export default {
   async created() {
     // if (this.interaction.isCompoundGroup === false) console.log(this.interaction)
     // this.getPathwayRefsCount();
+
     this.primarySideInView = this.$store.getters.firstInteractionSide;
     eventBus.$on(EV_sortby_side_swaped, this.swapSideNames);
     this.restoreCollapses();

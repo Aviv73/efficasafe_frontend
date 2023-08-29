@@ -6,42 +6,29 @@
                 <button @click="$router.go(-1)" class="close-modal-btn">
                     <close-icon :size="14" />
                 </button>
-                <img class="logo" src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
+                <img class="logo" src="@/client/assets/imgs/flat-logo.webp" alt="Logo" />
                 <div class="auth-modal-small-title font-medium">
                     <p>Enter your Email</p>
                 </div>
 
                 <validation-observer v-slot="{ handleSubmit, reset }" ref="observer">
-                    <form
-                        @submit.prevent="handleSubmit(sendEmail)"
-                        @reset="reset"
-                        novalidate
-                    >
-                            <validation-provider
-                                mode="eager"
-                                name="email"
-                                rules="required|email"
-                                :custom-messages="validationMessages"
-                                v-slot="{ errors }"
-                            >
-                                <div class="auth-modal-field">
-                                    <input
-                                        :class="{ 'is-invalid': !!errors.length }"
-                                        v-model="email"
-                                        type="email"
-                                        placeholder="yours@example.com"
-                                    />
-                                </div>
-                                <p v-if="emailSent" class="auth-modal-user-msg font-bold">
-                                    WE'VE JUST SENT YOU AN EMAIL TO RESET YOUR PASSWORD.
-                                </p>
-                                <p v-if="errors.length" class="auth-modal-user-msg font-bold is-error">
-                                    {{ errors[0] }}
-                                </p>
-                                <p v-if="failMsg" class="auth-modal-user-msg font-bold is-error">
-                                    {{ failMsg }}
-                                </p>
-                            </validation-provider>
+                    <form @submit.prevent="handleSubmit(sendEmail)" @reset="reset" novalidate>
+                        <validation-provider mode="eager" name="email" rules="required|email"
+                            :custom-messages="validationMessages" v-slot="{ errors }">
+                            <div class="auth-modal-field">
+                                <input :class="{ 'is-invalid': !!errors.length }" v-model="email" type="email"
+                                    placeholder="yours@example.com" />
+                            </div>
+                            <p v-if="emailSent" class="auth-modal-user-msg font-bold">
+                                WE'VE JUST SENT YOU AN EMAIL TO RESET YOUR PASSWORD.
+                            </p>
+                            <p v-if="errors.length" class="auth-modal-user-msg font-bold is-error">
+                                {{ errors[0] }}
+                            </p>
+                            <p v-if="failMsg" class="auth-modal-user-msg font-bold is-error">
+                                {{ failMsg }}
+                            </p>
+                        </validation-provider>
                         <button type="submit" class="btn">Send Email</button>
                     </form>
                 </validation-observer>

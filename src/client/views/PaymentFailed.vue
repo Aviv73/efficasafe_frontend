@@ -1,6 +1,6 @@
 <template>
   <section class="success-page">
-    <img class="logo" src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
+    <img class="logo" src="@/client/assets/imgs/flat-logo.webp" alt="Logo" />
     <h2>Somthing went wrong</h2>
     <h3>For some reason the payment did not go through, please try again</h3>
     <div class="failed-btns go-search-btn">
@@ -17,17 +17,17 @@ import { httpService } from "@/cms/services/http.service";
 
 export default {
   computed: {
-    loggedInUser(){
-        return this.$store.getters.loggedInUser;
+    loggedInUser() {
+      return this.$store.getters.loggedInUser;
     }
   },
   async created() {
-      await this.$store.dispatch({type: 'getUserInfo'})
-      const task = {
-        isFailedPayment: true,
-        user: JSON.parse(JSON.stringify(this.loggedInUser))
-      }
-      await httpService.post('task', task)
+    await this.$store.dispatch({ type: 'getUserInfo' })
+    const task = {
+      isFailedPayment: true,
+      user: JSON.parse(JSON.stringify(this.loggedInUser))
+    }
+    await httpService.post('task', task)
   },
 };
 </script>

@@ -1,4 +1,5 @@
-const CompressionPlugin = require('compression-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin')
+const BrotliPlugin = require('brotli-webpack-plugin')
 
 module.exports = {
   pages: {
@@ -6,27 +7,31 @@ module.exports = {
       entry: 'src/cms/main.js',
       template: 'public/cms.html',
       filename: 'cms.html',
-      title: 'Efficasafe - CMS'
+      title: 'Efficasafe - CMS',
     },
     client: {
       entry: 'src/client/main.js',
       template: 'public/index.html',
       filename: 'index.html',
-      title: 'Efficasafe'
-    }
+      title: 'Efficasafe',
+    },
   },
-  "transpileDependencies": [
-    "vuetify"
-  ],
-  outputDir: '../efficasafe_backend/public',
+  transpileDependencies: ['vuetify'],
+  outputDir: '../backend/public',
 
   configureWebpack: {
     plugins: [
       new CompressionPlugin({
         test: /\.js$|\.css$|\.html$/,
         threshold: 10240,
-        minRatio: 0.8
-      })
-    ]
-  }
+        minRatio: 0.8,
+      }),
+      new BrotliPlugin({
+        asset: '[path].br[query]',
+        test: /\.js$|\.css$|\.html$/,
+        threshold: 2048,
+        minRatio: 0.8,
+      }),
+    ],
+  },
 }

@@ -1,8 +1,8 @@
 <template>
     <section class="success-page">
-        <img class="logo" src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
+        <img class="logo" src="@/client/assets/imgs/flat-logo.webp" alt="Logo" />
         <template v-if="isLoading">
-            <loader/>
+            <loader />
             <h3>Do not close this page...</h3>
         </template>
         <template v-else>
@@ -23,7 +23,7 @@ import Loader from '@/client/cmps/common/icons/Loader';
 import { googleAnalyticsService } from '../../cms/services/googleAnalyticsService';
 
 export default {
-    data(){
+    data() {
         return {
             isLoading: true
         }
@@ -41,7 +41,7 @@ export default {
         await userService.updateSession(user)
         this.isLoading = false
     },
-    components:{
+    components: {
         Loader
     }
 };

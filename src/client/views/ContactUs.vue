@@ -4,11 +4,7 @@
       <span class="brim-start" />
       <header>
         <router-link to="/" class="logo-container">
-          <img
-            class="logo"
-            :src="require('@/client/assets/imgs/flat-logo.png')"
-            alt="Logo"
-          />
+          <img class="logo" :src="require('@/client/assets/imgs/flat-logo.webp')" alt="Logo" />
         </router-link>
         <h2 class="heading1">Contact us</h2>
         <p>
@@ -21,20 +17,11 @@
       </header>
       <main>
         <validation-observer v-slot="{ handleSubmit, reset, invalid }" ref="observer">
-          <form
-            class="contact-us-form"
-            @submit.prevent="handleSubmit(onSubmit)"
-            @reset="reset"
-            novalidate
-          >
+          <form class="contact-us-form" @submit.prevent="handleSubmit(onSubmit)" @reset="reset" novalidate>
             <validation-provider>
               <div class="form-input">
                 <label for="">
-                  <input
-                    type="text"
-                    placeholder="First Name"
-                    v-model="userDetails.firstName"
-                  />
+                  <input type="text" placeholder="First Name" v-model="userDetails.firstName" />
                   <span class="label">First Name</span>
                 </label>
               </div>
@@ -42,30 +29,15 @@
             <validation-provider>
               <div class="form-input">
                 <label for="">
-                  <input
-                    type="text"
-                    placeholder="Last Name"
-                    v-model="userDetails.lastName"
-                  />
+                  <input type="text" placeholder="Last Name" v-model="userDetails.lastName" />
                   <span class="label">Last Name</span>
                 </label>
               </div>
             </validation-provider>
-            <validation-provider
-              rules="required|email"
-              v-slot="{ errors }"
-              :custom-messages="validationMessages"
-            >
-              <div
-                class="form-input"
-                :class="{ 'is-invalid': !!errors.length }"
-              >
+            <validation-provider rules="required|email" v-slot="{ errors }" :custom-messages="validationMessages">
+              <div class="form-input" :class="{ 'is-invalid': !!errors.length }">
                 <label for="">
-                  <input
-                    type="text"
-                    placeholder="Email"
-                    v-model="userDetails.email"
-                  />
+                  <input type="text" placeholder="Email" v-model="userDetails.email" />
                   <span class="label">Email</span>
                 </label>
               </div>
@@ -76,41 +48,21 @@
             <validation-provider>
               <div class="form-input last-input-form">
                 <label for="">
-                  <input
-                    type="text"
-                    placeholder="Phone"
-                    v-model="userDetails.phone"
-                    ref="phoneInput"
-                    @countrychange="setPhoneDialCode"
-                  />
+                  <input type="text" placeholder="Phone" v-model="userDetails.phone" ref="phoneInput"
+                    @countrychange="setPhoneDialCode" />
                   <span class="label">Phone</span>
                 </label>
               </div>
             </validation-provider>
 
-              <custom-select
-                :key="selectKey"
-                class="contact-us-custom-select"
-                :class="{ 'is-invalid': selectError }"
-                placeholder="Inquiry type"
-                :options="selectOptions"
-                v-model="userDetails.type"
-                ref="customSelect"
-                @changed="selectError = false"
-              >
-              </custom-select>
+            <custom-select :key="selectKey" class="contact-us-custom-select" :class="{ 'is-invalid': selectError }"
+              placeholder="Inquiry type" :options="selectOptions" v-model="userDetails.type" ref="customSelect"
+              @changed="selectError = false">
+            </custom-select>
 
-            <validation-provider
-              rules="required"
-              v-slot="{ errors }"
-              :custom-messages="validationMessages"
-            >
-              <textarea
-                v-model="userDetails.msg"
-                placeholder="Message"
-                rows="10"
-                :class="{ 'is-invalid': !!errors.length }"
-              />
+            <validation-provider rules="required" v-slot="{ errors }" :custom-messages="validationMessages">
+              <textarea v-model="userDetails.msg" placeholder="Message" rows="10"
+                :class="{ 'is-invalid': !!errors.length }" />
               <div class="user-edit-error-msg font-bold" v-if="errors.length">
                 {{ errors[0] }}
               </div>
@@ -125,9 +77,10 @@
               <p>efficasafe can send me news and updates</p>
             </span> -->
 
-            <button :class="{'disabled-btn': invalid || !userDetails.type}" class="btn contact-us-btn" type="submit">Submit</button>
+            <button :class="{ 'disabled-btn': invalid || !userDetails.type }" class="btn contact-us-btn"
+              type="submit">Submit</button>
             <div class="user-edit-error-msg font-bold" v-if="selectError">
-                Inquiry type is required
+              Inquiry type is required
             </div>
           </form>
         </validation-observer>
@@ -186,13 +139,13 @@ export default {
         return;
       }
       this.checkPhoneIntlValid();
-      try{
-          await httpService.post('task', this.userDetails)
-          eventBus.$emit(EV_show_user_msg, 'Your request was submitted, we will reply as soon as possible', 5000, 'success')  
-          this.resetForm()
+      try {
+        await httpService.post('task', this.userDetails)
+        eventBus.$emit(EV_show_user_msg, 'Your request was submitted, we will reply as soon as possible', 5000, 'success')
+        this.resetForm()
 
-      }catch(err){
-          eventBus.$emit(EV_show_user_msg, 'Something went wrong', 5000, 'error')
+      } catch (err) {
+        eventBus.$emit(EV_show_user_msg, 'Something went wrong', 5000, 'error')
       }
     },
     setPhoneDialCode() {
@@ -206,7 +159,7 @@ export default {
     onSelectChange() {
       this.$refs.customSelect.classList.remove("is-invalid");
     },
-    resetForm(){
+    resetForm() {
       this.userDetails.firstName = ''
       this.userDetails.lastName = ''
       this.userDetails.email = ''
@@ -214,7 +167,7 @@ export default {
       this.userDetails.type = ''
       this.userDetails.msg = ''
       this.selectKey++
-      this.$refs.observer.reset();  
+      this.$refs.observer.reset();
     }
   },
   mounted() {

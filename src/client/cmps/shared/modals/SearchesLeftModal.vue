@@ -1,25 +1,19 @@
 <template>
     <aside class="searches-left-modal">
         <header class="searches-left-modal-header">
-            <button
-                class="close-btn"
-                @click="reset"
-            >
+            <button class="close-btn" @click="reset">
                 <close-icon :size="14" />
             </button>
         </header>
         <main class="searches-left-modal-content">
-            <img src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
+            <img src="@/client/assets/imgs/flat-logo.webp" alt="Logo" />
             <p class="searches-left-modal-content-txt font-medium">
                 Only 5 free searches left
             </p>
             <button class="btn" @click="onOpenSignup">Register for free trial</button>
         </main>
         <footer class="searches-left-modal-footer">
-            <button
-                class="searches-left-modal-footer-btn"
-                @click="reset"
-            >
+            <button class="searches-left-modal-footer-btn" @click="reset">
                 Not now
             </button>
         </footer>
@@ -49,7 +43,7 @@ export default {
         reset() {
             this.$emit('close-modal');
         },
-        onOpenSignup(){
+        onOpenSignup() {
             eventBus.$emit(EV_open_signup)
             this.$emit('close-modal');
         }

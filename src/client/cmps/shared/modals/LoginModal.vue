@@ -1,46 +1,47 @@
 <template>
-        <div class="auth-modal">
-            <div class="auth-modal-cover" @click.stop="closeModal"></div>
-            <div class="auth-modal-content txt-center">
-                <div class="auth-modal-content-container">
-                    <button @click="closeModal" class="close-modal-btn">
-                        <close-icon :size="14" />
-                    </button>
-                    <img class="logo" src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
-                    <p @click="openSignupModal" class="signup-link">Don't have an account? signup now</p>
-                    <div v-if="wrongProviderMsg || isShowFailedMsg" class="msg failed">{{wrongProviderMsg || 'WRONG EMAIL OR PASSWORD.'}}</div>
-                    <div v-if="isShowSuccesseMsg" class="msg successe">You are now logged in.</div>
-                    <form @submit.prevent="onRegister" class="auth-modal-field">
-                        <eye-icon v-if="!isShowPass" @click="isShowPass = !isShowPass" class="eye-icon"></eye-icon>
-                        <eye-off-icon v-else @click="isShowPass = !isShowPass" class="eye-icon"></eye-off-icon>
-                        <input @input="removeFailedmsg" type="text" placeholder="Email" v-model="cred.email">
-                        <input @input="removeFailedmsg" :type="passInputType" placeholder="Password" v-model="cred.password">
-                        <div class="forgot-pass-link">
-                            <a href="/email-pass">Forgot password?</a>
-                        </div>
-                        <button v-if="!isLoading" class="register-btn">Login</button>
-                        <button v-else class="register-btn disabled">
-                            <loader class="loader"/>
-                        </button>
-                    </form>
-                    <div class="or-container">
-                        <div class="line"></div>
-                        <p style="margin-bottom: 10px">or Login with</p>
-                        <div class="line"></div>
+    <div class="auth-modal">
+        <div class="auth-modal-cover" @click.stop="closeModal"></div>
+        <div class="auth-modal-content txt-center">
+            <div class="auth-modal-content-container">
+                <button @click="closeModal" class="close-modal-btn">
+                    <close-icon :size="14" />
+                </button>
+                <img class="logo" src="@/client/assets/imgs/flat-logo.webp" alt="Logo" />
+                <p @click="openSignupModal" class="signup-link">Don't have an account? signup now</p>
+                <div v-if="wrongProviderMsg || isShowFailedMsg" class="msg failed">
+                    {{ wrongProviderMsg || 'WRONG EMAIL OR PASSWORD.' }}</div>
+                <div v-if="isShowSuccesseMsg" class="msg successe">You are now logged in.</div>
+                <form @submit.prevent="onRegister" class="auth-modal-field">
+                    <eye-icon v-if="!isShowPass" @click="isShowPass = !isShowPass" class="eye-icon"></eye-icon>
+                    <eye-off-icon v-else @click="isShowPass = !isShowPass" class="eye-icon"></eye-off-icon>
+                    <input @input="removeFailedmsg" type="text" placeholder="Email" v-model="cred.email">
+                    <input @input="removeFailedmsg" :type="passInputType" placeholder="Password" v-model="cred.password">
+                    <div class="forgot-pass-link">
+                        <a href="/email-pass">Forgot password?</a>
                     </div>
-                    <div class="auth-modal-content-media-btns">
-                        <a :href="googleLink" class="blue" role="button">
-                            <img src="@/client/assets/imgs/google.svg" alt="Logo" />
-                            Login with google
-                        </a>
-                        <!-- <a :href="facebookLink" class="blue" role="button">
+                    <button v-if="!isLoading" class="register-btn">Login</button>
+                    <button v-else class="register-btn disabled">
+                        <loader class="loader" />
+                    </button>
+                </form>
+                <div class="or-container">
+                    <div class="line"></div>
+                    <p style="margin-bottom: 10px">or Login with</p>
+                    <div class="line"></div>
+                </div>
+                <div class="auth-modal-content-media-btns">
+                    <a :href="googleLink" class="blue" role="button">
+                        <img src="@/client/assets/imgs/google.svg" alt="Logo" />
+                        Login with google
+                    </a>
+                    <!-- <a :href="facebookLink" class="blue" role="button">
                             <img class="facebook-img" src="@/client/assets/imgs/facebook.svg" alt="Logo" />
                             Login with facebook 
                         </a> -->
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
 </template>
 
 <script>
@@ -61,9 +62,9 @@ export default {
     data() {
         return {
             isLoading: false,
-            cred:{
-                email:'',
-                password:'',
+            cred: {
+                email: '',
+                password: '',
             },
             isShowFailedMsg: false,
             wrongProviderMsg: null,
@@ -75,16 +76,16 @@ export default {
         loggedInUser() {
             return this.$store.getters.loggedInUser;
         },
-        googleLink(){
-            if(window.AutopilotAnywhere && window.AutopilotAnywhere.sessionId) return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/google?q=${window.AutopilotAnywhere.sessionId}` : `/auth/google?q=${window.AutopilotAnywhere.sessionId}`
+        googleLink() {
+            if (window.AutopilotAnywhere && window.AutopilotAnywhere.sessionId) return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/google?q=${window.AutopilotAnywhere.sessionId}` : `/auth/google?q=${window.AutopilotAnywhere.sessionId}`
             return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/google` : `/auth/google`
         },
         // facebookLink(){
         //     if(window.AutopilotAnywhere && window.AutopilotAnywhere.sessionId) return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/facebook?q=${window.AutopilotAnywhere.sessionId}` : `/auth/facebook?q=${window.AutopilotAnywhere.sessionId}`
         //     return (process.env.NODE_ENV === 'development') ? `http://localhost:3000/auth/facebook` : `/auth/facebook`
         // },
-        passInputType(){
-            if(!this.isShowPass) return 'password'
+        passInputType() {
+            if (!this.isShowPass) return 'password'
             return 'text'
         }
     },
@@ -92,43 +93,43 @@ export default {
         closeModal() {
             this.$emit('closeModal');
         },
-        openSignupModal(){
+        openSignupModal() {
             eventBus.$emit(EV_open_signup);
             this.$emit('closeModal');
         },
-        async onRegister(){
-            if(this.isLoading){
+        async onRegister() {
+            if (this.isLoading) {
                 return
             }
             this.isLoading = true
-            try{
-                if(window.AutopilotAnywhere && window.AutopilotAnywhere.sessionId) this.cred.autoPilotSessionId = window.AutopilotAnywhere.sessionId
+            try {
+                if (window.AutopilotAnywhere && window.AutopilotAnywhere.sessionId) this.cred.autoPilotSessionId = window.AutopilotAnywhere.sessionId
                 this.cred.email = this.cred.email.trim()
-                await this.$store.dispatch({type: 'login', cred: this.cred});
+                await this.$store.dispatch({ type: 'login', cred: this.cred });
                 this.isShowSuccesseMsg = true
                 setTimeout(() => {
                     this.closeModal()
-                },1500)
-            }catch(err){
-                 this.isShowFailedMsg = true
-            }finally{
+                }, 1500)
+            } catch (err) {
+                this.isShowFailedMsg = true
+            } finally {
                 this.isLoading = false
             }
         },
-        removeFailedmsg(){
+        removeFailedmsg() {
             this.isShowFailedMsg = false
             this.wrongProviderMsg = null
         },
-        showWrongProviderMsg(msg){
+        showWrongProviderMsg(msg) {
             this.wrongProviderMsg = msg.toUpperCase()
         }
-        
+
     },
-    created(){
+    created() {
         eventBus.$on(EV_wrong_provider, this.showWrongProviderMsg);
-        if(this.showNotSameProviderMsg) this.showWrongProviderMsg('This email signed up through a different login method')
+        if (this.showNotSameProviderMsg) this.showWrongProviderMsg('This email signed up through a different login method')
     },
-    components:{
+    components: {
         CloseIcon,
         EyeIcon,
         EyeOffIcon,

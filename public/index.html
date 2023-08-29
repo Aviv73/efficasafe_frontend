@@ -1,143 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <!-- Google Tag Manager -->
+    <script>
+      ;(function (w, d, s, l, i) {
+        w[l] = w[l] || []
+        w[l].push({
+          'gtm.start': new Date().getTime(),
+          event: 'gtm.js',
+        })
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer' ? '&l=' + l : ''
+        j.async = true
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl
+        f.parentNode.insertBefore(j, f)
+      })(window, document, 'script', 'dataLayer', 'GTM-55VQVXK')
+    </script>
+    <!-- End Google Tag Manager -->
 
-<head>
-  <!-- Google Tag Manager -->
-  <script>
-    (function (w, d, s, l, i) {
-      w[l] = w[l] || [];
-      w[l].push({
-        'gtm.start': new Date().getTime(),
-        event: 'gtm.js'
-      });
-      var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s),
-        dl = l != 'dataLayer' ? '&l=' + l : '';
-      j.async = true;
-      j.src =
-        'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-      f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-55VQVXK');
-  </script>
-  <!-- End Google Tag Manager -->
+    <!-- Auto pilot script -->
+    <script type="text/javascript">
+      ;(function (o) {
+        var b = 'https://speedyrhino.co/anywhere/',
+          t = '9cc9ef7006264324a1e0dec9b772e73280fd6ed069cc4b37ab590afd9ba7a8e6',
+          a = (window.AutopilotAnywhere = {
+            _runQueue: [],
+            run: function () {
+              this._runQueue.push(arguments)
+            },
+          }),
+          c = encodeURIComponent,
+          s = 'SCRIPT',
+          d = document,
+          l = d.getElementsByTagName(s)[0],
+          p = 't=' + c(d.title || '') + '&u=' + c(d.location.href || '') + '&r=' + c(d.referrer || ''),
+          j = 'text/javascript',
+          z,
+          y
+        if (!window.Autopilot) window.Autopilot = a
+        if (o.app) p = 'devmode=true&' + p
+        z = function (src, asy) {
+          var e = d.createElement(s)
+          e.src = src
+          e.type = j
+          e.async = asy
+          l.parentNode.insertBefore(e, l)
+        }
+        y = function () {
+          z(b + t + '?' + p, true)
+        }
+        if (window.attachEvent) {
+          window.attachEvent('onload', y)
+        } else {
+          window.addEventListener('load', y, false)
+        }
+      })({
+        app: true,
+      })
+    </script>
+    <!-- End Auto pilot script -->
 
-
-  <!-- Auto pilot script -->
-  <script type="text/javascript">
-    (function (o) {
-      var b = "https://speedyrhino.co/anywhere/",
-        t = "9cc9ef7006264324a1e0dec9b772e73280fd6ed069cc4b37ab590afd9ba7a8e6",
-        a = window.AutopilotAnywhere = {
-          _runQueue: [],
-          run: function () {
-            this._runQueue.push(arguments);
-          }
-        },
-        c = encodeURIComponent,
-        s = "SCRIPT",
-        d = document,
-        l = d.getElementsByTagName(s)[0],
-        p = "t=" + c(d.title || "") + "&u=" + c(d.location.href || "") + "&r=" + c(d.referrer || ""),
-        j = "text/javascript",
-        z, y;
-      if (!window.Autopilot) window.Autopilot = a;
-      if (o.app) p = "devmode=true&" + p;
-      z = function (src, asy) {
-        var e = d.createElement(s);
-        e.src = src;
-        e.type = j;
-        e.async = asy;
-        l.parentNode.insertBefore(e, l);
-      };
-      y = function () {
-        z(b + t + '?' + p, true);
-      };
-      if (window.attachEvent) {
-        window.attachEvent("onload", y);
-      } else {
-        window.addEventListener("load", y, false);
+    <!-- Ortto efficasafe2 capture code -->
+    <script>
+      window.ap3c = window.ap3c || {}
+      var ap3c = window.ap3c
+      ap3c.cmd = ap3c.cmd || []
+      ap3c.cmd.push(function () {
+        ap3c.init('Y5irBMp0H-qdw9NoZWZmaWNhc2FmZTI', 'https://capture-api.autopilotapp.com/')
+        ap3c.track({ v: 0 })
+      })
+      ap3c.activity = function (act) {
+        ap3c.act = ap3c.act || []
+        ap3c.act.push(act)
       }
-    })({
-      "app": true
-    });
-  </script>
-  <!-- End Auto pilot script -->
+      var s, t
+      s = document.createElement('script')
+      s.type = 'text/javascript'
+      s.src = 'https://cdn2l.ink/app.js'
+      t = document.getElementsByTagName('script')[0]
+      t.parentNode.insertBefore(s, t)
+    </script>
+    <!-- End Ortto efficasafe2 capture code -->
 
-  <!-- Ortto efficasafe2 capture code -->
-  <script>
-    window.ap3c = window.ap3c || {};
-    var ap3c = window.ap3c;
-    ap3c.cmd = ap3c.cmd || [];
-    ap3c.cmd.push(function() {
-        ap3c.init('Y5irBMp0H-qdw9NoZWZmaWNhc2FmZTI', 'https://capture-api.autopilotapp.com/');
-        ap3c.track({v: 0});
-    });
-    ap3c.activity = function(act) { ap3c.act = (ap3c.act || []); ap3c.act.push(act); };
-    var s, t; s = document.createElement('script'); s.type = 'text/javascript'; s.src = "https://cdn2l.ink/app.js";
-    t = document.getElementsByTagName('script')[0]; t.parentNode.insertBefore(s, t);
-  </script>
-  <!-- End Ortto efficasafe2 capture code -->
-  
-  <script>
-    window.dataLayer = [];
-  </script>
+    <script>
+      window.dataLayer = []
+    </script>
 
-  <!-- google site verification meta tag -->
-  <meta name="google-site-verification" content="oAy2Z2XeLMBPsdqRbyADpvy5WpiTP_puqc9veOyCBsg" />
+    <!-- google site verification meta tag -->
+    <meta name="google-site-verification" content="oAy2Z2XeLMBPsdqRbyADpvy5WpiTP_puqc9veOyCBsg" />
 
-  <!-- Enable mixed http/https content; used ONLY for the 'geoplugin' api (for currency) -->
-  <!-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> -->
-  <!-- Currency script -->
-  <!-- <script language="JavaScript" src="http://www.geoplugin.net/javascript.gp" type="text/javascript"></script> -->
-  <!-- <script language="JavaScript" src="https://ssl.geoplugin.net/javascript.gp?k=UVDVoldtQJdlW37KpPm1sTTwhS1Rht" type="text/javascript"></script> -->
+    <!-- Enable mixed http/https content; used ONLY for the 'geoplugin' api (for currency) -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> -->
+    <!-- Currency script -->
+    <!-- <script language="JavaScript" src="http://www.geoplugin.net/javascript.gp" type="text/javascript"></script> -->
+    <!-- <script language="JavaScript" src="https://ssl.geoplugin.net/javascript.gp?k=UVDVoldtQJdlW37KpPm1sTTwhS1Rht" type="text/javascript"></script> -->
 
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1" />
+    <meta name="description" content="Efficasafe is a Drug, Herb, and Supplement interaction platform that allows for better integrative medical care." />
+    <!-- MS, fb & Whatsapp -->
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1">
-  <meta name="description" content="Efficasafe is a Drug, Herb, and Supplement interaction platform that allows for better integrative medical care.">
-  <!-- MS, fb & Whatsapp -->
+    <!-- MS Tile - for Microsoft apps-->
+    <meta name="msapplication-TileImage" content="./img/icons/ms-icon-310x310.png" />
 
-  <!-- MS Tile - for Microsoft apps-->
-  <meta name="msapplication-TileImage" content="./img/icons/ms-icon-310x310.png">    
+    <!-- fb & Whatsapp -->
 
-  <!-- fb & Whatsapp -->
+    <!-- Site Name, Title, and Description to be displayed -->
+    <meta property="og:site_name" content="Efficasafe" />
+    <meta property="og:title" content="Efficasafe" />
+    <meta property="og:description" content="Optimizing efficacy and safety" />
 
-  <!-- Site Name, Title, and Description to be displayed -->
-  <meta property="og:site_name" content="Efficasafe">
-  <meta property="og:title" content="Efficasafe">
-  <meta property="og:description" content="Optimizing efficacy and safety">
+    <!-- Image to display -->
+    <!-- Replace   «example.com/image01.jpg» with your own -->
+    <!-- No need to change anything here -->
 
-  <!-- Image to display -->
-  <!-- Replace   «example.com/image01.jpg» with your own -->
-  <!-- No need to change anything here -->
+    <meta property="og:image" content="https://www.efficasafe.com/img/icons/ms-icon-300x227.jpeg" />
 
-  <meta property="og:image" content="https://www.efficasafe.com/img/icons/ms-icon-300x227.jpeg" />
+    <!-- Size of image. Any size up to 300. Anything above 300px will not work in WhatsApp -->
+    <meta property="og:image:width" content="300" />
+    <meta property="og:image:height" content="227" />
 
-  <!-- Size of image. Any size up to 300. Anything above 300px will not work in WhatsApp -->
-  <meta property="og:image:width" content="300">
-  <meta property="og:image:height" content="227">
+    <!-- Website to visit when clicked in fb or WhatsApp-->
+    <meta property="og:url" content="https://www.efficasafe.com" />
 
-  <!-- Website to visit when clicked in fb or WhatsApp-->
-  <meta property="og:url" content="https://www.efficasafe.com" />
-  
-  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-  <title><%= htmlWebpackPlugin.options.title %></title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
-</head>
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /> -->
+    <!-- <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin /> -->
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap" /> -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css" /> -->
+  </head>
 
-<body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-55VQVXK" height="0" width="0"
-      style="display:none;visibility:hidden" /></noscript>
-  <!-- End Google Tag Manager (noscript) -->
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-55VQVXK" height="0" width="0" style="display: none; visibility: hidden" /></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
-  <noscript>
-    <strong>The world’s no 1 Herb-Supplement-Drug interactions platform</strong>
-  </noscript>
-  <div id="app"></div>
-  <!-- built files will be auto injected -->
-</body>
-
+    <noscript>
+      <strong>The world’s no 1 Herb-Supplement-Drug interactions platform</strong>
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
 </html>

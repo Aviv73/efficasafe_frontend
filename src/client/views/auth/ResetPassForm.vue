@@ -3,34 +3,20 @@
         <div class="auth-modal-cover"></div>
         <div>
             <div class="auth-modal-content txt-center">
-                <img class="logo" src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
+                <img class="logo" src="@/client/assets/imgs/flat-logo.webp" alt="Logo" />
                 <div class="auth-modal-small-title font-medium">
                     <p>Enter a new password</p>
                 </div>
-                
+
                 <validation-observer v-slot="{ handleSubmit, reset }">
                     <form @submit.prevent="handleSubmit(onResetPass)" @reset="reset" novalidate>
-                        <validation-provider
-                            ref="validator1"
-                            mode="eager"
-                            name="password"
-                            rules="required|password"
-                            v-slot="{ errors }"
-                            :custom-messages="validationMessages"
-                        >
+                        <validation-provider ref="validator1" mode="eager" name="password" rules="required|password"
+                            v-slot="{ errors }" :custom-messages="validationMessages">
                             <div class="auth-modal-field">
-                                <input
-                                    :class="{ 'is-invalid': !!errors.length }"
-                                    v-model="newPass"
-                                    :type="inputType"
-                                    placeholder="Enter new Password"
-                                />
-                                <button
-                                    type="button"
-                                    tabindex="-1"
-                                    class="auth-modal-field-pass-toggle reset-pass-toggle"
-                                    @click="toggleInputType()"
-                                >
+                                <input :class="{ 'is-invalid': !!errors.length }" v-model="newPass" :type="inputType"
+                                    placeholder="Enter new Password" />
+                                <button type="button" tabindex="-1" class="auth-modal-field-pass-toggle reset-pass-toggle"
+                                    @click="toggleInputType()">
                                     <eye-icon v-if="inputType === 'password'" class="eye-icon" title="" :size="16" />
                                     <eye-off-icon v-else class="eye-icon" title="" :size="16" />
                                 </button>
@@ -39,26 +25,13 @@
                                 {{ errors[0] }}
                             </p>
                         </validation-provider>
-                        <validation-provider
-                            mode="eager"
-                            name="password"
-                            :rules="`required|confirm:${newPass}`"
-                            v-slot="{ errors }"
-                            :custom-messages="validationMessages"
-                        >
+                        <validation-provider mode="eager" name="password" :rules="`required|confirm:${newPass}`"
+                            v-slot="{ errors }" :custom-messages="validationMessages">
                             <div class="auth-modal-field">
-                                <input
-                                    :class="{ 'is-invalid': !!errors.length }"
-                                    v-model="checkPass"
-                                    :type="inputType2"
-                                    placeholder="Repeat Password"
-                                />
-                                <button
-                                    type="button"
-                                    tabindex="-1"
-                                    class="auth-modal-field-pass-toggle reset-pass-toggle"
-                                    @click="toggleInputType2()"
-                                >
+                                <input :class="{ 'is-invalid': !!errors.length }" v-model="checkPass" :type="inputType2"
+                                    placeholder="Repeat Password" />
+                                <button type="button" tabindex="-1" class="auth-modal-field-pass-toggle reset-pass-toggle"
+                                    @click="toggleInputType2()">
                                     <eye-icon v-if="inputType2 === 'password'" class="eye-icon" title="" :size="16" />
                                     <eye-off-icon v-else class="eye-icon" title="" :size="16" />
                                 </button>

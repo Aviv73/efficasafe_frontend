@@ -3,7 +3,7 @@
     <aside v-if="material" class="material-details-nav" :class="{ show: showNav }">
       <button class="drawer-btn" @click="showNav = false" v-if="isScreenNarrow"><arrow-left-icon /></button>
       <!-- <router-link to="/" class="material-details-nav-logo">
-        <img :src="require('@/client/assets/imgs/flat-logo.png')" alt="Logo" />
+        <img :src="require('@/client/assets/imgs/flat-logo.webp')" alt="Logo" />
       </router-link> -->
       <div class="material-details-nav-header">
         <img :src="require(`@/client/assets/icons/types/${getTypeImgName(material.type)}.svg`)" alt="" />
@@ -17,8 +17,10 @@
         <a v-if="material.plantPartUsed" @click="goTo('Plant part used')">Plant part used</a>
         <a v-if="material.qualities && material.qualities.length" @click="goTo('Qualities')">Qualities</a>
         <a v-if="material.activeConstituents" @click="goTo('Active constituents')">Active constituents</a>
-        <a v-if="material.medicinalActions && material.medicinalActions.length" @click="goTo('Medicinal actions')">Medicinal actions</a>
-        <a v-if="(material.indications && material.indications.length) || material.medicinalUsesTxt" @click="goTo('Medicinal uses')">Medicinal uses</a>
+        <a v-if="material.medicinalActions && material.medicinalActions.length"
+          @click="goTo('Medicinal actions')">Medicinal actions</a>
+        <a v-if="(material.indications && material.indications.length) || material.medicinalUsesTxt"
+          @click="goTo('Medicinal uses')">Medicinal uses</a>
         <a v-if="material.dosage" @click="goTo('Dosage')">Dosage</a>
         <a v-if="material.sensitivities" @click="goTo('Sensitivities')">Sensitivities</a>
         <a v-if="material.adverseReactions" @click="goTo('Adverse reactions')">Adverse reactions</a>
@@ -39,13 +41,15 @@
           <share-variant-icon title="" :size="22" />
         </button>
         <h1 ref="Title" class="material-details-content-name">
-          {{ prityName }}<span class="material-details-content-name-search" v-if="userSearch && material.name !== userSearch"> - {{ userSearch }}</span>
+          {{ prityName }}<span class="material-details-content-name-search"
+            v-if="userSearch && material.name !== userSearch"> - {{ userSearch }}</span>
         </h1>
       </div>
 
       <button class="drawer-btn" @click="showNav = true" v-if="isScreenNarrow"><menu-icon title="" /></button>
 
-      <p class="material-details-content-family" v-if="material.BotanicalFamily || material.botanicalFamily">botanical family: {{ material.BotanicalFamily || material.botanicalFamily || 'Not indicated' }}</p>
+      <p class="material-details-content-family" v-if="material.BotanicalFamily || material.botanicalFamily">botanical
+        family: {{ material.BotanicalFamily || material.botanicalFamily || 'Not indicated' }}</p>
       <!-- <div v-if="aliasesToShow.length" class="material-details-content-aliases-container">
         <p v-for="alias in aliasesToShow" :key="alias">{{ alias }}</p>
       </div> -->
@@ -57,12 +61,14 @@
       </section>
       <section class="material-details-content-section">
         <h3 ref="Interactions">Interactions</h3>
-        <router-link :to="`/search?q=${originalMaterial.name}`" target="_blank" class="fda-link font14"> click here to see all of the interactions </router-link>
+        <router-link :to="`/search?q=${originalMaterial.name}`" target="_blank" class="fda-link font14"> click here to see
+          all of the interactions </router-link>
         <hr class="line" />
       </section>
-      <section v-if="material.depleteds && material.depleteds.length" class="material-details-content-section depleted-section">
+      <section v-if="material.depleteds && material.depleteds.length"
+        class="material-details-content-section depleted-section">
         <h3 ref="Depleteds"> Drug-induced depletions</h3>
-        <MaterialDepletionsSection :material="material"/>
+        <MaterialDepletionsSection :material="material" />
         <hr class="line" />
       </section>
       <section v-if="material.plantPartUsed" class="material-details-content-section">
@@ -80,12 +86,14 @@
         <p v-html="material.activeConstituents" v-refs-tooltip-material="{ material, refCountMap }"></p>
         <hr class="line" />
       </section>
-      <section v-if="material.medicinalActions && material.medicinalActions.length" class="material-details-content-section">
+      <section v-if="material.medicinalActions && material.medicinalActions.length"
+        class="material-details-content-section">
         <h3 ref="Medicinal actions">Medicinal actions</h3>
         <p>{{ material.medicinalActions.join(', ') }}</p>
         <hr class="line" />
       </section>
-      <section v-if="(material.indications && material.indications.length) || material.medicinalUsesTxt" class="material-details-content-section">
+      <section v-if="(material.indications && material.indications.length) || material.medicinalUsesTxt"
+        class="material-details-content-section">
         <h3 ref="Medicinal uses">Medicinal uses</h3>
         <p v-if="material.indications && material.indications.length">{{ material.indications.join(', ') }}</p>
         <template v-if="material.medicinalUsesTxt">
@@ -149,15 +157,18 @@
             <template #content>
               <section class="pathways-tooltip-container">
                 <div class="tip">
-                  <p>A <span class="green bold">green</span> marking means that <span class="underline">clinical studies</span> have shown no effect</p>
+                  <p>A <span class="green bold">green</span> marking means that <span class="underline">clinical
+                      studies</span> have shown no effect</p>
                   <p>of the supplement on the pathway.</p>
                 </div>
                 <div class="tip">
-                  <p>A <span class="red bold">red</span> marking means that <span class="underline">clinical studies</span> have shown that the</p>
+                  <p>A <span class="red bold">red</span> marking means that <span class="underline">clinical
+                      studies</span> have shown that the</p>
                   <p>supplement inhibits or induces the pathway.</p>
                 </div>
                 <div class="tip">
-                  <p>A <span class="yellow bold">yellow</span> marking means that there are only <span class="underline">pre-clinical</span> studies</p>
+                  <p>A <span class="yellow bold">yellow</span> marking means that there are only <span
+                      class="underline">pre-clinical</span> studies</p>
                   <p>and the effect of the supplement on the pathway is unclear.</p>
                 </div>
               </section>
@@ -167,7 +178,8 @@
         </div>
         <div>
           <ul class="side1-pathways-nav flex-align-center chip-list">
-            <li class="side1-pathways-nav-item material-details-item" v-for="pathway in material.pathways" :key="pathway.name">
+            <li class="side1-pathways-nav-item material-details-item" v-for="pathway in material.pathways"
+              :key="pathway.name">
               <tooltip on="hover" bottom>
                 <template #content>
                   <section class="pathways-tooltip" v-html="pathway.influence"></section>
@@ -178,7 +190,8 @@
               </tooltip>
             </li>
           </ul>
-          <p v-if="material.pathways.length > 1" class="click-enzyme-chips-msg">* Click on each enzyme to see more information</p>
+          <p v-if="material.pathways.length > 1" class="click-enzyme-chips-msg">* Click on each enzyme to see more
+            information</p>
         </div>
         <p class="pathway-exp-txt">{{ pathwayExpTxt }}</p>
         <hr class="line" />

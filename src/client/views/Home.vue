@@ -3,7 +3,7 @@
     <!-- <header class="flex-coloumn">
       <h1 class="flex-coloumn">
         <a href="/">
-          <img src="@/client/assets/imgs/logo.png" alt="Efficasafe Logo" />
+          <img src="@/client/assets/imgs/logo.webp" alt="Efficasafe Logo" />
         </a>
         <span class="header">
           <span class="font-bold">Herb-Drug-Supplement</span>
@@ -48,7 +48,8 @@
         <router-link to="/we-are-better" v-if="!isSelectedCardEven">Click To See How</router-link>
         <router-link v-else to="/we-are-better">Click To See How</router-link>
         <button v-if="!loggedInUser" class="btn home-cta" @click="$emit('signup')">Start a Free Trial</button>
-        <button v-else-if="loggedInUser.type !== 'subscribed'" class="btn home-cta" @click="goToSubscribeWithBtn">Subscribe Now</button>
+        <button v-else-if="loggedInUser.type !== 'subscribed'" class="btn home-cta"
+          @click="goToSubscribeWithBtn">Subscribe Now</button>
         <button v-else class="btn home-cta wide" @click="searchWithBtn">Search Interactions</button>
 
         <!-- <template v-if="managementData">
@@ -87,31 +88,39 @@
         <swiper class="home-swiper home-container" auto-play>
           <div class="home-stats-quote">
             <div class="home-stats-quote-img-container">
-              <img src="@/client/assets/imgs/recommender2.png" class="quote-img" alt="" />
+              <img loading="lazy" src="@/client/assets/imgs/recommender2.png" class="quote-img" alt="" />
               <p>Michal Kirsh, ND, RH AHG, Head of herbalism program, Broshim School of complementary medicine.</p>
             </div>
-            "This site is by far the most fully comprehensive, reliable resource I have come across for herb-drug interactions. I believe that professionals have been waiting for something like this to come along for a very long time."
+            "This site is by far the most fully comprehensive, reliable resource I have come across for herb-drug
+            interactions. I believe that professionals have been waiting for something like this to come along for a very
+            long time."
           </div>
           <div class="home-stats-quote">
             <div class="home-stats-quote-img-container">
-              <img src="@/client/assets/imgs/recommender4.png" class="quote-img" alt="" />
+              <img loading="lazy" src="@/client/assets/imgs/recommender4.png" class="quote-img" alt="" />
               <p>Vardit Kalamaro, Pharm.D</p>
             </div>
-            "This site is so easy to use it has quickly become an integral part of my everyday practice as a clinical pharmacist. There is no better drug-supplement interaction checker than Efficasafe. Easy to use, and good for quick decision making."
+            "This site is so easy to use it has quickly become an integral part of my everyday practice as a clinical
+            pharmacist. There is no better drug-supplement interaction checker than Efficasafe. Easy to use, and good for
+            quick decision making."
           </div>
           <div class="home-stats-quote">
             <div class="home-stats-quote-img-container">
-              <img src="@/client/assets/imgs/recommender3.png" class="quote-img" alt="" />
+              <img loading="lazy" src="@/client/assets/imgs/recommender3.png" class="quote-img" alt="" />
               <p>Inbale Dressler, ND, RH AHG, Davidoff cancer center, Integrative Medicine Unit.</p>
             </div>
-            "So much more than just an interaction checker. I can save my searches (my patients) and even get notified when the interactions I saved have been updated. That’s a game-changer that enables better patient care, which at the end of the day, is what we are all aiming for."
+            "So much more than just an interaction checker. I can save my searches (my patients) and even get notified
+            when the interactions I saved have been updated. That’s a game-changer that enables better patient care, which
+            at the end of the day, is what we are all aiming for."
           </div>
           <div class="home-stats-quote">
             <div class="home-stats-quote-img-container">
-              <img src="@/client/assets/imgs/recommender1.png" class="quote-img" alt="" />
+              <img loading="lazy" src="@/client/assets/imgs/recommender1.png" class="quote-img" alt="" />
               <p>Keren Volkomir, Naturopth.</p>
             </div>
-            "Finally! One site with everything in it. Efficasafe allows me to search, cross-reference and get all the information I need, in seconds. This kind of scientifically backed information is priceless to me as a Naturopath."
+            "Finally! One site with everything in it. Efficasafe allows me to search, cross-reference and get all the
+            information I need, in seconds. This kind of scientifically backed information is priceless to me as a
+            Naturopath."
           </div>
           <template #navigation-prev>
             <chevron-left-icon :size="36" title="" />
@@ -124,30 +133,39 @@
       <div v-else class="home-container">
         <swiper class="home-swiper home-container" auto-play>
           <div class="home-stats-quote-wide">
-            <img src="@/client/assets/imgs/recommender2.png" class="quote-img" alt="" />
+            <img loading="lazy" src="@/client/assets/imgs/recommender2.png" class="quote-img" alt="" />
             <div class="home-stats-quote-txt-container">
-              <p>"This site is by far the most fully comprehensive, reliable resource I have come across for herb-drug interactions. I believe that professionals have been waiting for something like this to come along for a very long time."</p>
-              <p class="title">Michal Kirsh, ND, RH AHG, Head of herbalism program, Broshim School of complementary medicine.</p>
+              <p>"This site is by far the most fully comprehensive, reliable resource I have come across for herb-drug
+                interactions. I believe that professionals have been waiting for something like this to come along for a
+                very long time."</p>
+              <p class="title">Michal Kirsh, ND, RH AHG, Head of herbalism program, Broshim School of complementary
+                medicine.</p>
             </div>
           </div>
           <div class="home-stats-quote-wide">
-            <img src="@/client/assets/imgs/recommender4.png" class="quote-img" alt="" />
+            <img loading="lazy" src="@/client/assets/imgs/recommender4.png" class="quote-img" alt="" />
             <div class="home-stats-quote-txt-container">
-              <p>"This site is so easy to use it has quickly become an integral part of my everyday practice as a clinical pharmacist. There is no better drug-supplement interaction checker than Efficasafe. Easy to use, and good for quick decision making."</p>
+              <p>"This site is so easy to use it has quickly become an integral part of my everyday practice as a clinical
+                pharmacist. There is no better drug-supplement interaction checker than Efficasafe. Easy to use, and good
+                for quick decision making."</p>
               <p class="title">Vardit Kalamaro, Pharm.D</p>
             </div>
           </div>
           <div class="home-stats-quote-wide">
-            <img src="@/client/assets/imgs/recommender3.png" class="quote-img" alt="" />
+            <img loading="lazy" src="@/client/assets/imgs/recommender3.png" class="quote-img" alt="" />
             <div class="home-stats-quote-txt-container">
-              <p>"So much more than just an interaction checker. I can save my searches (my patients) and even get notified when the interactions I saved have been updated. That’s a game-changer that enables better patient care, which at the end of the day, is what we are all aiming for."</p>
+              <p>"So much more than just an interaction checker. I can save my searches (my patients) and even get
+                notified when the interactions I saved have been updated. That’s a game-changer that enables better
+                patient care, which at the end of the day, is what we are all aiming for."</p>
               <p class="title">Inbale Dressler, ND, RH AHG, Davidoff cancer center, Integrative Medicine Unit.</p>
             </div>
           </div>
           <div class="home-stats-quote-wide">
-            <img src="@/client/assets/imgs/recommender1.png" class="quote-img" alt="" />
+            <img loading="lazy" src="@/client/assets/imgs/recommender1.png" class="quote-img" alt="" />
             <div class="home-stats-quote-txt-container">
-              <p>"Finally! One site with everything in it. Efficasafe allows me to search, cross-reference and get all the information I need, in seconds. This kind of scientifically backed information is priceless to me as a Naturopath."</p>
+              <p>"Finally! One site with everything in it. Efficasafe allows me to search, cross-reference and get all the
+                information I need, in seconds. This kind of scientifically backed information is priceless to me as a
+                Naturopath."</p>
               <p class="title">Keren Volkomir, Naturopath.</p>
             </div>
           </div>
@@ -170,7 +188,7 @@
             <p class="margin-bottom-40"><span class="font-bold">Cross check</span> multiple Drug-Drug and Herb-Supplement-Drug interactions instantly.</p>
             <p><span class="font-bold">Receive</span> concise recommendations, summaries, and detailed study reviews.</p>
           </article>
-          <img src="@/client/assets/imgs/capsules1.svg" alt="Capsules" class="capsules capsules-1" />
+          <img loading="lazy" src="@/client/assets/imgs/capsules1.svg" alt="Capsules" class="capsules capsules-1" />
         </li>
         <li class="home-content-list-item">
           <article class="main-container">
@@ -208,7 +226,8 @@
           <h3 class="card">No credit card required.</h3>
         </div>
         <div v-else-if="!loggedInUser" class="home-ftu-container bottom">
-          <h3 class="first">Get a free {{ managementData.freeTrailDaysNum }} day trial of unlimited searches and features!</h3>
+          <h3 class="first">Get a free {{ managementData.freeTrailDaysNum }} day trial of unlimited searches and features!
+          </h3>
           <h3 class="card">No credit card required.</h3>
           <button class="trial-btn" @click="$emit('signup')">Start a free trial now</button>
         </div>

@@ -6,7 +6,7 @@
         <button @click="closeModal" class="close-modal-btn">
           <close-icon :size="14" />
         </button>
-        <img class="logo" src="@/client/assets/imgs/flat-logo.png" alt="Logo" />
+        <img class="logo" src="@/client/assets/imgs/flat-logo.webp" alt="Logo" />
         <div v-if="showFreeSearchesMsg" class="searches-msg">
           <h3>No free searches left</h3>
           <h4>Want to enjoy efficasafe free trial for</h4>
@@ -18,14 +18,20 @@
           <form @submit.prevent="onRegister" class="auth-modal-field">
             <eye-icon v-if="!isShowPass" @click="isShowPass = !isShowPass" class="eye-icon"></eye-icon>
             <eye-off-icon v-else @click="isShowPass = !isShowPass" class="eye-icon"></eye-off-icon>
-            <input @focus="resetError('email')" :class="{ 'is-invalid': isInvaliedEmail }" type="text" placeholder="Email" v-model="cred.email" />
-            <input @focus="resetError('pass')" :class="{ 'is-invalid': isInvaliedPassword }" :type="passInputType" placeholder="Password" v-model="cred.password" />
-            <input @focus="resetError('name')" :class="{ 'is-invalid': isInvaliedName }" type="text" placeholder="Username" v-model="cred.username" />
+            <input @focus="resetError('email')" :class="{ 'is-invalid': isInvaliedEmail }" type="text" placeholder="Email"
+              v-model="cred.email" />
+            <input @focus="resetError('pass')" :class="{ 'is-invalid': isInvaliedPassword }" :type="passInputType"
+              placeholder="Password" v-model="cred.password" />
+            <input @focus="resetError('name')" :class="{ 'is-invalid': isInvaliedName }" type="text"
+              placeholder="Username" v-model="cred.username" />
             <div class="checkbox-container">
-              <input @change="changeCheckbox" class="checkbox" :class="{ 'is-invalid': isInvaliedName }" type="checkbox" v-model="cred.agreedToTerm" />
+              <input @change="changeCheckbox" class="checkbox" :class="{ 'is-invalid': isInvaliedName }" type="checkbox"
+                v-model="cred.agreedToTerm" />
               <p>I agree to the <a href="/terms-and-conditions">terms and conditions</a></p>
             </div>
-            <button @click="onRegister" :disabled="isBtnDisabled" class="register-btn" :class="{ 'invalid-btn': isInvaliedEmail || isInvaliedPassword || isInvaliedName || isNotAgreed, disabled: isBtnDisabled }">{{ btnTxt }}</button>
+            <button @click="onRegister" :disabled="isBtnDisabled" class="register-btn"
+              :class="{ 'invalid-btn': isInvaliedEmail || isInvaliedPassword || isInvaliedName || isNotAgreed, disabled: isBtnDisabled }">{{
+                btnTxt }}</button>
           </form>
           <div class="or-container">
             <div class="line"></div>
@@ -48,10 +54,12 @@
         <template v-else>
           <p class="auth-modal-title font-medium">Please confirm your email address</p>
 
-          <p class="auth-modal-sub-title font-bold">An email has been sent to you. in order to complete the registration process, please go to your mail and click the confirmation link.</p>
+          <p class="auth-modal-sub-title font-bold">An email has been sent to you. in order to complete the registration
+            process, please go to your mail and click the confirmation link.</p>
 
           <p class="desc mt">If you can't find the confirmation email, please check your spam or sales folder.</p>
-          <p class="desc">In addition, please verify that you entered a valid email address. you can find your email in your account in the upper left corner.</p>
+          <p class="desc">In addition, please verify that you entered a valid email address. you can find your email in
+            your account in the upper left corner.</p>
 
           <p class="assistance">If you need assistance, please contact us.</p>
           <button class="resend-email-btn" @click="onResendEmail">Resend email verification</button>

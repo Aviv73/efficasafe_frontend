@@ -1,29 +1,35 @@
-
 @font-face {
-    font-family: roboto;
-    src: url('../assets/fonts/Roboto-Regular.ttf');
+  font-family: roboto;
+  font-display: swap;
+  src: url('../assets/fonts/Roboto-Regular.woff2');
 }
 @font-face {
-    font-family: roboto-medium;
-    src: url('../assets/fonts/Roboto-Medium.ttf');
+  font-family: roboto-medium;
+  font-display: swap;
+  src: url('../assets/fonts/Roboto-Medium.woff2');
 }
 @font-face {
-    font-family: roboto-light;
-    src: url('../assets/fonts/Roboto-Light.ttf');
+  font-family: roboto-light;
+  font-display: swap;
+  src: url('../assets/fonts/Roboto-Light.woff2');
 }
 @font-face {
-    font-family: roboto-bold;
-    src: url('../assets/fonts/Roboto-Bold.ttf');
+  font-family: roboto-bold;
+  font-display: swap;
+  src: url('../assets/fonts/Roboto-Bold.woff2');
 }
 @font-face {
-    font-family: segoe-ui;
-    src: url('../assets/fonts/Segoe-UI.woff');
+  font-family: segoe-ui;
+  font-display: swap;
+  src: url('../assets/fonts/Segoe-UI.woff');
 }
 @font-face {
-    font-family: mulish;
-    src: url('../assets/fonts/Mulish-Regular.ttf');
+  font-family: mulish;
+  font-display: swap;
+  src: url('../assets/fonts/Mulish-Regular.woff2');
 }
 @font-face {
-    font-family: tw-cen;
-    src: url('../assets/fonts/TwCenClassMTStd-Regular.otf');
+  font-family: tw-cen;
+  font-display: swap;
+  src: url('../assets/fonts/TwCenClassMTStd-Regular.otf');
 }

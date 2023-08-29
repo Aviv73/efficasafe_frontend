@@ -18,7 +18,8 @@
           <!-- <router-link to="/" class="interaction-details-header-logo v-tour-interaction-step-4">
                         <img :src="require('@/client/assets/imgs/logo-vector.svg')" alt="Logo" />
                     </router-link> -->
-          <h1 class="v-tour-interaction-step-4" v-if="!isLoading && side1Material && side2Material">Interaction of {{ side1Material && side1Material.name }} & {{ side2Material && side2Material.name }}</h1>
+          <h1 class="v-tour-interaction-step-4" v-if="!isLoading && side1Material && side2Material">Interaction of {{
+            side1Material && side1Material.name }} & {{ side2Material && side2Material.name }}</h1>
           <h1 v-else>Interaction</h1>
           <span class="interaction-details-header-actions">
             <!-- <PlayTourBtn class="v-tour-interaction-step-4" :dontOpen="isScreenNarrow" @click.native="startTour" align="right" /> -->
@@ -89,15 +90,19 @@
         </div> -->
         <div class="main-container" :class="{ narrowHeader: isScreenNarrow }">
           <div class="flex-center p-relative capsules-container">
-            <interaction-capsules class="capsules" :name="interactionName" :color="interactionColor" :vInteractionCount="0" :localize="false" :showDraftName="false" :isLink="true" :isInteractionDetails="true" @go-to-material="goToMaterial" @openModal="ev => (this.pageLoc = ev)" on-details-page />
+            <interaction-capsules class="capsules" :name="interactionName" :color="interactionColor"
+              :vInteractionCount="0" :localize="false" :showDraftName="false" :isLink="true" :isInteractionDetails="true"
+              @go-to-material="goToMaterial" @openModal="ev => (this.pageLoc = ev)" on-details-page />
             <template v-if="pageLoc">
-              <div v-if="!isScreenNarrow" class="capsule-title" :style="{ top: pageLoc.y + 'px', left: pageLoc.x + 'px', transform: 'translateX(-50%)', position: 'fixed', 'z-index': 1000 }">
+              <div v-if="!isScreenNarrow" class="capsule-title"
+                :style="{ top: pageLoc.y + 'px', left: pageLoc.x + 'px', transform: 'translateX(-50%)', position: 'fixed', 'z-index': 1000 }">
                 Press for more info
                 <div class="arrow-down"></div>
               </div>
             </template>
 
-            <span class="recommendation-capsule" :class="{ 'txt-dark': interactionColor === '#F6D55C' }" :style="{ 'background-color': interactionColor }" :title="interaction.recommendation">
+            <span class="recommendation-capsule" :class="{ 'txt-dark': interactionColor === '#F6D55C' }"
+              :style="{ 'background-color': interactionColor }" :title="interaction.recommendation">
               <component :is="recommendationIconName" :size="14" />
               <span class="clip-txt">{{ interaction.recommendation }}</span>
             </span>
@@ -106,7 +111,8 @@
               <tooltip on="hover" right>
                 <template #content>
                   <div class="evidence-level-tooltip-content">
-                    <p class="d-flex" v-if="interaction.evidence_level === 1">1- Information formally provided in official prescribing documentation</p>
+                    <p class="d-flex" v-if="interaction.evidence_level === 1">1- Information formally provided in official
+                      prescribing documentation</p>
                     <p class="d-flex" v-else-if="interaction.evidence_level === 2">2- Based on scientific research</p>
                   </div>
                 </template>
@@ -133,11 +139,13 @@
       </header>
       <main class="interaction-details-details">
         <div class="main-container p-relative mobile-coloumn">
-          <span class="recommendation-capsule mobile drugbank" :class="{ 'txt-dark': interactionColor === '#F6D55C' }" :style="{ 'background-color': interactionColor }">
+          <span class="recommendation-capsule mobile drugbank" :class="{ 'txt-dark': interactionColor === '#F6D55C' }"
+            :style="{ 'background-color': interactionColor }">
             <component :is="recommendationIconName" :size="14" />
             {{ interaction.recommendation }}
           </span>
-          <div class="mobile-blure" v-if="isScreenNarrow && (showMobileAlerts || showMobileEvedence)" @click="showMobileAlerts = showMobileEvedence = false"></div>
+          <div class="mobile-blure" v-if="isScreenNarrow && (showMobileAlerts || showMobileEvedence)"
+            @click="showMobileAlerts = showMobileEvedence = false"></div>
 
           <div class="mobile-data-modal evidence-level-mobile" v-if="showMobileEvedence && isScreenNarrow">
             <button class="close-btn" @click.stop="toggleMobileLevelOfEvedence">
@@ -146,7 +154,8 @@
             <div class="modal-content">
               <span class="font-bold">Level of evidence:</span> {{ interaction.evidenceLevel }}
               <div class="evidence-level-tooltip-content">
-                <p class="d-flex" v-if="interaction.evidence_level === 1">1- Information formally provided in official prescribing documentation</p>
+                <p class="d-flex" v-if="interaction.evidence_level === 1">1- Information formally provided in official
+                  prescribing documentation</p>
                 <p class="d-flex" v-else-if="interaction.evidence_level === 2">2- Based on scientific research</p>
               </div>
             </div>
@@ -172,35 +181,28 @@
                     </figure> -->
           <!-- <div class="evidence-level-mobile"><span class="font-bold">Level of evidence:</span> {{ interaction.evidence_level }} - {{ levelOfEvidenceTxt }}</div> -->
           <h2 v-if="interaction.summary" class="subheader">Summary</h2>
-          <warnings v-if="!isScreenNarrow && side1Material && side2Material" :side1Material="side1Material" :side2Material="side2Material" :isDb="true" />
+          <warnings v-if="!isScreenNarrow && side1Material && side2Material" :side1Material="side1Material"
+            :side2Material="side2Material" :isDb="true" />
 
           <p class="paragraph" v-if="interaction.summary" v-text="interaction.summary" />
           <h2 v-if="interaction.severity" class="subheader">Severity</h2>
           <p class="paragraph" v-if="interaction.severity" v-text="interaction.severity" />
           <h2 v-if="interaction.extended_description" class="subheader">Extended description</h2>
-          <p
-            class="paragraph"
-            v-if="interaction.extended_description"
-            v-html="getRefsToDisplay(interaction.extended_description)"
-            v-refs-tooltip.dBank="{
+          <p class="paragraph" v-if="interaction.extended_description"
+            v-html="getRefsToDisplay(interaction.extended_description)" v-refs-tooltip.dBank="{
               interactionRefs
-            }"
-          />
+            }" />
           <h2 v-if="interaction.management" class="subheader">Management</h2>
-          <p
-            class="paragraph"
-            v-if="interaction.management"
-            v-html="getRefsToDisplay(interaction.management)"
+          <p class="paragraph" v-if="interaction.management" v-html="getRefsToDisplay(interaction.management)"
             v-refs-tooltip.dBank="{
               interactionRefs
-            }"
-          />
+            }" />
         </div>
       </main>
       <div class="drugbank-container main-container">
         <figure class="drugbank-logo">
           <figcaption class="caption">powered by</figcaption>
-          <img :src="require(`@/cms/assets/drugbank.png`)" alt="DrugBank logo" />
+          <img width="220" height="22.49" :src="require(`@/cms/assets/drugbank.png`)" alt="DrugBank logo" />
         </figure>
       </div>
       <footer class="interaction-details-refs">

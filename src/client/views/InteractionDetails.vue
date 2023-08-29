@@ -18,10 +18,12 @@
           <!-- <router-link to="/" class="interaction-details-header-logo v-tour-interaction-step-4">
                         <img :src="require('@/client/assets/imgs/logo-vector.svg')" alt="Logo" />
                     </router-link> -->
-          <h1 class="v-tour-interaction-step-4" v-if="!isLoading && side1Material && side2Material">Interaction of {{ side1Material && side1Material.name }} & {{ side2Material && side2Material.name }}</h1>
+          <h1 class="v-tour-interaction-step-4" v-if="!isLoading && side1Material && side2Material">Interaction of {{
+            side1Material && side1Material.name }} & {{ side2Material && side2Material.name }}</h1>
           <h1 v-else>Interaction</h1>
           <span class="interaction-details-header-actions">
-            <PlayTourBtn class="v-tour-interaction-step-4" :dontOpen="isScreenNarrow" @click.native="startTour" align="right" />
+            <PlayTourBtn class="v-tour-interaction-step-4" :dontOpen="isScreenNarrow" @click.native="startTour"
+              align="right" />
 
             <button class="print-btn print-btn-icon no-print" title="Print" @click="printWindow()">
               <printer-icon title="" />
@@ -35,18 +37,23 @@
         <span />
       </div>
     </header>
-    <article class="interaction-details-content" v-if="!isLoading && ((!isVirtual && interaction) || (isVirtual && interaction && side2Material))">
+    <article class="interaction-details-content"
+      v-if="!isLoading && ((!isVirtual && interaction) || (isVirtual && interaction && side2Material))">
       <header class="interaction-details-content-header">
         <div class="main-container" :class="{ narrowHeader: isScreenNarrow }">
           <div class="flex-center p-relative capsules-container">
-            <interaction-capsules class="capsules" :name="interactionName" :color="interactionColor" :vInteractionCount="0" :localize="false" :showDraftName="false" :isLink="true" :isInteractionDetails="true" @go-to-material="goToMaterial" @openModal="ev => (this.pageLoc = ev)" on-details-page />
+            <interaction-capsules class="capsules" :name="interactionName" :color="interactionColor"
+              :vInteractionCount="0" :localize="false" :showDraftName="false" :isLink="true" :isInteractionDetails="true"
+              @go-to-material="goToMaterial" @openModal="ev => (this.pageLoc = ev)" on-details-page />
             <template v-if="pageLoc">
-              <div v-if="!isScreenNarrow" class="capsule-title" :style="{ top: pageLoc.y + 'px', left: pageLoc.x + 'px', transform: 'translateX(-50%)', position: 'fixed', 'z-index': 1000 }">
+              <div v-if="!isScreenNarrow" class="capsule-title"
+                :style="{ top: pageLoc.y + 'px', left: pageLoc.x + 'px', transform: 'translateX(-50%)', position: 'fixed', 'z-index': 1000 }">
                 Press for more info
                 <div class="arrow-down"></div>
               </div>
             </template>
-            <span class="recommendation-capsule" :class="{ 'txt-dark': interactionColor === '#F6D55C' }" :style="{ 'background-color': interactionColor }" :title="interaction.recommendation">
+            <span class="recommendation-capsule" :class="{ 'txt-dark': interactionColor === '#F6D55C' }"
+              :style="{ 'background-color': interactionColor }" :title="interaction.recommendation">
               <component :is="recommendationIconName" :size="14" />
               <span class="clip-txt">{{ interaction.recommendation }}</span>
             </span>
@@ -71,7 +78,7 @@
                 <span class="refs-count">({{ combinedRefs.length }})</span>
               </button>
               <button v-if="warnings.length" @click="toggleMobileAlerts">
-                <img :src="require('@/client/assets/imgs/alert.svg')" />
+                <img width="20" height="20" :src="require('@/client/assets/imgs/alert.svg')" />
               </button>
             </div>
           </template>
@@ -79,15 +86,18 @@
       </header>
       <main class="interaction-details-details">
         <div class="main-container p-relative mobile-coloumn">
-          <h2 class="recommendation-capsule mobile" :class="{ 'txt-dark': interactionColor === '#F6D55C' }" :style="{ 'background-color': interactionColor }">
+          <h2 class="recommendation-capsule mobile" :class="{ 'txt-dark': interactionColor === '#F6D55C' }"
+            :style="{ 'background-color': interactionColor }">
             <component :is="recommendationIconName" :size="14" />
             {{ interaction.recommendation }}
           </h2>
-          <warnings v-if="!isScreenNarrow && side1Material && side2Material" :side1Material="side1Material" :side2Material="side2Material" />
+          <warnings v-if="!isScreenNarrow && side1Material && side2Material" :side1Material="side1Material"
+            :side2Material="side2Material" />
           <div class="note-container flex-center" v-if="!isPrimaryMaterial && interaction.note">
             <span class="note"> <span class="font-bold">Note:</span> {{ interaction.note }} </span>
           </div>
-          <div class="mobile-blure" v-if="isScreenNarrow && (showMobileAlerts || showMobileEvedence)" @click="showMobileAlerts = showMobileEvedence = false"></div>
+          <div class="mobile-blure" v-if="isScreenNarrow && (showMobileAlerts || showMobileEvedence)"
+            @click="showMobileAlerts = showMobileEvedence = false"></div>
 
           <div class="mobile-data-modal evidence-level-mobile" v-if="showMobileEvedence && isScreenNarrow">
             <button class="close-btn" @click.stop="toggleMobileLevelOfEvedence">
@@ -115,16 +125,13 @@
           </div>
 
           <h3 v-if="interaction.summary" class="subheader regular-pointer">Summary</h3>
-          <p
-            class="paragraph regular-pointer summary-container"
-            v-if="interaction.summary"
-            v-html="formatRefs(interaction.summary, undefined, true)"
-            v-refs-tooltip="{
+          <p class="paragraph regular-pointer summary-container" v-if="interaction.summary"
+            v-html="formatRefs(interaction.summary, undefined, true)" v-refs-tooltip="{
               combinedRefs,
               side2Refs
-            }"
-          />
-          <div class="monitor" v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptoms || interaction.monitor.general">
+            }" />
+          <div class="monitor"
+            v-if="interaction.monitor.labTests || interaction.monitor.otherTests || interaction.monitor.symptoms || interaction.monitor.general">
             <h3 class="subheader">What to monitor</h3>
             <div v-if="interaction.monitor.general">
               <span class="font-medium">General: </span>
@@ -154,14 +161,10 @@
               </h3>
             </template>
             <template #content>
-              <p
-                class="paragraph regular-pointer"
-                v-html="formatRefs(interaction.reviewOfStudies)"
-                v-refs-tooltip="{
-                  combinedRefs,
-                  side2Refs
-                }"
-              />
+              <p class="paragraph regular-pointer" v-html="formatRefs(interaction.reviewOfStudies)" v-refs-tooltip="{
+                combinedRefs,
+                side2Refs
+              }" />
             </template>
           </collapse>
           <collapse class="pharmacokinetics" hide-de-activator allow-overflow>
@@ -195,7 +198,9 @@
                   </h3>
                 </template>
                 <template #content>
-                  <side2-pathways v-if="relevantSide2Pathways.length" :side2Pathways="relevantSide2Pathways" :combinedRefs="combinedRefs" :side2Refs="side2Refs" :materialName="interactionName.split(' & ')[1]" :formatRefs="formatRefs" />
+                  <side2-pathways v-if="relevantSide2Pathways.length" :side2Pathways="relevantSide2Pathways"
+                    :combinedRefs="combinedRefs" :side2Refs="side2Refs" :materialName="interactionName.split(' & ')[1]"
+                    :formatRefs="formatRefs" />
                   <p v-else class="side2-pathways">There is no data on {{ side2Material.name }} metabolism</p>
                 </template>
               </collapse>
@@ -210,7 +215,9 @@
                   </h3>
                 </template>
                 <template #content>
-                  <side1-pathways :pathways="relevantSide1Pathways" :summary="effectOnDrugMetabolism" :materialName="interaction.side1Material.name" :unrelevantPathways="unRelevantSide2Pathways" :formatRefs="formatRefs" :combinedRefs="combinedRefs" :side2Refs="side2Refs" />
+                  <side1-pathways :pathways="relevantSide1Pathways" :summary="effectOnDrugMetabolism"
+                    :materialName="interaction.side1Material.name" :unrelevantPathways="unRelevantSide2Pathways"
+                    :formatRefs="formatRefs" :combinedRefs="combinedRefs" :side2Refs="side2Refs" />
                 </template>
               </collapse>
             </template>
@@ -224,7 +231,8 @@
         </div>
       </footer>
     </article>
-    <error-404 v-else-if="!isLoading && ((!isVirtual && !interaction) || (isVirtual && (!interaction || !side2Material)))" />
+    <error-404
+      v-else-if="!isLoading && ((!isVirtual && !interaction) || (isVirtual && (!interaction || !side2Material)))" />
     <loader class="loader" v-else-if="isLoading" />
     <modal-wrap :isActive="isShareModalActive" @close-modal="isShareModalActive = false">
       <share-modal @close-modal="isShareModalActive = false" />
@@ -634,8 +642,8 @@ export default {
               .filter(Boolean)
               .map(draftIdxStr => {
                 let draftIdx = +draftIdxStr;
-                const opts = this.combinedRefs.filter(ref => ref && (ref.draftIdx === draftIdx)) ;
-                const item = (opts.find(ref => isPathwaysRefs? ref.source === 'side1' : true) || opts[0]);
+                const opts = this.combinedRefs.filter(ref => ref && (ref.draftIdx === draftIdx));
+                const item = (opts.find(ref => isPathwaysRefs ? ref.source === 'side1' : true) || opts[0]);
                 const fixedVal = this.combinedRefs.findIndex(c => c.txt === item.txt) + 1;
                 return fixedVal;
               })
@@ -655,13 +663,13 @@ export default {
       if (!this.combinedRefs.length) return;
       const refsOrder = interactionUIService.getRefsOrder(txt, false, false).filter(num => txt.indexOf(num) > -1);
       let lastRefIdx = 0;
-      
+
       let lastSubIdx = -1;
       const subTag = '<sub>';
       const subEndTag = '</sub>';
 
       refsOrder.forEach((refNum) => {
-        let subIdx = txt.indexOf(subTag, lastSubIdx+1);
+        let subIdx = txt.indexOf(subTag, lastSubIdx + 1);
         if (subIdx !== -1) {
           lastSubIdx = subIdx = subIdx + subTag.length;
         } else {
@@ -671,14 +679,14 @@ export default {
         // lastSubIdx = txt.indexOf(subEndTag, lastSubIdx);
 
 
-        
+
         let draftIdx = this.combinedRefs.findIndex(ref => ref && ref.draftIdx === refNum) + 1;
         if (isPathwaysRefs) {
           const sameRefs = this.combinedRefs.filter(ref => ref && ref.draftIdx === refNum);
           if (sameRefs.length > 1) {
             const ref = sameRefs.find(ref => this.side2Refs.findIndex(currRef => currRef.link === ref.link) === -1);
             draftIdx = this.combinedRefs.indexOf(ref) + 1;
-          
+
           }
         }
         // let refIdx = txt.indexOf(refNum, lastRefIdx + draftIdx.toString().length);
@@ -696,8 +704,8 @@ export default {
         const contect = originalContent?.split(',').filter(Boolean).map(c => c.trim()) || [];
         const fixedContent = `(${contect.map(curr => {
           const nums = curr.split('-');
-          if (debug) console.log(nums, nums.map(c => c == refNum? draftIdx : c), refNum, draftIdx)
-          return nums.map(c => c == refNum? draftIdx : c).join('-');
+          if (debug) console.log(nums, nums.map(c => c == refNum ? draftIdx : c), refNum, draftIdx)
+          return nums.map(c => c == refNum ? draftIdx : c).join('-');
         }).join(',')})`;
 
 
@@ -707,16 +715,16 @@ export default {
           // if (isPathwaysRefs) {
           if (!Date) {
             txt = txt.slice(0, subIdx) +
-                  fixedContent +
-                  txt.slice(endSubIdx);
+              fixedContent +
+              txt.slice(endSubIdx);
             // if (debug) console.log(subIdx, endSubIdx, fixedContent)
             // lastSubIdx = endSubIdx + subEndTag.length;
           } else {
             txt = txt.slice(0, lastRefIdx) +
-                  txt.slice(lastRefIdx, (lastRefIdx + refNum.toString().length)).replace(refNum, draftIdx) +
-                  txt.slice(lastRefIdx + refNum.toString().length);
+              txt.slice(lastRefIdx, (lastRefIdx + refNum.toString().length)).replace(refNum, draftIdx) +
+              txt.slice(lastRefIdx + refNum.toString().length);
           }
-        } 
+        }
       });
       return txt;
     }

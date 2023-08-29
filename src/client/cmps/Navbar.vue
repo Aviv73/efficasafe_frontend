@@ -6,7 +6,8 @@
           <div class="flex-center">
             <router-link to="/" title="Home" class="logo">
               <!-- <img src="@/client/assets/imgs/efficasafe-logo-light.svg" alt="Efficasafe" /> -->
-              <img class="logo-name" src="@/client/assets/imgs/efficasafe-light.svg" alt="Efficasafe" />
+              <img class="logo-name" src="@/client/assets/imgs/efficasafe-light.svg" alt="Efficasafe" width="125.53"
+                height="20" />
             </router-link>
           </div>
         </div>
@@ -17,7 +18,8 @@
           </button>
           <router-link v-if="isScreenNarrow" to="/" title="Home" class="logo-mobile">
             <!-- <img src="@/client/assets/imgs/efficasafe-logo-light.svg" alt="Efficasafe" /> -->
-            <img class="logo-name" src="@/client/assets/imgs/efficasafe-light.svg" alt="Efficasafe" />
+            <img class="logo-name" src="@/client/assets/imgs/efficasafe-light.svg" alt="Efficasafe" width="125.53"
+              height="20" />
           </router-link>
           <div class="navbar-overlay" :class="{ active: isNavActive }" @click="toggleNavActive"></div>
           <ul class="navbar-nav nav-part" :class="{ active: isNavActive }" v-hammer:swipe.left="toggleNavActive">
@@ -50,9 +52,12 @@
                 <template #content>
                   <div class="navbar-user-dropdown">
                     <div class="navbar-user-dropdown-links">
-                      <router-link @click.native="toggleNavActive" to="/about" class="navbar-user-dropdown-item"> About us </router-link>
-                      <router-link @click.native="toggleNavActive" to="/principles-and-processes" class="navbar-user-dropdown-item"> Editorial Principles </router-link>
-                      <router-link @click.native="toggleNavActive" to="/contact" class="navbar-user-dropdown-item"> Contact us </router-link>
+                      <router-link @click.native="toggleNavActive" to="/about" class="navbar-user-dropdown-item"> About us
+                      </router-link>
+                      <router-link @click.native="toggleNavActive" to="/principles-and-processes"
+                        class="navbar-user-dropdown-item"> Editorial Principles </router-link>
+                      <router-link @click.native="toggleNavActive" to="/contact" class="navbar-user-dropdown-item">
+                        Contact us </router-link>
                     </div>
                   </div>
                 </template>
@@ -81,10 +86,14 @@
                 <template #content>
                   <div class="navbar-user-dropdown">
                     <div class="navbar-user-dropdown-links">
-                      <router-link @click.native="toggleNavActive" to="/index" class="navbar-user-dropdown-item"> Index </router-link>
-                      <router-link @click.native="toggleNavActive" to="/articles" class="navbar-user-dropdown-item"> Articles </router-link>
-                      <router-link @click.native="toggleNavActive" to="/thumb_rules" class="navbar-user-dropdown-item"> Thumb rules </router-link>
-                      <router-link @click.native="toggleNavActive" to="/new_studies" class="navbar-user-dropdown-item"> New studies </router-link>
+                      <router-link @click.native="toggleNavActive" to="/index" class="navbar-user-dropdown-item"> Index
+                      </router-link>
+                      <router-link @click.native="toggleNavActive" to="/articles" class="navbar-user-dropdown-item">
+                        Articles </router-link>
+                      <router-link @click.native="toggleNavActive" to="/thumb_rules" class="navbar-user-dropdown-item">
+                        Thumb rules </router-link>
+                      <router-link @click.native="toggleNavActive" to="/new_studies" class="navbar-user-dropdown-item">
+                        New studies </router-link>
                     </div>
                   </div>
                 </template>
@@ -95,21 +104,22 @@
 
         <div v-if="isScreenNarrow" class="nav-search">
           <router-link to="/search">
-            <img src="@/client/assets/imgs/search-icon-header.png" alt="Search" />
+            <img src="@/client/assets/imgs/search-icon-header.png" width="18" height="18" alt="Search" />
           </router-link>
         </div>
 
         <div class="nav-part last-part">
           <button class="video-btn" @click="openVideoModal">
             <span>Introduction</span>
-            <img src="@/client/assets/imgs/introduction-play-btn.svg" alt="Play" />
+            <img src="@/client/assets/imgs/introduction-play-btn.svg" alt="Play" width="13" height="12" />
           </button>
 
           <dropdown v-if="loggedInUser" class="user-dropdown">
             <template #activator>
               <div class="flex-align-center">
                 <!-- <span v-if="true" class="updated user-updated" title="Updated interactions">{{ updatedCount || 5 }}</span> -->
-                <span v-if="updatedCount" class="updated user-updated" title="Updated interactions">{{ updatedCount }}</span>
+                <span v-if="updatedCount" class="updated user-updated" title="Updated interactions">{{ updatedCount
+                }}</span>
 
                 <span class="flex">
                   {{ loggedInUser.username }}
@@ -194,7 +204,7 @@ export default {
   }),
   computed: {
     noOngingPurch() {
-      return !!this.loggedInUser?.purchases?.find(c => c.until  === 'Ongoing');
+      return !!this.loggedInUser?.purchases?.find(c => c.until === 'Ongoing');
     },
     isTrialMode() {
       // return true;

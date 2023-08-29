@@ -3,7 +3,7 @@
     <aside v-if="material" class="material-details-nav" :class="{ show: showNav }">
       <button class="drawer-btn" @click="showNav = false" v-if="isScreenNarrow"><arrow-left-icon /></button>
       <!-- <router-link to="/" class="material-details-nav-logo">
-        <img :src="require('@/client/assets/imgs/flat-logo.png')" alt="Logo" />
+        <img :src="require('@/client/assets/imgs/flat-logo.webp')" alt="Logo" />
       </router-link> -->
 
       <div class="material-details-nav-header">
@@ -15,7 +15,8 @@
         <a v-if="material.dBankDesc" @click="goTo('Background')">Background</a>
         <a @click="goTo('Interactions')">Interactions</a>
         <a v-if="material.depleteds && material.depleteds.length" @click="goTo('Depleteds')">Depletions</a>
-        <a v-if="material.dBankIndications && material.dBankIndications.length" @click="goTo('Medicinal uses')">Medicinal uses</a>
+        <a v-if="material.dBankIndications && material.dBankIndications.length" @click="goTo('Medicinal uses')">Medicinal
+          uses</a>
         <a v-if="material.pharmacology.indication" @click="goTo('Pharmacology')">Pharmacology</a>
         <a v-if="material.pharmacology.pharmacodynamics" @click="goTo('Pharmacodynamics')">Pharmacodynamics</a>
         <a v-if="material.pharmacology.absorption" @click="goTo('Absorption')">Absorption</a>
@@ -24,7 +25,8 @@
         <a v-if="material.pharmacology.metabolism" @click="goTo('Metabolism')">Metabolism</a>
         <a v-if="material.pharmacology.halfLife" @click="goTo('Half life')">Half life</a>
         <a v-if="material.pharmacology.routeOfElimination" @click="goTo('Route of elimination')">Route of elimination</a>
-        <a v-if="material.pharmacology.volumeOfDistribution" @click="goTo('Volume of distribution')">Volume of distribution</a>
+        <a v-if="material.pharmacology.volumeOfDistribution" @click="goTo('Volume of distribution')">Volume of
+          distribution</a>
         <a v-if="material.pharmacology.clearance" @click="goTo('Clearance')">Clearance</a>
         <a v-if="material.structuredAdverseEffects.length" @click="goTo('Adverse effects')">Adverse effects</a>
         <a v-if="material.structuredContraIndications.length" @click="goTo('Contraindications')">Contraindications</a>
@@ -40,7 +42,8 @@
       </button>
       <button class="drawer-btn" @click="showNav = true" v-if="isScreenNarrow"><menu-icon title="" /></button>
       <h1 ref="Title" class="material-details-content-name">
-        {{ material.name }}<span class="material-details-content-name-search" v-if="userSearch && material.name !== userSearch"> - {{ userSearch }}</span>
+        {{ material.name }}<span class="material-details-content-name-search"
+          v-if="userSearch && material.name !== userSearch"> - {{ userSearch }}</span>
       </h1>
 
       <!-- <div v-if="aliasesToShow.length" class="material-details-content-aliases-container">
@@ -62,15 +65,18 @@
       </section>
       <section class="material-details-content-section">
         <h3 ref="Interactions">Interactions</h3>
-        <router-link :to="`/search?q=${originalMaterial.name}`" target="_blank" class="fda-link font14"> click here to see all of the interactions </router-link>
+        <router-link :to="`/search?q=${originalMaterial.name}`" target="_blank" class="fda-link font14"> click here to see
+          all of the interactions </router-link>
         <hr class="line" />
       </section>
-      <section v-if="material.depleteds && material.depleteds.length" class="material-details-content-section depleted-section">
+      <section v-if="material.depleteds && material.depleteds.length"
+        class="material-details-content-section depleted-section">
         <h3 ref="Depleteds"> Drug-induced depletions</h3>
-        <MaterialDepletionsSection :material="material"/>
+        <MaterialDepletionsSection :material="material" />
         <hr class="line" />
       </section>
-      <section v-if="material.dBankIndications && material.dBankIndications.length" class="material-details-content-section">
+      <section v-if="material.dBankIndications && material.dBankIndications.length"
+        class="material-details-content-section">
         <h3 ref="Medicinal uses">Medicinal uses</h3>
         <p v-if="material.dBankIndications.length">{{ material.dBankIndications.join(', ') }}</p>
         <hr class="line" />
@@ -155,7 +161,9 @@
           <p class="ref-idx dBank-ref-idx">{{ ref.ref_id }}</p>
           <div class="txt-container">
             <p v-if="ref.citation" class="txt">{{ ref.citation }}</p>
-            <a v-if="ref.pubmed_id" class="link clip-txt" target="_blank" :href="`https://pubmed.ncbi.nlm.nih.gov/${ref.pubmed_id}`">https://pubmed.ncbi.nlm.nih.gov/{{ ref.pubmed_id }}</a>
+            <a v-if="ref.pubmed_id" class="link clip-txt" target="_blank"
+              :href="`https://pubmed.ncbi.nlm.nih.gov/${ref.pubmed_id}`">https://pubmed.ncbi.nlm.nih.gov/{{ ref.pubmed_id
+              }}</a>
             <a v-if="ref.url" class="link clip-txt" target="_blank" :href="ref.url">{{ ref.url }}</a>
           </div>
         </div>

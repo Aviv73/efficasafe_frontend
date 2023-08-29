@@ -1,244 +1,255 @@
 .print-modal {
-    border-radius: 6px;
-    color: $clr-txt-darker;
-    font-size: rem(16px);
+  border-radius: 6px;
+  color: $clr-txt-darker;
+  font-size: rem(16px);
+  line-height: rem(22px);
+  width: 90%;
+  max-width: 900px;
+  animation: slideDown 0.4s forwards;
+  &-header {
+    padding: rem(18px) rem(24px) rem(18px) rem(16px);
+    background-color: $white;
+    border: 1px solid $clr6;
+    border-radius: 6px 6px 1px 1px;
+    font-size: rem(18px);
     line-height: rem(22px);
-    width: 90%;
-    max-width: 900px;
 
-    &-header {
-        padding: rem(18px) rem(24px) rem(18px) rem(16px);
-        background-color: $white; 
-        border: 1px solid $clr6;
-        border-radius: 6px 6px 1px 1px;
+    &-sub {
+      display: inline-block;
+      font-size: rem(14px);
+      line-height: rem(18px);
+      margin-block-start: rem(12px);
+      font-style: italic;
+      opacity: 0.8;
+    }
+
+    .printer-icon {
+      color: $clr1;
+      height: 18px;
+      margin-inline-end: rem(8px);
+    }
+    .close-btn {
+      color: $gray;
+    }
+    h5 {
+      flex-grow: 1;
+    }
+  }
+  &-preview {
+    background-color: $clr3;
+    max-height: 600px;
+    overflow-y: auto;
+
+    &-list {
+      padding: 0 rem(24px);
+
+      &-item {
+        box-shadow: $slight-border-top;
+        padding: rem(6px) 0;
+
+        &:first-child {
+          padding: rem(24px) 0;
+          text-transform: capitalize;
+        }
+        .evidence-level {
+          flex-grow: 1;
+          display: inline-flex;
+          justify-content: flex-end;
+        }
+        .capsules {
+          margin-inline-end: rem(48px);
+          transform: none;
+        }
+        .checkbox {
+          margin-inline-end: rem(24px);
+          &-label {
+            cursor: pointer;
+            margin-inline-start: rem(24px);
+          }
+        }
+      }
+    }
+    &-interaction {
+      padding: 0 24px;
+      background-color: $white;
+
+      &-header {
+        font-family: tw-cen, sans-serif;
         font-size: rem(18px);
-        line-height: rem(22px);
+        line-height: rem(20px);
+        margin-block-end: rem(18px);
+        padding: rem(12px) 0 rem(18px);
+        text-align: center;
+        position: relative;
 
-        &-sub {
-            display: inline-block;
-            font-size: rem(14px);
-            line-height: rem(18px);
-            margin-block-start: rem(12px);
-            font-style: italic;
-            opacity: .8;
+        [alt='Logo'] {
+          position: absolute;
+          top: 12px;
+          left: 0;
+          width: 140px;
+        }
+        &::before {
+          content: '';
+          width: 100%;
+          height: 6px;
+          position: absolute;
+          left: 0;
+          bottom: 6px;
+          background-image: linear-gradient(90deg, $gradient-clr1, $gradient-clr2);
+        }
+        &::after {
+          content: '';
+          width: 100%;
+          height: 1px;
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          background-image: linear-gradient(90deg, $gradient-clr1, $gradient-clr2);
+        }
+      }
+      &-summary {
+        padding-block-end: rem(22px);
+        font-size: rem(16px);
+        line-height: rem(20px);
+        align-items: stretch;
+        gap: rem(8px);
+        position: relative;
+
+        &::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          height: 1px;
+          background-image: linear-gradient(90deg, $gradient-clr1, $gradient-clr2);
         }
 
-        .printer-icon {
-            color: $clr1;
-            height: 18px;
-            margin-inline-end: rem(8px);
+        & > * {
+          flex-basis: 50%;
         }
-        .close-btn {
-            color: $gray;
+        .capsule {
+          border-radius: 100px;
+          border: 1px solid $clr19;
+          padding: rem(6px) rem(16px);
+          text-align: center;
         }
-        h5 {
-            flex-grow: 1;
+        .interaction-capsules {
+          display: flex;
+
+          &-side {
+            height: 100%;
+            width: 50%;
+            border: 1px solid $clr19;
+            box-shadow: none;
+            padding: rem(6px) rem(16px);
+
+            & > span {
+              height: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+          }
         }
+
+        .recommendation-capsule {
+          color: $white;
+
+          &-icon {
+            margin-inline-end: rem(6px);
+          }
+          .clip-txt {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .material-design-icon {
+            height: 16px;
+          }
+        }
+        .note,
+        .level-of-evidence {
+          color: $clr1;
+        }
+        .narrow-therapuetic-warnning {
+          font-size: rem(14px);
+          text-align: center;
+          padding: rem(12px) rem(16px);
+          border: 1px solid $red;
+          border-radius: 3px;
+        }
+      }
+      &-content {
+        padding: rem(8px) 0 rem(16px);
+        font-size: rem(14px);
+
+        &-subheader {
+          color: $clr1;
+          text-transform: uppercase;
+          margin-block-end: rem(6px);
+        }
+        .paragraph {
+          margin-block-end: rem(18px);
+        }
+        .small-header {
+          color: $clr-txt-dark;
+          margin-block-end: rem(6px);
+        }
+        .enzymes-opener {
+          margin-block-end: rem(4px);
+        }
+      }
     }
-    &-preview {
-        background-color: $clr3;
-        max-height: 600px;
-        overflow-y: auto;
+  }
+  &-footer {
+    border-radius: 1px 1px 6px 6px;
+    padding: rem(18px) rem(24px);
+    background-color: $white;
+    border: 1px solid $clr6;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-family: roboto-medium, sans-serif;
+    font-weight: 500;
 
-        &-list {
-            padding: 0 rem(24px);
+    &-btn {
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-size: rem(13px);
+      line-height: rem(36px);
+      padding: 0 rem(22px);
+      letter-spacing: 0.07px;
 
-            &-item {
-                box-shadow: $slight-border-top;
-                padding: rem(6px) 0;
+      &:not(:last-child) {
+        margin-inline-end: rem(12px);
+      }
 
-                &:first-child {
-                    padding: rem(24px) 0;
-                    text-transform: capitalize;
-                }
-                .evidence-level {
-                    flex-grow: 1;
-                    display: inline-flex;
-                    justify-content: flex-end;
-                }
-                .capsules {
-                    margin-inline-end: rem(48px);
-                    transform: none;
-                }
-                .checkbox {
-                    margin-inline-end: rem(24px);
-                    &-label {
-                        cursor: pointer;
-                        margin-inline-start: rem(24px);
-                    }
-                }
-            }
+      &.print-btn {
+        background-color: $clr6;
+        color: $clr1;
+        transition: background-color 0.3s linear;
+
+        @include hover-supported {
+          background-color: darken($clr6, 5%);
         }
-        &-interaction {
-            padding: 0 24px;
-            background-color: $white;
 
-            &-header {
-                font-family: tw-cen, sans-serif;
-                font-size: rem(18px);
-                line-height: rem(20px);
-                margin-block-end: rem(18px);
-                padding: rem(12px) 0 rem(18px);
-                text-align: center;
-                position: relative;
-
-                [alt=Logo] {
-                    position: absolute;
-                    top: 12px;
-                    left: 0;
-                    width: 140px;
-                }
-                &::before {
-                    content: "";
-                    width: 100%;
-                    height: 6px;
-                    position: absolute;
-                    left: 0;
-                    bottom: 6px;
-                    background-image: linear-gradient(90deg, $gradient-clr1, $gradient-clr2);
-                }
-                &::after {
-                    content: "";
-                    width: 100%;
-                    height: 1px;
-                    position: absolute;
-                    left: 0;
-                    bottom: 0;
-                    background-image: linear-gradient(90deg, $gradient-clr1, $gradient-clr2);
-                }
-            }
-            &-summary {
-                padding-block-end: rem(22px);
-                font-size: rem(16px);
-                line-height: rem(20px);
-                align-items: stretch;
-                gap: rem(8px);
-                position: relative;
-
-                &::after {
-                    content: "";
-                    position: absolute;
-                    left: 0;
-                    bottom: 0;
-                    width: 100%;
-                    height: 1px;
-                    background-image: linear-gradient(90deg, $gradient-clr1, $gradient-clr2);
-                }
-
-                &>* {
-                    flex-basis: 50%;
-                }
-                .capsule {
-                    border-radius: 100px;
-                    border: 1px solid $clr19;
-                    padding: rem(6px) rem(16px);
-                    text-align: center;
-                }
-                .interaction-capsules {
-                    display: flex;
-
-                    &-side {
-                        height: 100%;
-                        width: 50%;
-                        border: 1px solid $clr19;
-                        box-shadow: none;
-                        padding: rem(6px) rem(16px);
-    
-                        & > span {
-                            height: 100%;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                        }
-                    }
-                }
-                
-                .recommendation-capsule {
-                    color: $white;
-                    
-                    &-icon {
-                        margin-inline-end: rem(6px);
-                    }
-                    .clip-txt {
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                    }
-                    .material-design-icon {
-                        height: 16px;
-                    }
-                }
-                .note,
-                .level-of-evidence {
-                    color: $clr1;
-                }
-                .narrow-therapuetic-warnning {
-                    font-size: rem(14px);
-                    text-align: center;
-                    padding: rem(12px) rem(16px);
-                    border: 1px solid $red;
-                    border-radius: 3px;
-                }
-            }
-            &-content {
-                padding: rem(8px) 0 rem(16px);
-                font-size: rem(14px);
-
-                &-subheader {
-                    color: $clr1;
-                    text-transform: uppercase;
-                    margin-block-end: rem(6px);
-                }
-                .paragraph {
-                    margin-block-end: rem(18px);
-                }
-                .small-header {
-                    color: $clr-txt-dark;
-                    margin-block-end: rem(6px);
-                }
-                .enzymes-opener {
-                    margin-block-end: rem(4px);
-                }
-            }
+        &:disabled {
+          opacity: 0.5;
+          pointer-events: none;
         }
+      }
     }
-    &-footer {
-        border-radius: 1px 1px 6px 6px;
-        padding: rem(18px) rem(24px);
-        background-color: $white;
-        border: 1px solid $clr6;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        font-family: roboto-medium, sans-serif;
-        font-weight: 500;
+  }
+}
 
-        &-btn {
-            border-radius: 4px;
-            text-transform: uppercase;
-            font-size: rem(13px);
-            line-height: rem(36px);
-            padding: 0 rem(22px);
-            letter-spacing: .07px;
-
-            &:not(:last-child) {
-                margin-inline-end: rem(12px);
-            }
-
-            &.print-btn {
-                background-color: $clr6;
-                color: $clr1;
-                transition: background-color .3s linear;
-
-                @include hover-supported {
-                    background-color: darken($clr6, 5%);
-                }
-
-                &:disabled {
-                    opacity: .5;
-                    pointer-events: none;
-                }
-            }
-        }
-    }
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

@@ -4,7 +4,7 @@
             <span class="brim-start" />
             <div class="user-account-navigation flex-coloumn">
                 <router-link to="/" class="user-account-navigation-logo">
-                    <img :src="require('@/client/assets/imgs/logo.png')" alt="Logo" />
+                    <img :src="require('@/client/assets/imgs/logo.webp')" alt="Logo" />
                 </router-link>
                 <nav class="user-account-navigation-nav font-medium">
                     <ul>
@@ -37,7 +37,7 @@
 <script>
 export default {
     name: 'UserAccount',
-    metaInfo () {
+    metaInfo() {
         return {
             title: 'Account'
         }
